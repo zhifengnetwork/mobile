@@ -251,9 +251,9 @@ class Index extends MobileBase {
     	$p = I('p/d',1);
         $where = [
             'is_recommend' => 1,
-            'exchange_integral'=>0,  //积分商品不显示
+            // 'exchange_integral'=>0,  //积分商品不显示
             'is_on_sale' => 1,
-            'virtual_indate' => ['exp', ' = 0 OR virtual_indate > ' . time()]
+            // 'virtual_indate' => ['exp', ' = 0 OR virtual_indate > ' . time()]
         ];
     	$favourite_goods = Db::name('goods')->where($where)->order('sort DESC')->page($p,C('PAGESIZE'))->cache(true,TPSHOP_CACHE_TIME)->select();//首页推荐商品
     	$this->assign('favourite_goods',$favourite_goods);
