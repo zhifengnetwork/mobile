@@ -10,8 +10,8 @@
         <h5>会员签到及管理设置</h5>
       </div>
       <ul class="tab-base nc-row">
-      <li><a  href="{:U('user/signList')}" data-state="" ><span>签到列表</span></a></li>
-      <li><a href="{:U('user/signRule')}" data-state="0" class="current" ><span>签到规则</span></a></li>
+      <li><a  href="{:U('sign/signList')}" data-state="" ><span>签到列表</span></a></li>
+      <li><a href="{:U('sign/signRule')}" data-state="0" class="current" ><span>签到规则</span></a></li>
       
       </ul>
     </div>
@@ -27,7 +27,7 @@
         <li>签到规则：可设置功能开启关闭，签到积分和连续签到额外奖励</li>
     </ul>
   </div>
-    <form method="post" enctype="multipart/form-data" id="form1" name="form1" action="{:U('User/signRule')}">
+    <form method="post" enctype="multipart/form-data" id="form1" name="form1" action="{:U('Sign/signRule')}">
         <input type="hidden" name="inc_type" value="sign">
         <div class="ncap-form-default">
             

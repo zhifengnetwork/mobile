@@ -804,37 +804,6 @@ exit("请联系TPshop官网客服购买高级版支持此功能");
 
 
     /**
-     * 签到列表
-     * @date 2017/09/28
-     */
-    public function signList()
-    {
-        header("Content-type: text/html; charset=utf-8");
-exit("请联系TPshop官网客服购买高级版支持此功能");
-    }
-
-
-    /**
-     * 会员签到 ajax
-     * @date 2017/09/28
-     */
-    public function ajaxsignList()
-    {
-        header("Content-type: text/html; charset=utf-8");
-exit("请联系TPshop官网客服购买高级版支持此功能");
-    }
-
-    /**
-     * 签到规则设置
-     * @date 2017/09/28
-     */
-    public function signRule()
-    {
-        header("Content-type: text/html; charset=utf-8");
-exit("请联系TPshop官网客服购买高级版支持此功能");
-    }
-
-    /**
      * 会员标签列表
      */
     public function labels()
