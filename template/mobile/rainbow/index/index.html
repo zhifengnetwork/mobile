@@ -260,6 +260,64 @@
     </div>
     <!--热销商品-end-->
 
+    <!--分销商品-start-->
+    <div class="floor guesslike m-b-0">
+        <div class="banner banner_imgs" style="font-size: 32px;text-align:center;">
+            <!-- <img src="__STATIC__/images/tp-cainixih.png" alt="分销商品"/> -->
+            分销商品
+        </div>
+        <div class="likeshop">
+                <ul class="product single_item info">
+                    <foreach name="distribut_goods" item="v">
+                        <li>
+                            <div class="similer-product products_kuang">   
+                                <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}" title="{$v.goods_name}">
+                                <img src="{$v[goods_id]|goods_thum_images=400,400}"/>
+                                <span class="similar-product-text">{$v[goods_name]|getSubstr=0,20}</span>
+                                </a>
+                                <span class="similar-product-price">
+                                    ¥<span class="big-price">{$v[shop_price]}</span>
+                                    <a href="{:U('Goods/goodsList',['id'=>$v['cat_id']])}" title="{$v.goods_name}">
+                                        <span class="guess-button J_ping">看相似</span>
+                                    </a>
+                                </span>
+                            </div>
+                        </li>
+                    </foreach>
+                </ul>
+        </div>
+    </div>
+    <!--分销商品-end-->
+
+    <!--代理商品-start-->
+    <div class="floor guesslike m-b-0">
+        <div class="banner banner_imgs" style="font-size: 32px;text-align:center;">
+            <!-- <img src="__STATIC__/images/tp-cainixih.png" alt="分销商品"/> -->
+            代理商品
+        </div>
+        <div class="likeshop">
+                <ul class="product single_item info">
+                    <foreach name="agent_goods" item="v">
+                        <li>
+                            <div class="similer-product products_kuang">   
+                                <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}" title="{$v.goods_name}">
+                                <img src="{$v[goods_id]|goods_thum_images=400,400}"/>
+                                <span class="similar-product-text">{$v[goods_name]|getSubstr=0,20}</span>
+                                </a>
+                                <span class="similar-product-price">
+                                    ¥<span class="big-price">{$v[shop_price]}</span>
+                                    <a href="{:U('Goods/goodsList',['id'=>$v['cat_id']])}" title="{$v.goods_name}">
+                                        <span class="guess-button J_ping">看相似</span>
+                                    </a>
+                                </span>
+                            </div>
+                        </li>
+                    </foreach>
+                </ul>
+        </div>
+    </div>
+    <!--代理商品-end-->
+
     <!--猜您喜欢-start-->
     <div class="floor guesslike m-b-0">
         <div class="banner banner_imgs">

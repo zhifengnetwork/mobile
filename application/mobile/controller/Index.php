@@ -35,6 +35,13 @@ class Index extends MobileBase {
         $this->assign('hot_goods',$hot_goods);
         $favourite_goods = M('goods')->where("is_recommend=1 and is_on_sale=1")->order('sort DESC')->limit(20)->cache(true,TPSHOP_CACHE_TIME)->select();//首页推荐商品
 
+        $distribut_goods =  M('goods')->where("is_distribut=1 and is_on_sale=1")->order('sort DESC')->limit(20)->cache(true,TPSHOP_CACHE_TIME)->select();//首页推荐商品
+        $this->assign('distribut_goods',$distribut_goods);
+
+        $agent_goods =  M('goods')->where("is_agent=1 and is_on_sale=1")->order('sort DESC')->limit(20)->cache(true,TPSHOP_CACHE_TIME)->select();//首页推荐商品
+        $this->assign('agent_goods',$agent_goods);
+
+
         //秒杀商品
         $now_time = time();  //当前时间
         if(is_int($now_time/7200)){      //双整点时间，如：10:00, 12:00
