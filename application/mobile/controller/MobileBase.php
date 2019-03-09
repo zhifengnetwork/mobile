@@ -41,6 +41,7 @@ class MobileBase extends Controller {
                 }
             } 
             if (empty(session('openid'))){
+                dump('空');
                 if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1){
                     $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
                      
