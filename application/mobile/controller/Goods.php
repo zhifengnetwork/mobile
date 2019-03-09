@@ -285,10 +285,18 @@ class Goods extends MobileBase
 
         $goods['activity_is_on'] = 0;
         $specGoodsPrice = SpecGoodsPrice::get($item_id, '');
+      
         if($specGoodsPrice){
-            $goods->shop_price = $specGoodsPrice->price;
+            // $goods->shop_price = $specGoodsPrice->price;
+            $goods['shop_price'] = $specGoodsPrice->price;
+
         }
-        $goods->shop_price = $goodsLogic->getGoodsPriceByLadder($goods_num, $goods['shop_price'], $goods['price_ladder']);//先使用价格阶梯
+
+        // $goods->shop_price = $goodsLogic->getGoodsPriceByLadder($goods_num, $goods['shop_price'], $goods['price_ladder']);//先使用价格阶梯
+        $goods['shop_price'] = $goodsLogic->getGoodsPriceByLadder($goods_num, $goods['shop_price'], $goods['price_ladder']);//先使用价格阶梯
+        $goods['shop_price'] =  $goods['shop_price'] == null ? 0 :  $goods['shop_price'];
+        
+
         if ($goodsPromFactory->checkPromType($goods['prom_type'])) {
             $goodsPromLogic = $goodsPromFactory->makeModule($goods, $specGoodsPrice);
             if ($goodsPromLogic->checkActivityIsAble()) {

@@ -604,9 +604,11 @@ class GoodsLogic extends Model
      */
     public function getGoodsPriceByLadder($goods_num, $goods_price, $price_ladder)
     {
+      
         if (empty($price_ladder)) {
             return $goods_price;
         }
+       
         $price_ladder = array_values(array_sort($price_ladder,'amount','asc'));
         $price_ladder_count = count($price_ladder);
         for ($i = 0; $i < $price_ladder_count; $i++) {

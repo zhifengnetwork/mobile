@@ -1,5 +1,4 @@
 <?php
-/
 namespace app\common\logic;
 
 use app\common\model\GroupBuy;
