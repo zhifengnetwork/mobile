@@ -38,6 +38,8 @@ class MobileBase extends Controller {
                 if (!$user) {
                     session('openid', 0);
                     session('user', null);
+                }else{
+                    session('openid', $user['openid']);
                 }
             } 
             if (empty(session('openid'))){
