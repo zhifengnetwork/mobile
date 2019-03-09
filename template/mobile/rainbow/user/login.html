@@ -34,14 +34,14 @@
         <a class="note fr" href="{:U('User/forget_pwd')}">忘记密码？</a>
     </div>
 <!--登录表单-e-->
-    <!--第三方登陆-s-->
+    <!--第三方登陆-s-
     <div class="thirdlogin">
         <h4>第三方登陆</h4>
         <div class="third-login-list">
         <tpshop sql="select * from __PREFIX__plugin where type='login' AND status = 1" item="v" key="k">
-            <!--<if condition="$v['code'] eq 'weixin' AND is_weixin() neq 1">
+            --<if condition="$v['code'] eq 'weixin' AND is_weixin() neq 1">
                 <a class="item-ico ico-wechat-login" href="{:U('LoginApi/login',array('oauth'=>'weixin'))}" target="_blank" title="weixin"></a>
-       </if>-->
+       </if>--
             <if condition="$v['code'] eq 'qqq' AND is_qq() neq 1">
                 <a class="item-ico ico-qq-login" href="{:U('LoginApi/login',array('oauth'=>'qq'))}" target="_blank" title="QQ"></a>
             </if>
@@ -54,7 +54,7 @@
         </tpshop>
         </div>
     </div>
-     <!--第三方登陆-e-->
+     --第三方登陆-e-->
 </div>
 
 

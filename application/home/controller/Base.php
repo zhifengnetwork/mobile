@@ -79,6 +79,7 @@ class Base extends Controller {
      */
     public function ajaxReturn($data)
     {
-        exit(json_encode($data));
+        header('Content-Type:application/json; charset=utf-8');
+        exit(json_encode($data,JSON_UNESCAPED_UNICODE));
     }
 }

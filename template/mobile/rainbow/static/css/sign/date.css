@@ -1,0 +1,169 @@
+* {
+	margin: 0;
+	padding: 0
+}
+
+
+/*p{padding: 20px 5px;border-bottom: 1px solid #ccc;font-size: 30px}
+em{
+    color: #f00;
+}*/
+
+
+/*wrap*/
+
+.date {
+	/*text-align: center;*/
+	position: absolute;
+	top: -0.81rem;
+	right: 0;
+	left: 0;
+	margin: 0 auto;
+	/*box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;*/
+	width: 6.9rem;
+	height: auto;
+	border: .02rem solid #999;
+	border-radius: .09rem;
+	background-color: #fff;
+}
+
+/*top box*/
+.date-marker-header {
+	/*padding-left: 1.35rem;*/
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 6.9rem;
+	height: 1.48rem;
+	text-align: center;
+	border-bottom: .02rem solid #999;
+}
+/*时间 box*/
+.date-marker-header_timeBox {
+	margin: 0 auto;
+	display: table;
+	width: auto;
+	height: 100%;
+}
+/*top box => 左点击*/
+
+.month-prev {
+	float: left;
+	position: relative;
+	width: .54rem;
+	height: 100%;
+}
+
+
+/*button=> img '*/
+
+.buttonImg {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	font-size: .25rem;
+	width: .15rem;
+	height: .25rem;
+}
+
+
+/*top box => 右点击*/
+
+.month-next {
+	float: left;
+	position: relative;
+	width: .54rem;
+	height: 100%;
+}
+
+/*年份  => select*/
+.date-marker-year {
+	float: left;
+	margin: .5rem 0 0 .08rem;
+	padding: 0;
+	padding: .02rem 0 0 .1rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	min-width: 1.2rem;
+	height: .48rem;
+	line-height: .4rem;
+	outline: none;
+	border: none;
+	background-color: transparent;
+}
+/*月份 => select*/
+.date-marker-month {
+	float: left;
+	margin: .5rem .08rem 0 .1rem;
+	padding: 0;
+	padding-left: .1rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	min-width: 1.2rem;
+	height: .48rem;
+	line-height: .4rem;
+	outline: none;
+	border: none;
+	background-color: transparent;
+}
+/*ul*/
+.date-marker-body {
+	display: block;
+	padding-top: .2rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+}
+
+.date-marker-body:after {
+	content: ' ';
+	display: table;
+	height: .25rem;
+	width: 0;
+	clear: both;
+}
+
+li {
+	float: left;
+	position: relative;
+	/*padding-top: .6rem;*/
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 14%;
+	list-style: none;
+	height: 1rem;
+	font-size: .26rem;
+	line-height: 1rem;
+	text-align: center;
+	vertical-align: middle;
+}
+
+li.active {
+	background: #f00;
+	color: #fff;
+}
+
+li em {
+	position: absolute;
+	width: 100%;
+	height: 14px;
+	line-height: 14px;
+	top: 5px;
+	left: 0;
+	color: #fff;
+	font-size: 12px;
+	font-style: normal;
+}
+
+.date-marker-prev {
+	color: #ccc;
+}

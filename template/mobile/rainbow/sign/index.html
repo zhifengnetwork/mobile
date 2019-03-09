@@ -1,0 +1,232 @@
+<!-- 
+    签到
+ -->
+ <!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<title>签到</title>
+		<script src="__STATIC__/js/public/rem.js" ></script>
+		<link rel="stylesheet" href="__STATIC__/css/sign/index.css"/>
+		<link rel="stylesheet" href="__STATIC__/css/public_lb/public.css" />
+		<!--日历 css-->
+    	<link rel="stylesheet" href="__STATIC__/css/sign/date.css" media="screen" title="no title" charset="utf-8">
+		
+	</head>
+	<body>
+		<!--最外边框-->
+		<div class="wrap_signin">
+			<!--public head-->
+			<div class="lb_headWrap lb_headWrap_fiontWhite">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/image/lj_sign_tl.png"/>
+				</p>
+				<span>签到</span>
+				<p class="lb_headWrap_text" onclick="">领取产品</p>
+			</div>
+			<!--内容-->
+			<div class="content_si">
+				<!--背景图 box-->
+				<div class="topImgBox">
+					<div class="topImgBox_butBox">
+						<!--button-->
+						<p class="signInBut">
+							<img class="topImgBox_butBoxImg" src="__STATIC__/image/lj_s_yqd.png" />	
+							<span>&nbsp;签到</span>
+						</p>
+					</div>
+					<!--总积分-->
+					<p class="integralL">总积分:<span>0</span>积分</p>
+					<!--连续、积累签到-->
+					<p class="recordBox">
+						已连续签到:&nbsp;<span class="continuityNum">0</span>天<br />
+						积累签到:&nbsp;<span class="dayNum">0<!--天数--></span>天</p>
+				</div>
+				<!--日历 wrap-->
+				<div class="calendarWrapL">
+					<!--标签=>dateMarker.js中的'构建日历骨架'改，-->
+					<div class="date"></div>
+				</div>
+				
+			</div>
+			
+			
+			<!--遮罩层-->
+			<!--<div class="model" style="display: block;">
+				<div class="dialog-sign-zp" style="display: block;">-->
+			<div class="model">
+				<div class="dialog-sign-zp">
+					<p class="score">总积分<span>0</span></p>
+					<p class="time">已经连续签到<span>0</span>天</p>
+					<p class="white">今日签到成功</p>
+					<p class="add-score">+<span>0</span>积分</p>
+					<div class="rule_box">
+						<p class="rule_box_title">签到奖励</p>
+						<span><!--签到规则--></span>
+					</div>
+					
+				</div>
+				
+			</div>
+			
+		</div>
+					
+		<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
+		<script src="__STATIC__/js/public/public_lb.js"></script>
+		<!--以下两个，日历js-->
+		<script src="__STATIC__/js/sign/DateMarker.js"></script>
+		<script src="__STATIC__/js/sign/sign.js"></script>
+		
+		<script>
+			$(document).ready(function(){
+				/*保存用户签到的状态*/
+				var signObj = {
+					/*用户是否签到*/
+					stateD: false,
+					/*总积分(后台)*/
+					totalNUm: 0,
+					/*签到奖励的积分（后台）*/
+					signNumVal: null,
+					/*连续签到（后台）*/
+					evenNum: 0,
+					/*积累签到（后天）*/
+					accumulate: 0,
+				}
+				/*签到记录、积分、连续天数、对应的规则等请求*/
+				$.ajax({
+					type: "GET",
+					url: "/mobile/sign/get_sign_day?user_id=" + {$user_id},
+					async: true,
+					success: function(data){
+						if(data['status'] == 1){
+							console.log('后台传的数据',data);
+							/*后台 传过来的数组（签到日期）*/
+							var signArr = data['data'];
+							/*存储后台传过来（修改后）日期*/
+							var newSignArr = [];
+							console.log('编辑前:',signArr);
+							/*后台传过来的值 => '2019/03/06'*/
+							/*月、日*/
+							var monthS, dayS ;
+							/**重新对后台传过来的数据，（2019/03/06）进行编辑=> '2019/3/6' **/
+							for(var k=0;k<signArr.length;k++){
+								monthS = Number(signArr[k].split('/')[1]);
+								dayS = Number(signArr[k].split('/')[2]);
+								/*console.log(signArr[k].split('/')[0],monthS,dayS);*/
+								newSignArr[k] = signArr[k].split('/')[0] + '/' + monthS + '/' + dayS;
+							}
+							
+							console.log('编辑后:',newSignArr);
+//							/*后台传过来的数组*/
+							for(var j=0;j<newSignArr.length;j++){
+								/*.getMonth()=>获取当前月份(0-11,0代表1月)*/
+								for(var i = 0; i < $('.date-marker-body li').length; i++) {
+									/**传过来的数据-不要在月份和日期前加0 =>'2019/3/6' **/
+									if($('.date-marker-body li').eq(i).attr('data-markdate') == newSignArr[j]) {
+										$('.date-marker-body li').eq(i).append(`
+											<img class="signInIconL" src="/template/mobile/rainbow/static/images/sign/signInIconS.png" />
+										`);
+									}
+								}
+							}
+							
+							/*判读用户是否签到*/
+							if(data['today_sign']){
+								$('.signInBut').find('span').html('已签到');
+								signObj['stateD'] = true;
+							}
+							/*总积分-obj*/
+							signObj['totalNUm'] = data['points'];
+							/*页面-总积分*/
+							$('.integralL').find('span').html(signObj['totalNUm']);
+							/*弹框-总积分*/
+							$('.dialog-sign-zp .score span').html(signObj['totalNUm']);
+							/*积累签到-obj*/
+							signObj['accumulate'] = data['accumulate_day'];
+							/*积累签到*/
+							$('.recordBox').find('.dayNum').html(signObj['accumulate']);
+							/*连续签到-obj*/
+							signObj['evenNum'] = data['continue_sign'];
+							/*页面-连续签到*/
+							$('.recordBox').find('.continuityNum').html(signObj['evenNum']);
+							/*弹框-连续签到*/
+							$('.dialog-sign-zp .time span').html(signObj['evenNum']);
+							/*签到-激励积分-obj*/
+							signObj['signNumVal'] = data['add_point'];
+							$('.add-score').find('span').html(signObj['signNumVal']);
+							console.log('签到积分',signObj['signNumVal']);
+							$('.rule_box span').html(data['note']);
+							
+						}else {
+							console.log('无数据');
+						}
+						
+					},
+					error: function(error){
+						console.log('报错',error);
+					}
+				});
+				
+				/*签到请求*/
+				$('.signInBut').on('click',function(){
+					/*判断用户签到状态=>ajax*/
+					if(!signObj['stateD']){
+						$.ajax({
+							type: "GET",
+							url: "/mobile/sign/sign?user_id=" + {$user_id},
+							async: true,
+							success: function(_re){
+								console.log('点击签到:',_re);
+								/*存-今天签日期*/
+								var todayState = _re['date'];
+								console.log('todayState:',todayState);
+								$('.signInBut').find('span').html('已签到');
+								/*新总积分 = 签到积分+原来的总积分*/
+								/*页面-总积分*/
+								$('.integralL').find('span').html(signObj['totalNUm']+signObj['signNumVal']);
+								/*弹框-总积分*/
+								$('.dialog-sign-zp .score span').html(signObj['totalNUm']+signObj['signNumVal']);
+								/*新的连续签到 = 今天+原来的连续签到*/
+								/*页面-连续签到*/
+								$('.recordBox').find('.continuityNum').html(signObj['evenNum']+1);
+								/*弹框-连续签到*/
+								$('.dialog-sign-zp .time span').html(signObj['evenNum']+1);
+								/*页面-积累签到*/
+								$('.recordBox .dayNum').html(signObj['accumulate']+1);
+								/*在日历盖章=>把后台数据转换: "2019/03/09" =>"2019/3/9"*/
+								console.log('后台日期数据:',todayState);
+								todayState = todayState.split('/')[0] + '/' + Number(todayState.split('/')[1]) + '/' + Number(todayState.split('/')[2])
+								console.log("转换后:",todayState);
+								
+								/*.getMonth()=>获取当前月份(0-11,0代表1月)*/
+								for(var i = 0; i < $('.date-marker-body li').length; i++) {
+									/**传过来的数据-不要在月份和日期前加0 =>'2019/3/6' **/
+									if($('.date-marker-body li').eq(i).attr('data-markdate') == todayState) {
+										$('.date-marker-body li').eq(i).append(`
+											<img class="signInIconL" src="/template/mobile/rainbow/static/images/sign/signInIconS.png" />
+										`);
+									}
+								}
+								
+							},
+							error: function(error){ 
+								console.log('报错',error);
+							}
+						})
+					}
+					/*签到-弹框*/
+					$(".model").show();
+					$(".dialog-sign-zp").show(100);
+				})
+				
+				/*关闭-签到弹窗*/
+				$(".model").on('click',function(){
+					$(".model").hide()
+					$(".dialog-sign-zp").hide(100)
+				})
+				
+			})
+		</script>
+	</body>
+</html>
