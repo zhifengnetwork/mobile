@@ -123,8 +123,9 @@ class MobileBase extends Controller {
     // 网页授权登录获取 OpendId
     public function GetOpenid()
     {
-        if(session('openid')
+        if(session('openid')){
             return session('data');
+        }
         //通过code获得openid
         if (!isset($_GET['code'])){
             //触发微信返回code码
