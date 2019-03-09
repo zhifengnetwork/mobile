@@ -8,6 +8,7 @@ use app\common\logic\GoodsPromFactory;
 use app\common\model\Combination;
 use app\common\model\SpecGoodsPrice;
 use app\common\util\TpshopException;
+use app\common\model\GoodsCategory;
 use think\AjaxPage;
 use think\Page;
 use think\Db;
@@ -22,10 +23,38 @@ class Goods extends MobileBase
     /**
      * 分类列表显示
      */
-    public function categoryList()
-    {
+    // public function categoryList()
+    // {
+    //     return $this->fetch();
+    // }
+    public function categoryList(){
+
+        //获取要访问的一级分类的ID  如果没有传ID默认展示为你推荐栏目
+//        $id=I(id,31);
+
+        $category=new GoodsCategory();
+
+        //获取所有要展示的一级分类
+        $categoryList = $category->get_first_level_category();
+        //获取当前要展示的分类的2，3级信息
+        $ids=array_column($categoryList,'id');
+        //创建数组包含所有的2，3级分类
+//        var_dump($ids);
+        $categorys=array();
+        foreach($ids as $k=>$v){
+            $categorys[$k]=$category->get_children_category($v);
+//            $cids=array_column($categorys[$k],'id');
+            foreach($categorys[$k] as $ke=>$va){
+                $categorys[$k][$ke]['child']=$category->get_children_category($va['id']);
+            }
+        }
+//        var_dump(array_column($categorys[0],'id'));
+        $this->assign('categoryList',$categoryList);
+        $this->assign('categorys',$categorys);
+//        print_r($categorys[0]);die;
         return $this->fetch();
     }
+
 
     /**
      * 商品列表页
