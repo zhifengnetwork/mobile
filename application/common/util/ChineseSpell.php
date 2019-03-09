@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by Green Studio.
- * File: File.class.php
- * Date: 14-1-31
- * Time: 下午2:53
- */
 
 namespace app\common\util;
 class ChineseSpell {//注意仅支持：GBK，故传入参数前须转码

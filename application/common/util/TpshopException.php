@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by Green Studio.
- * File: File.class.php
- * User: Timothy Zhang
- * Date: 14-1-31
- * Time: 下午2:53
- */
 
 namespace app\common\util;
 use think\Exception;

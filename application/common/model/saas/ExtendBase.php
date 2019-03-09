@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2017/11/16
- * Time: 15:55
- */
+
 
 namespace app\common\model\saas;
 

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * User: dyr
- * Date: 2017/11/24 0024
- * Time: 下午 3:00
- */
 
 namespace app\common\behavior;
 use app\common\logic\wechat\WechatUtil;

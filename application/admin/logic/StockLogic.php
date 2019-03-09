@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: lpy
- * Date: 2018/8/16
- * Time: 18:13
- */
 
 namespace app\admin\logic;
 use think\Page;
