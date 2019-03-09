@@ -4,7 +4,8 @@ $(window).scroll(
         var scrollTop = parseInt($(this).scrollTop());
         var scrollHeight = parseInt($(document).height());
         var windowHeight = parseInt($(this).height());
-        if (scrollTop + windowHeight >= scrollHeight-60) {
+        var chazhi = (scrollTop + windowHeight ) - (scrollHeight-60);
+        if ( chazhi >= -800 ){
             ajax_sourch_submit();//调用加载更多
         }
     }
