@@ -36,11 +36,11 @@ class MobileBase extends Controller {
             if (isset($user_temp['user_id']) && $user_temp['user_id']) {
                 $user = M('users')->where("user_id", $user_temp['user_id'])->find();
                 if (!$user) {
-                    $_SESSION['openid'] = 0;
+                    session('openid', 0);
                     session('user', null);
                 }
             } 
-            if (empty($_SESSION['openid'])){
+            if (empty(session('openid'))){
                 if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1){
                     $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
                      
@@ -123,8 +123,8 @@ class MobileBase extends Controller {
     // 网页授权登录获取 OpendId
     public function GetOpenid()
     {
-        if($_SESSION['openid'])
-            return $_SESSION['data'];
+        if(session('openid')
+            return session('data');
         //通过code获得openid
         if (!isset($_GET['code'])){
             //触发微信返回code码
