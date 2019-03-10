@@ -5,16 +5,17 @@ namespace app\mobile\controller;
 use Think\Db;
 use app\common\logic\wechat\WechatUtil;
 
+
+
 class Index extends MobileBase {
 
     /**
      * 测试
      */
-
-     public function test(){
-        change_role('629');
-     }
-
+    public function test(){
+        agent_performance(629);
+    }
+    
     public function index(){
         $diy_index = M('mobile_template')->where('is_index=1')->field('template_html,block_info')->find();
         if($diy_index){

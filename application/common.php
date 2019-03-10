@@ -2,6 +2,9 @@
 
 use think\Log;
 use think\Db;
+
+use app\common\logic\BonusLogic;
+
 define('EXTEND_MODULE', 1);
 define('EXTEND_ANDROID', 2);
 define('EXTEND_IOS', 3);
@@ -9,6 +12,143 @@ define('EXTEND_ENTRUST', 4); //委托服务
 define('EXTEND_MINIAPP', 5);
 define("EXTEND_H5",6);//添加终端h5
 define('TIME_MOUTH', 4);
+
+
+//获取推荐上级
+function get_uper_user($data)
+{
+    $recUser  = getAllUp($data);
+    return array('recUser'=>$recUser);
+}
+
+/*
+ * 获取所有上级
+ */
+function getAllUp($invite_id,&$userList=array())
+{           
+    $field  = "user_id,first_leader";
+    $UpInfo = M('users')->field($field)->where(['user_id'=>$invite_id])->find();
+    if($UpInfo)  //有上级
+    {
+        $userList[] = $UpInfo;                                                
+        getAllUp($UpInfo['first_leader'],$userList);
+    }
+    
+    return $userList;     
+    
+}
+
+
+/**
+ * 极差代理
+ */
+ function jichadaili($order_id){
+
+    $r = M('order_divide')->where(['order_id'=>$order_id])->find();
+    //记录表
+    if($r['status'] == 1){
+        return false;
+    }
+
+    $order = M('order')->where(['order_id'=>$order_id])->find();
+    $userId = $order['user_id'];
+    $orderSn = $order['order_sn'];
+
+    $goods_list = M('order_goods')->where(['order_id'=>$order_id])->select();
+
+    foreach($goods_list as $k => $v){
+
+        $goodId = $v['goods_id'];
+        $goodNum = $v['goods_num'];
+
+        $model = new BonusLogic($userId, $goodId,$goodNum,$orderSn,$order_id);
+        $res = $model->bonusModel();
+
+    }
+
+ }
+
+
+ /**
+  * 业绩
+  */
+ function agent_performance($order_id){
+
+    $order = M('order')->where(['order_id'=>$order_id])->field('order_amount,user_id')->find();
+    $order_amount = $order['order_amount'];
+    $user_id = $order['user_id'];
+
+    //加个人业绩(下单人)
+    $cunzai = M('agent_performance')->where(['user_id'=>$user_id])->find();
+    //存在
+    if($cunzai){
+        $data['ind_per'] = $cunzai['ind_per'] + $order_amount;
+        $data['update_time'] = date('Y-m-d H:i:s');
+        $res = M('agent_performance')->where(['user_id'=>$user_id])->save($data);
+
+        agent_performance_log($user_id,$order_amount,$order_id);
+
+    }else{
+
+        $data['user_id'] =  $user_id;
+        $data['ind_per'] =  $order_amount;
+        $data['create_time'] = date('Y-m-d H:i:s');
+        $data['update_time'] = date('Y-m-d H:i:s');
+        $res = M('agent_performance')->add($data);
+
+        agent_performance_log($user_id,$order_amount,$order_id);
+    }
+
+    
+
+    $first_leader = M('users')->where(['user_id'=>$user_id])->value('first_leader');
+    $arr = get_uper_user($first_leader);
+
+
+    //加 团队业绩
+    foreach($arr['recUser'] as $k => $v){
+       
+
+        $cunzai = M('agent_performance')->where(['user_id'=>$v['user_id']])->find();
+        //存在
+        if($cunzai){
+            $data1['agent_per'] = $cunzai['agent_per'] + $order_amount;
+            $data1['update_time'] = date('Y-m-d H:i:s');
+            $res = M('agent_performance')->where(['user_id'=>$v['user_id']])->save($data1);
+        }else{
+
+            $data1['user_id'] =  $v['user_id'];
+            $data1['agent_per'] =  $order_amount;
+            $data1['create_time'] = date('Y-m-d H:i:s');
+            $data1['update_time'] = date('Y-m-d H:i:s');
+            $res = M('agent_performance')->add($data1);
+        }
+
+        
+        agent_performance_log($v['user_id'],$order_amount,$order_id);
+    }
+
+
+ }
+
+
+
+ /**
+  * log
+  */
+function agent_performance_log($user_id,$order_amount,$order_id){
+
+    $log = array(
+        'user_id'=>$user_id,
+        'money'=>$order_amount,
+        'create_time'=>date('Y-m-d H:i:s'),
+        'note'=>'订单'.$order_id.'业绩'
+    );
+    M('agent_performance_log')->add($log);
+
+
+}
+
 /**
  * tpshop检验登陆
  * @param
@@ -854,7 +994,6 @@ function update_pay_status($order_sn,$ext=array())
             //M('users')->where("user_id", $order['user_id'])->save(array('is_distribut'=>1));
         change_role($order['order_id']);
 
-
         //虚拟服务类商品支付
         if($order['prom_type'] == 5){
             $OrderLogic = new \app\common\logic\OrderLogic();
@@ -905,6 +1044,7 @@ function update_pay_status($order_sn,$ext=array())
         }
     }
   
+    jichadaili($order_id);
 }
 
 
