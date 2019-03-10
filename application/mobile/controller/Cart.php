@@ -254,6 +254,7 @@ class Cart extends MobileBase {
         }
         // 如果已经支付过的订单直接到订单详情页面. 不再进入支付页面
         if($order['pay_status'] == 1){
+            change_role($order['order_id']);//修改代理、分销
             $order_detail_url = U("Mobile/Order/order_detail",array('id'=>$order['order_id']));
             header("Location: $order_detail_url");
             exit;

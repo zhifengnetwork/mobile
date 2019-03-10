@@ -850,8 +850,11 @@ function update_pay_status($order_sn,$ext=array())
         M('rebate_log')->where("order_id" ,$order['order_id'])->save(array('status'=>1));
         // 成为分销商条件
         $distribut_condition = tpCache('distribut.condition');
-        if($distribut_condition == 1)  // 购买商品付款才可以成为分销商
-            M('users')->where("user_id", $order['user_id'])->save(array('is_distribut'=>1));
+        //if($distribut_condition == 1)  // 购买商品付款才可以成为分销商
+            //M('users')->where("user_id", $order['user_id'])->save(array('is_distribut'=>1));
+        change_role($order['order_id']);
+
+
         //虚拟服务类商品支付
         if($order['prom_type'] == 5){
             $OrderLogic = new \app\common\logic\OrderLogic();
@@ -874,6 +877,36 @@ function update_pay_status($order_sn,$ext=array())
         $wechat->sendTemplateMsgOnPaySuccess($order);
     }
 }
+
+
+
+/**
+ * 修改某个人的分销、代理
+ */
+ function change_role($order_id){
+    $order = M('order')->where(['order_id'=>$order_id])->find();
+    if(!$order){
+        return false;
+    }
+    if($order['pay_status'] == 0){
+        return false;
+    }
+
+    $user_id = $order['user_id'];
+
+    $goods_list = M('order_goods')->where(['order_id'=>$order_id])->select();
+    foreach($goods_list as $k => $v){
+        $goods_attr = M('goods')->where(['goods_id'=>$v['goods_id']])->field('goods_id,is_distribut,is_agent')->find();
+        if($goods_attr['is_distribut'] == 1){
+            M('users')->where("user_id", $user_id)->save(array('is_distribut'=>1));
+        }
+        if($goods_attr['is_agent']==1){
+            M('users')->where("user_id", $user_id)->save(array('is_agent'=>1));
+        }
+    }
+  
+}
+
 
 /**
  * 订单确认收货

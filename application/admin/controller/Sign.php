@@ -42,7 +42,11 @@ class Sign extends Base
     public function ajaxsignList()
     {
 
-        $list = M('sign_log')->select();
+        $list = M('sign_log')->group("user_id")->select();
+
+
+        
+
         $this->assign('list',$list);
 
         return $this->fetch();
