@@ -56,7 +56,7 @@
                         <th align="left" abbr="ac_id" axis="col4" class="">
                         <div style="text-align: left; width: 150px;" class="" >手机号码</div>
                         </th>
-                        <th align="center" abbr="article_show" axis="col6" class="">
+                        <!-- <th align="center" abbr="article_show" axis="col6" class="">
                         <div style="text-align: center; width: 100px;" class="" >累计签到天数</div>
                         </th>
                         <th align="center" abbr="article_time" axis="col6" class="">
@@ -73,7 +73,7 @@
                         </th>     
                         <th align="center" abbr="article_time" axis="col6" class="">
                         <div style="text-align: center; width: 100px;" class="">累计签到积分</div>
-                        </th>            
+                        </th>             -->
 
                         <th style="width:100%" axis="col7">
                         <div></div>
@@ -132,7 +132,7 @@
             cur_page = page; //当前页面 保存为全局变量
             $.ajax({
                 type: "POST",
-                url: "/index.php?m=Admin&c=user&a=ajaxsignList&p=" + page, //+tab,
+                url: "/index.php?m=Admin&c=sign&a=ajaxsignList&p=" + page, //+tab,
                 data: $('#' + form).serialize(), // 你的formid
                 success: function(data) {
                     $("#ajax_return").html('');
