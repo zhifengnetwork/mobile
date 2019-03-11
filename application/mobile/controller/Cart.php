@@ -117,6 +117,7 @@ class Cart extends MobileBase {
         $cartLogic = new CartLogic();
         $couponLogic = new CouponLogic();
         $cartLogic->setUserId($this->user_id);
+        
         //立即购买
         if($action == 'buy_now'){
             $cartLogic->setGoodsModel($goods_id);
@@ -209,7 +210,7 @@ class Cart extends MobileBase {
                 $pay->payCart($userCartList);
             }
             $pay->setUserId($this->user_id)->setShopById($shop_id)->delivery($address['district'])->orderPromotion()
-                ->useCouponById($coupon_id)->useUserMoney($user_money)->usePayPoints($pay_points,false,'mobile');
+                ->useCouponById($coupon_id)->useUserMoney($user_money)->usePayPoints($pay_points,false,'mobile')->getUserSign($goods_id);
             // 提交订单
             if ($_REQUEST['act'] == 'submit_order') {
                 $placeOrder = new PlaceOrder($pay);
@@ -224,6 +225,11 @@ class Cart extends MobileBase {
             $error = $t->getErrorArr();
             $this->ajaxReturn($error);
         }
+    }
+    public function caa()
+    {
+        $pay = new Pay();
+        return $pay->setUserId($this->user_id)->getUserSign(239);
     }
     /*
      * 订单支付页面
