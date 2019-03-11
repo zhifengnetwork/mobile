@@ -90,8 +90,6 @@ class User extends MobileBase
 		}else{
 			$max_moneys = $moneys[0];
 		}
-       
-        // $max_moneys = max($moneys);
         array_shift($moneys);
         //去掉最大业绩之和
 		$moneys = array_sum($moneys);
