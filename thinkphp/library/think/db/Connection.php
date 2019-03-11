@@ -1026,7 +1026,19 @@ abstract class Connection
                 $r = $this->config['slave_no'];
             } else {
                 // 读操作连接从服务器 每次随机连接的数据库
-                $r = floor(mt_rand($this->config['master_num'], count($_config['hostname']) - 1));
+
+                $a= $this->config['master_num'];
+                $b = count($_config['hostname']) - 1;
+
+                if($a < $b){
+                    $re = mt_rand($a, $b);
+                }
+
+                if($a > $b){
+                    $re = mt_rand($b, $a);
+                }
+
+                $r = floor($re);
             }
         } else {
             // 读写操作不区分服务器 每次随机连接的数据库

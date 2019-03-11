@@ -107,6 +107,10 @@ return	array(
 					array('name' => '新闻列表', 'act'=>'newsList', 'op'=>'News'),
 					array('name' => '新闻分类', 'act'=>'categoryList', 'op'=>'News'),
 			)),
+			array('name' => '素材', 'child' => array(
+			    array('name' => '素材列表', 'act' => 'materialList', 'op' => 'Material'),
+			    array('name' => '素材分类', 'act' => 'materialClass', 'op' => 'Material'),
+			)),
 	)),
 		
 	'marketing'=>array('name'=>'营销','child'=>array(

@@ -81,6 +81,10 @@ class Sign extends MobileBase {
             $r = M('sign_log')->save(['user_id'=>$user_id,'sign_day'=>date('Y-m-d H:i:s')]);
             if($r){
                 if($r){
+                    //签到积分
+                    $add_point = (int)M('config')->where(['name'=>'sign_integral'])->value('value');
+                    accountLog($user_id, 0, $add_point , '签到送积分',0,0 ,'');
+
                     return $this->ajaxReturn(['status'=>1,'msg'=>'签到成功','date'=>$date]);
                 }else{
                     return $this->ajaxReturn(['status'=>-1,'msg'=>'签到失败','date'=>$date]);
@@ -117,8 +121,8 @@ class Sign extends MobileBase {
         $points = M('users')->where(['user_id'=>$user_id])->value('pay_points');
         $continue_sign = $this->continue_sign($user_id);
         //签到积分
-        $add_point = M('config')->where(['name'=>'sign_integral'])->value('value');
-
+        $add_point = (int)M('config')->where(['name'=>'sign_integral'])->value('value');
+      
         //签到规则
         //连续签到几天	        
         $rule = M('config')->where(['name'=>'sign_rule'])->value('value');
