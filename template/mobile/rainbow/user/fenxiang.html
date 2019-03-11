@@ -1,8 +1,12 @@
 <include file="public/header" title="我的分享" body="g4"/>
 <include file="public/header_nav" title="我的分享" href="javascript:history.back(-1)"/>
 <style>
-    .two-bothshop ul li {width: 33%;}
-    .qr{ margin: 195px;margin-left:120px}
+    .qr{ 
+       position:absolute;
+       left: 50%;
+       top:40%;
+       transform: translate(-50%,-50%)
+    }
 </style>
 <div class="two-bothshop">
     <div class="maleri30">
@@ -15,12 +19,11 @@
     </div>
 </div>
 
-<div class="coupon_csswri">
-    
+<div>
 	<div id="qrcode" class="qr"></div>
-
 </div>
 
+<script type="text/javascript" src="__STATIC__/js/qrcode.js"></script>
 
 <script type="text/javascript">
 
@@ -28,14 +31,15 @@ var url = "{$url}";
 
 var qrcode = new QRCode("qrcode", {
     text: url,
-    width: 500,
-    height: 500,
+    width: 300,
+    height: 300,
     colorDark : "#000000",
     colorLight : "#ffffff",
     correctLevel : QRCode.CorrectLevel.H
 });
 
 </script>
+
 
 <script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
 
