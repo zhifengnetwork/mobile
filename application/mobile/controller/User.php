@@ -5,6 +5,7 @@ namespace app\mobile\controller;
 use app\common\logic\CartLogic;
 use app\common\logic\Message;
 use app\common\logic\UsersLogic;
+use app\common\logic\DistributLogic;
 use app\common\logic\OrderLogic;
 use app\common\model\MenuCfg;
 use app\common\model\UserAddress;
@@ -64,6 +65,52 @@ class User extends MobileBase
         );
         $this->assign('order_status_coment', $order_status_coment);
     }
+
+    public function distribut()
+    {
+        $user = session('user');
+        $field = "user_id,first_leader,is_distribut,is_agent"; 
+        $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->select();
+        $money_array = [];
+        foreach($users as $key=>$val){
+            $get_child_agent = $this->child_agent($val['user_id']);
+            $money_array[]=$get_child_agent['agent_per'];
+            // dump($get_child_agent['agent_per']);
+            // $$money_array[] = $get_child_agent['agent_per'];
+        }
+        if(empty($money_array)){
+            return false;
+        };
+        $moneys = array_filter($money_array);
+        rsort($moneys);
+        //最大业绩用户
+		if(count($moneys) >= 2){
+			$max_moneys = max($moneys);
+		}else{
+			$max_moneys = $moneys[0];
+		}
+       
+        // $max_moneys = max($moneys);
+        array_shift($moneys);
+        //去掉最大业绩之和
+		$moneys = array_sum($moneys);
+        $agent = $this->child_agent($user['user_id']);
+        $money_total = $agent['ind_per']+$agent['agent_per'];
+        $money_total = array(
+            'money_total'=>$money_total,
+            'max_moneys'=>$max_moneys,
+            'moneys'=>$moneys
+        );
+        $this->assign('money_total',$money_total);
+        return $this->fetch();
+    }
+
+    private function child_agent($user_id)
+	{
+		$performance = M('agent_performance')->where(['user_id'=>$user_id])->find();
+		if(empty($performance)) return false;
+		return $performance;
+	}
 
     public function index()
     {
@@ -1099,6 +1146,86 @@ class User extends MobileBase
     	}
     	return $this->fetch();
     }
+
+
+    public function performance_log(){
+    	$DistributLogic = new DistributLogic;
+        $result= $DistributLogic->get_recharge_log($this->user_id,'','agent_performance_log');  //业务记录
+        // dump($this->user_id);
+    	$this->assign('page', $result['show']);
+        $this->assign('lists', $result['result']);
+        if (I('is_ajax')) {
+    		return $this->fetch('ajax_log_list');
+    	}
+    	return $this->fetch();
+    }
+
+    public function commision(){
+    	$DistributLogic = new DistributLogic;
+        $result= $DistributLogic->get_commision_log($this->user_id);  //佣金明细
+        // dump($result);
+    	$this->assign('page', $result['show']);
+        $this->assign('lists', $result['result']);
+        if (I('is_ajax')) {
+    		return $this->fetch('ajax_commision_list');
+    	}
+    	return $this->fetch();
+    }
+
+    public function team_list(){
+    	$DistributLogic = new DistributLogic;
+        $result= $DistributLogic->get_team_list($this->user_id);  //团队列表
+        // dump($result);
+        // dump($result['result']);
+        // 判断下级是否还有下级
+        // dump($result['result']);
+        // foreach($result['result'] as $key=>$value){
+        //     $res=team_list($value['user_id']);
+        //     dump($res);  
+        // }
+        // exit();
+    	$this->assign('page', $result['show']);
+        $this->assign('lists', $result['result']);
+        if (I('is_ajax')) {
+    		return $this->fetch('ajax_team_list');
+    	}
+    	return $this->fetch();
+    }
+
+    public function next_team_list(){
+        $user_id = I('user_id');
+        $DistributLogic = new DistributLogic;
+        $result= $DistributLogic->get_team_list($user_id);
+        // 获取下级id
+        // dump($result);
+        $data = $result['result'];
+        foreach($data as $key=>$value)
+        {
+            
+            $son=$value['user_id'];
+            $son_data=$this->next_team_list($son);
+            dump($son_data);
+        }
+
+        // $num=count($result['result']);
+        // for ($i=0; $i<=$num; $i++) {
+        //      $user_id = $result['result'][$i][] 
+        // } 
+        
+        // dump($result); 
+    	// $DistributLogic = new DistributLogic;
+        // $result= $DistributLogic->get_team_list($user_id);  //团队列表
+        // // dump($result);
+        // // dump($result['result']);
+    	// $this->assign('page', $result['show']);
+        // $this->assign('lists', $result['result']);
+        // if (I('is_ajax')) {
+    	// 	return $this->fetch('ajax_team_list');
+    	// }
+    	// $this->ajaxReturn(['status'=>1,'msg'=>'查询成功','result' => $result]);        
+      
+    }
+
 
     //添加、编辑提现支付宝账号
     public function add_card(){
