@@ -5,7 +5,16 @@ body {
 .wrap_signin {
 	width: 7.5rem;
 	height: auto;
+	touch-action: pan-y;
 }
+/*头部 背景色 -左向右渐变*/
+.topBox_backgroundColor {
+	background:-webkit-linear-gradient(left,#ffba33, #f95112);
+	background:-o-linear-gradient(right,#ffba33, #f95112);
+	background:-moz-linear-gradient(right,#ffba33, #f95112);
+	background: linear-gradient(to right,#ffba33, #f95112);
+}
+
 /*内容*/
 .content_si {
 	width: 100%;
@@ -26,8 +35,13 @@ body {
 	-o-background-size: cover;
 }
 .topImgBox_butBox {
+	padding-top: .2rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 	width: 100%;
-	height: .84rem;
+	/*height: .84rem;*/
+	height: 1.24rem;
 }
 .signInBut {
 	margin: 0 auto;
@@ -38,7 +52,8 @@ body {
 	-webkit-box-sizing: border-box;
 	width: 3.06rem;
 	height: .84rem;
-	font: .34rem/.8rem "微软雅黑";
+	font-size: .34rem;
+	line-height: .8rem;
 	color: #fff;
 	letter-spacing: .02rem;
 	border: .02rem solid #fff;
@@ -59,7 +74,8 @@ body {
 	width: 100%;
 	height: .82rem;
 	text-align: center;
-	font: .24rem/.82rem "微软雅黑";
+	font-size: .24rem;
+	line-height: .82rem;
 	color: #fff;
 	letter-spacing: .02rem;
 }
@@ -70,7 +86,8 @@ body {
 	-webkit-box-sizing: border-box;
 	width: 100%;
 	height: auto;
-	font: .24rem/.36rem "微软雅黑";
+	font-size: .24rem;
+	line-height: .4rem;
 	color: #fff;
 	text-align: center;
 	letter-spacing: .02rem;
@@ -127,7 +144,11 @@ body {
 	margin-left: -3.2rem;
 	margin-top: -3.2rem;
 }
-.dialog-sign-zp .score{
+/*.dialog-sign-zp .score{
+	margin-bottom: .1rem;
+	font-size: .28rem;
+}*/
+.accumulateL {
 	margin-bottom: .1rem;
 	font-size: .28rem;
 }
@@ -158,12 +179,12 @@ body {
 }
 .rule_box_title {
 	margin: 0 auto;
-	padding-top: .8rem;
+	padding-top: 1.1rem;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	width: 80%;
-	height: 1.2rem;
+	height: 1.6rem;
 	/*line-height: .8rem;*/
 	font-size: .26rem;
 }

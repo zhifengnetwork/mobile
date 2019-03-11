@@ -82,10 +82,10 @@ return	array(
 					array('name' => '退换货', 'act'=>'return_list', 'op'=>'Order'),
 					array('name' => '添加订单', 'act'=>'add_order', 'op'=>'Order'),
 					array('name' => '订单日志','act'=>'order_log','op'=>'Order'),
-					array('name' => '发票管理','act'=>'index', 'op'=>'Invoice'),
-			        array('name' => '拼团列表','act'=>'team_list','op'=>'Team'),
-			        array('name' => '拼团订单','act'=>'order_list','op'=>'Team'),
-			        array('name' => '上门自提','act'=>'index','op'=>'ShopOrder'),
+					// array('name' => '发票管理','act'=>'index', 'op'=>'Invoice'),
+			    //     array('name' => '拼团列表','act'=>'team_list','op'=>'Team'),
+			    //     array('name' => '拼团订单','act'=>'order_list','op'=>'Team'),
+			    //     array('name' => '上门自提','act'=>'index','op'=>'ShopOrder'),
 			)),
 
 			array('name' => '广告','child' => array(
@@ -106,6 +106,10 @@ return	array(
 			array('name' => '新闻','child'=>array(
 					array('name' => '新闻列表', 'act'=>'newsList', 'op'=>'News'),
 					array('name' => '新闻分类', 'act'=>'categoryList', 'op'=>'News'),
+			)),
+			array('name' => '素材', 'child' => array(
+			    array('name' => '素材列表', 'act' => 'materialList', 'op' => 'Material'),
+			    array('name' => '素材分类', 'act' => 'materialClass', 'op' => 'Material'),
 			)),
 	)),
 		
@@ -148,7 +152,7 @@ return	array(
  	'member'=>array('name'=>'会员','child'=>array(
 		array('name' => '会员管理','child'=>array(
 			array('name'=>'会员列表','act'=>'index','op'=>'User'),
-			array('name'=>'会员等级','act'=>'levelList','op'=>'User'),
+			// array('name'=>'会员等级','act'=>'levelList','op'=>'User'),
 		)),
 		array('name' => '充值提现','child'=>array(
 			array('name'=>'充值记录','act'=>'recharge','op'=>'User'),

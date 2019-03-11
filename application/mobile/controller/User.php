@@ -5,6 +5,7 @@ namespace app\mobile\controller;
 use app\common\logic\CartLogic;
 use app\common\logic\Message;
 use app\common\logic\UsersLogic;
+use app\common\logic\DistributLogic;
 use app\common\logic\OrderLogic;
 use app\common\model\MenuCfg;
 use app\common\model\UserAddress;
@@ -1099,6 +1100,67 @@ class User extends MobileBase
     	}
     	return $this->fetch();
     }
+
+
+    public function performance_log(){
+    	$DistributLogic = new DistributLogic;
+        $result= $DistributLogic->get_recharge_log($this->user_id,'','agent_performance_log');  //业务记录
+        // dump($this->user_id);
+    	$this->assign('page', $result['show']);
+        $this->assign('lists', $result['result']);
+        if (I('is_ajax')) {
+    		return $this->fetch('ajax_log_list');
+    	}
+    	return $this->fetch();
+    }
+
+    public function commision(){
+    	$DistributLogic = new DistributLogic;
+        $result= $DistributLogic->get_commision_log($this->user_id);  //佣金明细
+        // dump($result);
+    	$this->assign('page', $result['show']);
+        $this->assign('lists', $result['result']);
+        if (I('is_ajax')) {
+    		return $this->fetch('ajax_commision_list');
+    	}
+    	return $this->fetch();
+    }
+
+    public function team_list(){
+    	$DistributLogic = new DistributLogic;
+        $result= $DistributLogic->get_team_list($this->user_id);  //团队列表
+        // dump($result);
+        // dump($result['result']);
+        // 判断下级是否还有下级
+        // dump($result['result']);
+        // foreach($result['result'] as $key=>$value){
+        //     $res=team_list($value['user_id']);
+        //     dump($res);  
+        // }
+        // exit();
+    	$this->assign('page', $result['show']);
+        $this->assign('lists', $result['result']);
+        if (I('is_ajax')) {
+    		return $this->fetch('ajax_team_list');
+    	}
+    	return $this->fetch();
+    }
+
+    public function next_team_list(){
+        $user_id = I('user_id');
+    	// $DistributLogic = new DistributLogic;
+        // $result= $DistributLogic->get_team_list($user_id);  //团队列表
+        // // dump($result);
+        // // dump($result['result']);
+    	// $this->assign('page', $result['show']);
+        // $this->assign('lists', $result['result']);
+        // if (I('is_ajax')) {
+    	// 	return $this->fetch('ajax_team_list');
+    	// }
+    	$this->ajaxReturn(['status'=>1,'msg'=>'查询成功']);        
+      
+    }
+
 
     //添加、编辑提现支付宝账号
     public function add_card(){
