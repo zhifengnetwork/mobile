@@ -101,12 +101,10 @@ class Distribut extends Base {
     public function grade_list()
     {
         $data = input('post.');
-
         $distribut = M('distribut')->find();
 
         //是否接收到数据
         if ($data) {
-            //是否已存在数据,是则修改,不是则新增
             if ($distribut) {
                 $bool = M('distribut')->where('distribut_id',$distribut['distribut_id'])->update(['rate'=>$data['rate'],'time'=>$data['date'],'update_time'=>time()]);
             } else {
@@ -117,6 +115,10 @@ class Distribut extends Base {
                 $distribut['rate'] = $data['rate'];
             }
         }
+
+        $config['qr_back'] = M('config')->where(['name'=>'qr_back'])->value('value');
+        $this->assign('config',$config);
+
 
         $this->assign('rate', $distribut['rate']);
 
