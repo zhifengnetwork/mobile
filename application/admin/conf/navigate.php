@@ -17,7 +17,7 @@
             	    )
                ),             		
               'admin/index'=>array(
-                'name' =>'TPshop系统管理',
+                'name' =>'智丰网络',
                 'action'=>array(
                      'index'=>'欢迎页面',                     
          	       )

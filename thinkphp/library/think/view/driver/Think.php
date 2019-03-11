@@ -80,7 +80,7 @@ class Think
 			
 			if(strstr($template,'pre_sell_list')){
 				header("Content-type: text/html; charset=utf-8");
-				exit('要使用预售功能请联系TPshop官网客服,官网地址 www.tp-shop.cn');
+				exit('要使用预售功能请联系智丰网络客服,官网地址 www.tp-shop.cn');
 			}
             throw new TemplateNotFoundException('template not exists:' . $template, $template);
         }

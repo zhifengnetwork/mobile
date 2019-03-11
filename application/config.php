@@ -366,7 +366,7 @@ return [
     'finally_pay_time'=>1*24*3600,
     'WX_PAY2' => 1,
 
-    /**假设这个访问地址是 www.tpshop.cn/home/goods/goodsInfo/id/1.html 
+    /**假设这个访问地址是 mobile.zhifengwangluo.com.c3w.cc/home/goods/goodsInfo/id/1.html 
      *就保存名字为 home_goods_goodsinfo_1.html     
      *配置成这样, 指定 模块 控制器 方法名 参数名      
      */

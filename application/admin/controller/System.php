@@ -17,7 +17,7 @@ class System extends Base
 		/*配置列表*/
 		$group_list = [
             'shop_info' => '店铺信息',
-            'basic'     => '基本设置',
+            // 'basic'     => '基本设置',
             'sms'       => '短信设置',
             'shopping'  => '购物流程设置',
             // 'smtp'      => '邮件设置',
@@ -66,7 +66,7 @@ class System extends Base
     public function user_center_menu()
     {
 		header("Content-type: text/html; charset=utf-8");
-        exit("请联系TPshop官网客服购买高级版支持此功能");
+        exit("请联系智丰网络客服购买高级版支持此功能");
     }
 
     public function user_center_menu_save(){
