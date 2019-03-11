@@ -107,19 +107,22 @@ class Distribut extends Base {
     public function grade_list()
     {
         $data = input('post.');
-
-        $config['qr_back'] = M('config')->where(['name'=>'qr_back'])->value('value');
-        $this->assign('config',$config);
-
         $distribut = M('distribut')->find();
 
         if ($data) {
+          
+            M('config')->where(['name'=>'qr_back'])->update(['value'=>$data['qr_back']]);
+
             if ($distribut) {
                 M('distribut')->where('distribut_id',$distribut['distribut_id'])->update(['rate'=>$data['rate'],'time'=>$data['date'],'update_time'=>time()]);
             } else {
                 M('distribut')->insert(['rate'=>$data['rate'],'time'=>$data['date'],'create_time'=>time(),'update_time'=>time()]);
             }
         }
+
+        $config['qr_back'] = M('config')->where(['name'=>'qr_back'])->value('value');
+        $this->assign('config',$config);
+
 
         $this->assign('rate', $distribut['rate']);
 
