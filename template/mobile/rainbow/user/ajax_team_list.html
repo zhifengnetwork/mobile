@@ -1,0 +1,8 @@
+    <foreach name="lists" item="v">
+        <ul> 
+            <input type="hidden" name="user_id" value="{$v[user_id]}">  
+            <li class="li2"><span>{$v[nickname]}</span></li> 
+            <li class="li1" style="width:33.3%"><span>{$v[tel]}</span></li>  
+            <li class="li3"><span>+</span></li>
+        </ul>
+    </foreach>

@@ -25,7 +25,7 @@ body{
 	padding: 0.1rem 0.3rem;
 }
 .top-bar .search{
-	width: 6.1rem;
+	width: 7.1rem;
 	height: 0.68rem;
 	background: #f8f8f8;
 	border-radius: 0.15rem;
@@ -56,12 +56,14 @@ body{
 	background: url(../../images/category/sweep.png) no-repeat center center;
 	background-size: 100%;
 	margin: 0 0.3rem;
+	display: none;
 }
 .top-bar .msg-icon{
 	width: 0.45rem;
 	height: 0.45rem;
 	background:url(../../images/category/news.png) no-repeat;
 	background-size: 100%;
+	display: none;
 }
 
 /*分类主体*/
