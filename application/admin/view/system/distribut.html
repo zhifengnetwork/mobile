@@ -1,602 +1,240 @@
 <include file="public/layout" />
-<script src="/public/static/js/layer/laydate/laydate.js"></script>
-<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<body style="background-color: #FFF; overflow: auto;">
 <div id="append_parent"></div>
 <div id="ajaxwaitid"></div>
 <div class="page">
-	<div class="fixed-bar">
-		<div class="item-title">
-			<div class="subject">
-				<h3>分销商管理</h3>
-				<h5>分销商成员管理</h5>
-			</div>
-		</div>
-	</div>
-
-	<!-- 操作说明 -->
-	<div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
-		<div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
-		  <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
-		  <span title="收起提示" id="explanationZoom" style="display: block;"></span>
-		</div>
-		 <ul>
-			<li>分销商成员信息管理</li>
-		</ul>
-	</div>
-	
-	<div class="flexigrid">
-		<div class="mDiv">
-			<div class="ftitle">
-				<h3>分销商列表</h3>
-				<h5>(共15条记录)</h5>
-			</div>
-			<div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
-
-			<!-- <form class="navbar-form form-inline" id="search-form" method="post" action="/index.php/admin/Report/userTop" onSubmit="return check_form();">
-				<div class="sDiv">
-					<div class="sDiv2" style="margin-right: 10px;">
-						<input type="text" size="30" name="user" id="user" value="" placeholder="用户" class="qsbox">
-					</div>
-					<div class="sDiv2" style="margin-right: 10px;">
-						<input type="text" size="30" name="good" id="good" value="" placeholder="商品名称" class="qsbox">
-					</div>
-					<div class="sDiv2">
-						<input class="btn" value="搜索" type="submit">
-					</div>
-				</div>
-			</form> -->
-		</div>
-
-		<div class="hDiv">
-			<div class="hDivBox">
-				<table cellspacing="0" cellpadding="0">
-					<thead>
-					<tr>
-						<th class="sign" axis="col0">
-							<div style="width: 24px;"><i class="ico-check"></i></div>
-						</th>
-						<th align="center" abbr="article_title" axis="col3" class="">
-							<div style="text-align: center; width: 50px;" class="">ID</div>
-						</th>
-						<th align="center" abbr="ac_id" axis="col4" class="">
-							<div style="text-align: center; width: 100px;" class="">用户</div>
-						</th>
-						<th align="center" abbr="article_show" axis="col5" class="">
-							<div style="text-align: center; width: 200px;" class="">会员等级</div>
-						</th>
-                        <th align="center" abbr="article_show" axis="col5" class="">
-                            <div style="text-align: center; width: 150px;" class="">上级</div>
-                        </th>
-                        <th align="center" abbr="article_show" axis="col5" class="">
-                            <div style="text-align: center; width: 100px;" class="">省份</div>
-                        </th>
-						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 80px;" class="">手机</div>
-						</th>
-						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 200px;" class="">邮箱</div>
-						</th>
-						<th align="center" axis="col1" class="handle">
-							<div style="text-align: center; width: 200px;">操作</div>
-						</th>
-						<th style="width:100%" axis="col7">
-							<div></div>
-						</th>
-					</tr>
-					</thead>
-				</table>
-			</div>
-		</div>
-		<div class="bDiv" style="height: auto;">
-			<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
-				<table>
-					<tbody>
-											<tr>
-							<td class="sign">
-								<div style="width: 24px;"><i class="ico-check"></i></div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 50px;">75</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 100px;">  </div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;">1</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 150px;">0</div>
-							</td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 100px;">0</div>
-                            </td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 80px;"></div>
-                            </td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;"></div>
-							</td>
-							<td align="center" class="handle">
-								<div style="text-align: center; width: 200px; max-width:200px;">
-									<a class="btn red" href="javascript:void(0)" data-url="/index.php/admin/Distribut/distributor_del" data-id="75" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
-								</div>
-							</td>
-							<td align="" class="" style="width: 100%;">
-								<div>&nbsp;</div>
-							</td>
-						</tr>
-											<tr>
-							<td class="sign">
-								<div style="width: 24px;"><i class="ico-check"></i></div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 50px;">74</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 100px;">泷邦</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;">1</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 150px;">75</div>
-							</td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 100px;">0</div>
-                            </td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 80px;"></div>
-                            </td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;"></div>
-							</td>
-							<td align="center" class="handle">
-								<div style="text-align: center; width: 200px; max-width:200px;">
-									<a class="btn red" href="javascript:void(0)" data-url="/index.php/admin/Distribut/distributor_del" data-id="74" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
-								</div>
-							</td>
-							<td align="" class="" style="width: 100%;">
-								<div>&nbsp;</div>
-							</td>
-						</tr>
-											<tr>
-							<td class="sign">
-								<div style="width: 24px;"><i class="ico-check"></i></div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 50px;">73</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 100px;">方子墨</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;">1</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 150px;">74</div>
-							</td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 100px;">0</div>
-                            </td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 80px;"></div>
-                            </td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;"></div>
-							</td>
-							<td align="center" class="handle">
-								<div style="text-align: center; width: 200px; max-width:200px;">
-									<a class="btn red" href="javascript:void(0)" data-url="/index.php/admin/Distribut/distributor_del" data-id="73" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
-								</div>
-							</td>
-							<td align="" class="" style="width: 100%;">
-								<div>&nbsp;</div>
-							</td>
-						</tr>
-											<tr>
-							<td class="sign">
-								<div style="width: 24px;"><i class="ico-check"></i></div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 50px;">72</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 100px;">随风飘流</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;">1</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 150px;">73</div>
-							</td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 100px;">0</div>
-                            </td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 80px;"></div>
-                            </td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;"></div>
-							</td>
-							<td align="center" class="handle">
-								<div style="text-align: center; width: 200px; max-width:200px;">
-									<a class="btn red" href="javascript:void(0)" data-url="/index.php/admin/Distribut/distributor_del" data-id="72" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
-								</div>
-							</td>
-							<td align="" class="" style="width: 100%;">
-								<div>&nbsp;</div>
-							</td>
-						</tr>
-											<tr>
-							<td class="sign">
-								<div style="width: 24px;"><i class="ico-check"></i></div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 50px;">71</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 100px;">Z</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;">1</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 150px;">8</div>
-							</td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 100px;">0</div>
-                            </td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 80px;"></div>
-                            </td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;"></div>
-							</td>
-							<td align="center" class="handle">
-								<div style="text-align: center; width: 200px; max-width:200px;">
-									<a class="btn red" href="javascript:void(0)" data-url="/index.php/admin/Distribut/distributor_del" data-id="71" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
-								</div>
-							</td>
-							<td align="" class="" style="width: 100%;">
-								<div>&nbsp;</div>
-							</td>
-						</tr>
-											<tr>
-							<td class="sign">
-								<div style="width: 24px;"><i class="ico-check"></i></div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 50px;">70</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 100px;">梦</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;">1</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 150px;">8</div>
-							</td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 100px;">0</div>
-                            </td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 80px;"></div>
-                            </td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;"></div>
-							</td>
-							<td align="center" class="handle">
-								<div style="text-align: center; width: 200px; max-width:200px;">
-									<a class="btn red" href="javascript:void(0)" data-url="/index.php/admin/Distribut/distributor_del" data-id="70" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
-								</div>
-							</td>
-							<td align="" class="" style="width: 100%;">
-								<div>&nbsp;</div>
-							</td>
-						</tr>
-											<tr>
-							<td class="sign">
-								<div style="width: 24px;"><i class="ico-check"></i></div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 50px;">86</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 100px;">精</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;">1</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 150px;">0</div>
-							</td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 100px;">0</div>
-                            </td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 80px;"></div>
-                            </td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;"></div>
-							</td>
-							<td align="center" class="handle">
-								<div style="text-align: center; width: 200px; max-width:200px;">
-									<a class="btn red" href="javascript:void(0)" data-url="/index.php/admin/Distribut/distributor_del" data-id="86" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
-								</div>
-							</td>
-							<td align="" class="" style="width: 100%;">
-								<div>&nbsp;</div>
-							</td>
-						</tr>
-											<tr>
-							<td class="sign">
-								<div style="width: 24px;"><i class="ico-check"></i></div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 50px;">87</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 100px;">覃发辉-软件开发项目总监</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;">1</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 150px;">0</div>
-							</td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 100px;">0</div>
-                            </td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 80px;"></div>
-                            </td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;"></div>
-							</td>
-							<td align="center" class="handle">
-								<div style="text-align: center; width: 200px; max-width:200px;">
-									<a class="btn red" href="javascript:void(0)" data-url="/index.php/admin/Distribut/distributor_del" data-id="87" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
-								</div>
-							</td>
-							<td align="" class="" style="width: 100%;">
-								<div>&nbsp;</div>
-							</td>
-						</tr>
-											<tr>
-							<td class="sign">
-								<div style="width: 24px;"><i class="ico-check"></i></div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 50px;">88</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 100px;">小雨点</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;">1</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 150px;">0</div>
-							</td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 100px;">0</div>
-                            </td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 80px;"></div>
-                            </td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;"></div>
-							</td>
-							<td align="center" class="handle">
-								<div style="text-align: center; width: 200px; max-width:200px;">
-									<a class="btn red" href="javascript:void(0)" data-url="/index.php/admin/Distribut/distributor_del" data-id="88" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
-								</div>
-							</td>
-							<td align="" class="" style="width: 100%;">
-								<div>&nbsp;</div>
-							</td>
-						</tr>
-											<tr>
-							<td class="sign">
-								<div style="width: 24px;"><i class="ico-check"></i></div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 50px;">89</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 100px;">68AJz</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;">1</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 150px;">0</div>
-							</td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 100px;">0</div>
-                            </td>
-                            <td align="center" class="">
-                                <div style="text-align: center; width: 80px;"></div>
-                            </td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 200px;"></div>
-							</td>
-							<td align="center" class="handle">
-								<div style="text-align: center; width: 200px; max-width:200px;">
-									<a class="btn red" href="javascript:void(0)" data-url="/index.php/admin/Distribut/distributor_del" data-id="89" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
-								</div>
-							</td>
-							<td align="" class="" style="width: 100%;">
-								<div>&nbsp;</div>
-							</td>
-						</tr>
-										</tbody>
-				</table>
-			</div>
-			<div class="iDiv" style="display: none;"></div>
-		</div>
-		<!--分页位置-->
-		<div class='dataTables_paginate paging_simple_numbers'><ul class='pagination'>  <li class="paginate_button active"><a tabindex="0" data-dt-idx="1" aria-controls="example1" href="#">1</a></li><li class="paginate_button"><a class="num" href="/index.php/admin/Distribut/distributor_list/m/admin/c/Distribut/a/distributor_list/p/2">2</a></li> <li id="example1_next" class="paginate_button next"><a class="next" href="/index.php/admin/Distribut/distributor_list/m/admin/c/Distribut/a/distributor_list/p/2">下一页</a></li> </ul></div>		 </div>
-</div>
-<script>
-	$(document).ready(function(){
-		// 表格行点击选中切换
-		$('#flexigrid > table>tbody >tr').click(function(){
-			$(this).toggleClass('trSelected');
-		});
-
-		// 点击刷新数据
-		$('.fa-refresh').click(function(){
-			location.href = location.href;
-		});
-
-		$('#start_time').layDate();
-		$('#end_time').layDate();
-	});
-
-	function delfun(obj) {
-		// 删除按钮
-		layer.confirm('确认删除？', {
-			btn: ['确定', '取消'] //按钮
-		}, function () {
-			$.ajax({
-				type: 'post',
-				url: $(obj).attr('data-url'),
-				data : {act:'del',del_id:$(obj).attr('data-id')},
-				dataType: 'json',
-				success: function (data) {
-					layer.closeAll();
-					if (data) {
-						$(obj).parent().parent().parent().remove();
-					} else {
-						layer.alert('删除失败', {icon: 2});  //alert('删除失败');
-					}
-				}
-			})
-		}, function () {
-			layer.closeAll();
-		});
-	}
-</script>
-<div id="think_page_trace" style="position: fixed;bottom:0;right:0;font-size:14px;width:100%;z-index: 999999;color: #000;text-align:left;font-family:'微软雅黑';">
-    <div id="think_page_trace_tab" style="display: none;background:white;margin:0;height: 250px;">
-        <div id="think_page_trace_tab_tit" style="height:30px;padding: 6px 12px 0;border-bottom:1px solid #ececec;border-top:1px solid #ececec;font-size:16px">
-                        <span style="color:#000;padding-right:12px;height:30px;line-height:30px;display:inline-block;margin-right:3px;cursor:pointer;font-weight:700">基本</span>
-                        <span style="color:#000;padding-right:12px;height:30px;line-height:30px;display:inline-block;margin-right:3px;cursor:pointer;font-weight:700">文件</span>
-                        <span style="color:#000;padding-right:12px;height:30px;line-height:30px;display:inline-block;margin-right:3px;cursor:pointer;font-weight:700">流程</span>
-                        <span style="color:#000;padding-right:12px;height:30px;line-height:30px;display:inline-block;margin-right:3px;cursor:pointer;font-weight:700">错误</span>
-                        <span style="color:#000;padding-right:12px;height:30px;line-height:30px;display:inline-block;margin-right:3px;cursor:pointer;font-weight:700">SQL</span>
-                        <span style="color:#000;padding-right:12px;height:30px;line-height:30px;display:inline-block;margin-right:3px;cursor:pointer;font-weight:700">调试</span>
-                    </div>
-        <div id="think_page_trace_tab_cont" style="overflow:auto;height:212px;padding:0;line-height: 24px">
-                        <div style="display:none;">
-                <ol style="padding: 0; margin:0">
-                    <li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">请求信息 : 2019-03-10 16:51:23 HTTP/1.1 GET : shop.zhifengwangluo.com.c3w.cc/index.php?m=admin&amp;c=Distribut&amp;a=distributor_list</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">运行时间 : 0.429069s [ 吞吐率：2.33req/s ] 内存消耗：4,844.22kb 文件加载：65</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">查询信息 : 5 queries 0 writes </li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">缓存信息 : 1 reads,0 writes</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">配置加载 : 110</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">会话信息 : SESSION_ID=odc4eapbncch7fnnguu8uu6uf2</li>                </ol>
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>商城设置</h3>
+                <h5>分销基本配置</h5>
             </div>
-                        <div style="display:none;">
-                <ol style="padding: 0; margin:0">
-                    <li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/index.php ( 2.80 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/saas.php ( 0.01 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/start.php ( 0.72 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/base.php ( 2.60 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Loader.php ( 20.23 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/vendor/composer/autoload_namespaces.php ( 0.29 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/vendor/composer/autoload_psr4.php ( 0.89 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/vendor/composer/autoload_classmap.php ( 44.14 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/vendor/composer/autoload_files.php ( 0.43 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/vendor/symfony/polyfill-mbstring/bootstrap.php ( 3.96 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/vendor/topthink/think-captcha/src/helper.php ( 1.59 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Route.php ( 58.86 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Config.php ( 6.38 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Validate.php ( 40.54 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/vendor/topthink/think-testing/src/config.php ( 0.65 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Console.php ( 22.65 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Error.php ( 3.79 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/convention.php ( 10.10 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/App.php ( 22.18 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Request.php ( 48.58 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/application/config.php ( 15.78 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/application/database.php ( 1.26 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Hook.php ( 4.71 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/application/tags.php ( 1.03 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/application/common.php ( 53.51 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Env.php ( 1.21 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/helper.php ( 21.82 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/application/function.php ( 37.22 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Lang.php ( 7.23 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Log.php ( 6.04 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/lang/zh-cn.php ( 11.58 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/application/route.php ( 1.25 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/application/admin/config.php ( 1.58 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/application/admin/common.php ( 4.81 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/application/admin/controller/Distribut.php ( 8.80 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/application/admin/controller/Base.php ( 5.44 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Controller.php ( 7.31 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/traits/controller/Jump.php ( 4.90 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Session.php ( 10.86 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/View.php ( 6.77 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/view/driver/Think.php ( 5.64 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Template.php ( 45.34 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/template/driver/File.php ( 2.17 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/application/common/logic/Saas.php ( 9.48 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/exception/ErrorException.php ( 1.83 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Exception.php ( 1.60 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/exception/Handle.php ( 8.56 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Db.php ( 6.67 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/db/connector/Mysql.php ( 3.89 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/db/Connection.php ( 30.08 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/db/Query.php ( 90.32 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/db/builder/Mysql.php ( 4.22 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/db/Builder.php ( 30.65 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Cache.php ( 6.10 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/cache/driver/File.php ( 7.22 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/cache/Driver.php ( 5.98 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Debug.php ( 7.13 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/application/admin/logic/UpgradeLogic.php ( 7.96 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Model.php ( 68.14 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/application/admin/conf/navigate.php ( 7.66 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Page.php ( 6.59 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/runtime/temp/184da03ca16383478c2534c413b1c630.php ( 12.79 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Url.php ( 12.71 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/Response.php ( 8.33 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">/www/wwwroot/FacialMaskShop/thinkphp/library/think/debug/Html.php ( 4.16 KB )</li>                </ol>
-            </div>
-                        <div style="display:none;">
-                <ol style="padding: 0; margin:0">
-                    <li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ LANG ] /www/wwwroot/FacialMaskShop/thinkphp/lang/zh-cn.php</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ ROUTE ] array (
-  'type' =&gt; 'module',
-  'module' =&gt; 
-  array (
-    0 =&gt; 'admin',
-    1 =&gt; 'Distribut',
-    2 =&gt; 'distributor_list',
-  ),
-)</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ HEADER ] array (
-  'host' =&gt; 'shop.zhifengwangluo.com.c3w.cc',
-  'connection' =&gt; 'keep-alive',
-  'upgrade-insecure-requests' =&gt; '1',
-  'user-agent' =&gt; 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36',
-  'accept' =&gt; 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-  'referer' =&gt; 'http://shop.zhifengwangluo.com.c3w.cc/admin',
-  'accept-encoding' =&gt; 'gzip, deflate',
-  'accept-language' =&gt; 'zh-CN,zh;q=0.9',
-  'cookie' =&gt; 'PHPSESSID=odc4eapbncch7fnnguu8uu6uf2; parent_region=%5B%7B%22id%22%3A3%2C%22name%22%3A%22%u4E1C%u57CE%u533A%22%7D%2C%7B%22id%22%3A14%2C%22name%22%3A%22%u897F%u57CE%u533A%22%7D%2C%7B%22id%22%3A22%2C%22name%22%3A%22%u5D07%u6587%u533A%22%7D%2C%7B%22id%22%3A30%2C%22name%22%3A%22%u5BA3%u6B66%u533A%22%7D%2C%7B%22id%22%3A39%2C%22name%22%3A%22%u671D%u9633%u533A%22%7D%2C%7B%22id%22%3A83%2C%22name%22%3A%22%u4E30%u53F0%u533A%22%7D%2C%7B%22id%22%3A105%2C%22name%22%3A%22%u77F3%u666F%u5C71%u533A%22%7D%2C%7B%22id%22%3A115%2C%22name%22%3A%22%u6D77%u6DC0%u533A%22%7D%2C%7B%22id%22%3A145%2C%22name%22%3A%22%u95E8%u5934%u6C9F%u533A%22%7D%2C%7B%22id%22%3A159%2C%22name%22%3A%22%u623F%u5C71%u533A%22%7D%2C%7B%22id%22%3A188%2C%22name%22%3A%22%u901A%u5DDE%u533A%22%7D%2C%7B%22id%22%3A204%2C%22name%22%3A%22%u987A%u4E49%u533A%22%7D%2C%7B%22id%22%3A227%2C%22name%22%3A%22%u660C%u5E73%u533A%22%7D%2C%7B%22id%22%3A245%2C%22name%22%3A%22%u5927%u5174%u533A%22%7D%2C%7B%22id%22%3A264%2C%22name%22%3A%22%u6000%u67D4%u533A%22%7D%2C%7B%22id%22%3A281%2C%22name%22%3A%22%u5E73%u8C37%u533A%22%7D%5D; cn=0; CNZZDATA009=30037667-1536735; thinkphp_show_page_trace=0|0; workspaceParam=distributor_list%7CDistribut',
-  'content-type' =&gt; '',
-  'content-length' =&gt; '',
-)</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ PARAM ] array (
-  'm' =&gt; 'admin',
-  'c' =&gt; 'Distribut',
-  'a' =&gt; 'distributor_list',
-)</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ DB ] INIT mysql</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ CACHE ] INIT File</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ RUN ] app\admin\controller\Distribut-&gt;distributor_list[ /www/wwwroot/FacialMaskShop/application/admin/controller/Distribut.php ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ VIEW ] ./application/admin/view/distribut/distributor_list.html [ array (
-  0 =&gt; 'action',
-  1 =&gt; 'template_now_time',
-  2 =&gt; 'start_time',
-  3 =&gt; 'end_time',
-  4 =&gt; 'tpshop_config',
-  5 =&gt; 'upgradeMsg',
-  6 =&gt; 'navigate_admin',
-  7 =&gt; 'pager',
-  8 =&gt; 'distributor',
-) ]</li>                </ol>
-            </div>
-                        <div style="display:none;">
-                <ol style="padding: 0; margin:0">
-                    <li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[8]Use of undefined constant IS_SAAS - assumed 'IS_SAAS'[/www/wwwroot/FacialMaskShop/application/common/logic/Saas.php:48]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[8]Use of undefined constant SAAS_BASE_USER - assumed 'SAAS_BASE_USER'[/www/wwwroot/FacialMaskShop/application/common/logic/Saas.php:49]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[8]未定义数组索引: SAAS_CONFIG[/www/wwwroot/FacialMaskShop/application/common/logic/Saas.php:50]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[8]未定义数组索引: SAAS[/www/wwwroot/FacialMaskShop/application/common/logic/Saas.php:51]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[8]未定义数组索引: distributor_list[/www/wwwroot/FacialMaskShop/application/admin/common.php:81]</li>                </ol>
-            </div>
-                        <div style="display:none;">
-                <ol style="padding: 0; margin:0">
-                    <li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ DB ] CONNECT:[ UseTime:0.089254s ] mysql:host=112.74.177.40;port=3306;dbname=facialMaskShop;charset=utf8</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SHOW COLUMNS FROM `tp_config` [ RunTime:0.059899s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `tp_config` [ RunTime:0.059419s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SHOW COLUMNS FROM `tp_users` [ RunTime:0.060008s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT COUNT(*) AS tp_count FROM `tp_users` LIMIT 1 [ RunTime:0.059272s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT `user_id`,`nickname`,`level`,`first_leader`,`province`,`mobile`,`email` FROM `tp_users` WHERE  `is_lock` = 0  AND `is_distribut` = 1 LIMIT 0,10 [ RunTime:0.059313s ]</li>                </ol>
-            </div>
-                        <div style="display:none;">
-                <ol style="padding: 0; margin:0">
-                                    </ol>
-            </div>
-                    </div>
+            <ul class="tab-base nc-row">
+                <foreach name="group_list" item="v" key="k">
+                    <li><a href="{:U('System/index',['inc_type'=> $k])}" <if condition="$k==$inc_type">class="current"</if>><span>{$v}</span></a></li>
+                </foreach>
+            </ul>
+        </div>
     </div>
-    <div id="think_page_trace_close" style="display:none;text-align:right;height:15px;position:absolute;top:10px;right:12px;cursor:pointer;"><img style="vertical-align:top;" src="data:image/gif;base64,R0lGODlhDwAPAJEAAAAAAAMDA////wAAACH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS4wLWMwNjAgNjEuMTM0Nzc3LCAyMDEwLzAyLzEyLTE3OjMyOjAwICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MUQxMjc1MUJCQUJDMTFFMTk0OUVGRjc3QzU4RURFNkEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MUQxMjc1MUNCQUJDMTFFMTk0OUVGRjc3QzU4RURFNkEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxRDEyNzUxOUJBQkMxMUUxOTQ5RUZGNzdDNThFREU2QSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxRDEyNzUxQUJBQkMxMUUxOTQ5RUZGNzdDNThFREU2QSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAACH5BAAAAAAALAAAAAAPAA8AAAIdjI6JZqotoJPR1fnsgRR3C2jZl3Ai9aWZZooV+RQAOw==" /></div>
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span> </div>
+        <ul>
+            <li>若开启分销，普通会员启用默认分销规则，还可以去设置分销商等级设定分销规则</li>
+            <li>分销返佣金额每个商品单独设定，原则上不高于商品价格50%</li>
+            <li>所有分销商获佣比例之和不超过100%,比例为0则也视为不参与分佣</li>
+        </ul>
+    </div>
+    <form method="post" enctype="multipart/form-data" id="handlepost" action="{:U('System/handle')}">
+        <input type="hidden" name="form_submit" value="ok" />
+        <input type="hidden" name="inc_type" value="cash">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">分销开关</dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label for="switch1" class="cb-enable  <if condition="$config['switch'] eq 1">selected</if>">开启</label>
+                        <label for="switch0" class="cb-disable <if condition="$config['switch'] eq 0">selected</if>">关闭</label>
+                        <input type="radio" onclick="$('#switch_on_off').show();"  id="switch1"  name="switch" value="1" <if condition="$config['switch'] eq 1">checked="checked"</if>>
+                        <input type="radio" onclick="$('#switch_on_off').hide();" id="switch0" name="switch" value="0" <if condition="$config['switch'] eq 0">checked="checked"</if> >
+                    </div>
+                </dd>
+            </dl>
+            <div id="switch_on_off" <if condition="$config['switch'] eq 0">style="display: none;"</if>>
+            <dl class="row">
+                <dt class="tit">
+                    <label>成为分销商条件</label>
+                </dt>
+                <dd class="opt">
+                    <input type="radio" name="condition" value="0" <if condition="$config[condition] eq 0">checked="checked"</if>>无条件成为分销商 &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="condition" value="1" <if condition="$config[condition] eq 1">checked="checked"</if>>需购买商品后成为分销商 &nbsp;&nbsp;&nbsp;&nbsp;
+                    <!--<input type="radio" name="condition" value="2" <if condition="$config[condition] eq 2">checked="checked"</if>>需提交申请审核 &nbsp;&nbsp;&nbsp;&nbsp;-->
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="distribut_date">分销模式</label>
+                </dt>
+                <dd class="opt">
+                    <select name="pattern" id="distribut_pattern">
+                        <option value="0" <if condition="$config['pattern'] eq 0">selected="selected"</if>>按商品设置的分成金额</option>
+                        <option value="1" <if condition="$config['pattern'] eq 1">selected="selected"</if>>按订单设置的分成比例</option>
+                    </select>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label for="distribut_date">返佣级数</label> 
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+                    <select name="regrade" id="regrade">
+						<option value="0" <if condition="$config['regrade'] eq 0">selected="selected"</if>>返一级</option>
+						<option value="1" <if condition="$config['regrade'] eq 1">selected="selected"</if>>返两级</option>
+						<option value="2" <if condition="$config['regrade'] eq 2">selected="selected"</if>>返三级</option>
+                    </select>
+                </dd>
+            </dl>
+            <dl class="row" id="distribut_order_rate" <if condition="$config['pattern'] eq 0">style="display:none"</if>>
+                <dt class="tit">
+                    <label>订单默认分成比例</label>
+                </dt>
+                <dd class="opt">
+                    <input name="order_rate" value="{$config.order_rate|default='20'}" onpaste="this.value=this.value.replace(/[^\d]/g,'')" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" class="input-txt" type="text">
+                    <p class="notic">返佣分销金为订单总额百分之多少，分销商按下面设置比例瓜分</p>
+                </dd>
+            </dl>
+            <dl class="row"><dt class="tit"><label><b>默认返佣规则</b></label></dt></dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>购买者提成点</label>
+                </dt>
+                <dd class="opt">
+                    <input name="own_rate" value="{$config.own_rate|default=0}" class="input-txt" type="text">
+                    <p class="notic">购买者本人返佣占商品价格的比例  单位 %</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>一级分销商获佣比例</label>
+                </dt>
+                <dd class="opt">
+                    <input name="first_rate" id="distribut_first_rate" value="{$config.first_rate}"onpaste="this.value=this.value.replace(/[^\d]/g,'')" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" class="input-txt" type="text">
+                    <p class="notic">购买者直接推荐人返佣占商品分销金比例  单位：%</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>二级分销商获佣比例</label>
+                </dt>
+                <dd class="opt">
+                    <input name="second_rate" id="distribut_second_rate" value="{$config.second_rate}"onpaste="this.value=this.value.replace(/[^\d]/g,'')" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" class="input-txt" type="text">
+                    <p class="notic">购买者推荐人的上级返佣占商品分销金比例  单位：%</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>三级分销商获佣比例</label>
+                </dt>
+                <dd class="opt">
+                    <input name="third_rate" id="distribut_third_rate" value="{$config.third_rate}"onpaste="this.value=this.value.replace(/[^\d]/g,'')" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" class="input-txt" type="text">
+                    <p class="notic">购买者推荐人的上上级占商品分销金比例    单位：%</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="distribut_date">分成时间</label>
+                </dt>
+                <dd class="opt">
+                    <select name="date" id="distribut_date">
+                        <for start="1" end="31" name="i" >
+                            <option value="{$i}" <if condition="$config[date] eq $i">selected="selected"</if>>{$i}天</option>
+                        </for>
+                    </select>
+                    <p class="notic">订单收货确认后多少天可以分成</p>
+                </dd>
+            </dl>
+            <dl class="row"><dt class="tit"><label><b>二维码相关设定</b></label></dt></dl>
+            <dl class="row">
+                <dt class="tit">
+                  <label>页面二维码背景</label>
+                </dt>
+                <dd class="opt">
+                  <div class="input-file-show">
+                      <span class="show">
+                          <a id="qr_back_a" target="_blank" class="nyroModal" rel="gal" href="{$config.qr_back}">
+                            <i id="qr_back_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$config.qr_back}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                          </a>
+                      </span>
+                      <span class="type-file-box">
+                          <input type="text" id="qr_back" name="qr_back" value="{$config.qr_back}" class="type-file-text">
+                          <input type="button" value="选择上传..." class="type-file-button">
+                          <input class="type-file-file" onClick="GetUploadify(1,'','weixin','qr_back_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                      </span>
+                  </div>
+                  <span class="err"></span>
+                </dd>
+              </dl>
+              <dl class="row">
+                <dt class="tit">
+                  <label>‘我的二维码’大背景</label>
+                </dt>
+                <dd class="opt">
+                  <div class="input-file-show">
+                      <span class="show">
+                          <a id="qr_big_back_a" target="_blank" class="nyroModal" rel="gal" href="{$config.qr_big_back}">
+                            <i id="qr_big_back_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$config.qr_big_back}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                          </a>
+                      </span>
+                      <span class="type-file-box">
+                          <input type="text" id="qr_big_back" name="qr_big_back" value="{$config.qr_big_back}" class="type-file-text">
+                          <input type="button" value="选择上传..." class="type-file-button">
+                          <input class="type-file-file" onClick="GetUploadify(1,'','weixin','qr_big_back_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                      </span>
+                  </div>
+                  <span class="err"></span>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>微信菜单关键字</label>
+                </dt>
+                <dd class="opt">
+                    <input name="qrcode_menu_word" value="{$config.qrcode_menu_word}" class="input-txt" type="text">
+                    <p class="notic">用户点击微信菜单中的某项，响应‘我的二维码’图片</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>微信输入关键字</label>
+                </dt>
+                <dd class="opt">
+                    <input name="qrcode_input_word"  value="{$config.qrcode_input_word}" class="input-txt" type="text">
+                    <p class="notic">用户在微信中输入的文本，响应‘我的二维码’图片</p>
+                </dd>
+            </dl>
+            </div>
+            <div class="bot">
+                <input type="hidden" name="inc_type" value="{$inc_type}">
+                <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="adsubmit()">确认提交</a>
+            </div>
+        </div>
+    </form>
 </div>
-<div id="think_page_trace_open" style="height:30px;float:right;text-align:right;overflow:hidden;position:fixed;bottom:0;right:0;color:#000;line-height:30px;cursor:pointer;">
-    <div style="background:#232323;color:#FFF;padding:0 6px;float:right;line-height:30px;font-size:14px">0.432273s </div>
-    <img width="30" style="" title="ShowPageTrace" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBXaW5kb3dzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjVERDVENkZGQjkyNDExRTE5REY3RDQ5RTQ2RTRDQUJCIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjVERDVENzAwQjkyNDExRTE5REY3RDQ5RTQ2RTRDQUJCIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NURENUQ2RkRCOTI0MTFFMTlERjdENDlFNDZFNENBQkIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NURENUQ2RkVCOTI0MTFFMTlERjdENDlFNDZFNENBQkIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5fx6IRAAAMCElEQVR42sxae3BU1Rk/9+69+8xuNtkHJAFCSIAkhMgjCCJQUi0GtEIVbP8Qq9LH2No6TmfaztjO2OnUdvqHFMfOVFTqIK0vUEEeqUBARCsEeYQkEPJoEvIiELLvvc9z+p27u2F3s5tsBB1OZiebu5dzf7/v/L7f952zMM8cWIwY+Mk2ulCp92Fnq3XvnzArr2NZnYNldDp0Gw+/OEQ4+obQn5D+4Ubb22+YOGsWi/Todh8AHglKEGkEsnHBQ162511GZFgW6ZCBM9/W4H3iNSQqIe09O196dLKX7d1O39OViP/wthtkND62if/wj/DbMpph8BY/m9xy8BoBmQk+mHqZQGNy4JYRwCoRbwa8l4JXw6M+orJxpU0U6ToKy/5bQsAiTeokGKkTx46RRxxEUgrwGgF4MWNNEJCGgYTvpgnY1IJWg5RzfqLgvcIgktX0i8dmMlFA8qCQ5L0Z/WObPLUxT1i4lWSYDISoEfBYGvM+LlMQQdkLHoWRRZ8zYQI62Thswe5WTORGwNXDcGjqeOA9AF7B8rhzsxMBEoJ8oJKaqPu4hblHMCMPwl9XeNWyb8xkB/DDGYKfMAE6aFL7xesZ389JlgG3XHEMI6UPDOP6JHHu67T2pwNPI69mCP4rEaBDUAJaKc/AOuXiwH07VCS3w5+UQMAuF/WqGI+yFIwVNBwemBD4r0wgQiKoFZa00sEYTwss32lA1tPwVxtc8jQ5/gWCwmGCyUD8vRT0sHBFW4GJDvZmrJFWRY1EkrGA6ZB8/10fOZSSj0E6F+BSP7xidiIzhBmKB09lEwHPkG+UQIyEN44EBiT5vrv2uJXyPQqSqO930fxvcvwbR/+JAkD9EfASgI9EHlp6YiHO4W+cAB20SnrFqxBbNljiXf1Pl1K2S0HCWfiog3YlAD5RGwwxK6oUjTweuVigLjyB0mX410mAFnMoVK1lvvUvgt8fUJH0JVyjuvcmg4dE5mUiFtD24AZ4qBVELxXKS+pMxN43kSdzNwudJ+bQbLlmnxvPOQoCugSap1GnSRoG8KOiKbH+rIA0lEeSAg3y6eeQ6XI2nrYnrPM89bUTgI0Pdqvl50vlNbtZxDUBcLBK0kPd5jPziyLdojJIN0pq5/mdzwL4UVvVInV5ncQEPNOUxa9d0TU+CW5l+FoI0GSDKHVVSOs+0KOsZoxwOzSZNFGv0mQ9avyLCh2Hpm+70Y0YJoJVgmQv822wnDC8Miq6VjJ5IFed0QD1YiAbT+nQE8v/RMZfmgmcCRHIIu7Bmcp39oM9fqEychcA747KxQ/AEyqQonl7hATtJmnhO2XYtgcia01aSbVMenAXrIomPcLgEBA4liGBzFZAT8zBYqW6brI67wg8sFVhxBhwLwBP2+tqBQqqK7VJKGh/BRrfTr6nWL7nYBaZdBJHqrX3kPEPap56xwE/GvjJTRMADeMCdcGpGXL1Xh4ZL8BDOlWkUpegfi0CeDzeA5YITzEnddv+IXL+UYCmqIvqC9UlUC/ki9FipwVjunL3yX7dOTLeXmVMAhbsGporPfyOBTm/BJ23gTVehsvXRnSewagUfpBXF3p5pygKS7OceqTjb7h2vjr/XKm0ZofKSI2Q/J102wHzatZkJPYQ5JoKsuK+EoHJakVzubzuLQDepCKllTZi9AG0DYg9ZLxhFaZsOu7bvlmVI5oPXJMQJcHxHClSln1apFTvAimeg48u0RWFeZW4lVcjbQWZuIQK1KozZfIDO6CSQmQQXdpBaiKZyEWThVK1uEc6v7V7uK0ysduExPZx4vysDR+4SelhBYm0R6LBuR4PXts8MYMcJPsINo4YZCDLj0sgB0/vLpPXvA2Tn42Cv5rsLulGubzW0sEd3d4W/mJt2Kck+DzDMijfPLOjyrDhXSh852B+OvflqAkoyXO1cYfujtc/i3jJSAwhgfFlp20laMLOku/bC7prgqW7lCn4auE5NhcXPd3M7x70+IceSgZvNljCd9k3fLjYsPElqLR14PXQZqD2ZNkkrAB79UeJUebFQmXpf8ZcAQt2XrMQdyNUVBqZoUzAFyp3V3xi/MubUA/mCT4Fhf038PC8XplhWnCmnK/ZzyC2BSTRSqKVOuY2kB8Jia0lvvRIVoP+vVWJbYarf6p655E2/nANBMCWkgD49DA0VAMyI1OLFMYCXiU9bmzi9/y5i/vsaTpHPHidTofzLbM65vMPva9HlovgXp0AvjtaqYMfDD0/4mAsYE92pxa+9k1QgCnRVObCpojpzsKTPvayPetTEgBdwnssjuc0kOBFX+q3HwRQxdrOLAqeYRjkMk/trTSu2Z9Lik7CfF0AvjtqAhS4NHobGXUnB5DQs8hG8p/wMX1r4+8xkmyvQ50JVq72TVeXbz3HvpWaQJi57hJYTw4kGbtS+C2TigQUtZUX+X27QQq2ePBZBru/0lxTm8fOOQ5yaZOZMAV+he4FqIMB+LQB0UgMSajANX29j+vbmly8ipRvHeSQoQOkM5iFXcPQCVwDMs5RBCQmaPOyvbNd6uwvQJ183BZQG3Zc+Eiv7vQOKu8YeDmMcJlt2ckyftVeMIGLBCmdMHl/tFILYwGPjXWO3zOfSq/+om+oa7Mlh2fpSsRGLp7RAW3FUVjNHgiMhyE6zBFjM2BdkdJGO7nP1kJXWAtBuBpPIAu7f+hhu7bFXIuC5xWrf0X2xreykOsUyKkF2gwadbrXDcXrfKxR43zGcSj4t/cCgr+a1iy6EjE5GYktUCl9fwfMeylyooGF48bN2IGLTw8x7StS7sj8TF9FmPGWQhm3rRR+o9lhvjJvSYAdfDUevI1M6bnX/OwWaDMOQ8RPgKRo0eulBTdT8AW2kl8e9L7UHghHwMfLiZPNoSpx0yugpQZaFqKWqxVSM3a2pN1SAhC2jf94I7ybBI7EL5A2Wvu5ht3xsoEt4+Ay/abXgCQAxyOeDsDlTCQzy75ohcGgv9Tra9uiymRUYTLrswOLlCdfAQf7HPDQQ4ErAH5EDXB9cMxWYpjtXApRncojS0sbV/cCgHTHwGNBJy+1PQE2x56FpaVR7wfQGZ37V+V+19EiHNvR6q1fRUjqvbjbMq1/qfHxbTrE10ePY2gPFk48D2CVMTf1AF4PXvyYR9dV6Wf7H413m3xTWQvYGhQ7mfYwA5mAX+18Vue05v/8jG/fZX/IW5MKPKtjSYlt0ellxh+/BOCPAwYaeVr0QofZFxJWVWC8znG70au6llVmktsF0bfHF6k8fvZ5esZJbwHwwnjg59tXz6sL/P0NUZDuSNu1mnJ8Vab17+cy005A9wtOpp3i0bZdpJLUil00semAwN45LgEViZYe3amNye0B6A9chviSlzXVsFtyN5/1H3gaNmMpn8Fz0GpYFp6Zw615H/LpUuRQQDMCL82n5DpBSawkvzIdN2ypiT8nSLth8Pk9jnjwdFzH3W4XW6KMBfwB569NdcGX93mC16tTflcArcYUc/mFuYbV+8zY0SAjAVoNErNgWjtwumJ3wbn/HlBFYdxHvSkJJEc+Ngal9opSwyo9YlITX2C/P/+gf8sxURSLR+mcZUmeqaS9wrh6vxW5zxFCOqFi90RbDWq/YwZmnu1+a6OvdpvRqkNxxe44lyl4OobEnpKA6Uox5EfH9xzPs/HRKrTPWdIQrK1VZDU7ETiD3Obpl+8wPPCRBbkbwNtpW9AbBe5L1SMlj3tdTxk/9W47JUmqS5HU+JzYymUKXjtWVmT9RenIhgXc+nroWLyxXJhmL112OdB8GCsk4f8oZJucnvmmtR85mBn10GZ0EKSCMUSAR3ukcXd5s7LvLD3me61WkuTCpJzYAyRurMB44EdEJzTfU271lUJC03YjXJXzYOGZwN4D8eB5jlfLrdWfzGRW7icMPfiSO6Oe7s20bmhdgLX4Z23B+s3JgQESzUDiMboSzDMHFpNMwccGePauhfwjzwnI2wu9zKGgEFg80jcZ7MHllk07s1H+5yojtUQTlH4nFdLKTGwDmPbIklOb1L1zO4T6N8NCuDLFLS/C63c0eNRimZ++s5BMBHxU11jHchI9oFVUxRh/eMDzHEzGYu0Lg8gJ7oS/tFCwoic44fyUtix0n/46vP4bf+//BRgAYwDDar4ncHIAAAAASUVORK5CYII=">
-</div>
+<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+<script>
+    $('#distribut_pattern').change(function(){
+        if($(this).val() == 1)
+            $('#distribut_order_rate').show();
+        else
+            $('#distribut_order_rate').hide();
+    });
 
-<script type="text/javascript">
-    (function(){
-        var tab_tit  = document.getElementById('think_page_trace_tab_tit').getElementsByTagName('span');
-        var tab_cont = document.getElementById('think_page_trace_tab_cont').getElementsByTagName('div');
-        var open     = document.getElementById('think_page_trace_open');
-        var close    = document.getElementById('think_page_trace_close').children[0];
-        var trace    = document.getElementById('think_page_trace_tab');
-        var cookie   = document.cookie.match(/thinkphp_show_page_trace=(\d\|\d)/);
-        var history  = (cookie && typeof cookie[1] != 'undefined' && cookie[1].split('|')) || [0,0];
-        open.onclick = function(){
-            trace.style.display = 'block';
-            this.style.display = 'none';
-            close.parentNode.style.display = 'block';
-            history[0] = 1;
-            document.cookie = 'thinkphp_show_page_trace='+history.join('|')
+    function adsubmit(){
+        var distribut_first_rate  = $.trim($('#distribut_first_rate').val());
+        var distribut_second_rate = $.trim($('#distribut_second_rate').val());
+        var distribut_third_rate  = $.trim($('#distribut_third_rate').val());
+
+        var rate = parseInt(distribut_first_rate) + parseInt(distribut_second_rate) + parseInt(distribut_third_rate);
+        if(rate > 100)
+        {
+            layer.msg('三个分销商比例总和不得超过100%', {icon: 2,time: 2000});//alert('少年，邮箱不能为空！');
+            // alert('三个分销商比例总和不得超过100%');
+            return false;
         }
-        close.onclick = function(){
-            trace.style.display = 'none';
-            this.parentNode.style.display = 'none';
-            open.style.display = 'block';
-            history[0] = 0;
-            document.cookie = 'thinkphp_show_page_trace='+history.join('|')
-        }
-        for(var i = 0; i < tab_tit.length; i++){
-            tab_tit[i].onclick = (function(i){
-                return function(){
-                    for(var j = 0; j < tab_cont.length; j++){
-                        tab_cont[j].style.display = 'none';
-                        tab_tit[j].style.color = '#999';
-                    }
-                    tab_cont[i].style.display = 'block';
-                    tab_tit[i].style.color = '#000';
-                    history[1] = i;
-                    document.cookie = 'thinkphp_show_page_trace='+history.join('|')
-                }
-            })(i)
-        }
-        parseInt(history[0]) && open.click();
-        tab_tit[history[1]].click();
-    })();
+
+        $('#handlepost').submit();
+    }
+    
+    function qr_back_call_back(fileurl_tmp)
+    {
+      $("#qr_back").val(fileurl_tmp);
+      $("#qr_back_a").attr('href', fileurl_tmp);
+      $("#qr_back_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+    function qr_big_back_call_back(fileurl_tmp)
+    {
+      $("#qr_big_back").val(fileurl_tmp);
+      $("#qr_big_back_a").attr('href', fileurl_tmp);
+      $("#qr_big_back_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
 </script>
 </body>
 </html>
