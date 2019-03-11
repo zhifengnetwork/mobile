@@ -1133,6 +1133,25 @@ class User extends MobileBase
 
     public function next_team_list(){
         $user_id = I('user_id');
+        $DistributLogic = new DistributLogic;
+        $result= $DistributLogic->get_team_list($user_id);
+        // 获取下级id
+        // dump($result);
+        $data = $result['result'];
+        foreach($data as $key=>$value)
+        {
+            
+            $son=$value['user_id'];
+            $son_data=$this->next_team_list($son);
+            dump($son_data);
+        }
+
+        // $num=count($result['result']);
+        // for ($i=0; $i<=$num; $i++) {
+        //      $user_id = $result['result'][$i][] 
+        // } 
+        
+        // dump($result); 
     	// $DistributLogic = new DistributLogic;
         // $result= $DistributLogic->get_team_list($user_id);  //团队列表
         // // dump($result);
@@ -1142,7 +1161,7 @@ class User extends MobileBase
         // if (I('is_ajax')) {
     	// 	return $this->fetch('ajax_team_list');
     	// }
-    	$this->ajaxReturn(['status'=>1,'msg'=>'查询成功']);        
+    	// $this->ajaxReturn(['status'=>1,'msg'=>'查询成功','result' => $result]);        
       
     }
 
