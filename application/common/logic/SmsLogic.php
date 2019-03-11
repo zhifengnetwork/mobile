@@ -1,6 +1,7 @@
 <?php
 
 namespace app\common\logic;
+use app\common\logic\SmsChuanglanLogic;
 
 /**
  * Description of SmsLogic
@@ -35,11 +36,11 @@ class SmsLogic
         }
          
         $smsParams = [ // 短信模板中字段的值
-            1 => ['code'=>$code],                                                                                                          //1. 用户注册 (验证码类型短信只能有一个变量)
-            2 => ['code'=>$code],                                                                                                          //2. 用户找回密码 (验证码类型短信只能有一个变量)
-            3 => ['consignee'=>$consignee ,'phone'=>$mobile],                                                      //3. 客户下单
-            4 =>['orderId'=>$order_id],                                                                                                //4. 客户支付
-            5 => ['userName'=>$user_name, 'consignee'=>$consignee],                                           //5. 商家发货
+            1 => ['code'=>$code],                                                      //1. 用户注册 (验证码类型短信只能有一个变量)
+            2 => ['code'=>$code],                                                      //2. 用户找回密码 (验证码类型短信只能有一个变量)
+            3 => ['consignee'=>$consignee ,'phone'=>$mobile],                         //3. 客户下单
+            4 =>['orderId'=>$order_id],                                               //4. 客户支付
+            5 => ['userName'=>$user_name, 'consignee'=>$consignee],                    //5. 商家发货
             6 => ['code'=>$code]
         ];
 
@@ -57,7 +58,23 @@ class SmsLogic
         $log_id = M('sms_log')->insertGetId(array('mobile' => $sender, 'code' => $code, 'add_time' => time(), 'session_id' => $session_id, 'status' => 0, 'scene' => $scene, 'msg' => $msg));
         if ($sender != '' && check_mobile($sender)) {//如果是正常的手机号码才发送
             try {
-                $resp = $this->realSendSms($sender, $smsTemp['sms_sign'], $smsParam, $smsTemp['sms_tpl_code']);
+                //$resp = $this->realSendSms($sender, $smsTemp['sms_sign'], $smsParam, $smsTemp['sms_tpl_code']);
+
+                $account = M('config')->where(['name'=>'sms_appkey'])->value('value');
+                $password = M('config')->where(['name'=>'sms_secretKey'])->value('value');;
+                $logic = new SmsChuanglanLogic($account,$password);
+              
+                $msg = '【'.$code.'】'.$msg;
+                $res = $logic->sendSMS($sender, $msg, 'true');
+
+                $res = json_decode($res,true);
+                // "{"code":"0","msgId":"19031122454723995","time":"20190311224547","errorMsg":""}"
+                $status = (int)$res['code'] == 0 ? 1 : 0;
+                $msg = (int)$res['code'] == 0 ? $res['errorMsg'] : '';
+
+                return array('status' => $status, 'msg' => $msg);
+
+
             } catch (\Exception $e) {
                 $resp = ['status' => -1, 'msg' => $e->getMessage()];
             }
