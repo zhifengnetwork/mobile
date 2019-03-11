@@ -19,20 +19,13 @@
                     <div style="text-align: center; width: 50px;">{$list.total_amount}</div>
                 </td>
                 <td align="left" class="">
-                    <div style="text-align: center; width: 150px;">{$list.email}
-                        <if condition="($list['email_validated'] eq 0) AND ($list['email'])">
-                            (未验证)
-                        </if>
+                       
+                    <div style="text-align: center; width: 150px;">
+                        {$list.user_id|get_agent_log}
                     </div>
                 </td>
                 <td align="left" class="">
                     <div style="text-align: center; width: 60px;">{$first_leader[$list[user_id]]['count']|default="0"}</div>
-                </td>
-                <td align="left" class="">
-                    <div style="text-align: center; width: 60px;">{$second_leader[$list[user_id]]['count']|default="0"}</div>
-                </td>
-                <td align="left" class="">
-                    <div style="text-align: center; width: 60px;">{$third_leader[$list[user_id]]['count']|default="0"}</div>
                 </td>
                 <td align="left" class="">
                     <div style="text-align: center; width: 80px;">{$list.mobile}

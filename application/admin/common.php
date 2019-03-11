@@ -1,6 +1,18 @@
 <?php
 
+function get_agent_log($user_id){
 
+	
+	$agent_money = M('agent_performance')->where(['user_id'=>$user_id])->find();
+	
+	if(empty($agent_money)){
+		$money = 0;
+	}else{
+		$money = $agent_money['ind_per']+$agent_money['agent_per'];
+	}
+
+	return $money;
+}
 /**
  * 管理员操作记录
  * @param $log_info string 记录信息
