@@ -207,19 +207,23 @@ class Sign extends MobileBase {
             $result = array('status'=>0,'msg'=>'已超出领取次数','result'=>array());
             return $this->ajaxReturn($result);
         }
+        
+        if(!empty($data)){
 
-        $newTimeM = date('m', time());//当前月份
-        $addTimeM = date('m', $data[0]['addend_time']); //最近下单月份
-        $addTimeD = strtotime(date('Y-m-d', $data[0]['addend_time'])); //最近下单天份
+            $newTimeM = date('m', time());//当前月份
+            $addTimeM = date('m', $data[0]['addend_time']); //最近下单月份
+            $addTimeD = strtotime(date('Y-m-d', $data[0]['addend_time'])); //最近下单天份
 
-        if ($newTime == $addTimeM && $this->user['is_agent'] == 1 ) {
-            $result = array('status'=>0,'msg'=>'本月已领取过了','result'=>array());
-            return $this->ajaxReturn($result);
-        }
+            if ($newTime == $addTimeM && $this->user['is_agent'] == 1 ) {
+                $result = array('status'=>0,'msg'=>'本月已领取过了','result'=>array());
+                return $this->ajaxReturn($result);
+            }
 
-        if ($addTimeD+259200 < time() && $this->user['is_agent'] == 1 ) {
-            $result = array('status'=>0,'msg'=>'3天内只能领取一次哦','result'=>array());
-            return $this->ajaxReturn($result);
+            if ($addTimeD+259200 < time() && $this->user['is_agent'] == 1 ) {
+                $result = array('status'=>0,'msg'=>'3天内只能领取一次哦','result'=>array());
+                return $this->ajaxReturn($result);
+            }
+
         }
 
         $result = array('status'=>1,'msg'=>'可领取','result'=>array());
