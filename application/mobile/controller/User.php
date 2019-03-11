@@ -66,6 +66,43 @@ class User extends MobileBase
         $this->assign('order_status_coment', $order_status_coment);
     }
 
+    public function distribut()
+    {
+        $user = session('user');
+        $field = "user_id,first_leader,is_distribut,is_agent"; 
+        $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->select();
+        $money_array = [];
+        foreach($users as $key=>$val){
+            $get_child_agent = $this->child_agent($val['user_id']);
+            $money_array[]=$get_child_agent['agent_per'];
+            // dump($get_child_agent['agent_per']);
+            // $$money_array[] = $get_child_agent['agent_per'];
+        }
+        $moneys = array_filter($money_array);
+        rsort($moneys);
+        //最大业绩用户
+        $max_moneys = max($moneys);
+        array_shift($moneys);
+        //去掉最大业绩之和
+		$moneys = array_sum($moneys);
+        $agent = $this->child_agent($user['user_id']);
+        $money_total = $agent['ind_per']+$agent['agent_per'];
+        $money_total = array(
+            'money_total'=>$money_total,
+            'max_moneys'=>$max_moneys,
+            'moneys'=>$moneys
+        );
+        $this->assign('money_total',$money_total);
+        return $this->fetch();
+    }
+
+    private function child_agent($user_id)
+	{
+		$performance = M('agent_performance')->where(['user_id'=>$user_id])->find();
+		if(empty($performance)) return false;
+		return $performance;
+	}
+
     public function index()
     {
         $MenuCfg = new MenuCfg();
