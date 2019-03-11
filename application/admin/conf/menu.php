@@ -138,7 +138,7 @@ return	array(
 				array('name' => '分销商设置', 'act' => 'grade_list', 'op' => 'Distribut'),
 				array('name' => '代理商设置', 'act' => 'agent_grade_list', 'op' => 'Distribut'),
 				// array('name' => '分销设置', 'act' => 'distribut', 'op' => 'System'),
-				array('name' => '日志', 'act' => 'rebate_log', 'op' => 'Distribut'),
+				// array('name' => '日志', 'act' => 'rebate_log', 'op' => 'Distribut'),
 			)),
 	     
     	    array('name' => '微信接入','child' => array(
