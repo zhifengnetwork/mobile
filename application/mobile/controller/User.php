@@ -78,10 +78,19 @@ class User extends MobileBase
             // dump($get_child_agent['agent_per']);
             // $$money_array[] = $get_child_agent['agent_per'];
         }
+        if(empty($money_array)){
+            return false;
+        };
         $moneys = array_filter($money_array);
         rsort($moneys);
         //最大业绩用户
-        $max_moneys = max($moneys);
+		if(count($moneys) >= 2){
+			$max_moneys = max($moneys);
+		}else{
+			$max_moneys = $moneys[0];
+		}
+       
+        // $max_moneys = max($moneys);
         array_shift($moneys);
         //去掉最大业绩之和
 		$moneys = array_sum($moneys);
