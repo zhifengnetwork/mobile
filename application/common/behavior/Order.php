@@ -20,11 +20,11 @@ class Order
         Db::name('order_action')->add($action_info);
 
         //分销开关全局
-        $distribut_switch = tpCache('distribut.switch');
-        if ($distribut_switch == 1 && file_exists(APP_PATH . 'common/logic/DistributLogic.php')) {
-            $distributLogic = new \app\common\logic\DistributLogic();
-            $distributLogic->rebateLog($order); // 生成分成记录
-        }
+        // $distribut_switch = tpCache('distribut.switch');
+        // if ($distribut_switch == 1 && file_exists(APP_PATH . 'common/logic/DistributLogic.php')) {
+        //     $distributLogic = new \app\common\logic\DistributLogic();
+        //     $distributLogic->rebateLog($order); // 生成分成记录
+        // }
 
         // 如果有微信公众号 则推送一条消息到微信.微信浏览器才发消息，否则下单超时。by清华
         if(is_weixin()){
