@@ -133,7 +133,11 @@ class User extends MobileBase
 
         $qr_back = M('config')->where(['name'=>'qr_back'])->value('value');
 
-        $this->assign('qr_back',SITE.URL.$qr_back);
+        //测试
+        $qr_back = '/public/upload/weixin/2019/03-11/66af11d0ee38ca6818092b534aef92c1.jpg';
+
+        // SITE_URL.
+        $this->assign('qr_back',$qr_back);
 
 
         return $this->fetch();
