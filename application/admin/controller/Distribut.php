@@ -108,6 +108,9 @@ class Distribut extends Base {
     {
         $data = input('post.');
 
+        $config['qr_back'] = M('config')->where(['name'=>'qr_back'])->value('value');
+        $this->assign('config',$config);
+
         $distribut = M('distribut')->find();
 
         if ($data) {

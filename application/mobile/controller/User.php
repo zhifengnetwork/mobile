@@ -130,6 +130,12 @@ class User extends MobileBase
       
         $this->assign('url',$url);
         
+
+        $qr_back = M('config')->where(['name'=>'qr_back'])->value('value');
+
+        $this->assign('qr_back',SITE.URL.$qr_back);
+
+
         return $this->fetch();
     }
     
