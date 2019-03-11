@@ -84,6 +84,12 @@ class MobileBase extends Controller {
             }
         }
         
+        $first_leader = I('first_leader');
+        if($first_leader){
+            $user_id = session('user.user_id');
+            share_deal_after($user_id,(int)$first_leader);
+        }
+
         $this->public_assign();
     }
     
