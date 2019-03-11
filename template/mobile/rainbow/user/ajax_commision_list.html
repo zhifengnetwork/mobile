@@ -1,0 +1,7 @@
+    <foreach name="lists" item="v">
+        <ul>   
+            <li class="li2"><span>{:date('Y-m-d', $v[change_time])}</span></li> 
+            <li class="li1" style="width:33.3%"><span>{$v[user_money]}</span></li>  
+            <li class="li3"><span>{$v[desc]}</span></li>
+        </ul>
+    </foreach>

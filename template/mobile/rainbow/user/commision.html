@@ -1,20 +1,20 @@
-<include file="public/header" title="业绩明细" body=""/>
-<include file="public/header_nav" title="业绩明细" href="javascript:history.back(-1)"/>
+<include file="public/header" title="佣金明细" body=""/>
+<include file="public/header_nav" title="佣金明细" href="javascript:history.back(-1)"/>
 <div class="application-record">
     <div class="maleri30">
         <ul class="re_tit">
             
             <li class="li2"><span>日期</span></li>
-            <li class="li1" style="width:33.3%"><span>金额</span></li>
+            <li class="li1" style="width:33.3%"><span>用户金额</span></li>
             
-            <li class="li3"><span>备注</span></li>
+            <li class="li3"><span>描述</span></li>
             
         </ul>
         <foreach name="lists" item="v">
             <ul>   
-                <li class="li2"><span>{$v[create_time]}</span></li> 
-                <li class="li1" style="width:33.3%"><span>{$v[money]}</span></li>  
-                <li class="li3"><span>{$v[note]}</span></li>
+                <li class="li2"><span>{:date('Y-m-d', $v[change_time])}</span></li> 
+                <li class="li1" style="width:33.3%"><span>{$v[user_money]}</span></li>  
+                <li class="li3"><span>{$v[desc]}</span></li>
             </ul>
         </foreach>
     </div>
@@ -29,7 +29,7 @@
         page++;
         $.ajax({
             type:'GET',
-            url:'/index.php/Mobile/User/performance_log/is_ajax/1/p/'+page,
+            url:'/index.php/Mobile/User/commision/is_ajax/1/p/'+page,
             success:function(data){
                 if($.trim(data)==''){
                     $('#getmore').show();

@@ -10,7 +10,21 @@
                 <a href="javascript:void(0);">{$user['nickname']}</a>
             </div>
             <div class="user_top_title">
-                <a href="javascript:void(0);">{$user.user_level.level_name}</a>
+                
+                <!-- 代理 -->
+                <if condition="($user.agent_user == 1)"> <a href="javascript:void(0);">[代理等级一]--</a>
+                    <elseif condition="$user.agent_user eq 2"/><a href="javascript:void(0);">[代理等级二]--</a>
+                    <elseif condition="$user.agent_user eq 3"/><a href="javascript:void(0);">[代理等级三]--</a>
+                    <elseif condition="$user.agent_user eq 4"/><a href="javascript:void(0);">[代理等级四]--</a>
+                    <elseif condition="$user.agent_user eq 5"/><a href="javascript:void(0);">[代理等级五]--</a>
+                    <elseif condition="$user.agent_user eq 6"/><a href="javascript:void(0);">[代理等级六]--</a>
+                    <elseif condition="$user.is_agent eq 1"/><a href="javascript:void(0);">[代理]--</a>
+                    <else /> <a href="javascript:void(0);"></a>
+                </if>
+                <!-- 分销 -->
+                <if condition="($user.is_distribut == 1)"> <a href="javascript:void(0);">--[分销商]</a>
+                    <else /> <a href="javascript:void(0);">[普通用户]</a>
+                </if>
             </div>
         </div>
         <div class="z_user_down">

@@ -13,6 +13,20 @@ define('EXTEND_MINIAPP', 5);
 define("EXTEND_H5",6);//添加终端h5
 define('TIME_MOUTH', 4);
 
+function share_deal_after($xiaji,$shangji){
+   
+    if($xiaji == $shangji){
+        return false;
+    }
+    $is_shangji = M('users')->where(['user_id'=>$xiaji])->value('first_leader');
+    if($is_shangji  && (int)$is_shangji > 0){
+        return false;
+    }
+
+    M('users')->where(['user_id'=>$xiaji])->save(['first_leader'=>$shangji]);
+
+    return true;
+}
 
 //获取推荐上级
 function get_uper_user($data)
