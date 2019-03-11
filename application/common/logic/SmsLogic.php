@@ -59,18 +59,29 @@ class SmsLogic
         if ($sender != '' && check_mobile($sender)) {//如果是正常的手机号码才发送
             try {
                 //$resp = $this->realSendSms($sender, $smsTemp['sms_sign'], $smsParam, $smsTemp['sms_tpl_code']);
-
+                
                 $account = M('config')->where(['name'=>'sms_appkey'])->value('value');
                 $password = M('config')->where(['name'=>'sms_secretKey'])->value('value');;
                 $logic = new SmsChuanglanLogic($account,$password);
-              
-                $msg = '【'.$code.'】'.$msg;
-                $res = $logic->sendSMS($sender, $msg, 'true');
-
+                
+                $message = '【'.$smsTemp['sms_sign'].'】'.$msg;
+                $res = $logic->sendSMS($sender, $message, 'true');
                 $res = json_decode($res,true);
+
                 // "{"code":"0","msgId":"19031122454723995","time":"20190311224547","errorMsg":""}"
-                $status = (int)$res['code'] == 0 ? 1 : 0;
-                $msg = (int)$res['code'] == 0 ? $res['errorMsg'] : '';
+                
+                if((int)$res['code'] == 0 ){
+                    $status = 1;
+                }else{
+                    $status = 0;
+                }
+
+                if((int)$res['code'] == 0 ){
+                    $msg = '发送成功';
+                    
+                }else{
+                    $msg = $res['errorMsg'];
+                }
 
                 return array('status' => $status, 'msg' => $msg);
 
