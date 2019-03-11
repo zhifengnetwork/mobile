@@ -71,6 +71,7 @@ class User extends MobileBase
         $user = session('user');
         $field = "user_id,first_leader,is_distribut,is_agent"; 
         $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->select();
+        if(empty($users)) return false;
         $money_array = [];
         foreach($users as $key=>$val){
             $get_child_agent = $this->child_agent($val['user_id']);
