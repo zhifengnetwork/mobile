@@ -126,7 +126,7 @@ class Sign extends MobileBase {
 
         //当前积分
         $points = M('users')->where(['user_id'=>$user_id])->value('pay_points');
-        
+
         $continue_sign = continue_sign($user_id);
 
         //签到积分
@@ -207,11 +207,18 @@ class Sign extends MobileBase {
             $result = array('status'=>0,'msg'=>'已超出领取次数','result'=>array());
             return $this->ajaxReturn($result);
         }
-        $newTime = date('m', time());
-        $addTime = date('m', $data[0]['addend_time']);
 
-        if ($newTime == $addTime) {
+        $newTimeM = date('m', time());//当前月份
+        $addTimeM = date('m', $data[0]['addend_time']); //最近下单月份
+        $addTimeD = strtotime(date('Y-m-d', $data[0]['addend_time'])); //最近下单天份
+
+        if ($newTime == $addTimeM && $this->user['is_agent'] == 1 ) {
             $result = array('status'=>0,'msg'=>'本月已领取过了','result'=>array());
+            return $this->ajaxReturn($result);
+        }
+
+        if ($addTimeD+259200 < time() && $this->user['is_agent'] == 1 ) {
+            $result = array('status'=>0,'msg'=>'3天内只能领取一次哦','result'=>array());
             return $this->ajaxReturn($result);
         }
 
