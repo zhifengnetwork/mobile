@@ -1076,7 +1076,7 @@ class User extends MobileBase
     
     public function recharge_list(){
     	$usersLogic = new UsersLogic;
-    	$result= $usersLogic->get_recharge_log($this->user_id);  //充值记录
+        $result= $usersLogic->get_recharge_log($this->user_id);  //充值记录
     	$this->assign('page', $result['show']);
     	$this->assign('lists', $result['result']);
     	if (I('is_ajax')) {
@@ -1084,6 +1084,16 @@ class User extends MobileBase
     	}
     	return $this->fetch();
     }
+
+
+    public function tp_agent_performance_log(){
+    	$usersLogic = new UsersLogic;
+        $result= $usersLogic->get_recharge_log($this->user_id,'','agent_performance_log');  //业务记录
+    	$this->assign('page', $result['show']);
+    	$this->assign('lists', $result['result']);
+    	return $this->fetch();
+    }
+
 
     //添加、编辑提现支付宝账号
     public function add_card(){

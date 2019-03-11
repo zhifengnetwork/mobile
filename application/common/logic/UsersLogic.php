@@ -629,19 +629,29 @@ class UsersLogic extends Model
      * $author lxl 2017-4-26
      * @param $user_id 用户ID
      * @param int $pay_status 充值状态0:待支付 1:充值成功 2:交易关闭
+     *  @param $table 指定查询那张表
      * @return mixed
      */
-    public function get_recharge_log($user_id,$pay_status=0){
+    public function get_recharge_log($user_id,$pay_status=0,$table='recharge'){
         $recharge_log_where = ['user_id'=>$user_id];
         if($pay_status){
             $pay_status['status']=$pay_status;
         }
-        $count = M('recharge')->where($recharge_log_where)->count();
-        $Page = new Page($count, 15);
-        $recharge_log = M('recharge')->where($recharge_log_where)
-            ->order('order_id desc')
-            ->limit($Page->firstRow . ',' . $Page->listRows)
-            ->select();
+        if($table='agent_performance_log'){
+            $count = M('agent_performance_log')->where($recharge_log_where)->count();
+            $Page = new Page($count, 15);
+            $recharge_log = M('agent_performance_log')->where($recharge_log_where)
+                ->limit($Page->firstRow . ',' . $Page->listRows)
+                ->select(); 
+        }else{
+            $count = M('recharge')->where($recharge_log_where)->count();
+            $Page = new Page($count, 15);
+            $recharge_log = M('recharge')->where($recharge_log_where)
+                ->order('order_id desc')
+                ->limit($Page->firstRow . ',' . $Page->listRows)
+                ->select(); 
+        }
+
         $return = [
             'status'    =>1,
             'msg'       =>'',
@@ -650,6 +660,7 @@ class UsersLogic extends Model
         ];
         return $return;
     }
+
     /*
      * 获取优惠券
      */
