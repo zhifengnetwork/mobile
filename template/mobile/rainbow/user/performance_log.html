@@ -1,5 +1,5 @@
-<include file="public/header" title="业绩记录" body=""/>
-<include file="public/header_nav" title="业绩记录" href="javascript:history.back(-1)"/>
+<include file="public/header" title="业绩明细" body=""/>
+<include file="public/header_nav" title="业绩明细" href="javascript:history.back(-1)"/>
 <div class="application-record">
     <div class="maleri30">
         <ul class="re_tit">
@@ -12,7 +12,7 @@
         </ul>
         <foreach name="lists" item="v">
             <ul>   
-                <li class="li2"><span>{:date('Y-m-d', $v[create_time])}</span></li> 
+                <li class="li2"><span>{$v[create_time]}</span></li> 
                 <li class="li1" style="width:33.3%"><span>{$v[money]}</span></li>  
                 <li class="li3"><span>{$v[note]}</span></li>
             </ul>

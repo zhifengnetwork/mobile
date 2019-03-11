@@ -1086,7 +1086,7 @@ class User extends MobileBase
     }
 
 
-    public function tp_agent_performance_log(){
+    public function performance_log(){
     	$usersLogic = new UsersLogic;
         $result= $usersLogic->get_recharge_log($this->user_id,'','agent_performance_log');  //业务记录
     	$this->assign('page', $result['show']);
