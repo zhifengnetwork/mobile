@@ -6,6 +6,8 @@ use app\common\model\Cart;
 use app\common\model\CouponList;
 use app\common\model\Shop;
 use app\common\util\TpshopException;
+use app\mobile\controller\Sign;
+use app\common\model\Goods;
 use think\Model;
 use think\Db;
 /**
@@ -29,6 +31,7 @@ class Pay
     private $userMoney = 0;//使用余额
     private $payPoints = 0;//使用积分
     private $couponPrice = 0;//优惠券抵消金额
+    private $signPrice = 0;//签到抵消金额
 
     private $orderPromId;//订单优惠ID
     private $orderPromAmount = 0;//订单优惠金额
@@ -379,6 +382,62 @@ class Pay
     }
 
     /**
+     * 获取用户身份签到条件
+     * @return int
+     */
+    public function getUserSign($goods_id)
+    {
+        $signSum = continue_sign($this->user['user_id']); // 连续签到数
+        // 是否分销商
+        if($this->user['is_distribut'] == 1){
+            if($signSum >= 3){
+                $price = $this->getSignSatisfy($goods_id);
+                if ($price == ture) {
+                    $this->orderAmount = $this->orderAmount - $this->goodsPrice;
+                    $this->signPrice = $this->goodsPrice;
+                }
+
+            }
+        }
+
+        // 是否代理商
+        if($this->user['is_agent'] == 1){
+            if($signSum >= 10){
+                $price = $this->getSignSatisfy($goods_id);
+                if ($price == ture) {
+                    $this->orderAmount = $this->orderAmount - $this->goodsPrice;
+                    $this->signPrice = $this->goodsPrice;
+                }
+            }
+        }
+
+    }
+
+    /**
+     * 签到条件满足免费领取
+     * @return int
+     */
+    public function getSignSatisfy($goods_id)
+    {
+
+        $goodsModel = new Goods();
+        $this->goods = $goodsModel::get($goods_id);
+
+        //当前商品是否分销商分类的产品
+        if(!empty($this->goods['cat_id']) && $this->goods['cat_id'] == 584){
+            return ture;
+        }
+
+        //当前商品是否代理商分类的产品
+        if(!empty($this->goods['cat_id']) && $this->goods['cat_id'] == 585){
+            return ture;
+        }
+
+        return false;
+
+    }
+
+    /**
      * 获取实际上使用的余额
      * @return int
      */
@@ -441,6 +500,15 @@ class Pay
     }
 
     /**
+     *  获取签到抵消费
+     * @return int
+     */
+    public function getSignPrice()
+    {
+        return $this->signPrice;
+    }
+
+    /**
      * 商品总价
      * @return int
      */
@@ -492,6 +560,7 @@ class Pay
         return [
             'shipping_price' => round($this->shippingPrice, 2),
             'coupon_price' => round($this->couponPrice, 2),
+            'sign_price' => round($this->signPrice, 2),
             'user_money' => round($this->userMoney, 2),
             'integral_money' => $this->integralMoney,
             'pay_points' => $this->payPoints,

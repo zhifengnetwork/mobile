@@ -1683,3 +1683,61 @@ function orderExresperMent($order_info = array(),$des='',$order_id=''){
       }
       
 }
+
+
+    /**
+     * 连续签到次数
+     */
+function continue_sign($user_id){
+
+    //定义时间戳
+    date_default_timezone_set("Asia/Shanghai");
+    //先看一下今天有没有签到
+    $con['sign_day'] = array('like',date('Y-m-d',time()).'%');
+    $cunzai = M('sign_log')->where(['user_id'=>$user_id])->where($con)->find();
+    if($cunzai){
+        $todaySign=1;
+    }else{
+        $todaySign=0;
+    }
+    //再看之前的签到时间
+    $list = M('sign_log')->where(['user_id'=>$user_id])->order('sign_day desc')->field('sign_day')->select();
+    //对所有的签到时间进行时间戳然后倒序排序
+    $array=array();
+    foreach($list as $key=>$value){
+        $array[]=strtotime($value['sign_day']);
+    }
+
+     //定义连续签到次数
+     $countSign=$todaySign;
+     //依次判断所有的时间戳是否在指定范围内，例如第一个应该在昨天00:00:00-23:59:59之前，如果在则$countSign+1,否则跳出循环
+     //定义昨天的时间戳范围
+     $begintime=strtotime(date('Y-m-d 00:00:00',time()-86400));
+     $endtime=strtotime(date('Y-m-d 23:59:59',time()-86400));
+     if($todaySign==1){
+         for($i=1;$i<count($array);){
+        //                echo $begintime."------".$array[$i]."---------".$endtime."+++++";
+             if($array[$i]>=$begintime && $array[$i]<=$endtime){
+                 $countSign++;
+                 $begintime-=86400;
+                 $endtime-=86400;
+             }else{
+                 break;
+             }
+             $i++;
+         }
+     }else{
+         for($k=0;$k<count($array);){
+             if($array[$k]>=$begintime && $array[$k]<=$endtime){
+                 $countSign++;
+                 $begintime-=86400;
+                 $endtime-=86400;
+             }else{
+                 break;
+             }
+             $k++;
+         }
+     }
+
+    return $countSign;
+}

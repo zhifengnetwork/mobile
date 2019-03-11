@@ -64,6 +64,7 @@ class PlaceOrder
             update_pay_status($this->order['order_sn']);
         }
         $this->deductionCoupon();//扣除优惠券
+        $this->addOrderSignReceive();//添加免费领取记录
         $this->changUserPointMoney($this->order);//扣除用户积分余额
         $this->queueDec();
     }
@@ -233,6 +234,7 @@ class PlaceOrder
             'coupon_price' => $this->pay->getCouponPrice(),//'使用优惠券',
             'integral' => $this->pay->getPayPoints(), //'使用积分',
             'integral_money' => $this->pay->getIntegralMoney(),//'使用积分抵多少钱',
+            'sign_price' => $this->pay->getSignPrice(),//'签到抵扣金额',
             'total_amount' => $this->pay->getTotalAmount(),// 订单总额
             'order_amount' => $this->pay->getOrderAmount(),//'应付款金额',
             'add_time' => time(), // 下单时间
@@ -240,6 +242,7 @@ class PlaceOrder
         if($orderData["order_amount"] < 0){
             throw new TpshopException("订单入库", 0, ['status' => -8, 'msg' => '订单金额不能小于0', 'result' => '']);
         }
+ 
         if ($this->promType == 4) {
             //预售订单
             if ($this->preSell['deposit_price'] > 0) {
@@ -411,6 +414,24 @@ class PlaceOrder
             Db::name('account_log')->insert($accountLogData);
         }
     }
+
+    /**
+     * 添加免费领取记录
+     * @param $order
+     */
+    public function addOrderSignReceive()
+    {
+        $signPrice = $this->pay->getSignPrice();
+        if($signPrice > 0){
+            $user = $this->pay->getUser();
+
+            $data['uid'] = $user['user_id'];
+            $data['order_id'] = $this->order['order_id'];
+            $data['addend_time'] = time();
+            Db::name('OrderSignReceive')->save($data);
+        }
+    }
+
     /**
      * 这方法特殊，只限拼团使用。
      * @param $order

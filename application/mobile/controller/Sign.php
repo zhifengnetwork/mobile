@@ -10,6 +10,8 @@ use app\common\logic\ActivityLogic;
 
 class Sign extends MobileBase {
 
+    public $user_id = 0;
+    public $user = array();
 
     /*
     * 初始化操作
@@ -21,6 +23,11 @@ class Sign extends MobileBase {
             header("location:" . U('Mobile/User/login'));
             exit;
         }
+        
+        $user = session('user');
+        session('user', $user);  //覆盖session 中的 user
+        $this->user = $user;
+        $this->user_id = $user['user_id'];
     }
 
 
@@ -119,7 +126,7 @@ class Sign extends MobileBase {
 
         //当前积分
         $points = M('users')->where(['user_id'=>$user_id])->value('pay_points');
-        $continue_sign = $this->continue_sign($user_id);
+        $continue_sign = continue_sign($user_id);
         //签到积分
         $add_point = (int)M('config')->where(['name'=>'sign_integral'])->value('value');
       
@@ -154,59 +161,38 @@ class Sign extends MobileBase {
     }
 
     /**
-     * 连续签到次数
+     * 是否可以免费领取
      */
-    private function continue_sign($user_id){
+    public function receive()
+    {
+        $cat_id = I('cat_id/d');
 
-        //定义时间戳
-        date_default_timezone_set("Asia/Shanghai");
-        //先看一下今天有没有签到
-        $con['sign_day'] = array('like',date('Y-m-d',time()).'%');
-        $cunzai = M('sign_log')->where(['user_id'=>$user_id])->where($con)->find();
-        if($cunzai){
-            $todaySign=1;
-        }else{
-            $todaySign=0;
-        }
-        //再看之前的签到时间
-        $list = M('sign_log')->where(['user_id'=>$user_id])->order('sign_day desc')->field('sign_day')->select();
-        //对所有的签到时间进行时间戳然后倒序排序
-        $array=array();
-        foreach($list as $key=>$value){
-            $array[]=strtotime($value['sign_day']);
+        if ($this->user['is_distribut'] == 0 && $cat_id == 584) {
+            $result = array('status'=>0,'msg'=>'成为分销商才可领取','result'=>array());
+            return $this->ajaxReturn($result);
         }
 
-         //定义连续签到次数
-         $countSign=$todaySign;
-         //依次判断所有的时间戳是否在指定范围内，例如第一个应该在昨天00:00:00-23:59:59之前，如果在则$countSign+1,否则跳出循环
-         //定义昨天的时间戳范围
-         $begintime=strtotime(date('Y-m-d 00:00:00',time()-86400));
-         $endtime=strtotime(date('Y-m-d 23:59:59',time()-86400));
-         if($todaySign==1){
-             for($i=1;$i<count($array);){
-            //                echo $begintime."------".$array[$i]."---------".$endtime."+++++";
-                 if($array[$i]>=$begintime && $array[$i]<=$endtime){
-                     $countSign++;
-                     $begintime-=86400;
-                     $endtime-=86400;
-                 }else{
-                     break;
-                 }
-                 $i++;
-             }
-         }else{
-             for($k=0;$k<count($array);){
-                 if($array[$k]>=$begintime && $array[$k]<=$endtime){
-                     $countSign++;
-                     $begintime-=86400;
-                     $endtime-=86400;
-                 }else{
-                     break;
-                 }
-                 $k++;
-             }
-         }
+        if ($this->user['is_agent'] == 0 && $cat_id == 585) {
+            $result = array('status'=>0,'msg'=>'成为代理商才可领取','result'=>array());
+            return $this->ajaxReturn($result);
+        }
 
-        return $countSign;
+        $data = M('order_sign_receive')->where('uid',$this->user_id)->order('addend_time desc')->select();
+
+        if ($this->user['is_agent'] == 1 && count($data)  == 12 ) {
+            $result = array('status'=>0,'msg'=>'已超出领取次数','result'=>array());
+            return $this->ajaxReturn($result);
+        }
+        $newTime = date('m', time());
+        $addTime = date('m', $data[0]['addend_time']);
+
+        if ($newTime == $addTime) {
+            $result = array('status'=>0,'msg'=>'本月已领取过了','result'=>array());
+            return $this->ajaxReturn($result);
+        }
+
+        $result = array('status'=>1,'msg'=>'可领取','result'=>array());
+        $this->ajaxReturn($result);
     }
+
 }
