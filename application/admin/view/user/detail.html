@@ -166,8 +166,8 @@
                             <ul>
                                 <li>用户余额</li>
                                 <li>上一级编号</li>
-                                <li>上二级编号</li>
-                                <li>上三级编号</li>
+                                <!-- <li>上二级编号</li>
+                                <li>上三级编号</li> -->
                             </ul>
                         </span>
                         <span class="span_1">
@@ -180,7 +180,7 @@
                                         {$user.first_leader}
                                     </if>
                                 </li>
-                                <li>
+                               <!--  <li>
                                     <if condition='$user[second_leader] gt 0'>
                                         <a href="{:U(detail,array('id'=>$user[second_leader]))}">{$user.second_leader}</a>
                                         <else />
@@ -193,15 +193,15 @@
                                         <else />
                                         {$user.third_leader}
                                     </if>
-                                </li>
+                                </li> -->
                             </ul>
                         </span>
                         <span class="span_1">
                             <ul>
                                 <li>累积分佣金额</li>
                                 <li>一级下线数</li>
-                                <li>二级下线数</li>
-                                <li>三级下线数</li>
+                                <!-- <li>二级下线数</li>
+                                <li>三级下线数</li> -->
                             </ul>
                         </span>
                         <span class="span_1">
@@ -214,7 +214,7 @@
                                         {$user.first_lower}
                                     </if>
                                 </li>
-                                <li>
+                                <!-- <li>
                                     <if condition='$user[second_lower] gt 0'>
                                         <a href="{:U(index,array('second_leader'=>$user[user_id]))}">{$user.second_lower}</a>
                                         <else />
@@ -227,7 +227,7 @@
                                         <else />
                                         {$user.third_lower}
                                     </if>
-                                </li>
+                                </li> -->
                             </ul>
                         </span>
                         <div style="clear:both;"></div>

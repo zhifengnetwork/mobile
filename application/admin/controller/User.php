@@ -71,52 +71,76 @@ class User extends Base
     /**
      * 会员详细信息查看
      */
-    public function detail()
-    {
-        $uid = I('get.id');
-        $user = D('users')->where(array('user_id' => $uid))->find();
-        if (!$user)
-            exit($this->error('会员不存在'));
-        if (IS_POST) {
-            //  会员信息编辑
-            $password = I('post.password');
-            $password2 = I('post.password2');
-            if ($password != '' && $password != $password2) {
-                exit($this->error('两次输入密码不同'));
-            }
-            if ($password == '' && $password2 == '') {
-                unset($_POST['password']);
-            } else {
-                $_POST['password'] = encrypt($_POST['password']);
-            }
-
-            if (!empty($_POST['email'])) {
-                $email = trim($_POST['email']);
-                $c = M('users')->where("user_id != $uid and email = '$email'")->count();
-                $c && exit($this->error('邮箱不得和已有用户重复'));
-            }
-
-            if (!empty($_POST['mobile'])) {
-                $mobile = trim($_POST['mobile']);
-                $c = M('users')->where("user_id != $uid and mobile = '$mobile'")->count();
-                $c && exit($this->error('手机号不得和已有用户重复'));
-            }
-
-            $userLevel = D('user_level')->where('level_id=' . $_POST['level'])->value('discount');
-            $_POST['discount'] = $userLevel / 100;
-            $row = M('users')->where(array('user_id' => $uid))->save($_POST);
-            if ($row)
-                exit($this->success('修改成功'));
-            exit($this->error('未作内容修改或修改失败'));
-        }
-
-        $user['first_lower'] = M('users')->where("first_leader = {$user['user_id']}")->count();
-        $user['second_lower'] = M('users')->where("second_leader = {$user['user_id']}")->count();
-        $user['third_lower'] = M('users')->where("third_leader = {$user['user_id']}")->count();
-
-        $this->assign('user', $user);
-        return $this->fetch();
-    }
+     public function detail()
+     {
+ 
+         $uid = I('get.id');
+         $user = D('users')->where(array('user_id' => $uid))->find();
+         if (!$user)
+             exit($this->error('会员不存在'));
+         if (IS_POST) {
+             //  会员信息编辑
+             $password = I('post.password');
+             $password2 = I('post.password2');
+             if ($password != '' && $password != $password2) {
+                 exit($this->error('两次输入密码不同'));
+             }
+             if ($password == '' && $password2 == '') {
+                 unset($_POST['password']);
+             } else {
+                 $_POST['password'] = encrypt($_POST['password']);
+             }
+ 
+             if (!empty($_POST['email'])) {
+                 $email = trim($_POST['email']);
+                 $c = M('users')->where("user_id != $uid and email = '$email'")->count();
+                 $c && exit($this->error('邮箱不得和已有用户重复'));
+             }
+ 
+             if (!empty($_POST['mobile'])) {
+                 $mobile = trim($_POST['mobile']);
+                 $c = M('users')->where("user_id != $uid and mobile = '$mobile'")->count();
+                 $c && exit($this->error('手机号不得和已有用户重复'));
+             }
+ 
+             $userLevel = D('user_level')->where('level_id=' . $_POST['level'])->value('level');
+             $_POST['agent_user'] = $userLevel;
+             // dump($_POST);die;
+             $agent = M('agent_info')->where(['uid'=>$uid])->find();
+             if ($agent) {
+                 $data = array('level_id'=>$userLevel);
+                 M('agent_info')->where(['uid'=>$uid])->save($data);
+             }else{
+                 $this->agent_add($user['user_id'],$user['first_leader'],$userLevel);
+                 $_POST['is_agent'] = 1;
+             }
+             $row = M('users')->where(array('user_id' => $uid))->save($_POST);
+             if ($row)
+ 
+                 exit($this->success('修改成功'));
+             exit($this->error('未作内容修改或修改失败'));
+         }
+ 
+         $user['first_lower'] = M('users')->where("first_leader = {$user['user_id']}")->count();
+         $user['second_lower'] = M('users')->where("second_leader = {$user['user_id']}")->count();
+         $user['third_lower'] = M('users')->where("third_leader = {$user['user_id']}")->count();
+ 
+         $this->assign('user', $user);
+         return $this->fetch();
+     }
+ 
+     private function agent_add($user_id,$head_id,$level_id)
+     {
+         $data = array(
+             'uid'=>$user_id,
+             'head_id'=>$head_id,
+             'level_id'=>$level_id,
+             'create_time'=>time(),
+             'update_time'=>time(),
+             'note'=>"后台增加等级"
+         );
+         M('agent_info')->add($data);
+     }
 
     public function add_user()
     {

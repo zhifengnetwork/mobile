@@ -1,6 +1,17 @@
 <?php
 
-
+/**
+ * 智丰网络
+ * ============================================================================
+ * 版权所有 2015-2027 深圳搜豹网络科技有限公司，并保留所有权利。
+ * 网站地址: http://www.tp-shop.cn
+ * ----------------------------------------------------------------------------
+ * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
+ * 不允许对程序代码以任何形式任何目的的再发布。
+ * ============================================================================
+ * Author: 当燃
+ * Date: 2015-09-09
+ */
 
 namespace app\admin\logic;
 
@@ -80,5 +91,55 @@ class UsersLogic extends Model
                 accountLog($user_id, 0, $pay_points, '会员注册赠送积分'); // 记录日志流水
             return array('status' => 1, 'msg' => '添加成功', 'user_id' => $user_id);
         }
+    }
+
+    /**
+     * 获得指定分销商下的上级的数组     
+     * @access  public
+     * @param   int     $cat_id     分销商的ID
+     * @param   int     $selected   当前选中分销商的ID
+     * @param   boolean $re_type    返回的类型: 值为真时返回下拉列表,否则返回数组
+     * @param   int     $level      限定返回的级数。为0时返回所有级数
+     * @return  mix
+     */
+    public function relation($cat_id = 0, $selected = 0, $re_type = true, $level = 0)
+    {
+        global $goods_category, $goods_category2;            
+        $sql = "SELECT user_id,nickname,mobile,is_distribut,is_agent,first_leader,agent_user FROM  __PREFIX__users ORDER BY first_leader , agent_user ASC";
+        $goods_category = DB::query($sql);
+        $goods_category = convert_arr_key($goods_category, 'user_id');
+        
+        foreach ($goods_category AS $key => $value)
+        {
+            if(($value['is_distribut'] == 1 || $value['is_agent'] == 1) && $value['first_leader'] == 0){
+                $this->get_cat_tree($value['user_id'], 0);                               
+            }
+        }
+        return $goods_category2;
+    }
+
+    /**
+     * 获取指定id下的 所有分销商      
+     * @global type $goods_category 所有分销商
+     * @param type $id 当前显示的 菜单id
+     * @param type $level 等级
+     * @return 返回数组 Description
+     */
+    public function get_cat_tree($id, $level)
+    {
+        global $goods_category, $goods_category2;          
+        $goods_category2[$id] = $goods_category[$id];
+        $level = $level + 1;
+        $goods_category2[$id]['level'] = $level;
+        $k = $goods_category[$id]['level']; 
+
+        foreach ($goods_category AS $key => $value){
+             if(($value['is_distribut'] == 1 || $value['is_agent'] == 1) && $value['first_leader'] == $id)
+             {
+                $this->get_cat_tree($value['user_id'], $level);  
+                $goods_category2[$id]['have_son'] = 1; // 还有下级
+                $k++;
+             }
+        }            
     }
 }
