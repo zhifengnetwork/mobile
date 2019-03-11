@@ -16,9 +16,8 @@ body {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
-/*去除input默认样式*/
-input {
-	/*IOS*/
+/*去除IOS下 => input, select默认样式*/
+input, select {
 	-webkit-appearance:none; 
 	background: none;
 	border: none;
