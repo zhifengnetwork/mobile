@@ -7,9 +7,11 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<title>签到</title>
-		<script src="__STATIC__/js/public/rem.js" ></script>
-		<link rel="stylesheet" href="__STATIC__/css/sign/index.css"/>
-		<link rel="stylesheet" href="__STATIC__/css/public_lb/public.css?v=1552289507" />
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--layer插件-->
+		<link rel="stylesheet" href="__STATIC__/css/layer.css?v=1552289507"/>
+		<link rel="stylesheet" href="__STATIC__/css/sign/index.css?v=1552297609"/>
+		<link rel="stylesheet" href="__STATIC__/css/public_lb/public.css?v=1552297609" />
 		<!--日历 css-->
     	<link rel="stylesheet" href="__STATIC__/css/sign/date.css" media="screen" title="no title" charset="utf-8">
 		
@@ -37,11 +39,11 @@
 						</p>
 					</div>
 					<!--总积分-->
-					<p class="integralL">总积分:<span>0</span>积分</p>
-					<!--连续、积累签到-->
+					<!--<p class="integralL">总积分:<span>0</span>积分</p>-->
+					<!--连续、累积签到-->
 					<p class="recordBox">
 						已连续签到:&nbsp;<span class="continuityNum">0</span>天<br />
-						积累签到:&nbsp;<span class="dayNum">0<!--天数--></span>天</p>
+						累积签到:&nbsp;<span class="dayNum">0<!--天数--></span>天</p>
 				</div>
 				<!--日历 wrap-->
 				<div class="calendarWrapL">
@@ -53,14 +55,13 @@
 			
 			
 			<!--遮罩层-->
-			<!--<div class="model" style="display: block;">
-				<div class="dialog-sign-zp" style="display: block;">-->
 			<div class="model">
 				<div class="dialog-sign-zp">
-					<p class="score">总积分<span>0</span></p>
+					<!--<p class="score">总积分<span>0</span></p>-->
+					<p class="accumulateL">累积签到<span>0</span></p>
 					<p class="time">已经连续签到<span>0</span>天</p>
 					<p class="white">今日签到成功</p>
-					<p class="add-score">+<span>0</span>积分</p>
+					<!--<p class="add-score">+<span>0</span>积分</p>-->
 					<div class="rule_box">
 						<p class="rule_box_title">签到奖励</p>
 						<span><!--签到规则--></span>
@@ -77,20 +78,57 @@
 		<!--以下两个，日历js-->
 		<script src="__STATIC__/js/sign/DateMarker.js"></script>
 		<script src="__STATIC__/js/sign/sign.js"></script>
-		
+		<!--layer插件-->
+		<script src="__STATIC__/js/layer/layer.js"></script>
 		<script>
+			/*微信h5页面禁止下拉露出网页来源*/
+			var overscroll = function(el) {
+				/*触摸*/
+			  	el.addEventListener('touchstart', function() {
+				    var top = el.scrollTop
+				      , totalScroll = el.scrollHeight
+				      , currentScroll = top + el.offsetHeight;
+				    //If we're at the top or the bottom of the containers
+				    //scroll, push up or down one pixel.
+				    //
+				    //this prevents the scroll from "passing through" to
+				    //the body.
+				    if(top === 0) {
+				      el.scrollTop = 1;
+				    } else if(currentScroll === totalScroll) {
+				      el.scrollTop = top - 1;
+				    }
+				  });
+				  el.addEventListener('touchmove', function(evt) {
+				    //if the content is actually scrollable, i.e. the content is long enough
+				    //that scrolling can occur
+				    if(el.offsetHeight < el.scrollHeight)
+				      evt._isScroller = true;
+				  });
+			}
+			overscroll(document.querySelector('.wrap_signin'));
+			document.body.addEventListener('touchmove', function(evt) {
+			  //In this case, the default behavior is scrolling the body, which
+			  //would result in an overflow.  Since we don't want that, we preventDefault.
+			  if(!evt._isScroller) {
+			    evt.preventDefault();
+			  }
+			});
+			
 			$(document).ready(function(){
 				/*保存用户签到的状态*/
 				var signObj = {
 					/*用户是否签到*/
 					stateD: false,
+					/*用户权限-是否能签到(后台)*/
+					admin: null,
 					/*总积分(后台)*/
-					totalNUm: 0,
+					/*totalNUm: 0,*/
 					/*签到奖励的积分（后台）*/
-					signNumVal: null,
+					/*signNumVal: null,*/
 					/*连续签到（后台）*/
 					evenNum: 0,
-					/*积累签到（后天）*/
+					/*累积签到（后天）*/
 					accumulate: 0,
 				}
 				/*签到记录、积分、连续天数、对应的规则等请求*/
@@ -109,6 +147,8 @@
 							/*后台传过来的值 => '2019/03/06'*/
 							/*月、日*/
 							var monthS, dayS ;
+							/*用户是否有-签到的权限*/
+							signObj['admin'] = data['auth'];
 							/**重新对后台传过来的数据，（2019/03/06）进行编辑=> '2019/3/6' **/
 							for(var k=0;k<signArr.length;k++){
 								monthS = Number(signArr[k].split('/')[1]);
@@ -137,15 +177,17 @@
 								signObj['stateD'] = true;
 							}
 							/*总积分-obj*/
-							signObj['totalNUm'] = data['points'];
+							/*signObj['totalNUm'] = data['points'];*/
 							/*页面-总积分*/
-							$('.integralL').find('span').html(signObj['totalNUm']);
+							/*$('.integralL').find('span').html(signObj['totalNUm']);*/
 							/*弹框-总积分*/
-							$('.dialog-sign-zp .score span').html(signObj['totalNUm']);
-							/*积累签到-obj*/
+							/*$('.dialog-sign-zp .score span').html(signObj['totalNUm']);*/
+							/*累积签到-obj*/
 							signObj['accumulate'] = data['accumulate_day'];
-							/*积累签到*/
+							/*页面-累积签到*/
 							$('.recordBox').find('.dayNum').html(signObj['accumulate']);
+							/*弹框-累积签到*/
+							$('.dialog-sign-zp .accumulateL span').html(signObj['accumulate']);
 							/*连续签到-obj*/
 							signObj['evenNum'] = data['continue_sign'];
 							/*页面-连续签到*/
@@ -153,9 +195,10 @@
 							/*弹框-连续签到*/
 							$('.dialog-sign-zp .time span').html(signObj['evenNum']);
 							/*签到-激励积分-obj*/
-							signObj['signNumVal'] = data['add_point'];
-							$('.add-score').find('span').html(signObj['signNumVal']);
-							console.log('签到积分',signObj['signNumVal']);
+							/*signObj['signNumVal'] = data['add_point'];*/
+							/*$('.add-score').find('span').html(signObj['signNumVal']);*/
+							/*console.log('签到积分',signObj['signNumVal']);*/
+							/*签到规则*/
 							$('.rule_box span').html(data['note']);
 							
 						}else {
@@ -170,6 +213,11 @@
 				
 				/*签到请求*/
 				$('.signInBut').on('click',function(){
+					/*后台传数据=> auth==1;可以签到 , auth==0;不可以签到*/
+					if(signObj['admin'] == 0){
+						layer.msg('权限不足，无法签到！');
+						return false;
+					}
 					/*判断用户签到状态=>ajax*/
 					if(!signObj['stateD']){
 						$.ajax({
@@ -184,15 +232,15 @@
 								$('.signInBut').find('span').html('已签到');
 								/*新总积分 = 签到积分+原来的总积分*/
 								/*页面-总积分*/
-								$('.integralL').find('span').html(signObj['totalNUm']+signObj['signNumVal']);
+								/*$('.integralL').find('span').html(signObj['totalNUm']+signObj['signNumVal']);*/
 								/*弹框-总积分*/
-								$('.dialog-sign-zp .score span').html(signObj['totalNUm']+signObj['signNumVal']);
+								/*$('.dialog-sign-zp .score span').html(signObj['totalNUm']+signObj['signNumVal']);*/
 								/*新的连续签到 = 今天+原来的连续签到*/
 								/*页面-连续签到*/
 								$('.recordBox').find('.continuityNum').html(signObj['evenNum']+1);
 								/*弹框-连续签到*/
 								$('.dialog-sign-zp .time span').html(signObj['evenNum']+1);
-								/*页面-积累签到*/
+								/*页面-累积签到*/
 								$('.recordBox .dayNum').html(signObj['accumulate']+1);
 								/*在日历盖章=>把后台数据转换: "2019/03/09" =>"2019/3/9"*/
 								console.log('后台日期数据:',todayState);

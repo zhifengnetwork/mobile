@@ -1,0 +1,47 @@
+<include file="public/header" title="我的分享" body="g4"/>
+<include file="public/header_nav" title="我的分享" href="javascript:history.back(-1)"/>
+<style>
+    .qr{ 
+       position:absolute;
+       left: 50%;
+       top:40%;
+       transform: translate(-50%,-50%)
+    }
+</style>
+<div class="two-bothshop">
+    <div class="maleri30">
+        <ul>
+            <li class="red" style="width:100%;">
+               <span>截图分享二维码邀请好友</span>
+            </li>
+          
+        </ul>
+    </div>
+</div>
+
+<div>
+	<div id="qrcode" class="qr"></div>
+</div>
+
+<script type="text/javascript" src="__STATIC__/js/qrcode.js"></script>
+
+<script type="text/javascript">
+
+var url = "{$url}";
+
+var qrcode = new QRCode("qrcode", {
+    text: url,
+    width: 300,
+    height: 300,
+    colorDark : "#000000",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.H
+});
+
+</script>
+
+
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+
+</body>
+</html>
