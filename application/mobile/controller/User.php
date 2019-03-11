@@ -71,37 +71,39 @@ class User extends MobileBase
         $user = session('user');
         $field = "user_id,first_leader,is_distribut,is_agent"; 
         $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->select();
-        $money_array = [];
-        foreach($users as $key=>$val){
-            $get_child_agent = $this->child_agent($val['user_id']);
-            $money_array[]=$get_child_agent['agent_per'];
-            // dump($get_child_agent['agent_per']);
-            // $$money_array[] = $get_child_agent['agent_per'];
+        if($users)
+        {
+            if(empty($users)) return false;
+            $money_array = [];
+            foreach($users as $key=>$val){
+                $get_child_agent = $this->child_agent($val['user_id']);
+                $money_array[]=$get_child_agent['agent_per'];
+                // dump($get_child_agent['agent_per']);
+                // $$money_array[] = $get_child_agent['agent_per'];
+            }
+            if(empty($money_array)){
+                return false;
+            };
+            $moneys = array_filter($money_array);
+            rsort($moneys);
+            //最大业绩用户
+            if(count($moneys) >= 2){
+                $max_moneys = max($moneys);
+            }else{
+                $max_moneys = $moneys[0];
+            }
+            array_shift($moneys);
+            //去掉最大业绩之和
+            $moneys = array_sum($moneys);
+            $agent = $this->child_agent($user['user_id']);
+            $money_total = $agent['ind_per']+$agent['agent_per'];
+            $money_total = array(
+                'money_total'=>$money_total,
+                'max_moneys'=>$max_moneys,
+                'moneys'=>$moneys
+            );
+            $this->assign('money_total',$money_total);
         }
-        if(empty($money_array)){
-            return false;
-        };
-        $moneys = array_filter($money_array);
-        rsort($moneys);
-        //最大业绩用户
-		if(count($moneys) >= 2){
-			$max_moneys = max($moneys);
-		}else{
-			$max_moneys = $moneys[0];
-		}
-       
-        // $max_moneys = max($moneys);
-        array_shift($moneys);
-        //去掉最大业绩之和
-		$moneys = array_sum($moneys);
-        $agent = $this->child_agent($user['user_id']);
-        $money_total = $agent['ind_per']+$agent['agent_per'];
-        $money_total = array(
-            'money_total'=>$money_total,
-            'max_moneys'=>$max_moneys,
-            'moneys'=>$moneys
-        );
-        $this->assign('money_total',$money_total);
         return $this->fetch();
     }
 
