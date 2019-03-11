@@ -81,6 +81,10 @@ class Sign extends MobileBase {
             $r = M('sign_log')->save(['user_id'=>$user_id,'sign_day'=>date('Y-m-d H:i:s')]);
             if($r){
                 if($r){
+                    //签到积分
+                    //$add_point = (int)M('config')->where(['name'=>'sign_integral'])->value('value');
+                    //accountLog($user_id, 0, $add_point , '签到送积分',0,0 ,'');
+
                     return $this->ajaxReturn(['status'=>1,'msg'=>'签到成功','date'=>$date]);
                 }else{
                     return $this->ajaxReturn(['status'=>-1,'msg'=>'签到失败','date'=>$date]);
@@ -115,16 +119,21 @@ class Sign extends MobileBase {
 
         //当前积分
         $points = M('users')->where(['user_id'=>$user_id])->value('pay_points');
+
         $continue_sign = $this->continue_sign($user_id);
         //签到积分
-        $add_point = M('config')->where(['name'=>'sign_integral'])->value('value');
-
+        $add_point = (int)M('config')->where(['name'=>'sign_integral'])->value('value');
+      
         //签到规则
         //连续签到几天	        
         $rule = M('config')->where(['name'=>'sign_rule'])->value('value');
 
         //连续签到几天
         $accumulate_day = count($data);
+
+        //检查权限
+        $auth = $this->check_auth($user_id);
+        
 
         return $this->ajaxReturn(
             ['status'=>1,
@@ -135,9 +144,27 @@ class Sign extends MobileBase {
             'add_point'=>$add_point,
             'continue_sign'=> $continue_sign,
             'accumulate_day'=>$accumulate_day,
-            'note'=>$rule
+            'note'=>$rule,
+            'auth'=>$auth
             ]);
     }
+
+
+    /**
+     * 检查签到权限
+     */
+    private function check_auth($user_id){
+        //检查身份
+        //只有  分销 和 代理 可以签到
+        $is_ok = M('users')->where(['user_id'=>$user_id])->field('is_distribut,is_agent')->find();
+        if($is_ok['is_distribut'] == 1 || $is_ok['is_agent'] == 1){
+            return 1;
+        }else{
+            return 0;
+        }
+        
+    }
+
 
     /**
      * 处理时间

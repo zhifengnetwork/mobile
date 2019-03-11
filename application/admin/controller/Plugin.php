@@ -16,7 +16,8 @@ class Plugin extends Base {
 
     public function index(){
 
-        $plugin_list = M('plugin')->select();
+        $plugin_list = M('plugin')->where(['status'=>1])->select();
+        // dump($plugin_list);
         $plugin_list = group_same_key($plugin_list,'type');
         $this->assign('payment',$plugin_list['payment']);
         $this->assign('login',$plugin_list['login']);

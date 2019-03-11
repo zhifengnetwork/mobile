@@ -6,6 +6,13 @@ body {
 	width: 7.5rem;
 	height: auto;
 }
+/*头部 背景色 -左向右渐变*/
+.topBox_backgroundColor {
+	background:-webkit-linear-gradient(left,#ffba33, #f95112);
+	background:-o-linear-gradient(right,#ffba33, #f95112);
+	background:-moz-linear-gradient(right,#ffba33, #f95112);
+	background: linear-gradient(to right,#ffba33, #f95112);
+}
 /*内容*/
 .content_si {
 	width: 100%;
