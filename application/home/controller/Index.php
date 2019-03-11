@@ -1,25 +1,25 @@
 <?php
-/**
- * tpshop
- * ============================================================================
- * * 版权所有 2015-2027 深圳搜豹网络科技有限公司，并保留所有权利。
- * 网站地址: http://mobile.zhifengwangluo.com.c3w.cc
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * 个人学习免费, 如果商业用途务必到智丰网络购买授权.
- * 采用最新Thinkphp5助手函数特性实现单字母函数M D U等简写方式
- * ============================================================================
- * $Author: IT宇宙人 2015-08-10 $
- *
- */ 
 namespace app\home\controller;
 use think\Page;
 use think\Verify;
+use app\common\logic\SmsChuanglanLogic;
 use think\Image;
 use think\Db;
 class Index extends Base {
     
+
+    public function test(){
+
+        // $account = M('config')->where(['name'=>'sms_appkey'])->value('value');
+        // $password = M('config')->where(['name'=>'sms_secretKey'])->value('value');;
+        // $logic = new SmsChuanglanLogic($account,$password);
+        // $mobile = '13516565558';
+        // $msg = '【253云通讯】测试一下,这里是内容';
+        // $res = $logic->sendSMS($mobile, $msg, $needstatus = 'true');
+
+        // "{"code":"0","msgId":"19031122454723995","time":"20190311224547","errorMsg":""}"
+    }
+
     public function index(){      
 
         // 如果是手机跳转到 手机模块
