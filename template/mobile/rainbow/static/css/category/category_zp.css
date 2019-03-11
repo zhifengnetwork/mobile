@@ -40,12 +40,14 @@ body{
 	background: url(../../images/category/search-zp.png) no-repeat;
 	background-size: 100%;
 	margin: 0 0.3rem;
+	border: none;
 }
 .top-bar .search .search-text{
 	width: 100%;
 	background: none;
 	font-size: 0.28rem;
 	color: #999999;
+	border: none;
 }
 .top-bar .search .scan{
 	width:0.45rem;
