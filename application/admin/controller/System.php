@@ -23,7 +23,7 @@ class System extends Base
             'smtp'      => '邮件设置',
             'water'     => '水印设置',
             'push'      => '推送设置',
-            'oss'       => '对象存储',
+            // 'oss'       => '对象存储',
             'express'	=> '物流设置',
             'poster'	=> '海报设置'
         ];		
