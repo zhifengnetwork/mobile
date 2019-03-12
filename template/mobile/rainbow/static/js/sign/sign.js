@@ -1,3 +1,6 @@
+/*签到的数据(后台传的年份（编辑后）)*/
+var signData = [];
+
 $(function() {
 	$('.date').dateMarker();
 });
