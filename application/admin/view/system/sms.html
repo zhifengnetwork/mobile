@@ -28,26 +28,26 @@
     <form method="post" enctype="multipart/form-data" name="form1" action="{:U('System/handle')}">
         <input type="hidden" name="inc_type" value="{$inc_type}">
         <div class="ncap-form-default">
-            <dl class="row">
+            <!-- <dl class="row">
                 <dt class="tit">
                     <label for="sms_platform">选择短信平台</label>
                 </dt>
                 <dd class="opt">
                     <select name="sms_platform" id="sms_platform">
-                        <!-- option value="0" <if condition="$config[sms_platform] eq 0">selected="selected"</if>>阿里大于</option -->
+                        <!-- option value="0" <if condition="$config[sms_platform] eq 0">selected="selected"</if>>阿里大于</option 
                         <option value="1" <if condition="$config[sms_platform] eq 1">selected="selected"</if>>阿里云</option>
                         <option value="2" <if condition="$config[sms_platform] eq 2">selected="selected"</if>>天瑞云</option>
                     </select>
                     <p class="notic">短信平台选择</p>
                 </dd>
-            </dl>
+            </dl> -->
             <dl class="row">
                 <dt class="tit">
                     <label for="sms_appkey">短信平台[appkey]</label>
                 </dt>
                 <dd class="opt">
                     <input id="sms_appkey" name="sms_appkey" value="{$config.sms_appkey}" class="input-txt" type="text"/>
-                    <a style="color:red ;font-weight:bold ; margin-left:20px" href="http://help.tp-shop.cn/Index/Help/info/cat_id/5/id/513.html" target="_blank">查看短信接入手册</a>
+                    <!-- <a style="color:red ;font-weight:bold ; margin-left:20px" href="http://help.tp-shop.cn/Index/Help/info/cat_id/5/id/513.html" target="_blank">查看短信接入手册</a> -->
                     <p class="notic">短信平台配置appkey/keyid</p>
                     
                 </dd>

@@ -1,0 +1,67 @@
+<!-- 
+     /**
+     * 拼团 列表
+     */
+ -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximun-scale=1.0,user-scalable=0" />
+		<title>拼团列表</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+        <!--public-->
+        <link rel="stylesheet" href="__STATIC__/css/public_lb/public.css" />
+        <!--公共头部-->
+        <link rel="stylesheet" href="__STATIC__/css/listdata/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/listdata/listdata.css" />
+	</head>
+	<body>
+		<!--最大边框-->
+		<div class="lb_assembleWrap">
+			<!--头部 wrap
+				returnFun()=>data-num="1" 或  不写; => 返回上一页。data-num="跳转路径"; => 返回上一页。
+			-->
+			<div class="headWrap_lb">
+				<p class="returnBut_lb" data-num="1" onclick="returnFun()">
+					<img class="returnIcon_lb" src="__STATIC__/images/public_lb/returnImg_lb.png"/>
+				</p>
+				<!--Tab, data-tab="1"=>从零开始-->
+				<div class="headTab_lb" data-tab="1">
+					<!--页面跳转=>pageJump("路径")-->
+					<p class="headTabTerm_lb" onclick="pageJump('/mobile/Auction/index')">竞拍</p>
+					<p class="headTabTerm_lb" onclick="pageJump('/mobile/Groupbuy/listdata')">拼团</p>
+					<p class="headTabTerm_lb" onclick="pageJump('/mobile/Seckill/index_zp')">秒杀</p>
+				</div>
+			</div>
+			<!--商品 列表-->
+			<div class="commodityListL clearfloat">
+				<volist name="list" id="item">
+					<!--商品 项-->
+					<div class="comListTerm">
+						<a href="/mobile/Groupbuy/detail?team_id={$item.team_id}&goods_id={$item.goods_id}">
+							<img class="comListTermImg" alt="{$item.goods_name}" src="{$item.original_img}"/>
+						</a>
+						<!--title-->
+						<p class="comListTermTitle">
+							<a style="color: #000;text-decoration:none;" href="/mobile/Groupbuy/detail?team_id={$item.team_id}&goods_id={$item.goods_id}">{$item.goods_name|mb_substr=0,8,'utf-8'}...</a>
+						</p>
+						<p class="comListTermText">{$item.goods_name}</p>
+						<p class="comListTermPrice">￥{$item.shop_price}</p>
+
+					</div>
+
+				</volist>
+			</div>
+
+		</div>
+		
+		<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
+		<script src="__STATIC__/js/public/public_lb.js"></script>
+		<!--头部 Tab切换样式(跳转)-->
+		<script src="__STATIC__/js/listdata/public.js"></script>
+		
+	</body>
+</html>
+
+ 

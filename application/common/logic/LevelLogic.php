@@ -129,7 +129,7 @@ class LevelLogic extends Model
 	*/
 	public function child_agent($user_id)
 	{
-		$performance = M('agent_performance')->where(['uid'=>$user_id])->find();
+		$performance = M('agent_performance')->where(['user_id'=>$user_id])->find();
 		if(empty($performance)) return false;
 		return $performance['agent_per'];
 	}

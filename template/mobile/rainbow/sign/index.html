@@ -8,8 +8,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<title>签到</title>
 		<script src="__STATIC__/js/public/rem.js"></script>
-		<link rel="stylesheet" href="__STATIC__/css/sign/index.css"/>
-		<link rel="stylesheet" href="__STATIC__/css/public_lb/public.css?v=1552289507" />
+		<!--layer插件-->
+		<link rel="stylesheet" href="__STATIC__/css/layer.css?v=1552289507"/>
+		<link rel="stylesheet" href="__STATIC__/css/sign/index.css?v=1552297609"/>
+		<link rel="stylesheet" href="__STATIC__/css/public_lb/public.css?v=1552297609" />
 		<!--日历 css-->
     	<link rel="stylesheet" href="__STATIC__/css/sign/date.css" media="screen" title="no title" charset="utf-8">
 		
@@ -55,10 +57,11 @@
 			<!--遮罩层-->
 			<div class="model">
 				<div class="dialog-sign-zp">
-					<p class="score">总积分<span>0</span></p>
+					<!--<p class="score">总积分<span>0</span></p>-->
+					<p class="accumulateL">累积签到<span>0</span></p>
 					<p class="time">已经连续签到<span>0</span>天</p>
 					<p class="white">今日签到成功</p>
-					<p class="add-score">+<span>0</span>积分</p>
+					<!--<p class="add-score">+<span>0</span>积分</p>-->
 					<div class="rule_box">
 						<p class="rule_box_title">签到奖励</p>
 						<span><!--签到规则--></span>
@@ -75,7 +78,8 @@
 		<!--以下两个，日历js-->
 		<script src="__STATIC__/js/sign/DateMarker.js"></script>
 		<script src="__STATIC__/js/sign/sign.js"></script>
-		
+		<!--layer插件-->
+		<script src="__STATIC__/js/layer/layer.js"></script>
 		<script>
 			/*微信h5页面禁止下拉露出网页来源*/
 			var overscroll = function(el) {
@@ -116,6 +120,8 @@
 				var signObj = {
 					/*用户是否签到*/
 					stateD: false,
+					/*用户权限-是否能签到(后台)*/
+					admin: null,
 					/*总积分(后台)*/
 					/*totalNUm: 0,*/
 					/*签到奖励的积分（后台）*/
@@ -141,6 +147,8 @@
 							/*后台传过来的值 => '2019/03/06'*/
 							/*月、日*/
 							var monthS, dayS ;
+							/*用户是否有-签到的权限*/
+							signObj['admin'] = data['auth'];
 							/**重新对后台传过来的数据，（2019/03/06）进行编辑=> '2019/3/6' **/
 							for(var k=0;k<signArr.length;k++){
 								monthS = Number(signArr[k].split('/')[1]);
@@ -205,6 +213,11 @@
 				
 				/*签到请求*/
 				$('.signInBut').on('click',function(){
+					/*后台传数据=> auth==1;可以签到 , auth==0;不可以签到*/
+					if(signObj['admin'] == 0){
+						layer.msg('权限不足，无法签到！');
+						return false;
+					}
 					/*判断用户签到状态=>ajax*/
 					if(!signObj['stateD']){
 						$.ajax({

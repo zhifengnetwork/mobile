@@ -36,14 +36,14 @@ return	array(
 						array('name' => '供应商列表', 'act'=>'supplier', 'op'=>'Admin'),
 				)),
 			
-				array('name' => '数据','child'=>array(
-						array('name' => '数据备份', 'act'=>'index', 'op'=>'Tools'),
-						array('name' => '数据还原', 'act'=>'restore', 'op'=>'Tools'),
-                        array('name' => '清空演示数据', 'act'=>'clear_demo_data', 'op'=>'Tools'),						
-						//array('name' => 'ecshop数据导入', 'act'=>'ecshop', 'op'=>'Tools'),
-						//array('name' => '淘宝csv导入', 'act'=>'taobao', 'op'=>'Tools'),
-						//array('name' => 'SQL查询', 'act'=>'log', 'op'=>'Admin'),
-				)),
+				// array('name' => '数据','child'=>array(
+				// 		array('name' => '数据备份', 'act'=>'index', 'op'=>'Tools'),
+				// 		array('name' => '数据还原', 'act'=>'restore', 'op'=>'Tools'),
+        //                 array('name' => '清空演示数据', 'act'=>'clear_demo_data', 'op'=>'Tools'),						
+				// 		//array('name' => 'ecshop数据导入', 'act'=>'ecshop', 'op'=>'Tools'),
+				// 		//array('name' => '淘宝csv导入', 'act'=>'taobao', 'op'=>'Tools'),
+				// 		//array('name' => 'SQL查询', 'act'=>'log', 'op'=>'Admin'),
+				// )),
 
 	)),
 		
@@ -97,10 +97,10 @@ return	array(
 					array('name' => '文章列表', 'act'=>'articleList', 'op'=>'Article'),
 					array('name' => '文章分类', 'act'=>'categoryList', 'op'=>'Article'),
 					//array('name' => '帮助管理', 'act'=>'help_list', 'op'=>'Article'),
-					array('name'=>'友情链接','act'=>'linkList','op'=>'Article'),
-					array('name' => '会员协议', 'act'=>'agreement', 'op'=>'Article'),
+					// array('name'=>'友情链接','act'=>'linkList','op'=>'Article'),
+					// array('name' => '会员协议', 'act'=>'agreement', 'op'=>'Article'),
 					//array('name' => '公告管理', 'act'=>'notice_list', 'op'=>'Article'),
-					array('name' => '专题列表', 'act'=>'topicList', 'op'=>'Topic'),
+					// array('name' => '专题列表', 'act'=>'topicList', 'op'=>'Topic'),
 			)),
 
 			array('name' => '新闻','child'=>array(
@@ -117,26 +117,28 @@ return	array(
 			array('name' => '促销活动','child' => array(
 					array('name' => '抢购管理', 'act'=>'flash_sale', 'op'=>'Promotion'),
 					array('name' => '团购管理', 'act'=>'group_buy_list', 'op'=>'Promotion'),
-					array('name' => '优惠促销', 'act'=>'prom_goods_list', 'op'=>'Promotion'),
-					array('name' => '订单促销', 'act'=>'prom_order_list', 'op'=>'Promotion'),
+					// array('name' => '优惠促销', 'act'=>'prom_goods_list', 'op'=>'Promotion'),
+					// array('name' => '订单促销', 'act'=>'prom_order_list', 'op'=>'Promotion'),
 					// array('name' => '预售管理','act'=>'index', 'op'=>'PreSell'),
 					// array('name' => '拼团管理','act'=>'index', 'op'=>'Team'),
 					// array('name' => '搭配购管理','act'=>'index', 'op'=>'Combination'),
 			)),
-			array('name' => '优惠积分','child' => array(
-					array('name' => '优惠券','act'=>'index', 'op'=>'Coupon'),
-					array('name' => '积分兑换','act'=>'index', 'op'=>'IntegralMall'),
-			)),
+			// array('name' => '优惠积分','child' => array(
+			// 		array('name' => '优惠券','act'=>'index', 'op'=>'Coupon'),
+			// 		array('name' => '积分兑换','act'=>'index', 'op'=>'IntegralMall'),
+			// )),
 	)),
 		
 	'distribution'=>array('name'=>'分销','child'=>array(
-			array('name' => '分销管理','child' => array(
-					// array('name' => '分销商品', 'act'=>'goods_list', 'op'=>'Distribut'),
-					// array('name' => '分销商列表', 'act'=>'distributor_list', 'op'=>'Distribut'),
-					// array('name' => '分销关系', 'act'=>'tree', 'op'=>'Distribut'),
-					// array('name' => '分销商等级', 'act'=>'grade_list', 'op'=>'Distribut'),
-					array('name' => '分销设置', 'act'=>'distribut', 'op'=>'System'),
-					// array('name' => '分成日志', 'act'=>'rebate_log', 'op'=>'Distribut'),
+		
+			array('name' => '模式管理', 'child' => array(
+				// array('name' => '分销商品', 'act' => 'goods_list', 'op' => 'Distribut'),
+				// array('name' => '分销商列表', 'act' => 'distributor_list', 'op' => 'Distribut'),
+				array('name' => '等级关系', 'act' => 'tree', 'op' => 'Distribut'),
+				array('name' => '分销商设置', 'act' => 'grade_list', 'op' => 'Distribut'),
+				array('name' => '代理商设置', 'act' => 'agent_grade_list', 'op' => 'Distribut'),
+				// array('name' => '分销设置', 'act' => 'distribut', 'op' => 'System'),
+				// array('name' => '日志', 'act' => 'rebate_log', 'op' => 'Distribut'),
 			)),
 	     
     	    array('name' => '微信接入','child' => array(

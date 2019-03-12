@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<title>编辑个人资料</title>
+		<link rel="stylesheet" href="__STATIC__/css/lj_personal.css" />
+		<script type="text/javascript" src="__STATIC__/js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/public/rem.js"></script>
+		
+		
+	</head>
+
+	<body>
+		<div class="lj_top">
+			<div class="lj_wrap">
+
+				<div class="lj_top_left">
+					<a href="{:U('mobile/user/personal')}"><img src="__STATIC__/image/lj_top_left.png" /></a>
+				</div>
+				<div class="lj_top_right">
+					<p>编辑个人资料</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="lj_wrap">
+
+			<div class="lj_main_d">
+				<ul>
+					<li>
+						<div class="lj_main_d_div">
+							<p>头像</p>
+							<form id="head_pic" method="post" enctype="multipart/form-data">
+								<label class="file" style="cursor:pointer;">
+										<div class="around" id="fileList">
+											<img class="lj_list_r_img1" src="{$user.head_pic}"/>
+										<input  type="file" accept="image/*" name="head_pic"  onchange="handleFiles(this)" style="display:none">
+									</div>
+								</label>
+							</form>	
+							<img class="lj_list_r_img3" src ="__STATIC__/image/lj_userinfo_r.png" />
+						</div>
+						
+					</li>
+					<li>
+						<p>手机号</p>
+						<div class="lj_list_r">
+							<p>{$user.mobile}</p>
+						</div>
+					</li>
+					<li>
+						<a href="modify.html">
+							<div class="lj_main_d_div">
+								<p>名称</p>
+								<div class="lj_list_r">
+									<p>{$user.nickname}</p>
+									<img class="lj_list_r_img2" src="__STATIC__/image/lj_userinfo_r.png" />
+								</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="{:U('Mobile/User/userinfo',array('action'=>'sex'))}">
+							<div class="lj_main_d_div">
+								<p>性别</p>
+								<div class="lj_list_r">
+									<p>{$sex[$user.sex]}</p>
+									<img class="lj_list_r_img2" src="__STATIC__/image/lj_userinfo_r.png" />
+								</div>
+							</div>
+						</a>						
+					</li>
+					<li>
+						<p>出生日期</p>
+						<div class="lj_list_r">
+                           
+							<p>{$user.birthday}</p>
+							<img class="lj_list_r_img2" src="__STATIC__/image/lj_userinfo_r.png" />
+						</div>
+					</li>
+				</ul>
+				
+			</div>
+		</div>
+		<script>
+			//显示上传照片
+			window.URL = window.URL || window.webkitURL;
+
+			function handleFiles(obj) {
+				
+				console.log('========')
+				
+				fileList = document.getElementById("fileList");
+				var files = obj.files;
+				img = new Image();
+				if(window.URL) {
+					img.src = window.URL.createObjectURL(files[0]); //创建一个object URL，并不是你的本地路径
+					img.width = 60;
+					img.height = 60;
+					img.onload = function(e) {
+						window.URL.revokeObjectURL(this.src); //图片加载后，释放object URL
+					}
+					if(fileList.firstElementChild) {
+						fileList.removeChild(fileList.firstElementChild);
+					}
+					$('#fileList').find('img').remove();
+					fileList.appendChild(img);
+				} else if(window.FileReader) {
+					//opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+					var reader = new FileReader();
+					reader.readAsDataURL(files[0]);
+					reader.onload = function(e) {
+						img.src = this.result;
+						img.width = 60;
+						img.height = 60;
+						$('#fileList').find('img').remove();
+						fileList.appendChild(img);
+					}
+				} else {
+					//ie
+					obj.select();
+					obj.blur();
+					var nfile = document.selection.createRange().text;
+					document.selection.empty();
+					img.src = nfile;
+					img.width = 60;
+					img.height = 60;
+					img.onload = function() {
+
+					}
+					$('#fileList').find('img').remove();
+					fileList.appendChild(img);
+				}
+				$('#asubmit').show();
+				$('#logout').hide();
+				$('#head_pic').submit();
+			}
+		</script>
+	</body>
+
+</html>

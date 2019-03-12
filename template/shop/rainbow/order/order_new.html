@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximun-scale=1.0, user-scalable=0" />
+		<title>我的订单</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/public_lb/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/order_new/order_new.css" />
+		
+		
+	</head>
+	<body>
+		<!--最外边框-->
+		<div class="wrap_order">
+			<!--public head-->
+			<div class="lb_headWrap lb_headWrap_line lb_headWrap_bacColor">
+				<!--头部 wrap
+					returnFun()=>data-num="1" 或  不写; => 返回上一页。data-num="跳转路径"; => 返回上一页。
+				-->
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/images/public_lb/returnImg666_lb.png"/>
+				</p>
+				<span>我的订单</span>
+				<p class="lb_headWrap_share" onclick="">
+					<img class="publicDrooping head_right_icon" src="__STATIC__/images/public_lb/moreIcon5151.png"  alt=""/>
+				</p>
+			</div>
+			<!--内容-->
+			<div class="content_order">
+				<!--搜索 box-->
+				<div class="searchBoxL">
+					<!--icon-->
+					<p class="searchBoxL_img">
+						<img class="searchBoxL_icon" src="__STATIC__/images/public_lb/search7e7e.png"/>
+					</p>
+					<!--input-->
+					<p class="input_box">
+						<input class="searchBoxL_inp" type="text" name="" id="" value="" placeholder="商品名称/商品编号/订单号" />
+					</p>
+					<!--搜索 按钮-->
+					<div class="search_buttonBox">
+						<p class="search_button">搜索</p>
+					</div>
+					<!--清除 按钮-->
+					<div class="eliminate_input">
+						<img class="publicDrooping" src="__STATIC__/images/public_lb/close_ababab.png" />
+					</div>
+				</div>
+				<!--选项卡 wrap，弹性布局、固定定位-->
+				<div class="tabWrapMT">
+					<!--
+						1、选项卡=>'项' box。
+						2、点击时的font的color=> class="clickFontColor";
+					-->
+					<p class="tabBoxMT clickFontColor">全部</p>
+					<p class="tabBoxMT">待付款</p>
+					<p class="tabBoxMT">待发货</p>
+					<p class="tabBoxMT">待收货</p>
+					<p class="tabBoxMT">待评价</p>
+				</div>
+				
+				<!--选项卡对应(指定)的  内容 wrap-->
+				<div class="tabAppointContentWrapMT">
+					<!--全部-->
+					<div class="tabAppointContentBoxMT publicShowBox">
+						<!--项-->
+						<div class="publicTerm_box clearfloat">
+							<!--title-->
+							<div class="publicTerm_boxTitle">
+								<!--time-->
+								<span class="stateTime">2019/02/03 00:28:20</span>
+								<!--delete button-->
+								<p class="publicTerm_box_delBut"></p>
+								<span class="stateText">交易成功</span>
+							</div>
+						</div>
+					</div>
+					<!--待付款-->
+					<div class="tabAppointContentBoxMT">
+					2222
+					</div>	
+					<!--待发货-->
+					<div class="tabAppointContentBoxMT">
+					333
+					</div>	
+					<!--待收货-->
+					<div class="tabAppointContentBoxMT">
+					444
+					</div>	
+					<!--待评价-->
+					<div class="tabAppointContentBoxMT">
+					555
+					</div>	
+				</div>
+			</div>
+			
+		</div>
+		
+		<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
+		<script src="__STATIC__/js/public/public_lb.js"></script>
+		
+		<!--我的订单.js-->
+		<script>
+			/**
+			 * 全局变量
+			 * **/
+			
+			
+			/*加载完html => js*/
+			$(document).ready(function(){
+				
+				/*（选项卡）Tab切换*/
+				$('.tabBoxMT').on('click',function(){
+					/*全部Tab对应的box-隐藏*/
+					$('.tabAppointContentBoxMT').hide();
+					/*显示-对应当前box*/
+					$('.tabAppointContentBoxMT').eq($(this).index()).show();
+					/*选项卡box的 => 字体color，改成默认color:#666;(删除class)*/
+					$('.tabBoxMT').removeClass('clickFontColor');
+					/*选项卡box的 => 字体color，改成被点击时color:#1e82d2;(添加class样式)*/
+					$('.tabBoxMT').eq($(this).index()).addClass('clickFontColor');
+					
+					
+				})
+			})
+		</script>
+	</body>
+</html>

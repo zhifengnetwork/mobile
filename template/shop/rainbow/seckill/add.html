@@ -1,0 +1,183 @@
+<!-- 
+     /**
+     * 秒杀 填写 订单
+     */
+ -->
+ 	 <!DOCTYPE html>
+     <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <title>秒杀 提交 订单</title>
+         <script type="text/javascript" src="__STATIC__/js/jquery-1.8.3.min.js" charset="utf-8"></script>
+		 <script type="text/javascript" src="__STATIC__/js/rem.js" charset="utf-8"></script>
+        <style>
+        	*{margin: 0;padding: 0;font-family: "微软雅黑";}
+        	/* .toji{width: 6.8rem;height: .88rem;}
+        	.du{height: 0.3rem;padding-left: 0.4rem;}
+        	.zhi{margin-top: 1.1rem;width: 100%;}
+        	.ri{padding-left: 2.5rem;margin-top: -0.8rem;}
+        	.fuzi{margin-top: 0.5rem;}
+        	.yase{font-size: 0.2rem;background-color: whitesmoke;color: #7C7C7E;
+        	 height: 0.5rem; margin-top: 0.5rem;padding-top: 0.2rem;padding-left: 0.2rem;}
+        	.ying{font-size: 0.3rem;color: orangered;margin-top: 0.2rem;padding-left: 0.2rem;}
+        	.zfb{font-size: 0.2rem;margin-top: 0.3rem;}
+        	.guo{float: right;margin-top: 0.26rem;margin-right: 0.5rem;}
+        	
+        	input[type=radio] {
+			  margin-right: 5px;
+			  cursor: pointer;
+			  font-size: 10px;
+			  width:10px;
+			  height: 15px;
+			  position: relative;
+			}
+
+		input[type=radio]:after {
+		  position: absolute;
+		  width: 10px;
+		  height:  15px;
+		  top: 0;
+		  content: " ";
+		  color: orangered;
+		  display: inline-block;
+		  visibility: visible;
+		  padding: 0px 3px;
+		  border-radius: 3px;
+		}
+
+		input[type=radio]:checked:after {
+		  content: "✓";
+		  font-size: 10px;
+		  background-color: orangered;
+		}
+
+
+		
+		input[type=radio] {
+		    margin-right: 5px;
+		    cursor: pointer;
+		    font-size: 10px;
+		    width: 10px;
+		    height: 15px;
+		    position: relative;
+		}
+
+		input[type=radio]:after {
+		    position: absolute;
+		    width: 10px;
+		    height: 15px;
+		    top: 0;
+		    content: " ";
+		    color: #fff;
+		    display: inline-block;
+		    visibility: visible;
+		    padding: 0px 3px;
+		    border-radius: 50%;
+		}
+
+		input[type=radio]:checked:before {
+		    content: "✓";
+		    display: block;
+		    position: relative;
+		    top: -2px;
+		    left: 3px;
+		    width: 0;
+		    height: 5px;
+		    background-color:orangered;
+		    font-weight: 400;
+		    z-index: 1
+        	}
+        	.sheng{text-align: center;height: 0.6rem;width: 100%;
+        	background-color: orangered;font-size: 0.3rem;margin-top: 0.8rem;
+					color: white;padding-top: 0.2rem;}
+					.quanju{display: flex;} */
+				   
+					.taobu{display: flex;margin: 0 .4rem;margin-top: 2rem   }
+        .sho{flex: 1;font-size: 0.2rem;}
+        .sho img{width: 4.62rem;height: 4rem}
+        .wenzi{flex: 1;font-size: 0.2rem}
+        .wenzi span{font-size: 0.2rem;}
+        .cheng{padding-left: 3rem;color: #7d9098}
+        .yanse{color: orangered}
+        .taobu1{display: flex;margin: 0 .4rem;margin-top: 2rem   }
+        .sho1{flex: 1;font-size: 0.2rem;}
+        .sho1 img{width: 4.62rem;height: 4rem}
+        .wenzi1{flex: 1;font-size: 0.2rem}
+        .wenzi1 span{font-size: 0.2rem;}
+        .cheng1{padding-left: 3rem;color: #7d9098}
+        .yanse1{color: orangered}
+			
+        </style>
+      </head>
+      <body>
+			
+			
+				<div class="taobu">
+					<div class="sho">
+							< img src="__STATIC__/IMAGE/img/sj.png">
+					</div>
+					<div class="wenzi">
+							<p>【秒杀直降】LESMANG沙发布艺沙发</p >
+							<p>现代简约可拆洗布沙发皮沙发客厅整装家具单人为(单排不发货)</p >
+							<span class="yanse">￥1499.00</span><span class="cheng">X2</span>
+					</div>
+			</div>
+		 <div class="taobu1">
+				 <div class="sho1">
+						 < img src="__STATIC__/IMAGE/img/sj.png">
+				 </div>
+				 <div class="wenzi1">
+						 <p>【秒杀直降】LESMANG沙发布艺沙发</p >
+						 <p>现代简约可拆洗布沙发皮沙发客厅整装家具单人为(单排不发货)</p >
+						 <span class="yanse1">￥1499.00</span><span class="cheng1">X2</span>
+				 </div>
+		 </div>
+
+       	 <!-- <div class="toji">
+       	</div>
+       	<div class="zhi">
+       		<img style="height: 1.4rem;width:2rem;padding-left: 0.3rem;" src="__STATIC__/IMAGE/img/sj.png">
+       	    <p style="font-size: 0.23rem;float: right;padding-right: 0.85rem;">【秒杀直降】&nbsp;LESMANG&nbsp;沙发布艺沙发......</p>
+       	    <p style="font-size: 5px;color: #7C7C7E;float: right;margin-top: -1.8rem;margin-right: 0.1rem;">
+       	    	现代简约可拆洗布沙发皮布沙发客厅整装家具单人<br/>位(单拍不发货)
+       	    </p>
+       	    <div class="ri">
+       	    <p style="font-size: 0.3rem;color: orangered">￥1499.00</p>
+       	    <p style="font-size: 0.3rem;float: right;margin-top: -0.3rem;margin-right: 0.5rem;">X2</p>
+       	    </div>
+       	</div>
+       	<div class="fuzi">
+       		<img style="height: 1.4rem;width:2rem;padding-left: 0.3rem;" src="__STATIC__/IMAGE/img/sj.png">
+       	    <p style="font-size: 0.26rem;float: right;padding-right: 0.85rem;">【秒杀直降】&nbsp;LESMANG&nbsp;沙发布艺沙发......</p>
+       	    <p style="font-size: 5px;color: #7C7C7E;float: right;margin-top: -1.8rem;margin-right: 0.1rem;">
+       	    	现代简约可拆洗布沙发皮布沙发客厅整装家具单人<br/>位(单拍不发货)
+       	    </p>
+       	    <div class="ri">
+       	    <p style="font-size: 0.3rem;color: orangered">￥1499.00</p>
+       	    <p style="font-size: 0.3rem;float: right;margin-top: -0.3rem;margin-right: 0.5rem;">X2</p>
+       	    </div>
+       	    <p class="yase">
+       	    	请在两个小时内完成，否则订单自动取消！
+       	    </p>
+       	    <p class="ying">应付金额：￥5996.00</p>
+       	</div>
+       	  <div class="zfb">
+       	  	<img src="__STATIC__/IMAGES/yy2.png" />
+       	  	云闪付<input style="position: absolute;right: 0.8rem;bottom:5rem;"  type="radio" name="method" value="plus" checked><br>
+       	  </div>
+       	  <div style="font-size: 0.3rem;margin-top: 0.3rem;">&nbsp;
+       	    <img style="width: 0.4rem;" src="__STATIC__/IMAGES/yy.png" />&nbsp;
+			支付宝<input style="position: absolute;right: 0.8rem;bottom: 4.3rem;"   type="radio" name="method" value="minus"><br>
+		</div>
+		<div class="" style="font-size: 0.3rem;margin-top: 0.2rem;">&nbsp;
+			<img style="width: 0.4rem;"  src="__STATIC__/IMAGES/yy1.png" />&nbsp;
+			 微信	<input style="position: absolute;right: 0.8rem;bottom: 3.6rem;"  type="radio" name="method" value="plus"><br>
+		</div>
+		<div class="" style="font-size: 0.3rem;margin-top: 0.2rem;">&nbsp;
+			<img style="width: 0.4rem;" src="__STATIC__/IMAGES/yy3.png" />&nbsp;
+	              余额：￥8000.42<input style="position: absolute;right: 0.8rem;bottom:2.9rem;"type="radio" name="method" value="minus" checked><br>
+	               <p class="sheng">提交订单</p>
+	   </div>  -->
+      	</body>
+</html>

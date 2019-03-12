@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>阅读区</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="__STATIC__/js/public/rem.js"></script>
+	<link rel="stylesheet" href="__STATIC__/css/public_lb/public.css" />
+    <style>
+        html,body,div,p,a,span {
+            margin: 0;
+            padding: 0;
+		}
+		#container {
+            padding-top: .88rem;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box; 
+        }
+		.head {
+            width: 100%;
+            height: .8rem;
+            background: #fff;
+            border-bottom: .01rem solid #bbb;
+        }
+        .head p {
+            float: left;
+            margin:0 auto;
+            width: 80%;
+            color: #101010;
+            font-size: .35rem;
+            font-weight: 600;
+            line-height: .8rem;
+            text-align: center;
+        }
+        .head a {
+            margin: 3% 0 0 3%;
+            float: left;
+            display: inline-block;
+            width: 4%;
+            height: .45rem;
+            background: url(__STATIC__/images/return.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+		.title-wrap .title {
+			margin: 3% 0 0 3%;
+			font-size: .35rem;
+			font-weight: 900;
+		}
+		.title-wrap .date {
+			margin: 2% 0 0 3%;
+			font-size: .24rem;
+		}
+		.title-wrap .what p {
+			margin: 5% 0 0 2%;
+			/*line-height: 24px;*/
+			line-height: .46rem !important;
+			width: 95%;
+			font-size: .26rem !important;
+			text-indent: .25rem;
+		}
+		.title-wrap .code {
+			margin: 10% auto;
+			width: 50%;
+		}
+        img {
+			width: 100%;
+		}
+		.lb_headWrap {
+			background: #ffff;
+			border-bottom: .01rem solid #999; 
+		}
+    </style>
+</head>
+<body>
+    <div id="container">
+        <!-- <div class="head">
+            <a href="javascript:history.back(-1)"></a>
+            <p>阅读区</p>
+		</div> -->
+		<div class="lb_headWrap topBox_backgroundColor">
+			<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+				<img class="lb_headWrap_return_img" src="__STATIC__/images/public_lb/returnImg666_lb.png"/>
+			</p>
+			<span>阅读区</span>
+		</div>
+			<div class="title-wrap">
+				<div class="title">{$atDetail['title']}</div>
+				<div class="date">
+					<span>作者：saaaaa</span>&nbsp;
+					<span>{$atDetail['add_time']|date="Y-m-d H:i:s",###}</span>
+				</div>
+				<div class="what">
+					<p>{$atDetail['content']}</p>
+				</div>
+				
+				
+				<div class="date">
+						<span>阅读：<if condition="$vs['click'] gt 0 ">{$vs['click']}<else/>0</if></span>
+						
+					</div>
+				
+				<div class="code" id="QR_Code">
+					<!-- <img src="__STATIC__/images/z-tihuoma.png"/> -->
+				</div>
+			</div>
+    </div>    
+</body>
+</html>
+<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
+<script src="__STATIC__/js/public/public_lb.js"></script>
+<script src="__STATIC__/js/qrcode.js"></script>
+<script>
+	var qrcode = new QRCode('QR_Code', { 
+		text: '{{$url}}', 
+		width: 220, 
+		height: 220, 
+		colorDark : '#000000', 
+		colorLight : '#ffffff', 
+		correctLevel : QRCode.CorrectLevel.H 
+	});
+</script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+ //如果微信分销配置正常, 商品详情分享内容中的"图标"不显示, 则检查域名否配置了https, 如果配置了https,分享图片地址也要https开头
+ var httpPrefix = "http://{$Think.server.SERVER_NAME}";
+<if condition="ACTION_NAME eq 'goodsInfo'">
+var ShareLink = httpPrefix+"/index.php?m=Mobile&c=Goods&a=goodsInfo&id={$goods[goods_id]}"; //默认分享链接
+	var ShareImgUrl = httpPrefix+"{$goods[goods_id]|goods_thum_images=100,100}"; // 分享图标
+	var ShareTitle = "{$goods.goods_name|default=$tpshop_config['shop_info_store_title']}"; // 分享标题
+	var ShareDesc = "{$goods.goods_remark|default=$tpshop_config['shop_info_store_desc']}"; // 分享描述
+<elseif condition="ACTION_NAME eq 'info'"/>
+	var ShareLink = "{$team['bd_url']}"; //默认分享链接
+	var ShareImgUrl = "{$team['bd_pic']}"; //分享图标
+	var ShareTitle = "{$team[share_title]}"; //分享标题
+	var ShareDesc = "{$team[share_desc]}"; //分享描述
+<elseif condition="ACTION_NAME eq 'found'"/>
+var ShareLink = httpPrefix+"/index.php?m=Mobile&c=Team&a=found&id={$teamFound[found_id]}"; //默认分享链接
+	var ShareImgUrl = "{$team[bd_pic]}"; //分享图标
+	var ShareTitle = "{$team[share_title]}"; //分享标题
+	var ShareDesc = "{$team[share_desc]}"; //分享描述
+<elseif condition="ACTION_NAME eq 'my_store'"/>
+	var ShareLink = httpPrefix+"/index.php?m=Mobile&c=Distribut&a=my_store"; 
+	var ShareImgUrl = httpPrefix+"{$tpshop_config['shop_info_store_logo']}"; 
+	var ShareTitle = "{$share_title}"; 
+	var ShareDesc = httpPrefix+"/index.php?m=Mobile&c=Distribut&a=my_store}"; 
+<else />
+	var ShareLink = httpPrefix+"/index.php?m=Mobile&c=Index&a=index"; //默认分享链接
+	var ShareImgUrl = httpPrefix+"{$tpshop_config['shop_info_wap_home_logo']}"; //分享图标
+	var ShareTitle = "{$tpshop_config['shop_info_store_title']}"; //分享标题
+	var ShareDesc = "{$tpshop_config['shop_info_store_desc']}"; //分享描述
+</if>
+
+var is_distribut = getCookie('is_distribut'); // 是否分销代理
+var user_id = getCookie('user_id'); // 当前用户id
+// 如果已经登录了, 并且是分销商
+if(parseInt(is_distribut) == 1 && parseInt(user_id) > 0)
+{									
+	ShareLink = ShareLink + "&first_leader="+user_id;									
+}
+
+$(function() {
+	if(isWeiXin() && parseInt(user_id)>0){
+		$.ajax({
+			type : "POST",
+			url:"/index.php?m=Mobile&c=Index&a=ajaxGetWxConfig&t="+Math.random(),
+			data:{'askUrl':encodeURIComponent(location.href.split('#')[0])},		
+			dataType:'JSON',
+			success: function(res)
+			{
+				//微信配置
+				wx.config({
+				    debug: false, 
+				    appId: res.appId,
+				    timestamp: res.timestamp, 
+				    nonceStr: res.nonceStr, 
+				    signature: res.signature,
+				    jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage','onMenuShareQQ','onMenuShareQZone','hideOptionMenu'] // 功能列表，我们要使用JS-SDK的什么功能
+				});
+			},
+			error:function(res){
+				console.log("wx.config error:");
+				console.log(res);
+				return false;
+			}
+		}); 
+
+		// config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在 页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready 函数中。
+		wx.ready(function(){
+		    // 获取"分享到朋友圈"按钮点击状态及自定义分享内容接口
+		    wx.onMenuShareTimeline({
+		        title: ShareTitle, // 分享标题
+		        link:ShareLink,
+		        desc: ShareDesc,
+		        imgUrl:ShareImgUrl // 分享图标
+		    });
+
+		    // 获取"分享给朋友"按钮点击状态及自定义分享内容接口
+		    wx.onMenuShareAppMessage({
+		        title: ShareTitle, // 分享标题
+		        desc: ShareDesc, // 分享描述
+		        link:ShareLink,
+		        imgUrl:ShareImgUrl // 分享图标
+		    });
+			// 分享到QQ
+			wx.onMenuShareQQ({
+		        title: ShareTitle, // 分享标题
+		        desc: ShareDesc, // 分享描述
+		        link:ShareLink,
+		        imgUrl:ShareImgUrl // 分享图标
+			});	
+			// 分享到QQ空间
+			wx.onMenuShareQZone({
+		        title: ShareTitle, // 分享标题
+		        desc: ShareDesc, // 分享描述
+		        link:ShareLink,
+		        imgUrl:ShareImgUrl // 分享图标
+			});
+
+		   <if condition="CONTROLLER_NAME eq 'User'"> 
+				wx.hideOptionMenu();  // 用户中心 隐藏微信菜单
+		   </if>	
+		});
+	}
+});
+
+
+
+// 读取 cookie
+function getCookie(c_name)
+{
+	if (document.cookie.length>0)
+	{
+	  c_start = document.cookie.indexOf(c_name + "=")
+	  if (c_start!=-1)
+	  { 
+	    c_start=c_start + c_name.length+1 
+	    c_end=document.cookie.indexOf(";",c_start)
+	    if (c_end==-1) c_end=document.cookie.length
+	    	return unescape(document.cookie.substring(c_start,c_end))
+	  } 
+	}
+	return "";
+}
+
+
+function isWeiXin(){
+    var ua = window.navigator.userAgent.toLowerCase();
+    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+        return true;
+    }else{
+        return false;
+    }
+}
+</script>
+<!--微信关注提醒 start-->
+<if condition="$Think.session.subscribe eq 0">
+<button class="guide" style="display:none;" onclick="follow_wx()">关注公众号</button>
+<style type="text/css">
+.guide{width:0.627rem;height:2.83rem;text-align: center;border-radius: .08rem ;font-size:0.512rem;padding:.08rem 0;border: .01rem solid #adadab;color:#000000;background-color: #fff;position: fixed;right: .06rem;bottom: 2rem;z-index: 99;}
+#cover{display:none;position:absolute;left:0;top:0;z-index:18888;background-color:#000000;opacity:0.7;}
+#guide{display:none;position:absolute;top:.05rem;z-index:19999;}
+#guide img{width: 70%;height: auto;display: block;margin: 0 auto;margin-top: .1rem;}
+div.layui-m-layerchild h3{font-size:0.64rem;height:1.24rem;line-height:1.24rem;}
+.layui-m-layercont img{height:8.96rem;width:8.96rem;}
+</style>
+<script type="text/javascript">
+  //关注微信公众号二维码	 
+function follow_wx()
+{
+	layer.open({
+		type : 1,  
+		title: '关注公众号',
+		content: '<img src="{$wechat_config.qr}">',
+		style: ''
+	});
+}
+  
+$(function(){
+	if(isWeiXin()){
+		var subscribe = getCookie('subscribe'); // 是否已经关注了微信公众号		
+		if(subscribe == 0)
+			$('.guide').show();
+	}else{
+		$('.guide').hide();
+	}
+})
+ 
+</script>
+</if>
+<!--微信关注提醒  end-->

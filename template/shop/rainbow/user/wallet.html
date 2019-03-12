@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>钱包</title>
+    <link rel="stylesheet" href="__STATIC__/css/wallet/wallet.css" />
+    <script src="__STATIC__/js/public/rem.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+    <div class="wtf_head">
+        <div class="wtf_wrap">
+            <span>
+                <a href="javascript:history.go(-1);">
+                    <img src="__STATIC__/images/wallet/wtf_Back.png" />
+                </a>
+            </span>
+            <p>我的钱包</p>
+            <!--<span>
+                <a href="#"><img src="__STATIC__/images/wallet/wtf_menu.png" /></a>
+            </span>-->
+        </div>
+        <div class="wtf_orbg">
+        
+        </div>
+    </div>
+    <div class="wtf_content">
+        <div class="wtf_wrap">
+            <div class="wtf_money">
+                <p>金库总额</p>
+                <p>{$user.user_money}</p>
+                <div class="wtf_jfquan">
+                    <div class="wtf_jf">
+                        积分<span>{$user.pay_points}分</span>
+                    </div>
+                    <div class="wtf_yhq">
+                        优惠券<span>3张</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wtf_list">
+                <p class="p1">
+                    账单明细
+                    <a href="#"><img src="__STATIC__/images/wallet/wtf_Back2.png" /></a>
+                </p>
+                <p class="p1 p2">
+                    我的银行卡
+                    <a href="#"><span>未添加</span><img src="__STATIC__/images/wallet/wtf_Back2.png" /></a>
+                </p>
+                <p class="p1 p3">
+                    我的支付宝
+                    <a href="#"><span>已添加</span><img src="__STATIC__/images/wallet/wtf_Back2.png" /></a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
