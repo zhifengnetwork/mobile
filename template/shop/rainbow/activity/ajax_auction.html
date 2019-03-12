@@ -1,0 +1,20 @@
+<foreach name="auction_goods" item="vo" >
+    <div class="section">
+
+        <div class='time'>{$vo[start_time]|date='m月d号 H:i:s',###}开枪</div>
+        <div class="fu">
+            <img src="{$vo[goods_id]|goods_thum_images=400,400}" class="img"/>
+        </div>
+        <div class="bottom">
+            <div class="priceear">
+                <p class="name">{$vo.activity_name|getSubstr=0,30}</p>
+                <p style="display: inline-block;" class="price">￥{$vo[start_price]}</p><span>起拍</span>
+            </div>
+            <a class="joinauction" href="{:U('Auction/auction_detail',array('id'=>$vo[id],'item_id'=>$vo[spec_goods_price][item_id]))}" >
+                <if condition="($vo['start_time'] - time()) gt 7200">未开场<else />参与竞拍</if>
+            </a>
+
+        </div>
+
+    </div>
+</foreach>

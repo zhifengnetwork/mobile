@@ -124,25 +124,15 @@ class User extends MobileBase
 
     public function fenxiang()
     {
-        
         $user_id = session('user.user_id');
         $url = SITE_URL.'?first_leader='.$user_id;
-      
         $this->assign('url',$url);
-        
-
         $qr_back = M('config')->where(['name'=>'qr_back'])->value('value');
-
-        $this->assign('qr_back',SITE.URL.$qr_back);
-
-
+        $this->assign('qr_back',$qr_back);
         return $this->fetch();
     }
     
-    
-    
-    
-    
+
     public function logout()
     {
         session_unset();

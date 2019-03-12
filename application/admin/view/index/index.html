@@ -10,7 +10,7 @@
 <!-- Apple devices fullscreen -->
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
-<title>{$tpshop_config.shop_info_store_name|default='Tpshop商城'}</title>
+<title>{$tpshop_config.shop_info_store_name|default='智丰网络'}</title>
 <script type="text/javascript">
   var SITEURL = window.location.host +'/index.php/admin';
 </script>
@@ -32,7 +32,6 @@
 	<div class="bgSelector"></div>
 	<div id="foldSidebar"><i class="fa fa-outdent " title="展开/收起侧边导航"></i></div>
 	<div class="admincp-name" onClick="javascript:openItem('welcome|Index');">
-		<!-- <h2 style="cursor:pointer;">TPshop3.0<br>平台系统管理中心</h2> -->
 		<img  style="width: 148px;height: 28px" src="{$tpshop_config.shop_info_admin_home_logo|default='/public/static/images/logo/admin_home_logo_default.png'}" alt="">
 	</div>
 	<div class="nc-module-menu">
@@ -101,7 +100,7 @@
         <div class="operate bgd-opa">
         	<span class="bgdopa-t">我的工作台<i class="opa-arow"></i></span>
             <ul class="bgdopa-list">
-                <li style="display: none !important;" tptype="pending_matters"><a class="toast show-option" href="javascript:void(0);" onClick="$.cookie('commonPendingMatters', 0, {expires : -1});ajax_form('pending_matters', '待处理事项', 'http://www.tpshop.cn/admin/index.php?act=common&op=pending_matters', '480');" title="查看待处理事项">&nbsp;<em>0</em></a></li>
+                <li style="display: none !important;" tptype="pending_matters"><a class="toast show-option" href="javascript:void(0);" onClick="$.cookie('commonPendingMatters', 0, {expires : -1});ajax_form('pending_matters', '待处理事项', 'http://mobile.zhifengwangluo.com.c3w.cc/admin/index.php?act=common&op=pending_matters', '480');" title="查看待处理事项">&nbsp;<em>0</em></a></li>
                 <li><a class="login-out show-option" href="{:U('Admin/logout')}"><img src="__PUBLIC__/static/images/icon-exit.png">退出系统</a></li>
                 <li><a class="sitemap show-option" id="trace_show" href="{:U('System/cleanCache',array('quick'=>1))}" target="workspace"><img src="__PUBLIC__/static/images/cle-cache.png">更新缓存</a></li>
             </ul>

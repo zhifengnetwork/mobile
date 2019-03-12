@@ -1,0 +1,162 @@
+<!-- 
+
+     /**
+     * 优惠券
+     */
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的优惠卷中心</title>
+    <link rel="stylesheet" href="__STATIC__/css/coupon/coupon.css">
+    <script src="__STATIC__/js/coupon/jquery-1.8.3.min.js"></script>
+    <script src="__STATIC__/js/coupon/rem.js"></script>
+    <!-- <script src="__STATIC__/js/coupon/coupon.js" ></script> -->
+</head>
+<body>
+        <div class="copon-box">
+             <!-- header -->
+             <div class="copon-back">
+                 <img src="__STATIC__/image/fanhui.png" alt="" class="go-back">
+                 <div class="copon-centre">
+                    <p class="centre-name">我的优惠券中心</p>
+                </div>
+             </div>
+             <!-- tabar -->
+             <div class="copon-selection">
+                 <ul class="selection-ul clearfix">
+                     <li class="selection-item active">
+                         <a href="javascript:;">未使用</a>
+                         <p></p>
+                     </li>
+                     <li class="selection-item">
+                        <a href="javascript:;">使用记录</a>
+                        <p></p>
+                     </li>
+                     <li class="selection-item">
+                        <a href="javascript:;">已过期</a>
+                        <p></p>
+                     </li>
+                 </ul>
+             </div>
+                <!-- 优惠卷列表 -->
+               <div class="copon-listBox ">  
+                <!-- 未使用 -->
+                <div class="copon-list">
+                    <div class="list-headerColor"></div>
+                    <div class="list-info">
+                        <div class="info-price">
+                            <div class="price">
+                              ¥<span>8</span>
+                            </div>
+                            <div class="satisfy">满120元可用</div>
+                        </div>
+                        <div class="info-class">
+                            <div class="info-discount">
+                                <div class="discount"> • 智丰卷</div>
+                                <div class="discount-name ">全品类</div>
+                            </div>
+                            <div class="info-time">
+                                使用时间: <span>2019-10-20-2019-12-20</span>  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-use">
+                        <div class="immediately-use">
+                            <button class="btn">立即使用</button>
+                           </div>
+                    </div>
+                </div>
+                <!-- 使用记录 -->
+                <div class="copon-list hide">
+                        <div class="list-headerColor employ"></div>
+                        <div class="list-info">
+                            <div class="info-price">
+                                <div class="price price-employ">
+                                  ¥<span>8</span>
+                                </div>
+                                <div class="satisfy">满120元可用</div>
+                            </div>
+                            <div class="info-class">
+                                <div class="info-discount">
+                                    <div class="discount discount-employ"> • 智丰卷</div>
+                                    <div class="discount-name name-past">全品类</div>
+                                </div>
+                                <div class="info-time">
+                                    使用时间: <span>2019-10-20-2019-12-20</span>  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-use">
+                            <div class="immediately-use">
+                                <button class="btn dis-btn" disabled  >已使用</button>
+                               </div>
+                        </div>
+                    </div>
+                <!-- 已过期 -->
+                <div class="copon-list hide">
+                        <div class="list-headerColor past"></div>
+                        <div class="list-info">
+                            <div class="info-price">
+                                <div class="price price-past">
+                                  ¥<span>8</span>
+                                </div>
+                                <div class="satisfy satisfy-past">满120元可用</div>
+                            </div>
+                            <div class="info-class">
+                                <div class="info-discount">
+                                    <div class="discount discount-past"> • 智丰卷</div>
+                                    <div class="discount-name name-past">全品类</div>
+                                </div>
+                                <div class="info-time time-past">
+                                    使用时间: <span>2019-10-20-2019-12-20</span>  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-use">
+                            <div class="immediately-use">
+                                <button class="btn past-btn" disabled  >已过期</button>
+                               </div>
+                        </div>
+                    </div>
+            </div>
+			 <!-- 优惠码卷二维码 -->
+			<div class="cover hide">
+			 <div class="copon-codeBox"></div>
+			    <div class="codeBox"> 
+			        <div class="codeBox-num">卷码:13722222222</div>
+			        <div class="codeBox-img">
+			            <img src="__STATIC__/image/ah.png" alt="卷码" class="codeBox-gg">
+			        </div>
+			    </div>
+			</div>
+        </div>
+        <script type="text/javascript">
+        $(function(){
+            /* tabar 导航操作*/
+            $(".selection-item").click(function(){
+                var index=$(this).index()
+                if($(this).next() || $(this).prev()){
+                    $(this).addClass("active").siblings().removeClass("active")
+                    $(".copon-listBox ").children().eq(index).show().siblings('').hide().last().addClass("hide")
+                }
+            })
+            
+           /* 立即使用 弹出二维码卷*/
+           
+           
+           $(".btn").click(function(){
+            $(".cover").toggleClass("hide")
+           })
+           /* 隐藏 二维码卷*/ 
+           $(".copon-codeBox").click(function(){
+            $(".cover").toggleClass("hide")
+         })
+        })
+        
+        </script>
+</body>
+</html>

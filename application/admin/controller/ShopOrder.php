@@ -18,7 +18,7 @@ class ShopOrder extends Base {
      */
     public function index(){
         header("Content-type: text/html; charset=utf-8");
-exit("请联系TPshop官网客服购买高级版支持此功能");
+exit("请联系智丰网络客服购买高级版支持此功能");
     }
 
     /**
