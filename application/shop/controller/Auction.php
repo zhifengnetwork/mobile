@@ -34,7 +34,8 @@ class Auction extends MobileBase
      */
     public function index()
     {
-       
+       //查询页面所需字段
+//        $auctionGoodsList=Db::field('goods.original_img')->table(['tp_goods'=>'goods','tp_auction'=>'auction'])->where()->select();
         return $this->fetch();
     }
 
