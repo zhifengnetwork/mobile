@@ -33,7 +33,7 @@
         <input type="hidden" name="inc_type" value="sign">
         <div class="ncap-form-default">
 
-            <!--
+
             <dl class="row">
                 <dt class="tit">
                     <label>签到送积分开关</label>
@@ -52,7 +52,7 @@
                     <label for="sign_integral">签到送积分</label>
                 </dt>
                 <dd class="opt">
-                    <input onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" id="reg_integral" name="sign_integral" value="{$config.sign_integral}" class="input-txt" type="text">
+                    <input onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" id="sign_integral" name="sign_integral" value="{$config.sign_integral}" class="input-txt" type="text">
                     <span class="err">只能输入整数</span>
                     <p class="notic">会员每次签到赠送的积分</p>
                 </dd>
@@ -81,10 +81,33 @@
                     <p class="notic">会员连续签到积分奖励，满足连续签将按此积分设置每天增加此积分，直到断签为止</p>
                 </dd>
             </dl>
-        -->
             <dl class="row">
                 <dt class="tit">
-                    <label for="sign_award">签到奖励规则</label>
+                    <label for="sign_distribut_days">分销员连续签到天数</label>
+                </dt>
+                <dd class="opt">
+                    <input onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" id="sign_distribut_days" name="sign_distribut_days" value="{$config.sign_distribut_days|default=3}" class="input-txt" type="text">
+                    <span class="err">只能输入整数</span>
+
+                    <p class="notic">分销员连续签到达到设置天数可领取指定商品，需付邮费</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="sign_agent_days">代理连续签到天数</label>
+                </dt>
+                <dd class="opt">
+                    <input onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" id="sign_agent_days" name="sign_agent_days" value="{$config.sign_agent_days|default=10}" class="input-txt" type="text">
+                    <span class="err">只能输入整数</span>
+
+                    <p class="notic">代理连续签到达到设置天数可免费领取指定商品</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="sign_rule">签到奖励规则</label>
                 </dt>
                 <dd class="opt">
                     <input id="sign_rule" name="sign_rule" value="{$config.sign_rule}" class="input-txt" type="text">
