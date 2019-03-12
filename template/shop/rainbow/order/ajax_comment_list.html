@@ -11,9 +11,9 @@
         </div>
         <div class="dyeai">
             <if condition="$v1[is_comment] eq 0">
-                <a class="compj" href="{:U('Mobile/Order/add_comment',array('rec_id'=>$v1[rec_id]))}"><i class="said"></i>评价订单</a>
+                <a class="compj" href="{:U('Shop/Order/add_comment',array('rec_id'=>$v1[rec_id]))}"><i class="said"></i>评价订单</a>
             <else/>
-                <a class="compj nomar" href="{:U('Mobile/Order/comment_info',array('comment_id'=>$v1[comment_id]))}"><i class="said c23"></i>查看评价</a>
+                <a class="compj nomar" href="{:U('Shop/Order/comment_info',array('comment_id'=>$v1[comment_id]))}"><i class="said c23"></i>查看评价</a>
             </if>
         </div>
     </div>

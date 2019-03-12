@@ -91,7 +91,7 @@
         ++page;
         $.ajax({
             type : "GET",
-            url: "/index.php?m=Mobile&c=Activity&a=ajax_flash_sale&p=" + page + "&start_time=" + start_time + "&end_time=" + end_time,
+            url: "/index.php?m=Shop&c=Activity&a=ajax_flash_sale&p=" + page + "&start_time=" + start_time + "&end_time=" + end_time,
             success: function(data){
 		        if ($.trim(data)) {
                     ajax_return_srtatus = 1;

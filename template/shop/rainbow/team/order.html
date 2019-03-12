@@ -20,7 +20,7 @@
 </style>
 <div id="wrapBody">
     <div id="pagePay">
-        <form method="post" action="{:U('Mobile/Payment/getCode')}" name="form" id="form">
+        <form method="post" action="{:U('Shop/Payment/getCode')}" name="form" id="form">
             <input type="hidden" name="order_id" value="{$order.order_id}"/>
             <input type="hidden" name="coupon_id" autocomplete="off" value="">
             <input type="hidden" name="address_id" autocomplete="off" value="{$address.address_id}"/>
@@ -166,7 +166,7 @@
                                         <!--解决google浏览器识别text+password,自动填充已保存的账户密码-->
                                         <input type="password" id="pay_pwd" placeholder="请输入支付密码"/>
                                         <if condition="empty($user['paypwd'])">
-                                            <a class="go-set-password" href="{:U('Mobile/User/paypwd')}">去设置支付密码?</a>
+                                            <a class="go-set-password" href="{:U('Shop/User/paypwd')}">去设置支付密码?</a>
                                         </if>
                                     </div>
                                 </label>
@@ -514,7 +514,7 @@
     $(function () {
         //主页面返回上一步
         $(document).on('click', '#back', function () {
-            window.location.href = "/index.php?m=Mobile&c=Team&a=Info&goods_id="+goods_id+"&team_id="+team_id;
+            window.location.href = "/index.php?m=Shop&c=Team&a=Info&goods_id="+goods_id+"&team_id="+team_id;
         });
         //地址弹窗返回上一步
         $(document).on('click', '#address_list_back,#invoice_list_back,#address_add_back,#shop_list_back,#shop_consignee_back,#map_back', function () {
@@ -574,7 +574,7 @@
         $(document).on('click', '#address_form_confirm', function () {
             $.ajax({
                 type: "POST",
-                url: '/index.php?m=Mobile&c=User&a=addressSave',
+                url: '/index.php?m=Shop&c=User&a=addressSave',
                 data: $("#address_form").serialize(),
                 dataType: "json",
                 success: function (data) {
@@ -611,7 +611,7 @@
         var address_id = form.find("input[name='address_id']");
         $.ajax({
             type: "get",
-            url: '/index.php?m=Mobile&c=User&a=ajaxAddressList',
+            url: '/index.php?m=Shop&c=User&a=ajaxAddressList',
             dataType: "json",
             success: function (data) {
                 var address_list_html = '';
@@ -706,7 +706,7 @@
         var order_id = form.find("input[name=order_id]").val();
         $.ajax({
             type : "POST",
-            url:"{:U('Mobile/Team/getOrderInfo')}",
+            url:"{:U('Shop/Team/getOrderInfo')}",
             dataType:'json',
             data: form.serialize()+ "&act=submit_order",
             success: function(data){
@@ -714,7 +714,7 @@
                     if(data.result.order_amount == 0){
                         //应
                         layer.open({content:data.msg, time:2,end:function(){
-                            location.href ='/index.php?m=mobile&c=Order&a=team_detail&order_id='+order_id;
+                            location.href ='/index.php?m=Shop&c=Order&a=team_detail&order_id='+order_id;
                         }});
                     }else{
                         form.submit();
@@ -872,7 +872,7 @@
         var order_id = $("input[name='order_id']").val();
         $.ajax({
             type: "POST",
-            url: "{:U('Mobile/Team/getOrderInfo')}",//+tab,
+            url: "{:U('Shop/Team/getOrderInfo')}",//+tab,
             dataType: 'json',
             data: $('#form').serialize(),
             success: function (data) {
@@ -885,10 +885,10 @@
                                 door_to_door_hide_or_show();
                             }
                             if(data.code == 808){
-                                window.location.href = "/index.php?m=Mobile&c=Order&a=order_list";
+                                window.location.href = "/index.php?m=Shop&c=Order&a=order_list";
                             }
                             if(data.code == 810){
-                                window.location.href = "/index.php?m=Mobile&c=Order&a=order_detail&id=" + order_id;
+                                window.location.href = "/index.php?m=Shop&c=Order&a=order_detail&id=" + order_id;
                             }
                         }
                     }});

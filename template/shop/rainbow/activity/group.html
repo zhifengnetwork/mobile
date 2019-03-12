@@ -183,7 +183,7 @@
         </div>
     </div>
 <!--添加购物车JS-->
-    <script src="__PUBLIC__/js/mobile_common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/Shop_common.js" type="text/javascript" charset="utf-8"></script>
 </div>
 <!--商品-e-->
 
@@ -247,7 +247,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{:U('Mobile/Cart/index')}" >
+                    <a href="{:U('Shop/Cart/index')}" >
                         <span id="tp_cart_info"></span>
                         <i class="gwc"></i>
                         <p>购物车</p>
@@ -469,7 +469,7 @@ $(document).ready(function(){
         function ajaxComment(commentType,page){
             $.ajax({
                 type : "GET",
-                url:"/index.php?m=Mobile&c=goods&a=ajaxComment&goods_id={$goods['goods_id']}&commentType="+commentType+"&p="+page,//+tab,
+                url:"/index.php?m=Shop&c=goods&a=ajaxComment&goods_id={$goods['goods_id']}&commentType="+commentType+"&p="+page,//+tab,
                 success: function(data){
                     $(".my_comment_list").empty().append(data);
                 }

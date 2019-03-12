@@ -43,18 +43,18 @@
 		<nav class="storenav grst p">
 			<ul>
 				<li <if condition="$Request.param.type eq ''">class='red'</if>>
-                    <a href="{:U('Mobile/Activity/group_list')}">
+                    <a href="{:U('Shop/Activity/group_list')}">
                         <span >默认</span>
                     </a>
 				</li>
 				<li <if condition="$Request.param.type eq 'new'">class='red'</if>>
-                    <a href="{:U('Mobile/Activity/group_list',array('type'=>'new'))}">
+                    <a href="{:U('Shop/Activity/group_list',array('type'=>'new'))}">
 					    <span >最新</span>
 					<!--<i></i>-->
 					</a>
 				</li>
 				<li <if condition="$Request.param.type eq 'comment'">class='red'</if>>
-                    <a href="{:U('Mobile/Activity/group_list',array('type'=>'comment'))}">
+                    <a href="{:U('Shop/Activity/group_list',array('type'=>'comment'))}">
                         <span >评论数</span>
 					    <!--<i></i>-->
 					</a>
@@ -154,7 +154,7 @@
 				<ul>
                     <foreach name="list" item="v" key="k" >
 					<li>
-						<a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id],'item_id'=>$v[item_id]))}">
+						<a href="{:U('Shop/Goods/goodsInfo',array('id'=>$v[goods_id],'item_id'=>$v[item_id]))}">
 							<div class="similer-product">
 								<div class="zjj close">
 									<img src="{$v.goods_id|goods_thum_images=200,200}">
@@ -199,7 +199,7 @@
         ++page;
         $.ajax({
             type:'GET',
-            url:"/index.php?m=Mobile&c=Activity&is_ajax=1&a=group_list&p="+page,
+            url:"/index.php?m=Shop&c=Activity&is_ajax=1&a=group_list&p="+page,
             success:function(data){
                 if(data){
                     $(".likeshop>ul").append(data);

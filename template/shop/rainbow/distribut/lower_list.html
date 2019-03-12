@@ -11,7 +11,7 @@
      <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
 </head>
 <body class="bag_gray2">
-<include file="public/header_nav" title="我的团队"  href="{:U('Mobile/Distribut/index')}" />
+<include file="public/header_nav" title="我的团队"  href="{:U('Shop/Distribut/index')}" />
     <div class="retails_li3 p">
         <ul>
             <li <if condition="$level eq 1">class="current"</if>><a href="{:U('Distribut/lower_list',array('level'=>1))}">一级<if condition="$level eq 1">({$count})</if></a></li>
@@ -59,7 +59,7 @@
         page += 1;
         $.ajax({
             type : "GET",
-            url:"/index.php?m=Mobile&c=Distribut&a=lower_list&is_ajax=1&p="+page+"&level="+level,//+tab,
+            url:"/index.php?m=Shop&c=Distribut&a=lower_list&is_ajax=1&p="+page+"&level="+level,//+tab,
 //            data : $('#filter_form').serialize(),// 你的formid 搜索表单 序列化提交
             success: function(data)
             {

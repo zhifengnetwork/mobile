@@ -1,5 +1,5 @@
 <include file="public/header" title="我的订单" body="g4"/>
-<include file="public/header_nav" title="我的订单" href="{:U('/Mobile/User/index')}"/>
+<include file="public/header_nav" title="我的订单" href="{:U('/Shop/User/index')}"/>
 <div class="top_search_wrap">
     <div class="top_search">
         <img src="__STATIC__/images/t_12.png">
@@ -10,17 +10,17 @@
     <div class="maleri30">
         <ul class="">
             <li <if condition="$Request.param.type eq ''">class="red"</if>>
-                <a href="{:U('/Mobile/Order/order_list')}" class="tab_head">全部</a>
+                <a href="{:U('/Shop/Order/order_list')}" class="tab_head">全部</a>
             </li>
             <li id="WAITPAY" <if condition="$Request.param.type eq 'WAITPAY'">class="red"</if>">
-                <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITPAY'))}" class="tab_head" >待付款</a>
+                <a href="{:U('/Shop/Order/order_list',array('type'=>'WAITPAY'))}" class="tab_head" >待付款</a>
             </li>
             <li id="WAITSEND" <if condition="$Request.param.type eq 'WAITSEND'">class="red"</if>>
-                <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITSEND'))}"  class="tab_head">待发货</a>
+                <a href="{:U('/Shop/Order/order_list',array('type'=>'WAITSEND'))}"  class="tab_head">待发货</a>
             </li>
-            <li id="WAITRECEIVE"><a href="{:U('/Mobile/User/order_list',array('type'=>'WAITRECEIVE'))}"  class="tab_head <if condition="$Request.param.type eq 'WAITRECEIVE'">on</if>">待收货</a></li>
+            <li id="WAITRECEIVE"><a href="{:U('/Shop/User/order_list',array('type'=>'WAITRECEIVE'))}"  class="tab_head <if condition="$Request.param.type eq 'WAITRECEIVE'">on</if>">待收货</a></li>
             <li id="WAITCCOMMENT"  <if condition="$Request.param.type eq 'FINISH'">class="red"</if>>
-                <a href="{:U('/Mobile/Order/order_list',array('type'=>'FINISH'))}" class="tab_head">已完成</a>
+                <a href="{:U('/Shop/Order/order_list',array('type'=>'FINISH'))}" class="tab_head">已完成</a>
             </li>
         </ul>
     </div>
@@ -63,7 +63,7 @@
                     <div class="maleri30">
                         <volist name="order.order_goods" id="goods">
                             <div class="sc_list se_sclist paycloseto">
-                                <a href="{:U('/Mobile/Order/order_detail',array('id'=>$order['order_id']))}">
+                                <a href="{:U('/Shop/Order/order_detail',array('id'=>$order['order_id']))}">
                                 <div class="shopimg fl">
                                     <img src="{$goods[goods_id]|goods_thum_images=200,200}">
                                 </div>
@@ -87,7 +87,7 @@
                                             <a class="applyafts">已申请售后</a>
                                             <else />
                                             <if condition="($order.return_btn eq 1)">
-                                                <a href="{:U('Mobile/Order/return_goods',['rec_id'=>$goods['rec_id']])}">申请售后</a>
+                                                <a href="{:U('Shop/Order/return_goods',['rec_id'=>$goods['rec_id']])}">申请售后</a>
                                             </if>
                                         </notempty>
                                     </div>
@@ -106,7 +106,7 @@
                     <!--if condition="$list['pay_code'] eq 'cod'"><i class="tits-ions qxatten-ions">货到付款</i></if -->
                 </span>
                         <if condition="$order.pay_btn eq 1">
-                            <a class="shop-rebuy paysoon" href="{:U('Mobile/Cart/cart4',array('order_id'=>$order['order_id']))}">立即付款</a>
+                            <a class="shop-rebuy paysoon" href="{:U('Shop/Cart/cart4',array('order_id'=>$order['order_id']))}">立即付款</a>
                         </if>
                         <if condition="$order.cancel_btn eq 1">
                             <if condition="$order.pay_status eq 0">
@@ -120,10 +120,10 @@
                             <a class="shop-rebuy paysoon" onclick="orderConfirm({$order.order_id})">确认收货</a>
                         </if>
                         <if condition="$order.comment_btn eq 1">
-                            <a class="shop-rebuy" href="{:U('/Mobile/Order/comment')}">评价</a>
+                            <a class="shop-rebuy" href="{:U('/Shop/Order/comment')}">评价</a>
                         </if>
                         <if condition="$order.shipping_btn eq 1 && $order.shipping_name neq '' ">
-                            <a class="shop-rebuy" href="{:U('Mobile/Order/express',array('order_id'=>$order['order_id']))}">查看物流</a>
+                            <a class="shop-rebuy" href="{:U('Shop/Order/express',array('order_id'=>$order['order_id']))}">查看物流</a>
                         </if>
                     </div>
                 </div>
@@ -142,14 +142,14 @@
         $.ajax({
             type: 'GET',
             dataType:'JSON',
-            url:"/index.php?m=Mobile&c=Order&a=cancel_order&id="+id,
+            url:"/index.php?m=Shop&c=Order&a=cancel_order&id="+id,
             success:function(data){
                 if(data.code == 1){
                     layer.open({content:data.msg,time:1});
-                    location.href = "/index.php?m=Mobile&c=Order&a=order_list";
+                    location.href = "/index.php?m=Shop&c=Order&a=order_list";
                 }else{
                     layer.open({content:data.msg,time:2});
-                    location.href = "/index.php?m=Mobile&c=Order&a=order_list";
+                    location.href = "/index.php?m=Shop&c=Order&a=order_list";
                     return false;
                 }
             },
@@ -165,7 +165,7 @@
     function orderConfirm(id){
         if(!confirm("确定收到该订单商品吗?"))
             return false;
-        location.href = "/index.php?m=Mobile&c=Order&a=order_confirm&id="+id;
+        location.href = "/index.php?m=Shop&c=Order&a=order_confirm&id="+id;
     }
 
     var  page = 1;
@@ -177,7 +177,7 @@
         page += 1;
         $.ajax({
             type : "GET",
-            url:"/index.php?m=Mobile&c=Order&a=order_list&type={$Request.param.type}&is_ajax=1&p="+page,//+tab,
+            url:"/index.php?m=Shop&c=Order&a=order_list&type={$Request.param.type}&is_ajax=1&p="+page,//+tab,
             success: function(data)
             {
                 if(data == '')

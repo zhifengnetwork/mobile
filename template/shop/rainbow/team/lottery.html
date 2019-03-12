@@ -16,10 +16,10 @@
 		<div class="stakwind p">
 			<div class="maleri30">
 				<div class="fl kaj-i">
-					<a href="{:U('Mobile/Team/info',['team_id'=>$team[team_id],'goods_id'=>$team[goods_id]])}"><img src="{$team.goods_id|goods_thum_images=400,400}"/></a>
+					<a href="{:U('Shop/Team/info',['team_id'=>$team[team_id],'goods_id'=>$team[goods_id]])}"><img src="{$team.goods_id|goods_thum_images=400,400}"/></a>
 				</div>
 				<div class="fr kaj-n">
-					<p class="similar-product-text"><a href="{:U('Mobile/Team/info',['team_id'=>$team[team_id],'goods_id'=>$team[goods_id]])}">{$team.goods_name}</a></p>
+					<p class="similar-product-text"><a href="{:U('Shop/Team/info',['team_id'=>$team[team_id],'goods_id'=>$team[goods_id]])}">{$team.goods_name}</a></p>
 					<!--<div class="kaj-pri">-->
 						<!--<p class="new"><span>￥</span><span>{$team[goods][shop_price]}</span></p>-->
 						<!--<p class="old"><span>￥</span><span>{$team[goods][shop_price]}</span></p>-->
@@ -28,7 +28,7 @@
 						<if condition="$team[is_lottery] eq 1">
 							<a href="javascript:void (0)">已开奖</a>
 							<else/>
-							<a href="{:U('Mobile/Team/info',['team_id'=>$team[team_id],'goods_id'=>$team[goods_id]])}">未开奖</a>
+							<a href="{:U('Shop/Team/info',['team_id'=>$team[team_id],'goods_id'=>$team[goods_id]])}">未开奖</a>
 						</if>
 					</div>
 				</div>

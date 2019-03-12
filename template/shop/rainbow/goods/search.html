@@ -22,7 +22,7 @@
         <div class="lsw-header">
             <div class="lsw-leftImg">
                 <a href="javascript:history.back(-1);">
-                    <img src="/template/mobile/rainbow/static/images/return.png" alt="返回">
+                    <img src="/template/shop/rainbow/static/images/return.png" alt="返回">
                 </a>
             </div>
             <div class="lsw-Inputimg">
@@ -40,15 +40,15 @@
                     综合
                     <i class="multipleimg"></i>
                </li> 
-                <li class="nav-item  <if condition="I('sort') eq 'sales_sum'">red</if>"><a href="<?php echo urldecode(U('Mobile/Goods/search',array_merge($filter_param,array('sort'=>'sales_sum')),''));?>">
+                <li class="nav-item  <if condition="I('sort') eq 'sales_sum'">red</if>"><a href="<?php echo urldecode(U('Shop/Goods/search',array_merge($filter_param,array('sort'=>'sales_sum')),''));?>">
                     销量
                 </a></li> 
-                <li class="nav-item  <if condition="I('sort') eq 'shop_price'">red</if>"><a href="<?php echo urldecode(U('Mobile/Goods/search',array_merge($filter_param,array('sort'=>'shop_price','sort_asc'=>$sort_asc)),''));?>">
+                <li class="nav-item  <if condition="I('sort') eq 'shop_price'">red</if>"><a href="<?php echo urldecode(U('Shop/Goods/search',array_merge($filter_param,array('sort'=>'shop_price','sort_asc'=>$sort_asc)),''));?>">
                     价格
                     <i class=" <if condition="I('sort_asc') eq 'asc'">tariff</if>  <if condition="I('sort_asc') eq 'desc'"> bb </if>"></i>
                     <i class="icon  <if condition="I('sort_asc') eq 'asc'">bb</if>  <if condition="I('sort_asc') eq 'desc'"> icon3 </if>"></i> 
                 </a></li>  
-                <li class="nav-item <if condition="I('sort') eq 'sales_sum'">red</if>"><a href="<?php echo urldecode(U('Mobile/Goods/search',array_merge($filter_param,array('sort'=>'sales_sum')),''));?>">
+                <li class="nav-item <if condition="I('sort') eq 'sales_sum'">red</if>"><a href="<?php echo urldecode(U('Shop/Goods/search',array_merge($filter_param,array('sort'=>'sales_sum')),''));?>">
                     新品
                 </a></li> 
                 <li class="nav-item"><a href="#" class="sx">
@@ -72,7 +72,7 @@
                  </div>
                  <div class="itemMsg">
                      <div class="deletes">
-                         <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$vo[goods_id]))}" class="item">
+                         <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$vo[goods_id]))}" class="item">
                             <span class="similar-product-text fl">{$vo.goods_name|getSubstr=0,20}</span>
                         </a>
                            </div>
@@ -80,7 +80,7 @@
                            <p class="sc_pri fl"><span>￥</span><b>{$vo[shop_price]}元</b></p>
                           </div>
                                 <a href="" class="moda">
-                                    <span>MODA专营店<img src="/template/mobile/rainbow/static/images/Back@2x.png"></span>
+                                    <span>MODA专营店<img src="/template/shop/rainbow/static/images/Back@2x.png"></span>
                                 </a>
                           <p class="weight">
                             <span class="proli-eva">{$vo['comment_statistics']['high_rate']}%好评</span>
@@ -104,7 +104,7 @@
                     </div>
                     <div class="max-itemMsg">
                         <div class="max-deletes">
-                            <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$vo[goods_id]))}" class="max-item">
+                            <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$vo[goods_id]))}" class="max-item">
                                <span class="max-similar-product-text fl">女式花瓣肩连衣裙2019春季新款纱网拼接高腰连衣裙</span>
                            </a>
                               </div>
@@ -112,7 +112,7 @@
                               <p class="max-sc_pri fl"><span>￥</span><b>399.00元</b></p>
                              </div>
                                    <a href="" class="max-moda">
-                                       <span>MODA专营店<img src="/template/mobile/rainbow/static/images/Back@2x.png"></span>
+                                       <span>MODA专营店<img src="/template/shop/rainbow/static/images/Back@2x.png"></span>
                                    </a>
                              <p class="max-weight">
                                <span class="max-proli-eva">90%好评</span>
@@ -131,13 +131,13 @@
         <div class="maleri30">
             <ul>
                   <li >
-                        <a href="<?php echo urldecode(U('Mobile/Goods/search',array_merge($filter_param,array('sort'=>'')),''));?>" class="<if condition="(I('sort') eq '')">on red</if>" >综合</a>
+                        <a href="<?php echo urldecode(U('Shop/Goods/search',array_merge($filter_param,array('sort'=>'')),''));?>" class="<if condition="(I('sort') eq '')">on red</if>" >综合</a>
                   </li>
                   <li >
-                        <a href="<?php echo urldecode(U('Mobile/Goods/search',array_merge($filter_param,array('sort'=>'is_new')),''));?>" class="<if condition="(I('sort') eq 'is_new')">on red</if>">新品</a>
+                        <a href="<?php echo urldecode(U('Shop/Goods/search',array_merge($filter_param,array('sort'=>'is_new')),''));?>" class="<if condition="(I('sort') eq 'is_new')">on red</if>">新品</a>
                    </li>
                   <li >
-                        <a href="<?php echo urldecode(U('Mobile/Goods/search',array_merge($filter_param,array('sort'=>'comment_count')),''));?>" class="<if condition="I('sort') eq 'comment_count'">on red</if>">评价</a>
+                        <a href="<?php echo urldecode(U('Shop/Goods/search',array_merge($filter_param,array('sort'=>'comment_count')),''));?>" class="<if condition="I('sort') eq 'comment_count'">on red</if>">评价</a>
                   </li>
             </ul>
         </div>
@@ -250,7 +250,7 @@
                     $(".SsearchIput").attr("placeholder","请输入关键字！")
                     return false;
                 }else{
-                    window.location.href='/mobile/Goods/search.html?q='+val;
+                    window.location.href='/shop/Goods/search.html?q='+val;
                 }
                
             }
@@ -258,7 +258,7 @@
         $(function(){
             $(".searchimg").click(function(){
                 var val = $(".SsearchIput").val()
-                window.location.href='/mobile/Goods/search.html?q='+val;
+                window.location.href='/shop/Goods/search.html?q='+val;
             })
             // 综合下拉框 
             $(".multiple").click(function(){
@@ -330,7 +330,7 @@
                 if(sel){
                     url += '&sel='+sel;
                 }
-                location.href= "/index.php?m=Mobile&c=Goods&a=search"+url;
+                location.href= "/index.php?m=Shop&c=Goods&a=search"+url;
             }
         })
 <<<<<<< HEAD
@@ -381,7 +381,7 @@
         page += 1;
         $.ajax({
             type : "GET",
-            url:"{:U('Mobile/Goods/search')}",//+tab,
+            url:"{:U('Shop/Goods/search')}",//+tab,
             data:{brand_id:'{$Request.param.brand_id}',id:'{$Request.param.id}',sort:'{$Request.param.sort}',sort_asc:'{$Request.param.sort_asc}',sel:'{$Request.param.sel}',q:$('#q').val(),is_ajax:1,p:page},
             success: function(data)
             {
@@ -446,7 +446,7 @@
                 url += "&" + k + '=' + get_parment[k];
             }
         }
-        location.href ="/index.php?m=Mobile&c=Goods&a=search"+url;
+        location.href ="/index.php?m=Shop&c=Goods&a=search"+url;
     }
             
         })

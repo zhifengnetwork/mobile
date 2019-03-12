@@ -55,9 +55,9 @@
                 </p>
                 <p class="butna">
                     <!--<a href="">再次购买</a>-->
-                    <a href="{:U('Mobile/Order/order_detail',array('id'=>$order.order_id,'waitreceive'=>1))}">查看详情</a>
+                    <a href="{:U('Shop/Order/order_detail',array('id'=>$order.order_id,'waitreceive'=>1))}">查看详情</a>
                     <a class="tuid" href="javascript:void(0);" onclick="expedite('{$order.order_id}')">我要催单</a>
-                    <!--<a href="{:U('Mobile/User/express',array('order_id'=>$order.order_id))}">查看物流</a>-->
+                    <!--<a href="{:U('Shop/User/express',array('order_id'=>$order.order_id))}">查看物流</a>-->
                     <a class="red receipt" href="javascript:void(0);" onclick="confirmReceive('{$order.order_id}')">确认收货</a>
                 </p>
             </div>
@@ -69,7 +69,7 @@
         <p>您的订单已经交由<span class="red">{$order.shipping_name}</span>进行配送，运单号为<span class="red">{$order.delivery_doc[invoice_no]}</span></p>
         <div class="weiyi p">
             <a href="javascript:void(0);">取消</a>
-            <a class="eno" href="{:U('Mobile/Order/express',array('order_id'=>$order.order_id))}">查看物流</a>
+            <a class="eno" href="{:U('Shop/Order/express',array('order_id'=>$order.order_id))}">查看物流</a>
         </div>
     </div>
     <!--我要催单弹窗-e-->
@@ -79,7 +79,7 @@
         <p>是否收到该订单商品？</p>
         <div class="weiyi p">
             <a href="javascript:void(0);">未收货</a>
-            <a class="eno" href="{:U('Mobile/Order/order_confirm',array('id'=>$order.order_id))}">已收货</a>
+            <a class="eno" href="{:U('Shop/Order/order_confirm',array('id'=>$order.order_id))}">已收货</a>
         </div>
     </div>
 </foreach>

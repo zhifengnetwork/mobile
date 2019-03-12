@@ -14,7 +14,7 @@
             <li class="red"><a href="javascript:void(0);">首页</a></li>
             <volist name="goods_category" id="category" >
                 <li>
-                    <a href="{:U('Mobile/Team/category',['id'=>$category[id]])}" class="tab_head">{$category[mobile_name]}</a>
+                    <a href="{:U('Shop/Team/category',['id'=>$category[id]])}" class="tab_head">{$category[mobile_name]}</a>
                 </li>
             </volist>
         </ul>
@@ -37,19 +37,19 @@
 <div class="actionnav p">
     <ul>
         <li>
-            <a href="{:U('Mobile/Goods/ajaxSearch')}">
+            <a href="{:U('Shop/Goods/ajaxSearch')}">
                 <i class="action-aa"></i>
                 <p>搜索</p>
             </a>
         </li>
         <li>
-            <a href="{:U('Mobile/Activity/flash_sale_list')}">
+            <a href="{:U('Shop/Activity/flash_sale_list')}">
                 <i class="action-ab"></i>
                 <p>秒杀</p>
             </a>
         </li>
         <li>
-            <a href="{:U('Mobile/Activity/group_list')}">
+            <a href="{:U('Shop/Activity/group_list')}">
                 <i class="action-ac"></i>
                 <p>团购</p>
             </a>
@@ -143,7 +143,7 @@
         ++page;
         $.ajax({
             type: 'POST',
-            url: "{:U('Mobile/Team/AjaxTeamList')}",
+            url: "{:U('Shop/Team/AjaxTeamList')}",
             dataType: 'json',
             data: {p: page},
             success: function (data) {
@@ -153,7 +153,7 @@
                     var url;
                     if (data.result.length > 0) {
                         for (var i = 0; i < data.result.length; i++) {
-                            url = "/index.php?m=Mobile&c=Team&a=info&team_id=" + data.result[i].team_id + "&item_id="+data.result[i].item_id;
+                            url = "/index.php?m=Shop&c=Team&a=info&team_id=" + data.result[i].team_id + "&item_id="+data.result[i].item_id;
                             html += '<div class="ggroup-bx"> <div class="maleri30"> <a class="cpt" href="'+url+'"><img src="' + data.result[i].share_img + '"/> ' +
                                     '<p class="similar-product-text">' + data.result[i].goods_name + '</p></a> <div class="fgtemple p"> <div class="zeqzuo">' +
                                     ' <span class="fg_peop"><i class="action-af"></i><em>' + data.result[i].needer + '</em>人团</span><span class="g_price">' +

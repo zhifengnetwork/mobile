@@ -18,7 +18,7 @@
 <body>
     <!-- <div class="p search_pl">
         <div class="lsw_search">
-            <a href="javascript:history.back(-1);" ><img src="/template/mobile/rainbow/static/images/return.png" alt="返回"></a>
+            <a href="javascript:history.back(-1);" ><img src="/template/shop/rainbow/static/images/return.png" alt="返回"></a>
         </div>
          <div class="search2">
             <form method="get" action="{:U('Goods/search')}" id="sourch_form">
@@ -34,7 +34,7 @@
          <div class="lsw_headerBox">
               <div class="lsw_leftImg">
                   <a href="javascript:history.back(-1);">
-                        <img src="/template/mobile/rainbow/static/images/return.png" alt="返回">
+                        <img src="/template/shop/rainbow/static/images/return.png" alt="返回">
                   </a>
               </div>
               <div class="lsw_Inputimg">
@@ -94,7 +94,7 @@
                     $(".SsearchIput").attr("placeholder","请输入关键字！")
                     return false;
                 }else{
-                    window.location.href='/mobile/Goods/search.html?q='+val;
+                    window.location.href='/shop/Goods/search.html?q='+val;
                 }
                
             }
@@ -103,7 +103,7 @@
         $(function(){
             $(".searchimg").click(function(){
                 var val = $(".SsearchIput").val()
-                window.location.href='/mobile/Goods/search.html?q='+val;
+                window.location.href='/shop/Goods/search.html?q='+val;
             }) 
         })
     </script>

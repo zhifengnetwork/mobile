@@ -19,14 +19,14 @@
                     <div class="img_or fl"><img src="{$goods[goods_id]|goods_thum_images=100,100}"></div>
                     <div class="fon_or fl">
                         <h2 class="similar-product-text">
-                            <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$goods[goods_id]))}">{$goods[goods_name]}</a>
+                            <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$goods[goods_id]))}">{$goods[goods_name]}</a>
                             <p>{$goods[spec_key_name]}</p>
                         </h2>
                         <if condition="$goods['is_send'] elt 2">
-                            <a class="compj" href="{:U('Mobile/Order/add_comment',['rec_id'=>$goods[rec_id]])}">去评价</a>
+                            <a class="compj" href="{:U('Shop/Order/add_comment',['rec_id'=>$goods[rec_id]])}">去评价</a>
                         </if>
                         <if condition="$goods['is_send'] egt 2">
-                            <a class="compj" href="{:U('Mobile/Order/order_detail',array('id'=>I('id')))}">已完成售后</a>
+                            <a class="compj" href="{:U('Shop/Order/order_detail',array('id'=>I('id')))}">已完成售后</a>
                         </if>
                         <if condition="$goods['is_send'] eq 0">
                             <a class="compj">未发货</a>

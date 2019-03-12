@@ -1,18 +1,18 @@
 <include file="public/header" title="我的评价" body="f3"/>
-<include file="public/header_nav" title="我的评价" href="{:U('/Mobile/User/index')}"/>
+<include file="public/header_nav" title="我的评价" href="{:U('/Shop/User/index')}"/>
 <div class="pjiscion p after-set-li">
     <ul>
-        <a href="{:U('Mobile/Order/comment',array('status'=>-1))}">
+        <a href="{:U('Shop/Order/comment',array('status'=>-1))}">
             <li <if condition='$Request.param.status eq -1'>class="red"</if>>
                 <p>全部评价</p><p></p>
             </li>
         </a>
-        <a href="{:U('Mobile/Order/comment',array('status'=>0))}" >
+        <a href="{:U('Shop/Order/comment',array('status'=>0))}" >
             <li <if condition='$Request.param.status eq 0'>class="red"</if>>
                 <p>待评价</p><p></p>
             </li>
         </a>
-        <a href="{:U('Mobile/Order/comment',array('status'=>1))}">
+        <a href="{:U('Shop/Order/comment',array('status'=>1))}">
             <li <if condition='$Request.param.status eq 1'>class="red"</if>>
                 <p>已评价</p><p></p>
             </li>
@@ -29,7 +29,7 @@
         <div class="nonenothing">
             <img src="__STATIC__/images/nothing.png"/>
             <p>没找到相关记录</p>
-            <a href="{:U('Mobile/Index/index')}">去逛逛</a>
+            <a href="{:U('Shop/Index/index')}">去逛逛</a>
         </div>
 <else/>
     <div class="fukcuid mae">
@@ -46,9 +46,9 @@
                     </div>
                     <div class="dyeai">
                         <if condition="$v1[is_comment] eq 0">
-                            <a class="compj" href="{:U('Mobile/Order/add_comment',array('rec_id'=>$v1[rec_id]))}"><i class="said"></i>评价订单</a>
+                            <a class="compj" href="{:U('Shop/Order/add_comment',array('rec_id'=>$v1[rec_id]))}"><i class="said"></i>评价订单</a>
                         <else/>
-                            <a class="compj nomar" href="{:U('Mobile/Order/comment_info',array('comment_id'=>$v1[comment_id]))}"><i class="said c23"></i>查看评价</a>
+                            <a class="compj nomar" href="{:U('Shop/Order/comment_info',array('comment_id'=>$v1[comment_id]))}"><i class="said c23"></i>查看评价</a>
                         </if>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
         ++page;
         $.ajax({
             type : "GET",
-            url:"/index.php?m=Mobile&c=Order&a=comment&is_ajax=1&status={$Request.param.status}&p="+page,
+            url:"/index.php?m=Shop&c=Order&a=comment&is_ajax=1&status={$Request.param.status}&p="+page,
             success: function(data) {
                 if ($.trim(data) == '') {
                     $('#getmore').hide();

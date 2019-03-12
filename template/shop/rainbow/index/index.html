@@ -18,7 +18,7 @@
 	<div class="wrapper">
 		<!-- 头部 -->
 		<header class="header-box">
-			<a href="/mobile/Goods/categoryList.html">
+			<a href="/shop/Goods/categoryList.html">
 				<div class="headerClass">
 					<img src="__STATIC__/images/caidan.png" alt="">
 				</div>
@@ -64,7 +64,7 @@
 		<!-- 八宫格 -->
 		<div class="gongGe">
 			<div class="choiceness gongGeItem">
-				<a href="/mobile/handpick/index.html">
+				<a href="/shop/handpick/index.html">
 					<img src="__STATIC__/images/t_6.png" alt="">
 					<p class="gongGeItemTit">精选</p>
 				</a>
@@ -77,7 +77,7 @@
 				</a>
 			</div>
 			<div class="choiceness gongGeItem">
-				<a href="/mobile/sign/index">
+				<a href="/shop/sign/index">
 					<img src="__STATIC__/images/t_10.png" alt="">
 					<p class="gongGeItemTit">签到</p>
 				</a>
@@ -101,7 +101,7 @@
 				</a>
 			</div>
 			<div class="choiceness gongGeItem">
-				<a href="{:U('Mobile/Material/index')}">
+				<a href="{:U('Shop/Material/index')}">
 					<img src="__STATIC__/images/t_11.png" alt="">
 					<p class="gongGeItemTit">素材区</p>
 				</a>
@@ -143,7 +143,7 @@
 
 				</div>
 				<div class="more">
-					<a href="{:U('Mobile/Activity/flash_sale_list')}">
+					<a href="{:U('Shop/Activity/flash_sale_list')}">
 						<span class="moreGood">更多好货</span>
 						<span class="gomore">
 							<img src="__STATIC__/images/t_15.png" alt=""></span>
@@ -155,7 +155,7 @@
 				<ul>
                 <foreach name="flash_sale_list" item="v">
 					<li class="hot-single-goods">
-						<a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id],'item_id'=>$v[item_id]))}">
+						<a href="{:U('Shop/Goods/goodsInfo',array('id'=>$v[goods_id],'item_id'=>$v[item_id]))}">
 							<img src="{$v[goods_id]|goods_thum_images=200,200}" alt="" class="goods-img">
 							<div class="goods-pic">
 								<p class="goods-redSize">￥<span>{$v[price]}</span>元</p>
@@ -176,12 +176,12 @@
 				<foreach name="favourite_goods" id="v">
 					<div class="recommend-info">
 						<div class="recommend-img">
-							<a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}"><img
+							<a href="{:U('Shop/Goods/goodsInfo',array('id'=>$v[goods_id]))}"><img
 									src="{$v[goods_id]|goods_thum_images=400,400}" alt=""></a>
 						</div>
 						<div class="recommend-text">
 							<div class="recommend-name">
-								<a href="{:U('mobile/goods/goods_info',array('id'=>$v['goods_id']))}">
+								<a href="{:U('Shop/goods/goods_info',array('id'=>$v['goods_id']))}">
 									{$v.goods_name|getSubstr=0,33}
 								</a>
 							</div>
@@ -259,7 +259,7 @@
 				page++;
 				$.ajax({
 					type : "get",
-					url:"/index.php?m=Mobile&c=Index&a=ajaxGetMore&p="+page,
+					url:"/index.php?m=Shop&c=Index&a=ajaxGetMore&p="+page,
 					success: function(data)
 					{
 						if(data){
@@ -278,7 +278,7 @@
 			* */
 			$(function(){
 				 $(".headerInput").click(function(){
-								$(window).attr('location',` /mobile/Goods/ajaxSearch`);
+								$(window).attr('location',` /shop/Goods/ajaxSearch`);
 				 })
 				 $(document).keydown(function (event) {
         if (event.keyCode == 13) {

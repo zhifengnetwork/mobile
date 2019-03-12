@@ -29,7 +29,7 @@
         <div class="">
             <span class="ico ico-v-code"></span>
             <input class="v-code-input left" type="text" name="verify_code" id="verify_code" value="" placeholder="请输入验证码"/>
-            <img class="v-code-pic" src="/index.php?m=Mobile&c=User&a=verify&type=forget" id="verify_code_img" onclick="verify()">
+            <img class="v-code-pic" src="/index.php?m=Shop&c=User&a=verify&type=forget" id="verify_code_img" onclick="verify()">
         </div>
     </form>
     <div class="lsu-submit">
@@ -40,7 +40,7 @@
 <script>
     //加载验证码
     function verify(){
-        $('#verify_code_img').attr('src','/index.php?m=Mobile&c=User&a=verify&type=forget&r='+Math.random());
+        $('#verify_code_img').attr('src','/index.php?m=Shop&c=User&a=verify&type=forget&r='+Math.random());
     }
 
     var ajax_return_status=1;
@@ -63,7 +63,7 @@
        }
         $.ajax({
             type: "POST",
-            url: '/index.php/mobile/User/forget_pwd',
+            url: '/index.php/Shop/User/forget_pwd',
             data: $("#fpForm").serialize(),
             dataType: 'json',
             success: function (data) {

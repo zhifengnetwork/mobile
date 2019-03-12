@@ -29,7 +29,7 @@
         ++page;
         $.ajax({
             type : "GET",
-            url:"/index.php?m=Mobile&c=Activity&a=promote_goods&is_ajax=1&p="+page,
+            url:"/index.php?m=Shop&c=Activity&a=promote_goods&is_ajax=1&p="+page,
 //			data : $('#filter_form').serialize(),// 你的formid 搜索表单 序列化提交
             success: function(data) {
                 if ($.trim(data) == '') {

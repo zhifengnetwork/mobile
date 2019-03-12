@@ -15,7 +15,7 @@
             <div class="maleri30">
                 <volist name="order.order_goods" id="goods">
                     <div class="sc_list se_sclist paycloseto">
-                        <a href="{:U('/Mobile/Order/order_detail',array('id'=>$order['order_id']))}">
+                        <a href="{:U('/Shop/Order/order_detail',array('id'=>$order['order_id']))}">
                             <div class="shopimg fl">
                                 <img src="{$goods[goods_id]|goods_thum_images=200,200}">
                             </div>
@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="buttondde">
                                     <if condition="($order.return_btn eq 1) and ($goods[is_send] lt 2)">
-                                        <a href="{:U('Mobile/Order/return_goods',['rec_id'=>$goods['rec_id']])}">申请售后</a>
+                                        <a href="{:U('Shop/Order/return_goods',['rec_id'=>$goods['rec_id']])}">申请售后</a>
                                     </if>
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
                     <!--if condition="$list['pay_code'] eq 'cod'"><i class="tits-ions qxatten-ions">货到付款</i></if -->
                 </span>
                 <if condition="$order.pay_btn eq 1">
-                    <a class="shop-rebuy paysoon" href="{:U('Mobile/Cart/cart4',array('order_id'=>$order['order_id']))}">立即付款</a>
+                    <a class="shop-rebuy paysoon" href="{:U('Shop/Cart/cart4',array('order_id'=>$order['order_id']))}">立即付款</a>
                 </if>
                 <if condition="$order.cancel_btn eq 1">
                     <if condition="$order.pay_status eq 0">
@@ -66,10 +66,10 @@
                     <a class="shop-rebuy paysoon" onclick="orderConfirm({$order.order_id})">确认收货</a>
                 </if>
                 <if condition="$order.comment_btn eq 1">
-                    <a class="shop-rebuy" href="{:U('/Mobile/Order/comment')}">评价</a>
+                    <a class="shop-rebuy" href="{:U('/Shop/Order/comment')}">评价</a>
                 </if>
                 <if condition="$order.shipping_btn eq 1">
-                    <a class="shop-rebuy" href="{:U('Mobile/Order/express',array('order_id'=>$order['order_id']))}">查看物流</a>
+                    <a class="shop-rebuy" href="{:U('Shop/Order/express',array('order_id'=>$order['order_id']))}">查看物流</a>
                 </if>
             </div>
         </div>

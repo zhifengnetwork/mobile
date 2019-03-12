@@ -1,5 +1,5 @@
 <include file="public/header" title="分销商品列表"/>
-<include file="public/header_nav" title="分销商品列表" href="{:U('Mobile/Distribut/index')}"/>
+<include file="public/header_nav" title="分销商品列表" href="{:U('Shop/Distribut/index')}"/>
 <div class="p search_pl">
     <div class="maleri30">
         <div class="search2">
@@ -35,7 +35,7 @@
 <!--排序按钮-e-->
 
 <!--商品详情s-->
-<form id="add_form" name="formCart" action="{:U('Mobile/Distribut/add_goods')}"  method="post">
+<form id="add_form" name="formCart" action="{:U('Shop/Distribut/add_goods')}"  method="post">
     <div id="goods_list">
     </div>
 </form>
@@ -342,7 +342,7 @@
         $('#p').val(page+1);
         $.ajax({
             type : "POST",
-            url:"{:U('Mobile/Distribut/ajax_goods_list')}",
+            url:"{:U('Shop/Distribut/ajax_goods_list')}",
             data:$('#sourch_form').serialize(),
             success: function(data)
             {

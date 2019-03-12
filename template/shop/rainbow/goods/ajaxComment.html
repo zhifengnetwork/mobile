@@ -47,7 +47,7 @@
                          <span class="assess-btns-num" id="span_zan_{$v['comment_id']}" data="0">{$v['zan_num']}</span>
                          <i class="like">+1</i>
                      </a>
-                    <a href="{:U('Mobile/Order/comment_info',['comment_id'=>$v.comment_id])}" class="assess-reply-btn" <if condition="$v['reply_num'] gt 0">href="{:U('Mobile/Goods/reply',array('comment_id'=>$v['comment_id']))}"</if>>
+                    <a href="{:U('Shop/Order/comment_info',['comment_id'=>$v.comment_id])}" class="assess-reply-btn" <if condition="$v['reply_num'] gt 0">href="{:U('Shop/Goods/reply',array('comment_id'=>$v['comment_id']))}"</if>>
                         <i class="no-assess-btns-icon btn-reply-icon"></i>
                         <span class="assess-btns-num" id="comment_id{$v[comment_id]}">{$v['reply_num']}</span>
                     </a>
@@ -93,7 +93,7 @@
          page += 1;
          $.ajax({
              type: "GET",
-             url: "{:U('Mobile/Goods/ajaxComment',array('goods_id'=>$goods_id,'commentType'=>$commentType),'')}"+"/p/" + page,
+             url: "{:U('Shop/Goods/ajaxComment',array('goods_id'=>$goods_id,'commentType'=>$commentType),'')}"+"/p/" + page,
              success: function (data) {
                  $('.getmore').hide();
                  if ($.trim(data) != ''){

@@ -97,7 +97,7 @@
             success: function (data) {
                 if (data.status == 1) {
                     clearInterval(interval);
-                    location.href = "{:U('Mobile/User/account')}";
+                    location.href = "{:U('Shop/User/account')}";
                 }else{
                     if (isIOS()){
                         if (!isOrder()){

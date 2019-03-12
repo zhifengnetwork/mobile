@@ -325,7 +325,7 @@
             var goods_id = cart2_form.find("input[name='goods_id']");
             var item_id = cart2_form.find("input[name='item_id']");
             history.back(-1);
-            // window.location.href = "/index.php?m=Mobile&c=Goods&a=goodsInfo&id="+goods_id.val()+'&item_id='+item_id.val();
+            // window.location.href = "/index.php?m=Shop&c=Goods&a=goodsInfo&id="+goods_id.val()+'&item_id='+item_id.val();
         });
         //地址弹窗返回上一步
         $(document).on('click', '#address_list_back,#invoice_list_back,#address_add_back,#shop_list_back,#shop_consignee_back,#map_back', function () {
@@ -380,7 +380,7 @@
         $(document).on('click', '#address_form_confirm', function () {
             $.ajax({
                 type: "POST",
-                url: '/index.php?m=Mobile&c=User&a=addressSave',
+                url: '/index.php?m=Shop&c=User&a=addressSave',
                 data:  $("#address_form").serialize(),
                 dataType: "json",
                 success: function (data) {
@@ -427,7 +427,7 @@
         var address_id = cart2_form.find("input[name='address_id']");
         $.ajax({
             type: "get",
-            url: '/index.php?m=Mobile&c=User&a=ajaxAddressList',
+            url: '/index.php?m=Shop&c=User&a=ajaxAddressList',
             dataType: "json",
             success: function (data) {
                 var address_list_html = '';
@@ -525,7 +525,7 @@
                     layer.open({icon: 2, content: data.msg, time: 1, end:function(){
                         // 登录超时
                         if (data.status == -100) {
-                            location.href = "{:U('Mobile/User/login')}";
+                            location.href = "{:U('Shop/User/login')}";
                         }
                         $('.submit_price a').addClass("disable");
                     }});
@@ -568,7 +568,7 @@
                     showErrorMsg(data.msg);  //执行有误
                     // 登录超时
                     if (data.status == -100){
-                        location.href = "{:U('Mobile/User/login')}";
+                        location.href = "{:U('Shop/User/login')}";
                     }
                     ajax_return_status = 1; // 上一次ajax 已经返回, 可以进行下一次 ajax请求
                     return false;
@@ -584,7 +584,7 @@
                 $("#payables").text(data.result.order_amount);// 应付
                 $("#order_prom_amount").text(data.result.order_prom_amount);// 订单 优惠活动
                 showErrorMsg('订单提交成功，跳转支付页面!');
-                location.href = "/index.php?m=Mobile&c=Cart&a=cart4&order_sn=" + data.result;
+                location.href = "/index.php?m=Shop&c=Cart&a=cart4&order_sn=" + data.result;
             }
         });
     }

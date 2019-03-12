@@ -89,7 +89,7 @@
     <div class="loginlater">
         <img src="__STATIC__/images/small_car.png"/>
         <span>登录后可同步电脑和手机购物车</span>
-        <a href="{:U('Mobile/User/loagin')}">登录</a>
+        <a href="{:U('Shop/User/loagin')}">登录</a>
     </div>
 </if>
     <div class="cart_list">
@@ -97,7 +97,7 @@
         <div class="nonenothing" <notempty name="cartList">style="display: none"</notempty>>
             <img src="__STATIC__/images/nothing.png"/>
             <p>购物车暂无商品</p>
-            <a href="{:U('Mobile/Index/index')}">去逛逛</a>
+            <a href="{:U('Shop/Index/index')}">去逛逛</a>
         </div>
         <!--购物车没有商品-e-->
 
@@ -118,7 +118,7 @@
                                      </span>
                                 </div>
                                 <div class="shopimg fl">
-                                    <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$cart[goods_id]))}">
+                                    <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$cart[goods_id]))}">
                                         <!--商品图片-->
                                         <img src="{$cart.goods_id|goods_thum_images=400,400,$cart[item_id]}">
                                     </a>
@@ -127,7 +127,7 @@
                                     <div class="deletes">
                                         <!--商品名-->
                                         <span class="similar-product-text fl">
-                                            <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$cart[goods_id]))}">{$cart[goods_name]}</a>
+                                            <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$cart[goods_id]))}">{$cart[goods_name]}</a>
                                         </span>
                                         <!--删除按钮-->
                                         <a href="javascript:void(0);" class="delescj deleteGoods" data-cart-id="{$cart['id']}"><img src="__STATIC__/images/dele.png"/></a>
@@ -198,7 +198,7 @@
                              <!--</span>-->
                                     </div>
                                     <div class="shopimg fl">
-                                        <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$cart[goods_id]))}">
+                                        <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$cart[goods_id]))}">
                                             <!--商品图片-->
                                             <img src="{$cart.goods_id|goods_thum_images=400,400,$cart[item_id]}">
                                         </a>
@@ -207,7 +207,7 @@
                                         <div class="deletes">
                                             <!--商品名-->
                                             <span class="similar-product-text fl">
-                                    <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$cart[goods_id]))}">{$cart[goods_name]}</a>
+                                    <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$cart[goods_id]))}">{$cart[goods_name]}</a>
                                 </span>
                                             <!--删除按钮-->
                                             <a href="javascript:void(0);" class="delescj deleteGoods" data-cart-id="{$cart['id']}"><img src="__STATIC__/images/dele.png"/></a>
@@ -257,7 +257,7 @@
 					                        </span>
                                         </div>
                                         <div class="shopimg fl">
-                                            <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$cart_r[goods_id]))}">
+                                            <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$cart_r[goods_id]))}">
                                                 <!--商品图片-->
                                                 <img src="{$cart_r.goods_id|goods_thum_images=400,400,$cart_r[item_id]}">
                                             </a>
@@ -266,7 +266,7 @@
                                             <div class="deletes">
                                                 <!--商品名-->
                                                 <span class="similar-product-text fl">
-                                    <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$cart_r[goods_id]))}">{$cart_r[goods_name]}</a>
+                                    <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$cart_r[goods_id]))}">{$cart_r[goods_name]}</a>
                                 </span>
                                                 <!--删除按钮-->
                                                 <a href="javascript:void(0);" class="delescj deleteGoods" data-cart-id="{$cart_r['id']}"><img src="__STATIC__/images/dele.png"/></a>
@@ -351,7 +351,7 @@
         <ul>
             <foreach name="hot_goods" item="good">
                 <li>
-                    <a href="{:U('Mobile/goods/goodsInfo',array('id'=>$good[goods_id]))}">
+                    <a href="{:U('Shop/goods/goodsInfo',array('id'=>$good[goods_id]))}">
                         <div class="similer-product">
                             <img src="{$good[goods_id]|goods_thum_images=400,400}"/>
                             <span class="similar-product-text">{$good[goods_name]|getsubstr=0,20}</span>
@@ -397,7 +397,7 @@
         //选择数大于0
         if (j > 0) {
             //跳转订单页面
-            window.location.href = "{:U('Mobile/Cart/cart2')}"
+            window.location.href = "{:U('Shop/Cart/cart2')}"
         } else {
             layer.open({content: '请选择要结算的商品！', time: 2});
             return false;
@@ -426,7 +426,7 @@
         })
         $.ajax({
             type : "POST",
-            url:"{:U('Mobile/Cart/AsyncUpdateCart')}",//,
+            url:"{:U('Shop/Cart/AsyncUpdateCart')}",//,
             dataType:'json',
             data: {cart: cart},
             success: function(data){
@@ -609,7 +609,7 @@
         }
         $.ajax({
             type: "POST",
-            url: "{:U('Mobile/Cart/changeNum')}",//+tab,
+            url: "{:U('Shop/Cart/changeNum')}",//+tab,
             dataType: 'json',
             data: {cart: cart},
             success: function (data) {
@@ -640,7 +640,7 @@
                     layer.close(index);
                     $.ajax({
                         type : "POST",
-                        url:"{:U('Mobile/Cart/delete')}",
+                        url:"{:U('Shop/Cart/delete')}",
                         dataType:'json',
                         data: {cart_ids: cart_ids},
                         success: function(data){

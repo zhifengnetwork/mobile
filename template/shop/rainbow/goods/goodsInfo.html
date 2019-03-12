@@ -413,7 +413,7 @@
                     </if>
                 </li>
                 <li>
-                    <a href="{:U('Mobile/Cart/index')}" >
+                    <a href="{:U('Shop/Cart/index')}" >
                         <span id="tp_cart_info"></span>
                         <i class="gwc"></i>
                         <p>购物车</p>
@@ -665,7 +665,7 @@
                 return;
             }
             if (getCookie('user_id') == '') {
-                window.location.href = "{:U('Mobile/User/login')}";
+                window.location.href = "{:U('Shop/User/login')}";
                 return;
             }
             var is_virtual = $("input[name='is_virtual']").val();//是否是虚拟商品
@@ -679,7 +679,7 @@
             if (is_virtual == 1) {
                 var virtual_limit = parseInt($('#virtual_limit').val());
                 if ((goods_num <= store_count && goods_num <= virtual_limit) || (goods_num < store_count && virtual_limit == 0)) {
-                    form.attr('action', "{:U('mobile/Cart/cart2',['action'=>'buy_now'])}").submit();
+                    form.attr('action', "{:U('Shop/Cart/cart2',['action'=>'buy_now'])}").submit();
                 } else {
                     layer.open({icon: 2, content: "购买数量超过此商品购买上限", time: 2});
                 }
@@ -690,12 +690,12 @@
                 return;
             }
             if(goods_prom_type == 4 && activity_is_on == 1){
-                form.attr('action', "{:U('mobile/Cart/pre_sell')}").submit();
+                form.attr('action', "{:U('Shop/Cart/pre_sell')}").submit();
                 return;
             }
             //普通流程
             if (goods_num <= store_count) {
-                form.attr('action', "{:U('mobile/Cart/cart2',['action'=>'buy_now'])}").submit();
+                form.attr('action', "{:U('Shop/Cart/cart2',['action'=>'buy_now'])}").submit();
             } else {
                 layer.open({icon: 2, content: "购买数量超过此商品购买上限", time: 2});
             }
@@ -776,7 +776,7 @@
             type: 'post',
             dataType: 'json',
             data: {goods_id: goods_id, item_id: item_id, goods_num : goods_num},
-            url: "{:U('Mobile/Goods/activity')}",
+            url: "{:U('Shop/Goods/activity')}",
             success: function (data) {
                 if (data.status == 1) {
                     $('input[name="goods_prom_type"]').attr('value', data.result.goods.prom_type);//商品活动类型
@@ -810,7 +810,7 @@
         $.ajax({
             type : "GET",
             dataType: "json",
-            url:"/index.php?m=mobile&c=goods&a=collect_goods",//+tab,
+            url:"/index.php?m=Shop&c=goods&a=collect_goods",//+tab,
             data: {goods_id:goods_id},
             success: function(data){
                 layer.open({content:data.msg, time:2});
@@ -1008,7 +1008,7 @@
     function ajaxComment(commentType,page){
         $.ajax({
             type : "GET",
-            url:"/index.php?m=Mobile&c=goods&a=ajaxComment&goods_id={$goods['goods_id']}&commentType="+commentType+"&p="+page,//+tab,
+            url:"/index.php?m=Shop&c=goods&a=ajaxComment&goods_id={$goods['goods_id']}&commentType="+commentType+"&p="+page,//+tab,
             success: function(data){
                 $(".my_comment_list").empty().append(data);
             }
@@ -1062,7 +1062,7 @@
                     $('.team-pies').show();
                     var prom_id = $('input[name="prom_id"]').attr('value');
                     var goods_id = $('input[name="goods_id"]').attr('value');
-                    $('.team_button').attr('href',"/index.php?m=Mobile&c=Team&a=info&team_id="+prom_id+"&goods_id="+goods_id);
+                    $('.team_button').attr('href',"/index.php?m=Shop&c=Team&a=info&team_id="+prom_id+"&goods_id="+goods_id);
                     setNormalGoodsPrice();
                     break;
                 default:
@@ -1208,7 +1208,7 @@
                 goods_id:$('input[name=goods_id]').val(),
                 item_id:$('input[name=item_id]').val()
             },
-            url: "/index.php?m=Mobile&c=Goods&a=checkGoodsPromotionType",//+tab,
+            url: "/index.php?m=Shop&c=Goods&a=checkGoodsPromotionType",//+tab,
             success: function (data) {
                 if(data.status == 1 && data.result == 3){
                     $("#price").html("￥" + prom_goods_price); //变动价格显示
@@ -1291,7 +1291,7 @@
             type: "POST",
             data: {comment_id: comment_id},
             dataType: 'json',
-            url: "/index.php?m=Mobile&c=Order&a=ajaxZan",
+            url: "/index.php?m=Shop&c=Order&a=ajaxZan",
             success: function (data) {
                 ajax_return_stauts = 1
                 if (data.status==1) {
@@ -1385,7 +1385,7 @@ function combinationCurl(goods_id,item,combination_id) {
     function couponList() {
         var goods_id = parseInt($("input[name='goods_id']").val());
         var item_id = $("input[name='item_id']").val();
-        var url = "/index.php?m=Mobile&c=Goods&a=couponList";
+        var url = "/index.php?m=Shop&c=Goods&a=couponList";
         $.ajax({
             type: "Post",
             url: url,
@@ -1424,7 +1424,7 @@ function combinationCurl(goods_id,item,combination_id) {
     function getCoupon(obj){
         $.ajax({
             type: "POST",
-            url: "{:U('Mobile/Activity/getCoupon')}",
+            url: "{:U('Shop/Activity/getCoupon')}",
             data: {coupon_id: $(obj).data('coupon-id')},
             dataType: "json",
             error: function () {

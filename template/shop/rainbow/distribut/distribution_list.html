@@ -1,5 +1,5 @@
 <include file="public/header" title="分销商品列表"/>
-<include file="public/header_nav" title="分销商品列表" href="{:U('Mobile/Distribut/my_store')}"/>
+<include file="public/header_nav" title="分销商品列表" href="{:U('Shop/Distribut/my_store')}"/>
 
 <!--商品详情s-->
 <form id="delete_form">
@@ -81,7 +81,7 @@
 
         $.ajax({
             type: "POST",
-            url: "{:U('Mobile/Distribut/distribution_list')}",
+            url: "{:U('Shop/Distribut/distribution_list')}",
             data: {p: page},
             success: function (data) {
 
@@ -108,7 +108,7 @@ function delete_item () {
         if (goods_ids.length > 0) {
             $.ajax({
                 type : "POST",
-                url:"{:U('mobile/Distribut/delete')}",
+                url:"{:U('Shop/Distribut/delete')}",
                 dataType:'json',
                 data: {goods_ids: goods_ids},
                 success: function(data){

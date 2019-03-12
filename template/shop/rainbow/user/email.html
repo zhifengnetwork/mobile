@@ -19,7 +19,7 @@
     }
 </style>
 		<div class="loginsingup-input">
-			<form action="{:U('Mobile/User/userinfo')}" method="post" onsubmit="return submitverify(this)">
+			<form action="{:U('Shop/User/userinfo')}" method="post" onsubmit="return submitverify(this)">
 				<div class="reset-pwd-title">绑定/修改邮箱</div>
 				<div class="lsu bk">
 					<span class="ico ico-email"></span>
@@ -43,8 +43,8 @@
         }else if(checkEmail(email)){
             $.ajax({
                 type : "GET",
-                url:"/index.php?m=Home&c=Api&a=issetMobileOrEmail",//+tab,
-//			url:"{:U('Mobile/User/comment',array('status'=>$_GET['status']),'')}/is_ajax/1/p/"+page,//+tab,
+                url:"/index.php?m=Home&c=Api&a=issetShopOrEmail",//+tab,
+//			url:"{:U('Shop/User/comment',array('status'=>$_GET['status']),'')}/is_ajax/1/p/"+page,//+tab,
                 data :{mobile:email},// 你的formid 搜索表单 序列化提交
                 success: function(data)
                 {

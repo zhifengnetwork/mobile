@@ -1,6 +1,6 @@
 <foreach name="pre_sell_list" item="v" key="k" >
     <li>
-        <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$vo['goods_id'],'item_id'=>$vo['item_id']))}">
+        <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$vo['goods_id'],'item_id'=>$vo['item_id']))}">
             <div class="similer-product">
                 <div class="zjj close">
                     <img src="{$v.goods_id|goods_thum_images=200,200}">

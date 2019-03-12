@@ -53,11 +53,11 @@
 	                    <!--分类-s-->
 	                    <div class="tp-class-list">
 	                        <foreach name="vo.tmenu" item="v2" key="k2">
-	                                <h4><a href="{:U('Mobile/Goods/goodsList',array('id'=>$v2[id]))}" >{$v2['mobile_name']}</a></h4>
+	                                <h4><a href="{:U('Shop/Goods/goodsList',array('id'=>$v2[id]))}" >{$v2['mobile_name']}</a></h4>
 	                                <ul class="tp-category">
 	                                    <foreach name="v2.sub_menu" item="v3">
 	                                            <li>
-	                                                <a href="{:U('Mobile/Goods/goodsList',array('id'=>$v3[id]))}">
+	                                                <a href="{:U('Shop/Goods/goodsList',array('id'=>$v3[id]))}">
 	                                                    <img src="{$v3['image']|default='__STATIC__/images/zy.png'}"/>
 	                                                    <p>{$v3['mobile_name']}</p>
 	                                                </a>

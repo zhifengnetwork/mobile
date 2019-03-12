@@ -29,9 +29,9 @@
 				<!--Tab, data-tab="1"=>从零开始-->
 				<div class="headTab_lb" data-tab="1">
 					<!--页面跳转=>pageJump("路径")-->
-					<p class="headTabTerm_lb" onclick="pageJump('/mobile/Auction/index')">竞拍</p>
-					<p class="headTabTerm_lb" onclick="pageJump('/mobile/Groupbuy/listdata')">拼团</p>
-					<p class="headTabTerm_lb" onclick="pageJump('/mobile/Seckill/index_zp')">秒杀</p>
+					<p class="headTabTerm_lb" onclick="pageJump('/shop/Auction/index')">竞拍</p>
+					<p class="headTabTerm_lb" onclick="pageJump('/shop/Groupbuy/listdata')">拼团</p>
+					<p class="headTabTerm_lb" onclick="pageJump('/shop/Seckill/index_zp')">秒杀</p>
 				</div>
 			</div>
 			<!--商品 列表-->
@@ -39,12 +39,12 @@
 				<volist name="list" id="item">
 					<!--商品 项-->
 					<div class="comListTerm">
-						<a href="/mobile/Groupbuy/detail?team_id={$item.team_id}&goods_id={$item.goods_id}">
+						<a href="/shop/Groupbuy/detail?team_id={$item.team_id}&goods_id={$item.goods_id}">
 							<img class="comListTermImg" alt="{$item.goods_name}" src="{$item.original_img}"/>
 						</a>
 						<!--title-->
 						<p class="comListTermTitle">
-							<a style="color: #000;text-decoration:none;" href="/mobile/Groupbuy/detail?team_id={$item.team_id}&goods_id={$item.goods_id}">{$item.goods_name|mb_substr=0,8,'utf-8'}...</a>
+							<a style="color: #000;text-decoration:none;" href="/shop/Groupbuy/detail?team_id={$item.team_id}&goods_id={$item.goods_id}">{$item.goods_name|mb_substr=0,8,'utf-8'}...</a>
 						</p>
 						<p class="comListTermText">{$item.goods_name}</p>
 						<p class="comListTermPrice">￥{$item.shop_price}</p>

@@ -144,7 +144,7 @@
             success:function(data){
                 if(data.status==1){
                     is_check = true;
-                    window.location.href='/index.php?m=Mobile&c=User&a=paypwd&step=2&t='+Math.random();
+                    window.location.href='/index.php?m=Shop&c=User&a=paypwd&step=2&t='+Math.random();
                 }else{
                     showErrorMsg(data.msg);
                     return false;
@@ -170,7 +170,7 @@
             return false;
         }
         $.ajax({
-            url:'/index.php?m=Mobile&c=User&a=paypwd&step=2&t='+Math.random(),
+            url:'/index.php?m=Shop&c=User&a=paypwd&step=2&t='+Math.random(),
             type:'post',
             dataType:'json',
             data:$('#payform').serialize(),

@@ -1,5 +1,5 @@
 <include file="public/header" title="账户明细" body=""/>
-<include file="public/header_nav" title="账户明细" href="{:U('Mobile/User/account')}"/>
+<include file="public/header_nav" title="账户明细" href="{:U('Shop/User/account')}"/>
 <div class="allaccounted">
     <div class="maleri30">
         <div class="head_acc ma-to-20">
@@ -78,8 +78,8 @@
         ++page;
         $.ajax({
             type : "GET",
-            url:"/index.php?m=Mobile&c=User&a=points&is_ajax=1&type={$type}&p="+page,//+tab,
-    //			url:"{:U('Mobile/User/points',null,'')}/is_ajax/1/p/"+page,//+tab,
+            url:"/index.php?m=Shop&c=User&a=points&is_ajax=1&type={$type}&p="+page,//+tab,
+    //			url:"{:U('Shop/User/points',null,'')}/is_ajax/1/p/"+page,//+tab,
     //			data : $('#filter_form').serialize(),// 你的formid 搜索表单 序列化提交
             success: function(data)
             {

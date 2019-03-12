@@ -9,13 +9,13 @@
             </span>
 
             <if condition="$v.message_notice.type eq '2'"/>
-            <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo2('{:U('Mobile/User/coupon')}',{$v.rec_id});">立即使用</a></div>
+            <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo2('{:U('Shop/User/coupon')}',{$v.rec_id});">立即使用</a></div>
             <elseif condition="($v.message_notice.type eq '3')"/>
-            <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo2('{:U('Mobile/User/coupon',['type'=>1])}',{$v.rec_id});">查看详情</a></div>
+            <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo2('{:U('Shop/User/coupon',['type'=>1])}',{$v.rec_id});">查看详情</a></div>
             <elseif condition="($v.message_notice.type eq '4')"/>
-            <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo2('{:U('Mobile/User/coupon')}',{$v.rec_id});">查看详情</a></div>
+            <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo2('{:U('Shop/User/coupon')}',{$v.rec_id});">查看详情</a></div>
             <elseif condition="($v.message_notice.type eq '6')"/>
-            <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo2('{:U('Mobile/User/withdrawals_list')}',{$v.rec_id});">查看详情</a></div>
+            <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo2('{:U('Shop/User/withdrawals_list')}',{$v.rec_id});">查看详情</a></div>
             <elseif condition="$v.message_notice.mmt_code eq 'message_notice'"/>
             <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo({$v.rec_id});">查看详情</a></div>
             <else/>

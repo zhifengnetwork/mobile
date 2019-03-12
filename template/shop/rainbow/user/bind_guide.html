@@ -174,14 +174,14 @@
 			 }
 			 $.ajax({
 				 type: "POST",
-				 url:"{:U('Mobile/User/bind_account')}",
+				 url:"{:U('Shop/User/bind_account')}",
 				 data: {mobile: mobile,verify_code:verify_code},
 				 dataType: "json",
 				 success: function(data){
 					 console.log(data);
 					 if (data.status == 1) {
 						 layer.open({content: data.msg, time: 2, end:function(){
-							 window.location.href = "{:U('Mobile/User/index')}";
+							 window.location.href = "{:U('Shop/User/index')}";
 						 }});
 					 } else {
 						 layer.open({content: data.msg, time: 2});
@@ -221,14 +221,14 @@
 			 if($('input:checkbox').is(':checked')){
 				 $.ajax({
 					 type: "POST",
-					 url:"{:U('Mobile/User/bind_reg')}",
+					 url:"{:U('Shop/User/bind_reg')}",
 					 data: form.serialize(),
 					 dataType: "json",
 					 success: function(data){
 						 console.log(data);
 						 if (data.status == 1) {
 							 layer.open({content: data.msg, time: 2, end:function(){
-								 window.location.href = "{:U('Mobile/User/index')}";
+								 window.location.href = "{:U('Shop/User/index')}";
 							 }});
 						 } else {
 							 layer.open({content: data.msg, time: 2});

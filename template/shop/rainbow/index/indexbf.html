@@ -35,9 +35,9 @@
             <div class="ds-in-bl login">
                 <span>
                 <if condition="$user_id gt 0">
-                    <a href="{:U('Mobile/User/index')}"> <img class="after_login" src="__STATIC__/images/my.png"></a>
+                    <a href="{:U('Shop/User/index')}"> <img class="after_login" src="__STATIC__/images/my.png"></a>
                 <else/>
-                    <a href="{:U('Mobile/User/login')}"> 登录</a>
+                    <a href="{:U('Shop/User/login')}"> 登录</a>
                 </if>
             </span>
             </div>
@@ -129,7 +129,7 @@
                     <span class="hms"></span>
                 </div>
                 <div class="xsxl fr">
-                    <a href="{:U('Mobile/Activity/flash_sale_list')}">
+                    <a href="{:U('Shop/Activity/flash_sale_list')}">
                         <span>限时限量<img src="__STATIC__/images/or.png" alt="" /></span>
                     </a>
                 </div>
@@ -139,8 +139,8 @@
                     <div style="text-align: center;">暂无抢购商品。。。。</div>
                 </if>
                 <foreach name="flash_sale_list" item="v">
-                    <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id],'item_id'=>$v[item_id]))}">
-                    <a href="{:U('Mobile/Activity/flash_sale_list')}">
+                    <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$v[goods_id],'item_id'=>$v[item_id]))}">
+                    <a href="{:U('Shop/Activity/flash_sale_list')}">
                         <div class="timerBox shopnum">
                             <img src="{$v[goods_id]|goods_thum_images=200,200}"/>
                             <p>￥<span>{$v[price]}</span>元</p>
@@ -323,7 +323,7 @@
         page++;
         $.ajax({
             type : "get",
-            url:"/index.php?m=Mobile&c=Index&a=ajaxGetMore&p="+page,
+            url:"/index.php?m=Shop&c=Index&a=ajaxGetMore&p="+page,
             success: function(data)
             {
                 if(data){

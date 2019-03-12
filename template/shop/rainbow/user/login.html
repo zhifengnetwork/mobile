@@ -23,7 +23,7 @@
             <input class="v-code-input" type="text" name="verify_code" id="verify_code" value="" placeholder="请输入验证码"/>
             <div class="login_yanz">
             	<!--<p>点击切换验证码</p>-->
-            	<img class="v-code-pic"  id="verify_code_img" src="{:U('Mobile/User/verify')}" onClick="verify()"/>
+            	<img class="v-code-pic"  id="verify_code_img" src="{:U('shop/User/verify')}" onClick="verify()"/>
             </div>
         </div>
         </notempty>
@@ -67,7 +67,7 @@
 
 <script type="text/javascript">
     function verify(){
-        $('#verify_code_img').attr('src','/index.php?m=Mobile&c=User&a=verify&r='+Math.random());
+        $('#verify_code_img').attr('src','/index.php?m=shop&c=User&a=verify&r='+Math.random());
     }
 
     //复选框状态
@@ -110,14 +110,14 @@
         }
         $.ajax({
             type : 'post',
-            url : '/index.php?m=Mobile&c=User&a=do_login&t='+Math.random(),
+            url : '/index.php?m=shop&c=User&a=do_login&t='+Math.random(),
             data : data,
             dataType : 'json',
             success : function(data){
                 if(data.status == 1){
                     var url = decodeURIComponent(data.url);
                     if (url.indexOf('user') >= 0 && url.indexOf('login') >= 0 || url == '') {
-                        window.location.href = '/index.php/mobile';
+                        window.location.href = '/index.php/shop';
                     }else{
                         window.location.href = url;
                     }

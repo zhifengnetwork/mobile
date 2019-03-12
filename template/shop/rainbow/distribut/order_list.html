@@ -11,12 +11,12 @@
     <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
 </head>
 <body class="bag_gray">
-<include file="public/header_nav" title="分销订单"  href="{:U('Mobile/Distribut/index')}" />
+<include file="public/header_nav" title="分销订单"  href="{:U('Shop/Distribut/index')}" />
     <div class="retails_li3 p">
         <ul>
-            <li <if condition="$Request.param.status eq 0">class="current"</if>><a href="{:U('mobile/Distribut/order_list',array('status'=>0))}">未付款</a></li>
-            <li <if condition="$Request.param.status eq '1,2'">class="current"</if>><a href="{:U('mobile/Distribut/order_list',array('status'=>'1,2'))}">已付款</a></li>
-            <li <if condition="$Request.param.status eq 3">class="current"</if>><a href="{:U('mobile/Distribut/order_list',array('status'=>3))}">已完成</a></li>
+            <li <if condition="$Request.param.status eq 0">class="current"</if>><a href="{:U('Shop/Distribut/order_list',array('status'=>0))}">未付款</a></li>
+            <li <if condition="$Request.param.status eq '1,2'">class="current"</if>><a href="{:U('Shop/Distribut/order_list',array('status'=>'1,2'))}">已付款</a></li>
+            <li <if condition="$Request.param.status eq 3">class="current"</if>><a href="{:U('Shop/Distribut/order_list',array('status'=>3))}">已完成</a></li>
         </ul>
     </div>
 <if condition="!empty($list)">
@@ -125,7 +125,7 @@
         page += 1;
         $.ajax({
             type : "GET",
-            url:"/index.php?m=Mobile&c=Distribut&a=order_list&status={$Request.param.status}&is_ajax=1&p="+page,//+tab,
+            url:"/index.php?m=Shop&c=Distribut&a=order_list&status={$Request.param.status}&is_ajax=1&p="+page,//+tab,
             data : $('#filter_form').serialize(),// 你的formid 搜索表单 序列化提交
             success: function(data)
             {

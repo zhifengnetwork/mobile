@@ -60,7 +60,7 @@
                         <div class="tips">说明：您本次购买的商品不需要收货地址，请正确输入接收手机号码，确保及时获得“电子兑换码”。可使用您已经绑定的手机或重新输入其它手机号码。</div>
                     </div>
                     <div class="shopimg fl">
-                        <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$goods[goods_id]))}">
+                        <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$goods[goods_id]))}">
                             <!--商品图片-->
                             <img src="{$goods.goods_id|goods_thum_images=200,200}">
                         </a>
@@ -69,7 +69,7 @@
                         <div class="deletes">
                             <!--商品名-->
                         <span class="similar-product-text fl">
-                            <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$goods[goods_id]))}">{$goods[goods_name]}</a>
+                            <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$goods[goods_id]))}">{$goods[goods_name]}</a>
                         </span>
                             <!--删除按钮-->
                             <!--<a href="javascript:void(0);" onclick="del_cart_goods({$goods.id})" class="delescj"><img src="__STATIC__/images/dele.png"/></a>-->
@@ -130,7 +130,7 @@
             data:$('#cart_form').serialize(),
             success:function(data){
                 if(data.status == 1){
-                    location.href='/index.php?m=Mobile&c=Virtual&a=buy_step2&order_id='+data.result;
+                    location.href='/index.php?m=Shop&c=Virtual&a=buy_step2&order_id='+data.result;
                 }else{
                     layer.open({content:data.msg, time: 2});
                 }

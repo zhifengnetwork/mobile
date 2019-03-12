@@ -1,7 +1,7 @@
 <include file="public/header" title="新增收货地址" body="pore_add"/>
 <include file="public/header_nav" title="新增收货地址" href="javascript:history.back(-1)"/>
 <div class="floor my p edit">
-    <form action="{:U('Mobile/User/add_address')}" method="post" id="addressForm">
+    <form action="{:U('Shop/User/add_address')}" method="post" id="addressForm">
         <div class="content">
             <div class="floor list7">
                 <div class="myorder p">
@@ -181,7 +181,7 @@
         }
         $.ajax({
             type : "POST",
-            url:"{:U('Mobile/User/add_address')}",//+tab,
+            url:"{:U('Shop/User/add_address')}",//+tab,
             dataType:'JSON',
             data :$('#addressForm').serialize(),
             success: function(data)

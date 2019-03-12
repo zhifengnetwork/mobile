@@ -5,7 +5,7 @@
                 <img src="{$good[original_img]}">
             </div>
             <div class="deleshow fr">
-                <a href="{:U('Mobile/Goods/goodsInfo', array('id'=>$good[goods_id]))}">
+                <a href="{:U('Shop/Goods/goodsInfo', array('id'=>$good[goods_id]))}">
                     <div class="deletes">
                         <span class="similar-product-text">{$good[goods_name]}</span>
                     </div>
@@ -16,7 +16,7 @@
                 </a>
                 <div class="qxatten">
                     <p class="weight"><span>市场价</span>&nbsp;<span>￥{$good[market_price]}</span></p>
-                    <a class="closeannten" href="{:U('Mobile/Goods/goodsInfo',array('id'=>$good['goods_id']))}" >立即兑换</a>
+                    <a class="closeannten" href="{:U('Shop/Goods/goodsInfo',array('id'=>$good['goods_id']))}" >立即兑换</a>
                 </div>
             </div>
         </div>

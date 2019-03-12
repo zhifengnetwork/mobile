@@ -1,7 +1,7 @@
 <foreach name="prom_list" item="good">
     <div class="orderlistshpop p">
         <div class="maleri30">
-            <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$good[goods_id]))}" class="item">
+            <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$good[goods_id]))}" class="item">
                 <div class="sc_list se_sclist">
                     <div class="shopimg fl">
                         <img src="{$good.goods_id|goods_thum_images=400,400}">

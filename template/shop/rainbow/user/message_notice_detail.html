@@ -40,13 +40,13 @@
             </span>
 
                 <if condition="$v.message_notice.type eq '2'"/>
-                <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo2('{:U('Mobile/User/coupon')}',{$v.rec_id});">立即使用</a></div>
+                <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo2('{:U('shop/User/coupon')}',{$v.rec_id});">立即使用</a></div>
                 <elseif condition="($v.message_notice.type eq '3')"/>
-                <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo2('{:U('Mobile/User/coupon',['type'=>1])}',{$v.rec_id});">查看详情</a></div>
+                <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo2('{:U('shop/User/coupon',['type'=>1])}',{$v.rec_id});">查看详情</a></div>
                 <elseif condition="($v.message_notice.type eq '4')"/>
-                <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo2('{:U('Mobile/User/coupon')}',{$v.rec_id});">查看详情</a></div>
+                <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo2('{:U('shop/User/coupon')}',{$v.rec_id});">查看详情</a></div>
                 <elseif condition="($v.message_notice.type eq '6')"/>
-                <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo2('{:U('Mobile/User/withdrawals_list')}',{$v.rec_id});">查看详情</a></div>
+                <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo2('{:U('shop/User/withdrawals_list')}',{$v.rec_id});">查看详情</a></div>
                 <elseif condition="$v.message_notice.mmt_code eq 'message_notice'"/>
                 <div class="mesgdeta_thi notice_mesgde_thi"><a href="javascript:messageNoticeInfo({$v.rec_id});">查看详情</a></div>
                 <else/>
@@ -114,7 +114,7 @@
         page += 1;
         $.ajax({
             type : "GET",
-            url:"/index.php?m=Mobile&c=User&a=message_notice_detail&type={$Request.param.type}&is_ajax=1&p="+page,//+tab,
+            url:"/index.php?m=shop&c=User&a=message_notice_detail&type={$Request.param.type}&is_ajax=1&p="+page,//+tab,
             success: function(data)
             {
                 if(data ) {
@@ -165,7 +165,7 @@ function deletedMessage(msg_id) {
 }
 // 查看通知消息详情
 function messageNoticeInfo(msg_id, is_see) {
-    location.href = "{:U('Mobile/User/message_notice_info')}" + "?msg_id=" + msg_id + "&type=0"
+    location.href = "{:U('shop/User/message_notice_info')}" + "?msg_id=" + msg_id + "&type=0"
 }
 
 function messageNoticeInfo2(url, msg_id) {
@@ -185,7 +185,7 @@ function messageAcitivityInfo(url, msg_id, mmt_code, is_finished,is_start) {
     }
     if (mmt_code == 'prom_order_activity') {
         //showErrorMsg('订单促销需要您下单');
-        location.href = "{:U('Mobile/User/message_notice_info')}" + "?msg_id=" + msg_id + "&type=1"
+        location.href = "{:U('shop/User/message_notice_info')}" + "?msg_id=" + msg_id + "&type=1"
         return;
     } 
     location.href = url;
