@@ -9,9 +9,9 @@
 		<title>签到</title>
 		<script src="__STATIC__/js/public/rem.js"></script>
 		<!--layer插件-->
-		<link rel="stylesheet" href="__STATIC__/css/layer.css?v=1552289507"/>
-		<link rel="stylesheet" href="__STATIC__/css/sign/index.css?v=1552297609"/>
-		<link rel="stylesheet" href="__STATIC__/css/public_lb/public.css?v=1552297609" />
+		<link rel="stylesheet" href="__STATIC__/css/public_lb/layer.css?v=1552363434"/>
+		<link rel="stylesheet" href="__STATIC__/css/sign/index.css?v=1552363434"/>
+		<link rel="stylesheet" href="__STATIC__/css/public_lb/public.css?v=1552363434" />
 		<!--日历 css-->
     	<link rel="stylesheet" href="__STATIC__/css/sign/date.css" media="screen" title="no title" charset="utf-8">
 		
@@ -38,12 +38,11 @@
 							<span>&nbsp;签到</span>
 						</p>
 					</div>
-					<!--总积分-->
-					<!--<p class="integralL">总积分:<span>0</span>积分</p>-->
 					<!--连续、累积签到-->
 					<p class="recordBox">
-						已连续签到:&nbsp;<span class="continuityNum">0</span>天<br />
-						累积签到:&nbsp;<span class="dayNum">0<!--天数--></span>天</p>
+						累积签到:&nbsp;<span class="dayNum">0<!--天数--></span>天<br />
+						已连续签到:&nbsp;<span class="continuityNum">0</span>天
+					</p>
 				</div>
 				<!--日历 wrap-->
 				<div class="calendarWrapL">
@@ -57,11 +56,9 @@
 			<!--遮罩层-->
 			<div class="model">
 				<div class="dialog-sign-zp">
-					<!--<p class="score">总积分<span>0</span></p>-->
 					<p class="accumulateL">累积签到<span>0</span></p>
 					<p class="time">已经连续签到<span>0</span>天</p>
 					<p class="white">今日签到成功</p>
-					<!--<p class="add-score">+<span>0</span>积分</p>-->
 					<div class="rule_box">
 						<p class="rule_box_title">签到奖励</p>
 						<span><!--签到规则--></span>
@@ -79,7 +76,7 @@
 		<script src="__STATIC__/js/sign/DateMarker.js"></script>
 		<script src="__STATIC__/js/sign/sign.js"></script>
 		<!--layer插件-->
-		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script src="__STATIC__/js/public/layer.js"></script>
 		<script>
 			/*微信h5页面禁止下拉露出网页来源*/
 			var overscroll = function(el) {
@@ -122,10 +119,6 @@
 					stateD: false,
 					/*用户权限-是否能签到(后台)*/
 					admin: null,
-					/*总积分(后台)*/
-					/*totalNUm: 0,*/
-					/*签到奖励的积分（后台）*/
-					/*signNumVal: null,*/
 					/*连续签到（后台）*/
 					evenNum: 0,
 					/*累积签到（后天）*/
@@ -176,12 +169,6 @@
 								$('.signInBut').find('span').html('已签到');
 								signObj['stateD'] = true;
 							}
-							/*总积分-obj*/
-							/*signObj['totalNUm'] = data['points'];*/
-							/*页面-总积分*/
-							/*$('.integralL').find('span').html(signObj['totalNUm']);*/
-							/*弹框-总积分*/
-							/*$('.dialog-sign-zp .score span').html(signObj['totalNUm']);*/
 							/*累积签到-obj*/
 							signObj['accumulate'] = data['accumulate_day'];
 							/*页面-累积签到*/
@@ -194,10 +181,6 @@
 							$('.recordBox').find('.continuityNum').html(signObj['evenNum']);
 							/*弹框-连续签到*/
 							$('.dialog-sign-zp .time span').html(signObj['evenNum']);
-							/*签到-激励积分-obj*/
-							/*signObj['signNumVal'] = data['add_point'];*/
-							/*$('.add-score').find('span').html(signObj['signNumVal']);*/
-							/*console.log('签到积分',signObj['signNumVal']);*/
 							/*签到规则*/
 							$('.rule_box span').html(data['note']);
 							
@@ -230,18 +213,14 @@
 								var todayState = _re['date'];
 								console.log('todayState:',todayState);
 								$('.signInBut').find('span').html('已签到');
-								/*新总积分 = 签到积分+原来的总积分*/
-								/*页面-总积分*/
-								/*$('.integralL').find('span').html(signObj['totalNUm']+signObj['signNumVal']);*/
-								/*弹框-总积分*/
-								/*$('.dialog-sign-zp .score span').html(signObj['totalNUm']+signObj['signNumVal']);*/
-								/*新的连续签到 = 今天+原来的连续签到*/
 								/*页面-连续签到*/
 								$('.recordBox').find('.continuityNum').html(signObj['evenNum']+1);
 								/*弹框-连续签到*/
 								$('.dialog-sign-zp .time span').html(signObj['evenNum']+1);
 								/*页面-累积签到*/
 								$('.recordBox .dayNum').html(signObj['accumulate']+1);
+								/*弹框-累积签到*/
+								$('.accumulateL span').html(signObj['accumulate']+1);
 								/*在日历盖章=>把后台数据转换: "2019/03/09" =>"2019/3/9"*/
 								console.log('后台日期数据:',todayState);
 								todayState = todayState.split('/')[0] + '/' + Number(todayState.split('/')[1]) + '/' + Number(todayState.split('/')[2])
