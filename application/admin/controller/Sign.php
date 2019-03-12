@@ -74,6 +74,8 @@ class Sign extends Base
             $model->where(['name'=>'sign_integral'])->save(['value'=>$post['sign_integral']]);
             $model->where(['name'=>'sign_signcount'])->save(['value'=>$post['sign_signcount']]);
             $model->where(['name'=>'sign_award'])->save(['value'=>$post['sign_award']]);
+            $model->where(['name'=>'sign_agent_days'])->save(['value'=>$post['sign_agent_days']]);
+            $model->where(['name'=>'sign_distribut_days'])->save(['value'=>$post['sign_distribut_days']]);
 
             
 
@@ -89,6 +91,8 @@ class Sign extends Base
         $config['sign_award'] = $model->where(['name'=>'sign_award'])->value('value');
 
         $config['sign_rule'] = $model->where(['name'=>'sign_rule'])->value('value');
+        $config['sign_agent_days'] = $model->where(['name'=>'sign_agent_days'])->value('value');
+        $config['sign_distribut_days'] = $model->where(['name'=>'sign_distribut_days'])->value('value');
 
         $this->assign('config',$config);
 

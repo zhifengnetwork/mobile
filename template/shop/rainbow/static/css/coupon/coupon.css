@@ -1,0 +1,304 @@
+*{
+    margin:0;
+    padding:0;
+}
+
+body{
+    background-color: #f5f5f5;
+}
+
+li{
+    list-style-type:none;
+}
+
+a{
+    text-decoration: none;
+}
+
+.hide{
+  display: none;
+}
+
+.clearfix:after {
+    content: " ";
+    display: block;;
+    line-height: 0;
+    height: 0;
+    visibility: hidden;
+    clear: both;
+}
+
+.copon-back{
+    display: flex;
+    flex-wrap:nowrap;
+    height: .88rem;  
+    background-color:#ffffff;
+}
+
+.copon-back .go-back{
+   width: .25rem;
+   height: .44rem; 
+   padding: .22rem .2rem .22rem .3rem;
+}
+
+.copon-centre{
+    width: 100%;
+	padding-right:.75rem;
+}
+
+.copon-centre .centre-name{
+    font-size:.4rem;
+    /* height: .44rem; */
+    font-weight: 300;
+    text-align: center;
+    color: #0f0f0f;
+    padding-top:.22rem;
+    padding-bottom:.22rem;
+}
+
+.copon-selection{
+    height: .84rem;
+    border-top:.01rem solid #f5f5f5;
+    border-bottom:.01rem solid #f5f5f5;
+    background-color:#ffffff;
+}
+
+.copon-selection .selection-ul{
+   padding-left:.33rem;
+   padding-right: .33rem;
+}
+
+.copon-selection .selection-ul .selection-item{
+    float: left;
+    font-size: .3rem;
+    /* width: 2.28rem; */
+	width:33.3%;
+    text-align: center;
+    padding-top:.25rem;
+    padding-bottom:.17rem;
+}
+
+/* 默认selection-item样式 */
+.copon-selection .selection-ul .selection-item>a{
+    color:#666666;
+}
+
+/* 选中样式1 */
+.copon-selection .selection-ul .selection-item.active>a{
+    color:#e51c23;
+}
+
+/* 选中样式2 */
+.copon-selection .selection-ul .selection-item.active>p{
+    border:.02rem solid #e51c23;
+	background-color:#e51c23;
+    width:.39rem;
+    margin:.01rem auto;
+}
+
+/* 优惠券列表 */
+.copon-list{
+  margin-top:.39rem;
+  height: 3.37rem;
+  margin-left:.32rem;
+  margin-right: .32rem;
+  border-radius: 10px;
+}
+
+.copon-list .list-headerColor{
+    background-color:#ff5722;
+    height: .62rem;
+    border-radius: 8px 8px 0 0;
+}
+
+.copon-list .list-info{
+  height: 1.79rem;
+  border-bottom: 1px dashed #ff5722;
+  border-radius: 0 0 8px 8px;
+  background-color:#ffffff;
+}
+
+.copon-list .list-info .info-price{
+    /* width: 2.54rem; */
+	width:33.3%;
+    height: 1.79rem;
+    float: left;
+}
+
+.copon-list .list-info .info-price .price{
+   font-size: .1rem;
+   color: #ff5722;
+   text-align: right;
+   padding-right: .86rem;
+    padding-top:.44rem;
+}
+
+.copon-list .list-info .info-price .price>span{
+    padding-left:.1rem;
+    font-size: .5rem;
+}
+
+.copon-list .list-info .info-price .satisfy{
+    font-size: .2rem;
+    color: #ff5722;
+    width: 100%;
+    text-align: center;
+    padding-top:.1rem;
+
+}
+
+.copon-list .list-info .info-class{
+    /* width: 4.32rem; */
+	width:66.6%;
+    height: 1.79rem;
+    float: left;
+}
+
+.info-class .info-discount,.info-class .info-time{
+    height: .33rem;
+    display: flex;
+    flex-wrap:nowrap;
+    margin-top:.42rem;
+    line-height: .33rem;
+}
+
+.info-class .info-discount .discount{
+    width: 1.03rem;
+    height: .33rem;
+    background-color:#ff5722;
+    color: #FFF;
+    font-size: .1rem;
+    border-radius: 5px 0 0 5px;
+    text-align: center;
+    margin-left:.22rem;
+    padding-right: .1rem;
+}
+
+.info-class .info-discount .discount-name{
+    font-size: .1rem;
+    margin-left:.22rem;
+}
+.info-class .info-time{
+    font-size:.1rem;
+    margin-left: .22rem;
+    color: #adadad;
+}
+
+.list-use{
+    width: 100%;
+    height: .94rem;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.list-use .immediately-use{
+    font-size: .2rem;
+    text-align: center;
+    line-height: .57rem;
+    margin:0 auto;
+    padding-top:.18rem;
+    padding-bottom: .20rem;
+}
+ /* 按钮默认样式 */
+.list-use .immediately-use .btn{
+    background-color: #f75c61;
+    border-radius: 5px;
+    width: 1.83rem;
+    height: 0.57rem;
+    color: #FFF;
+    border: 0;
+    font-size: .2rem;
+}
+
+/* 已使用样式 */
+.list-use .immediately-use .dis-btn{
+    background-color: #d87b7e;
+}
+
+.copon-list .employ,.info-class .info-discount .discount-employ{
+  background-color: #d36e4e;
+}
+
+
+.copon-list .list-info .info-price .price-employ{
+   color: #d36e4e;
+}
+
+.copon-list .list-info .info-price .satisfy{
+    color: #d87b7e;
+}
+
+/* 过期样式 */
+.copon-list .past,.list-use .immediately-use .past-btn,.info-class .info-discount .discount-past{
+    background-color:#968e8b;
+}
+
+.copon-list .list-info .info-price .price-past{
+    color: #eceaea;
+}
+
+.info-class .info-discount .name-past{
+   color:#7a7a7a;
+}
+
+.copon-list .list-info .info-price .satisfy-past,.info-class.time-past{
+   color:#bcb6b5;
+}
+
+/* 二维码卷 */
+
+.cover {
+    position: fixed;
+    z-index: 1001;
+}
+
+.cover,.copon-codeBox{
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.copon-codeBox{
+    background: rgba(147,147,147,.6)!important;
+    position: absolute;
+    z-index: 1002;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: .5;
+}
+
+.cover .codeBox{
+    width: 5.54rem;
+    height: 5.8rem;
+    background-color: #ffffff;
+    border-radius: 10PX;
+    position:absolute;
+    top:50%;
+    left:50%;
+    z-index: 1006!important;
+    margin-top:-2.77rem;
+    margin-left:-2.77rem;
+    opacity:1;
+}
+
+ .codeBox .codeBox-num{
+    font-size:.3rem;
+    color: #5a5a5a;
+    padding-top: .75rem;
+    text-align: center;
+}
+
+ .codeBox .codeBox-img{
+    width: 3.13rem;
+    height: 3.18rem;
+    margin: 0;
+    padding: .75rem 0rem  .75rem 0rem;
+	margin:0 auto;
+}
+ .codeBox .codeBox-img .codeBox-gg{
+    width: 3.13rem;
+    height: 3.18rem;
+}

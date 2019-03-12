@@ -70,15 +70,6 @@ body {
 	width: .38rem;
 	height: .4rem;
 }
-.integralL {
-	width: 100%;
-	height: .82rem;
-	text-align: center;
-	font-size: .24rem;
-	line-height: .82rem;
-	color: #fff;
-	letter-spacing: .02rem;
-}
 .recordBox {
 	padding-top: .02rem;
 	box-sizing: border-box;
@@ -144,10 +135,6 @@ body {
 	margin-left: -3.2rem;
 	margin-top: -3.2rem;
 }
-/*.dialog-sign-zp .score{
-	margin-bottom: .1rem;
-	font-size: .28rem;
-}*/
 .accumulateL {
 	margin-bottom: .1rem;
 	font-size: .28rem;
@@ -160,9 +147,6 @@ body {
 	color: #fff;
 	font-size: .3rem;
 	margin-bottom: .55rem;
-}
-.add-score {
-	font-size: .28rem;
 }
 
 .rule_box {

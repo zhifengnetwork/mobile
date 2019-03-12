@@ -1,0 +1,212 @@
+/*最外边框*/
+.wrap_order {
+	padding-top: 2.3rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 7.5rem;
+	height: auto;
+}
+/*head 更多*/
+.head_right_icon {
+	display: block;
+	width: .44rem;
+	height: .34rem;
+}
+/*内容*/
+.content_order {
+	width: 7.5rem;
+	height: auto;
+}
+.searchBoxL {
+	position: fixed;
+	top: .88rem;
+	left: 0;
+	z-index: 8;
+	width: 100%;
+	height: .58rem;
+	font-size: .26rem;
+}
+.searchBoxL_img {
+	float: left;
+	position: relative;
+	width: .71rem;
+	height: 100%;
+}
+.searchBoxL_icon {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: .3rem;
+	bottom: 0;
+	margin: auto 0;
+	height: .32rem;
+}
+.input_box {
+	float: left;
+	font-size: .26rem;
+	width: 4.88rem;
+	height: .58rem;
+}
+.searchBoxL_inp {
+	width: 4.88rem;
+	height: .58rem;
+	text-indent: .1rem;
+}
+/*inout的提示文字 样式修改*/
+.searchBoxL_inp::-webkit-input-placeholder { /* WebKit browsers */ 
+	color: #c6c6c6; 
+	font-size: .24rem;
+	letter-spacing: .02rem;
+} 
+.searchBoxL_inp:-moz-placeholder { /* Mozilla Firefox 4 to 18 */ 
+	color: #c6c6c6; 
+	font-size: .24rem;
+	letter-spacing: .02rem;
+} 
+.searchBoxL_inp::-moz-placeholder { /* Mozilla Firefox 19+ */ 
+	color: #c6c6c6; 
+	font-size: .24rem;
+	letter-spacing: .02rem;
+} 
+.searchBoxL_inp:-ms-input-placeholder { /* Internet Explorer 10+ */ 
+	color: #c6c6c6; 
+	font-size: .24rem;
+	letter-spacing: .02rem;
+}
+.search_buttonBox {
+	float: right;
+	margin-left: .1rem;
+	position: relative;
+	width: 1rem;
+	height: .58rem;
+	background: transparent;
+}
+.search_button {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto 0;
+	z-index: 1;
+	width: .8rem;
+	height: .4rem;
+	font-size: .22rem;
+	line-height: .4rem;
+	text-align: center;
+	letter-spacing: .02rem;
+	color: #fff;
+	background-color: #d91c1c; 
+}
+.eliminate_input {
+	float: right;
+	position: relative;
+	width: .61rem;
+	height: 100%;
+}
+.eliminate_input img {
+	display: block;
+	width: .18rem;
+	height: .18rem;
+	border-radius: 50%;
+}
+
+/*选项卡 wrap，弹性布局、绝对定位*/
+.tabWrapMT {
+	/*position: relative;*/
+	position: fixed;
+	top: 1.46rem;
+	left: 0;
+	z-index: 8;
+	width: 7.5rem;
+	height: .84rem;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-justify-content: space-around;
+	justify-content: space-around;
+	-moz-box-pack: space-around;
+	-webkit-box-pack: space-around;
+	box-pack: space-around;
+	/*box-shadow: 0 .06rem .6rem #eee;*/
+	background-color: #fff;
+	
+}
+/* 选项卡=>'项' box */
+.tabBoxMT {
+	display: table;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: auto;
+	height: .84rem;
+	font: .26rem/.84rem "微软雅黑";
+	text-align: center;
+	letter-spacing: .02rem;
+	color: #151515;
+}
+/*点击时的font的color*/
+.clickFontColor {
+	color: #f11010;
+	border-bottom: .03rem solid #f11010;
+}
+
+/*public 选项卡对应(指定)的 内容 wrap*/
+.tabAppointContentWrapMT {
+	width: 7.5rem;
+	height: auto;
+	font-size: .26rem;
+}
+/*public 选项卡对应(指定)的 内容 box*/
+.tabAppointContentBoxMT {
+	display: none;
+	padding-left: .2rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 7.5rem;
+	height: auto;
+}
+/*项*/
+.publicTerm_box {
+	position: relative;
+	width: 7.3rem;
+	height: auto;
+}
+.publicTerm_boxTitle {
+	position: relative;
+	width: 100%;
+	height: .58rem;
+	font-size: .16rem;
+	line-height: .16rem;
+	color: #151515;
+	letter-spacing: .01rem;
+}
+/*底部线*/
+.publicTerm_boxTitle:before {
+	content: " ";
+	width: 7.1rem;
+	height: .01rem;
+	border-bottom: .01rem solid #cdcdcd;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+}
+.publicTerm_box_delBut {
+	float: right;
+	width: .67rem;
+	height: .57rem;
+	background: darkgray; /*0*/
+}
+.stateText {
+	float: right;
+	color: #f20c0c;
+}
+
+/*public 显示box*/
+.publicShowBox {
+	display: block;
+}

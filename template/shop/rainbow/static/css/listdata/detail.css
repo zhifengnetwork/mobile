@@ -1,0 +1,739 @@
+/*最外边框*/
+.wrapL {
+	position: relative;
+	padding-bottom: .94rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 7.5rem;
+	height: auto;
+}
+/*返回，分享*/
+.returnshareWrapL {
+	position: absolute;
+	top: .26rem;
+	left: 0;
+	z-index: 10;
+	padding: 0 .26rem 0 .3rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: .5rem;
+}
+.returnBox {
+	float: left;
+	position: relative;
+	width: .64rem;
+	height: .5rem;
+}
+.returnBoxIcon {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	margin: auto;
+	width: .18rem;
+	height: .3rem;
+}
+/*分享*/
+.shareBox {
+	float: right;
+	position: relative;
+	width: .87rem;
+	height: 100%;
+}
+.shareBoxImg {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	margin: auto;
+	width: .28rem;
+	height: .3rem;
+}
+
+/*轮播图*/
+.rotarySowingWrapL {
+	width: 7.5rem;
+	height: 7.97rem;
+}
+/*图*/
+.sowingMapImgL {
+	width: 100%;
+	height: 7.97rem;
+}
+/*轮播图 -分页器的点*/
+.swiper-pagination-bullet {
+	width: .08rem;
+	height: .08rem;
+	border-radius: 50%;
+	opacity: 1;
+	background: #fff;
+}
+/*轮播图 active*/
+.swiper-pagination-bullet-active {
+	background: #999;
+}
+/*内容*/
+.contentL {
+	width: 7.5rem;
+	height: auto;
+}
+.timeBoxL {
+	width: 7.5rem;
+	height: .91rem;
+}
+.timeBoxTitleL {
+	float: left;
+	padding-left: .5rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 1.9rem;
+	height: 100%;
+	font: .24rem/.91rem "微软雅黑";
+	letter-spacing: .02rem;
+	color: #e82f5c;
+}
+.timeBoxTimeL {
+	float: left;
+	width: 5.1rem;
+	height: 100%;
+	font: .21rem/.91rem "微软雅黑";
+	letter-spacing: .02rem;
+	color: #ea466b;
+	text-align: right;
+	
+}
+.commTitleL {
+	padding-left: .5rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: .71rem;
+	font: .29rem/.71rem "微软雅黑";
+	letter-spacing: .01rem;
+	color: #000;
+}
+/*价格，运费*/
+.priceFreightBoxL {
+	position: relative;
+	width: 100%;
+	height: 1.07rem;
+}
+.priceBoxL {
+	padding-left: .5rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: .49rem;
+}
+.priceBoxLeftL {
+	float: left;
+	display: table;
+	padding: 0 .2rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: auto; 
+	height: 100%;
+	font: .23rem/.49rem "微软雅黑";
+	letter-spacing: .01rem;
+	color: #fff;
+	background-color: #ff5722; 
+}
+.priceBoxRightL {
+	float: left;
+	display: table;
+	padding: 0 .19rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: auto; 
+	/*总:height: .49rem;*/
+	height: .45rem;
+	font: .23rem/.45rem "微软雅黑";
+	letter-spacing: .01rem;
+	color: #999;
+	text-decoration: line-through;
+	border: .02rem solid #ff5722;
+	background-color: #fff; 
+}
+.freightBoxL {
+	padding-left: .5rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: .58rem;
+	font: .18rem/.58rem "微软雅黑";
+	color: #a1a1a1;
+	letter-spacing: .01rem;
+}
+.alreadyL {
+	display: table;
+	position: absolute;
+	top: .29rem;
+	right: .5rem;
+	z-index: 1;
+	font: .22rem/.22rem "微软雅黑";
+	color: #666;
+}
+.commentBoxL {
+	width: 7.5rem;
+	/*height: 1rem;*/
+	height: auto;
+}
+.commentBoxLeftL {
+	float: left;
+	padding-left: .5rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 3rem;
+	/*height: 1rem;*/
+	height: .8rem;
+	font: .24rem/.8rem "微软雅黑";
+	color: #333;
+}
+.praiseText {
+	font: .18rem/.8rem "微软雅黑";
+	color: #e82f5c;
+}
+.commentBoxRightL {
+	float: left;
+	padding-right: .5rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 4.5rem;
+	/*height: 1rem;*/
+	height: .8rem;
+}
+.commentNumL {
+	position: relative;
+	float: right;
+	display: table;
+	padding-right: .3rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: auto;
+	font: .18rem/.8rem "微软雅黑";
+	letter-spacing: .01rem;
+	color: #999;
+}
+/*user评价 wrap*/
+.commentBoxUserWrap {
+	padding-bottom: .5rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+}
+/*（循环）项*/
+.comBUserTermL {
+	margin-top: .2rem;
+	width: 100%;
+	/*height: 2.77rem;*/
+	height: auto;
+}
+.comBUserTermTopL {
+	padding: 0 .5rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: .45rem;
+	font: .24rem/.45rem "微软雅黑";
+	color: #333;
+	letter-spacing: .01rem;
+}
+.comBUserTermTopLeftL {
+	float: left;
+	width: 4.5rem;
+}
+.comBUserTermTopRightL {
+	float: right;
+	width: 2rem;
+	color: #999;
+	text-align: right;
+}
+.starsIconL {
+	width: .15rem;
+	height: .14rem;
+	vertical-align: middle;
+}
+.comBUTermTextL {
+	padding: .2rem 1rem 0 .5rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+	color: #494949;
+	font: .18rem/.3rem "微软雅黑";
+}
+.comBUTermImgBox {
+	padding-left: .3rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+}
+.comBUTermImg {
+	float: left;
+	margin: .2rem 0 0 .2rem;
+	display: block;
+	width: 1.1rem;
+	height: 1.1rem;
+}
+/*拼单 wrap*/
+.spellListWrapL {
+	padding-bottom: .2rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+}
+.spellLWHeadL {
+	position: relative;
+	padding: 0 .5rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: .58rem;
+	font: .2rem/.58rem "微软雅黑";
+	letter-spacing: .01rem;
+	color: #333;
+}
+.spellLWHeadMore {
+	position: absolute;
+	top: 0;
+	right: .5rem;
+	z-index: 1;
+	padding-right: .25rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 1.5rem;
+	height: .58rem;
+	text-align: right;
+	letter-spacing: .01rem;
+	color: #999;
+}
+/*拼单 box*/
+.spellListBoxL {
+	width: 100%;
+	height: auto;
+}
+.spellListTermL {
+	padding: 0 .5rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: 1rem;
+}
+.spellListTermLeftL {
+	float: left;
+	position: relative;
+	padding-left: .82rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 3rem;
+	height: 1rem;
+	font: .18rem/.8rem "微软雅黑";
+	color: #333;
+}
+.spellListTermIconL {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto 0;
+	width: .7rem;
+	height: .7rem;
+}
+.spellListTermRightL {
+	float: left;
+	position: relative;
+	padding: .2rem 1.38rem 0 0;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 3.5rem;
+	height: 100%;
+	font: .18rem/.3rem "微软雅黑";
+	color: #333;
+	text-align: right;
+	letter-spacing: .01rem;
+}
+
+.pellListTermBut {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto 0;
+	z-index: 1;
+	width: 1.2rem;
+	height: .5rem;
+	color: #fff;
+	font: .18rem/.5rem "微软雅黑";
+	text-align: center;
+	border-radius: .09rem;
+	letter-spacing: .01rem;
+	background-color: #ff5722;
+}
+/*购买 - 固定定位*/
+.purchaseWrapL {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 10;
+	width: 7.5rem;
+	height: .94rem;
+	box-shadow: 0 -0.03rem .1rem #ccc;
+	background: lemonchiffon; /*0*/
+}
+
+.purchaseWrapLeft {
+	float: left;
+	width: 2.14rem;
+	height: 100%;
+	background-color: #fff; 
+}
+.purchaseWrapLeftTerm {
+	float: left;
+	width: 50%;
+	height: 100%;
+	color: #333;
+	font: .18rem/.18rem "微软雅黑";
+	text-align: center;
+	letter-spacing: .02rem;
+	background-color: oldlace;  /*0*/
+}
+.purchaseWrapLeftTermTop {
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	letter-spacing: .01rem;
+	width: 100%;
+	height: .62rem;
+}
+.collectionImgL {
+	display: block;
+	margin: 0 auto;
+	width: .38rem;
+	height: .32rem;
+}
+.customerServiceImgL {
+	display: block;
+	margin: 0 auto;
+	width: .4rem;
+	height: .4rem;
+}
+.purchaseWrapMiddle {
+	float: left;
+	width: 2.06rem;
+	height: 100%;
+	background-color: #fe8c45; 
+}
+.purchaseWrapRight {
+	float: left;
+	width: 3.3rem;
+	height: 100%;
+	background-color: #ff5722; 
+}
+/*购买 - 固定定位-number*/
+.purchasePublicNum {
+	padding-top: .06rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	letter-spacing: .01rem;
+	color: #fff;
+	text-align: center;
+	font: .23rem/.4rem "微软雅黑";
+}
+/*购买 - 固定定位-text*/
+.purchasePublicText {
+	text-align: center;
+	font: .29rem/.29rem "微软雅黑";
+}
+/*拼团(弹窗) box*/
+.assembleAlertBox {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	margin: auto;
+	width: 5.75rem;
+	height: 7.63rem;
+	background-color: #fff;
+}
+.assembHeadBox {
+	position: relative;
+	padding-top: .45rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: .92rem;
+	color: #333;
+	font: .29rem/.29rem "微软雅黑";
+	text-align: center;
+	letter-spacing: .02rem;
+}
+.asHeadCIconBox {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 1;
+	width: .6rem;
+	height: .6rem;
+	background-color: #fff;
+}
+.asHeadCIconBoxIcon {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	margin: auto;
+	width: .2rem;
+	height: .2rem;
+}
+/**项**/
+.assembleAlertTermL {
+	width: 100%;
+	height: 1rem;
+}
+.assembleAlertTermLeftL {
+	float: left;
+	position: relative;
+	padding-left: .94rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	/*width: 3rem;*/
+	width: 2.5rem;
+	height: 1rem;
+	font: .18rem/.8rem "微软雅黑";
+	color: #333;
+}
+.assembleAlertTermIconL {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: .15rem;
+	z-index: 1;
+	margin: auto 0;
+	width: .7rem;
+	height: .7rem;
+}
+.assembleAlertTermRightL {
+	float: left;
+	position: relative;
+	padding: .2rem 1.38rem 0 0;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 3.05rem;
+	height: 100%;
+	font: .18rem/.3rem "微软雅黑";
+	color: #333;
+	text-align: right;
+	letter-spacing: .01rem;
+}
+
+.pellListTermBut {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto 0;
+	z-index: 1;
+	width: 1.2rem;
+	height: .5rem;
+	color: #fff;
+	font: .18rem/.5rem "微软雅黑";
+	text-align: center;
+	border-radius: .09rem;
+	letter-spacing: .01rem;
+	background-color: #ff5722;
+}
+/*提示*/
+.tipsBoxL {
+	width: 100%;
+	height: .71rem;
+	font: .23rem/.71rem "微软雅黑";
+	text-align: center;
+	letter-spacing: .02rem;
+}
+/*底部弹框*/
+.choiceStyleBox {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	width: 100%;
+	height: auto;
+	background-color: #fff;
+}
+.choiceStyleTopBox {
+	position: relative;
+	padding: .17rem 0 0 1.7rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: 1.34rem;
+	color: #e82f5c;
+	font: .17rem/.3rem "微软雅黑";
+	letter-spacing: .01rem;
+}
+.choiceStyleComImgL {
+	display: block;
+	position: absolute;
+	top: -0.4rem;
+	left: .39rem;
+	z-index: 1;
+	width: 1.2rem;
+	height: 1.2rem;
+}
+.tispTextL {
+	color: #333;
+}
+/*关闭按钮*/
+.choiceStyleIconBox {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 1;
+	width: .65rem;
+	height: .65rem;
+}
+.choiceSIconBoxIcon {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	margin: auto;
+	width: .2rem;
+	height: .2rem;
+}
+/*title*/
+.optionPromptTitle {
+	padding-left: .39rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: .22rem;
+	font: .22rem/.22rem "微软雅黑";
+	color: #333;
+	letter-spacing: .02rem;
+}
+
+.chooseStyleBox {
+	padding: 0 0 .4rem .1rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+}
+.chooseStyleBoxTerm {
+	float: left;
+	margin: .4rem .3rem 0 .3rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 1.22rem;
+	height: .52rem;
+	border: .01rem solid #ccc;
+	font: .2rem/.52rem "微软雅黑";
+	color: #666;
+	letter-spacing: .01rem;
+	text-align: center;
+}
+/*选择样式 active*/
+.chooseActive {
+	border: .01rem solid #e82f5c;
+	color: #e82f5c;
+}
+/*number*/
+.commNumberL {
+	padding: 0 .26rem 0 .4rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: .76rem;
+	
+}
+.commNumberTitleL {
+	float: left;
+	width: 2rem;
+	height: 100%;
+	font: .21rem/.76rem "微软雅黑";
+	letter-spacing: .02rem;
+	color: #333;
+}
+.commNumberAdd, .commNumberReduce {
+	float: right;
+	position: relative;
+	width: .42rem;
+	height: .76rem;
+}
+.commNumberAddImg {
+	display: block;
+	width: .16rem;
+	height: .16rem;
+}
+.commNumberRedImg {
+	display: block;
+	width: .16rem;
+	height: .02rem
+}
+.commNumberNum {
+	float: right;
+	width: .67rem;
+	height: .76rem;
+	text-align: center;
+	font: .18rem/.76rem "微软雅黑";
+}
+/*确定*/
+.chooseConfirmL {
+	margin-top: .1rem;
+	width: 100%;
+	height: .94rem;
+	text-align: center;
+	color: #fff;
+	letter-spacing: .02rem;
+	background-color: #f84a34; 
+	font: .29rem/.94rem "微软雅黑";
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>我的收藏--{$tpshop_config['shop_info_store_title']}</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/zepto-1.2.0-min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/style.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <script src="__STATIC__/js/swipeSlide.min.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+</head>
+<body class="[body]">
+
+<include file="public/header_nav_yuanlai" title="我的收藏" href="javascript:history.back(-1)"/>
+
+<if condition="empty($goods_list)" >
+    <!--没有收藏-s-->
+    <div class="comment_con p">
+        <div class="none"><img src="__STATIC__/images/none.png"><br><br>亲，此处还没有收藏哦~</div>
+    </div>
+    <!--没有收藏-e-->
+<else/>
+    <div class="floor guesslike">
+        <div class="likeshop">
+            <ul id="goods_list">
+                <foreach name="goods_list" item="good">
+                    <li>
+                        <div class="similer-product">
+                            <a class="simidibl" href="{:U('Goods/goodsInfo',array('id'=>$good[goods_id]))}">
+                                <img src="{$good.goods_id|goods_thum_images=400,400}"/>
+                                <span class="similar-product-text">{$good[goods_name]|getSubstr=0,20}</span>
+                            </a>
+                                <span class="similar-product-price">
+                                    ¥
+                                    <span class="big-price">{$good[shop_price]}</span>
+                                    <a href="{:U('Goods/goodsList',['id'=>$good.cat_id])}"><span class="guess-button dele-button J_ping">看相似</span></a>
+                                    <a href="{:U('Shop/User/cancel_collect', ['collect_id'=>$good[collect_id]])}"><span class="guess-button  J_ping">删除</span></a>
+                                </span>
+                        </div>
+                    </li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+</if>
+<!--底部导航-start-->
+<include file="public/footer_nav"/>
+<!--底部导航-end-->
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script  type="text/javascript" charset="utf-8">
+    /**
+     * ajax加载更多
+     * */
+    var page = 1;
+    function ajax_sourch_submit()
+    {
+        page += 1;
+        $.ajax({
+            type : "GET",
+            url:"/index.php/Shop/User/collect_list?is_ajax=1&p="+page,//+tab,
+            success: function(data)
+            {
+                if($.trim(data) != '')
+                {
+                    $("#goods_list").append(data);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

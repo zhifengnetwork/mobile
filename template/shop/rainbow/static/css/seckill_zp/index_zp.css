@@ -1,0 +1,216 @@
+@font-face{
+	font-family: 'PingFangBold';
+	src:url("../../font/PingFangBold.ttf")
+}
+.wrapper{
+	width: 100%;
+	height: 100%;
+	background: #f5f5f5;
+	font-family: "PingFangBold";
+}
+.seckill-wrap-zp{
+	padding-bottom: 1.6rem;
+}
+/*顶部*/
+.seckill-wrap-zp .topbar{
+	width: 100%;
+	height: 0.88rem;
+	background: #fff;
+	padding: 0 0.2rem;
+	display: flex;
+	align-items: center;
+	position: relative;
+	box-sizing: border-box;
+}
+.seckill-wrap-zp .topbar .return-btn img{
+	width: 0.2rem;
+	height: 0.32rem;
+	position: absolute;
+	left: 0.2rem;
+	top: 0.3rem;
+}
+.seckill-wrap-zp .topbar .share-btn img{
+	width: 0.28rem;
+	height: 0.3rem;
+	position: absolute;
+	right: 0.2rem;
+	top: 0.3rem;
+}
+.seckill-wrap-zp .topbar .topNav{
+	width: 100%;
+	display: flex;
+	justify-content:space-around;
+	font-size: 0.34rem;
+}
+.seckill-wrap-zp .topbar .topNav a{
+	color: #333333;
+}
+
+/*抢购时间*/
+.rush-time-zp ul{
+	height: 1rem;
+	display: flex;
+	align-items: center;
+	background: #fff;
+}
+.rush-time-zp ul li{
+	height: 1rem;
+	text-align: center;
+	padding: 0.1rem 0;
+	box-sizing: border-box;
+}
+.rush-time-zp ul li.active{
+	background: #ff5722;
+	color: #fff;
+}
+.rush-time-zp ul li span{
+	line-height: 0.4rem;
+	font-size: 0.22rem;
+}
+.rush-time-zp ul li span:first-child{
+	font-size: 0.32rem;
+}
+.seckill-ad-zp a{
+	display: block;
+}	
+.seckill-ad-zp img{
+	width: 100%;
+	display: block;
+}
+
+/*秒杀商品列表*/
+.seckill-list-zp{
+	
+	background: #ffffff;
+}
+.seckill-list-zp ul li{
+	display: flex;
+	padding: 0.25rem 0.2rem;
+	border-bottom: 0.02rem solid #f4f4f4;
+}
+.seckill-list-zp ul li .pro-img{
+	width: 2.04rem;
+	height: 2.04rem;
+	margin-right: 0.25rem;
+	overflow: hidden;
+}
+.seckill-list-zp ul li .pro-img img{
+	width: 100%;
+	display: block;
+}
+.seckill-list-zp ul li .text{
+	flex: 1;
+	position: relative;
+}
+.seckill-list-zp ul li .text h3 a{
+	color: #333333;
+	margin-bottom: 0.15rem;
+	font-size: 0.3rem;
+}
+.seckill-list-zp ul li .text .dec{
+	font-size: 0.24rem;
+	color: #666666;
+}
+.seckill-list-zp ul li .text .discount{
+	width: 0.75rem;
+	height: 0.35rem;
+	line-height: 0.35rem;
+	text-align: center;
+	color: #e82e5a;
+	font-size: 0.22rem;
+	border: 0.01rem solid #e82e5a;
+	margin: 0.12rem 0;
+}
+.seckill-list-zp ul li .text .discount-price{
+	color: #e82e5a;
+	font-size: 0.3rem;
+	margin-bottom: 0.2rem;
+}
+.seckill-list-zp ul li .text .original-price{
+	text-decoration: line-through;
+	margin-right: 1rem;
+}
+.seckill-list-zp ul li .text .line-5{
+	color: #999999;
+	font-size: 0.22rem;
+}
+
+.seckill-list-zp ul li .text .rush-buy{
+	position: absolute;
+	right: 0;
+	bottom: 0rem;
+}
+.seckill-list-zp ul li .text .rush-buy a{
+	font-size: 0.24rem;
+	color: #fff;
+	width: 1.44rem;
+	height: 0.6rem;
+	line-height: 0.6rem;
+	text-align: center;
+	background: #ff5722;
+	border-radius: 0.08rem;
+}
+.seckill-list-zp ul li .text .progress-bar{
+	width: 100%;
+	height: 0.1rem;
+	background: #cccccc;
+	border-radius: 0.8rem;
+	margin-top: 0.1rem;
+	position: relative;
+}
+.seckill-list-zp ul li .text .progress{
+	width: 50%;
+	height: 0.1rem;
+	background: #ff5722;
+	border-radius: 0.8rem;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+/*钻石世家*/
+.diamonds-wrap-zp{
+	margin: 0.3rem 0;
+}
+.diamonds-wrap-zp .title{
+	text-align: center;
+	margin-bottom: 0.3rem;
+}
+.diamonds-wrap-zp .title h2{
+	font-size: 0.3rem;
+	color: #333333;
+	margin-bottom: 0.15rem;
+}
+.diamonds-wrap-zp .title p{
+	font-size: 0.2rem;
+	color: #999999;
+}
+
+.diamonds-wrap-zp .diamonds-list ul{
+	display: flex;
+	justify-content: space-around;
+}
+.diamonds-wrap-zp .diamonds-list ul li .pro-img{
+	width: 2.2rem;
+	height: 2.2rem;
+	margin-bottom: 0.15rem;
+}
+.diamonds-wrap-zp .diamonds-list ul li .pro-img img{
+	width: 100%;
+	display: block;
+}
+.diamonds-wrap-zp .diamonds-list ul li .text p{
+	text-align: center;
+	color: #333333;
+	font-size: 0.26rem;
+	line-height: 0.4rem;
+}
+.diamonds-wrap-zp .diamonds-list ul li .text .discount-price{
+	font-size: 0.24rem;
+	color: #e8305c;
+}
+.diamonds-wrap-zp .diamonds-list ul li .text .original-price{
+	font-size: 0.22rem;
+	color: #999999;
+	text-decoration: line-through
+} 

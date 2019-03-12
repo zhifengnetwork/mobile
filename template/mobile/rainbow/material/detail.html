@@ -7,105 +7,40 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="__STATIC__/js/public/rem.js"></script>
 	<link rel="stylesheet" href="__STATIC__/css/public_lb/public.css" />
-    <style>
-        html,body,div,p,a,span {
-            margin: 0;
-            padding: 0;
-		}
-		#container {
-            padding-top: .88rem;
-            box-sizing: border-box;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box; 
-        }
-		.head {
-            width: 100%;
-            height: .8rem;
-            background: #fff;
-            border-bottom: .01rem solid #bbb;
-        }
-        .head p {
-            float: left;
-            margin:0 auto;
-            width: 80%;
-            color: #101010;
-            font-size: .35rem;
-            font-weight: 600;
-            line-height: .8rem;
-            text-align: center;
-        }
-        .head a {
-            margin: 3% 0 0 3%;
-            float: left;
-            display: inline-block;
-            width: 4%;
-            height: .45rem;
-            background: url(__STATIC__/images/return.png) no-repeat;
-            background-size: 100% 100%;
-        }
-
-		.title-wrap .title {
-			margin: 3% 0 0 3%;
-			font-size: .35rem;
-			font-weight: 900;
-		}
-		.title-wrap .date {
-			margin: 2% 0 0 3%;
-			font-size: .24rem;
-		}
-		.title-wrap .what p {
-			margin: 5% 0 0 2%;
-			/*line-height: 24px;*/
-			line-height: .46rem !important;
-			width: 95%;
-			font-size: .26rem !important;
-			text-indent: .25rem;
-		}
-		.title-wrap .code {
-			margin: 10% auto;
-			width: 50%;
-		}
-        img {
-			width: 100%;
-		}
-		.lb_headWrap {
-			background: #ffff;
-			border-bottom: .01rem solid #999; 
-		}
-    </style>
+	<link rel="stylesheet" href="__STATIC__/css/material/detail.css?v=1552362679" />
+        
 </head>
 <body>
     <div id="container">
-        <!-- <div class="head">
-            <a href="javascript:history.back(-1)"></a>
-            <p>阅读区</p>
-		</div> -->
+    	<!--head wrap-->
 		<div class="lb_headWrap topBox_backgroundColor">
 			<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
 				<img class="lb_headWrap_return_img" src="__STATIC__/images/public_lb/returnImg666_lb.png"/>
 			</p>
 			<span>阅读区</span>
 		</div>
-			<div class="title-wrap">
-				<div class="title">{$atDetail['title']}</div>
-				<div class="date">
-					<span>作者：saaaaa</span>&nbsp;
-					<span>{$atDetail['add_time']|date="Y-m-d H:i:s",###}</span>
-				</div>
-				<div class="what">
-					<p>{$atDetail['content']}</p>
-				</div>
-				
-				
-				<div class="date">
-						<span>阅读：<if condition="$vs['click'] gt 0 ">{$vs['click']}<else/>0</if></span>
-						
-					</div>
-				
-				<div class="code" id="QR_Code">
-					<!-- <img src="__STATIC__/images/z-tihuoma.png"/> -->
-				</div>
+		
+		<div class="title-wrap">
+			<div class="title">{$atDetail['title']}</div>
+			<div class="date">
+				<span>作者：saaaaa</span>&nbsp;
+				<span>{$atDetail['add_time']|date="Y-m-d H:i:s",###}</span>
 			</div>
+			<div class="what">
+				<p>{$atDetail['content']}</p>
+			</div>
+			
+			
+			<div class="date">
+					<span>阅读：<if condition="$vs['click'] gt 0 ">{$vs['click']}<else/>0</if></span>
+					
+				</div>
+			
+			<div class="code" id="QR_Code">
+				<!-- <img src="__STATIC__/images/z-tihuoma.png"/> -->
+			</div>
+		</div>
+		
     </div>    
 </body>
 </html>

@@ -1,0 +1,121 @@
+/* 
+    search搜索样式
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-text-size-adjust: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+    display:block;
+    /* float: left;
+    font-size: 0.2rem; */
+}
+
+ul{
+    list-style: none;
+}
+
+.lsw_searchbox{
+    width: 100%;
+    background-color: #ffffff;
+}
+
+.lsw_headerBox{
+    height: .75rem;
+    width: 100%;
+    display: flex;
+    justify-content:space-between;
+    margin-top:.3rem;
+}
+
+.lsw_headerBox .lsw_leftImg{
+ width: .61rem;
+ height: .75rem;
+}
+
+.lsw_headerBox .lsw_leftImg>a{
+    width: .61rem;
+    height: .75rem;
+    display: inline-block;
+    margin-left: 0.1rem;
+}
+
+.lsw_headerBox .lsw_leftImg>a>img{
+    width: .29rem;
+    height: .45rem;
+    vertical-align: top;
+    margin:.15rem 0 0 .28rem;
+}
+
+.lsw_Inputimg{
+    width: 5.23rem;
+    height: .75rem;
+    display: flex;
+    flex-wrap:nowrap;
+}
+
+ .searchimg{
+     background: url("../images/seas.png") no-repeat 100%;
+     background-color: #f2f2f2;
+     border-radius: .2rem 0rem 0rem .2rem;
+     width: .78rem;
+     height: .75rem;
+     background-size:50%;
+ }
+
+  .SsearchIput{
+      border: 0;
+      border-radius: 0 .2rem .2rem 0;
+      background-color: #f2f2f2;
+      height: .75rem;
+      width: 4.47rem;
+      font-size:.3rem;
+      padding-left:.2rem;
+      outline: none;
+  }
+
+  .lsw_searchText a{
+   font-size:.3rem;
+  }
+  .lsw_searchText{
+      height: .75rem;
+      line-height: .75rem;
+      padding-right: .3rem;
+  }
+.lsw_details {
+    margin:.95333rem 0 .42667rem 0;
+    /* line-height: 0rem; */
+}
+.lsw_hotsearch span {
+    float: left;
+    font-size: .3608267rem;
+    margin-left: 0.45rem;
+    font-weight: bold;
+    color: #333;
+}
+.lsw_sousuo-text{
+    background: #eee;
+}
+.lsw_sousuo-text a{
+    float: left;
+    font-size: 0.25rem;
+    background: #eee;
+    padding: 0.15rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.3rem;
+    border-radius: 0.09rem;
+    color:#7a7a7a;
+}
+.lsw_product{
+    margin-top: 1.9rem;
+    margin-left: 0.45rem;
+}

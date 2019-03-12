@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<title>personal</title>
+		<link rel="stylesheet" href="__STATIC__/css/lj_personal.css" />
+		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.min.js" ></script>
+		<script type="text/javascript" src="__STATIC__/js/public/rem.js" ></script>
+	</head>
+	<body>
+			<div class="lj_top">
+				<div class="lj_wrap">
+					<div class="lj_top_left">
+						<a href="javascript:history.go(-1);"><img src="__STATIC__/image/lj_top_left.png" /></a>
+					</div>
+					<div class="lj_top_right">
+						<p>个人资料</p>
+					</div>
+				</div>
+			</div>
+			
+			<div class="lj_wrap">
+				<a href="p_details.html">
+					<div class="lj_userinfo">
+						<div class="lj_userinfo_all">
+							<div class="lj_userinfo_img">
+								<img src="{$user.head_pic}" />
+							</div>
+							<div class="lj_userinfo_con">
+								<p>{$user.nickname}</p>
+								<span>手机号: {$user.mobile}</span>
+							</div>
+							<div class="lj_userinfo_r">
+								<img class="lj_list_r_img2" src="__STATIC__/image/lj_userinfo_r.png" />
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="lj_wrap">
+				<div class="lj_main_p">
+					<ul>
+						<li>
+							<a href="lj_address.html">
+								<div class="lj_main_p_div">
+									<p>地址管理</p>
+									<img class="lj_list_r_img2" src="__STATIC__/image/lj_userinfo_r.png" />
+								</div>
+							</a>
+						</li>
+						<li>
+							<a href="password.html">
+								<div class="lj_main_p_div">
+									<p>修改密码</p>
+									<img class="lj_list_r_img2" src="__STATIC__/image/lj_userinfo_r.png" />
+								 </div>
+							 </a>
+						</li>
+						<li>
+							<a href="paypwd.html">
+								<div class="lj_main_p_div">
+									<p>支付设置</p>
+									<img class="lj_list_r_img2" src="__STATIC__/image/lj_userinfo_r.png" />
+								</div>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<div class="lj_main_p_div">
+								<p>通用</p>
+								 <img class="lj_list_r_img2" src="__STATIC__/image/lj_userinfo_r.png" />
+								</div>
+							</a>
+						</li>
+						<li>
+							<p>操作流程</p>
+							<a href="#"> <img class="lj_list_r_img2" src="__STATIC__/image/lj_userinfo_r.png" /></a>
+						</li>
+						<li>
+							<p>关于APP</p>
+							<a href="#"> <img class="lj_list_r_img2" src="__STATIC__/image/lj_userinfo_r.png" /></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="lj_wrap">
+				<a href="{:U('Shop/user/logout')}">
+					<div class="lj_footer_m">
+						退出登录
+					</div>
+				</a>
+			</div>
+				
+	</body>
+</html>

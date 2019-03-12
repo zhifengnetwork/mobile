@@ -1,0 +1,209 @@
+<include file="public/layout" />
+<style>
+    .err{color:#F00; display:none;}
+</style>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>秒杀管理 - 编辑秒杀</h3>
+                <h5>网站系统秒杀活动详情页</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="handleposition" method="post">
+        <input type="hidden" id="goods_id" name="goods_id" value="{$info.goods_id}">
+        <input type="hidden" name="id" value="{$info.id}">
+        <input type="hidden" name="item_id" value="{$info.item_id}">
+        <div class="ncap-form-default">
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><em>*</em>选择商品：</label>
+                        </dt>
+                        <dd class="opt">
+                            <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">
+                            <span class="err" id="err_title"></span>
+                            <p class="notic">请选择商品。</p>
+                        </dd>
+                    </dl>
+        			
+        			<dl class="row">
+        			    <dt class="tit">
+        			        <label><em>*</em>开始时间：</label>
+        			    </dt>
+        			    <dd class="opt">
+        			        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">
+        			        <span class="err" id="err_title"></span>
+        			        <p class="notic">设置秒杀商品开始时间。</p>
+        			    </dd>
+        			</dl>
+        			
+        			<dl class="row">
+        			    <dt class="tit">
+        			        <label><em>*</em>结束时间：</label>
+        			    </dt>
+        			    <dd class="opt">
+        			        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">
+        			        <span class="err" id="err_title"></span>
+        			        <p class="notic">设置秒杀商品结束时间。</p>
+        			    </dd>
+        			</dl>
+        			
+        			<dl class="row">
+        			    <dt class="tit">
+        			        <label><em>*</em>秒杀价格：</label>
+        			    </dt>
+        			    <dd class="opt">
+        			        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">
+        			        <span class="err" id="err_title"></span>
+        			        <p class="notic">设置秒杀价格，必须低于原价。</p>
+        			    </dd>
+        			</dl>
+        			
+        			<dl class="row">
+        			    <dt class="tit">
+        			        <label><em>*</em>秒杀数量：</label>
+        			    </dt>
+        			    <dd class="opt">
+        			        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">
+        			        <span class="err" id="err_title"></span>
+        			        <p class="notic">设置秒杀数量。</p>
+        			    </dd>
+        			</dl>
+        			
+        			<dl class="row">
+        			    <dt class="tit">
+        			        <label><em>*</em>每人限购：</label>
+        			    </dt>
+        			    <dd class="opt">
+        			        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">
+        			        <span class="err" id="err_title"></span>
+        					<p class="notic">设置限购数量。</p>
+        			    </dd>
+        			</dl>
+					
+					<dl class="row">
+					    <dt class="tit">
+					        <label><em>*</em>是否返佣：</label>
+					    </dt>
+					    <dd class="opt">
+					        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">
+					        <span class="err" id="err_title"></span>
+					    </dd>
+					</dl>
+					<dl class="row">
+					    <dt class="tit">
+					        <label><em>*</em>允许使用优惠券：</label>
+					    </dt>
+					    <dd class="opt">
+					        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">
+					        <span class="err" id="err_title"></span>
+					    </dd>
+					</dl>
+					<dl class="row">
+					    <dt class="tit">
+					        <label><em>*</em>下架允许购买：</label>
+					    </dt>
+					    <dd class="opt">
+					        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">
+					        <span class="err" id="err_title"></span>
+					    </dd>
+					</dl>
+					<dl class="row">
+					    <dt class="tit">
+					        <label><em>*</em>需要关注公众号：</label>
+					    </dt>
+					    <dd class="opt">
+					        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">
+					        <span class="err" id="err_title"></span>
+					    </dd>
+					</dl>
+					
+        
+                        <div class="bot"><a onclick="verifyForm()" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+                    <!-- </if> -->
+                </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#start_time').layDate();
+    })
+    var ajax_return_status = 1; // 标识ajax 请求是否已经回来 可以进行下一次请求
+    function verifyForm(){
+        $('span.err').hide();
+        if (ajax_return_status == 0) {
+            return false;
+        }
+        if ($('#start_time').val() == ''){
+            layer.msg('请输入活动时间', {icon: 2,time: 1000});
+            return false;
+        }
+        ajax_return_status = 0;
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/Promotion/flash_sale_info')}",
+            data: $('#handleposition').serialize(),
+            dataType: "json",
+            error: function () {
+                ajax_return_status = 1
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+                        location.href = "{:U('Admin/Promotion/flash_sale')}";
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 2,time: 1000});
+                    $.each(data.result, function (index, item) {
+                        $('#err_' + index).text(item).show();
+                    });
+                    ajax_return_status = 1;
+                }
+            }
+        });
+    }
+    function selectGoods(){
+        var url = "{:U('Promotion/search_goods',array('tpl'=>'select_goods','prom_type'=>1,'prom_id'=>$info[id]))}";
+        layer.open({
+            type: 2,
+            title: '选择商品',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['75%', '75%'],
+            content: url,
+        });
+    }
+    function call_back(goodsItem){
+        $('#goods_id').val(goodsItem.goods_id);
+        $('input[name=item_id]').val(''); //将规格ID重置一下
+        var html = '';
+        if(goodsItem.spec != null){
+            //有规格
+            html = '<div style="float: left;margin: 10px auto;" class="selected-group-goods"><div class="goods-thumb">' +
+                    '<img style="width: 162px;height: 162px" src="'+goodsItem.spec.spec_img+'"/></div> <div class="goods-name"> ' +
+                    '<a target="_blank" href="/index.php?m=Home&c=Goods&a=goodsInfo&id='+goodsItem.goods_id+'">'+goodsItem.goods_name+goodsItem.spec.key_name+'</a> </div>' +
+                    ' <div class="goods-price">商城价：￥'+goodsItem.spec.price+'库存:'+goodsItem.spec.store_count+'</div> </div>';
+            $('input[name=item_id]').val(goodsItem.spec.item_id)
+            $('input[name=goods_name]').val(goodsItem.goods_name + goodsItem.spec.key_name);
+        }else{
+            html = '<div style="float: left;margin: 10px auto;" class="selected-group-goods"><div class="goods-thumb">' +
+                    '<img style="width: 162px;height: 162px" src="'+goodsItem.goods_image+'"/></div> <div class="goods-name"> ' +
+                    '<a target="_blank" href="/index.php?m=Home&c=Goods&a=goodsInfo&id='+goodsItem.goods_id+'">'+goodsItem.goods_name+'</a> </div>' +
+                    ' <div class="goods-price">商城价：￥'+goodsItem.goods_price+'库存:'+goodsItem.store_count+'</div> </div>';
+            $('input[name=goods_name]').val(goodsItem.goods_name);
+        }
+        $('#select_goods_button').attr('data-goods-id',goodsItem.goods_id);
+        $('#selected_group_goods').empty().html(html);
+        $('.selected-group-goods').show();
+        layer.closeAll('iframe');
+    }
+</script>
+</body>
+</html>

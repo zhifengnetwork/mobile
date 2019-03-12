@@ -1,0 +1,149 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+/*字体库*/
+@font-face{
+	font-family: 'PingFangMedium';
+	src:url("/template/mobile/rainbow/static/font/PingFangMedium.ttf");
+}
+body {
+	font-family:"PingFangMedium";
+}
+/*public 省略号*/
+.publicEllipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+/*去除IOS下 => input, select默认样式*/
+input, select {
+	-webkit-appearance:none; 
+	background: none;
+	border: none;
+	outline: none;
+}
+/*清除浮动代码 '父元素'*/
+.clearfloat:after{
+	display: block;
+	clear: both;
+	content:" ";
+	visibility: hidden;
+	height: 0;
+}
+.clearfloat{
+	zoom: 1;
+}
+/*透明度*/
+.publicOpacity {
+	filter:alpha(opacity=0);          
+	-moz-opacity:0;          
+	-khtml-opacity: 0;          
+	opacity: 0; 
+}
+/*向右箭头 ">"*/
+.publicGetIntoIcon_lb {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto 0;
+	z-index: 1;
+	width: .13rem;
+	height: .22rem;
+}
+/*垂直居中*/
+.publicDrooping {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	margin: auto;
+}
+/*弹窗 背景wrap（固定定位）*/
+.publicAlertWrap {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 20;
+	width: 100%;
+	height: 100vh;
+	background: rgba(0,0,0,.5);
+}
+/*public head*/
+.lb_headWrap {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 20;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: .88rem;
+	font-size: .3rem;
+	line-height: .88rem;
+	text-align: center;
+	color: #333;
+	letter-spacing: .02rem;
+}
+/*头部 底部线*/
+.lb_headWrap_line {
+	border-bottom: .01rem solid #ccc;
+}
+/*头部 背景颜色*/
+.lb_headWrap_bacColor {
+	background-color: #fff;
+}
+/*头部 字体颜色*/
+.lb_headWrap_fiontWhite {
+	color: #fff;
+}
+
+.lb_headWrap_return {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: .94rem;
+	height: 100%;
+}
+.lb_headWrap_return_img {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	width: .18rem;
+	height: .3rem;
+}
+/*（右box）文字*/
+.lb_headWrap_text {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 1;
+	width: 1.4rem;
+	height: 100%;
+	font-size: .26rem;
+	line-height: .88rem;
+	letter-spacing: .02rem;
+}
+/*（右box）分享 图标*/
+.lb_headWrap_share {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 1;
+	width: 1.04rem;
+	height: 100%;
+}
+.lb_headWrap_share_icon {
+	width: .28rem;
+	height: .3rem;
+}
+
