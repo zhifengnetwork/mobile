@@ -31,53 +31,49 @@
 					<p class="headTabTerm_lb" onclick="pageJump('/shop/seckill/index_zp')">秒杀</p>
 				</div>
 			</div>
-
-			<!--1-->
-			<div class="section">
-				<!--<img src="__STATIC__/auction/pic.png" class="img"/>-->
-				<div class='time'>1月24号  16:00:00开枪</div>
-				<div class="fu">
-					<img src="__STATIC__/auction/lovely.jpg" class="img"/>
-				</div>
-				<div class="bottom">
-
-				<div class="priceear">
-					<p class="name">商品名称商品名称商品名称商品名称</p>
-					<p style="display: inline-block;" class="price">￥72</p><span>起拍</span>
-				</div>
-				<a class="joinauction" href="detail.html">
-					参与竞拍
-				</a>
-
-					<div class="priceear">
-						<p class="name">商品名称</p>
-						<p style="display: inline-block;" class="price">￥72</p><span>起拍</span>
+			<foreach name="list" item="li">
+				<!--1-->
+				<div class="section">
+					<!--<img src="__STATIC__/auction/pic.png" class="img"/>-->
+					<div class='time'>{$li.start_time}开枪</div>
+					<div class="fu">
+						<if condition="$li[original_img] eq ''">
+							<img src="__STATIC__/auction/lovely.jpg" class="img"/>
+						<else>
+							<img src="{$li[original_img]}" class="img"/>
+						</if>
 					</div>
-					<a class="joinauction" href="/shop/auction/detail.html">
-						参与竞拍
-					</a>
+					<div class="bottom">
 
+						<div class="priceear">
+							<p class="name">{$li.goods_name}</p>
+							<p style="display: inline-block;" class="price">￥{$li.start_price}</p><span>起拍</span>
+						</div>
+						<a class="joinauction" href="detail.html">
+							参与竞拍
+						</a>
+					</div>
 				</div>
+			</foreach>
 
-			</div>
 
 			<!--2-->
-			<div class="section">
+			<!--<div class="section">-->
 
-				<div class='time'>1月24号  16:00:00开枪</div>
-				<div class="fu">
-				<img src="__STATIC__/auction/pic.png" class="img"/>
-				</div>
+				<!--<div class='time'>1月24号  16:00:00开枪</div>-->
+				<!--<div class="fu">-->
+				<!--<img src="__STATIC__/auction/pic.png" class="img"/>-->
+				<!--</div>-->
 
-				<div class="priceear">
-					<p class="name">商品名称商品名商品名</p>
-					<p style="display: inline-block;" class="price">￥72</p><span>起拍</span>
-				</div>
-				<a class="joinauction" href="detail.html">
-					参与竞拍
-				</a>
+				<!--<div class="priceear">-->
+					<!--<p class="name">商品名称商品名商品名</p>-->
+					<!--<p style="display: inline-block;" class="price">￥72</p><span>起拍</span>-->
+				<!--</div>-->
+				<!--<a class="joinauction" href="detail.html">-->
+					<!--参与竞拍-->
+				<!--</a>-->
 
-			</div>
+			<!--</div>-->
 
 		</div>
 		
@@ -85,6 +81,38 @@
 		<script src="__STATIC__/js/public/public_lb.js"></script>
 		<!--头部 Tab切换样式(跳转)-->
 		<script src="__STATIC__/js/listdata/public.js"></script>
+		<script type="text/javascript">
+			//加载更多商品
+			var page = 1;
+			function ajax_sourch_submit(){
+				++page;
+				$.ajax({
+					type:'GET',
+					url:"/index.php?m=Shop&c=Auction&is_ajax=1&a=index&p="+page,
+					success:function(data){
+						if(data){
+							$(".big").append(data);
+							// $('.get_more').hide();
+						}
+						// else{
+						// 	$('.get_more').hide();
+						// 	$('#getmore').remove();
+						// }
+					}
+				})
+			}
+			//滚动加载更多
+			$(window).scroll(
+					function() {
+						var scrollTop = $(this).scrollTop();
+						var scrollHeight = $(document).height();
+						var windowHeight = $(this).height();
+						if (scrollTop + windowHeight == scrollHeight) {
+							ajax_sourch_submit();//调用加载更多
+						}
+					}
+			);
+		</script>
 
 	</body>
 
