@@ -10,7 +10,7 @@
 	-moz-box-sizing: border-box;
 	width: 7.5rem;
 	height: .8rem;
-	    box-shadow: 0 .03rem 0.1rem #ccc;
+	box-shadow: 0 .03rem 0.1rem #ccc;
 	background-color: #fff;
 }
 .returnBut_lb {
@@ -48,7 +48,8 @@
 }
 /*项*/
 .headTabTerm_lb {
-	font: .3rem/.8rem "微软雅黑";
+	font-size: .3rem;
+	line-height: .8rem;
 	letter-spacing: .02rem;
 	color: #000;
 }
