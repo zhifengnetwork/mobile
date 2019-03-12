@@ -8,15 +8,18 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<title>签到</title>
 		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--<link rel="stylesheet" href="__STATIC__/css/public_lb/jquery-weui.min.css?v=1552363434" />-->
 		<link rel="stylesheet" href="__STATIC__/css/sign/index.css?v=1552363434"/>
 		<link rel="stylesheet" href="__STATIC__/css/public_lb/public.css?v=1552363434" />
 		<!--日历 css-->
     	<link rel="stylesheet" href="__STATIC__/css/sign/date.css" media="screen" title="no title" charset="utf-8">
+		<!--弹框-->
+		<link rel="stylesheet" href="__STATIC__/css/public_lb/alertWrap.css?v=1552363434" />
 		
 	</head>
 	<body>
 		<!--最外边框-->
-		<div class="wrap_signin">
+		<div class="wrap_signin">					
 			<!--public head-->
 			<div class="lb_headWrap lb_headWrap_fiontWhite topBox_backgroundColor">
 				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
@@ -71,10 +74,11 @@
 		<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
 		<script src="__STATIC__/js/public/public_lb.js"></script>
 		<!--以下两个，日历js-->
-		<script src="__STATIC__/js/sign/DateMarker.js"></script>
 		<script src="__STATIC__/js/sign/sign.js"></script>
-		<!--layer插件-->
-		<script src="__STATIC__/js/layer/layer.js"></script>
+		<script src="__STATIC__/js/sign/DateMarker.js"></script>
+		<!--弹窗 函数的js => sAFail($(最外的边框),icon路径,title,text,是否返回上一页(true)),sASuccess(),warningAlert()-->
+		<script src="__STATIC__/js/public/publicAlert.js"></script>
+		
 		<script>
 			/*微信h5页面禁止下拉露出网页来源*/
 			var overscroll = function(el) {
@@ -132,8 +136,6 @@
 							console.log('后台传的数据',data);
 							/*后台 传过来的数组（签到日期）*/
 							var signArr = data['data'];
-							/*存储后台传过来（修改后）日期*/
-							var newSignArr = [];
 							console.log('编辑前:',signArr);
 							/*后台传过来的值 => '2019/03/06'*/
 							/*月、日*/
@@ -145,16 +147,17 @@
 								monthS = Number(signArr[k].split('/')[1]);
 								dayS = Number(signArr[k].split('/')[2]);
 								/*console.log(signArr[k].split('/')[0],monthS,dayS);*/
-								newSignArr[k] = signArr[k].split('/')[0] + '/' + monthS + '/' + dayS;
+								/*signData变量声明在sign.js中*/
+								signData[k] = signArr[k].split('/')[0] + '/' + monthS + '/' + dayS;
+								
 							}
-							
-							console.log('编辑后:',newSignArr);
+							console.log('编辑后:',signData);
 //							/*后台传过来的数组*/
-							for(var j=0;j<newSignArr.length;j++){
+							for(var j=0;j<signData.length;j++){
 								/*.getMonth()=>获取当前月份(0-11,0代表1月)*/
 								for(var i = 0; i < $('.date-marker-body li').length; i++) {
 									/**传过来的数据-不要在月份和日期前加0 =>'2019/3/6' **/
-									if($('.date-marker-body li').eq(i).attr('data-markdate') == newSignArr[j]) {
+									if($('.date-marker-body li').eq(i).attr('data-markdate') == signData[j]) {
 										$('.date-marker-body li').eq(i).append(`
 											<img class="signInIconL" src="/template/mobile/rainbow/static/images/sign/signInIconS.png" />
 										`);
@@ -196,7 +199,8 @@
 				$('.signInBut').on('click',function(){
 					/*后台传数据=> auth==1;可以签到 , auth==0;不可以签到*/
 					if(signObj['admin'] == 0){
-						layer.msg('权限不足，无法签到！');
+						/*对话框*/
+						suredAlert($('.wrap_signin'),'权限不足，无法签到！');
 						return false;
 					}
 					/*判断用户签到状态=>ajax*/
@@ -233,6 +237,8 @@
 										`);
 									}
 								}
+								/*把签到数据，丢到本地渲染*/
+								signData.push(todayState);
 								
 							},
 							error: function(error){ 
