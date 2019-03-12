@@ -1173,10 +1173,8 @@ class User extends MobileBase
     public function team_list(){
     	$DistributLogic = new DistributLogic;
         $result= $DistributLogic->get_team_list($this->user_id);  //团队列表
-        // dump($result);die;
-        
-        // dump($list);
-        // dump($result['result']);
+        // $team_list = tpCache('team_list');
+        // dump($team_list);die;
         // //判断下级是否还有下级
         // dump($result['result']);die;
         // foreach($result['result'] as $key=>$value){
