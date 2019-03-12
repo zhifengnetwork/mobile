@@ -7,115 +7,15 @@
     <title>素材区</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="__STATIC__/js/public/rem.js"></script>
-    <link rel="stylesheet" href="__STATIC__/css/public_lb/public.css" />
-    
+    <link rel="stylesheet" href="__STATIC__/css/public_lb/public.css?v=1552359149" />
+    <link rel="stylesheet" href="__STATIC__/css/material/index.css?v=1552359149" />
     <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css"> -->
     <!-- <script src="main.js"></script> -->
-    <style>
-        html,
-        body,
-        div,
-        p,
-        a {
-            margin: 0;
-            padding: 0;
-        }
-        #container {
-            padding-top: .88rem;
-            box-sizing: border-box;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box; 
-        }
-        .head {
-            width: 100%;
-            height: .8rem;
-            background: #fff;
-            border-bottom: 1px solid #bbb;
-        }
-
-        .head p {
-            float: left;
-            margin: 0 auto;
-            width: 80%;
-            color: #101010;
-            font-size: .35rem;
-            font-weight: 600;
-            line-height: .8rem;
-            text-align: center;
-        }
-
-        .head a {
-            margin: 3% 0 0 3%;
-            float: left;
-            display: inline-block;
-            width: 4%;
-            height: .45rem;
-            background: url(__STATIC__/images/return.png) no-repeat;
-            background-size: 100% 100%;
-        }
-
-        .item-wrap {
-            width: 100%;
-            height: 1.7rem;
-            background: #fff;
-            border-bottom: 1px solid #bbb;
-        }
-
-        .item-wrap .list div {
-            float: left;
-        }
-
-        .img {
-            width: 100%;
-            border-radius: 50%;
-        }
-
-        .item-wrap .list .content {
-            margin: 3% 0 0 3%;
-            width: 65%;
-            font-size: .18rem;
-        }
-
-        .item-wrap .list .content p {
-            margin: 0 0 3% 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
-
-        .item-wrap .list .content .title {
-            font-size: .3rem;
-            font-weight: 900;
-        }
-
-        .item-wrap .list .code {
-            margin: 1% 0 0 5%;
-            width: 25%;
-            font-size: 0;
-        }
-
-        img {
-            width: 100%;
-        }
-        a{ 
-            text-decoration:none; 
-            color:#333; 
-        }
-        .lb_headWrap {
-			background: #ffff;
-			border-bottom: 1px solid #999; 
-		} 
-    </style>
 </head>
 
 <body>
+	<!--最外边框-->
     <div id="container">
-        <!-- <div class="head">
-            <a href="javascript:history.back(-1)"></a>
-            <p>素材区</p>
-        </div> -->
         <!--public head-->
         <div class="lb_headWrap topBox_backgroundColor">
             <p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
@@ -123,27 +23,36 @@
             </p>
             <span>素材区</span>
         </div>
-		<foreach name="$material" item="vs">
-            <div class="item-wrap">
-                <a href="{:U('Material/getDetail', 'atID='.$vs['material_id'])}">
-                    <div class="list" id="getDetail">
-                        <div class="content">
-                            <p class="title">{$vs.title}</p>
-                            <p class="zi">
-                                {$vs.describe}
-                            </p>
-                        </div>
-                        <div class="code">
-                            <if condition="$vs.thumb" >
-                                <img src="{$vs.thumb}" />
-                            <else/>
-                                <img src="__STATIC__/images/not_img.jpg" />
-                            </if>
-                        </div>
-                    </div>
-                </a>
-            </div>
-		</foreach>
+        <!--内容-->
+        <div class="contentWrap clearfloat">
+    		
+			<foreach name="$material" item="vs">
+				<!--清除浮动，height自适应-->
+	            <div class="item-wrap clearfloat">
+	                <a href="{:U('Material/getDetail', 'atID='.$vs['material_id'])}">
+	                    <!--项-->
+	                    <div class="list clearfloat" id="getDetail">
+	                        <div class="content">
+	                            <p class="title">{$vs.title}</p>
+	                            <p class="zi">
+	                                {$vs.describe}
+	                            </p>
+	                        </div>
+	                        <div class="code">
+	                            <if condition="$vs.thumb" >
+	                                <img src="{$vs.thumb}" />
+	                            <else/>
+	                            	<!--前端放置的图片-->
+	                                <img src="__STATIC__/images/goodsimg.png" />
+	                            </if>
+	                        </div>
+	                    </div>
+	                </a>
+	            </div>
+			</foreach>
+		
+		</div>
+		
     </div>
 </body>
 
