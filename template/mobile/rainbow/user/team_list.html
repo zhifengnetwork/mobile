@@ -17,21 +17,36 @@
     }
 
 </style> -->
+<style type="text/css">
+    .application-record .re_tit .li3{
+        width: 3.2rem;
+    }
+    .application-record .re_tit .li2{
+        width: 6rem;
+        margin-right: 0.5rem;
+    }
+    .application-record ul .li3 {
+        width: 3.2rem;
+    }
+     .application-record ul .li2 {
+        width: 6rem;
+         margin-right: 0.5rem;
+    }
+</style>
 <div class="application-record">
     <div class="maleri30">
         <ul class="re_tit">
-            <li class="li4"><span>级数</span></li>
+            <li class="li3"><span>级数</span></li>
             <li class="li2"><span>名称</span></li>
             <li class="li1" style="width:33.3%"><span>电话</span></li>
             <!-- <li class="li3"><span>操作</span></li> -->
-            
         </ul>
         <div id="next1">
             <foreach name="lists" item="v" key="i">
                 <foreach name="v" item="vo" key="j">
                     <ul> 
                         <input type="hidden" class="user_id" name="user_id" value="{$vo[user_id]}">  
-                        <li class="li4"><span>{$i+1}级</span>
+                        <li class="li3"><span>{$i+1}级</span>
                         <li class="li2"><span>{$vo[nickname]}</span></li> 
                         <li class="li1" style="width:33.3%"><span>{$vo[mobile]}</span></li>  
                         <!-- <li class="li3"><span id="next">+</span></li> -->
