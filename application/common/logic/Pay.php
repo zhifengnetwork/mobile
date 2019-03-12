@@ -391,14 +391,15 @@ class Pay
         $goodsModel = new Goods();
         $this->goods = $goodsModel::get($goods_id);
 
-        // 能否领取商品
-        $isReceive = provingReceive($this->user, $this->goods['cat_id']); 
+        if ($this->goods['cat_id'] == 584 || $this->goods['cat_id'] == 585) {
+            // 能否领取商品
+            $isReceive = provingReceive($this->user, $this->goods['cat_id']); 
 
-        if($isReceive['status'] == 1){
-            $this->orderAmount = $this->orderAmount - $this->goodsPrice;
-            $this->signPrice = $this->goodsPrice;
-        } else {
-            throw new TpshopException("计算订单价格", 0, $isReceive);
+            if($isReceive['status'] == 1){
+                $this->orderAmount = $this->orderAmount - $this->goodsPrice;
+                $this->signPrice = $this->goodsPrice;
+            }
+            
         }
 
     }
