@@ -34,7 +34,8 @@ class Auction extends MobileBase
      */
     public function index()
     {
-       
+       //查询页面所需字段
+//        $auctionGoodsList=Db::field('goods.original_img')->table(['tp_goods'=>'goods','tp_auction'=>'auction'])->where()->select();
         return $this->fetch();
     }
 
@@ -58,10 +59,13 @@ class Auction extends MobileBase
     /**
      * 竞拍详情
      */
-    public function auction_detail()
+    public function detail()
     {
 
         $goods_id = I("get.id/d");
+        if (empty($goods_id)) {
+            $this->error('商品id不存在');
+        }
         $goodsModel = new \app\common\model\Auction();
         $goods = $goodsModel::get($goods_id);
         //dump($goods);exit;

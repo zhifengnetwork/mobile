@@ -1,0 +1,132 @@
+<include file="public/layout" />
+<style>
+    .system_img_location{text-align: center; width: 120px;position:absolute;top:15px; margin-left:265px;}
+</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>卡单设置</h3>
+                <h5>网站全局内容基本选项设置</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <foreach name="group_list" item="v" key="k">
+                    <li><a href="{:U('System/index',['inc_type'=> $k])}" <if condition="$k==$inc_type">class="current"</if>><span>{$v}</span></a></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span> </div>
+        <ul>
+            <li>系统签到设置,包括签到规则、签到积分数等相关模块。</li>
+            <li>该页面的所有默认图标logo在"网站根目录/public/static/images/logo"目录下, 如果需要重新设计图标可参考默认图</li>
+
+        </ul>
+    </div>
+    <form method="post" id="handlepost" action="{:U('System/handle')}" enctype="multipart/form-data" name="form1">
+        <input type="hidden" name="form_submit" value="ok" />
+        <div class="ncap-form-default">
+
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="sign_rule">签到规则</label>
+                </dt>
+                <dd class="opt">
+                	<input id="sign_rule" name="sign_rule" value="{$config.sign_rule}" class="input-txt" type="textarea" />
+                </dd>	
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="sign_point">签到积分数</label>
+                </dt>
+                <dd class="opt">
+                	<input id="sign_point" name="sign_point" value="{$config.sign_point}" class="input-txt" type="text" />
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="sign_fenxiao_days">分销员连续签到可得商品天数</label>
+                </dt>
+                <dd class="opt">
+                	<input id="sign_fenxiao_days" name="sign_fenxiao_days" value="{$config.sign_fenxiao_days}" class="input-txt" type="text" />
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="sign_daili_days">代理连续签到可得商品天数</label>
+                </dt>
+                <dd class="opt">
+                	<input id="sign_daili_days" name="sign_daili_days" value="{$config.sign_daili_days}" class="input-txt" type="text" />
+                </dd>
+            </dl>
+
+
+            <div class="bot">
+                <input type="hidden" name="inc_type" value="{$inc_type}">
+                <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="submit()">确认提交</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+</body>
+<script type="text/javascript">
+    function submit(){
+        // if(checkPhone()){
+            document.form1.submit();
+        // };
+    }
+    function checkPhone()
+    {
+        var phone = $('#phone').val();
+        if( !checkTelphones(phone)){
+            layer.alert('请输入正确的号码！',{icon:2});
+            return false;
+        }
+        return true;
+    }
+    //网站图标
+    function img_call_back(fileurl_tmp , elementid)
+    {
+        $("#"+elementid).val(fileurl_tmp);
+        $("#"+elementid+'_a').attr('href', fileurl_tmp);
+        $("#"+elementid+'_i').attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+    //网站用户中心logo
+    function user_img_call_back(fileurl_tmp)
+    {
+        $("#store_user_logo").val(fileurl_tmp);
+        $("#userimg_a").attr('href', fileurl_tmp);
+        $("#userimg_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+    //网站图标
+    function store_ico_call_back(fileurl_tmp)
+    {
+        $("#store_ico").val(fileurl_tmp);
+        $("#storeico_a").attr('href', fileurl_tmp);
+        $("#storeico_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+    //选择商品
+    function selectGoods(){
+        var url = "{:U('Promotion/search_goods',array('tpl'=>'select_goods','prom_type'=>1,'prom_id'=>$info[id]))}";
+        layer.open({
+            type: 2,
+            title: '选择商品',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['75%', '75%'],
+            content: url,
+        });
+    }
+   
+</script>
+</html>

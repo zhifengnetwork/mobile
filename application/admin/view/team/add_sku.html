@@ -1,0 +1,80 @@
+<include file="public/layout"/>
+
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+        <div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+        <div id="append_parent"></div>
+        <div id="ajaxwaitid"></div>
+        <div class="page">
+
+            <form class="form-horizontal" id="handleposition" method="post" onsubmit="return false;">
+
+                <div class="ncap-form-default">
+
+                    
+                        <dl class="row">
+                                <dt class="tit">
+                                    <label><em>*</em>原价</label>
+                                </dt>
+                                <dd class="opt">
+                                    <input type="text" name="act_name" value="" class="input-txt">
+                                    <p class="notic">请填写sku原价</p>
+                                </dd>
+                            </dl>
+                            
+                            <dl class="row">
+                                    <dt class="tit">
+                                        <label><em>*</em>现价</label>
+                                    </dt>
+                                    <dd class="opt">
+                                        <input type="text" name="act_name" value="" class="input-txt">
+                                        <p class="notic">请填写sku现价</p>
+                                    </dd>
+                            </dl>
+
+                            <dl class="row">
+                                    <dt class="tit">
+                                        <label><em>*</em>拼团价</label>
+                                    </dt>
+                                    <dd class="opt">
+                                        <input type="text" name="act_name" value="" class="input-txt">
+                                        <p class="notic">请填写sku拼团价</p>
+                                    </dd>
+                            </dl>
+                    
+                    <div class="bot"><a onclick="verifyForm()" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+                </div>
+            </form>
+        </div>
+<script type="text/javascript">
+    function verifyForm(){
+        $('span.err').hide();
+        $.ajax({
+            type: "POST",
+            url: "{:U('Team/save')}",
+            data: $('#handleposition').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1000
+                    }, function(){
+                        location.href = "{:U('Team/index')}";
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 2,time: 1000});
+                    $.each(data.result, function (index, item) {
+                        $('#err_' + index).text(item).show();
+                    });
+                }
+            }
+        });
+    }
+
+</script>
+        
+</body>
+</html>

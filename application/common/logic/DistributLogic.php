@@ -90,6 +90,10 @@ class DistributLogic
         ];
         return $return;
     }
+
+    public function auto_confirm(){
+        return null;
+    }
 }
 
 

@@ -12,7 +12,7 @@
 		</div>
 	</div>
 	<!-- 操作说明 -->
-	<div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+	<!-- <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
 		<div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
 			<h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
 			<span title="收起提示" id="explanationZoom" style="display: block;"></span>
@@ -20,7 +20,7 @@
 		<ul>
 			<li>拼团管理, 由平台设置管理.</li>
 		</ul>
-	</div>
+	</div> -->
 	<div class="flexigrid">
 		<div class="mDiv">
 			<div class="ftitle">
@@ -45,29 +45,43 @@
 							<div style="width: 24px;"><i class="ico-check"></i></div>
 						</th>
 						<th align="left" abbr="article_title" axis="col3" class="">
-							<div style="text-align: left; width: 50px;" class="">拼团ID</div>
+							<div style="text-align: left; width: 50px;" class="">商品</div>
+						</th>
+
+						<th align="left" abbr="ac_id" axis="col4" class="">
+							<div style="text-align: center; width: 100px;" class="">生效时间</div>
 						</th>
 						<th align="left" abbr="ac_id" axis="col4" class="">
-							<div style="text-align: center; width: 100px;" class="">拼团标题</div>
+							<div style="text-align: center; width: 240px;" class="">团购类型</div>
 						</th>
-						<th align="left" abbr="ac_id" axis="col4" class="">
-							<div style="text-align: center; width: 240px;" class="">拼团商品</div>
+
+						<th align="center" abbr="article_time" axis="col6" class="">
+
+							<div style="text-align: center; width: 50px;" class="">状态</div>
 						</th>
 						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 80px;" class="">拼团类型</div>
+							<div style="text-align: center; width: 100px;" class="">开团人数</div>
 						</th>
 						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 80px;" class="">成团有效期</div>
+							<div style="text-align: center; width: 100px;" class="">购买数量</div>
 						</th>
 						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 80px;" class="">需要成团人数</div>
+							<div style="text-align: center; width: 70px;" class="">购买限制数</div>
 						</th>
 						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 80px;" class="">购买限制数</div>
+							<div style="text-align: center; width: 70px;" class="">最大开团数</div>
 						</th>
+						
 						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 80px;" class="">是否启动</div>
+							<div style="text-align: center; width: 70px;" class="">剩余开团数</div>
 						</th>
+						
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 70px;" class="">是否开启</div>
+						</th>
+							<div style="text-align: center; width: 80px;" class="">团购价</div>
+						</th>
+
 						<th align="left" axis="col1" class="handle">
 							<div style="text-align: center; width: 240px;">操作</div>
 						</th>
@@ -100,30 +114,36 @@
 							<td class="sign">
 								<div style="width: 24px;"><i class="ico-check"></i></div>
 							</td>
+							<!-- <td align="left" class="">
+								<div style="text-align: left; width: 50px;">{$team.goods_name}</div>
+							</td> -->
 							<td align="left" class="">
-								<div style="text-align: left; width: 50px;">{$team.team_id}</div>
+								<div style="text-align: left; width: 100px;"><a href="{:U('Mobile/Team/info',['team_id'=>$team.team_id, 'item_id'=>$team['team_goods_item'][0]['item_id']])}" target="_blank" >{$team.goods_name|getSubstr=0,20}</a></div>
+							</td>
+
+							<td align="left" class="">
+								<div style="text-align: center; width: 80px;">{$team.start_time}</div>
+							</td>	
+							<td align="left" class="">
+								<div style="text-align: center; width: 80px;">{$team.cluster_type}</div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: left; width: 100px;"><a href="{:U('Mobile/Team/info',['team_id'=>$team.team_id, 'item_id'=>$team['team_goods_item'][0]['item_id']])}" target="_blank" >{$team.act_name|getSubstr=0,20}</a></div>
+								<div style="text-align: center; width: 80px;">{$team.status}</div>
+							</td>									
+							<td align="left" class="">
+								<div style="text-align: center; width: 80px;">{$team.group_price}</div>
+							</td>								
+							<td align="left" class="">
+								<div style="text-align: center; width: 80px;">{$team.group_number}</div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: center; width: 240px;">
-									<a href="{:U('Mobile/Goods/goodsInfo',['id'=>$team.goods_id, 'item_id'=>$team['team_goods_item'][0]['item_id']])}" target="_blank">
-										{$team.goods_name|getSubstr=0,20}
-									</a>
-								</div>
+								<div style="text-align: center; width: 80px;">{$team.purchase_qty}</div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: center; width: 80px;">{$team.team_type_desc}</div>
+								<div style="text-align: center; width: 80px;">{$team.max_open_num}</div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: center; width: 80px;">{$team.time_limit_hours}小时</div>
-							</td>
-							<td align="left" class="">
-								<div style="text-align: center; width: 80px;">{$team.needer}</div>
-							</td>
-							<td align="left" class="">
-								<div style="text-align: center; width: 80px;">{$team.buy_limit}</div>
+								<div style="text-align: center; width: 80px;">0</div>
 							</td>
 							<td align="left" class="">
 								<div style="text-align: center; width: 80px;">
@@ -136,13 +156,6 @@
 							</td>
 							<td align="left" class="handle">
 								<div style="text-align: left; width: 240px; max-width:240px;">
-									<if condition="$team[team_type] eq 2 AND $team[is_lottery] eq 0">
-										<a class="btn blue gift_button" data-team-id="{$team['team_id']}"><i class="fa fa-gift"></i>抽奖</a>
-									</if>
-									<if condition="$team[team_type] eq 2 AND $team[is_lottery] eq 1">
-										<a class="btn blue" href="{:U('Mobile/Team/lottery',['team_id'=>$team['team_id']])}" ><i class="fa fa-file-text-o"></i>中奖名单</a>
-									</if>
-									<a class="btn blue" href="{:U('Team/team_list',array('team_id'=>$team['team_id']))}" ><i class="fa fa-list"></i>订单</a>
 									<a class="btn blue" href="{:U('Team/info',array('team_id'=>$team['team_id']))}"><i class="fa fa-pencil-square-o"></i>编辑</a>
 									<a class="btn red" data-url="{:U('Team/delete')}" data-id="{$team.team_id}" onclick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
 								</div>
@@ -158,7 +171,7 @@
 			<div class="iDiv" style="display: none;"></div>
 		</div>
 		<!--分页位置-->
-		{$page->show()} </div>
+		</div>
 </div>
 <script>
 	$(document).ready(function(){
