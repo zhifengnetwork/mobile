@@ -209,7 +209,6 @@ class Sign extends MobileBase {
         
     }
 
-
     /**
      * 处理时间
      */
