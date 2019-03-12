@@ -6,6 +6,7 @@ namespace app\common\logic;
 use think\Db;
 use think\Page;
 use think\Session;
+use think\Cache;
 
 class DistributLogic
 {
@@ -76,6 +77,7 @@ class DistributLogic
         global $result;
         $this->get_next($user_id);  //获取下级信息
 
+        // Cache::set('team_list', $result, 3600);
         $page = new Page(count($result),15);
         
         $return = [
@@ -109,9 +111,3 @@ class DistributLogic
         }
     }
 }
-
-
-
-
-
-
