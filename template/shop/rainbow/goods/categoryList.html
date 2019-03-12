@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>分类</title>
+    
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/category/category_zp.css"/>
+    <script src="__STATIC__/js/public/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/public/rem.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/category/category_zp.js" type="text/javascript" charset="utf-8"></script>
+    
+</head>
+<body>
+	<div class="wrapper">
+		<div class="category-wrap">
+			<div class="top-bar">
+				<div class="search">
+					<form action="" method="post">
+						<input type="submit" class="search-btn" value=""/>
+						<input type="text" class="search-text" placeholder="SK ll" />
+						<i class="scan"></i>
+					</form>
+				</div>
+				<div class="msg-icon"></div>
+			</div>
+			<div class="category-main">
+				<!--左侧菜单-->
+				<div class="menu">
+					<ul>
+						<!-- <foreach name="category" item="vo" key="i">
+							<li><i></i>{$vo.mobile_name}</li>
+						</foreach> -->
+						<foreach name="categoryList" item="list">
+							<li <if condition="$list[id] eq 31"> class="active" </if> ><i></i>{$list[name]}</li>
+						</foreach>
+						<!--<li class="active"><i></i>为您推荐</li>-->
+						<!--<li><i></i>品牌墙</li>-->
+						<!--<li><i></i>美容彩妆</li>-->
+						<!--<li><i></i>奶粉纸尿裤</li>-->
+						<!--<li><i></i>外部专区</li>-->
+						<!--<li><i></i>轻奢</li>-->
+						<!--<li><i></i>个人洗护</li>-->
+						<!--<li><i></i>手表配饰</li>-->
+						<!--<li><i></i>数码家电</li>-->
+						<!--<li><i></i>家居生活</li>-->
+						<!--<li><i></i>环球美食</li>-->
+						<!--<li><i></i>服饰鞋靴</li>-->
+						<!--<li><i></i>家用家电</li>-->
+						<!--<li><i></i>医药保健</li>-->
+						<!--<li><i></i>汽车生活</li>-->
+					</ul>
+				</div>
+				<!--右边分类内容-->
+				<div class="main">
+					<foreach name="categorys" item="category">
+						<div class="branchList <if condition='$category[0][parent_id] eq 31'> active </if>">
+						<div class="advert">
+							<assign name="k" value="0"></assign>
+							<foreach name="categoryList" item="cate">
+								<if condition="$k<1">
+									<if condition="$cate[id] eq $category[parent_id]">
+										<a href="{$k++}"><img src="{$cate[image]}" /></a>
+									<else>
+										<a href="{$k++}"><img src="__STATIC__/images/category/advert-1.jpg" /></a>
+									</if>
+								</if>
+							</foreach>
+						</div>
+						<foreach name="category" item="catelist">
+							<div class="cate-item">
+								<h3>{$catelist[name]}</h3>
+								<ul class="cate-list">
+									<foreach name="catelist.child" item="child">
+										<li class="item">
+											<a href="###">
+												<img src="{$child[image]}" />
+												<p>{$child[name]}</p>
+											</a>
+										</li>
+									</foreach>
+
+									<!--<li class="item">-->
+										<!--<a href="###">-->
+											<!--<img src="__STATIC__/images/category/pro-img08.jpg" />-->
+											<!--<p>外套</p>-->
+										<!--</a>-->
+									<!--</li>-->
+									<!--<li class="item">-->
+										<!--<a href="###">-->
+											<!--<img src="__STATIC__/images/category/pro-img09.jpg" />-->
+											<!--<p>面膜</p>-->
+										<!--</a>-->
+									<!--</li>-->
+									<!--<li class="item">-->
+										<!--<a href="###">-->
+											<!--<img src="__STATIC__/images/category/pro-img10.jpg" />-->
+											<!--<p>基础护肤</p>-->
+										<!--</a>-->
+									<!--</li>-->
+									<!--<li class="item">-->
+										<!--<a href="###">-->
+											<!--<img src="__STATIC__/images/category/pro-img11.jpg" />-->
+											<!--<p>数码3C</p>-->
+										<!--</a>-->
+									<!--</li>-->
+									<!--<li class="item">-->
+										<!--<a href="###">-->
+											<!--<img src="__STATIC__/images/category/pro-img12.jpg" />-->
+											<!--<p>家电</p>-->
+										<!--</a>-->
+									<!--</li>-->
+								</ul>
+							</div>
+						</foreach>
+
+						<!--<div class="cate-item">-->
+							<!--<h3>推荐品牌</h3>-->
+							<!--<ul class="cate-list">-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/brand01.jpg" />-->
+										<!--<p>SK-ll</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/brand02.jpg" />-->
+										<!--<p>VANS</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/brand03.jpg" />-->
+										<!--<p>NIKE</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/brand04.jpg" />-->
+										<!--<p>APPLE</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/brand05.jpg" />-->
+										<!--<p>PUMA</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/brand06.jpg" />-->
+										<!--<p>SAMSUNG</p>-->
+									<!--</a>-->
+								<!--</li>-->
+							<!--</ul>-->
+						<!--</div>-->
+						<!--<div class="cate-item">-->
+							<!--<h3>精选特辑</h3>-->
+							<!--<ul class="album-list">-->
+								<!--<li class="album-item">-->
+									<!--<a href="###">-->
+										<!--<img class="album-img" src="__STATIC__/images/category/good-list01.jpg" />-->
+									<!--</a>-->
+									<!--<div class="text">-->
+										<!--<p class="line-1"><a href="###">春秋穿搭必备指南</a></p>-->
+										<!--<p class="line-2">-->
+											<!--<span><i>21</i>款商品</span>-->
+											<!--<span><i>3.5万</i>人购买</span>-->
+										<!--</p>-->
+									<!--</div>-->
+									<!--<div class="album-enter"></div>-->
+								<!--</li>-->
+								<!--<li class="album-item">-->
+									<!--<a href="###">-->
+										<!--<img class="album-img" src="__STATIC__/images/category/good-list01.jpg" />-->
+									<!--</a>-->
+									<!--<div class="text">-->
+										<!--<p class="line-1"><a href="###">春秋穿搭必备指南</a></p>-->
+										<!--<p class="line-2">-->
+											<!--<span><i>62</i>款商品</span>-->
+											<!--<span><i>2.6万</i>人购买</span>-->
+										<!--</p>-->
+									<!--</div>-->
+									<!--<div class="album-enter"></div>-->
+								<!--</li>-->
+								<!--<li class="album-item">-->
+									<!--<a href="###">-->
+										<!--<img class="album-img" src="__STATIC__/images/category/good-list01.jpg" />-->
+									<!--</a>-->
+									<!--<div class="text">-->
+										<!--<p class="line-1"><a href="###">春秋穿搭必备指南</a></p>-->
+										<!--<p class="line-2">-->
+											<!--<span><i>15</i>款商品</span>-->
+											<!--<span><i>0.3万</i>人购买</span>-->
+										<!--</p>-->
+									<!--</div>-->
+									<!--<div class="album-enter"></div>-->
+								<!--</li>-->
+							<!--</ul>-->
+						<!--</div>-->
+						<!--<div class="cate-more">-->
+							<!--<a href="###">-->
+								<!--查看更多<i></i>-->
+							<!--</a>-->
+						<!--</div>-->
+					</div>
+					</foreach>
+
+					 <!--<div class="branchList">-->
+						<!--<div class="advert">-->
+							<!--<a href="###"><img src="__STATIC__/images/category/advert-1.jpg" /></a>-->
+						<!--</div>-->
+						<!--<div class="cate-item">-->
+							<!--<h3>品牌墙</h3>-->
+							<!--<ul class="cate-list">-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/pro-img01.jpg" />-->
+										<!--<p>新年好礼</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/pro-img02.jpg" />-->
+										<!--<p>新品上架</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/pro-img03.jpg" />-->
+										<!--<p>暖冬必备</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/pro-img04.jpg" />-->
+										<!--<p>科技达人</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/pro-img05.jpg" />-->
+										<!--<p>销量榜单</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/pro-img06.jpg" />-->
+										<!--<p>精致女生</p>-->
+									<!--</a>-->
+								<!--</li>-->
+							<!--</ul>-->
+						<!--</div>-->
+						<!--<div class="cate-item">-->
+							<!--<h3>热门分类</h3>-->
+							<!--<ul class="cate-list">-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/pro-img07.jpg" />-->
+										<!--<p>美妆</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/pro-img08.jpg" />-->
+										<!--<p>外套</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/pro-img09.jpg" />-->
+										<!--<p>面膜</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/pro-img10.jpg" />-->
+										<!--<p>基础护肤</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/pro-img11.jpg" />-->
+										<!--<p>数码3C</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/pro-img12.jpg" />-->
+										<!--<p>家电</p>-->
+									<!--</a>-->
+								<!--</li>-->
+							<!--</ul>-->
+						<!--</div>-->
+						<!--<div class="cate-item">-->
+							<!--<h3>推荐品牌</h3>-->
+							<!--<ul class="cate-list">-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/brand01.jpg" />-->
+										<!--<p>SK-ll</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/brand02.jpg" />-->
+										<!--<p>VANS</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/brand03.jpg" />-->
+										<!--<p>NIKE</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/brand04.jpg" />-->
+										<!--<p>APPLE</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/brand05.jpg" />-->
+										<!--<p>PUMA</p>-->
+									<!--</a>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img src="__STATIC__/images/category/brand06.jpg" />-->
+										<!--<p>SAMSUNG</p>-->
+									<!--</a>-->
+								<!--</li>-->
+							<!--</ul>-->
+						<!--</div>-->
+						<!---->
+						<!--<div class="cate-item">-->
+							<!--<h3>精选特辑</h3>-->
+							<!--<ul class="album-list">-->
+								<!--<li class="album-item">-->
+									<!--<a href="###">-->
+										<!--<img class="album-img" src="__STATIC__/images/category/good-list01.jpg" />-->
+									<!--</a>-->
+									<!--<div class="text">-->
+										<!--<p class="line-1"><a href="###">春秋穿搭必备指南</a></p>-->
+										<!--<p class="line-2">-->
+											<!--<span><i>21</i>款商品</span>-->
+											<!--<span><i>3.5万</i>人购买</span>-->
+										<!--</p>-->
+									<!--</div>-->
+									<!--<div class="album-enter"></div>-->
+								<!--</li>-->
+								<!--<li class="album-item">-->
+									<!--<a href="###">-->
+										<!--<img class="album-img" src="__STATIC__/images/category/good-list01.jpg" />-->
+									<!--</a>-->
+									<!--<div class="text">-->
+										<!--<p class="line-1"><a href="###">春秋穿搭必备指南</a></p>-->
+										<!--<p class="line-2">-->
+											<!--<span><i>62</i>款商品</span>-->
+											<!--<span><i>2.6万</i>人购买</span>-->
+										<!--</p>-->
+									<!--</div>-->
+									<!--<div class="album-enter"></div>-->
+								<!--</li>-->
+								<!--<li class="album-item">-->
+									<!--<a href="###">-->
+										<!--<img class="album-img" src="__STATIC__/images/category/good-list01.jpg" />-->
+									<!--</a>-->
+									<!--<div class="text">-->
+										<!--<p class="line-1"><a href="###">春秋穿搭必备指南</a></p>-->
+										<!--<p class="line-2">-->
+											<!--<span><i>15</i>款商品</span>-->
+											<!--<span><i>0.3万</i>人购买</span>-->
+										<!--</p>-->
+									<!--</div>-->
+									<!--<div class="album-enter"></div>-->
+								<!--</li>-->
+							<!--</ul>-->
+							<!---->
+						<!--</div>-->
+						<!--<div class="cate-more">-->
+							<!--<a href="###">-->
+								<!--查看更多<i></i>-->
+							<!--</a>-->
+						<!--</div>-->
+					<!--</div>-->
+					<!--<div class="branchList">-->
+						<!--<div class="advert">-->
+							<!--<a href="###"><img src="__STATIC__/images/category/advert-1.jpg" /></a>-->
+						<!--</div>-->
+						<!--<div class="cate-item">-->
+							<!--<h3>面部护理</h3>-->
+							<!--<ul class="nursing-list">-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img class="nursing-img" src="__STATIC__/images/category/mz-img01.jpg" />-->
+									<!--</a>-->
+									<!--<div class="text">-->
+										<!--<p class="title"><a href="###">嫩肤清莹露160ml</a></p>-->
+										<!--<p class="price"><i>¥</i>560</p>-->
+									<!--</div>-->
+									<!--<div class="cart-btn"></div>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img class="nursing-img" src="__STATIC__/images/category/mz-img02.jpg" />-->
+									<!--</a>-->
+									<!--<div class="text">-->
+										<!--<p class="title"><a href="###">环采臻皙清莹露</a></p>-->
+										<!--<p class="price"><i>¥</i>830</p>-->
+									<!--</div>-->
+									<!--<div class="cart-btn"></div>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img class="nursing-img" src="__STATIC__/images/category/mz-img03.jpg" />-->
+									<!--</a>-->
+									<!--<div class="text">-->
+										<!--<p class="title"><a href="###">春秋穿搭必备指南</a></p>-->
+										<!--<p class="price"><i>¥</i>350</p>-->
+									<!--</div>-->
+									<!--<div class="cart-btn"></div>-->
+								<!--</li>-->
+							<!--</ul>-->
+						<!--</div>-->
+						<!--<div class="cate-item">-->
+							<!--<h3>洗发护理</h3>-->
+							<!--<ul class="nursing-list">-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img class="nursing-img" src="__STATIC__/images/category/mz-img01.jpg" />-->
+									<!--</a>-->
+									<!--<div class="text">-->
+										<!--<p class="title"><a href="###">嫩肤清莹露160ml</a></p>-->
+										<!--<p class="price"><i>¥</i>560</p>-->
+									<!--</div>-->
+									<!--<div class="cart-btn"></div>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img class="nursing-img" src="__STATIC__/images/category/mz-img02.jpg" />-->
+									<!--</a>-->
+									<!--<div class="text">-->
+										<!--<p class="title"><a href="###">环采臻皙清莹露</a></p>-->
+										<!--<p class="price"><i>¥</i>830</p>-->
+									<!--</div>-->
+									<!--<div class="cart-btn"></div>-->
+								<!--</li>-->
+								<!--<li class="item">-->
+									<!--<a href="###">-->
+										<!--<img class="nursing-img" src="__STATIC__/images/category/mz-img03.jpg" />-->
+									<!--</a>-->
+									<!--<div class="text">-->
+										<!--<p class="title"><a href="###">春秋穿搭必备指南</a></p>-->
+										<!--<p class="price"><i>¥</i>350</p>-->
+									<!--</div>-->
+									<!--<div class="cart-btn"></div>-->
+								<!--</li>-->
+							<!--</ul>-->
+						<!--</div>-->
+						<!--<div class="cate-more">-->
+							<!--<a href="###">-->
+								<!--查看更多<i></i>-->
+							<!--</a>-->
+						<!--</div>-->
+					<!--</div> -->
+				</div>
+			</div>
+			
+			
+			<!--底部导航-start-->
+    		<include file="public/footer_nav"/>
+			
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!-- <link rel="stylesheet" type="text/css" href="__STATIC__/css/reset.css"/> -->
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/footer.css?v=1"/>
+<script src="__STATIC__/js/public/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="__STATIC__/js/public/rem.js" type="text/javascript" charset="utf-8"></script>
+
+<!--底部导航-->
+<div class="footer-zp">
+	<ul>
+		<li <if condition="CONTROLLER_NAME eq 'Index'">class="on"</if>  >
+			<a href="{:U('Index/index')}"><i class="home-icon"></i><span>首页</span></a>
+		</li>
+		<li <if condition="CONTROLLER_NAME eq 'Goods'">class="on"</if> >
+			<a href="{:U('Goods/categoryList')}"><i class="category-icon"></i><span>分类</span></a>
+		</li>
+		<li <if condition="CONTROLLER_NAME eq 'Cart'">class="on" </if> >
+			<a href="{:U('Cart/index')}"><i class="cart-icon"></i><span>购物车</span></a>
+		</li>
+		<li <if condition="CONTROLLER_NAME eq 'User'">class="on" </if> >
+			<a href="{:U('User/index')}"><i class="user-icon"></i><span>我的</span></a>
+		</li>
+	</ul>
+</div>
+
+<!-- 微信浏览器 调用微信 分享js-->
+<include file="public/wx_share"/>
+<!-- 微信浏览器 调用微信 分享js  end-->

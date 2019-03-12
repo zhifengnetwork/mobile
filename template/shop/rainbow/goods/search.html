@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>[title]--{$tpshop_config['shop_info_store_title']}</title>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <link rel="stylesheet" href="__STATIC__/css/search/search.css?v=1">
+    <!-- <script src="__STATIC__/js/style.js" type="text/javascript" charset="utf-8"></script> -->
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/public/rem.js" type="text/javascript" meta charset="UTF-8"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <script src="__STATIC__/js/swipeSlide.min.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+</head>
+<body >
+
+    <div class="lsw_search-box">
+        <!-- 顶部导航栏 -->
+        <div class="lsw-header">
+            <div class="lsw-leftImg">
+                <a href="javascript:history.back(-1);">
+                    <img src="/template/mobile/rainbow/static/images/return.png" alt="返回">
+                </a>
+            </div>
+            <div class="lsw-Inputimg">
+                <div class="searchimg"></div>
+                <input type="text" name="q" id="qcc" value="<?php echo urldecode(I('q'))?>" class="SsearchIput" placeholder="" >
+            </div>
+            <div class="lsw-searchText">
+                <i class="listorimg "></i>
+            </div>
+        </div>
+
+
+        <ul class="nav"> 
+                <li class="nav-item multiple ">
+                    综合
+                    <i class="multipleimg"></i>
+               </li> 
+                <li class="nav-item  <if condition="I('sort') eq 'sales_sum'">red</if>"><a href="<?php echo urldecode(U('Mobile/Goods/search',array_merge($filter_param,array('sort'=>'sales_sum')),''));?>">
+                    销量
+                </a></li> 
+                <li class="nav-item  <if condition="I('sort') eq 'shop_price'">red</if>"><a href="<?php echo urldecode(U('Mobile/Goods/search',array_merge($filter_param,array('sort'=>'shop_price','sort_asc'=>$sort_asc)),''));?>">
+                    价格
+                    <i class=" <if condition="I('sort_asc') eq 'asc'">tariff</if>  <if condition="I('sort_asc') eq 'desc'"> bb </if>"></i>
+                    <i class="icon  <if condition="I('sort_asc') eq 'asc'">bb</if>  <if condition="I('sort_asc') eq 'desc'"> icon3 </if>"></i> 
+                </a></li>  
+                <li class="nav-item <if condition="I('sort') eq 'sales_sum'">red</if>"><a href="<?php echo urldecode(U('Mobile/Goods/search',array_merge($filter_param,array('sort'=>'sales_sum')),''));?>">
+                    新品
+                </a></li> 
+                <li class="nav-item"><a href="#" class="sx">
+                    筛选
+                    <i class="filter"></i>
+                </a></li> 
+            </ul> 
+        <!-- 商品列表 -->
+        <div class="pro">
+
+        <empty name="goods_list">
+                <p class="goods_title" id="goods_title" style="line-height: 2rem;text-align: center;margin-top: 0.2rem; font-size:0.2rem">抱歉暂时没有相关结果，换个筛选条件试试吧</p>
+            <else />
+
+            <foreach name="goods_list" item="vo" key="k">
+             <div class="pro-box">
+                 <div class="itemImg">
+                    <a href="">
+                        <img src="{$vo.goods_id|goods_thum_images=400,400}" alt="">
+                    </a>
+                 </div>
+                 <div class="itemMsg">
+                     <div class="deletes">
+                         <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$vo[goods_id]))}" class="item">
+                            <span class="similar-product-text fl">{$vo.goods_name|getSubstr=0,20}</span>
+                        </a>
+                           </div>
+                          <div class="prices">
+                           <p class="sc_pri fl"><span>￥</span><b>{$vo[shop_price]}元</b></p>
+                          </div>
+                                <a href="" class="moda">
+                                    <span>MODA专营店<img src="/template/mobile/rainbow/static/images/Back@2x.png"></span>
+                                </a>
+                          <p class="weight">
+                            <span class="proli-eva">{$vo['comment_statistics']['high_rate']}%好评</span>
+                            <span>销量:100</span>
+                            <span class="proli-eva">已付款:{$vo[comment_count]}</span>
+                            <!-- <span goods_id="{$vo.goods_id}" class="add_cart"><img src="__STATIC__/images/red-icon-cart.png" alt=""></span> -->
+                         </p>
+                 </div>
+             </div>
+
+            </foreach>
+            <!--商品-e-->
+        </empty>
+           
+            <!-- 一行两个 -->
+            <!-- <div class="max-pro-box" style="display:none;">
+                    <div class="max-itemImg">
+                       <a href="">
+                           <img src="__STATIC__/images/goods_user.png" alt="">
+                       </a>
+                    </div>
+                    <div class="max-itemMsg">
+                        <div class="max-deletes">
+                            <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$vo[goods_id]))}" class="max-item">
+                               <span class="max-similar-product-text fl">女式花瓣肩连衣裙2019春季新款纱网拼接高腰连衣裙</span>
+                           </a>
+                              </div>
+                             <div class="max-prices">
+                              <p class="max-sc_pri fl"><span>￥</span><b>399.00元</b></p>
+                             </div>
+                                   <a href="" class="max-moda">
+                                       <span>MODA专营店<img src="/template/mobile/rainbow/static/images/Back@2x.png"></span>
+                                   </a>
+                             <p class="max-weight">
+                               <span class="max-proli-eva">90%好评</span>
+                               <span>销量:10万</span>
+                               <span class="max-proli-eva">已付款:4200+</span>
+
+                            </p>
+                    </div>
+            </div> --> 
+        </div>
+
+    
+    </div>
+    <!-- 综合筛选 -->
+    <div class="fil_all_comm">
+        <div class="maleri30">
+            <ul>
+                  <li >
+                        <a href="<?php echo urldecode(U('Mobile/Goods/search',array_merge($filter_param,array('sort'=>'')),''));?>" class="<if condition="(I('sort') eq '')">on red</if>" >综合</a>
+                  </li>
+                  <li >
+                        <a href="<?php echo urldecode(U('Mobile/Goods/search',array_merge($filter_param,array('sort'=>'is_new')),''));?>" class="<if condition="(I('sort') eq 'is_new')">on red</if>">新品</a>
+                   </li>
+                  <li >
+                        <a href="<?php echo urldecode(U('Mobile/Goods/search',array_merge($filter_param,array('sort'=>'comment_count')),''));?>" class="<if condition="I('sort') eq 'comment_count'">on red</if>">评价</a>
+                  </li>
+            </ul>
+        </div>
+    </div>
+
+       <!--筛选-s-->
+       <div class="screen_wi">
+            <div class="classreturn loginsignup">
+                <div class="content">
+                    <div class="ds-in-bl return seac_retu">
+                        <a href="javascript:void(0);" ><img src="__STATIC__/images/return.png" alt="返回"></a>
+                    </div>
+                    <div class="ds-in-bl search center">
+                        <span class="sx_jsxz">筛选</span>
+                    </div>
+                    <div class="ds-in-bl suce_ok ">
+                        <a href="javascript:void(0);">确定</a>
+                    </div>
+                </div>
+            </div>
+    
+            <!--顶部筛选-s-->
+            <div class="popcover">
+                <ul>
+                    <li>
+                        <span <if condition="$Request.param.sel eq 'all' or $Request.param.sel eq 'all'">class="ch_dg"</if>>
+                        显示全部<input type="hidden"  class="sel" value="all" >
+                        </span>
+                    </li>
+                    <li>
+                        <span <if condition="$Request.param.sel eq 'free_post'">class="ch_dg"</if>>
+                        仅看包邮<input type="hidden"  value="free_post" >
+                        </span>
+                    </li>
+                    <li>
+                        <span <if condition="$Request.param.sel eq 'store_count'">class="ch_dg"</if>>
+                        仅看有货<input type="hidden"  value='store_count'>
+                        </span>
+                    </li>
+                    <li>
+                        <span <if condition="$Request.param.sel eq 'prom_type'">class="ch_dg"</if>>
+                        促销商品<input type="hidden"  value="prom_type" >
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <!--筛选顶部-e-->
+    
+           
+            <!--一级筛选条件-e-->
+            <div class="list-se-all ma-to-20 one-related">
+                    <!--品牌-s-->
+                    <!--品牌-e-->
+                    <!--价格-s-->
+                    <div class="myorder p" onclick="filterprice()">
+                        <div class="content30">
+                            <a href="javascript:void(0)">
+                                <div class="order">
+                                    <div class="fl">
+                                        <span>价格</span>
+                                    </div>
+                                    <div class="fr">
+                                        <i class="Mright"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                     <!--价格-e-->
+                    <input type="hidden" id="key" value="">
+                </div>
+      
+        </div>
+
+        <!--筛选-e-->
+     <div class="mask-filter-div" style="display: none;"></div>
+</body>
+<script src="__STATIC__/js/jquery-1.8.3.min.js"></script>
+<script>
+    $(document).ready(function(){  
+    $(".main").unbind("scroll").bind("scroll", function(e){  
+        var sum = this.scrollHeight;  
+        if (sum <= $(this).scrollTop() + $(this).height()) {  
+            $(".main").append($(".child").clone());  
+        }  
+    });  
+}); 
+    $('.lsw-searchText>i').click(function(){
+        if($(this).hasClass("listorimg")){
+            $(this).addClass("active").removeClass("listorimg");
+            $(".pro-box").addClass("max-pro-box").removeClass("pro-box")
+            $(".itemImg").addClass("max-itemImg").removeClass("itemImg")
+            $(".itemMsg").addClass("max-itemMsg").removeClass("itemMsg")
+            $(".weight").addClass("max-weight").removeClass("weight")
+        }else{
+            $(this).addClass("listorimg").removeClass("active")
+            $('.max-pro-box').addClass("pro-box").removeClass("max-pro-box")    
+            $(".max-itemImg").addClass("itemImg").removeClass("max-itemImg")
+            $(".max-itemMsg").addClass("itemMsg").removeClass("max-itemMsg")
+            $(".max-weight").addClass("weight").removeClass("max-weight")
+        }   
+        
+    })
+    /*点击搜索*/
+    $(document).keydown(function (event) {
+            if (event.keyCode == 13) {
+                
+                var val = $(".SsearchIput").val()
+                if(!val.length){
+                    $(".SsearchIput").attr("placeholder","请输入关键字！")
+                    return false;
+                }else{
+                    window.location.href='/mobile/Goods/search.html?q='+val;
+                }
+               
+            }
+        })
+        $(function(){
+            $(".searchimg").click(function(){
+                var val = $(".SsearchIput").val()
+                window.location.href='/mobile/Goods/search.html?q='+val;
+            })
+            // 综合下拉框 
+            $(".multiple").click(function(){
+                console.log($(this))
+               if($(this).hasClass("multiple")){
+                   $(".fil_all_comm").show()
+                   $(".mask-filter-div").show()
+                
+               }else{
+                   $(".fil_all_comm").hide()
+                   $(".mask-filter-div").hide()  
+               }
+            })
+            $(".mask-filter-div").click(function(){
+                $(".fil_all_comm").hide()
+                $(".mask-filter-div").hide()
+            })
+            
+    //显示隐藏筛选弹窗
+    $('.nav-item .sx').click(function(){
+        $('body').css('position','relative');
+        $('.screen_wi').animate({width: '7rem', opacity: 'show'}, 'normal',function(){
+            $('.screen_wi').show();
+            $(".mask-filter-div").show()
+        });
+
+        $(".ds-in-bl").click(function(){
+            $('body').css('');
+        $('.screen_wi').animate({width: '0', opacity: 'show'}, 'normal',function(){
+            $('.screen_wi').hide();
+            $(".mask-filter-div").hide()
+             })
+        })
+
+        $(".popcover>ul>li>span").click(function(){
+            $(this).addClass("ch_dg")
+            .parent().siblings().children().removeClass("ch_dg")
+        })
+
+        $('.two-related .myorder .order').click(function(){
+            var mright = $(this).find('.fr i');
+            var input = mright.find("input");
+            mright.toggleClass('Mright');
+            //改变复选框状态
+            mright.hasClass('Mright') ? input.attr('checked',true) : input.attr('checked',false);
+        })
+    })
+    //确定按钮
+    $('.suce_ok').click(function(){
+            //判断当前二级筛选状态
+            if($('.suce_ok').is('.two')) {
+//                        get_parment += 'spec=@'+key+'_'+val.join('_');
+////                        $('.screen_wi,.popcover,.one-related').show();
+////                        $('.two-related').hide();
+////                        $('.sx_jsxz').html('筛选');
+////                        $('.suce_ok').removeClass('two');
+                var t=$('#key').attr('class');
+                submitMoreFilter(t);
+            }else{
+                var sel = $('.sel').val();
+                // 组装请求的url
+                var url = '';
+                for ( var k in get_parment )
+                {
+                    if(k != 'a' && k != 'c' && k != 'm' && k!='price'){
+                        url += "&"+k+'='+get_parment[k];
+                    }
+                }
+                if(sel){
+                    url += '&sel='+sel;
+                }
+                location.href= "/index.php?m=Mobile&c=Goods&a=search"+url;
+            }
+        })
+<<<<<<< HEAD
+=======
+        //返回按钮
+        $('.seac_retu').click(function(){
+            //判断当前二级筛选状态
+            if($('.suce_ok').is('.two')){
+                $(".filterspec").each(function(i,o){
+                    //去掉全部选择
+                    $(o).find('.fr input').attr('checked',false);
+                });
+                $('#key').removeAttr('class');
+                //显示一级筛选
+                $('.screen_wi,.popcover,.one-related').show();
+                $('.two-related').hide();
+                $('.sx_jsxz').html('筛选');
+                $('.suce_ok').removeClass('two');
+            }else{
+                $('.screen_wi').animate({width: '0', opacity: 'hide'}, 'normal',function(){
+                    undercover();
+                    $('.screen_wi').hide();
+                });
+            }
+        })
+    //筛选弹窗的品牌筛选
+    function filtercriteria(criteria){
+        $('#key').addClass(criteria);
+        $('.filter').show();
+        $('.tow-price').hide();
+    }
+
+    //筛选弹窗的价格筛选
+    function filterprice(){
+        $('.tow-price').show();
+        $('.filter').hide();
+    }
+
+    //加载更多商品
+    var  page = 1;
+    /*** ajax 提交表单 查询订单列表结果*/
+    var ajax_status = 1;
+    function ajax_sourch_submit(){
+        if(ajax_status == 0){
+            return false;
+        }
+        ajax_status = 0;
+        page += 1;
+        $.ajax({
+            type : "GET",
+            url:"{:U('Mobile/Goods/search')}",//+tab,
+            data:{brand_id:'{$Request.param.brand_id}',id:'{$Request.param.id}',sort:'{$Request.param.sort}',sort_asc:'{$Request.param.sort_asc}',sel:'{$Request.param.sel}',q:$('#q').val(),is_ajax:1,p:page},
+            success: function(data)
+            {
+               
+                ajax_status = 1;
+                if($.trim(data) == ''){
+                    // $('#getmore').hide();
+                }else{
+                    $("#goods_list").append(data);
+                }
+            }
+        });
+    }
+
+    //筛选菜单栏切换效果
+    var lb = $('.search_list_dump .lb')
+    var fil = $('.fil_all_comm');
+    var cs = $('.classreturn,.search_list_dump');
+    var son = $('.search_list_dump .jg').siblings();
+    $(function(){
+    $('.storenav ul li span').click(function(){
+        $(this).parent().parent().addClass('red').siblings('li').removeClass('red')
+        if(!$(this).hasClass('lb')){
+            fil.hide();
+            undercover();
+            cs.removeClass('pore');
+        }
+        if(!$(this).hasClass('jg')){
+            son.removeClass('bpr1');
+            son.removeClass('bpr2');
+        }
+    });
+>>>>>>> a08e12e8c53ffa187919f6679cef6aa9553d27bb
+
+            //############   点击多选确定按钮      ############
+    // t 为类型  是品牌 还是 规格 还是 属性
+    // btn 是点击的确定按钮用于找位置
+    get_parment = <?php echo json_encode($_GET); ?>;
+    function submitMoreFilter(t){
+        var val = new Array();  // 请求的参数值
+        $(".filter").each(function(i,o){
+            var che=$(o).find('.fr input');
+            if(che.attr('checked')){    //选中的值
+                val.push(che.val());
+            }
+        });
+        // 没有被勾选的时候
+        if(key == ''){
+            return false;
+        }
+        // 品牌
+        if(t == 'brand')
+        {
+            get_parment.brand_id = val.join('_');
+        }
+
+        // 组装请求的url
+        var url = '';
+        for ( var k in get_parment )
+        {
+            if(k != 'a' && k != 'c' && k != 'm') {
+                url += "&" + k + '=' + get_parment[k];
+            }
+        }
+        location.href ="/index.php?m=Mobile&c=Goods&a=search"+url;
+    }
+            
+        })
+        $(window).scroll(
+             function() {
+            var scrollTop = parseInt($(this).scrollTop());
+            var scrollHeight = parseInt($(document).height());
+            var windowHeight = parseInt($(this).height());
+            if (scrollTop + windowHeight >= scrollHeight-60) {
+                ajax_sourch_submit();//调用加载更多
+            }
+        }
+    );
+</script>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<link rel="stylesheet" href="__STATIC__/css/swiper.min.css?v=1">
+
+	<script src="__STATIC__/js/public/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script src="__STATIC__/js/public/rem.js" type="text/javascript" charset="utf-8"></script>
+	<script src="__STATIC__/js/swiper.min.js"></script>
+	<title>首页</title>
+	<link rel="stylesheet" href="__STATIC__/css/index.css?v=2">
+</head>
+
+<body>
+	<div class="wrapper">
+		<!-- 头部 -->
+		<header class="header-box">
+			<a href="/mobile/Goods/categoryList.html">
+				<div class="headerClass">
+					<img src="__STATIC__/images/caidan.png" alt="">
+				</div>
+			</a>
+			<div class="headerInput">
+				<div class="search">
+					
+				</div>
+				<div class="searchInput">搜索</div>
+			</div>
+			<div class="searchMsg">
+				<img src="__STATIC__/images/xinxi.png" alt="">
+			</div>
+		</header>
+		<!-- 轮播图 -->
+		<div class="swiper-container">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide">
+					<a href="javascript:;">
+						<img src="__STATIC__/images/t_1.jpg" alt="">
+					</a>
+				</div>
+				<div class="swiper-slide">
+					<a href="javascript:;">
+						<img src="__STATIC__/images/t_2.jpg" alt="">
+					</a>
+				</div>
+				<div class="swiper-slide">
+					<a href="javascript:;">
+						<img src="__STATIC__/images/t_3.jpg" alt="">
+					</a>
+				</div>
+				<div class="swiper-slide">
+						<a href="javascript:;">
+							<img src="__STATIC__/images/t_4.jpg" alt="">
+						</a>
+					</div>
+			</div>
+			<div class="swiper-pagination"></div>
+			<!-- 如果需要滚动条 -->
+			<div class="swiper-scrollbar"></div>
+		</div>
+		<!-- 八宫格 -->
+		<div class="gongGe">
+			<div class="choiceness gongGeItem">
+				<a href="/mobile/handpick/index.html">
+					<img src="__STATIC__/images/t_6.png" alt="">
+					<p class="gongGeItemTit">精选</p>
+				</a>
+
+			</div>
+			<div class="choiceness gongGeItem">
+				<a href="javascript:alert('未开发');">
+					<img src="__STATIC__/images/t_14.png" alt="">
+					<p class="gongGeItemTit">视频直播</p>
+				</a>
+			</div>
+			<div class="choiceness gongGeItem">
+				<a href="/mobile/sign/index">
+					<img src="__STATIC__/images/t_10.png" alt="">
+					<p class="gongGeItemTit">签到</p>
+				</a>
+			</div>
+			<div class="choiceness gongGeItem">
+				<a href="">
+					<img src="__STATIC__/images/t_5.png" alt="">
+					<p class="gongGeItemTit">活动专区</p>
+				</a>
+			</div>
+			<div class="choiceness gongGeItem">
+				<a href="">
+					<img src="__STATIC__/images/t_7.png" alt="">
+					<p class="gongGeItemTit">美容专区</p>
+				</a>
+			</div>
+			<div class="choiceness gongGeItem">
+				<a href="">
+					<img src="__STATIC__/images/t_9.png" alt="">
+					<p class="gongGeItemTit">佣金排行榜</p>
+				</a>
+			</div>
+			<div class="choiceness gongGeItem">
+				<a href="{:U('Mobile/Material/index')}">
+					<img src="__STATIC__/images/t_11.png" alt="">
+					<p class="gongGeItemTit">素材区</p>
+				</a>
+			</div>
+			<div class="choiceness gongGeItem">
+				<a href="">
+					<img src="__STATIC__/images/t_13.png" alt="">
+					<p class="gongGeItemTit">小游戏</p>
+				</a>
+			</div>
+		</div>
+		<!-- 间隔条 -->
+		<div class="interval"></div>
+		<!-- 消息头条 -->
+		<div class="msgHeadline">
+			<h4 class="Headline">智丰头条</h4>
+			<a href="">
+				<p class="shopRed">雪山旗舰店入送卷了</p>  
+			</a>
+			<a href="">
+				<p class="shopMove">| 更多</p>
+			</a>
+		</div>
+		<!-- 间隔条 -->
+		<div class="interval"></div>
+		<div class="seckill-box">
+			<!-- 秒杀 -->
+			<div class="seckillMsg">
+				<h4 class="seckillTit">智丰秒杀</h4>
+				<p class="count">剩下时间</p>
+				<div class="countTime">
+					<span class="countTimeImg">
+						<img src="__STATIC__/images/t_8.png" alt="">
+					</span>
+					<!-- <span class="tiemNum">{:date('H',$start_time)}</span>:
+					<span class="tiemNum">{:date('m',$start_time)}</span>:
+					<span class="tiemNum">{:date('s',$start_time)}</span> -->
+					<span class="hms"></span>
+
+				</div>
+				<div class="more">
+					<a href="{:U('Mobile/Activity/flash_sale_list')}">
+						<span class="moreGood">更多好货</span>
+						<span class="gomore">
+							<img src="__STATIC__/images/t_15.png" alt=""></span>
+					</a>
+				</div>
+			</div>
+			<!-- 左滑 -->
+			<div class="goodList">
+				<ul>
+                <foreach name="flash_sale_list" item="v">
+					<li class="hot-single-goods">
+						<a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id],'item_id'=>$v[item_id]))}">
+							<img src="{$v[goods_id]|goods_thum_images=200,200}" alt="" class="goods-img">
+							<div class="goods-pic">
+								<p class="goods-redSize">￥<span>{$v[price]}</span>元</p>
+							</div>
+						</a>
+					</li>
+				</foreach>					
+				</ul>
+			</div>
+		</div>
+		<!-- 为你推荐 -->
+		<div class="recommend-box">
+			<div class="recommend-title">
+				<p class="p-title">为 / 你 / 推 / 荐</p>
+			</div>
+			<div class="recommend-list clearfix">
+
+				<foreach name="favourite_goods" id="v">
+					<div class="recommend-info">
+						<div class="recommend-img">
+							<a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}"><img
+									src="{$v[goods_id]|goods_thum_images=400,400}" alt=""></a>
+						</div>
+						<div class="recommend-text">
+							<div class="recommend-name">
+								<a href="{:U('mobile/goods/goods_info',array('id'=>$v['goods_id']))}">
+									{$v.goods_name|getSubstr=0,33}
+								</a>
+							</div>
+							<div class="recommend-pic">
+								<span class="pic-red">￥&nbsp4540.00</span>
+								<span class="evaluation">评价:109</span>
+							</div>
+						</div>
+					</div>
+				</foreach>
+
+				<div id="J_ItemList">
+				</div>
+
+			</div>
+		</div>
+			 <div class="loading-box" style="display:none;">
+				<!-- <div class='loading' >	
+			 </div>  -->
+			 <img src="__STATIC__/images/handpick/loding.gif" alt="" class='loading' >
+			 <p class="p-zai">加载中...</p>
+		</div>
+
+		<include file="public/footer_nav" />
+	</div>
+	<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+	<script>
+		/**
+     	* 秒杀模块倒计时
+     	* */
+    	function GetRTime(end_time){
+        	var NowTime = new Date();
+        	var t = (end_time*1000) - NowTime.getTime();
+        	var d=Math.floor(t/1000/60/60/24);
+        	var h=Math.floor(t/1000/60/60%24);
+        	var m=Math.floor(t/1000/60%60);
+        	var s=Math.floor(t/1000%60);
+        	if(s >= 0)
+            	return (d * 24 + h) + '时' + m + '分' +s+'秒';
+    	}
+    	function GetRTime2(){
+        	var text = GetRTime('{$end_time}');
+        	if (text== 0){
+            	$(".hms").text('活动已结束');
+        	}else{
+            	$(".hms").text(text);
+        	}
+    	}
+    	setInterval(GetRTime2,1000);
+
+		$(document).ready(function () {
+			var mySwiper = new Swiper('.swiper-container', {
+				//   direction: 'vertical', // 垂直切换选项
+				loop: true, // 循环模式选项
+				pagination: {
+					el: '.swiper-pagination',
+				},
+				autoplay: {
+					delay: 2500,
+					stopOnLastSlide: false,
+					disableOnInteraction: false,
+					},
+			})
+		})
+			/**
+			* 继续加载猜您喜欢
+			* */
+			var before_request = 1; // 上一次请求是否已经有返回来, 有才可以进行下一次请求
+			var page = 0;
+			function ajax_sourch_submit(){
+				// $('.loading-box').show();
+				if(before_request == 0)// 上一次请求没回来 不进行下一次请求
+					return false;
+				before_request = 0;
+				page++;
+				$.ajax({
+					type : "get",
+					url:"/index.php?m=Mobile&c=Index&a=ajaxGetMore&p="+page,
+					success: function(data)
+					{
+						if(data){
+							$("#J_ItemList").append(data);
+							before_request = 1;
+							$('.loading-box').show();
+						}else{
+							$('.loading-box').hide();
+						}
+					}
+				});
+			}
+
+			/**
+			* 搜索
+			* */
+			$(function(){
+				 $(".headerInput").click(function(){
+								$(window).attr('location',` /mobile/Goods/ajaxSearch`);
+				 })
+				 $(document).keydown(function (event) {
+        if (event.keyCode == 13) {
+          $('.headerInput').triggerHandler('click');
+        }
+      });
+
+			})
+		</script>
+
+	
+</body>
+
+</html>

@@ -1,0 +1,134 @@
+<!-- 
+    取货二维码
+ -->
+
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+<title>Cross-Browser QRCode generator for Javascript</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style>
+	*{
+		margin: 0px;
+		padding: 0px;
+		
+	}
+	body{
+		
+		background: #F5F5F5;
+		
+	}
+	.header{
+		
+		width: 90%;
+		padding: 0 5%;
+		height:2.8rem;
+		background: white;
+		line-height: 2.8rem;
+		margin-bottom: 6rem;
+			
+	}
+	.p3 , .p1{
+		
+		display: inline-block;
+	    width: 10%;
+	    
+	
+		
+	}
+	.p2{
+		
+		display: inline-block;
+		width: 80%;
+		text-align: center;
+		
+		
+		
+	}
+	
+	
+</style>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+<script src="__STATIC__/js/jquery-1.8.3.min.js"></script>
+<!--<script type="text/javascript" src="qrcode.js"></script>-->
+<script src="__STATIC__/js/qrcode.js"></script>
+</head>
+<body>
+	<div class="header">
+	
+	<span class="p1"><</span>
+	<span class="p2">线下取货</span>	
+	<span class="p3"></span>
+	
+</div>	
+	
+
+	
+<div style="text-align: center; width: 100%;">
+	券码：<span>12345689799899</span>
+</div>	
+<input id="text" type="text" value="{$url}" style="width:80%;display: none;"/><br />
+<div id="qrcode" style="width:200px; height:200px; margin-top:15px;position: absolute;top: 50%;left: 50%;transform: translate(-50%,-75%);"></div>
+
+
+	
+<script type="text/javascript">
+var qrcode = new QRCode(document.getElementById("qrcode"), {
+	width : 200,
+	height : 200
+});
+
+function makeCode () {		
+	var elText = document.getElementById("text");
+	
+	if (!elText.value) {
+		alert("Input a text");
+		elText.focus();
+		return;
+	}
+	
+	qrcode.makeCode(elText.value);
+}
+
+makeCode();
+
+$("#text").
+	on("blur", function () {
+		makeCode();
+	}).
+	on("keydown", function (e) {
+		if (e.keyCode == 13) {
+			makeCode();
+		}
+	});
+</script>
+</body>
+ 
+ 
+ 
+ 
+ <!--<script>
+     var url = "{$url}"; 
+ </script>-->
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 

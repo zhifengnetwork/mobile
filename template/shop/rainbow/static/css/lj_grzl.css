@@ -1,0 +1,23 @@
+@font-face{
+	font-family: 'PingFangMedium';
+	src:url("/template/mobile/rainbow/static/font/PingFangMedium.ttf")
+}
+
+
+
+.lj_cont_input{height: 1.5rem !important;}
+
+.v-cont-wrap {border: none !important;}
+
+.m_phone{margin-top: 0.25rem !important;}
+
+.v-identity .v-til{line-height: 1.68rem;}
+
+.lsu-submit input{box-shadow: none !important;background: #ff4200 !important;border-radius: 9px !important;}
+
+
+
+.lj_top_left{float: left;width: 0.25rem;height: 0.41rem;}
+.lj_top_left img{vertical-align: middle;width: 0.45rem;height: 0.7rem;margin-left: 0.9rem;}
+.lj_top_right{ text-align: center;}
+.lj_top_right p{font-size: 0.768rem !important;color: #0f0f0f;}

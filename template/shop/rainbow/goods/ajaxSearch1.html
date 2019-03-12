@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> -->
+    <title>[title]--{$tpshop_config['shop_info_store_title']}</title>   
+    <!-- <title>搜索</title> -->
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+</head>
+<body class="[body]">
+
+<!-- 
+    <div class="classreturn loginsignup ">
+        <div class="content">
+            <div class="ds-in-bl return">
+                <a id="[back]" <php> if(request()->action() == 'userinfo' && $_GET["action"]==""){ </php>  href="{:U('User/index')}" <php> }else{ </php> href="[href]" <php> } </php> ><img src="__STATIC__/images/return.png" alt="返回"></a>
+            </div>
+            <div class="ds-in-bl search center">
+                <span>搜索</span>
+            </div>
+            <div class="ds-in-bl menu">
+                <a href="javascript:void(0);"><img src="__STATIC__/images/class1.png" alt="菜单"></a>
+            </div>
+        </div>
+    </div>
+    <div class="flool up-tpnavf-wrap tpnavf [top-header]">
+        <div class="footer up-tpnavf-head">
+            <div class="up-tpnavf-i"> </div>
+            <ul>
+                <li>
+                    <a class="yello" href="{:U('Index/index')}">
+                        <div class="icon">
+                            <i class="icon-shouye iconfont"></i>
+                            <p>首页</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Goods/categoryList')}">
+                        <div class="icon">
+                            <i class="icon-fenlei iconfont"></i>
+                            <p>分类</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Cart/index')}">
+                        <div class="icon">
+                            <i class="icon-gouwuche iconfont"></i>
+                            <p>购物车</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('User/index')}">
+                        <div class="icon">
+                            <i class="icon-wode iconfont"></i>
+                            <p>我的</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        
+    $(function(){	
+        $(window).scroll(function() {		
+            if($(window).scrollTop() >= 1){ 
+                $('.tpnavf').hide()
+            }
+        })
+    })
+    </script> -->
+
+
+		<div class="p search_pl">
+            <div class="classreturn whiback bornone">
+                <div class="content">
+                    <div class="ds-in-bl return ">
+                        <a href="javascript:history.back(-1);"><img src="/template/mobile/rainbow/static/images/return.png" alt="返回"></a>
+                    </div>
+                </div>
+			<div class="maleri30">
+				<div class="search2">
+                    <form method="get" action="{:U('Goods/search')}" id="sourch_form">
+                        
+                        <a href="javascript:;" onclick="ajaxsecrch()" class="lsw_seach-img" style="float:left"><div class="ri_ss"><img src="__STATIC__/images/seas.png"/></div></a>
+                        <div class="le_inp"><input type="text" name="q" id="qcc" value="" placeholder="商品 店铺"/></div>
+                    </form>
+				</div>
+            </div>
+            <div class="lsw_seach">
+                <a href="javascript:;" class="ccdd" >取消</a>
+            </div>
+		</div>
+		<div class="near-le-ri p">
+			<div class="maleri30">
+				<span>热门搜索</span>
+			</div>
+		</div>
+		<div class="lb_showhide se_shien p" style="display: block;">
+			<div class="maleri30">
+				<ul>
+                    <foreach name="tpshop_config.hot_keywords" item="wd" key="k">
+                        <!-- <li><a href="{:U('Goods/search',array('q'=>$wd))}" <if condition="$k eq 0">class="ht"</if>>{$wd}</a></li> -->
+                        <span class="lsw_sousuo-text"><a href="{:U('Goods/search',array('q'=>$wd))}" <if condition="$k eq 0">class="ht"</if>>{$wd}</a></span>
+                    </foreach>
+				</ul>
+			</div>
+		</div>
+
+
+        <div class="near-le-ri p">
+                <div class="maleri30">
+                    <span>热门搜索</span>
+                </div>
+            </div>
+            <div class="lb_showhide se_shien p" style="display: block;">
+                <div class="maleri30">
+                    <ul>
+                        <foreach name="tpshop_config.hot_keywords" item="wd" key="k">
+                            <!-- <li><a href="{:U('Goods/search',array('q'=>$wd))}" <if condition="$k eq 0">class="ht"</if>>{$wd}</a></li> -->
+                            <span class="lsw_sousuo-text"><a href="{:U('Goods/search',array('q'=>$wd))}" <if condition="$k eq 0">class="ht"</if>>{$wd}</a></span>
+                        </foreach>
+                    </ul>
+                </div>
+            </div>
+        <!--底部导航-start-->
+        <include file="public/footer_nav"/>
+        <!--底部导航-end-->
+</body>
+<script src="__STATIC__/js/rem.js"></script>
+<script src="__STATIC__/js/style.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+</html>
+<script>
+     $(function(){
+         $("#qcc").keydown(function(){
+                $(".lsw_seach").children().html("搜索")  
+         })
+        //  .blur(function(){
+        //         $(".lsw_seach").children().html("取消")
+        //  })
+         $(".ccdd").click(function(){
+             var msg=$("#qcc").val()
+             if($(".lsw_seach").children().html()=="搜索"){
+                $(this).attr("href",`http://www.tt.com/Mobile/Goods/search/id/0/q/${msg}/shop_price/sort_asc/desc`)
+             }else{
+                $("#qcc").val("")
+             }
+             
+         })
+     })
+
+</script>
+<script>
+    function ajaxsecrch(){
+        if($.trim($('#q').val()) != ''){
+            $("#sourch_form").submit();
+        }else{
+            layer.open({content:'请输入搜索关键字',time:2});
+        }
+    }
+    $(function(){
+        $('#q').focus();
+    })
+</script>
