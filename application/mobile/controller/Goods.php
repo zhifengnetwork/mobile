@@ -584,6 +584,20 @@ class Goods extends MobileBase
     }
 
     /**
+     * 是否可以免费领取商品
+     */
+    public function sign_receive()
+    {
+        $cat_id = I('cat_id/d');
+
+        $user = session('user');
+
+        $result = provingReceive($user, $cat_id);
+
+        $this->ajaxReturn($result);
+    }
+
+    /**
      * 搭配详情页
      * @return mixed
      * @throws \think\db\exception\DataNotFoundException

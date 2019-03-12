@@ -220,52 +220,6 @@ class Sign extends MobileBase {
         return str_replace('-','/',$time);
     }
 
-    /**
-     * 是否可以免费领取
-     */
-    public function receive()
-    {
-        $cat_id = I('cat_id/d');
-
-        if ($this->user['is_distribut'] == 0 && $cat_id == 584) {
-            $result = array('status'=>0,'msg'=>'成为分销商才可领取','result'=>array());
-            return $this->ajaxReturn($result);
-        }
-
-        if ($this->user['is_agent'] == 0 && $cat_id == 585) {
-            $result = array('status'=>0,'msg'=>'成为代理商才可领取','result'=>array());
-            return $this->ajaxReturn($result);
-        }
-
-        $data = M('order_sign_receive')->where('uid',$this->user_id)->order('addend_time desc')->select();
-
-        if ($this->user['is_agent'] == 1 && count($data)  == 12 ) {
-            $result = array('status'=>0,'msg'=>'已超出领取次数','result'=>array());
-            return $this->ajaxReturn($result);
-        }
-        
-        if(!empty($data)){
-
-            $newTimeM = date('m', time());//当前月份
-            $addTimeM = date('m', $data[0]['addend_time']); //最近下单月份
-            $addTimeD = strtotime(date('Y-m-d', $data[0]['addend_time'])); //最近下单天份
-
-            if ($newTimeM == $addTimeM && $this->user['is_agent'] == 1 ) {
-                $result = array('status'=>0,'msg'=>'本月已领取过了','result'=>array());
-                return $this->ajaxReturn($result);
-            }
-
-            if ($addTimeD+259200 < time() && $this->user['is_agent'] == 1 ) {
-                $result = array('status'=>0,'msg'=>'3天内只能领取一次哦','result'=>array());
-                return $this->ajaxReturn($result);
-            }
-
-        }
-
-        $result = array('status'=>1,'msg'=>'可领取','result'=>array());
-        $this->ajaxReturn($result);
-    }
-
     //仅供生成连续签到奖品次数用的获取连续签到数
     function goods_continue_sign($user_id,$sign_mark){
 

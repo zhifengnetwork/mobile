@@ -382,60 +382,27 @@ class Pay
     }
 
     /**
-     * 获取用户身份签到条件
+     * 使用签到免费领取
      * @return int
      */
     public function getUserSign($goods_id)
-    {
-        $signSum = continue_sign($this->user['user_id']); // 连续签到数
-        // 是否分销商
-        if($this->user['is_distribut'] == 1){
-            if($signSum >= 3){
-                $price = $this->getSignSatisfy($goods_id);
-                if ($price == ture) {
-                    $this->orderAmount = $this->orderAmount - $this->goodsPrice;
-                    $this->signPrice = $this->goodsPrice;
-                }
-
-            }
-        }
-
-        // 是否代理商
-        if($this->user['is_agent'] == 1){
-            if($signSum >= 10){
-                $price = $this->getSignSatisfy($goods_id);
-                if ($price == ture) {
-                    $this->orderAmount = $this->orderAmount - $this->goodsPrice;
-                    $this->signPrice = $this->goodsPrice;
-                }
-            }
-        }
-
-    }
-
-    /**
-     * 签到条件满足免费领取
-     * @return int
-     */
-    public function getSignSatisfy($goods_id)
     {
 
         $goodsModel = new Goods();
         $this->goods = $goodsModel::get($goods_id);
 
-        //当前商品是否分销商分类的产品
-        if(!empty($this->goods['cat_id']) && $this->goods['cat_id'] == 584){
-            return ture;
-        }
+        // 能否领取商品
+        $isReceive = provingReceive($this->user, $this->goods['cat_id']); 
 
-        //当前商品是否代理商分类的产品
-        if(!empty($this->goods['cat_id']) && $this->goods['cat_id'] == 585){
-            return ture;
+        if($isReceive['status'] == 1){
+            $this->orderAmount = $this->orderAmount - $this->goodsPrice;
+            $this->signPrice = $this->goodsPrice;
+        } else {
+            throw new TpshopException("计算订单价格", 0, $isReceive);
         }
-
-        return false;
 
     }
+
 
     /**
      * 获取实际上使用的余额
