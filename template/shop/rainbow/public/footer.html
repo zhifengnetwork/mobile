@@ -2,13 +2,13 @@
     <div class="flool1">
         <ul>
         	<if condition="$is_weixin_browser eq 1">
-        		<li><a href="{:U('Mobile/User/index')}">{$uname}</a></li>
+        		<li><a href="{:U('Shop/User/index')}">{$uname}</a></li>
             <elseif condition="!empty($_COOKIE['user_id']) && !$is_wx" />
-                <li><a href="{:U('Mobile/User/index')}"><?php echo getSubstr(urldecode($_COOKIE['uname']),0,3);?></a></li>
-                <li><a href="{:U('Mobile/User/logout')}">退出</a></li>
+                <li><a href="{:U('Shop/User/index')}"><?php echo getSubstr(urldecode($_COOKIE['uname']),0,3);?></a></li>
+                <li><a href="{:U('Shop/User/logout')}">退出</a></li>
             <else/>
-                <li><a href="{:U('Mobile/User/login')}">登录</a></li>
-                <li><a href="{:U('Mobile/User/reg')}">注册</a></li>
+                <li><a href="{:U('Shop/User/login')}">登录</a></li>
+                <li><a href="{:U('Shop/User/reg')}">注册</a></li>
             </if>
             <li><a href="tel:{$tpshop_config['shop_info_phone']}">反馈</a></li>
             <li class="comebackTop">回到顶部</li>
@@ -25,7 +25,7 @@
                 </a>
             </li>
             <li>
-                <a href="{:U('Mobile/Index/index')}">
+                <a href="{:U('Shop/Index/index')}">
                     <div class="icon black">
                         <img src="__STATIC__/images/ind_72.png"/>
                         <p>触屏版</p>

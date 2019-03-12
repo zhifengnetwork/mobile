@@ -181,7 +181,7 @@
         <p>是否收到该订单商品？</p>
         <div class="weiyi p">
             <a href="javascript:void(0);">未收货</a>
-            <a class="eno" href="{:U('Mobile/Order/order_confirm',array('id'=>$order.order_id))}">已收货</a>
+            <a class="eno" href="{:U('Shop/Order/order_confirm',array('id'=>$order.order_id))}">已收货</a>
         </div>
     </div>
 <!--确认收货弹窗-e-->
@@ -205,12 +205,12 @@
     function cancel_order(id){
         $.ajax({
             type: 'GET',
-            url:"/index.php?m=Mobile&c=Order&a=cancel_order&id="+id,
+            url:"/index.php?m=Shop&c=Order&a=cancel_order&id="+id,
             success:function(data){
                 if(data.code == 1){
                     //成功
                     layer.open({content:data.msg,time:2});
-                    location.href = "/index.php?m=Mobile&c=Order&a=order_detail&id="+id;
+                    location.href = "/index.php?m=Shop&c=Order&a=order_detail&id="+id;
                 }else{
                     //状态不允许
                     layer.open({content:data.msg,time:2});

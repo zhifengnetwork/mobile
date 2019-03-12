@@ -55,7 +55,7 @@
                             </span>
                         </div>
                         <div class="shopimg fl">
-                            <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$cart[goods_id]))}">
+                            <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$cart[goods_id]))}">
                                 <!--商品图片-->
                                 <!--<img src="{$cart.goods_id|goods_thum_images=400,400,$cart.item_id}">-->
                                 <img src="{$cart.original_img}">
@@ -65,7 +65,7 @@
                             <div class="deletes">
                                 <!--商品名-->
                                 <span class="similar-product-text fl">
-                                    <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$cart[goods_id]))}">{$cart.goods_name}</a>
+                                    <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$cart[goods_id]))}">{$cart.goods_name}</a>
                                 </span>
                             </div>
                             <!--商品属性，规格-->
@@ -135,7 +135,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{:U('Mobile/Cart/index')}">
+                    <a href="{:U('Shop/Cart/index')}">
                         <span id="tp_cart_info"></span>
                         <i class="gwc"></i>
                         <p>购物车</p>
@@ -296,7 +296,7 @@
 
             $.ajax({
                 type: "Post",
-                url: "{:U('Mobile/Cart/addCombination')}",
+                url: "{:U('Shop/Cart/addCombination')}",
                 data: {combination_id: combination_id, combination_goods: arr,num:num},
                 dataType: "json",
                 success: function (data) {
@@ -309,7 +309,7 @@
                                 btn: ['去登录', '取消'],
                                 shadeClose: false,
                                 yes: function () {
-                                    location.href = "/index.php?m=Mobile&c=User&a=Login";
+                                    location.href = "/index.php?m=Shop&c=User&a=Login";
                                 }, no: function () {
                                     layer.closeAll();
                                 }
@@ -323,7 +323,7 @@
 
                         if(type ==1){
                             layer.open({content: '正在跳转购物车...', time: 2});
-                            location.href = "/index.php?m=Mobile&c=Cart&a=index";
+                            location.href = "/index.php?m=Shop&c=Cart&a=index";
                             return false;
                         }
                         layer.open({
@@ -334,7 +334,7 @@
 
                                 layer.closeAll();
                             }, no: function () {
-                                location.href = "/index.php?m=Mobile&c=Cart&a=index";
+                                location.href = "/index.php?m=Shop&c=Cart&a=index";
                             }
                         });
                     }else{

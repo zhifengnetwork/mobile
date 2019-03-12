@@ -46,7 +46,7 @@
         ++page;
         $.ajax({
             type: 'GET',
-            url: '/index.php?m=Mobile&c=Goods&a=similar&is_ajax=1',
+            url: '/index.php?m=Shop&c=Goods&a=similar&is_ajax=1',
             data:{id:'{$now_good[goods_id]}',p:page},
             success:function(data){
                 if ($.trim(data) == ''){

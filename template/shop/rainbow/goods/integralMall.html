@@ -3,14 +3,14 @@
     <nav class="storenav grst p">
         <ul>
             <li <if condition="$Request.param.rank eq ''">class="red"</if>>
-               <a href="{:U('Mobile/Goods/integralMall')}"><span>默认 </span></a>
+               <a href="{:U('Shop/Goods/integralMall')}"><span>默认 </span></a>
             </li>
             <li <if condition="$Request.param.rank eq 'num'">class="red"</if>>
-                <a href="{:U('Mobile/Goods/integralMall',array('rank'=>'num'))}"><span>兑换量</span></a>
+                <a href="{:U('Shop/Goods/integralMall',array('rank'=>'num'))}"><span>兑换量</span></a>
                 <i></i>
             </li>
             <li <if condition="$Request.param.rank eq 'integral'">class="red"</if>>
-                <a href="{:U('Mobile/Goods/integralMall',array('rank'=>'integral'))}"><span>积分值</span></a>
+                <a href="{:U('Shop/Goods/integralMall',array('rank'=>'integral'))}"><span>积分值</span></a>
                 <i></i>
             </li>
         </ul>
@@ -24,7 +24,7 @@
                         <img src="{$good.goods_id|goods_thum_images=400,400}">
                     </div>
                     <div class="deleshow fr">
-                        <a href="{:U('Mobile/Goods/goodsInfo', array('id'=>$good[goods_id]))}">
+                        <a href="{:U('Shop/Goods/goodsInfo', array('id'=>$good[goods_id]))}">
                             <div class="deletes">
                                 <span class="similar-product-text">{$good[goods_name]}</span>
                             </div>
@@ -36,7 +36,7 @@
                         </a>
                         <div class="qxatten">
                             <p class="weight"><span>市场价</span>&nbsp;<span>￥{$good[market_price]}</span></p>
-                            <a class="closeannten" href="{:U('Mobile/Goods/goodsInfo',array('id'=>$good['goods_id']))}" >立即兑换</a>
+                            <a class="closeannten" href="{:U('Shop/Goods/goodsInfo',array('id'=>$good['goods_id']))}" >立即兑换</a>
                         </div>
                     </div>
                 </div>
@@ -68,9 +68,9 @@
     function ajax_sourch_submit(){
         ++page;
         <if condition='$Request.param.rank'>
-            var url = '/index.php/Mobile/Goods/integralMall/p/' + page +'rank/'+ '{$Request.param.rank}';
+            var url = '/index.php/Shop/Goods/integralMall/p/' + page +'rank/'+ '{$Request.param.rank}';
         <else/>
-            var url = '/index.php/Mobile/Goods/integralMall/p/' + page;
+            var url = '/index.php/Shop/Goods/integralMall/p/' + page;
         </if>
 
         $.ajax({

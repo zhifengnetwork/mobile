@@ -234,13 +234,13 @@
         <div class="fr">
             <ul>
                 <li class="o">
-                    <a href="{:U('Mobile/Goods/goodsInfo',['id'=>$team_activity[goods_id]])}">
+                    <a href="{:U('Shop/Goods/goodsInfo',['id'=>$team_activity[goods_id]])}">
                         单独购买<br/>
                         ￥<em>{$team_activity['goods'][shop_price]}</em>
                     </a>
                 </li>
                 <li class="r lottery" style="display: none">
-                    <a href="{:U('Mobile/Team/lottery',['team_id'=>$team_activity['team_id']])}">查看中奖名单
+                    <a href="{:U('Shop/Team/lottery',['team_id'=>$team_activity['team_id']])}">查看中奖名单
                         <br/>
                         ￥<em class="team_price">{$team_activity['team_goods_item'][0]['team_price']}</em>
                     </a>
@@ -387,12 +387,12 @@
         }
         $.ajax({
             type : "POST",
-            url:"{:U('Mobile/Team/addOrder')}",
+            url:"{:U('Shop/Team/addOrder')}",
             dataType:'json',
             data: $('#buy_goods_form').serialize(),
             success: function(data){
                 if(data.status == 1){
-                    location.href = "/index.php?m=Mobile&c=Team&a=order&order_id=" + data.result.order_id; // 跳转到结算页
+                    location.href = "/index.php?m=Shop&c=Team&a=order&order_id=" + data.result.order_id; // 跳转到结算页
                 }else{
                     layer.open({content:data.msg,time: 2,end:function(){
                         if(!$.isEmptyObject(data.result)){
@@ -413,7 +413,7 @@
         var goods_id = $("input[name='goods_id']").val();
         $.ajax({
             type: "GET",
-            url: "/index.php?m=Mobile&c=goods&a=ajaxComment&goods_id=" + goods_id + "&commentType=" + commentType + "&p=" + page,//+tab,
+            url: "/index.php?m=Shop&c=goods&a=ajaxComment&goods_id=" + goods_id + "&commentType=" + commentType + "&p=" + page,//+tab,
             success: function (data) {
                 $(".my_comment_list").empty().append(data);
             }
@@ -434,7 +434,7 @@
         $.ajax({
             type : "GET",
             dataType: "json",
-            url:"/index.php?m=mobile&c=goods&a=collect_goods",//+tab,
+            url:"/index.php?m=Shop&c=goods&a=collect_goods",//+tab,
             data: {goods_ids:ids},
             success: function(data){
                 layer.open({content:data.msg, time:2});
@@ -653,7 +653,7 @@
             type: 'post',
             dataType: 'json',
             data: {goods_id: $('input[name="goods_id"]').val(), item_id:$('input[name="item_id"]').val()},
-            url: "{:U('Mobile/Team/ajaxCheckTeam')}",
+            url: "{:U('Shop/Team/ajaxCheckTeam')}",
             success: function (data) {
                 if (data.status == 1) {
                     var goods = data.result.team_goods_item.goods;
@@ -679,14 +679,14 @@
             type: 'post',
             dataType: 'json',
             data: {goods_id: goods_id},
-            url: "{:U('Mobile/Team/ajaxTeamFound')}",
+            url: "{:U('Shop/Team/ajaxTeamFound')}",
             success: function (data) {
                 if (data.status == 1) {
                     var founds = data.result.teamFounds;
                     var html = '', end_time,url;
                     for(var i = 0;i < founds.length;i++){
                         end_time = parseInt(founds[i].found_time) + parseInt(founds[i].time_limit);
-                        url = "/index.php?m=Mobile&c=Team&a=found&id=" + founds[i].found_id;
+                        url = "/index.php?m=Shop&c=Team&a=found&id=" + founds[i].found_id;
                         html += '<div class="box-lesc team-found"> <div class="diff_img"> <img src="'+founds[i].head_pic+'"/> ' +
                                 '</div> <div class="diff_lrzy"> <ul class="f_name_add"> <li class="nameli">' +
                                 '<span>'+founds[i].nickname+'</span></li> <li class="addci"><span>'+founds[i].address_region+'</span>' +

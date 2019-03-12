@@ -33,12 +33,12 @@
                 <i></i>
             </li>
             <li class="<if condition="I('sort') eq 'sales_sum'">red</if>">
-                <a href="javascript:ios_click('<?php echo urldecode(U('Mobile/Goods/goodsList',array_merge($filter_param,array('sort'=>'sales_sum')),''));?>')" >
+                <a href="javascript:ios_click('<?php echo urldecode(U('Shop/Goods/goodsList',array_merge($filter_param,array('sort'=>'sales_sum')),''));?>')" >
                     <span class="dq" >销量</span>
                 </a>
             </li>
             <li class="<if condition="I('sort') eq 'shop_price'">red</if>">
-                <a href="javascript:ios_click('<?php echo urldecode(U('Mobile/Goods/goodsList',array_merge($filter_param,array('sort'=>'shop_price','sort_asc'=>$sort_asc)),''));?>')">
+                <a href="javascript:ios_click('<?php echo urldecode(U('Shop/Goods/goodsList',array_merge($filter_param,array('sort'=>'shop_price','sort_asc'=>$sort_asc)),''));?>')">
                     <span class="jg dq">价格</span>
                 </a>
                 <i  class="pr <if condition="I('sort_asc') eq 'asc'">bpr2</if>  <if condition="I('sort_asc') eq 'desc'"> bpr1 </if>"></i>
@@ -66,11 +66,11 @@
                 <div class="maleri30">
                         <div class="sc_list se_sclist">
                             <div class="shopimg fl">
-                                <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$vo[goods_id]))}" class="item"><img src="{$vo.goods_id|goods_thum_images=400,400}"></a>
+                                <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$vo[goods_id]))}" class="item"><img src="{$vo.goods_id|goods_thum_images=400,400}"></a>
                             </div>
                             <div class="deleshow fr">
                                 <div class="deletes">
-                                    <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$vo[goods_id]))}" class="item"><span class="similar-product-text fl">{$vo.goods_name|getSubstr=0,20}</span></a>
+                                    <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$vo[goods_id]))}" class="item"><span class="similar-product-text fl">{$vo.goods_name|getSubstr=0,20}</span></a>
                                 </div>
                                 <div class="prices">
                                     <p class="sc_pri fl"><span>￥</span><b>{$vo[shop_price]}元</b></p>
@@ -102,13 +102,13 @@
         <div class="maleri30">
             <ul>
                 <li class="<if condition="I('sort') eq ''">red</if>">
-                    <a href="javascript:ios_click('<?php echo urldecode(U('Mobile/Goods/goodsList',array_merge($filter_param,array('sort'=>'')),''));?>')" >综合</a>
+                    <a href="javascript:ios_click('<?php echo urldecode(U('Shop/Goods/goodsList',array_merge($filter_param,array('sort'=>'')),''));?>')" >综合</a>
                 </li>
                 <li class="<if condition="I('sort') eq 'is_new'">red</if>">
-                    <a href="javascript:ios_click('<?php echo urldecode(U('Mobile/Goods/goodsList',array_merge($filter_param,array('sort'=>'is_new')),''));?>')" >新品</a>
+                    <a href="javascript:ios_click('<?php echo urldecode(U('Shop/Goods/goodsList',array_merge($filter_param,array('sort'=>'is_new')),''));?>')" >新品</a>
                 </li>
                 <li class="<if condition="I('sort') eq 'comment_count'">red</if>">
-                    <a href="javascript:ios_click('<?php echo urldecode(U('Mobile/Goods/goodsList',array_merge($filter_param,array('sort'=>'comment_count')),''));?>')">评价</a>
+                    <a href="javascript:ios_click('<?php echo urldecode(U('Shop/Goods/goodsList',array_merge($filter_param,array('sort'=>'comment_count')),''));?>')">评价</a>
                 </li>
             </ul>
         </div>
@@ -241,7 +241,7 @@
             <foreach name="cateArr" item="cate" key="catek">
                     <div class="myorder p catearr">
                         <div class="content30">
-                            <a href="javascript:ios_click('{:U('Mobile/Goods/goodsList',array('id'=>$cate['id']))}')">
+                            <a href="javascript:ios_click('{:U('Shop/Goods/goodsList',array('id'=>$cate['id']))}')">
                                 <div class="order">
                                     <div class="fl">
                                         <span>{$cate[name]}</span>
@@ -256,7 +256,7 @@
                 <foreach name="cate[sub_menu]" item="cate2" key="catek2">
                     <div class="myorder p catearr">
                         <div class="content30">
-                            <a href="javascript:ios_click('{:U('Mobile/Goods/goodsList',array('id'=>$cate2['id']))}')">
+                            <a href="javascript:ios_click('{:U('Shop/Goods/goodsList',array('id'=>$cate2['id']))}')">
                                 <div class="order">
                                     <div class="fl">
                                         <span>{:str_repeat("&nbsp;",$cate2[level])}{$cate2[name]}</span>
@@ -385,7 +385,7 @@
                     </if>
                 </li>
                 <li>
-                    <a href="{:U('Mobile/Cart/index')}" >
+                    <a href="{:U('Shop/Cart/index')}" >
                         <span id="tp_cart_info"></span>
                         <i class="gwc"></i>
                         <p>购物车</p>
@@ -401,7 +401,7 @@
         <div class="fr">
             <ul>
                 <li class="r" id="join_cart_li" style="float:right; display:block">
-                    <a class="pb_plusshopcar buy_button choise_num" href="/Mobile/Cart/index.html">去购物车</a>
+                    <a class="pb_plusshopcar buy_button choise_num" href="/Shop/Cart/index.html">去购物车</a>
                 </li>
             </ul>
         </div>
@@ -470,14 +470,14 @@
             {
                 url += "&"+k+'='+get_parment[k];
             }
-            location.href ="/index.php?m=Mobile&c=Goods&a=goodsList"+url;
+            location.href ="/index.php?m=Shop&c=Goods&a=goodsList"+url;
         }
 
 
     /**
-     * <a href="javascript:ios_click('/Mobile/Goods/goodsList/id/437/sort/sales_sum')" class="red">
+     * <a href="javascript:ios_click('/Shop/Goods/goodsList/id/437/sort/sales_sum')" class="red">
      *     转为下面的
-     *     /index.php?m=Mobile&c=Goods&a=goodsList&id=437&sort=sales_sum
+     *     /index.php?m=Shop&c=Goods&a=goodsList&id=437&sort=sales_sum
      */
     function ios_click(url){
         var arr = url.replace(/.html/i,'').split('/')
@@ -517,7 +517,7 @@
                     }
                     url += "&"+k+'='+get_parment[k];
                 }
-                location.href= "/index.php?m=Mobile&c=Goods&a=goodsList"+url+"&sel="+sel;
+                location.href= "/index.php?m=Shop&c=Goods&a=goodsList"+url+"&sel="+sel;
             }
         })
 
@@ -584,7 +584,7 @@
         page += 1;
         $.ajax({
             type : "POST",
-            url:"/index.php/Mobile/Goods/goodsList", //+tab,{:U('Mobile/Goods/goodsList')}
+            url:"/index.php/Shop/Goods/goodsList", //+tab,{:U('Shop/Goods/goodsList')}
 //			data : $('#filter_form').serialize(),// 你的formid 搜索表单 序列化提交
             data:{
                 id:'{$Request.param.id}',
@@ -694,7 +694,7 @@ $(function(){
 
     $(document).on("click",".add_cart",function(e){
         var goods_id=$(this).attr("goods_id");
-        $.post("{:U('Mobile/Goods/Goodsinfo2')}",{'id':goods_id},function(res){
+        $.post("{:U('Shop/Goods/Goodsinfo2')}",{'id':goods_id},function(res){
             $('#buy_goods_form').html(res);
             $('#join_cart').text('确定');
             $('#join_cart').width('100%').show();

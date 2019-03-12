@@ -90,19 +90,19 @@
 	</div>
 </div>
 <div class="nav-list-p">
-	<a href="{:U('Mobile/Index/index')}">
+	<a href="{:U('Shop/Index/index')}">
 		<div class="ico-wrap"><img src="__STATIC__/images/pic-sy.png" alt="" /></div>
 		<span>首页逛逛</span>
 	</a>
-	<a href="{:U('Mobile/Activity/flash_sale_list')}">
+	<a href="{:U('Shop/Activity/flash_sale_list')}">
 		<div class="ico-wrap"><img src="__STATIC__/images/pic-ms.png" alt="" /></div>
 		<span>秒杀</span>
 	</a>
-	<a href="{:U('Mobile/Activity/promote_goods')}">
+	<a href="{:U('Shop/Activity/promote_goods')}">
 		<div class="ico-wrap"><img src="__STATIC__/images/pic-qc.png" alt="" /></div>
 		<span>促销</span>
 	</a>
-	<a href="{:U('Mobile/Activity/group_list')}">
+	<a href="{:U('Shop/Activity/group_list')}">
 		<div class="ico-wrap"><img src="__STATIC__/images/pic-tg.png" alt="" /></div>
 		<span>团购</span>
 	</a>
@@ -242,7 +242,7 @@
 			type: 'post',
 			dataType: 'json',
 			data: {goods_id: goods_id, item_id: item_id},
-			url: "{:U('Mobile/Team/ajaxCheckTeam')}",
+			url: "{:U('Shop/Team/ajaxCheckTeam')}",
 			success: function (data) {
 				if (data.status == 1) {
 					var goods = data.result.team_goods_item.goods;
@@ -329,14 +329,14 @@
 			type : "post",
 			data:{p:page},
 			dataType:'json',
-			url:"{:U('Mobile/Team/ajaxGetMore')}",
+			url:"{:U('Shop/Team/ajaxGetMore')}",
 			success: function(data)
 			{
 				if(data.status == 1){
 					var teams = data.result;
 					var html = '',url;
 					for(var i = 0;i < teams.length;i++){
-						url = "/index.php?m=Mobile&c=Team&a=info&team_id=" + teams[i].team_id + "&goods_id=" + teams[i].goods_id;
+						url = "/index.php?m=Shop&c=Team&a=info&team_id=" + teams[i].team_id + "&goods_id=" + teams[i].goods_id;
 						html += '<a class="goods-item-p" href="'+url+'">' +
 								' <div class="item-pic-p"><img src="'+teams[i].share_img+'"/></div> ' +
 								'<div class="item-name">'+teams[i].act_name+'</div> ' +
@@ -389,12 +389,12 @@
 		}
 		$.ajax({
 			type : "POST",
-			url:"{:U('Mobile/Team/addOrder')}",
+			url:"{:U('Shop/Team/addOrder')}",
 			dataType:'json',
 			data: $('#buy_goods_form').serialize(),
 			success: function(data){
 				if(data.status == 1){
-					location.href = "/index.php?m=Mobile&c=Team&a=order&order_id=" + data.result.order_id; // 跳转到结算页
+					location.href = "/index.php?m=Shop&c=Team&a=order&order_id=" + data.result.order_id; // 跳转到结算页
 				}else{
 					layer.open({content:data.msg,time: 2,end:function(){
 						if(!$.isEmptyObject(data.result)){
@@ -470,7 +470,7 @@
 			<!--//此处放置通用设置-->
 			<!--bdText : '{$team[share_title]}',-->
 			<!--bdDesc : '{$team[share_desc]}',-->
-			<!--bdUrl : "{:U('Mobile/Team/found',['id'=>$teamFound[found_id]],'',true)}",-->
+			<!--bdUrl : "{:U('Shop/Team/found',['id'=>$teamFound[found_id]],'',true)}",-->
 			<!--bdPic : 'http://{$Think.server.SERVER_NAME}{$team[share_img]}'-->
 		<!--},-->
 		<!--share : [{-->

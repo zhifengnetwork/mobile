@@ -62,7 +62,7 @@
         ++page;
         $.ajax({
             type:'GET',
-            url:"/index.php?m=Mobile&c=Goods&a=brandstreet&is_ajax=1&p="+page,
+            url:"/index.php?m=Shop&c=Goods&a=brandstreet&is_ajax=1&p="+page,
             success:function(data){
                 if($.trim(data) == ''){
                     $('.more').hide();

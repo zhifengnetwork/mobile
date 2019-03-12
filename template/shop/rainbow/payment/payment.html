@@ -37,7 +37,7 @@
                 	<img src="__STATIC__/images/suc_cg.png"/>
                 	<p>支付完成</p>
                     <br>
-                    <a href="{:U('Mobile/order/order_detail',array('id'=>$order_id))}">支付成功</a>
+                    <a href="{:U('Shop/order/order_detail',array('id'=>$order_id))}">支付成功</a>
                 </div>
                 <div class="fail-I-success" >
                 	<!--<img src="__STATIC__/images/qrcode_vmall_app01.png" width="110" height="110"/>-->
@@ -47,11 +47,11 @@
                 	<img src="__STATIC__/images/suc_sb.png"/>
                 	<p>支付遇到问题</p>
                     <br>
-                    <a href="{:U('Mobile/Cart/cart4',array('order_id'=>$order_id))}">支付失败</a>
+                    <a href="{:U('Shop/Cart/cart4',array('order_id'=>$order_id))}">支付失败</a>
                 </div>
            
             <div class="re-qtzfgg">
-            	<a href="{:U('Mobile/Cart/cart4',array('order_id'=>$order_id))}">返回选择其他支付方式</a>
+            	<a href="{:U('Shop/Cart/cart4',array('order_id'=>$order_id))}">返回选择其他支付方式</a>
             </div>
         </div>
     </div>
@@ -80,7 +80,7 @@
                 success: function (data) {
                     if (data.status == 1) {
                         clearInterval(interval);
-                        location.href = "{:U('Mobile/Payment/pay_success',['order_id'=>$order_id])}";
+                        location.href = "{:U('Shop/Payment/pay_success',['order_id'=>$order_id])}";
                        //location.href = "{:U('Home/Cart/cart4',array('order_id'=>$order_id,'master_order_sn'=>$master_order_sn))}";
                     }
                 }

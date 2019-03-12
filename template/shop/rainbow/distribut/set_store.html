@@ -65,7 +65,7 @@
         var formData = new FormData(formObj);//表单id
         $.ajax({
             type: "POST",
-            url: "{:U('Mobile/Distribut/set_store')}",
+            url: "{:U('Shop/Distribut/set_store')}",
             data: formData,
             dataType: "json",
             async: false,
@@ -78,7 +78,7 @@
             success: function (data) {
                 if (data.status == 1) {
                     layer.open({content:data.msg,time:2,end:function () {
-                        location.href = "{:U('Mobile/Distribut/set_store')}";
+                        location.href = "{:U('Shop/Distribut/set_store')}";
                     }});
                 }else {
                     $.each(data.result, function (index, item) {

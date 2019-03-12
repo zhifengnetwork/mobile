@@ -18,8 +18,8 @@
 		</div>
 		<div class="ranking_main">
 			<div class="list2_rank">
-				<a href="{:U('mobile/Distribut/rankings',array('sort'=>'distribut_money'))}" <if condition="$Request.param.sort eq 'distribut_money'">class="current" </if>>佣金排行</a>
-				<a href="{:U('mobile/Distribut/rankings',array('sort'=>'underling_number'))}" <if condition="$Request.param.sort eq 'underling_number'">class="current" </if> >下线排行</a>
+				<a href="{:U('Shop/Distribut/rankings',array('sort'=>'distribut_money'))}" <if condition="$Request.param.sort eq 'distribut_money'">class="current" </if>>佣金排行</a>
+				<a href="{:U('Shop/Distribut/rankings',array('sort'=>'underling_number'))}" <if condition="$Request.param.sort eq 'underling_number'">class="current" </if> >下线排行</a>
 			</div>
 			<div class="form_list">
 				<div class="board_yellow_dark">
@@ -106,7 +106,7 @@
         page = page<=0 ? 0 : page;
         $.ajax({
             type : "GET",
-            url:"/index.php?m=Mobile&c=Distribut&a=rankings&sort={$Request.param.sort}&is_ajax=1&p="+page,//+tab,
+            url:"/index.php?m=Shop&c=Distribut&a=rankings&sort={$Request.param.sort}&is_ajax=1&p="+page,//+tab,
             success: function(data)
             {
                 if($.trim(data) == '')

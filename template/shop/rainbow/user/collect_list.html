@@ -39,7 +39,7 @@
                                     ¥
                                     <span class="big-price">{$good[shop_price]}</span>
                                     <a href="{:U('Goods/goodsList',['id'=>$good.cat_id])}"><span class="guess-button dele-button J_ping">看相似</span></a>
-                                    <a href="{:U('Mobile/User/cancel_collect', ['collect_id'=>$good[collect_id]])}"><span class="guess-button  J_ping">删除</span></a>
+                                    <a href="{:U('Shop/User/cancel_collect', ['collect_id'=>$good[collect_id]])}"><span class="guess-button  J_ping">删除</span></a>
                                 </span>
                         </div>
                     </li>
@@ -62,7 +62,7 @@
         page += 1;
         $.ajax({
             type : "GET",
-            url:"/index.php/Mobile/User/collect_list?is_ajax=1&p="+page,//+tab,
+            url:"/index.php/Shop/User/collect_list?is_ajax=1&p="+page,//+tab,
             success: function(data)
             {
                 if($.trim(data) != '')

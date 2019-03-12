@@ -1,5 +1,5 @@
 <include file="public/header" title="分成明细" body=""/>
-<include file="public/header_nav" title="分成明细" href="{:U('Mobile/Distribut/index')}"/>
+<include file="public/header_nav" title="分成明细" href="{:U('Shop/Distribut/index')}"/>
 <style>
     .fll_acc ul li{
         font-size: .4rem;
@@ -15,15 +15,15 @@
                     <i></i>
                 </li>
                 <!--<li class="<if condition="$Request.param.status eq 'sales_sum'">red</if>">-->
-                    <!--<a href="{:U('Mobile/Distribut/rebate_log',array('id'=>$vo[goods_id]))}" >-->
+                    <!--<a href="{:U('Shop/Distribut/rebate_log',array('id'=>$vo[goods_id]))}" >-->
                         <!--<span class="dq" >销量</span>-->
                     <!--</a>-->
                 <!--</li>-->
                 <li class="<if condition="$Request.param.sort eq 'money'">red</if>">
                 <if condition="$Request.param.sort_asc eq 'asc'">
-                    <a href="{:U('Mobile/Distribut/rebate_log',array('sort'=>'money','sort_asc'=>'desc'))}">
+                    <a href="{:U('Shop/Distribut/rebate_log',array('sort'=>'money','sort_asc'=>'desc'))}">
                 <else/>
-                    <a href="{:U('Mobile/Distribut/rebate_log',array('sort'=>'money','sort_asc'=>'asc'))}">
+                    <a href="{:U('Shop/Distribut/rebate_log',array('sort'=>'money','sort_asc'=>'asc'))}">
                 </if>
                         <span class="jg dq">佣金</span>
                     </a>
@@ -37,22 +37,22 @@
             <div class="maleri30">
                 <ul>
                     <li>
-                        <a href="{:U('Mobile/Distribut/rebate_log',array('status'=>''))}" class="<if condition="$Request.param.status eq ''">on red </if>"  >综合</a>
+                        <a href="{:U('Shop/Distribut/rebate_log',array('status'=>''))}" class="<if condition="$Request.param.status eq ''">on red </if>"  >综合</a>
                     </li>
                     <li>
-                        <a href="{:U('Mobile/Distribut/rebate_log',array('status'=>0))}" class="<if condition="$Request.param.status eq '0'">on red </if>"  >未付款</a>
+                        <a href="{:U('Shop/Distribut/rebate_log',array('status'=>0))}" class="<if condition="$Request.param.status eq '0'">on red </if>"  >未付款</a>
                     </li>
                     <li>
-                        <a href="{:U('Mobile/Distribut/rebate_log',array('status'=>1))}" class="<if condition="$Request.param.status eq '1'">on red</if>">已付款</a>
+                        <a href="{:U('Shop/Distribut/rebate_log',array('status'=>1))}" class="<if condition="$Request.param.status eq '1'">on red</if>">已付款</a>
                     </li>
                     <li>
-                        <a href="{:U('Mobile/Distribut/rebate_log',array('status'=>2))}" class="<if condition="$Request.param.status eq '2'">on red</if>">等待分成</a>
+                        <a href="{:U('Shop/Distribut/rebate_log',array('status'=>2))}" class="<if condition="$Request.param.status eq '2'">on red</if>">等待分成</a>
                     </li>
                     <li>
-                        <a href="{:U('Mobile/Distribut/rebate_log',array('status'=>3))}" class="<if condition="$Request.param.status eq '3'">on red</if>">已分成</a>
+                        <a href="{:U('Shop/Distribut/rebate_log',array('status'=>3))}" class="<if condition="$Request.param.status eq '3'">on red</if>">已分成</a>
                     </li>
                     <li>
-                        <a href="{:U('Mobile/Distribut/rebate_log',array('status'=>4))}" class="<if condition="$Request.param.status eq '4'">on red</if>">已取消</a>
+                        <a href="{:U('Shop/Distribut/rebate_log',array('status'=>4))}" class="<if condition="$Request.param.status eq '4'">on red</if>">已取消</a>
                     </li>
                 </ul>
             </div>
@@ -110,7 +110,7 @@
         page ++;
         $.ajax({
             type : "GET",
-            url:"/index.php?m=Mobile&c=Distribut&a=rebate_log&is_ajax=1&p="+page,//+tab,
+            url:"/index.php?m=Shop&c=Distribut&a=rebate_log&is_ajax=1&p="+page,//+tab,
             data:{sort_asc:"{$Request.param.sort_asc}",sort:"{$Request.param.sort}",status:"{$Request.param.status}"},
             success: function(data)
             {

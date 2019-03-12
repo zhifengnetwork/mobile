@@ -96,7 +96,7 @@
         }
         $.ajax({
             type: "POST",
-            url: '/index.php?m=Mobile&c=Cart&a=invoice_info',
+            url: '/index.php?m=Shop&c=Cart&a=invoice_info',
             data: {radio_title:radioTitle,invoice_title:invoice_title,taxpayer:taxpayer,radio_cont:radioCont},
             dataType: "json",
             success: function (data) {

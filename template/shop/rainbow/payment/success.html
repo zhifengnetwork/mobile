@@ -10,7 +10,7 @@
             <p class="ddnum"><span>
             			<if condition="$order['pay_code'] eq 'cod'">您需要支付金额<else/>付款金额</if>：</span><span class="red">{$order['order_amount']}</span><span>元</span></p>
             <p class="ddnum"><span>请你保持手机畅通，等待收货。</span></p>
-            <div class="ddxq-succ"><a href="{:U('/Mobile/Order/order_detail',array('id'=>$order['order_id']))}">订单详情</a></div>
+            <div class="ddxq-succ"><a href="{:U('/Shop/Order/order_detail',array('id'=>$order['order_id']))}">订单详情</a></div>
         </div>
     </div>
 </div>

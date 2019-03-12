@@ -86,7 +86,7 @@
         <ul>
             <volist name="pre_sell_list" id="vo">
                 <li>
-                    <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$vo['goods_id'],'item_id'=>$vo['item_id']))}">
+                    <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$vo['goods_id'],'item_id'=>$vo['item_id']))}">
                         <div class="similer-product">
                             <div class="zjj close">
                                 <img src="{$vo.goods_id|goods_thum_images=200,200}">
@@ -132,7 +132,7 @@
         ++page;
         $.ajax({
             type:'GET',
-            url:"/index.php?m=Mobile&c=Activity&a=pre_sell_list&p="+page+"&type={$Request.param.type}",
+            url:"/index.php?m=Shop&c=Activity&a=pre_sell_list&p="+page+"&type={$Request.param.type}",
             success:function(data){
                 if(data){
                     $(".likeshop>ul").append(data);

@@ -9,7 +9,7 @@
     <div class="addset-wrap-h">
         <ul class="addset-h">
             <li class="red">
-                <a href="{:U('Mobile/Team/category',['id'=>$goods_category_level_one[id]])}" class="tab_head">全部</a>
+                <a href="{:U('Shop/Team/category',['id'=>$goods_category_level_one[id]])}" class="tab_head">全部</a>
             </li>
             <volist name="goods_category_level_two" id="category" >
                 <li>
@@ -77,7 +77,7 @@
         var id = $("input[name='id']").val();
         var tid = $("input[name='tid']").val();
         var two_all_ids = $("input[name='two_all_ids']").val();
-        var url = "/index.php?m=Mobile&c=Team&a=AjaxTeamList&p="+page+"&id="+id+"&two_all_ids="+two_all_ids;
+        var url = "/index.php?m=Shop&c=Team&a=AjaxTeamList&p="+page+"&id="+id+"&two_all_ids="+two_all_ids;
         if(id > 0){
             url += '&tid=' + tid;
         }
@@ -97,7 +97,7 @@
                             } else {
                                 goods_price = data.result[i].shop_price;
                             }
-                            url = "/index.php?m=Mobile&c=Team&a=info&team_id=" + data.result[i].team_id + "&goods_id=" + data.result[i].goods_id;
+                            url = "/index.php?m=Shop&c=Team&a=info&team_id=" + data.result[i].team_id + "&goods_id=" + data.result[i].goods_id;
                             html += ' <li> <a href="'+url+'"> <div class="similer-product"> <img src="' + data.result[i].share_img + '"> ' +
                                     '<span class="similar-product-text">' + data.result[i].act_name + '</span> ' +
                                     '<span class="similar-product-price">¥ <span class="big-price">' + data.result[i].team_price + '</span> ' +

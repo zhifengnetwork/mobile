@@ -3,7 +3,7 @@
  //如果微信分销配置正常, 商品详情分享内容中的"图标"不显示, 则检查域名否配置了https, 如果配置了https,分享图片地址也要https开头
  var httpPrefix = "http://{$Think.server.SERVER_NAME}";
 <if condition="ACTION_NAME eq 'goodsInfo'">
-var ShareLink = httpPrefix+"/index.php?m=Mobile&c=Goods&a=goodsInfo&id={$goods[goods_id]}"; //默认分享链接
+var ShareLink = httpPrefix+"/index.php?m=Shop&c=Goods&a=goodsInfo&id={$goods[goods_id]}"; //默认分享链接
 	var ShareImgUrl = httpPrefix+"{$goods[goods_id]|goods_thum_images=100,100}"; // 分享图标
 	var ShareTitle = "{$goods.goods_name|default=$tpshop_config['shop_info_store_title']}"; // 分享标题
 	var ShareDesc = "{$goods.goods_remark|default=$tpshop_config['shop_info_store_desc']}"; // 分享描述
@@ -13,17 +13,17 @@ var ShareLink = httpPrefix+"/index.php?m=Mobile&c=Goods&a=goodsInfo&id={$goods[g
 	var ShareTitle = "{$team[share_title]}"; //分享标题
 	var ShareDesc = "{$team[share_desc]}"; //分享描述
 <elseif condition="ACTION_NAME eq 'found'"/>
-var ShareLink = httpPrefix+"/index.php?m=Mobile&c=Team&a=found&id={$teamFound[found_id]}"; //默认分享链接
+var ShareLink = httpPrefix+"/index.php?m=Shop&c=Team&a=found&id={$teamFound[found_id]}"; //默认分享链接
 	var ShareImgUrl = "{$team[bd_pic]}"; //分享图标
 	var ShareTitle = "{$team[share_title]}"; //分享标题
 	var ShareDesc = "{$team[share_desc]}"; //分享描述
 <elseif condition="ACTION_NAME eq 'my_store'"/>
-	var ShareLink = httpPrefix+"/index.php?m=Mobile&c=Distribut&a=my_store"; 
+	var ShareLink = httpPrefix+"/index.php?m=Shop&c=Distribut&a=my_store"; 
 	var ShareImgUrl = httpPrefix+"{$tpshop_config['shop_info_store_logo']}"; 
 	var ShareTitle = "{$share_title}"; 
-	var ShareDesc = httpPrefix+"/index.php?m=Mobile&c=Distribut&a=my_store}"; 
+	var ShareDesc = httpPrefix+"/index.php?m=Shop&c=Distribut&a=my_store}"; 
 <else />
-	var ShareLink = httpPrefix+"/index.php?m=Mobile&c=Index&a=index"; //默认分享链接
+	var ShareLink = httpPrefix+"/index.php?m=Shop&c=Index&a=index"; //默认分享链接
 	var ShareImgUrl = httpPrefix+"{$tpshop_config['shop_info_wap_home_logo']}"; //分享图标
 	var ShareTitle = "{$tpshop_config['shop_info_store_title']}"; //分享标题
 	var ShareDesc = "{$tpshop_config['shop_info_store_desc']}"; //分享描述
@@ -41,7 +41,7 @@ $(function() {
 	if(isWeiXin() && parseInt(user_id)>0){
 		$.ajax({
 			type : "POST",
-			url:"/index.php?m=Mobile&c=Index&a=ajaxGetWxConfig&t="+Math.random(),
+			url:"/index.php?m=Shop&c=Index&a=ajaxGetWxConfig&t="+Math.random(),
 			data:{'askUrl':encodeURIComponent(location.href.split('#')[0])},		
 			dataType:'JSON',
 			success: function(res)

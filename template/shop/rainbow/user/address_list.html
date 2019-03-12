@@ -22,7 +22,7 @@
                     <span class="similars">{$region_list[$list['province']]},{$region_list[$list['city']]},{$region_list[$list['district']]},{$region_list[$list['twon']]}{$list['address']}</span>
                 </div>
                 <div class="editdiv fl">
-                    <a href="{:U('/Mobile/User/edit_address',array('id'=>$list[address_id]))}">
+                    <a href="{:U('/Shop/User/edit_address',array('id'=>$list[address_id]))}">
                         <i class="eedit"></i>
                     </a>
                 </div>
@@ -32,7 +32,7 @@
 </div>
 <!--地址-e-->
 <div class="createnew">
-    <a href="{:U('/Mobile/User/add_address')}">+新建地址</a>
+    <a href="{:U('/Shop/User/add_address')}">+新建地址</a>
 </div>
 </body>
 </html>

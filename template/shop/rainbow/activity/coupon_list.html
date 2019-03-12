@@ -122,7 +122,7 @@
 			function getCoupon(obj){
 				$.ajax({
 					type: "POST",
-					url: "{:U('Mobile/Activity/getCoupon')}",
+					url: "{:U('Shop/Activity/getCoupon')}",
 					data: {coupon_id: $(obj).data('coupon-id')},
 					dataType: "json",
 					error: function () {
@@ -147,7 +147,7 @@
 				++page;
 				$.ajax({
 					type : "get",
-					url:"/index.php?m=Mobile&c=Activity&a=coupon_list&p="+page,
+					url:"/index.php?m=Shop&c=Activity&a=coupon_list&p="+page,
 					success: function(data) {
 						if ($.trim(data) == '') {
 							$('#getmore').hide();

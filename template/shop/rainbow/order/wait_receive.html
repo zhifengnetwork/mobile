@@ -4,7 +4,7 @@
     <div class="nonenothing">
         <img src="__STATIC__/images/nothing.png"/>
         <p>暂无待收货商品</p>
-        <a href="{:U('Mobile/Index/index')}">去逛逛</a>
+        <a href="{:U('Shop/Index/index')}">去逛逛</a>
     </div>
 <else/>
     <foreach name="order_list" key="k" item="order">
@@ -59,7 +59,7 @@
                             </div>
                             <div class="buttondde inherflo">
                              <!--   <if condition="($order[return_btn] eq 1) and ($good[is_send] lt 2)">
-                                    <a href="{:U('Mobile/Order/return_goods',['rec_id'=>$good['rec_id']])}">申请售后</a>
+                                    <a href="{:U('Shop/Order/return_goods',['rec_id'=>$good['rec_id']])}">申请售后</a>
                                 </if>-->
                                 <!--<if condition="$good[is_send] gt 1">-->
                                     <!--<a class="applyafts">已申请售后</a>-->
@@ -69,7 +69,7 @@
                                     <a class="applyafts">已申请售后</a>
                                     <else />
                                     <if condition="($order.return_btn eq 1)">
-                                        <a href="{:U('Mobile/Order/return_goods',['rec_id'=>$good['rec_id']])}">申请售后</a>
+                                        <a href="{:U('Shop/Order/return_goods',['rec_id'=>$good['rec_id']])}">申请售后</a>
                                     </if>
                                 </notempty>
                             </div>
@@ -85,9 +85,9 @@
                     </p>
                     <p class="butna">
                         <!--<a href="">再次购买</a>-->
-                        <a href="{:U('Mobile/Order/order_detail',array('id'=>$order.order_id,'waitreceive'=>1))}">查看详情</a>
+                        <a href="{:U('Shop/Order/order_detail',array('id'=>$order.order_id,'waitreceive'=>1))}">查看详情</a>
                         <a style="display: none" class="tuid" href="javascript:void(0);" onclick="expedite('{$order.order_id}')">我要催单</a>
-                        <!--<a href="{:U('Mobile/User/express',array('order_id'=>$order.order_id))}">查看物流</a>-->
+                        <!--<a href="{:U('Shop/User/express',array('order_id'=>$order.order_id))}">查看物流</a>-->
                         <if condition="$order.pay_status eq 1">
                         <a class="red receipt" href="javascript:void(0);"  >确认收货</a>
                         </if>
@@ -101,7 +101,7 @@
             <p>您的订单已经交由<span class="red">{$order.shipping_name}</span>进行配送，运单号为<span class="red">{$order.delivery_doc['invoice_no']}</span></p>
             <div class="weiyi p">
                 <a href="javascript:void(0);">取消</a>
-                <a class="eno" href="{:U('Mobile/Order/express',array('order_id'=>$order.order_id))}">查看物流</a>
+                <a class="eno" href="{:U('Shop/Order/express',array('order_id'=>$order.order_id))}">查看物流</a>
             </div>
         </div>
         <!--我要催单弹窗-e-->
@@ -111,7 +111,7 @@
             <p>是否收到该订单商品？</p>
             <div class="weiyi p">
                 <a href="javascript:void(0);">未收货</a>
-                <a class="eno" href="{:U('Mobile/Order/order_confirm',array('id'=>$order.order_id))}">已收货</a>
+                <a class="eno" href="{:U('Shop/Order/order_confirm',array('id'=>$order.order_id))}">已收货</a>
             </div>
         </div>
         <!--确认收货弹窗-e-->
@@ -134,7 +134,7 @@
         page += 1;
         $.ajax({
             type : "GET",
-            url:"/index.php?m=Mobile&c=Order&a=wait_receive&type=WAITRECEIVE&is_ajax=1&p="+page,
+            url:"/index.php?m=Shop&c=Order&a=wait_receive&type=WAITRECEIVE&is_ajax=1&p="+page,
             success: function(data)
             {
                 if(data == ''){

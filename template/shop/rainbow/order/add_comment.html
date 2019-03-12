@@ -267,7 +267,7 @@
             formData.append("content", $("textarea[name='content']").val());
             $.ajax({
                 type: "POST",
-                url: "{:U('Mobile/Order/add_comment')}",
+                url: "{:U('Shop/Order/add_comment')}",
                 data: formData,
                 dataType: "json",
                 async: false,

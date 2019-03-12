@@ -57,7 +57,7 @@
 		++page;
 		$.ajax({
 			type : "GET",
-			url: "/index.php?m=Mobile&c=Activity&a=ajax_auction&p=" + page,
+			url: "/index.php?m=Shop&c=Activity&a=ajax_auction&p=" + page,
 			success: function(data){
 				if ($.trim(data)) {
 					$(".shopkill").append(data);
