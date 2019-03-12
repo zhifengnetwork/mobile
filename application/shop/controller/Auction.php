@@ -58,10 +58,13 @@ class Auction extends MobileBase
     /**
      * 竞拍详情
      */
-    public function auction_detail()
+    public function detail()
     {
 
         $goods_id = I("get.id/d");
+        if (empty($goods_id)) {
+            $this->error('商品id不存在');
+        }
         $goodsModel = new \app\common\model\Auction();
         $goods = $goodsModel::get($goods_id);
         //dump($goods);exit;
