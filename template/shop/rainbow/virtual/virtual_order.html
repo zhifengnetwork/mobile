@@ -32,7 +32,7 @@
 <div class="ord_list p">
     <div class="maleri30">
         <volist name="order_info.order_goods" id="good">
-            <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$good[goods_id]))}">
+            <a href="{:U('Shop/Goods/goodsInfo',array('id'=>$good[goods_id]))}">
                 <div class="shopprice">
                     <div class="img_or fl">
                         <img src="{$good[goods_id]|goods_thum_images=100,100}"/>
@@ -61,7 +61,7 @@
             <a class="" href="{:U('Order/cancel_order_info',['order_id'=>$order_info['order_id']])}">取消进度</a>
         </if>
         <if condition="$order_info.order_status_detail eq '待评价'">
-            <a  class="" href="{:U('Mobile/Order/add_comment',['order_id'=>$order_info.order_id,'rec_id'=>$good.rec_id])}">评价晒单</a>
+            <a  class="" href="{:U('Shop/Order/add_comment',['order_id'=>$order_info.order_id,'rec_id'=>$good.rec_id])}">评价晒单</a>
         </if>
     </div>
 </div>
@@ -153,7 +153,7 @@
     </div>
 </div>
 <!--取消订单-e-->
-<!--http://192.168.0.146:1004/Mobile/Order/add_comment/order_id/2888/rec_id/2997.html {:U('Mobile/Order/add_comment',['order_id'=>$order.order_id,'rec_id'=>$goods.rec_id])}-->
+<!--http://192.168.0.146:1004/Shop/Order/add_comment/order_id/2888/rec_id/2997.html {:U('Shop/Order/add_comment',['order_id'=>$order.order_id,'rec_id'=>$goods.rec_id])}-->
 
 
 <div class="mask-filter-div" style="display: none;"></div>
@@ -162,7 +162,7 @@
 <div class="payit ma-to-20">
     <div class="fr s">
         <if condition="$order_info.virtual_order_button[pay_btn] eq 1">
-            <a href="{:U('/Mobile/Cart/cart4',array('order_id'=>$order_info[order_id]))}'">立即支付</a>
+            <a href="{:U('/Shop/Cart/cart4',array('order_id'=>$order_info[order_id]))}'">立即支付</a>
         </if>
         <if condition="$order_info.virtual_order_button[receive_btn] eq 1">
             <a onclick="order_confirm({$order_info['order_id']});">收货确认</a>
@@ -197,7 +197,7 @@
             success:function(data){
                 if(data.status == 1){
                     layer.open({content:data.msg, time:2});
-                    location.href ='/index.php?m=mobile&c=Virtual&a=virtual_order&order_id='+orderId;
+                    location.href ='/index.php?m=Shop&c=Virtual&a=virtual_order&order_id='+orderId;
                 }else{
                     layer.open({content:data.msg, time:2});
                 }
@@ -212,13 +212,13 @@
     function cancel_order(id){
         $.ajax({
             type: 'GET',
-            url:"/index.php?m=Mobile&c=Order&a=cancel_order&id="+id,
+            url:"/index.php?m=Shop&c=Order&a=cancel_order&id="+id,
             dataType:'JSON',
             success:function(data){
                 if(data.status == 1){
                     //成功
                     layer.open({content:data.msg,time:2});
-                    window.location.href = "/index.php?m=Mobile&c=Virtual&a=virtual_order&order_id="+id;
+                    window.location.href = "/index.php?m=Shop&c=Virtual&a=virtual_order&order_id="+id;
                 }else{
                     //状态不允许
                     layer.open({content:data.msg,time:2});

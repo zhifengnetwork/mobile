@@ -62,7 +62,7 @@
             <p class="recept">
             	<input class="zjy_cheock" type="checkbox" name="" id="" value="" />
             	<span>我已经阅读并同意</span>
-            	<a href="{:U('Mobile/Article/agreement',['doc_code'=>'agreement'])}">《服务协议》</a>
+            	<a href="{:U('Shop/Article/agreement',['doc_code'=>'agreement'])}">《服务协议》</a>
             </p>
         </div>
         <!--<div class="lsu boo zc_se">-->
@@ -214,12 +214,12 @@
         }
         $.ajax({
             type:'POST',
-            url:"/index.php?m=Mobile&c=User&a=reg",
+            url:"/index.php?m=Shop&c=User&a=reg",
             dataType:'JSON',
             data:$('#regFrom').serialize(),
             success:function(data){
                 if(data.status == 1){
-                    location.href='/index.php/Mobile/User/index';
+                    location.href='/index.php/Shop/User/index';
                 }else{
                     showErrorMsg(data.msg);
                 }

@@ -31,7 +31,7 @@
     </div>
 </div>
 <div class="floor my p edit">
-    <form action="{:U('Mobile/User/edit_address')}" method="post" id="addressForm">
+    <form action="{:U('Shop/User/edit_address')}" method="post" id="addressForm">
         <div class="content">
             <div class="floor list7">
                 <div class="myorder p">
@@ -170,7 +170,7 @@
     <div class="sfk">是否删除该地址?</div>
     <div class="lineq">
         <span class="clos">取消</span>
-        <span class="sur"><a href="{:U('/Mobile/User/del_address',array('id'=>$address[address_id]))}'">确定</a></span>
+        <span class="sur"><a href="{:U('/Shop/User/del_address',array('id'=>$address[address_id]))}'">确定</a></span>
     </div>
 </div>
 <div class="mask-filter-div" style="display: none;"></div>
@@ -216,7 +216,7 @@
         }
         $.ajax({
             type : "POST",
-            url:"{:U('Mobile/User/edit_address')}",//+tab,
+            url:"{:U('Shop/User/edit_address')}",//+tab,
             dataType:'JSON',
             data :$('#addressForm').serialize(),
             success: function(data)

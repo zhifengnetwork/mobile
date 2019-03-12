@@ -65,8 +65,8 @@
         page += 1;
         $.ajax({
             type : "GET",
-            url:"/index.php?m=Mobile&c=User&a=coupon&type={$Request.param.type}&is_ajax=1&p="+page,//+tab,
-//			url:"{:U('Mobile/User/coupon',array('type'=>$_GET['type']),'')}/is_ajax/1/p/"+page,//+tab,
+            url:"/index.php?m=Shop&c=User&a=coupon&type={$Request.param.type}&is_ajax=1&p="+page,//+tab,
+//			url:"{:U('Shop/User/coupon',array('type'=>$_GET['type']),'')}/is_ajax/1/p/"+page,//+tab,
 //			data : $('#filter_form').serialize(),// 你的formid 搜索表单 序列化提交
             success: function(data)
             {

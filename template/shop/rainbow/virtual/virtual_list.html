@@ -10,16 +10,16 @@
 	<div class="maleri30">
 		<ul class="addset">
             <li <if condition="$Request.param.type eq ''">class="red"</if>>
-            <a href="{:U('/Mobile/Virtual/virtual_list')}" class="tab_head">全部订单</a>
+            <a href="{:U('/Shop/Virtual/virtual_list')}" class="tab_head">全部订单</a>
             </li>
             <li id="WAITPAY" <if condition="$Request.param.type eq 'WAITPAY'">class="red"</if>">
-            <a href="{:U('/Mobile/Virtual/virtual_list',array('type'=>'WAITPAY'))}" class="tab_head" >待付款</a>
+            <a href="{:U('/Shop/Virtual/virtual_list',array('type'=>'WAITPAY'))}" class="tab_head" >待付款</a>
             </li>
             <li id="WAITSEND" <if condition="$Request.param.type eq 'PAYED'">class="red"</if>>
-            <a href="{:U('/Mobile/Virtual/virtual_list',array('type'=>'PAYED'))}"  class="tab_head">已付款</a>
+            <a href="{:U('/Shop/Virtual/virtual_list',array('type'=>'PAYED'))}"  class="tab_head">已付款</a>
             </li>
             <li id="WAITCCOMMENT"  <if condition="$Request.param.type eq 'FINISH'">class="red"</if>>
-            <a href="{:U('/Mobile/Virtual/virtual_list',array('type'=>'FINISH'))}" class="tab_head">已完成</a>
+            <a href="{:U('/Shop/Virtual/virtual_list',array('type'=>'FINISH'))}" class="tab_head">已完成</a>
             </li>
 		</ul>
 	</div>
@@ -59,7 +59,7 @@
 						<foreach  name="order.order_goods" item="goods">
 							<div class="sc_list se_sclist paycloseto">
 								<!--虚拟订单-->
-								<a href="{:U('/Mobile/Virtual/virtual_order',array('order_id'=>$order['order_id']))}">
+								<a href="{:U('/Shop/Virtual/virtual_order',array('order_id'=>$order['order_id']))}">
 									<div class="shopimg fl">
 										<img src="{$goods[goods_id]|goods_thum_images=200,200}">
 									</div>
@@ -78,7 +78,7 @@
 										</div>
 										<div class="buttondde">
 											<if condition="$order[comment_btn] eq 1">
-												<a  href="{:U('Mobile/Order/add_comment',['order_id'=>$order.order_id,'rec_id'=>$goods.rec_id])}">评价晒单</a>
+												<a  href="{:U('Shop/Order/add_comment',['order_id'=>$order.order_id,'rec_id'=>$goods.rec_id])}">评价晒单</a>
 											</if>
 										</div>
 									</div>
@@ -98,7 +98,7 @@
 				<div class="shop-rebuy-price p">
 					<div class="maleri30">
 						<if condition="$order[pay_btn] eq 1">
-							<a class="shop-rebuy paysoon" href="{:U('Mobile/Cart/cart4',array('order_id'=>$order.order_id))}">立即付款</a>
+							<a class="shop-rebuy paysoon" href="{:U('Shop/Cart/cart4',array('order_id'=>$order.order_id))}">立即付款</a>
 						</if>
 						<if condition="$order[receive_btn] eq 1">
 							<a class="shop-rebuy paysoon"  onclick="order_confirm({$order['order_id']})">确认收货</a>
@@ -135,10 +135,10 @@
 			success:function(data){
 				if(data.status == 1){
 					layer.open({content:data.msg, time:2});
-					location.href ='/index.php?m=mobile&c=Virtual&a=virtual_list&id='+orderId;
+					location.href ='/index.php?m=Shop&c=Virtual&a=virtual_list&id='+orderId;
 				}else{
 					layer.open({content:data.msg, time:2});
-					location.href ='/index.php?m=mobile&c=Virtual&a=virtual_list&type={$Request.param.type}&p={$Request.param.p}';
+					location.href ='/index.php?m=Shop&c=Virtual&a=virtual_list&type={$Request.param.type}&p={$Request.param.p}';
 				}
 			},
 			error : function() {
@@ -155,12 +155,12 @@
 			return false;
 		$.ajax({
 			type: 'GET',
-			url:"/index.php?m=Mobile&c=Order&a=cancel_order&id="+id,
+			url:"/index.php?m=Shop&c=Order&a=cancel_order&id="+id,
 			dataType:'JSON',
 			success:function(data){
 				if(data.status == 1){
 					layer.open({content:data.msg,time:2});
-					location.href = "/index.php?m=Mobile&c=Virtual&a=virtual_list";
+					location.href = "/index.php?m=Shop&c=Virtual&a=virtual_list";
 				}else{
 					layer.open({content:data.msg,time:2});
 					return false;
@@ -181,7 +181,7 @@
 		page += 1;
 		$.ajax({
 			type : "GET",
-			url:"/index.php?m=Mobile&c=Virtual&a=virtual_list&type={$Request.param.type}&is_ajax=1&p="+page,//+tab,
+			url:"/index.php?m=Shop&c=Virtual&a=virtual_list&type={$Request.param.type}&is_ajax=1&p="+page,//+tab,
 			success: function(data)
 			{
 				if(data == '') {

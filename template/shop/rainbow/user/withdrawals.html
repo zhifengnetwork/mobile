@@ -261,7 +261,7 @@
 			$('#bank_name').val('微信');
 			$('#pay_num').html('正在获取绑定的微信。。。');
 			//ajax请求一下用户是否绑定了微信
-			$.post('{:U("Mobile/User/get_openid")}','',function(res){
+			$.post('{:U("Shop/User/get_openid")}','',function(res){
 				//console.log(res['status']);
 				if(res['status']==1){
 					$('#pay_num').html('微信账号已绑定');
@@ -308,7 +308,7 @@
 			return false;
 		}
 		// 
-		$.post('{:U("Mobile/User/add_card")}',{'type':cash_type,'card':card,'cash_name':cash_name},function(res){
+		$.post('{:U("Shop/User/add_card")}',{'type':cash_type,'card':card,'cash_name':cash_name},function(res){
 			if(res.status==1){
 				$('#pay_num').html(card);
 				$('#pay_name').html(cash_name);
@@ -399,7 +399,7 @@
         }
         $.ajax({
             type: "post",
-            url :"{:U('Mobile/User/withdrawals')}",
+            url :"{:U('Shop/User/withdrawals')}",
             dataType:'json',
             data:$('#returnform').serialize(),
             success: function(data)

@@ -17,13 +17,13 @@
             <div class="user_down_bg"></div>
             <ul>
                 <li>
-                    <a href="{:U('Mobile/User/account')}">
+                    <a href="{:U('shop/User/account')}">
                         <div class="user_down_dev">{$user['user_money']}</div>
                         <div class="user_down_name">余额</div>
                     </a>
                 </li>
                 <li>
-                    <a href="{:U('Mobile/User/points_list')}">
+                    <a href="{:U('shop/User/points_list')}">
                         <div class="user_down_dev">{$user['pay_points']}</div>
                         <div class="user_down_name">积分</div>
                     </a>
@@ -32,7 +32,7 @@
         </div>
         
        <div class="z_user_icon">
-       	<a href="/Mobile/User/userinfo.html">
+       	<a href="/shop/User/userinfo.html">
        		<i></i>
        	</a>
        </div> 
@@ -59,28 +59,28 @@
                         <div class="z_user_nav">
                             <ul>
                                 <li>
-                                    <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITPAY'))}">
+                                    <a href="{:U('/shop/Order/order_list',array('type'=>'WAITPAY'))}">
                                         <img src="__PUBLIC__/static/images/q1.png"/>
 
                                         <p>待付款</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{:U('/Mobile/Order/wait_receive',array('type'=>'WAITRECEIVE'))}">
+                                    <a href="{:U('/shop/Order/wait_receive',array('type'=>'WAITRECEIVE'))}">
                                         <img src="__PUBLIC__/static/images/q2.png"/>
 
                                         <p>待收货</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{:U('Mobile/Order/comment',array('status'=>0))}">
+                                    <a href="{:U('shop/Order/comment',array('status'=>0))}">
                                         <img src="__PUBLIC__/static/images/q3.png"/>
 
                                         <p>待评价</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{:U('Mobile/Order/return_goods_list',array('type'=>1))}">
+                                    <a href="{:U('shop/Order/return_goods_list',array('type'=>1))}">
                                         <img src="__PUBLIC__/static/images/q4.png"/>
 
                                         <p>售后服务</p>

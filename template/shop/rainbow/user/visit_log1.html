@@ -153,10 +153,10 @@
         $(' .check_t').each(function(){
             visit_ids.push($(this).attr('data-id'));
         });
-        location.href = "{:U('Mobile/User/del_visit_log')}?visit_ids="+String(visit_ids);
+        location.href = "{:U('Shop/User/del_visit_log')}?visit_ids="+String(visit_ids);
     }
     function clearAll() {
-        location.href = "{:U('Mobile/User/clear_visit_log')}";
+        location.href = "{:U('Shop/User/clear_visit_log')}";
     }
     var page = 1;
     function ajax_sourch_submit()
@@ -164,7 +164,7 @@
         page += 1;
         $.ajax({
             type : "get",
-            url:"{:U('Mobile/User/visit_log')}?is_ajax=1&p=" + page,
+            url:"{:U('Shop/User/visit_log')}?is_ajax=1&p=" + page,
             success: function(data)
             {
                 if($.trim(data) != ''){

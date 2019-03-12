@@ -15,7 +15,7 @@
                 <foreach  name="order.order_goods" item="goods">
                     <div class="sc_list se_sclist paycloseto">
                         <!--虚拟订单-->
-                        <a href="{:U('/Mobile/Virtual/virtual_order',array('order_id'=>$order['order_id']))}">
+                        <a href="{:U('/Shop/Virtual/virtual_order',array('order_id'=>$order['order_id']))}">
                             <div class="shopimg fl">
                                 <img src="{$goods[goods_id]|goods_thum_images=200,200}">
                             </div>
@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="buttondde">
                                     <if condition="$order[comment_btn] eq 1">
-                                        <a  href="{:U('Mobile/Order/add_comment',['order_id'=>$order.order_id,'rec_id'=>$goods.rec_id])}">评价晒单</a>
+                                        <a  href="{:U('Shop/Order/add_comment',['order_id'=>$order.order_id,'rec_id'=>$goods.rec_id])}">评价晒单</a>
                                     </if>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
         <div class="shop-rebuy-price p">
             <div class="maleri30">
                 <if condition="$order[pay_btn] eq 1">
-                    <a class="shop-rebuy paysoon" href="{:U('Mobile/Cart/cart4',array('order_id'=>$order.order_id))}">立即付款</a>
+                    <a class="shop-rebuy paysoon" href="{:U('Shop/Cart/cart4',array('order_id'=>$order.order_id))}">立即付款</a>
                 </if>
                 <if condition="$order[receive_btn] eq 1">
                     <a class="shop-rebuy paysoon"  onclick="order_confirm({$order['order_id']})">确认收货</a>
