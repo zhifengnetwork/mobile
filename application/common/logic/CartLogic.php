@@ -96,6 +96,7 @@ class CartLogic extends Model
     public function setUserId($user_id)
     {
         $this->user_id = $user_id;
+        $this->user = Db::name('users')->where(['user_id' => $this->user_id])->find();
     }
 
     /**
@@ -116,6 +117,16 @@ class CartLogic extends Model
     {
         if (empty($this->goods)) {
             throw new TpshopException('立即购买', 0, ['status' => 0, 'msg' => '购买商品不存在', 'result' => '']);
+        }
+        // 是否可免费领取
+        if ($this->goods['cat_id'] == 584 || $this->goods['cat_id'] == 585 ) {
+
+             $isReceive = provingReceive($this->user, $this->goods['cat_id']); 
+
+            if($isReceive['status'] == 0){
+                throw new TpshopException('立即购买', 0, ['status' => 0, 'msg' => '购买商品不存在', 'result' => '']);
+                // throw new TpshopException("立即购买",0, $isReceive);
+            }
         }
         if (empty($this->goodsBuyNum)) {
             throw new TpshopException('立即购买', 0, ['status' => 0, 'msg' => '购买商品数量不能为0', 'result' => '']);

@@ -1210,6 +1210,25 @@
     }
     // 提交订单
     var ajax_return_status = 1; // 标识ajax 请求是否已经回来 可以进行下一次请求
+    
+    //验证是否可以免费领取
+    function sign_receive(cat_id){
+        $.ajax({
+            type : "GET",
+            dataType: "json",
+            url:"/index.php?m=mobile&c=sign&a=receive",//+tab,
+            data: {cat_id:cat_id},
+            success: function(data){
+                if(data.status == 0){
+                    layer.open({content:data.msg, time:3});
+                    return false;
+                }else{
+                    submit_order();
+                }
+            }
+        });
+    }
+
     function submit_order() {
         if ($('.submit_price a').hasClass("disable")) {
             return;
@@ -1218,6 +1237,7 @@
             return false;
         }
         ajax_return_status = 0;
+
         $.ajax({
             type: "POST",
             url: "{:U('Mobile/Cart/cart3')}",//+tab,
