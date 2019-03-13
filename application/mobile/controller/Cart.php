@@ -185,6 +185,7 @@ class Cart extends MobileBase {
         $is_virtual = input('is_virtual/d',0);
         $data = input('request.');
         $cart_validate = Loader::validate('Cart');
+
         if($is_virtual === 1){
             $cart_validate->scene('is_virtual');
         }
@@ -195,7 +196,7 @@ class Cart extends MobileBase {
         $address = Db::name('user_address')->where("address_id", $address_id)->find();
         $cartLogic = new CartLogic();
         $pay = new Pay();
-        try {
+        // try {
             $cartLogic->setUserId($this->user_id);
             if ($action == 'buy_now') {
                 $cartLogic->setGoodsModel($goods_id);
@@ -209,6 +210,7 @@ class Cart extends MobileBase {
                 $cartLogic->checkStockCartList($userCartList);
                 $pay->payCart($userCartList);
             }
+
             $pay->setUserId($this->user_id)->setShopById($shop_id)->delivery($address['district'])->orderPromotion()
                 ->useCouponById($coupon_id)->useUserMoney($user_money)->usePayPoints($pay_points,false,'mobile')->getUserSign($goods_id);
             // 提交订单
@@ -221,16 +223,12 @@ class Cart extends MobileBase {
                 $this->ajaxReturn(['status' => 1, 'msg' => '提交订单成功', 'result' => $order['order_sn']]);
             }
             $this->ajaxReturn(['status' => 1, 'msg' => '计算成功', 'result' => $pay->toArray()]);
-        } catch (TpshopException $t) {
-            $error = $t->getErrorArr();
-            $this->ajaxReturn($error);
-        }
+        // } catch (TpshopException $t) {
+        //     $error = $t->getErrorArr();
+        //     $this->ajaxReturn($error);
+        // }
     }
-    public function caa()
-    {
-        $pay = new Pay();
-        return $pay->setUserId($this->user_id)->getUserSign(239);
-    }
+
     /*
      * 订单支付页面
      */
@@ -249,7 +247,11 @@ class Cart extends MobileBase {
         }
         $Order = new Order();
         $order = $Order->where($order_where)->find();
+
         empty($order) && $this->error('订单不存在！');
+        if($order['order_status'] == 1){
+            $this->error('该订单已支付过',U("Mobile/Order/order_detail",array('id'=>$order['order_id'])));
+        }
         if($order['order_status'] == 3){
             $this->error('该订单已取消',U("Mobile/Order/order_detail",array('id'=>$order['order_id'])));
         }

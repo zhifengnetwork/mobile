@@ -5,7 +5,8 @@ $.fn.extend({
         laydate.render({
             elem: '#'+$(this).attr("id"),//绑定元素
             theme: 'molv', //主题
-            format: 'yyyy-MM-dd', //自定义格式
+		    type:'datetime', //控件选择类型
+            format: 'yyyy-MM-dd HH:mm:ss', //自定义格式
             calendar: true, //显示公历节日
             min: '1970-01-01', //最小日期
             max: '2099-12-31', //最大日期

@@ -131,16 +131,16 @@
 								<div style="text-align: center; width: 50px;">{$shop.shop_id}</div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: left; width: 100px;">{$shop.shop_name|getSubstr=0,20}</div>
+								<div style="text-align: left; width: 100px;">{$shop.shop_name}</div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: center; width: 100px;">{$shop['area_list'][0]['name']}</div>
+								<div style="text-align: center; width: 100px;">{$shop['province']}</div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: center; width: 100px;">{$shop['area_list'][1]['name']}</div>
+								<div style="text-align: center; width: 100px;">{$shop['city']}</div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: center; width: 100px;">{$shop['area_list'][2]['name']}</div>
+								<div style="text-align: center; width: 100px;">{$shop['district']}</div>
 							</td>
 							<td align="left" class="">
 								<div style="text-align: center; width: 190px;">{$shop['shop_address']}</div>
@@ -176,7 +176,7 @@
 			<div class="iDiv" style="display: none;"></div>
 		</div>
 		<!--分页位置-->
-		{$page->show()} </div>
+		{$page} </div>
 </div>
 <script>
 	$(document).ready(function(){

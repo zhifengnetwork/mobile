@@ -108,14 +108,16 @@ class Goods extends Validate
     //检查是否有商品规格参加活动，若有则不能编辑商品
     protected function checkGoodsId($value)
     {
-        $spec_goods_price = Db::name('spec_goods_price')->where('goods_id', $value)->where('prom_type', 'gt', 0)->find();
-        if ($spec_goods_price) {
-            return '商品规格为' . $spec_goods_price['key_name'] . '正在参与活动，不能编辑该商品信息';
-        }
-        $goods = Db::name('goods')->where('goods_id', $value)->find();
-        if ($goods['prom_type'] > 0) {
-            return '该商品正在参与活动，不能编辑该商品信息';
-        }
+        // $spec_goods_price = Db::name('spec_goods_price')->where('goods_id', $value)->where('prom_type', 'gt', 0)->find();
+        // if ($spec_goods_price) {
+        //     return '商品规格为' . $spec_goods_price['key_name'] . '正在参与活动，不能编辑该商品信息';
+        // }
+        // $goods = Db::name('goods')->where('goods_id', $value)->find();
+        // if ($goods['prom_type'] > 0) {
+        //     return '该商品正在参与活动，不能编辑该商品信息';
+        // }
+
+        
         return true;
     }
 

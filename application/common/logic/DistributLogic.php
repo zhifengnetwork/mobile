@@ -6,6 +6,7 @@ namespace app\common\logic;
 use think\Db;
 use think\Page;
 use think\Session;
+use think\Cache;
 
 class DistributLogic
 {
@@ -73,27 +74,40 @@ class DistributLogic
      * 获取团队列表
      */
     public function get_team_list($user_id){
-        // 查询上级id是否等于用户id
-        $count = M('users')->where('first_leader|second_leader|third_leader',$user_id)->count();
-        // 分页
-        $Page = new Page($count, 15);
-        // 下级
-        $next = M('users')->where('first_leader|second_leader|third_leader',$user_id)
-            ->limit($Page->firstRow . ',' . $Page->listRows)
-            ->select(); 
-        // dump($next);
+        global $result;
+        $this->get_next($user_id);  //获取下级信息
+
+        // Cache::set('team_list', $result, 3600);
+        $page = new Page(count($result),15);
+        
         $return = [
             'status'    =>1,
             'msg'       =>'',
-            'result'    =>$next,
-            'show'      =>$Page->show()
+            'result'    =>$result,
+            'show'      =>$page
         ];
         return $return;
     }
+
+    //获取下级信息
+    public function get_next($user_id)
+    {
+        global $result;
+        // 下级
+        $next = M('users')->where('first_leader',$user_id)
+            ->limit($Page->firstRow . ',' . $Page->listRows)
+            ->field('user_id,nickname,mobile,first_leader')
+            ->select();
+
+        if($next){
+            $result[] = $next;
+            $k += 1;
+            
+            foreach ($next as $key => $value) {
+                if ($value) {
+                    $this->get_team_list($value['user_id'],$result);
+                }
+            }
+        }
+    }
 }
-
-
-
-
-
-

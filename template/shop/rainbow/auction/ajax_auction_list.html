@@ -1,0 +1,24 @@
+<foreach name="list" item="li">
+    <!--1-->
+    <div class="section">
+        <!--<img src="__STATIC__/auction/pic.png" class="img"/>-->
+        <div class='time'>{$li.start_time}开枪</div>
+        <div class="fu">
+            <if condition="$li[original_img] eq ''">
+                <img src="__STATIC__/auction/lovely.jpg" class="img"/>
+                <else>
+                    <img src="{$li[original_img]}" class="img"/>
+            </if>
+        </div>
+        <div class="bottom">
+
+            <div class="priceear">
+                <p class="name">{$li.goods_name}</p>
+                <p style="display: inline-block;" class="price">￥{$li.start_price}</p><span>起拍</span>
+            </div>
+            <a class="joinauction" href="detail.html">
+                参与竞拍
+            </a>
+        </div>
+    </div>
+</foreach>

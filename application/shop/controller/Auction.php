@@ -4,8 +4,11 @@
  */
 // namespace app\mobile\controller;
 namespace app\shop\controller;
+header('content-type:text/html;charset=utf-8');
 use app\common\logic\AuctionLogic;
 use think\Db;
+use think\Model;
+use think\Page;
 use app\common\model\WxNews;
 
 class Auction extends MobileBase
@@ -34,7 +37,31 @@ class Auction extends MobileBase
      */
     public function index()
     {
-       
+       //先算分页
+//        $auctionGoodsList=Db::field('goods.original_img')->table(['tp_goods'=>'goods','tp_auction'=>'auction'])->where()->select();
+//        $auction= new Auction();
+        $count =  M('auction')->order('start_time asc')->count();
+//        $count=Db::field('goods.original_img')->table(['tp_goods'=>'goods','tp_auction'=>'auction'])->where()->select();
+        $pagesize = C('PAGESIZE');  //每页显示数
+        $page = new Page($count,$pagesize); // 实例化分页类 传入总记录数和每页显示的记录数
+        $show = $page->show();  // 分页显示输出
+        $this->assign('page',$show);    // 赋值分页输出
+        $list = M('auction')
+            ->alias('au')
+            ->join('__GOODS__ g', 'au.goods_id=g.goods_id AND g.prom_type=8')
+            ->page($page->firstRow, $page->listRows)
+            ->order('start_time asc')
+            ->field('g.original_img,au.id,au.goods_name,au.start_price,au.start_time')
+            ->select();
+//        var_dump($list);die;
+        //处理时间
+        foreach($list as $key=>$value){
+            $list[$key]['start_time']=date('n月j日   H:i:s',$value['start_time']);
+        }
+        $this->assign('list', $list);
+        if(I('is_ajax')) {
+            return $this->fetch('ajax_auction_list');      //输出分页
+        }
         return $this->fetch();
     }
 
@@ -58,10 +85,13 @@ class Auction extends MobileBase
     /**
      * 竞拍详情
      */
-    public function auction_detail()
+    public function detail()
     {
 
         $goods_id = I("get.id/d");
+        if (empty($goods_id)) {
+            $this->error('商品id不存在');
+        }
         $goodsModel = new \app\common\model\Auction();
         $goods = $goodsModel::get($goods_id);
         //dump($goods);exit;

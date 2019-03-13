@@ -14,32 +14,39 @@
 }
 .comListTerm {
 	float: left;
-	margin: .3rem 0 0 .3rem;
-	width: 3.3rem;
-	height: 4.4rem;
+	margin: 4% 0 0 4%;
+	width: 44%;
+	height: auto;
 	text-align: center;
+}
+.comListTermImgBox {
+	width: 100%;
+	height: 100%;
 }
 .comListTermImg {
 	display: block;
-	width: 3.3rem;
-	height: 2.8rem;
+	max-width: 100%;
+	max-height: 100%;
+	font-size: .26rem;
 }
 .comListTermTitle {
-	padding-top: .16rem;
+	padding: .06rem 0;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	width: 100%;
-	height: .48rem;
-	font: .26rem/.26rem "微软雅黑";
+	font-size: .26rem;
+	line-height: .36rem;
 	color: #000;
 	letter-spacing: .02rem;
 }
 .comListTermText {
-	font: .18rem/.3rem "微软雅黑";
+	font-size: .24rem;
+	line-height: .36rem;
 	color: #999;
 }
 .comListTermPrice {
-	font: .23rem/.36rem "微软雅黑";
+	font-size: .24rem;
+	line-height: .4rem;
 	color: #e82f5c;
 }
