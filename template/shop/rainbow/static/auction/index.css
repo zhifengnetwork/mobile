@@ -5,7 +5,7 @@
 }
 
 .big{
-	padding-top: .88rem;
+	padding-top: .8rem;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -71,13 +71,15 @@
 }
 .priceear{
 	
-	width: 2rem;
+	width: 4rem;
 	height: 1rem;
 	position: absolute;
 	bottom: .23rem;	
     font-size: .3rem;
     left: 5%;
     display: inline-block;
+    
+    
    
     
 	
@@ -95,12 +97,21 @@
 	
 }
 .price{	
+	
+	 max-width: 3rem;
+	 display: inline-block;;
 	 color: #E8315D;
-	 font-size: .4rem;		
+	 font-size: .4rem;
+	 text-overflow: ellipsis;
+     overflow: hidden;
+     white-space: nowrap;
+     vertical-align: bottom;
+	 
+	 		
 }
 .priceear span{
 	
-	font-size: .2rem;	
+	font-size: .2rem;
 	
 }
 .joinauction{
