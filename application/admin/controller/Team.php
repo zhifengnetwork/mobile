@@ -57,7 +57,7 @@ class Team extends Base
 	public function teamHandle()
     {
         $data = I('post.');
-        // dump($data);
+        dump($data);
         $data['create_time'] = date('Y-m-d H:i:s',time());
         $data['start_time'] = strtotime($data['start_time']);
         $data['end_time'] = strtotime($data['end_time']);
@@ -114,14 +114,14 @@ class Team extends Base
     public function selectLevel()
     {
         $status = input('status');
-         
+
         // $tpl = input('tpl',);
         if($status=='add'){
             $h_val = input('h_val');
             $h_val = $h_val+1;
+            // 如果删除成功，h_var=h_var-1;  
         }else{
-            // 编辑
-            // $h_val = input('h_val');
+            $h_val = input('h_val');
         }    
         $this->assign('h_val',$h_val);    
         return $this->fetch('add_level');
