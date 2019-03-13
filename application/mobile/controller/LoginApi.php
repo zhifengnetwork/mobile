@@ -34,13 +34,14 @@ class LoginApi extends MobileBase{
     }
 
     public function login(){
-        if(!$this->oauth)
+        if(!$this->oauth){
             $this->error('非法操作',U('Mobile/User/login'));
+        }
         // include_once  "plugins/login/{$this->oauth}/{$this->oauth}.class.php";
         // $this->class_obj->login();
 
         $d = $this->GetOpenid();
-        
+
         $logic = new UsersLogic(); 
         $data = $logic->thirdLogin($d);
         //直接去登录，空 就注册
@@ -57,6 +58,8 @@ class LoginApi extends MobileBase{
         }
 
 
+        header("Location:".U('Mobile/User/index'));
+        //登录成功跳转
     }
 
    // 网页授权登录获取 OpendId
