@@ -630,7 +630,7 @@
         $.ajax({
             type: 'post',
             data: {goods_id: goods_id, type_id: type_id},
-            url: "{:U('admin/Goods/ajaxGetSpecSelect')}",
+            url: "{:U('seller/Goods/ajaxGetSpecSelect')}",
             success: function (data) {
                 $("#ajax_spec_data").html('').append(data);
                 ajaxGetSpecInput();	// 触发完  马上触发 规格输入框
@@ -643,7 +643,7 @@
         $.ajax({
             type: 'GET',
             data: {goods_id: goods_id, type_id: type_id},
-            url: "/index.php/admin/Goods/ajaxGetAttrInput",
+            url: "/index.php/seller/Goods/ajaxGetAttrInput",
             dataType: 'json',
             success: function (data) {
                     var html = '';
@@ -816,7 +816,7 @@
         }
     }
 
-     var url="{:url('Admin/Ueditor/index',array('savePath'=>'goods'))}";
+     var url="{:url('Seller/Ueditor/index',array('savePath'=>'goods'))}";
      var ue = UE.getEditor('goods_content',{
          toolbars: [[
              'fullscreen', 'source', '|', 'undo', 'redo', '|',
@@ -862,7 +862,7 @@
     function ClearPicArr2(obj, path) {
         $.ajax({
             type: 'GET',
-            url: "{:U('Admin/Uploadify/delupload')}",
+            url: "{:U('Seller/Uploadify/delupload')}",
             data: {action: "del", filename: path},
             success: function () {
                 $(obj).parent().remove(); // 删除完服务器的, 再删除 html上的图片
@@ -871,7 +871,7 @@
         // 删除数据库记录
         $.ajax({
             type: 'GET',
-            url: "{:U('Admin/Goods/del_goods_images')}",
+            url: "{:U('Seller/Goods/del_goods_images')}",
             data: {filename: path},
             success: function () {
             }
@@ -976,7 +976,7 @@
 
 
     function add_edit_type(type_id) {
-        var url = '/index.php?m=Admin&c=Goods&a=type';
+        var url = '/index.php?m=Seller&c=Goods&a=type';
         if(type_id){
             url += '&id='+type_id;
         }
@@ -997,7 +997,7 @@
         $.ajax({
             type: 'post',
             data: {type_id:type_id},
-            url: "{:U('admin/Goods/ajaxGetGoodsTypeList')}",
+            url: "{:U('seller/Goods/ajaxGetGoodsTypeList')}",
             success: function (data) {
                 $("#goods_type").html(JSON.parse(data)) ;
                 var goods_id = $("input[name='goods_id']").val();

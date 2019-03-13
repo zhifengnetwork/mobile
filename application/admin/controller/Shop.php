@@ -94,7 +94,7 @@ class Shop extends Base
         if (empty($data['longitude']) && empty($data['latitude'])) {
             $this->ajaxReturn(['status' => 0, 'msg' => '请选择地图定位', 'result' => '']);
         }
-        if (empty($data['shopper_name'])) {
+        /*if (empty($data['shopper_name'])) {
             $this->ajaxReturn(['status' => 0, 'msg' => '请填写门店自提点后台账号', 'result' => '']);
         }
         if (empty($data['user_name'])) {
@@ -102,7 +102,7 @@ class Shop extends Base
         }
         if (empty($data['password'])) {
             $this->ajaxReturn(['status' => 0, 'msg' => '请填写登录密码', 'result' => '']);
-        }
+        }*/
         if (empty($data['shop_name'])) {
             $this->ajaxReturn(['status' => 0, 'msg' => '请填写自提点名称', 'result' => '']);
         }

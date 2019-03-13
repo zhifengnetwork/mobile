@@ -10,20 +10,29 @@
                 <a href="javascript:void(0);">{$user['nickname']}</a>
             </div>
             <div class="user_top_title">
-                
+
                 <!-- 代理 -->
-                <if condition="($user.agent_user == 1)"> <a href="javascript:void(0);">[代理等级一]--</a>
-                    <elseif condition="$user.agent_user eq 2"/><a href="javascript:void(0);">[代理等级二]--</a>
-                    <elseif condition="$user.agent_user eq 3"/><a href="javascript:void(0);">[代理等级三]--</a>
-                    <elseif condition="$user.agent_user eq 4"/><a href="javascript:void(0);">[代理等级四]--</a>
-                    <elseif condition="$user.agent_user eq 5"/><a href="javascript:void(0);">[代理等级五]--</a>
-                    <elseif condition="$user.agent_user eq 6"/><a href="javascript:void(0);">[代理等级六]--</a>
-                    <elseif condition="$user.is_agent eq 1"/><a href="javascript:void(0);">[代理]--</a>
-                    <else /> <a href="javascript:void(0);"></a>
+                <if condition="($user.agent_user == 1)">
+                    <a href="javascript:void(0);">[代理等级一]--</a>
+                    <elseif condition="$user.agent_user eq 2"/>
+                    <a href="javascript:void(0);">[代理等级二]--</a>
+                    <elseif condition="$user.agent_user eq 3"/>
+                    <a href="javascript:void(0);">[代理等级三]--</a>
+                    <elseif condition="$user.agent_user eq 4"/>
+                    <a href="javascript:void(0);">[代理等级四]--</a>
+                    <elseif condition="$user.agent_user eq 5"/>
+                    <a href="javascript:void(0);">[代理等级五]--</a>
+                    <elseif condition="$user.agent_user eq 6"/>
+                    <a href="javascript:void(0);">[代理等级六]--</a>
+                    <elseif condition="$user.is_agent eq 1"/>
+                    <a href="javascript:void(0);">[代理]--</a>
+                    <else/>
+                    <a href="javascript:void(0);"></a>
                 </if>
                 <!-- 分销 -->
-                <if condition="($user.is_distribut == 1)"> <a href="javascript:void(0);">--[分销商]</a>
-                    <else /> <a href="javascript:void(0);">[普通用户]</a>
+                <if condition="($user.is_distribut == 1)"><a href="javascript:void(0);">--[分销商]</a>
+                    <else/>
+                    <a href="javascript:void(0);">[普通用户]</a>
                 </if>
             </div>
         </div>
@@ -44,32 +53,32 @@
                 </li>
             </ul>
         </div>
-        
-       <div class="z_user_icon">
-       	<a href="/Mobile/User/userinfo.html">
-       		<i></i>
-       	</a>
-       </div> 
+
+        <div class="z_user_icon">
+            <a href="/Mobile/User/userinfo.html">
+                <i></i>
+            </a>
+        </div>
     </div>
     <div class="z_user_li_wrap">
         <volist name="menu_list" id="menu">
             <switch name="$menu['menu_id']">
                 <case value="1">
-                        <div class="z_user_list border10">
-                            <a href="{$menu.menu_url}">
-                                <div class="user_list_cont padd10">
-                                    <div class="cont_fl">
-                                        <img src="__PUBLIC__/static/images/mlist.png"/>
-                                        <span>我的订单</span>
-                                    </div>
-                                    <div class="cont_fr">
+                    <div class="z_user_list border10">
+                        <a href="{$menu.menu_url}">
+                            <div class="user_list_cont padd10">
+                                <div class="cont_fl">
+                                    <img src="__PUBLIC__/static/images/mlist.png"/>
+                                    <span>我的订单</span>
+                                </div>
+                                <div class="cont_fr">
                                                 <span>
                                                     查看全部
                                                 </span>
-                                        <i class="zMright"></i>
-                                    </div>
+                                    <i class="zMright"></i>
                                 </div>
-                            </a>
+                            </div>
+                        </a>
                         <div class="z_user_nav">
                             <ul>
                                 <li>
@@ -104,7 +113,7 @@
                         </div>
                     </div>
                 </case>
-                <default />
+                <default/>
                 <a href="{$menu.menu_url}">
                     <div class="z_user_list <if condition='$menu.is_tab eq 1'>border10</if>">
                         <div class="user_list_cont padd10">
@@ -127,13 +136,13 @@
 <!--底部导航-end-->
 <script>
     $('.z_user_head').css("background-color", "{$tpshop_config['basic_header_background']}");
-    $(function(){		
+    $(function () {
         var ua = window.navigator.userAgent.toLowerCase();
-        if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+        if (ua.match(/MicroMessenger/i) == 'micromessenger') {
             $('#logout').hide();
         }
     });
-	$('.border10').css('border-color','#f8f8f8');
+    $('.border10').css('border-color', '#f8f8f8');
 </script>
 </body>
 </html>
