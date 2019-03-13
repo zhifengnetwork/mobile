@@ -267,8 +267,9 @@ color: gray;
 	
 }
 #form{
+	
 	position: fixed;
-	bottom: 0px;
+	bottom: .2rem;
 	
 	
 }
@@ -276,6 +277,7 @@ color: gray;
 	
 	margin-left: .06rem;
 	margin-right: .06rem;
+	margin-top:.1rem ;
 	
 }
 
@@ -293,7 +295,7 @@ color: gray;
 	height: .7rem;
 	line-height: .7rem;
 	border-radius: .03rem;
-	font-size: .2rem; 
+	font-size: .3rem; 
 	text-align: center; 
 	border-radius:10%;
 	margin-left:3.2rem;

@@ -3,6 +3,17 @@
 	padding: 0px;
 	
 }
+.fanghui{
+	
+	width: 98%;
+	font-size: .6rem;
+	height: .8rem;
+	line-height: .7rem;
+	border: 1.5px solid #EEEEEE;
+	padding-left: 2%;
+	
+}
+
 li{
 	list-style: none;
 }
