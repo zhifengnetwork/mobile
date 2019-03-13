@@ -40,7 +40,7 @@ class MobileBase extends Controller {
             $xianzai_openid = M('users')->whehre(['user_id'=>$uuuuid ])->value('openid');
             if($openid != $xianzai_openid){
                 //以 新的 为准
-                M('users')->whehre(['user_id'=>$res['result']['user_id'] ])->update(['openid'=>$openid,'old_openid'=>$xianzai_openid]);
+                M('users')->where(['user_id'=>$res['result']['user_id'] ])->update(['openid'=>$openid,'old_openid'=>$xianzai_openid]);
             }
         }
 
