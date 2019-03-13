@@ -28,82 +28,86 @@ class MobileBase extends Controller {
         else 
             cookie('is_mobile','0',3600);
         
-        //微信浏览器
-        if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
-            $this->weixin_config = M('wx_user')->find(); //取微获信配置
-            $this->assign('wechat_config', $this->weixin_config);            
-            $user_temp = session('user');
-            if (isset($user_temp['user_id']) && $user_temp['user_id']) {
-                $user = M('users')->where("user_id", $user_temp['user_id'])->find();
-                if (!$user) {
-                    session('openid', 0);
-                    session('user', null);
-                }else{
-                    session('openid', $user['openid']);
-                }
-            } 
-            if (empty(session('openid'))){
-               
-                if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1){
-                    $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
-                     
-                    session('tempuser',$tempuser);
-                    
-                    //新登录流程
-                    if($wxuser['openid']){
-                        //直接去 user 查找
+        if(ACTION_NAME != 'login'){
 
-                        $userdata = M('users')->where(['openid'=>$wxuser['openid']])->find();
-                        if($userdata){
-                            session('user',$userdata);
-                            //登录成功
-                        }else{
-                            //如果不存在，跳去手机号码登录
-                            header('Location:'.U('/mobile/user/login'));
-                            exit;
+            //微信浏览器
+            if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
+                $this->weixin_config = M('wx_user')->find(); //取微获信配置
+                $this->assign('wechat_config', $this->weixin_config);            
+                $user_temp = session('user');
+                if (isset($user_temp['user_id']) && $user_temp['user_id']) {
+                    $user = M('users')->where("user_id", $user_temp['user_id'])->find();
+                    if (!$user) {
+                        session('openid', 0);
+                        session('user', null);
+                    }else{
+                        session('openid', $user['openid']);
+                    }
+                } 
+                if (empty(session('openid'))){
+                
+                    if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1){
+                        $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
+                        
+                        session('tempuser',$tempuser);
+                        
+                        //新登录流程
+                        if($wxuser['openid']){
+                            //直接去 user 查找
+
+                            $userdata = M('users')->where(['openid'=>$wxuser['openid']])->find();
+                            if($userdata){
+                                session('user',$userdata);
+                                //登录成功
+                            }else{
+                                //如果不存在，跳去手机号码登录
+                                header('Location:'.U('/mobile/user/login'));
+                                exit;
+                            }
+
                         }
-
-                    }
+                        
+                        exit;
+                        
+                        //过滤特殊字符串
+                        $wxuser['nickname'] && $wxuser['nickname'] = replaceSpecialStr($wxuser['nickname']);
+                        
+                        session('subscribe', $wxuser['subscribe']);// 当前这个用户是否关注了微信公众号
+                        setcookie('subscribe',$wxuser['subscribe']);
+                        $logic = new UsersLogic(); 
                     
-                    exit;
-                    
-                    //过滤特殊字符串
-                    $wxuser['nickname'] && $wxuser['nickname'] = replaceSpecialStr($wxuser['nickname']);
-                    
-                    session('subscribe', $wxuser['subscribe']);// 当前这个用户是否关注了微信公众号
-                    setcookie('subscribe',$wxuser['subscribe']);
-                    $logic = new UsersLogic(); 
-                   
-                    $is_bind_account = tpCache('basic.is_bind_account');
-                    if ($is_bind_account) {
-                         if (CONTROLLER_NAME != 'User' || ACTION_NAME != 'bind_guide') {
-                            $data = $logic->thirdLogin_new($wxuser);//微信自动登录
-                            if ($data['status'] != 1 && $data['result'] === '100') {
-                                 session("third_oauth" , $wxuser);
-                                 $first_leader = I('first_leader');
-                                 $this->redirect(U('Mobile/User/bind_guide',['first_leader'=>$first_leader]));
-                           }
-                         }
-                    } else { 
-                        $data = $logic->thirdLogin($wxuser);
-                        //直接去登录，空 就注册
+                        $is_bind_account = tpCache('basic.is_bind_account');
+                        if ($is_bind_account) {
+                            if (CONTROLLER_NAME != 'User' || ACTION_NAME != 'bind_guide') {
+                                $data = $logic->thirdLogin_new($wxuser);//微信自动登录
+                                if ($data['status'] != 1 && $data['result'] === '100') {
+                                    session("third_oauth" , $wxuser);
+                                    $first_leader = I('first_leader');
+                                    $this->redirect(U('Mobile/User/bind_guide',['first_leader'=>$first_leader]));
+                            }
+                            }
+                        } else { 
+                            $data = $logic->thirdLogin($wxuser);
+                            //直接去登录，空 就注册
+                        }
+                        if($data['status'] == 1){
+                            session('user',$data['result']);
+                            setcookie('user_id',$data['result']['user_id'],null,'/');
+                            setcookie('is_distribut',$data['result']['is_distribut'],null,'/');
+                            setcookie('uname',$data['result']['nickname'],null,'/');
+                            // 登录后将购物车的商品的 user_id 改为当前登录的id
+                            M('cart')->where("session_id" ,$this->session_id)->save(array('user_id'=>$data['result']['user_id']));
+                            $cartLogic = new CartLogic();
+                            $cartLogic->setUserId($data['result']['user_id']);
+                            $cartLogic->doUserLoginHandle();  //用户登录后 需要对购物车 一些操作
+                        }
                     }
-                    if($data['status'] == 1){
-                        session('user',$data['result']);
-                        setcookie('user_id',$data['result']['user_id'],null,'/');
-                        setcookie('is_distribut',$data['result']['is_distribut'],null,'/');
-                        setcookie('uname',$data['result']['nickname'],null,'/');
-                        // 登录后将购物车的商品的 user_id 改为当前登录的id
-                        M('cart')->where("session_id" ,$this->session_id)->save(array('user_id'=>$data['result']['user_id']));
-                        $cartLogic = new CartLogic();
-                        $cartLogic->setUserId($data['result']['user_id']);
-                        $cartLogic->doUserLoginHandle();  //用户登录后 需要对购物车 一些操作
-                    }
+                }else{ 
+                    setcookie('user_id',$user_temp['user_id'],null,'/');
+                    setcookie('is_distribut',$user_temp['is_distribut'],null,'/');
                 }
-            }else{ 
-                setcookie('user_id',$user_temp['user_id'],null,'/');
-                setcookie('is_distribut',$user_temp['is_distribut'],null,'/');
             }
+
         }
         
         $first_leader = I('first_leader');
