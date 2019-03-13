@@ -3,7 +3,9 @@
 namespace app\mobile\controller;
 use app\common\logic\UsersLogic;
 use app\common\logic\CartLogic;
+use app\common\logic\wechat\WechatUtil;
 use think\Request;
+
 class LoginApi extends MobileBase{
     public $config;
     public $oauth;
@@ -24,6 +26,11 @@ class LoginApi extends MobileBase{
         // $class = '\\'.$this->oauth; //
         // $login = new $class($this->config); //实例化对应的登陆插件
         // $this->class_obj = $login;
+
+
+        $this->weixin_config = M('wx_user')->find(); //取微获信配置
+        $this->assign('wechat_config', $this->weixin_config);      
+
     }
 
     public function login(){
