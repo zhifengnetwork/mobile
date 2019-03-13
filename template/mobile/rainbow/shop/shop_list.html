@@ -1,4 +1,5 @@
-<include file="public/header" title="{$topic.topic_title}"/>
+<include file="public/header" title="{$shop_title}"/>
+<include file="public/header_nav" title="{$shop_title}" href="javascript:history.back(-1)"/>
 <style>
     #content p{
         text-align:left;
@@ -8,15 +9,16 @@
 <div class="xq_details">
     <div class="sg">
         <div class="spxq p">
-            <div id="content"> <!--可编辑区域开始-->
+            <div id="content">
+                <!--可编辑区域开始-->
                 <div>
                     <div style="margin-bottom: 25px;">
                         <h2 style="height: 34px; line-height: 34px; border-bottom-color: rgb(233, 234, 236); border-bottom-width: 1px; border-bottom-style: solid;"><span
-                                style="color: rgb(60, 60, 60); padding-top: 4px; padding-bottom: 4px; padding-left: 10px; font-size: 14px; font-weight: bold;">{$article.title}</span>
+                                style="color: rgb(60, 60, 60); padding-top: 4px; padding-bottom: 4px; padding-left: 10px; font-size: 14px; font-weight: bold;">{$shop_title}</span>
                         </h2>
                         <img src="{$article.thumb}"/>
                         <div style="padding: 20px 30px 0px; color: rgb(60, 60, 60); font-size: 12px;">
-                            {$topic.topic_content|htmlspecialchars_decode}
+                            {$shop_title}
                         </div>
                     </div>
                 </div>
@@ -27,6 +29,6 @@
 </div>
 <!--详情-e-->
 <script type="text/javascript"></script>
-<include file="public/wx_share"/>
+<include file="public/footer_nav"/>
 </body>
 </html>
