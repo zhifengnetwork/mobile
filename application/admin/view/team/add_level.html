@@ -12,28 +12,18 @@
 
                     
                         <dl class="row">
-                                <dt class="tit">
-                                    <label><em>*</em>层级</label>
-                                </dt>
-                                <dd class="opt">
-                                    <select id="level">
-                                        <option value ="0">请选择层级</option>
-                                        <option value ="1">1级</option>
-                                        <option value="2">2级</option>
-                                        <option value="3">3级</option>
-                                        <option value="4">4级</option>
-                                        <option value="5">5级</option>
-                                        <option value="6">6级</option>
-                                        <option value="7">7级</option>
-                                        <option value="8">8级</option>
-                                        <option value="9">9级</option>
-                                        <option value="10">10级</option>
-                                      </select>
-                                    <p class="notic">请选择层级</p>
-                                </dd>
+                            <dt class="tit">
+                                <label><em>*</em>层级</label>
+                            </dt>
+                            <dd class="opt">
+                                <select disabled name="level" id="level">
+                                    <option value="{$h_val}">
+                                            {$h_val}级
+                                    </option>
+                                </select>
+                            </dd>
                         </dl>
-
-                        
+                        <input type="hidden" id="h_val" value="{$h_val}">                       
                         <dl class="row">
                             <dt class="tit">
                                 <label><em>*</em>拼团价</label>
@@ -53,100 +43,28 @@
                                 <p class="notic">请填写拼团人数</p>
                             </dd>
                     </dl>                        
-                            <!-- <dl class="row">
-                                    <dt class="tit">
-                                        <label><em>*</em>拼团价格</label>
-                                    </dt>
-                                    <dd class="opt">
-                                        <input type="radio" id="myId" name="act_name1" value="" class="input-txt">
-                                        <p class="notic">请填写拼团价格</p>
-                                    </dd>
-                            </dl> -->
-<!-- 
-                            <dl class="row">
-                                    <dt class="tit">
-                                        <label><em>*</em>拼团人数</label>
-                                    </dt>
-                                    <dd class="opt">
-                                        <input type="radio" name="act_name2" value="" class="input-txt">
-                                        <p class="notic">请填写拼团人数</p>
-                                    </dd>
-                            </dl> -->
-                    
+
                     <div class="bot"><a onclick="select_goods()" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
                 </div>
             </form>
         </div>
 <script type="text/javascript">
-   // 点击刷新数据
-   $('.fa-refresh').click(function(){
-        location.href = location.href;
-    });
-    $(document).ready(function(){
-        $("input[type='radio']:checked").each(function(i,o){
-            var goods_id = $(this).data('id');
-            $('#spec_goods_id_'+goods_id).show();
-        })
-    });
     //商品对象
-    function GoodsItem(level, team_price, team_p) {
+    function GoodsItem(level,team_price, team_p,h_val) {
         this.level = level;
         this.team_price = team_price;
         this.team_p = team_p;
+        this.h_val = h_val;
     }
-    //商品对象
-    function GoodsSpecItem(item_id, key_name, store_count, price ,spec_img) {
-        this.item_id = item_id;
-        this.key_name = key_name;
-        this.store_count = store_count;
-        this.price = price;
-        this.spec_img = spec_img;
-    }
-    //单选框选中事件
-    $(function () {
-        $(document).on("click", '#flexigrid input', function (e) {
-            var goods_id = $(this).data('id');
-            if($(this).is(':checked')){
-                $('#spec_goods_id_'+goods_id).show();
-            }else{
-                $('#spec_goods_id_'+goods_id).hide();
-            }
-        })
-    })
-    //规格按钮点击事件
-    $(function () {
-        $(document).on("click", '.specBtn', function (e) {
-            $(this).parent().find('a').css("color","#777").removeClass('ncap-btn-green');
-            $(this).css("color","#FFF").addClass('ncap-btn-green');
-        })
-    })
-
     function select_goods()
     {
-        // var input = $("input[type='radio']:checked");
         var level = $('#level').val();
         var team_price = $('#team_price').val();
         var team_p = $('#team_p').val();
-        // if (input.length == 0) {
-        //     layer.alert('请选择商品', {icon: 2}); //alert('请选择商品');
-        //     return false;
-        // }
-        // var goods_id = input.data('id');
-        // var spec = $('#spec_goods_id_'+goods_id);
-        var goodsItem = null;
-        // if(spec.length == 0){
-        goodsItem = new GoodsItem(level,team_price,team_p);
+        var h_val = $('#h_val').val();
 
-        // }else{
-        //     var spec_a = spec.find('.ncap-btn-green');
-        //     if(spec_a.length == 0){
-        //         layer.alert('请选择要参与活动的商品规格', {icon: 2}); //alert('请选择商品');
-        //     }else{
-        //         var goodsSpecItem = new GoodsSpecItem(spec_a.data('item-id'),spec_a.data('key-name'),spec_a.data('store-count'),spec_a.data('price'),spec_a.data('spec-img'));
-        //         goodsItem = new GoodsItem(input.data('id'), input.data('name'), input.data('count'),input.data('price'),input.data('cost-price'), input.data('img'), goodsSpecItem);
-        //     }
-        // }
-      
+        var goodsItem = null;
+        goodsItem = new GoodsItem(level,team_price,team_p,h_val);
         window.parent.call_back1(goodsItem);
     }
 

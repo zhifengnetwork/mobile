@@ -255,7 +255,8 @@
 			        			</thead>
 			        		</table>
 			        	</div>
-			        </div>					
+					</div>	
+					<input type="hidden" value="0" id="h_val">				
 					<div class="tDiv">
 							<div class="tDiv2">
 								
@@ -379,21 +380,10 @@
     </form>
 </div>
 <script type="text/javascript">
-    $(document).ready(function(){
-        initType();
-    });
+
     $(document).on("click", '#submit', function (e) {
         $('#submit').attr('disabled',true);
         verifyForm();
-    })
-    $(document).on("click", ".team_type", function (e) {
-        initType();
-    })
-    $(document).on("click", ".delete_tr", function (e) {
-        $(this).parent().parent().parent().remove();
-        if($('#selected_group_goods').find('tr').length == 0){
-            $('#goods_name').removeAttr('readonly').val('').attr('readonly', 'readonly');
-        }
     })
 
     $(document).ready(function(){
@@ -424,30 +414,6 @@
             zIndex: 99999999, //css z-index
         });
     })
-    function initType(){
-        var type = $("input[name='team_type']:checked").val();
-        var commission = $('.commission');
-        var luck = $('.luck');
-        switch(parseInt(type))
-        {
-            case 0:
-                commission.hide();
-                luck.hide();
-                break;
-            case 1:
-                commission.show();
-                luck.hide();
-                break;
-            case 2:
-                commission.hide();
-                $("input[name='buy_limit']").val(1);
-                luck.show();
-                break;
-            default:
-                commission.hide();
-                luck.hide();
-        }
-    }
     function verifyForm(){
         $('span.err').hide();
         $.ajax({
@@ -476,7 +442,7 @@
         });
     }
 
-
+//   sku
     function selectGoods2(){
         var url = "{:U('Team/search_goods2',array('tpl'=>'add_sku','prom_type'=>6,'prom_id'=>$info[id]))}";
         layer.open({
@@ -490,34 +456,7 @@
     }
 
 
-    function selectLevel(level){
-		if(level){
-        //    编辑层级
-				var url = "{:U('Team/selectLevel',array('tpl'=>'add_level','status'=>'edit','level'=>'level'))}";
-					layer.open({
-						type: 2,
-						title: '选择层级',
-						shadeClose: true,
-						shade: 0.2,
-						area: ['30%', '50%'],
-						content: url,
-					});
-		}else{
-			// 添加层级
-			var url = "{:U('Team/selectLevel',array('tpl'=>'add_level','status'=>'add'))}";
-			layer.open({
-				type: 2,
-				title: '选择层级',
-				shadeClose: true,
-				shade: 0.2,
-				area: ['30%', '50%'],
-				content: url,
-			});
-		}
-
-    }
-
-
+    
     function selectGoods(){
         var url = "{:U('Promotion/search_goods',array('tpl'=>'select_goods','prom_type'=>6,'prom_id'=>$info[id]))}";
         layer.open({
@@ -554,25 +493,56 @@
         layer.closeAll('iframe');
 	}
 
-	
-	//层级显示 
-    function call_back1(goodsItem){
-        // alert(goodsItem);
-        // var next_data = null;
-        // next_data = new GoodsItem(goodsItem.level,goodsItem.team_price,goodsItem.team_p);
-        
-        $('#goods_id').val(goodsItem.goods_id);
-		// alert(goodsItem.level);
+
+    // 层级编辑或者添加
+    function selectLevel(level){
+		if(level){
+        //    编辑层级
+		// alert('aaa');
+				// var url = "{:U('Team/selectLevel',array('tpl'=>'add_level','status'=>'edit','level'=>'level'))}";
+			    var url = '/index.php/admin/Team/selectLevel/tpl/add_level/h_val/'+level+'/status/edit';
+					layer.open({
+						type: 2,
+						title: '选择层级',
+						shadeClose: true,
+						shade: 0.2,
+						area: ['30%', '50%'],
+						content: url,
+					});
+		}else{
+			// alert('bbb');
+			// 添加层级
+			// var url = "{:U('Team/selectLevel',array('tpl'=>'add_level','status'=>'add'))}";
+            var h_val = $("#h_val").val();
+			// console.log(h_val);
+			// console.log(h_val);
+			var url = '/index.php/admin/Team/selectLevel/tpl/add_level/h_val/'+h_val+'/status/add';
+			layer.open({
+				type: 2,
+				title: '选择层级',
+				shadeClose: true,
+				shade: 0.2,
+				area: ['30%', '50%'],
+				content: url,
+			});
+		}
+
+    }	
+	//层级显示 显示填写的数据   #h_var相当于id，用于标记一行的数据
+    function call_back1(goodsItem){        
         var html = '';
             html = '<tbody><tr><td align="left" abbr="article_title" axis="col3" class=""><div style="text-align: left; width: 50px;" class="">'+goodsItem.level+'</div></td>'+
 				   '<td align="left" abbr="ac_id" axis="col4" class=""><div style="text-align: center; width: 100px;" class="">'+goodsItem.team_price+'</div></td>'+
 				   '<td align="left" abbr="ac_id" axis="col4" class=""><div style="text-align: center; width: 120px;" class="">'+goodsItem.team_p+'</div></td>'+
 				   '<td align="left" axis="col1" class="handle"><div style="text-align: center; width: 240px;">'+
-				   '<a class="btn blue" onclick="selectLevel()"><i class="fa fa-pencil-square-o"></i>编辑</a>'+
-				   '<a class="btn red" href="javascript:void(0)" data-url="" data-id="" onClick=""><i class="fa fa-trash-o"></i>删除</a></div></td></tr></tbody>';        
+				   '<a class="btn blue" onclick="selectLevel('+goodsItem.h_val+')"><i class="fa fa-pencil-square-o"></i>编辑</a>'+
+				   '<a class="btn red" href="javascript:void(0)" data-url="" data-id="" onClick="del('+goodsItem.h_val+',this)"><i class="fa fa-trash-o"></i>删除</a></div></td></tr></tbody>';    
+
+
         // 把gooditem里的数据连接,放input框隐藏
 		var link_data = goodsItem.level+'-'+goodsItem.team_price+'-'+goodsItem.team_p;
-		var hid = '';
+		// console.log(link_data);
+		var hid = ''; 
 		    hid = '<input type="text" class="lev" name="team_hid" id="team_hid" value="'+link_data+'">';
 			$('#level_box').append(hid);
         
@@ -580,17 +550,20 @@
 		$('#team_price').val(goodsItem.team_price);
 		$('#team_person').val(goodsItem.team_p);
 		$('#selected_le').append(html);
+		// 把值赋给#h_val
+		$('#h_val').val(goodsItem.h_val);
         layer.closeAll('iframe');
 
     }
-
-    function img_call_back(fileurl_tmp)
-    {
-        $("#imagetext").val(fileurl_tmp);
-        $("#img_a").attr('href', fileurl_tmp);
-        $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
-    }
-
+    // 层级删除
+	function del(id,obj){
+		var res=$(obj).parent().parent().parent().parent().remove();
+		// 删除本行后，隐藏值设置为当前值-1，用于第二次点击后层级减1
+		var h_val = $("#h_val").val();
+		var data = h_val-1;
+		var h_val = $("#h_val").val(data);
+    }          
+	
 	function radioClick(level,name) {
           //定义一个变量show，show获取的是被选中的radio对应的值
           var show="";
