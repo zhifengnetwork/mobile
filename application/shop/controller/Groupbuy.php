@@ -18,7 +18,7 @@ class Groupbuy extends MobileBase
     /**
      * 拼团列表
      */
-    public function groupList()
+    public function grouplist()
     {
         $teamAct = new TeamActivity();
         $time = time();

@@ -157,11 +157,53 @@ return array(
         )),
     )),
 
-    /*'store'=>array('name'=>'门店','child'=>array(
-        array('name' => '门店管理','child'=>array(
-            array('name'=>'门店列表','act'=>'index','op'=>'Shop'),
-        )),
-    )),*/
+			array('name' => '新闻','child'=>array(
+					array('name' => '新闻列表', 'act'=>'newsList', 'op'=>'News'),
+					array('name' => '新闻分类', 'act'=>'categoryList', 'op'=>'News'),
+			)),
+			array('name' => '素材', 'child' => array(
+			    array('name' => '素材列表', 'act' => 'materialList', 'op' => 'Material'),
+			    array('name' => '素材分类', 'act' => 'materialClass', 'op' => 'Material'),
+			)),
+		
+	'marketing'=>array('name'=>'营销','child'=>array(
+			array('name' => '促销活动','child' => array(
+					array('name' => '抢购管理', 'act'=>'flash_sale', 'op'=>'Promotion'),
+					array('name' => '团购管理', 'act'=>'group_buy_list', 'op'=>'Promotion'),
+					array('name' => '竞拍管理', 'act'=>'auction_list', 'op'=>'Promotion'),
+					// array('name' => '优惠促销', 'act'=>'prom_goods_list', 'op'=>'Promotion'),
+					// array('name' => '订单促销', 'act'=>'prom_order_list', 'op'=>'Promotion'),
+					// array('name' => '预售管理','act'=>'index', 'op'=>'PreSell'),
+					// array('name' => '拼团管理','act'=>'index', 'op'=>'Team'),
+					// array('name' => '搭配购管理','act'=>'index', 'op'=>'Combination'),
+			)),
+			// array('name' => '优惠积分','child' => array(
+			// 		array('name' => '优惠券','act'=>'index', 'op'=>'Coupon'),
+			// 		array('name' => '积分兑换','act'=>'index', 'op'=>'IntegralMall'),
+			// )),
+	)),
+		
+	'distribution'=>array('name'=>'分销','child'=>array(
+		
+			array('name' => '模式管理', 'child' => array(
+				// array('name' => '分销商品', 'act' => 'goods_list', 'op' => 'Distribut'),
+				// array('name' => '分销商列表', 'act' => 'distributor_list', 'op' => 'Distribut'),
+				array('name' => '等级关系', 'act' => 'tree', 'op' => 'Distribut'),
+				array('name' => '分销商设置', 'act' => 'grade_list', 'op' => 'Distribut'),
+				array('name' => '代理商设置', 'act' => 'agent_grade_list', 'op' => 'Distribut'),
+				// array('name' => '分销设置', 'act' => 'distribut', 'op' => 'System'),
+				// array('name' => '日志', 'act' => 'rebate_log', 'op' => 'Distribut'),
+			)),
+	     
+    	    array('name' => '微信接入','child' => array(
+    	        array('name' => '公众号配置', 'act'=>'index', 'op'=>'Wechat'),
+    	        array('name' => '微信菜单管理', 'act'=>'menu', 'op'=>'Wechat'),
+    	        array('name' => '自动回复', 'act'=>'auto_reply', 'op'=>'Wechat'),
+                array('name' => '粉丝列表', 'act'=>'fans_list', 'op'=>'Wechat'),
+                array('name' => '模板消息', 'act'=>'template_msg', 'op'=>'Wechat'),
+                array('name' => '素材管理', 'act'=>'materials', 'op'=>'Wechat'),
+    	    )),
+	)),
 
     'data' => array('name' => '数据', 'child' => array(
         array('name' => '统计', 'child' => array(

@@ -1,32 +1,47 @@
 <include file="public/header" title="团队列表" body=""/>
 <include file="public/header_nav" title="团队列表" href="javascript:history.back(-1)"/>
+<style type="text/css">
+    .application-record .re_tit .li3{
+        width: 3.2rem;
+    }
+    .application-record .re_tit .li2{
+        width: 6rem;
+        margin-right: 0.5rem;
+    }
+    .application-record ul .li3 {
+        width: 3.2rem;
+    }
+     .application-record ul .li2 {
+        width: 6rem;
+         margin-right: 0.5rem;
+    }
+</style>
 <div class="application-record">
     <div class="maleri30">
         <ul class="re_tit">
-            
+            <li class="li3"><span>级数</span></li>
             <li class="li2"><span>名称</span></li>
             <li class="li1" style="width:33.3%"><span>电话</span></li>
-            
-            <li class="li3"><span>操作</span></li>
-            
+            <!-- <li class="li3"><span>操作</span></li> -->
         </ul>
         <div id="next1">
-            <foreach name="lists" item="v">
-                <ul> 
-                    <input type="hidden" class="user_id" name="user_id" value="{$v[user_id]}">  
-                    <li class="li2"><span>{$v[nickname]}</span></li> 
-                    <li class="li1" style="width:33.3%"><span>{$v[tel]}</span></li>  
-                    <li class="li3"><span id="next">+</span></li>
-                </ul>
+            <foreach name="lists" item="v" key="i">
+                <foreach name="v" item="vo" key="j">
+                    <ul> 
+                        <input type="hidden" class="user_id" name="user_id" value="{$vo[user_id]}">  
+                        <li class="li3"><span>{$i+1}级</span>
+                        <li class="li2"><span>{$vo[nickname]}</span></li> 
+                        <li class="li1" style="width:33.3%"><span>{$vo[mobile]}</span></li>  
+                        <!-- <li class="li3"><span id="next">+</span></li> -->
+                    </ul>
+                </foreach>
             </foreach>
         </div>
     </div>
     <div id="getmore"  style="font-size:.32rem;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both;display: none">
         <a >已显示完所有记录</a>
     </div>
-
-
-    <script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+    <!-- <script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script> -->
 </div>
 <script>
     var page = 1;
@@ -39,7 +54,8 @@
                 if($.trim(data)==''){
                     // 数据如果为空
                     $('#getmore').show();
-                    return false;
+                    // $('#getmore').css('display','block');
+                    return data;
                 }else{
                     $('.maleri30').append(data);
                 }
@@ -47,27 +63,27 @@
         });
     }
     // 查询下级
-    $("#next").click(function(){
-        var user_id = $('.user_id').val();
-        // console.log(user_id);
-        $.ajax({
-            type:'GET',
-            url:'/index.php/Mobile/User/next_team_list/user_id/'+user_id,
-            success:function(data){
-                // console.log(data.result);
-                // console.log(data.result[0]);
+    // $("#next").click(function(){
+    //     var user_id = $('.user_id').val();
+    //     // console.log(user_id);
+    //     $.ajax({
+    //         type:'GET',
+    //         url:'/index.php/Mobile/User/next_team_list/user_id/'+user_id,
+    //         success:function(data){
+    //             // console.log(data.result);
+    //             // console.log(data.result[0]);
                 
-                // var html = '';
-                // html = '<div><ul><input type="hidden" class="user_id" name="user_id" value="{$v[user_id]}"> ' +
-                // '<li class="li2"><span>'+data.result[0]['user_id']+'</span></li>'+
-                // // '<li class="li1" style="width:33.3%"><span>{$v[tel]}</span></li>'+
-                // // '<li class="li3"><span id="next">+</span></li>'+
-                // '</ul></div>';
-                // $('#next').append(html);               
+    //             var html = '';
+    //             html = '<div><ul><input type="hidden" class="user_id" name="user_id" value="{$v[user_id]}"> ' +
+    //             '<li class="li2"><span>'+data.result[0]['user_id']+'</span></li>'+
+    //             // '<li class="li1" style="width:33.3%"><span>{$v[tel]}</span></li>'+
+    //             // '<li class="li3"><span id="next">+</span></li>'+
+    //             '</ul></div>';
+    //             $('#next').append(html);               
 
-            }
-        });
-    });
+    //         }
+    //     });
+    // });
 
 </script>
 </body>
