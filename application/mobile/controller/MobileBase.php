@@ -31,7 +31,7 @@ class MobileBase extends Controller {
         
         //处理 openid 不一致的 问题
         $tempuser = session('tempuser');
-        dump($tempuser);
+   
         $openid = $tempuser['openid'];
         if($openid){
             $uuuuid = session('user.user_id');
@@ -64,7 +64,7 @@ class MobileBase extends Controller {
                     if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1){
                         $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
                         
-                        session('tempuser',$tempuser);
+                        session('tempuser',$wxuser);
                         
                         //新登录流程
                         if($wxuser['openid']){
