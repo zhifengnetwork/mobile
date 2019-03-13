@@ -35,11 +35,15 @@ class MobileBase extends Controller {
 
 
         $openid = $tempuser['openid'];
+        dump($openid);
         if($openid){
             $uuuuid = session('user.user_id');
+            dump($uuuuid);
             $xianzai_openid = M('users')->where(['user_id'=>$uuuuid ])->value('openid');
+            dump($xianzai_openid);
             if($openid != $xianzai_openid){
                 //以 新的 为准
+                dump('!=');
                 M('users')->where(['user_id'=>$res['result']['user_id'] ])->update(['openid'=>$openid,'old_openid'=>$xianzai_openid]);
             }
         }
