@@ -360,13 +360,28 @@ class Shop extends Base
         }
     }
 
+    /**
+     * 门店 - 门店管理 - 核销员列表 - 门店绑定核销员 - 选择核销员
+     */
     public function search_user(){
         $usersList = Db::name('users')->select();
         $this->assign('usersList', $usersList);
         return $this->fetch();
     }
 
+    /**
+     * 门店 - 门店管理 - 核销员列表 - 门店绑定核销员 - 选择门店
+     */
     public function search_shop(){
+        $shopList = Db::name('shop')->select();
+        $this->assign('shopList', $shopList);
+        return $this->fetch();
+    }
+
+    /**
+     * 门店 - 门店管理 - 门店商品管理
+     */
+    public function shop_goods_list(){
         $shopList = Db::name('shop')->select();
         $this->assign('shopList', $shopList);
         return $this->fetch();

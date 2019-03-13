@@ -261,7 +261,7 @@
             success: function (data) {
                 if (data.status == 1) {
                     layer.msg(data.msg, {icon: 1, time: 1000}, function(){
-                        location.href = "{:U('Admin/Promotion/flash_sale')}";
+                        location.href = "{:U('Admin/Promotion/auction_list')}";
                     });
                 } else {
                     layer.msg(data.msg, {icon: 2,time: 1000});
