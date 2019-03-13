@@ -41,6 +41,7 @@ class LoginApi extends MobileBase{
 
         $d = $this->GetOpenid();
         
+        $logic = new UsersLogic(); 
         $data = $logic->thirdLogin($d);
         //直接去登录，空 就注册
         if($data['status'] == 1){
