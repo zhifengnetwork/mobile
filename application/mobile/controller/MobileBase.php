@@ -28,6 +28,21 @@ class MobileBase extends Controller {
         else 
             cookie('is_mobile','0',3600);
         
+        
+        //处理 openid 不一致的 问题
+        $tempuser = session('tempuser');
+        dump($tempuser);
+        $openid = $tempuser['openid'];
+        if($openid){
+            $uuuuid = session('user.user_id');
+            $xianzai_openid = M('users')->whehre(['user_id'=>$uuuuid ])->value('openid');
+            if($openid != $xianzai_openid){
+                //以 新的 为准
+                M('users')->whehre(['user_id'=>$res['result']['user_id'] ])->update(['openid'=>$openid,'old_openid'=>$xianzai_openid]);
+            }
+        }
+
+
         if(ACTION_NAME != 'login'){
 
             //微信浏览器
