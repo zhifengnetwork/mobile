@@ -3,7 +3,9 @@
 namespace app\mobile\controller;
 use app\common\logic\UsersLogic;
 use app\common\logic\CartLogic;
+use app\common\logic\wechat\WechatUtil;
 use think\Request;
+
 class LoginApi extends MobileBase{
     public $config;
     public $oauth;
