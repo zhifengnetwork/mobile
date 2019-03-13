@@ -1,0 +1,178 @@
+*{font-size: 12px;}
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0; }
+body, button, input, select, textarea { font:12px/1.5tahoma, arial, \5b8b\4f53; }
+h1, h2, h3, h4, h5, h6{ font-size:100%; }
+address, cite, dfn, em, var { font-style:normal; }
+code, kbd, pre, samp { font-family:couriernew, courier, monospace; }
+small{ font-size:12px; }
+ul, ol { list-style:none; }
+a { text-decoration:none; }
+a:hover { text-decoration:underline; }
+sup { vertical-align:text-top; }
+sub{ vertical-align:text-bottom; }
+legend { color:#000; }
+fieldset, img { border:0; }
+button, input, select, textarea { font-size:100%; }
+table { border-collapse:collapse; border-spacing:0; }
+body{background: #f4f4f4;}
+.rog{
+    background: #e93f45
+}
+.header{
+    width: 100%;
+    height: .9rem;
+    line-height: .9rem;
+    font-size: .18rem;
+    color: black;
+    text-align: center;
+    background: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0 .2rem;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+}
+.header .header_l img{
+    margin-top: .25rem;
+    width: .22rem;
+    height: .38rem;
+}
+.header .header_c{
+    font-weight: bold;
+    margin-left: .7rem;
+}
+.header .header_r>div{
+    width: 1rem;
+    height: .54rem;
+    margin-top: .15rem;
+    line-height: .54rem;
+    background: #e93f45;
+    color: white;
+    text-align: center;
+    border-radius: .1rem;
+}
+.record_wrap{
+    width: 100%;
+    margin-top: .9rem;
+    padding: 0 .3rem;
+    box-sizing: border-box;
+    color: black;
+}
+.record_time{
+    width: 100%;
+    height: 1rem;
+    line-height: 1rem;
+    overflow: hidden;
+}
+.record_info{
+    width: 100%;
+    background: #fff;
+    border-radius: .1rem;
+    box-sizing: border-box;
+}
+.record_content{
+    display: flex;
+    justify-content: flex-start;
+    padding: .2rem;
+    border-bottom: .01rem solid #f5f5f5;
+}
+.check{
+    position: relative;
+    width: .32rem;
+    height: .32rem;
+    border: .02rem solid #838383;
+    border-radius: 50%;
+    margin: .55rem .1rem 0 0;
+}
+.check i{
+    display: block;
+    width: 75%;
+    height: 75%;
+    background: transparent;
+    position: absolute;
+    left: 0;top: 0;right: 0;bottom: 0;
+    border-radius: 50%;
+    margin: auto;
+}
+.record_content_l{
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: .1rem;
+    overflow: hidden;
+    margin-right: .1rem;
+}
+.record_content_l img{
+    width: 100%;
+    height: 100%;
+}
+.record_content_r .record_content_title{
+  max-width: 4.7rem;
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.record_content_r .record_content_price{
+    color: #e51c23;
+}
+.record_content_r .record_content_price span{
+    font-size: .36rem;
+    font-weight: bold;
+    margin-left: .1rem;
+}
+.record_content_r .record_content_info{
+    display: flex;
+    justify-content: space-between;
+}
+.record_content_r .record_content_info .content_info_l{
+    color: #959595;
+    display: flex;
+    justify-content: flex-start;
+}
+.record_content_r .record_content_info .content_info_l span{
+    margin: 0 .1rem;
+}
+.record_content_r .record_content_info .content_info_r{
+    width: .9rem;
+    height: .38rem;
+    line-height: .4rem;
+    border: .02rem solid #e51c23;
+    color: #e51c23;
+    text-align: center;
+}
+.btn_nav{
+    width: 100%;
+    height: .8rem;
+    line-height: .8rem;
+    background: #fff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 .2rem;
+    box-sizing: border-box;
+    color: black;
+}
+.btn_nav_l{
+    display: flex;
+    justify-content: flex-start;
+}
+.btn_nav_l .check{
+    margin: .2rem .1rem 0 0;
+}
+.btn_nav_r{
+    width: 1rem;
+    height: .45rem;
+    line-height: .45rem;
+    background: #e93f45;
+    border-radius:.1rem;
+    color: white;
+    text-align: center;
+    margin-top: .2rem;
+}

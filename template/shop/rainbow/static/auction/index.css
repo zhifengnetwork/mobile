@@ -1,0 +1,138 @@
+*{
+	margin: 0px;
+	padding: 0px;
+	
+}
+
+.big{
+	padding-top: .8rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	/*margin-top: 80px;*/
+}
+.section{
+	
+	width: 96%;
+	height: 5.53rem;
+	margin: 3% 2%;
+	margin-top: .8rem;
+	border: 1px solid #BEBEBE;
+	position: relative;
+	margin-bottom: 1rem;
+	
+	
+}
+.time{
+	
+	width: 50%;
+	height: .8rem;
+	border: 1px solid #BEBEBE;
+	position: absolute;
+	top: -.4rem;
+	background: white;
+	left: 50%;
+	transform: translate(-50%,0);
+	font-size: .3rem;
+	line-height: .8rem;
+	text-align: center;
+	
+	
+}
+
+.fu{
+	
+	width:5.5rem;
+	height: 2.5rem;
+	overflow: hidden;
+	position: relative;
+	top: 1rem;
+	left: 50%;
+	transform: translate(-50%,0);
+	
+	
+}
+
+
+.img{
+	
+	width:5.5rem;
+	/*margin: 0 7%;*/
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%,0);
+
+	
+}
+.bottom{
+	margin-top:3rem;
+	
+	
+}
+.priceear{
+	
+	width: 4rem;
+	height: 1rem;
+	position: absolute;
+	bottom: .23rem;	
+    font-size: .3rem;
+    left: 5%;
+    display: inline-block;
+    
+    
+   
+    
+	
+}
+
+.name {
+
+  width: 2rem;
+  height: .5rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size:.28rem;
+ 
+	
+}
+.price{	
+	
+	 max-width: 3rem;
+	 display: inline-block;;
+	 color: #E8315D;
+	 font-size: .4rem;
+	 text-overflow: ellipsis;
+     overflow: hidden;
+     white-space: nowrap;
+     vertical-align: bottom;
+	 
+	 		
+}
+.priceear span{
+	
+	font-size: .2rem;
+	
+}
+.joinauction{
+	
+	
+	 
+	 font-size: .32rem;
+	 background: #FF5722;	
+	 color: white;
+	 width: 1.8rem;
+	 height: .8rem;
+	 line-height: .8rem;
+	 text-align: center;
+	 border-radius: .06rem;
+	 position: absolute;
+	 bottom: .3rem;
+	 right: .8rem;
+	
+}
+.section a{
+	text-decoration: none;
+	
+}
+

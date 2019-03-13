@@ -1,0 +1,360 @@
+<!-- 
+      /**
+     * 拼团（弹窗）
+     * 拼团详情页
+     * 选择款式
+     */
+ -->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximun-scale=1.0,user-scalable=0"/>
+		<title>拼团详情页</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--public-->
+    <link rel="stylesheet" href="__STATIC__/css/public_lb/public.css" />
+    <!-- Link Swiper's CSS -->
+  	<link rel="stylesheet" href="__STATIC__/css/public_lb/swiper.min.css">
+		<link rel="stylesheet" href="__STATIC__/css/listdata/detail.css" />
+		
+	</head>
+
+	<body>
+		<!--最外边框-->
+		<div class="wrapL">
+			<!--返回，分享-->
+			<div class="returnshareWrapL">
+				<!--返回,data-num="1" 或  不写; => 返回上一页。data-num="跳转路径"; => 返回上一页。-->
+				<p class="returnBox" data-num="1" onclick="returnFun()">
+					<img class="returnBoxIcon" src="__STATIC__/images/public_lb/returnImg666_lb.png"  alt=""/>
+				</p>
+				<!--分享-->
+				<p class="shareBox" onclick="">
+					<img class="shareBoxImg" src="__STATIC__/images/public_lb/share666_lb.png"  alt=""/>
+				</p>
+			</div>
+			<!--轮播图-->
+			<div class="rotarySowingWrapL">
+				<!--swiper的外框-->
+				<div class="swiper-container swiper-container_lb">
+					<div class="swiper-wrapper">
+						<!--（循环）轮播-项-->
+						<volist name="goodsImg" id="item">
+							<div class="swiper-slide">
+								<img class="sowingMapImgL" src="{$item.image_url}"  alt="{$team.goods_name}"/>
+							</div>
+						</volist>
+
+					</div>
+					<!-- Add Pagination -->
+					<div class="swiper-pagination swiper-pagination_lb"></div>
+				</div>
+				
+			</div>
+			<!--内容-->
+			<div class="contentL">
+				<!--时间-->
+				<div class="timeBoxL">
+					<!--title-->
+					<p class="timeBoxTitleL publicEllipsis">小团</p>
+					<!--time-->
+					<p class="timeBoxTimeL publicEllipsis">距离结束还有00:10:00</p>
+				</div>
+				<!--商品title-->
+				<p class="commTitleL">{$team.goods_name}</p>
+				<!--价格，运费-->
+				<div class="priceFreightBoxL">
+					<!--价格-->
+					<div class="priceBoxL">
+						<p class="priceBoxLeftL">￥{$team.shop_price}起</p>
+						<p class="priceBoxRightL">￥{$team.market_price}起</p>
+					</div>
+					<!--运费-->
+					<p class="freightBoxL">运费: 免运费</p>
+					<p class="alreadyL">已团20件</p>
+				</div>
+				<!--评论-->
+				<div class="commentBoxL clearfloat">
+					<p class="commentBoxLeftL">评价<span class="praiseText">&nbsp;&nbsp;好评 100％</span></p>
+					<div class="commentBoxRightL">
+						<p class="commentNumL" onclick="pageJump('路径')">
+							<span>共200+条评论</span>
+							<img class="publicGetIntoIcon_lb" src="__STATIC__/images/public_lb/getIntoImg_lb.png"/>
+						</p>
+					</div>
+					<!--清除浮动-->
+					<p class="clearfloat"></p>
+					<!--user评价 wrap-->
+					<div class="commentBoxUserWrap">
+						<!--（循环）项-->
+						<volist name="comList" id="item">
+						<div class="comBUserTermL clearfloat">
+							<div class="comBUserTermTopL">
+								<p class="comBUserTermTopLeftL">
+									<span>{$item.username}</span>
+									<?php for ($i=1;$i<$item.goods_rank;$i+=1){?>
+									<img class="starsIconL" src="__STATIC__/images/public_lb/starsIcon.png"/>
+									<?php } ?>
+								</p>
+								<p class="comBUserTermTopRightL">{$item.add_time}</p>
+							</div>
+							<!--text-->
+							<p class="comBUTermTextL">{$item.content}</p>
+							<!--图片集 box-->
+							<div class="comBUTermImgBox">
+								<?php //foreach($item['img'] as $v){ ?>
+								<img class="comBUTermImg" src="<?php //echo $v?>" />
+								<?php //} ?>
+							</div>
+						</div>
+						</volist>
+					</div>
+					
+				</div>
+				<!--拼单 wrap-->
+				<div class="spellListWrapL clearfloat">
+					<!--head-->
+					<div class="spellLWHeadL">
+						<span>8人在拼单，可直接参与</span>
+						<p class="spellLWHeadMore">
+							<span>查看更多</span>
+							<img class="publicGetIntoIcon_lb" src="__STATIC__/images/public_lb/getIntoImg_lb.png"/>
+						</p>
+					</div>
+					<!--拼单 box-->
+					<div class="spellListBoxL">
+						<!--（循环）项-->
+						<div class="spellListTermL">
+							<div class="spellListTermLeftL">
+								<!--绝对定位-->
+								<img class="spellListTermIconL" src="__STATIC__/images/public_lb/00004.png"/>
+								<span>握不住的他和沙</span>
+							</div>
+							<div class="spellListTermRightL">
+								还差99人拼成<br />剩余00:05:30
+								<!--拼单按钮 - 绝对定位-->
+								<p class="pellListTermBut">去拼单</p>
+							</div>
+						</div>
+						<!--000-->
+						<!--（循环）项-->
+						<div class="spellListTermL">
+							<div class="spellListTermLeftL">
+								<!--绝对定位-->
+								<img class="spellListTermIconL" src="__STATIC__/images/public_lb/00004.png"/>
+								<span>握不住的他和沙</span>
+							</div>
+							<div class="spellListTermRightL">
+								还差99人拼成<br />剩余00:05:30
+								<!--拼单按钮 - 绝对定位-->
+								<p class="pellListTermBut">去拼单</p>
+							</div>
+						</div>
+						<!--（循环）项-->
+						<div class="spellListTermL">
+							<div class="spellListTermLeftL">
+								<!--绝对定位-->
+								<img class="spellListTermIconL" src="__STATIC__/images/public_lb/00004.png"/>
+								<span>握不住的他和沙</span>
+							</div>
+							<div class="spellListTermRightL">
+								还差99人拼成<br />剩余00:05:30
+								<!--拼单按钮 - 绝对定位-->
+								<p class="pellListTermBut">去拼单</p>
+							</div>
+						</div>
+						<!--000-->
+												
+					</div>					
+				</div>								
+			</div>
+			<!--购买 - 固定定位-->
+			<div class="purchaseWrapL">
+				<!--left-->
+				<div class="purchaseWrapLeft">
+					<!--收藏 -->
+					<div class="purchaseWrapLeftTerm collectionFun">
+						<p class="purchaseWrapLeftTermTop" style="padding-top: .17rem;">
+							<!--绝对定位-->
+							<!--未收藏-->
+							<!--<img class="collectionImgL" src="__STATIC__/images/public_lb/collectionIcon_lb.png"/>-->
+							<img class="collectionImgL" src="__STATIC__/images/public_lb/collectionYes_lb.png"/>
+						</p>
+						<span>收藏</span>
+					</div>
+					<div class="purchaseWrapLeftTerm">
+						<p class="purchaseWrapLeftTermTop" style="padding-top: .11rem;">
+							<!--绝对定位-->
+							<img class="customerServiceImgL" src="__STATIC__/images/public_lb/customerServiceIcon_lb.png"/>
+						</p>
+						<span>客服</span>
+					</div>
+				</div>
+				<div class="purchaseWrapMiddle purchasePublicNum">
+					￥{$team.shop_price}<br />
+					<span class="purchasePublicText">单独购买</span>
+				</div>
+				<div class="purchaseWrapRight purchasePublicNum">
+					￥{$team.group_price}<br />
+					<span class="purchasePublicText">发起拼单</span>
+				</div>
+			</div>
+			
+			<!--拼团(弹窗)-->
+			<div class="publicAlertWrap assembleAlertWrap">
+				<!--box-->
+				<div class="assembleAlertBox">
+					<!---->
+					<!--<div class="spellListTermL">-->
+					<!--head-->
+					<div class="assembHeadBox">
+						<span>正在拼单</span>
+						<!--关闭按钮 icon-->
+						<p class="asHeadCIconBox" >
+							<img class="asHeadCIconBoxIcon" src="__STATIC__/images/public_lb/close666_lb.png"/>
+						</p>
+					</div>
+					<!--（循环）项-->
+					<div class="assembleAlertTermL">
+						<div class="assembleAlertTermLeftL publicEllipsis">
+							<!--绝对定位-->
+							<img class="assembleAlertTermIconL" src="__STATIC__/images/public_lb/00004.png"/>
+							<span>握不住的他和沙</span>
+						</div>
+						<div class="assembleAlertTermRightL">
+							还差99人拼成<br />剩余00:05:30
+							<!--拼单按钮 - 绝对定位-->
+							<p class="pellListTermBut spellListAlertBut">去拼单</p>
+						</div>
+					</div>
+					<!--删-->
+					<div class="assembleAlertTermL">
+						<div class="assembleAlertTermLeftL publicEllipsis">
+							<!--绝对定位-->
+							<img class="assembleAlertTermIconL" src="__STATIC__/images/public_lb/00004.png"/>
+							<span>握不住的他和沙</span>
+						</div>
+						<div class="assembleAlertTermRightL">
+							还差99人拼成<br />剩余00:05:30
+							<!--拼单按钮 - 绝对定位-->
+							<p class="pellListTermBut spellListAlertBut">去拼单</p>
+						</div>
+					</div>
+					<div class="assembleAlertTermL">
+						<div class="assembleAlertTermLeftL publicEllipsis">
+							<!--绝对定位-->
+							<img class="assembleAlertTermIconL" src="__STATIC__/images/public_lb/00004.png"/>
+							<span>握不住的他和沙</span>
+						</div>
+						<div class="assembleAlertTermRightL">
+							还差99人拼成<br />剩余00:05:30
+							<!--拼单按钮 - 绝对定位-->
+							<p class="pellListTermBut spellListAlertBut">去拼单</p>
+						</div>
+					</div>
+					<div class="assembleAlertTermL">
+						<div class="assembleAlertTermLeftL publicEllipsis">
+							<!--绝对定位-->
+							<img class="assembleAlertTermIconL" src="__STATIC__/images/public_lb/00004.png"/>
+							<span>握不住的他和沙</span>
+						</div>
+						<div class="assembleAlertTermRightL">
+							还差99人拼成<br />剩余00:05:30
+							<!--拼单按钮 - 绝对定位-->
+							<p class="pellListTermBut spellListAlertBut">去拼单</p>
+						</div>
+					</div>
+					<div class="assembleAlertTermL">
+						<div class="assembleAlertTermLeftL publicEllipsis">
+							<!--绝对定位-->
+							<img class="assembleAlertTermIconL" src="__STATIC__/images/public_lb/00004.png"/>
+							<span>握不住的他和沙</span>
+						</div>
+						<div class="assembleAlertTermRightL">
+							还差99人拼成<br />剩余00:05:30
+							<!--拼单按钮 - 绝对定位-->
+							<p class="pellListTermBut spellListAlertBut">去拼单</p>
+						</div>
+					</div>
+					<div class="assembleAlertTermL">
+						<div class="assembleAlertTermLeftL publicEllipsis">
+							<!--绝对定位-->
+							<img class="assembleAlertTermIconL" src="__STATIC__/images/public_lb/00004.png"/>
+							<span>握不住的他和沙</span>
+						</div>
+						<div class="assembleAlertTermRightL">
+							还差99人拼成<br />剩余00:05:30
+							<!--拼单按钮 - 绝对定位-->
+							<p class="pellListTermBut spellListAlertBut">去拼单</p>
+						</div>
+					</div>
+					<!--删-->
+				
+				<!--提示-->
+				<div class="tipsBoxL">
+					仅显示6个正在拼单的人
+				</div>
+						
+				</div>
+			</div>
+			<!--选择款式（弹框）-->
+			<div class="publicAlertWrap choiceStyleWrap">
+				<!--底部弹框-->
+				<div class="choiceStyleBox clearfloat">
+					<!--top-->
+					<div class="choiceStyleTopBox">
+						<!--商品img-->
+						<img class="choiceStyleComImgL" src="__STATIC__/images/public_lb/00003.png" alt="" />
+						￥297-397<br /><span class="tispTextL">请选择 :&nbsp;</span><span class="tispTextL newPromptL">款式</span>						
+						<!--（绝对）关闭按钮 icon-->
+						<p class="choiceStyleIconBox" >
+							<img class="choiceSIconBoxIcon" src="__STATIC__/images/public_lb/close666_lb.png"/>
+						</p>
+					</div>
+					<!--title-->
+					<p class="optionPromptTitle">款式</p>
+					<!--选择样式-->
+					<div class="chooseStyleBox clearfloat">
+						<!--选项
+							butStyleFun('下标');点击样式: class="chooseActive";
+						-->
+						<p class="chooseStyleBoxTerm" onclick="butStyleFun(0)">黑色</p>
+						<p class="chooseStyleBoxTerm" onclick="butStyleFun(1)">红色</p>
+						<p class="chooseStyleBoxTerm" onclick="butStyleFun(2)">蓝色</p>
+						<p class="chooseStyleBoxTerm" onclick="butStyleFun(3)">红色</p>
+						<p class="chooseStyleBoxTerm" onclick="butStyleFun(4)">白色</p>
+						<p class="chooseStyleBoxTerm" onclick="butStyleFun(5)">红色</p>
+					</div>
+					<!--number-->
+					<div class="commNumberL">
+						<!--title-->
+						<p class="commNumberTitleL">数量</p>
+						<!--加-->
+						<p class="commNumberAdd">
+							<img class="publicDrooping commNumberAddImg" src="__STATIC__/images/public_lb/addIcon333.png"/>
+						</p>
+						<!--num-->
+						<p class="commNumberNum" id="commNumber_lb">9</p>
+						<!--减-->
+						<p class="commNumberReduce">
+							<img class="publicDrooping commNumberRedImg" src="__STATIC__/images/public_lb/reduceIcon333.png"/>
+						</p>
+					</div>
+					<!--确认-->
+					<p class="chooseConfirmL">确认</p>
+				</div>
+			</div>
+		</div>
+		
+		
+		<!-- Swiper JS -->
+		<script src="__STATIC__/js/public/swiper.min.js"></script>
+		<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
+		<script src="__STATIC__/js/listdata/detail.js"></script>
+		<script src="__STATIC__/js/public/public_lb.js"></script>
+		
+	</body>
+
+</html>

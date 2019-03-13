@@ -172,6 +172,23 @@
     this.marker.find('.date-marker-year option[value="'+this.date.year+'"]').prop('selected','selected');
     this.marker.find('.date-marker-month option[value="'+this.date.month+'"]').prop('selected','selected');
     this.marker.find('.date-marker-body').html(this.setPrev()+this.getMonthDays());
+  	if(signData){
+  		/*后台传过来的数组=> 保存在本地*/
+			for(var j=0;j<signData.length;j++){
+				/*.getMonth()=>获取当前月份(0-11,0代表1月)*/
+				for(var i = 0; i < $('.date-marker-body li').length; i++) {
+					/**传过来的数据-不要在月份和日期前加0 =>'2019/3/6' **/
+					if($('.date-marker-body li').eq(i).attr('data-markdate') == signData[j]) {
+						$('.date-marker-body li').eq(i).append(`
+							<img class="signInIconL" src="/template/mobile/rainbow/static/images/sign/signInIconS.png" />
+						`);
+					}
+				}
+			}
+			console.log(signData);
+  	}
+  	
+  	
   };
 
   $.fn.dateMarker = function(){

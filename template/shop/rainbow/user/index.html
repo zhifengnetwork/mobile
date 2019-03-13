@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>我的</title>  
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/user_zp/index.css?v=1"/>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="user-wrap">
+			<!--顶部-->
+			<div class="user-head-zp">
+				<div class="user-top-zp">
+					<div class="user-info-zp">
+						<a href="/shop/User/personal">
+							<div class="user-avatar-zp">
+								<img src="{$user['head_pic']}"/>
+							</div>
+						</a>
+						<p class="user-name-zp">{$user['nickname']}</p>
+						<span class="sign">尊贵会员</span>
+					</div>
+					<!-- <div class="sign-wrap-zp">
+						<span class="sign-in-zp"><i></i> 签到</span>
+						<span class="receive-zp">10天签到领取礼品</span>
+					</div> -->
+				</div>
+				<div class="user-down-zp">
+					<ul class="user-down-list">
+						<li>
+							<span class="num-zp">10</span>
+							<span>商品关注</span>
+						</li>
+						<a href="/Shop/User/collect_list">
+							<li>
+								<span class="num-zp">12</span>
+								<span>店铺关注</span>
+							</li>
+						</a>
+						<a href="/shop/User/visit_log">
+							<li>
+								<span class="num-zp">123</span>
+								<span>足迹</span>
+							</li>
+						</a>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="user-list-zp">
+				<div class="user-list-item">
+					<div class="tit-zp">
+						<h3>我的订单</h3>
+						<span class="more-zp">
+							<a href="/Shop/Order/order_list/">
+								<i>查看全部订单</i>
+								<i class="more-icon"></i>
+							</a>							
+						</span>
+					</div>
+					<div class="user-nav-zp">
+						<ul>
+							<li>
+								<a href="{:U('/Shop/Order/order_list',array('type'=>'WAITPAY'))}">
+									<img src="__STATIC__/images/user_zp/mm3@2x.png"/>
+									<p>待付款</p>
+								</a>
+							</li>
+							<li>
+								<a href="{:U('/Shop/Order/wait_receive',array('type'=>'WAITRECEIVE'))}">
+									<img src="__STATIC__/images/user_zp/mm2@2x.png"/>
+									<p>待发货</p>
+								</a>
+							</li>
+							<li>
+								<a href="{:U('Shop/Order/comment',array('status'=>0))}">
+									<img src="__STATIC__/images/user_zp/mm5@2x.png"/>
+									<p>待收货</p>
+								</a>
+							</li>
+							<li>
+								<a href="{:U('Shop/Order/return_goods_list',array('type'=>1))}">
+									<img src="__STATIC__/images/user_zp/mm4@2x.png"/>
+									<p>待评价</p>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				
+				<div class="user-list-item">
+					<div class="tit-zp">
+						<h3>我的钱包</h3>
+						<span class="more-zp">
+							<a href="{:U('Shop/User/wallet')}">
+								<i>查看钱包</i>
+								<i class="more-icon"></i>
+							</a>							
+						</span>
+					</div>
+					<div class="wallet-zp">
+						<ul>
+							<li>
+								<img src="__STATIC__/images/user_zp/JF1@2x.png" />
+								<p>积分</p>
+								<p class="num">{$user.pay_points}</p>
+							</li>
+							<li>
+								<img src="__STATIC__/images/user_zp/YHJ1@2x.png" />
+								<p>优惠券</p>
+								<p class="num">20</p>
+							</li>
+						</ul>
+					</div>
+				</div>
+				
+				<div class="user-list-item">
+					<div class="tit-zp">
+						<h3>公益基金账户</h3>
+						<div class="account-zp">
+							<span class="account-name">李艳小</span>
+							<span class="account-balance"><i>1000.00</i>元</span>
+						</div>
+						<span class="more-zp">
+							<a href="{:U('User/welfare_zp')}">
+								<i>查看名单</i>
+								<i class="more-icon"></i>
+							</a>							
+						</span>
+					</div>
+				</div>
+				
+				<div class="user-list-item">
+					<div class="tit-zp">
+						<h3>我的专栏</h3>
+						<span class="more-zp">
+							<a href="###">
+								<i>查看全部专栏</i>
+								<i class="more-icon"></i>
+							</a>							
+						</span>
+					</div>
+					<div class="special-column-zp">
+						<ul>
+							<li>
+								<a href="###">
+									<img src="__STATIC__/images/user_zp/HD2@2x.png"/>
+									<p>我的活动</p>
+								</a>
+							</li>
+							<li>
+								<a href="###">
+									<img src="__STATIC__/images/user_zp/JJTX@2x.png"/>
+									<p>奖金提现</p>
+								</a>
+							</li>
+							<li>
+								<a href="/shop/auction/index">
+									<img src="__STATIC__/images/user_zp/PM@2x.png"/>
+									<p>拍卖</p>
+								</a>
+							</li>
+							<li>
+								<a href="{:U('shop/seckill/index_zp')}">
+									<img src="__STATIC__/images/user_zp/PT@2x.png"/>
+									<p>拼团</p>
+								</a>
+							</li>
+							<li>
+								<a href="###">
+									<img src="__STATIC__/images/user_zp/TU2@2x.png"/>
+									<p>我的团队</p>
+								</a>
+							</li>
+							<li>
+								<a href="###">
+									<img src="__STATIC__/images/user_zp/ZB23@2x.png"/>
+									<p>直播</p>
+								</a>
+							</li>
+							<li>
+								<a href="###">
+									<img src="__STATIC__/images/user_zp/xyx124@2x.png"/>
+									<p>小游戏</p>
+								</a>
+							</li>
+							<li>
+								<a href="###">
+									<img src="__STATIC__/images/user_zp/mrzq147@2x.png"/>
+									<p>美容专区</p>
+								</a>
+							</li>
+							<li>
+								<a href="###">
+									<img src="__STATIC__/images/user_zp/jb13@2x.png"/>
+									<p>虚拟币</p>
+								</a>
+							</li>
+							<li>
+								<a href="###">
+									<img src="__STATIC__/images/user_zp/xxqh1@2x.png"/>
+									<p>线下取货</p>
+								</a>
+							</li>
+							<!-- <li>
+								<a href="###">
+									<img src="__STATIC__/images/user_zp/zt26@2x.png"/>
+									<p>切换主题</p>
+								</a>
+							</li> -->
+							<li>
+								<a href="{:U('shop/User/wallet')}">
+									<img src="__STATIC__/images/user_zp/zhmx1@2x.png"/>
+									<p>账户明细</p>
+								</a>
+							</li>
+							<li>
+								<a href="{:U('shop/user/member')}">
+									<img src="__STATIC__/images/user_zp/zt26@2x.png"/>
+									<p>我的分销</p>
+								</a>
+							</li>
+							<li>
+								<a href="{:U('shop/User/store')}">
+									<img src="__STATIC__/images/user_zp/zt26@2x.png"/>
+									<p>门店管理</p>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				
+			</div>
+			
+			
+			
+			<!--底部导航-start-->
+    		<include file="public/footer_nav"/>
+    		
+		</div>
+	</div>
+	<script src="__STATIC__/js/public/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/public/rem.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+		$(function(){
+			$(".sign-in-zp").click(function(){
+				$(".model").show();
+				$(".dialog-sign-zp").show(100)
+			})
+			$(".model").click(function(){
+				$(".model").hide()
+				$(".dialog-sign-zp").hide(100)
+			})
+		})
+	</script>
+</body>
+</html>

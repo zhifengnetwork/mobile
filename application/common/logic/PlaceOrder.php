@@ -322,7 +322,7 @@ class PlaceOrder
         }
         $payList = $this->pay->getPayList();
         $goods_ids = get_arr_column($payList,'goods_id');
-        $goodsArr = Db::name('goods')->where('goods_id', 'IN', $goods_ids)->getField('goods_id,cost_price,give_integral');
+        $goodsArr = Db::name('goods')->where('goods_id', 'IN', $goods_ids)->getField('goods_id,cat_id,cost_price,give_integral');
         $orderGoodsAllData = [];
         foreach ($payList as $payKey => $payItem) {
             if($this->pay->getGoodsPrice() ==0){  //清华要求加上
@@ -333,6 +333,7 @@ class PlaceOrder
             $finalPrice = round($payItem['member_goods_price'] - ($totalPriceToRatio * $orderDiscounts), 3);
             $orderGoodsData['order_id'] = $this->order['order_id']; // 订单id
             $orderGoodsData['goods_id'] = $payItem['goods_id']; // 商品id
+            $orderGoodsData['cat_id'] = $goodsArr[$payItem['goods_id']]['cat_id']; // 商品分类id
             $orderGoodsData['goods_name'] = $payItem['goods_name']; // 商品名称
             $orderGoodsData['goods_sn'] = $payItem['goods_sn']; // 商品货号
             $orderGoodsData['goods_num'] = $payItem['goods_num']; // 购买数量
@@ -429,6 +430,14 @@ class PlaceOrder
             $data['order_id'] = $this->order['order_id'];
             $data['addend_time'] = time();
             Db::name('OrderSignReceive')->save($data);
+
+            $catId = Db::name('order_goods')->where('order_id', $this->order['order_id'])->value('cat_id');
+
+            if ($catId == 584) {
+                Db::name('users')->where('user_id', $user['user_id'])->setDec('distribut_free_num');// 分销领取次数减一
+            } elseif ($catId == 585) {
+                Db::name('users')->where('user_id', $user['user_id'])->setDec('agent_free_num');// 代理领取次数减一
+            }
         }
     }
 

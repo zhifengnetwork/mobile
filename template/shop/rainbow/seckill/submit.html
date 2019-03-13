@@ -1,0 +1,120 @@
+<!-- 
+     /**
+     * 秒杀 提交 订单
+     */
+ -->
+ 	<!DOCTYPE html>
+     <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <title>秒杀 提交 订单</title>
+         <script type="text/javascript" src="__STATIC__/js/jquery-1.8.3.min.js" charset="utf-8"></script>
+				 <script type="text/javascript" src="__STATIC__/js/rem.js" charset="utf-8"></script>
+				 <script type="text/javascript" src="__STATIC__/js/daojishi.js" charset="utf-8"></script>
+        <style>
+					/* 全局的内外边距 字体 */
+					*{margin: 0;padding: 0;font-family: "微软雅黑";}
+					/* 箭头图片大小 */
+					.sj__tt{ height: 400px;width: 100%;}
+          /* 手机图片大小 */
+					.jjtu__tt{position: absolute;top: 15px;left: 15px;}
+           /* iPhone字体大小和左边距 */
+					 .iphone__tt{font-size: 0.3rem;padding-left: 0.2rem;}
+					 /* 秒杀：边框，颜色，宽高，外边距 */
+					.miao__ty{border: 1px solid red;width: 0.6rem;height: 0.3rem;font-size: 0.2rem;color: red;margin:0.2rem 0.2rem 0.2rem 0.2rem;}
+					/* 距离秒杀：浮动，外边高度和右边宽度，边框颜色，宽高 */
+            .bao{float: right;margin-top: -1.1rem;margin-right: 0.3rem;border: 1px solid red;width: 2.3rem;color: red;height: 0.95rem;}
+            
+            /* 立即购买 大小背景色颜色居中宽高内外边距 */
+						#wit__ty{width: 100%;background-color: orangered;color: white;text-align: center;font-size: 0.4rem;height: 0.8rem;margin-top: 0.5rem;padding-top: 0.2rem;}
+						/* 时间的边距和大小 */
+						.shijian__tt{padding-left: 0.9rem;padding-top: 0.21rem; font-size: 0.2rem;}
+						
+						
+						.miaoshojuli__tt{font-size: 0.2rem;margin-top: 0.1rem;margin-left: 0.1rem}
+						/* 移动联通电信：左边距，颜色 */
+						.xr__tt{font-size: 0.28rem;}
+						.kai{margin-left: 0.23rem;color:#7C7C7E;}
+						/*秒杀价的 大小颜色边距 */
+						.miaoshajia__ty{font-size: 0.4rem;color: red;margin-left: 0.2rem;margin-top: 0.3rem;}
+						/*市场价的 大小颜色右浮动内外边距 */
+						.shichangjia__ty{font-size: 0.2rem;color: #7C7C7E;float: right;margin-top: -0.4rem;margin-right: 0.2rem;}
+						/* 销量的外边距 */
+						.quanby__ty{margin-left: 0.2rem;margin-top: -0.6rem;}
+						.xiaoliang__ty{font-size: 0.25rem;color:#7C7C7E;}
+						.kucun__ty{font-size: 0.25rem;color:#7C7C7E;margin-left: 0.2rem;}
+						/* 已抢光 宽高背景色颜色居中大小内外边距 */
+						#xianshiyiqianguan__ty{width: 100%;background-color:darkgray;color: white;text-align: center;font-size: 0.4rem;height: 0.8rem;margin-top: 0.5rem;padding-top: 0.2rem;display: none;}
+				</style>
+      </head>
+      <body>
+      	<div class="xiao">
+      		<div class="xiaotu">
+      			<img class="sj__tt" src="__STATIC__/image/img/sj.png" >
+      			<img class="jjtu__tt"  src="__STATIC__/image/img/jj6.png"> 
+      		</div>
+      		<div class="app">
+      			<h5 class="iphone__tt" >apple/p苹果&nbsp;iPhone&nbsp;XR</h5>
+      			<p class="miao__ty">秒杀</p>
+      			<div class="bao">
+							<p class="miaoshojuli__tt" >距离秒杀开始</p>
+							<p class="shijian__tt" id="btn">
+								<span id="RemainH"></span>:<span id="RemainM"></span>:<span id="RemainS"></span></p>
+      		    </div>
+      		    <div class="kai">
+      		    	<p  class="xr__tt">
+      		                     苹果&nbsp;&nbsp;&nbsp;iPhone&nbsp;&nbsp;&nbsp;XR&nbsp;&nbsp;&nbsp;移动联动电信4G手机双卡双待苹果
+      		        <br/>iPhone XR
+      		    	</p>
+      		    </div>
+      		    <div class="shajia__tt">
+      		    	<div class="miaoshajia__ty" >
+									<span id="yingchang__ty">秒杀价</span>
+									<span id="youbian__tty">￥1999.00</span>
+      		    	</div>
+      		    	<p class="shichangjia__ty" >
+      		    		市场价￥5699.00
+      		    	</p>
+      		    	<p class="quanby__ty" >
+      		    	<span class="xiaoliang__ty" >销量：1W+</span>
+      		    	<span class="kucun__ty" >当前库存：1+件</span>
+								</p>
+								<div id="lijiqiangguang__ty">
+								<p id="wit__ty">立即购买</p>
+								<p id="xianshiyiqianguan__ty">已抢光</p>
+							</div>
+      		    </div>
+      	</div>
+			</body>
+			<script>
+				//隐藏立即购买 显示已抢光
+				   $(document).ready(function(){
+						 $("#wit__ty").click(function(){
+							 $("#xianshiyiqianguan__ty").show();
+							 $("#wit__ty").hide();
+							 $("#yingchang__ty").hide();
+							 $("#youbian__tty").css({"padding-right":".8rem"})
+						 })
+					 })
+					 //隐藏已抢光 显示立即购买
+					 $(document).ready(function(){
+						 $("#xianshiyiqianguan__ty").click(function(){
+							 $("#wit__ty").show();
+							 $("#xianshiyiqianguan__ty").hide();
+							 $("#yingchang__ty").show();
+						 })
+					 })
+					 
+</script>
+<script>
+	//定义方法  
+	$(document).ready(function () {
+			//定义参数 显示出GetRTime()方法 1000毫秒以后启动  
+			var timer_rt = window.setInterval("GetRTime({$time})", 1000);
+		});
+   GetRTime();
+</script>
+</html>
+  
+ 

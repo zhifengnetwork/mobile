@@ -1,0 +1,297 @@
+<include file="public/layout"/>
+<style>
+    .te_le .dataTables_paginate {
+        float: left;
+    }
+
+    .bot {
+        float: right;
+        padding: 15px 0
+    }
+</style>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;width:600px">
+<div class="page" style="width:600px;padding: 0px 1% 0 1%;">
+    <!-- 操作说明 -->
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>用户列表</h3>
+                <h5>(共{$page->totalRows}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+            <form class="navbar-form form-inline" id="search-form2" action="{:U('Shop/search_user')}" method="get">
+                <!--<input name="prom_id" type="hidden" value="{$Request.param.prom_id}">
+                <input name="prom_type" type="hidden" value="{$Request.param.prom_type}">
+                <input name="nospec" type="hidden" value="{$Request.param.nospec}">-->
+                <div class="sDiv">
+                    <!--<div class="sDiv2" style="margin-right: 10px;border:none;">
+                        <select name="cat_id" id="cat_id">
+                            <option value="">所有分类</option>
+                            <foreach name="categoryList" item="v" key="k" >
+                                <option value="{$v['id']}" <if condition="$v[id] eq $Request.param.cat_id">selected</if>>{$v['name']}</option>
+                            </foreach>
+                        </select>
+                    </div>-->
+                    <!--<div class="sDiv2" style="margin-right: 10px;border:none;">
+                        <select name="brand_id" id="brand_id">
+                            <option value="">所有品牌</option>
+                            <foreach name="brandList" item="v" key="k" >
+                                <option value="{$v['id']}" <if condition="$v[id] eq $Request.param.brand_id">selected</if>>{$v['name']}</option>
+                            </foreach>
+                        </select>
+                    </div>-->
+                    <!--<div class="sDiv2" style="margin-right: 10px;border:none;">
+                        <select name="intro">
+                            <option value="0">全部</option>
+                            <option value="is_new">新品</option>
+                            <option value="is_recommend">推荐</option>
+                        </select>
+                    </div>-->
+                    <div class="sDiv2">
+
+                        <input size="30" name="keywords" value="{$Request.param.keywords}" class="qsbox"
+                               placeholder="商品名称或者关键词" type="text">
+                        <input type="hidden" name="exvirtual" value="{$Request.param.exvirtual}"/>
+                        <input class="btn" value="搜索" type="submit">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th abbr="article_title" axis="col3" class="" align="left">
+                            <div style="text-align: left; width: 30px;" class=""><input type="checkbox"
+                                                                                        class="checkAll"></div>
+                        </th>
+                        <th abbr="ac_id" axis="col4" class="" align="left">
+                            <div style="text-align: center; width: 50px;" class="">ID</div>
+                        </th>
+                        <th abbr="article_time" axis="col6" class="" align="left">
+                            <div style="text-align: left; width: 150px;" class="">昵称</div>
+                        </th>
+                        <th abbr="ac_id" axis="col4" class="" align="left">
+                            <div style="text-align: center; width: 80px;" class="">手机号</div>
+                        </th>
+                        <th abbr="article_show" axis="col5" class="" align="center">
+                            <div style="text-align: center; width: 70px;" class="">省份</div>
+                        </th>
+                        <th abbr="article_show" axis="col5" class="" align="center">
+                            <div style="text-align: center; width: 70px;" class="">市区</div>
+                        </th>
+                        <th abbr="article_show" axis="col5" class="" align="center">
+                            <div style="text-align: center; width: 70px;" class="">区/县</div>
+                        </th>
+                        <th abbr="article_show" axis="col5" class="" align="center">
+                            <div style="text-align: center; width: 70px;" class="">是否为分销商</div>
+                        </th>
+                        <!--<th axis="col1" class=""  align="center">
+                            <div style="text-align: center; width: 80px;">操作</div>
+                        </th>-->
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody id="goos_table">
+                    <volist name="usersList" id="list">
+                        <tr>
+                            <td class="" align="left">
+                                <div style="text-align: left; width: 30px;">
+                                    <input class="checkItem" type="checkbox" name="user_id[]" value="{$list.user_id}"
+                                           data-name="{$list.nickname}"/>
+                                </div>
+                            </td>
+                            <td class="" align="left">
+                                <div style="text-align: center; width: 50px;">{$list.user_id}</div>
+                            </td>
+                            <td class="" align="left">
+                                <div style="text-align: left; width: 150px;">{$list.nickname}</div>
+                            </td>
+                            <td class="" align="left">
+                                <div style="text-align: center; width: 80px;">{$list.mobile}</div>
+                            </td>
+                            <td class="" align="left">
+                                <div style="text-align: center; width: 70px;">{$list.province}</div>
+                            </td>
+                            <td class="" align="left">
+                                <div style="text-align: center; width: 70px;">{$list.city}</div>
+                            </td>
+                            <td class="" align="left">
+                                <div style="text-align: center; width: 70px;">{$list.district}</div>
+                            </td>
+                            <td class="" align="left">
+                                <div style="text-align: center; width: 70px;">
+                                    <if condition="$list.is_distribut eq 1">
+                                        <i style="color:#0fff0f">是</i>
+                                        <else/>
+                                        <i style="color:#ff0000">否</i>
+                                    </if>
+                                </div>
+                            </td>
+                            <td class="" style="width: 100%;" align="">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+        <div class="te_le">
+            {$page}
+        </div>
+        <div class="bot"><a onclick="selectwrite_off_clerk_user();" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+    </div>
+</div>
+<script>
+    // 点击刷新数据
+    $('.fa-refresh').click(function () {
+        location.href = location.href;
+    });
+    /*$(document).ready(function () {
+        $("input[type='radio']:checked").each(function (i, o) {
+            var goods_id = $(this).data('id');
+            $('#spec_goods_id_' + goods_id).show();
+        })
+    });*/
+    //规格按钮点击事件
+    /*$(function () {
+        $(document).on("click", '.specBtn', function (e) {
+            if ($(this).hasClass('ncap-btn-green')) {
+                $(this).css("color", "#777").removeClass('ncap-btn-green');
+            } else {
+                $(this).css("color", "#FFF").addClass('ncap-btn-green');
+            }
+        })
+    })*/
+    //全选选中事件
+    /*$(function () {
+        $(document).on("click", '.checkAll', function (e) {
+            if ($(this).is(':checked')) {
+                $('.checkItem').each(function (i, o) {
+                    $(o).attr('checked', 'checked');
+                })
+                $("input[type='checkbox']:checked").each(function (i, o) {
+                    var goods_id = $(this).val();
+                    spec_goods_show(goods_id);
+                })
+                $('.specBtn').css("color", "#FFF").addClass('ncap-btn-green');
+            } else {
+                $('.checkItem').each(function (i, o) {
+                    $(o).removeAttr('checked');
+                })
+                $("input[type='checkbox']").each(function (i, o) {
+                    var goods_id = $(this).val();
+                    spec_goods_hide(goods_id);
+                })
+                $('.specBtn').css("color", "#777").removeClass('ncap-btn-green');
+            }
+        })
+    })*/
+    //复选框选中事件
+    /*$(function () {
+        $(document).on("click", '.checkItem', function (e) {
+            var goods_id = $(this).val();
+            if ($(this).is(':checked')) {
+                spec_goods_show(goods_id);
+            } else {
+                spec_goods_hide(goods_id);
+            }
+        })
+    })*/
+
+    /*function spec_goods_show(goods_id) {
+        var nospec = $('input[name=nospec]').val();
+        if (nospec != 1) {
+            $('#spec_goods_id_' + goods_id).show();
+        }
+    }*/
+
+    /*function spec_goods_hide(goods_id) {
+        $('#spec_goods_id_' + goods_id).hide();
+    }*/
+
+    //核销员对象
+    function UserItem(user_id, nickname) {
+        this.user_id = user_id;
+        this.nickname = nickname;
+        /*this.store_count = store_count;
+        this.goods_price = goods_price;
+        this.cost_price = cost_price;
+        this.goods_image = goods_image;
+        this.spec = spec;*/
+    }
+
+    //商品对象
+    /*function GoodsSpecItem(item_id, key_name, store_count, price, cost_price, spec_img) {
+        this.item_id = item_id;
+        this.key_name = key_name;
+        this.store_count = store_count;
+        this.price = price;
+        this.cost_price = cost_price;
+        this.spec_img = spec_img;
+    }*/
+
+    function selectwrite_off_clerk_user() {
+        var inputs = $("input[class='checkItem']:checked");
+        if (inputs.length == 0) {
+            layer.alert('请选择核销员', {icon: 2}); //alert('请选择商品');
+            return false;
+        }
+        //console.log(inputs);
+        var userArr = new Array();
+        inputs.each(function (i, o) {
+            //console.log(i);
+            //console.log(o);
+            var user_id = $(o).val();
+            var spec = $('#spec_user_id_' + user_id);
+            //console.log(spec);
+            if (spec.length == 0) {
+                //console.log(1);
+                var userItem = new UserItem(user_id, $(o).data('name'));
+                //console.log(userItem);
+                userArr.push(userItem);
+            }
+            /*else {
+                           console.log(2);
+                           var spec_a = spec.find('.ncap-btn-green');
+                           var nospec = $('input[name=nospec]').val();
+                           if (spec_a.length == 0 && nospec != 1) {
+                               layer.alert($(o).data('name') + ',请选择要参与活动的商品规格', {icon: 2});
+                               return false;
+                           } else {
+                               var userSpecItemArr = new Array();
+                               spec_a.each(function (index, item) {
+                                   var spec_img = $(item).data('spec-img');
+                                   if (spec_img == '') {
+                                       spec_img = $(o).data('img');
+                                   }
+                                   var userSpecItem = new UserSpecItem($(item).data('item-id'), $(item).data('key-name'), $(item).data('store-count'), $(item).data('price'), $(item).data('cost-price'), spec_img);
+                                   userSpecItemArr.push(userSpecItem);
+                               });
+                               goodsItem = new GoodsItem(goods_id, $(o).data('name'), $(o).data('count'), $(o).data('price'), $(o).data('cost-price'), $(o).data('img'), goodsSpecItemArr);
+                               userArr.push(goodsItem);
+                           }
+                       }*/
+        });
+        if (userArr.length == 0) {
+            layer.alert('请至少选择一个商品');
+            return false;
+        }
+        //console.log(userArr);
+        window.parent.call_back(userArr);
+    }
+</script>
+</body>
+</html>

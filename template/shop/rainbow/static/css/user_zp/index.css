@@ -1,0 +1,250 @@
+@font-face{
+	font-family: 'PingFangBold';
+	src:url("/template/mobile/rainbow/static/font/PingFangMedium.ttf")
+}
+.wrapper{
+	width: 100%;
+	height: 100%;
+	background: #ededed;
+	font-family: "PingFangBold";
+	padding-bottom: 1rem;
+}
+
+/*我的顶部*/
+.user-head-zp{
+	height: 2.4rem;
+	background: linear-gradient(#ff8954,#fe5203);
+	padding: 0 0.2rem;
+	margin-bottom: 0.2rem;
+}
+
+.user-head-zp .user-top-zp{
+	display: flex;
+	align-items: center;
+	justify-content:space-between;
+	color: #fff;
+	padding: 0.15rem 0;
+	box-sizing: border-box;
+	margin-bottom: 0.2rem;
+}
+.user-info-zp{
+	width: 2.6rem;
+	display: flex;
+	align-items: center;
+	position: relative;
+}
+.user-info-zp .user-avatar-zp img{
+	width:1rem;
+	height: 1rem;
+	border-radius: 50%;
+	margin: 0 0.2rem 0 0.1rem;
+}
+.user-info-zp .user-name-zp{
+	font-size: 0.3rem;
+}
+.user-info-zp .sign{
+	width: 1.2rem;
+	height: 0.3rem;
+	line-height: 0.3rem;
+	background: #ffffff;
+	border-radius: 0.12rem;
+	text-align: center;
+	font-size: 0.24rem;
+	color: #000;
+	font-family: "微软雅黑";
+	position: absolute;
+	left: 0;
+	bottom: 0;
+}
+
+.user-top-zp .sign-wrap-zp{
+	font-size: 0.24rem;
+}
+
+.user-top-zp .sign-wrap-zp .sign-in-zp i{
+	width: 0.26rem;
+	height: 0.26rem;
+	display: inline-block;
+	background: url(../../images/user_zp/QD1@2x.png) no-repeat;
+	background-size: 100%;
+}
+.user-top-zp .sign-wrap-zp .receive-zp{
+	margin: 0 0.2rem 0 0.85rem;
+}
+
+
+.user-down-zp .user-down-list{
+	display: flex;
+	justify-content:space-around;
+}
+
+.user-down-zp .user-down-list li{
+	text-align: center;
+	color: #fff;
+	font-size: 0.3rem;
+}
+.user-down-zp .user-down-list li span{
+	display: block;
+}
+.user-down-zp .user-down-list  .num-zp{
+	font-size: 0.24rem;
+	margin-bottom: 0.1rem;
+}
+
+.user-list-zp{
+	padding: 0 0.2rem;
+	margin-bottom:0.2rem;
+}
+.user-list-item{
+	background: #fff;
+	margin-bottom: 0.2rem;
+	border-radius: 0.08rem;
+}
+.user-list-item .tit-zp{
+	height: 0.7rem;
+	border-bottom: 0.01rem solid #c1c1c1;
+	display: flex;
+	align-items: center;
+	justify-content:space-between;
+	padding: 0 0.2rem;
+}
+.user-list-item .tit-zp h3{
+	font-size: 0.3rem;
+	color: #151515;
+}
+.user-list-item .tit-zp .more-zp a{
+	color: #151515;
+	/*font-size: 0.24rem;*/
+}
+.user-list-item .tit-zp .more-zp a i:first-child{
+	font-size: 0.24rem;
+	position: relative;
+	top: -0.03rem;
+}
+.user-list-item .tit-zp .more-icon{
+	display: inline-block;
+	width: 0.12rem;
+	height: 0.22rem;
+	background: url(../../images/user_zp/ZJT@2x.png) no-repeat;
+	background-size: 100%;
+}
+
+.user-nav-zp ul{
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	padding: 0.25rem 0;
+}
+.user-nav-zp li{
+	margin: 0 0.3rem;
+}
+.user-nav-zp li img{
+	width: 0.4rem;
+	height: 0.33rem;
+	display: block;
+	margin: 0.1rem auto;
+}
+.user-nav-zp li p{
+	color: #151515;
+	font-size: 0.24rem;
+}
+
+.wallet-zp ul{
+	display: flex;
+}
+.wallet-zp ul li{
+	width: 50%;
+	text-align: center;
+	margin: 0.12rem 0;
+}
+.wallet-zp ul li img{
+	width: 0.4rem;
+	height: 0.4rem;
+}
+.wallet-zp ul li p{
+	font-size: 0.24rem;
+	line-height: 0.38rem;
+}
+
+.wallet-zp ul li .num{
+	color: #fe2306;
+	font-size: 0.3rem;
+}
+
+.account-zp{
+	font-size: 0.24rem;
+	color: #151515;
+	margin-left: 0.5rem;
+}
+.account-zp .account-name{
+	margin-right: 0.45rem;
+}
+.account-zp .account-balance i{
+	color: #ff0000;
+}
+
+.special-column-zp{
+	margin-top: 0.3rem;
+}
+.special-column-zp ul{
+	display: flex;
+	flex-wrap: wrap;
+}
+.special-column-zp ul li{
+	width: 25%;
+	text-align: center;
+	margin-bottom: 0.15rem;
+}
+.special-column-zp ul li a{
+	font-size: 0.24rem;
+	color: #151515;
+}
+.special-column-zp ul li img{
+	width: 0.4rem;
+	height: 0.36rem;
+}
+.special-column-zp ul li p{
+	line-height: 0.5rem;
+}
+
+/*遮罩层*/
+.model{
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.4); 
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7F000000,endColorstr=#7F000000);
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 99;
+	display: none;
+}
+.dialog-sign-zp{
+	width: 6.4rem;
+	height: 6.4rem;
+	background: url(../../images/user_zp/sign-wrap-bg.png) no-repeat;
+	background-size: 100%;
+	text-align: center;
+	color: #e51c23;
+	align-items: center;
+	padding: 1.7rem 0;
+	box-sizing: border-box;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	margin-left: -3.2rem;
+	margin-top: -3.2rem;
+	display: none;
+}
+.dialog-sign-zp .score{
+	margin-bottom: 0.2rem;
+}
+.dialog-sign-zp .time{
+	font-size: 0.2rem;
+	margin-bottom: 0.7rem;
+}
+.dialog-sign-zp .white{
+	color: #fff;
+	margin-bottom: 0.6rem;
+}
+

@@ -1,0 +1,120 @@
+<!-- 竞拍 页面 -->
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>竞拍</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<script src="__STATIC__/js/rem.js"></script>
+		<link rel="stylesheet" href="__STATIC__/css/public_lb/public.css" />
+		<link rel="stylesheet" href="__STATIC__/auction/index.css" />
+		<link rel="stylesheet" href="__STATIC__/css/listdata/public.css" />
+
+	</head>
+
+	<body>
+
+		<div class="big">
+			<!--头部 wrap
+				returnFun()=>data-num="1" 或  不写; => 返回上一页。data-num="跳转路径"; => 返回上一页。
+			-->
+			<div class="headWrap_lb">
+				<p class="returnBut_lb" data-num="/mobile/Index/index.html" onclick="returnFun()">
+					<img class="returnIcon_lb" src="__STATIC__/images/public_lb/returnImg_lb.png" />
+				</p>
+				<!--Tab, data-tab="1"=>从零开始-->
+				<div class="headTab_lb" data-tab="0">
+					<!--页面跳转=>pageJump("路径")-->
+					<p class="headTabTerm_lb" onclick="pageJump('/shop/auction/index')">竞拍</p>
+					<p class="headTabTerm_lb" onclick="pageJump('/shop/groupbuy/grouplist')">拼团</p>
+					<p class="headTabTerm_lb" onclick="pageJump('/shop/activity/flash_sale_list')">秒杀</p>
+				</div>
+			</div>
+			<foreach name="list" item="li">
+				<!--1-->
+				<div class="section">
+					<!--<img src="__STATIC__/auction/pic.png" class="img"/>-->
+					<div class='time'>{$li.start_time}开枪</div>
+					<div class="fu">
+						<if condition="$li[original_img] eq ''">
+							<img src="__STATIC__/auction/lovely.jpg" class="img"/>
+						<else>
+							<img src="{$li[original_img]}" class="img"/>
+						</if>
+					</div>
+					<div class="bottom">
+
+						<div class="priceear">
+							<p class="name">{$li.goods_name}</p>
+							<p style="display: inline-block;" class="price">￥{$li.start_price}</p><span>起拍</span>
+						</div>
+						<a class="joinauction" href="detail.html?id={$li.id}">
+							参与竞拍
+						</a>
+					</div>
+				</div>
+			</foreach>
+
+
+			<!--2-->
+			<!--<div class="section">-->
+
+				<!--<div class='time'>1月24号  16:00:00开枪</div>-->
+				<!--<div class="fu">-->
+				<!--<img src="__STATIC__/auction/pic.png" class="img"/>-->
+				<!--</div>-->
+
+				<!--<div class="priceear">-->
+					<!--<p class="name">商品名称商品名商品名</p>-->
+					<!--<p style="display: inline-block;" class="price">￥72</p><span>起拍</span>-->
+				<!--</div>-->
+				<!--<a class="joinauction" href="detail.html">-->
+					<!--参与竞拍-->
+				<!--</a>-->
+
+			<!--</div>-->
+
+		</div>
+		
+		<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
+		<script src="__STATIC__/js/public/public_lb.js"></script>
+		<!--头部 Tab切换样式(跳转)-->
+		<script src="__STATIC__/js/listdata/public.js"></script>
+		<script type="text/javascript">
+			//加载更多商品
+			var page = 1;
+			function ajax_sourch_submit(){
+				++page;
+				$.ajax({
+					type:'GET',
+					url:"/index.php?m=Shop&c=Auction&is_ajax=1&a=index&p="+page,
+					success:function(data){
+						if(data){
+							$(".big").append(data);
+							// $('.get_more').hide();
+						}
+						// else{
+						// 	$('.get_more').hide();
+						// 	$('#getmore').remove();
+						// }
+					}
+				})
+			}
+			//滚动加载更多
+			$(window).scroll(
+					function() {
+						var scrollTop = $(this).scrollTop();
+						var scrollHeight = $(document).height();
+						var windowHeight = $(this).height();
+						if (scrollTop + windowHeight == scrollHeight) {
+							ajax_sourch_submit();//调用加载更多
+						}
+					}
+			);
+		</script>
+
+	</body>
+
+</html>

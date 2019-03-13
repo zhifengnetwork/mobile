@@ -1,0 +1,164 @@
+<include file="public/layout"/>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer"
+     style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i
+                class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>商家 - 编辑商家资料</h3>
+                <h5>网站系统商家资料</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="sellerHandle" method="post">
+        <input type="hidden" name="act" id="act" value="{$act}">
+        <input type="hidden" name="seller_id" value="{$info.seller_id}">
+        <!--<input type="hidden" name="auth_code" value="{$Think.config.AUTH_CODE}"/>-->
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="user_name"><em>*</em>登录名</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="user_name" value="{$info.user_name}" id="user_name" maxlength="20"
+                           class="input-txt">
+                    <span class="err" id="err_user_name"></span>
+                    <p class="notic">登录名</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="password"><em>*</em>登陆密码</label>
+                </dt>
+                <dd class="opt">
+                    <input type="password" name="password" maxlength="18" value="{$info.password}" id="password"
+                           class="input-txt">
+                    <span class="err" id="err_password"></span>
+                    <p class="notic">登陆密码</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="seller_name"><em>*</em>商家名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="seller_name" value="{$info.seller_name}" id="seller_name" maxlength="20"
+                           class="input-txt">
+                    <span class="err" id="err_seller_name"></span>
+                    <p class="notic">商家名称</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="seller_phone">商家电话</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="seller_phone" value="{$info.seller_phone}" id="seller_phone" maxlength="20"
+                           class="input-txt">
+                    <span class="err" id="err_seller_phone"></span>
+                    <p class="notic">商家电话</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="seller_mobile">手机号</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="seller_mobile" value="{$info.seller_mobile}" id="seller_mobile"
+                           maxlength="20" class="input-txt">
+                    <span class="err" id="err_seller_mobile"></span>
+                    <p class="notic">手机号</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="seller_address"><em>*</em>商家地址</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="seller_address" value="{$info.seller_address}" id="seller_address"
+                           maxlength="20" class="input-txt">
+                    <span class="err" id="err_seller_address"></span>
+                    <p class="notic">商家地址</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="email"><em>*</em>Email地址</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="email" value="{$info.email}" id="email" class="input-txt" maxlength="40">
+                    <span class="err" id="err_email"></span>
+                    <p class="notic">Email地址</p>
+                </dd>
+            </dl>
+            <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit();" class="ncap-btn-big ncap-btn-green"
+                                id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    // 判断输入框是否为空
+    function adsubmit() {
+        $('.err').show();
+        var user_name = $('#user_name').val();
+        var password = $('#password').val();
+        var seller_name = $('#seller_name').val();
+        var seller_phone = $('#seller_phone').val();
+        var seller_mobile = $('#seller_mobile').val();
+        var seller_address = $('#seller_address').val();
+        var email = $('#email').val();
+        var act = $('#act').val();
+        if(!user_name){
+            layer.msg('登录名不能为空！', {icon: 2, time: 1000});
+            return false;
+        }
+        if(!seller_name){
+            layer.msg('商家名称不能为空！', {icon: 2, time: 1000});
+            return false;
+        }
+        if(!seller_phone && !seller_mobile){
+            layer.msg('商家电话和手机号不能为空！请填写其中一个', {icon: 2, time: 1000});
+            return false;
+        }
+        if(!seller_address){
+            layer.msg('商家地址不能为空！', {icon: 2, time: 1000});
+            return false;
+        }
+        if(!email){
+            layer.msg('商家email不能为空！', {icon: 2, time: 1000});
+            return false;
+        }
+        if ((password.length < 6 || password.length > 18) && act == 'add') {
+            layer.msg('密码长度应该在6-18位！', {icon: 2, time: 1000});//alert('少年，密码不能为空！');
+            return false;
+        }
+        $.ajax({
+            async: false,
+            url: '/index.php?m=Admin&c=SellerManagement&a=sellerHandle&t=' + Math.random(),
+            data: $('#sellerHandle').serialize(),
+            type: 'post',
+            dataType: 'json',
+            success: function (data) {
+                if (data.status != 1) {
+                    layer.msg(data.msg, {icon: 2, time: 2000});
+                    $.each(data.result, function (index, item) {
+                        $('#err_' + index).text(item)
+                    })
+                } else {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        window.location.href = data.url;
+                    })
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $('#error').html('<span class="error">网络失败，请刷新页面后重试!</span>');
+            }
+        });
+    }
+</script>
+</body>
+</html>

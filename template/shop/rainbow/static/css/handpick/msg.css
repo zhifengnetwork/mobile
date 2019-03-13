@@ -1,0 +1,162 @@
+/* 
+站内信息
+
+*/
+body{
+    background-color: #f4f4f4;
+   font-family: "Microsoft YaHei";
+   margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 100%;
+    font-size: .3rem;
+}
+* {
+    margin: 0;
+    padding: 0;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-text-size-adjust: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+ul, li {
+    list-style: none;
+}
+
+a {
+    color: #232326;
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+a {
+    background: transparent;
+}
+
+i, em {
+    font-style: normal;
+}
+
+img{
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+.handpickBox{
+    width: 100%;
+    background-color: #f4f4f4;
+}
+
+/* toubu */
+.headerBox{
+    display: flex;
+        height:.63rem;
+        display: flex;
+        line-height: .63rem;
+        background-color: #ffffff;
+}
+.goleft{
+    height: .63rem;
+    width: .63rem;
+}
+ 
+.goleft .headerImg{
+    margin-top:.1rem;
+    width: .3rem;
+    height: .4rem;
+    
+}
+
+.headerBox .headerTitle{
+    line-height: .63rem;
+    color:#151515;
+    margin: 0 auto;
+    padding-right:.2rem;
+  }
+
+  .navigation{
+      margin:.1rem .17rem 0 .17rem;
+      display: flex;
+  }
+ .navigation .nav-li{
+  width: 50%;
+  height:.83rem;
+  line-height: .83rem;
+  text-align: center;
+  background-color:#ffffff;
+  }
+
+  .navigation .active{
+      background-color: #d67527;
+  }
+  .navigation .nav-li>span{
+      color:#000000;
+  }
+  .navigation .nav-li .active{
+      color:#fff;
+  }
+
+.msgTitle{
+   
+    margin:.1rem .17rem .1rem .17rem;
+    background-color:#ffffff;
+}
+
+.msgTitle .titleBox{
+    text-align: center;
+}
+
+.msgTitle .titleBox .title{
+    padding-top:.2rem;
+    font-size:.4rem;
+    font-weight: 500;
+}
+
+.msgTitle .msgMsg{
+    padding:0 .59rem .98rem .59rem;
+    margin-top:.2rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+
+
+
+/*加载中 */
+.loding{
+    
+    position: relative;
+    height:1rem;
+    line-height: 1rem;
+ }
+ .loding .loding1{
+     position: absolute;
+     left:40%;
+     top:20%;
+     width:.6rem;
+     height: .6rem;
+     margin-right:0;
+     display: inline-block;
+     box-sizing: border-box;
+     /* animation: loading1 1s linear infinite; */
+ }
+ /* @keyframes loading1{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+} */
+ .loding>span{
+     position: absolute;
+     left:48%;
+     color:#cdcdcd;
+     padding-left:.1rem;
+     margin-top:.1rem;
+ }

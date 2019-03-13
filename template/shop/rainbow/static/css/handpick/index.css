@@ -1,0 +1,363 @@
+/* 
+精选地区馆样式
+
+*/
+body{
+    background-color: #fff;
+   font-family: "Microsoft YaHei";
+   margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 100%;
+    font-size: .3rem;
+}
+* {
+    margin: 0;
+    padding: 0;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-text-size-adjust: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+ul, li {
+    list-style: none;
+}
+
+a {
+    color: #232326;
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+a {
+    background: transparent;
+}
+
+i, em {
+    font-style: normal;
+}
+
+img{
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+.handpickBox{
+    width: 100%;
+    background-color: #f4f4f4;
+}
+
+.handpickBox .headerBox{
+  height:.63rem;
+  display: flex;
+  justify-content:space-between;
+}
+
+.goleft{
+    height: .63rem;
+    width: .63rem;
+}
+ 
+.goleft .headerImg{
+    margin-top:.1rem;
+    width: .3rem;
+    height: .4rem;
+    
+}
+.Imgbox .fenx,.Imgbox .class{
+    margin-right: .2rem;
+}
+.Imgbox .fenx .headerImg,.Imgbox .class .headerImg{
+    width: .4rem;
+}
+
+.headerBox .headerTitle{
+  line-height: .63rem;
+  color:#151515;
+  padding-left:.6rem;
+}
+
+.headerBox .Imgbox{
+    display: flex;
+  justify-content:space-between;
+}
+
+/* 广告图 */
+
+.advertising{
+    height: 2.62rem;
+    width: 100%;
+}
+.advertising img{
+    height: 2.62rem;
+    width: 100%;
+}
+
+.advertisingtwo{
+     height: 2.22rem;
+     width: 100%;
+}
+.advertisingtwo img{
+    height: 2.22rem;
+    width: 100%;
+}
+/* 十宫格 */
+
+.GongGe{
+    width: 100%;
+    height: 2.80rem;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-wrap:wrap;
+    align-content:flex-end;
+}
+.GongGe  .GongGe-list{
+    width: 20%;
+    height: 50%;
+    text-align: center;
+}
+
+.GongGe-list .guoqi{
+    width: .73rem;
+    height: .73rem;
+    margin-top:.1rem;
+}
+
+.GongGe-list .p-tit{
+    margin-top:.12rem;
+    font-size: .11rem;
+}
+
+/* 广告精选 */
+.handpickListImg{
+    height: 1rem;
+    width: 100%;
+}
+.handpickListImg ul{
+    height: 1rem;
+    width: 100%;
+    display: flex;
+}
+.handpickListImg ul li{
+    height: 1rem;
+    width: 20%;
+    text-align: center;
+    background-color:#0e264a;
+    border-left:.02rem solid #FFFFFF;
+}
+
+.handpickListImg ul li img{
+    width: .5rem;
+    height:.5rem;
+    margin-top:.08rem;
+}
+
+.handpickListImg ul li P{
+  color:#FFFFFF;
+  font-size:.2rem;
+  padding-top:.1rem;
+}
+
+.handpickListImg ul .active{
+    background-color:#ff5722;
+}
+
+/* 新品速递 */
+
+.nweBox{
+ border-top:.01rem solid #a7a7a7;
+ margin-left:.18rem;
+ margin-right: .18rem;
+ margin-top:.63rem;
+}
+
+.newTitle{
+    text-align: center;
+    height: 1.27rem;
+    margin-top:-.3rem;
+}
+
+.newTitle>p{
+    color:#6d6d6d;
+    margin-top:.1rem;
+}
+.newTitle .newTitle-size{
+    margin:0;
+}
+
+.newTitle .newTitle-size>span{
+    border-left:.13rem solid #f4f4f4;
+    border-right:.13rem solid #f4f4f4;
+    background-color: #f4f4f4;
+    font-size:.4rem;
+    font-weight: 700;
+    color:#151515;
+}
+
+.nweBox .nweListBox{
+   height: 2.58rem;
+   background-size: 100% 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    width: 100%;
+}
+
+.nweListBox .nweListBox-item{
+    background: #fff;
+    display: inline-block;
+    height: 1.81rem;
+    margin-right: .26rem;
+    vertical-align: top;
+    width: 1.81rem;
+}
+
+.nweListBox .nweListBox-item>a>pic-img{
+    height: 1.81rem;
+    width: 100%;
+}
+
+.nweListBox>ul{
+    white-space: nowrap;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    box-sizing: border-box;
+}
+
+.nweListBox .nweListBox-item .goods-info{
+    -webkit-transform: scale(.5);
+    -webkit-transform-origin: 0 0 0;
+    height: .76rem;
+    padding: .1rem 0 .1rem;
+    position: relative;
+    text-align: center;
+    transform: scale(.5);
+    transform-origin: 0 0 0;
+    width: 200%;
+}
+
+
+.nweListBox .nweListBox-item .goods-info .goods-msg{
+    font-size:.4rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+}
+ 
+.nweListBox-item .goods-info .goods-price{
+    color:#f80505;
+    font-size:.4rem;
+    text-align: center;
+    padding-top:.1rem;
+}
+
+/* 看世界 */
+.seetworldBox{
+    margin-top:.45rem;
+}
+
+.seetTiele{
+    height:1.38rem;
+    text-align:center;
+}
+
+.seetTiele>h2{
+    font-size:.4rem;
+}
+
+.seetTiele>p{
+  width:1.86rem;
+  border:.01rem solid #151515;
+  margin:0 auto;
+  margin-top:.1rem;
+  margin-bottom:.49rem;
+}
+
+/* 层叠轮播图 */
+.swiperBox{
+    height:2.82rem;
+    width:100%;
+    /* position: relative; */
+    overflow: hidden;
+}
+
+/* .swiperBox .Cooldog_content{
+    position: absolute;
+    height:2.82rem;
+    left: 12%;
+}
+
+.swiperBox .Cooldog_content>ul>li{
+    position: absolute;
+    top: 0;
+    left: .04rem;
+    width: 5.62rem;
+    height:2.82rem;
+    transition: all 0.3s ease;
+    transform: translate3d(-.94rem, 0, 0) scale(0.81);
+    transform-origin: 0 50%;
+    opacity: 0.8;
+    z-index: 3;
+} */
+
+.swiper-container {
+    width: 5.62rem;
+    height:2.82rem;
+    overflow:visible;
+}  
+
+/* .swiperBox .Cooldog_content>ul>li img{
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.swiperBox .Cooldog_content>ul>.p3{
+    transform: translate3d(2rem, 0, 0) scale(0.81);
+    transform-origin: 0 50%;
+    opacity: 0.8;
+    z-index: 3;
+}
+.swiperBox .Cooldog_content>ul>.active{
+    transform: translate3d(0rem, 0, 0) scale(1);
+    opacity: 1;
+    z-index: 4;
+} */
+/* 加载样式 */
+
+/*加载中 */
+.loding{
+    
+    position: relative;
+    height:1rem;
+    line-height: 1rem;
+ }
+ .loding .loding1{
+     position: absolute;
+     left:40%;
+     top:20%;
+     width:.6rem;
+     height: .6rem;
+     margin-right:0;
+     display: inline-block;
+     box-sizing: border-box;
+     /* animation: loading1 1s linear infinite; */
+ }
+ /* @keyframes loading1{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+} */
+ .loding>span{
+     position: absolute;
+     left:48%;
+     color:#cdcdcd;
+     padding-left:.1rem;
+     margin-top:.1rem;
+ }

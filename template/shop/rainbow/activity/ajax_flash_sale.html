@@ -1,0 +1,21 @@
+<foreach name="flash_sale_goods" item="vo" >
+    <li>
+        <div class="pro-img">
+            <a href="{:U('Goods/goodsInfo',array('id'=>$vo[goods_id],'item_id'=>$vo[spec_goods_price][item_id]))}"><img src="{$vo[goods_id]|goods_thum_images=400,400}" /></a>
+        </div>
+        <div class="text">
+            <h3><a href="{:U('Goods/goodsInfo',array('id'=>$vo[goods_id],'item_id'=>$vo[spec_goods_price][item_id]))}">{$vo[title]}</a></h3>
+            <p class="dec">{$vo[goods_name]}</p>
+            <!--<p class="discount">4.6折</p>-->
+            <p class="discount-price">¥{$vo[price]}元</p>
+            <p class="line-5">
+                <span class="original-price">{$vo['goods']['shop_price']}</span>
+                <span class="stock">仅剩{$vo['goods_num']}件</span>
+            </p>
+            <div class="rush-buy">
+                <a href="{:U('Goods/goodsInfo',array('id'=>$vo[goods_id],'item_id'=>$vo[spec_goods_price][item_id]))}" class="buy-btn">马上抢</a>
+                <p class="progress-bar"><span class="progress" style="width:{$vo['percent']>100 ? 100 : $vo['percent']}%"></span></p>
+            </div>
+        </div>
+    </li>
+</foreach>

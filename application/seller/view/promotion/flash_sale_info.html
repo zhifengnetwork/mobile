@@ -1,0 +1,279 @@
+<include file="public/layout" />
+<style>
+    .err{color:#F00; display:none;}
+</style>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>竞拍管理 - 编辑竞拍</h3>
+                <h5>网站系统竞拍活动详情页</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="handleposition" method="post">
+        <input type="hidden" id="goods_id" name="goods_id" value="{$info.goods_id}">
+        <input type="hidden" name="id" value="{$info.id}">
+        <input type="hidden" name="item_id" value="{$info.item_id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>活动名称：</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">
+                    <span class="err" id="err_title"></span>
+                    <p class="notic">请填写活动名称</p>
+                </dd>
+            </dl>
+			
+			<dl class="row">
+			    <dt class="tit">
+			        <label><em>*</em>活动商品：</label>
+			    </dt>
+			    <dd class="opt">
+			        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">
+			        <span class="err" id="err_title"></span>
+			        <p class="notic">参加过其他活动的商品不参与拍卖，请选择不带活动标签的商品，否则后果自负！</p>
+			    </dd>
+			</dl>
+			
+			<dl class="row">
+			    <dt class="tit">
+			        <label><em>*</em>活动轮次：</label>
+			    </dt>
+			    <dd class="opt">
+			        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">轮
+			        <span class="err" id="err_title"></span>
+			        <p class="notic">活动轮次即活动商品数量。</p>
+			    </dd>
+			</dl>
+			
+			<dl class="row">
+			    <dt class="tit">
+			        <label><em>*</em>延时周期：</label>
+			    </dt>
+			    <dd class="opt">
+			        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">分钟
+			        <span class="err" id="err_title"></span>
+			        <p class="notic">延时周期即延长时间，单位分钟， 一旦有买家出价，则延时周期生效。</p>
+			    </dd>
+			</dl>
+			
+			<dl class="row">
+			    <dt class="tit">
+			        <label><em>*</em>每轮时间：</label>
+			    </dt>
+			    <dd class="opt">
+			        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">分钟
+			        <span class="err" id="err_title"></span>
+			        <p class="notic">每轮时间即每轮竞拍活动的出价时间。</p>
+			    </dd>
+			</dl>
+			
+			<dl class="row">
+			    <dt class="tit">
+			        <label><em>*</em>预展开始时间：</label>
+			    </dt>
+			    <dd class="opt">
+			        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">
+			        <span class="err" id="err_title"></span>
+			    </dd>
+			</dl>
+			
+			<dl class="row">
+			    <dt class="tit">
+			        <label><em>*</em>活动开始时间：</label>
+			    </dt>
+			    <dd class="opt">
+			        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">
+			        <span class="err" id="err_title"></span>
+			    </dd>
+			</dl>
+			
+			<dl class="row">
+			    <dt class="tit">
+			        <label><em>*</em>货款支付时间：</label>
+			    </dt>
+			    <dd class="opt">
+			        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">分钟
+			        <span class="err" id="err_title"></span>
+					<p class="notic">货款支付时间即竞拍胜出后的支付货款时间，单位为分钟，胜出者未按时付款的，视为违约，将扣除保证金。</p>
+			    </dd>
+			</dl>
+			
+			<dl class="row">
+			    <dt class="tit">
+			        <label><em>*</em>保证金：</label>
+			    </dt>
+			    <dd class="opt">
+			        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">元
+			        <span class="err" id="err_title"></span>
+					<p class="notic">为保证竞拍活动秩序，防止买家胡乱出价，参与竞拍必须支付保证金，且0＜保证金＜＝商品现价的20%。</p>
+			    </dd>
+			</dl>
+			
+			<dl class="row">
+			    <dt class="tit">
+			        <label><em>*</em>保留价：</label>
+			    </dt>
+			    <dd class="opt">
+			        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">元
+			        <span class="err" id="err_title"></span>
+					<p class="notic">买家出价低于保留价，则视为流拍，商品仍归商家，活动结束后，买家支付的保证金系统会自动退还给买家。设置为0，则表示不设置保留价，此时只要竞拍者出价即可胜出，付款后，商家必须发货。</p>
+			    </dd>
+			</dl>
+			
+			<dl class="row">
+			    <dt class="tit">
+			        <label><em>*</em>起拍价：</label>
+			    </dt>
+			    <dd class="opt">
+			        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">元
+			        <span class="err" id="err_title"></span>
+					<p class="notic">买家出价的最低价格。可以设置0元起拍，1元起拍。</p>
+			    </dd>
+			</dl>
+			
+			<dl class="row">
+			    <dt class="tit">
+			        <label><em>*</em>加价幅度：</label>
+			    </dt>
+			    <dd class="opt">
+			        <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">元
+			        <span class="err" id="err_title"></span>
+					<p class="notic">出价时需要增加的幅度。每次出价可以增加多个。</p>
+			    </dd>
+			</dl>
+
+
+            <if condition="$info['is_edit'] eq 0">
+                <div class="bot"><a class="ncap-btn-big">确认提交</a></div>
+            <else/>
+
+            <dl class="row" txt="是否交货">
+                <dt class="tit">是否交货</dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label for="mmt_message_switch1" class="cb-enable selected">是</label>
+                        <label for="mmt_message_switch0" class="cb-disable ">否</label>
+                        <input id="mmt_message_switch1" name="mmt_message_switch" checked="checked" value="1" type="radio">
+                        <input id="mmt_message_switch0" name="mmt_message_switch" value="0" type="radio">
+                    </div>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <!-- <dl class="row">
+                <dt class="tit">手机短信通知</dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label for="mmt_short_switch1" class="cb-enable ">是</label>
+                        <label for="mmt_short_switch0" class="cb-disable selected">否</label>
+                        <input id="mmt_short_switch1" name="mmt_short_switch"  value="1" type="radio">
+                        <input id="mmt_short_switch0" name="mmt_short_switch" checked="checked" value="0" type="radio">
+                    </div>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">邮件通知</dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label for="mmt_mail_switch1" class="cb-enable ">是</label>
+                        <label for="mmt_mail_switch0" class="cb-disable selected">否</label>
+                        <input id="mmt_mail_switch1" name="mmt_mail_switch"  value="1" type="radio">
+                        <input id="mmt_mail_switch0" name="mmt_mail_switch" checked="checked" value="0" type="radio">
+                    </div>
+                    <p class="notic"></p>
+                </dd>
+            </dl> --> 
+
+                <div class="bot"><a onclick="verifyForm()" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+            </if>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#start_time').layDate();
+    })
+    var ajax_return_status = 1; // 标识ajax 请求是否已经回来 可以进行下一次请求
+    function verifyForm(){
+        $('span.err').hide();
+        if (ajax_return_status == 0) {
+            return false;
+        }
+        if ($('#start_time').val() == ''){
+            layer.msg('请输入活动时间', {icon: 2,time: 1000});
+            return false;
+        }
+        ajax_return_status = 0;
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/Promotion/flash_sale_info')}",
+            data: $('#handleposition').serialize(),
+            dataType: "json",
+            error: function () {
+                ajax_return_status = 1
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+                        location.href = "{:U('Admin/Promotion/flash_sale')}";
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 2,time: 1000});
+                    $.each(data.result, function (index, item) {
+                        $('#err_' + index).text(item).show();
+                    });
+                    ajax_return_status = 1;
+                }
+            }
+        });
+    }
+    function selectGoods(){
+        var url = "{:U('Promotion/search_goods',array('tpl'=>'select_goods','prom_type'=>1,'prom_id'=>$info[id]))}";
+        layer.open({
+            type: 2,
+            title: '选择商品',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['75%', '75%'],
+            content: url,
+        });
+    }
+    function call_back(goodsItem){
+        $('#goods_id').val(goodsItem.goods_id);
+        $('input[name=item_id]').val(''); //将规格ID重置一下
+        var html = '';
+        if(goodsItem.spec != null){
+            //有规格
+            html = '<div style="float: left;margin: 10px auto;" class="selected-group-goods"><div class="goods-thumb">' +
+                    '<img style="width: 162px;height: 162px" src="'+goodsItem.spec.spec_img+'"/></div> <div class="goods-name"> ' +
+                    '<a target="_blank" href="/index.php?m=Home&c=Goods&a=goodsInfo&id='+goodsItem.goods_id+'">'+goodsItem.goods_name+goodsItem.spec.key_name+'</a> </div>' +
+                    ' <div class="goods-price">商城价：￥'+goodsItem.spec.price+'库存:'+goodsItem.spec.store_count+'</div> </div>';
+            $('input[name=item_id]').val(goodsItem.spec.item_id)
+            $('input[name=goods_name]').val(goodsItem.goods_name + goodsItem.spec.key_name);
+        }else{
+            html = '<div style="float: left;margin: 10px auto;" class="selected-group-goods"><div class="goods-thumb">' +
+                    '<img style="width: 162px;height: 162px" src="'+goodsItem.goods_image+'"/></div> <div class="goods-name"> ' +
+                    '<a target="_blank" href="/index.php?m=Home&c=Goods&a=goodsInfo&id='+goodsItem.goods_id+'">'+goodsItem.goods_name+'</a> </div>' +
+                    ' <div class="goods-price">商城价：￥'+goodsItem.goods_price+'库存:'+goodsItem.store_count+'</div> </div>';
+            $('input[name=goods_name]').val(goodsItem.goods_name);
+        }
+        $('#select_goods_button').attr('data-goods-id',goodsItem.goods_id);
+        $('#selected_group_goods').empty().html(html);
+        $('.selected-group-goods').show();
+        layer.closeAll('iframe');
+    }
+</script>
+</body>
+</html>
+
+

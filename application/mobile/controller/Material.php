@@ -1,46 +1,15 @@
 <?php
-/**
- * 智丰网络
- * ============================================================================
- * * 版权所有 2015-2027 深圳搜豹网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.tp-shop.cn
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * 采用最新Thinkphp5助手函数特性实现单字母函数M D U等简写方式
- * ============================================================================
- * $Author: C   2019-03-09
- */ 
+
 namespace app\mobile\controller;
-// use app\common\logic\GoodsLogic;
-// use app\common\model\FlashSale;
-// use app\common\model\GroupBuy;
-// use app\common\model\PreSell;
+
 use think\Db;
 use think\Page;
-// use app\common\logic\ActivityLogic;
+
 
 class Material extends MobileBase {
 
     public $user_id = 0;
     public $user = array();
-
-    // public function _initialize()
-    // {
-    //     parent::_initialize();
-    //     if (session('?user')) {
-    //         $user = session('user');
-    //         $user = M('users')->where("user_id", $user['user_id'])->find();
-    //         session('user', $user);  //覆盖session 中的 user
-    //         $this->user = $user;
-    //         $this->user_id = $user['user_id'];
-    //         $this->assign('user', $user); //存储用户信息
-    //         $this->assign('user_id', $this->user_id);
-    //     } else {
-    //         header("location:" . U('User/login'));
-    //         exit;
-    //     }
-    // }
     
     /**
      * 默认获取分享区数据列表
@@ -90,9 +59,12 @@ class Material extends MobileBase {
         }
         // 获取当前url
         $url = $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"].'&first_leader='.session('user.user_id');
+
+        
+
         $atDetail['content'] = htmlspecialchars_decode($atDetail['content']);
         $this->assign('url', $url);
         $this->assign('atDetail', $atDetail);
-        return $this->fetch('Material/detail');
+        return $this->fetch('detail');
     }
 }

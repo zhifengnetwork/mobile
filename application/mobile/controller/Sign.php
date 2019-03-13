@@ -91,7 +91,43 @@ class Sign extends MobileBase {
                     //签到积分
                     //$add_point = (int)M('config')->where(['name'=>'sign_integral'])->value('value');
                     //accountLog($user_id, 0, $add_point , '签到送积分',0,0 ,'');
+                    //添加积分   有两种用户   在user表中有两个字段is_agent（代理商）和is_distribut（经销商）  也可能即使代理商又是经销商  user表添加两个字段分别存储代理商抽奖次数agent_free_number和经销商抽奖次数distribut_free_number   读取设置表config中代理商签到次数agent_sign_num和经销商签到次数distribut_sign_num   在签到成功的时候  判断签到记录表中是否达到预定的次数   达到后改变user表中对应的次数+1
 
+                    //先查询用户类型
+                    $user_type=M('users')->where(['user_id'=>$user_id])->select();
+                    //获取后台设置的签到天数
+                    $sign_distribut_days=M('config')->where(['name'=>'sign_distribut_days'])->value('value');
+                    $sign_agent_days=M('config')->where(['name'=>'sign_agent_days'])->value('value');
+                    //代理类型
+//                    var_dump($sign_agent_days);
+//                    echo '``````````````````';
+//                    var_dump($user_type);
+//                    echo '``````````````````';
+                    if($user_type[0]['is_agent']){
+                        //查询签到记录看已经连续签到是次数是否达到了设置的值
+                        $agent_continue_sign_num=$this->goods_continue_sign($user_id,'sign_agent');
+//                        echo $agent_continue_sign_num.'````````````'.$sign_agent_days;
+                        if($agent_continue_sign_num>=$sign_agent_days){
+                            //使得user表中代理领礼物次数+1
+//                            M('user')->where(['user_id'=>$user_id])->save(['agent_free_num'=>'agent_free_num+1']);
+                            M('users')->where(['user_id'=>$user_id])->setInc('agent_free_num');
+                            //变更这几次的签到记录中的标志值
+                            M('sign_log')->where(['user_id'=>$user_id])->order('sign_day desc')->limit($sign_agent_days)->save(['sign_agent'=>1]);
+                        }
+                    }
+                    //分销员类型
+                    if($user_type[0]['is_distribut']){
+                        //查询签到记录看已经连续签到是次数是否达到了设置的值
+                        $distribut_continue_sign_num=$this->goods_continue_sign($user_id,'sign_distribut');
+//                        echo '|||||||||||||||||'.$distribut_continue_sign_num;die;
+                        if($distribut_continue_sign_num>=$sign_distribut_days){
+                            //使得user表中代理领礼物次数+1
+//                            M('user')->where(['user_id'=>$user_id])->save(['distribut_free_num'=>'distribut_free_num+1']);
+                            M('users')->where(['user_id'=>$user_id])->setInc('distribut_free_num');
+                            //变更这几次的签到记录中的标志值
+                            M('sign_log')->where(['user_id'=>$user_id])->order('sign_day desc')->limit($sign_distribut_days)->save(['sign_distribut'=>1]);
+                        }
+                    }
                     return $this->ajaxReturn(['status'=>1,'msg'=>'签到成功','date'=>$date]);
                 }else{
                     return $this->ajaxReturn(['status'=>-1,'msg'=>'签到失败','date'=>$date]);
@@ -126,17 +162,17 @@ class Sign extends MobileBase {
 
         //当前积分
         $points = M('users')->where(['user_id'=>$user_id])->value('pay_points');
-
+        //连续签到几天
         $continue_sign = continue_sign($user_id);
 
         //签到积分
         $add_point = (int)M('config')->where(['name'=>'sign_integral'])->value('value');
       
         //签到规则
-        //连续签到几天	        
+
         $rule = M('config')->where(['name'=>'sign_rule'])->value('value');
 
-        //连续签到几天
+        //拢共签到几天
         $accumulate_day = count($data);
 
         //检查权限
@@ -173,7 +209,6 @@ class Sign extends MobileBase {
         
     }
 
-
     /**
      * 处理时间
      */
@@ -184,50 +219,60 @@ class Sign extends MobileBase {
         return str_replace('-','/',$time);
     }
 
-    /**
-     * 是否可以免费领取
-     */
-    public function receive()
-    {
-        $cat_id = I('cat_id/d');
+    //仅供生成连续签到奖品次数用的获取连续签到数
+    function goods_continue_sign($user_id,$sign_mark){
 
-        if ($this->user['is_distribut'] == 0 && $cat_id == 584) {
-            $result = array('status'=>0,'msg'=>'成为分销商才可领取','result'=>array());
-            return $this->ajaxReturn($result);
+        //定义时间戳
+        date_default_timezone_set("Asia/Shanghai");
+        //先看一下今天有没有签到
+        $con['sign_day'] = array('like',date('Y-m-d',time()).'%');
+        $cunzai = M('sign_log')->where(['user_id'=>$user_id])->where($con)->find();
+        if($cunzai){
+            $todaySign=1;
+        }else{
+            $todaySign=0;
+        }
+        //再看之前的签到时间
+        //只查询签到标志为0的记录
+        $list = M('sign_log')->where(['user_id'=>$user_id,"$sign_mark"=>0])->order('sign_day desc')->field('sign_day')->select();
+        //对所有的签到时间进行时间戳然后倒序排序
+        $array=array();
+        foreach($list as $key=>$value){
+            $array[]=strtotime($value['sign_day']);
         }
 
-        if ($this->user['is_agent'] == 0 && $cat_id == 585) {
-            $result = array('status'=>0,'msg'=>'成为代理商才可领取','result'=>array());
-            return $this->ajaxReturn($result);
-        }
-
-        $data = M('order_sign_receive')->where('uid',$this->user_id)->order('addend_time desc')->select();
-
-        if ($this->user['is_agent'] == 1 && count($data)  == 12 ) {
-            $result = array('status'=>0,'msg'=>'已超出领取次数','result'=>array());
-            return $this->ajaxReturn($result);
-        }
-        
-        if(!empty($data)){
-
-            $newTimeM = date('m', time());//当前月份
-            $addTimeM = date('m', $data[0]['addend_time']); //最近下单月份
-            $addTimeD = strtotime(date('Y-m-d', $data[0]['addend_time'])); //最近下单天份
-
-            if ($newTime == $addTimeM && $this->user['is_agent'] == 1 ) {
-                $result = array('status'=>0,'msg'=>'本月已领取过了','result'=>array());
-                return $this->ajaxReturn($result);
+        //定义连续签到次数
+        $countSign=$todaySign;
+        //依次判断所有的时间戳是否在指定范围内，例如第一个应该在昨天00:00:00-23:59:59之前，如果在则$countSign+1,否则跳出循环
+        //定义昨天的时间戳范围
+        $begintime=strtotime(date('Y-m-d 00:00:00',time()-86400));
+        $endtime=strtotime(date('Y-m-d 23:59:59',time()-86400));
+        if($todaySign==1){
+            for($i=1;$i<count($array);){
+                //                echo $begintime."------".$array[$i]."---------".$endtime."+++++";
+                if($array[$i]>=$begintime && $array[$i]<=$endtime){
+                    $countSign++;
+                    $begintime-=86400;
+                    $endtime-=86400;
+                }else{
+                    break;
+                }
+                $i++;
             }
-
-            if ($addTimeD+259200 < time() && $this->user['is_agent'] == 1 ) {
-                $result = array('status'=>0,'msg'=>'3天内只能领取一次哦','result'=>array());
-                return $this->ajaxReturn($result);
+        }else{
+            for($k=0;$k<count($array);){
+                if($array[$k]>=$begintime && $array[$k]<=$endtime){
+                    $countSign++;
+                    $begintime-=86400;
+                    $endtime-=86400;
+                }else{
+                    break;
+                }
+                $k++;
             }
-
         }
 
-        $result = array('status'=>1,'msg'=>'可领取','result'=>array());
-        $this->ajaxReturn($result);
+        return $countSign;
     }
 
 }

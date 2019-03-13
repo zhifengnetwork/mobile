@@ -1,0 +1,45 @@
+*{margin:0;padding:0;line-height:1;}
+a{text-decoration:none;}
+img{display:block;}
+ul li {list-style: none;}
+body{max-width:7.5rem;min-width:3.2rem;width:7.5rem;margin:0 auto;background:#f5f5f5;font-family:PingFangMedium}
+.clear:after,.clear:before{content:'';display:block; clear: both;}
+
+
+.wtf_top_left a{display:block;}
+.wtf_wrap {width: 7rem;margin: 0 auto;}
+.wtf_top {width: 100%;height: 0.86rem;background: #fff;position: relative;}
+.wtf_top span{display: block;position: absolute;left: 0.3rem;top: 50%;transform: translateY(-50%);width: 0.16rem;height: 0.24rem;}
+.wtf_top span img{width: 0.16rem;height: 0.24rem;}
+.wtf_top p{text-align: center;font-size: 0.23rem;color: #333;line-height: 0.86rem;}
+
+.wtf_banner img{width: 100%;}
+.wtf_main {position: relative; background: #ffffff;border: 1px solid #fff;border-radius: 0.24rem;width: 7rem;height: 1.4rem;font-size: 0.23rem;margin-top: 0.16rem;margin-left: 0.25rem;color: #333;}
+.wtf_p1 span a{color: #333;padding-right: 0.Distribution member83rem;}
+
+.wtf_p2{background: url(/template/mobile/rainbow/static/images/Distributionmember/wtf_yuanjiao-2.png)no-repeat;  width: 1.92rem;height: 0.55rem;float: right;text-align: center;line-height: 0.55rem;margin-top: 0.43rem;margin-right: 0.82rem;background-size:1.92rem 0.55rem ;}
+.wtf_p1 {float: left;line-height: 1.4rem;position: relative;margin-left: 0.82rem;}
+.wtf_p2 a{color: #333;}
+.wtf_main1 {position: relative; display:inline-block; background: #ffffff;border: 1px solid #fff;border-radius: 0.24rem;width: 7rem;height: 1.4rem;font-size: 0.23rem;margin-top: 0.16rem;margin-left: 0.25rem;color: #333;}
+.wtf_p3 span a{color: #333;}
+.wtf_p4{float: right;text-align: center;line-height: 0.55rem;margin-top: 0.43rem;margin-right: 0.7rem;}
+.wtf_p3 {float: left;line-height: 1.4rem;position: relative;margin-left: 0.82rem;}
+.wtf_p4 a{color: #333;}
+.wtf_p4 a span{margin-left:0.17rem;}
+
+.wtf_nav {height: 2.7rem;width: 7rem;background: #ffffff;border-radius: 0.25rem ;padding-top: 0.62rem;margin-left:0.25rem ;padding-left: 0.1rem;}
+.wtf_nav ul li{float: left;width: 1.52rem;margin-left: 0.1rem;height: 1.52rem;display: inline-block;text-align: center;background: #f5f5f5;margin-right: 0.1rem;}
+.wtf_nav ul li img{margin: 0 auto;margin-top: 0.3rem;width: 0.58rem;height: 0.52rem;}
+.wtf_nav ul li a{font-size: 0.23rem;color: #333;display: inline-block;line-height: 0.7rem;}
+
+.wtf_main_i{position: absolute;top: 0.1rem; display: block;width: 2px;height: 1.19rem;background: #f5f5f5;z-index: 999;}
+.wtf_p1 i{left: 2.67rem;}
+.wtf_p3 i{left: 2.67rem;}
+
+
+
+@media only screen and (max-width: 365px) {
+    .wtf_p4{margin-right:0.5rem;}
+
+
+}
