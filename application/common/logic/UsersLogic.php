@@ -297,10 +297,10 @@ class UsersLogic extends Model
                 $map['first_leader'] = 0;
             }
             // 成为分销商条件
-            $distribut_condition = tpCache('distribut.condition');
-            if($distribut_condition == 0){    // 直接成为分销商, 每个人都可以做分销
-                $map['is_distribut']  = 1;
-            } 
+            // $distribut_condition = tpCache('distribut.condition');
+            // if($distribut_condition == 0){    // 直接成为分销商, 每个人都可以做分销
+            //     $map['is_distribut']  = 1;
+            // } 
             $row_id = Db::name('users')->add($map);
 
             $user = Db::name('users')->where(array('user_id'=>$row_id))->find();
@@ -441,9 +441,9 @@ class UsersLogic extends Model
 		} */
 
         // 成为分销商条件  
-        $distribut_condition = tpCache('distribut.condition'); 
-        if($distribut_condition == 0)  // 直接成为分销商, 每个人都可以做分销        
-            $map['is_distribut']  = 1;        
+        // $distribut_condition = tpCache('distribut.condition'); 
+        // if($distribut_condition == 0)  // 直接成为分销商, 每个人都可以做分销        
+        //     $map['is_distribut']  = 1;        
         
         $map['push_id'] = $push_id; //推送id
         $map['token'] = md5(time().mt_rand(1,999999999));
