@@ -1249,6 +1249,17 @@ class User extends MobileBase
                 $res2=Db::name('user_extend')->add($info);
             }
             $this->ajaxReturn(['status'=>1,'msg'=>'操作成功']);
+        }elseif($data['type']==2){
+            $info['bank_card_number']=$data['card'];
+            $info['user_id']=$user_id;
+            $res=DB::name('user_extend')->where('user_id='.$user_id)->count();
+            if($res){
+                $res2=Db::name('user_extend')->where('user_id='.$user_id)->save($info);
+            }else{
+                $res2=Db::name('user_extend')->add($info);
+            }
+            $this->ajaxReturn(['status'=>1,'msg'=>'操作成功']);
+            
         }else{
             //防止非支付宝类型的表单提交
             $this->ajaxReturn(['status'=>0,'msg'=>'不支持的提现方式']);
