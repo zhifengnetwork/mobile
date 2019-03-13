@@ -84,8 +84,6 @@ class Distribut extends Base {
     //关系图
     public function tree()
     {
-        // $where = "is_agent=1 and first_leader=0 and user_id>0 and agent_user<=6 and agent_user>1";
-        // $users_level = M('users')->field('user_id,nickname,is_agent,first_leader,is_distribut,level,agent_user')->where($where)->select();
         $UsersLogic = new UsersLogic();    
         $cat_list = $UsersLogic->relation();
         // dump($cat_list);die;
@@ -94,7 +92,8 @@ class Distribut extends Base {
         //     $heightLevel = max($level);
         // }
         $this->assign('heightLevel',$heightLevel);  
-        $this->assign('cat_list',$cat_list);     
+        $this->assign('cat_list',$cat_list);    
+        
         return $this->fetch();
     }
     
