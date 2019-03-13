@@ -61,7 +61,7 @@ class MobileBase extends Controller {
                                 //登录成功
                             }else{
                                 //如果不存在，跳去手机号码登录
-                                header('Location:'.U('/mobile/user/login'));
+                                header('Location:'.U('/shop/User/login'));
                                 exit;
                             }
 

@@ -40,14 +40,17 @@
     <div class="thirdlogin">
         <h4>使用第三方登录</h4>
         <div class="third-login-list">
-        <tpshop sql="select * from __PREFIX__plugin where type='login' AND status = 1" item="v" key="k">
-            <!--<if condition="$v['code'] eq 'weixin' AND is_weixin() neq 1">
-                <a class="item-ico ico-wechat-login" href="{:U('LoginApi/login',array('oauth'=>'weixin'))}" target="_blank" title="weixin"></a>
-       </if>-->
+
+            <a class="item-ico ico-wechat-login" href="{:U('Mobile/LoginApi/login',array('oauth'=>'weixin'))}" target="_blank" title="weixin"></a>
+
+        <!-- <tp   shop sql="select * from __PREFIX__plugin where type='login' AND status = 1" item="v" key="k"> -->
+            <!--<if condition="$v['code'] eq 'weixin' AND is_weixin() neq 1">-->
+                <!-- <a class="item-ico ico-wechat-login" href="{:U('LoginApi/login',array('oauth'=>'weixin'))}" target="_blank" title="weixin"></a> -->
+       <!--</if>-->
             <!--<if condition="$v['code'] eq 'qqq' AND is_qq() neq 1">
             	<a class="item-ico ico-qq-login" href="{:U('LoginApi/login',array('oauth'=>'qq'))}" target="_blank" title="QQ"></a>
-            </if>-->
-            <if condition="$v['code'] eq 'alipay' AND is_alipay() neq 1 AND is_weixin() neq 1">
+            </if> -->
+            <!-- <if condition="$v['code'] eq 'alipay' AND is_alipay() neq 1 AND is_weixin() neq 1">
             	<a class="item-ico ico-qq-login" target="_blank" title="QQ"></a>          
             </if>
             <if condition="$v['code'] eq 'alipay' AND is_alipay() neq 1 AND is_weixin() neq 1">
@@ -55,8 +58,8 @@
             </if>
             <if condition="$v['code'] eq 'alipaynew' AND is_alipay() neq 1 AND is_weixin() neq 1">
                 <a class="item-ico ico-alipay-login" href="alipays://platformapi/startapp?appId=20000067&url={$alipay_url}"></a>
-            </if>
-        </tpshop>
+            </if> -->
+        <!-- </tp   shop> -->
         </div>
     </div>
 
