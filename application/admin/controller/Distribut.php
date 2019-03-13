@@ -84,13 +84,13 @@ class Distribut extends Base {
     //关系图
     public function tree()
     {
-
         $UsersLogic = new UsersLogic();    
         $cat_list = $UsersLogic->relation();
-        if($cat_list){
-            $level = array_column($cat_list, 'level');
-            $heightLevel = max($level);
-        }
+        // dump($cat_list);die;
+        // if($cat_list){
+        //     $level = array_column($cat_list, 'level');
+        //     $heightLevel = max($level);
+        // }
         $this->assign('heightLevel',$heightLevel);  
         $this->assign('cat_list',$cat_list);    
         

@@ -25,14 +25,6 @@
       <div class="mDiv">
         <div class="ftitle">
           <h3>关系图</h3>
-          <h5></h5>
-            <div class="fbutton">
-            <a href="http://help.tp-shop.cn/Index/Help/info/cat_id/5/id/4.html" target="_blank">
-                <div class="add" title="帮助">
-                    <span>帮助</span>
-                </div>
-            </a>
-        </div>
         </div>
           <a href=""><div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div></a>
 
@@ -52,6 +44,7 @@
                 <th align="center" axis="col5"><div style="text-align: center; width: 80px;">分销商</div></th>
                 <th align="center" axis="col6"><div style="text-align: center; width: 80px;">代理商</div></th>
                 <th align="center" axis="col8"><div style="text-align: center; width: 120px;">代理等级(0:普通代理)</div></th>
+                <th align="center" axis="col8"><div style="text-align: center; width: 120px;">代理业绩</div></th>
                 <th axis="col10"><div></div></th>
               </tr>
             </thead>
@@ -113,7 +106,11 @@
               <td class="sort">
                 <div style="text-align: center; width: 100px;">{$vo.agent_user}
                 </div>
-              </td>                                      
+              </td>   
+              <td class="sort">
+                <div style="text-align: center; width: 100px;">{$vo.agent_user}
+                </div>
+              </td>                                   
               <td style="width: 100%;">
                 <div>&nbsp;</div>
               </td>
