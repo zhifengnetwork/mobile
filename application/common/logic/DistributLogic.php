@@ -110,4 +110,8 @@ class DistributLogic
             }
         }
     }
+
+    public function auto_confirm(){
+        return null;
+    }
 }

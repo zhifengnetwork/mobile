@@ -104,7 +104,7 @@
 	var timestamp = Date.parse(new Date());
 	$.ajax({
         type:'post',
-        url:"{:U('Admin/System/login_task')}",
+        url:"{:U('Seller/System/login_task')}",
         data:{timestamp:timestamp},
         timeout : 100000000, //超时时间设置，单位毫秒
         success:function(){
