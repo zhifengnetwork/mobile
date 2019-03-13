@@ -47,14 +47,35 @@ class MobileBase extends Controller {
                 if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1){
                     $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
                      
+                    session('tempuser',$tempuser);
+                    
+                    //新登录流程
+                    if($wxuser['openid']){
+                        //直接去 user 查找
+
+                        $userdata = M('users')->where(['openid'=>$wxuser['openid']])->find();
+                        if($userdata){
+                            session('user',$userdata);
+                            //登录成功
+                        }else{
+                            //如果不存在，跳去手机号码登录
+                            header('Location:'.U('/mobile/user/login'));
+                            exit;
+                        }
+
+                    }
+                    
+                    exit;
+                    
                     //过滤特殊字符串
                     $wxuser['nickname'] && $wxuser['nickname'] = replaceSpecialStr($wxuser['nickname']);
                     
                     session('subscribe', $wxuser['subscribe']);// 当前这个用户是否关注了微信公众号
                     setcookie('subscribe',$wxuser['subscribe']);
                     $logic = new UsersLogic(); 
+                   
                     $is_bind_account = tpCache('basic.is_bind_account');
-                     if ($is_bind_account) {
+                    if ($is_bind_account) {
                          if (CONTROLLER_NAME != 'User' || ACTION_NAME != 'bind_guide') {
                             $data = $logic->thirdLogin_new($wxuser);//微信自动登录
                             if ($data['status'] != 1 && $data['result'] === '100') {
@@ -65,6 +86,7 @@ class MobileBase extends Controller {
                          }
                     } else { 
                         $data = $logic->thirdLogin($wxuser);
+                        //直接去登录，空 就注册
                     }
                     if($data['status'] == 1){
                         session('user',$data['result']);
