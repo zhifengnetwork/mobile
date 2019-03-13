@@ -328,6 +328,8 @@ class User extends MobileBase
             $orderLogic->setUserId($res['result']['user_id']);//登录后将超时未支付订单给取消掉
             $orderLogic->abolishOrder();
 
+
+            //多重保险
             $openid = $tempuser['openid'];
             if($openid){
                 $uuuuid = session('user.user_id');
