@@ -1,118 +1,226 @@
-<include file="public/header" title="秒杀"/>
-<include file="public/header_nav" title="秒杀" href="javascript:history.back(-1)" />
-    <!--顶部时间栏-s-->
-    <div class="floor killtime p">
-        <div class="content30">
-            <ul>
-                <foreach name="time_space" item="vo" key="k">
-                    <li onclick="reload_flash_sale_list(this);" start-data="{$vo['start_time']|date='Y/m/d H:i:s',###}" end-data="{$vo['end_time']|date='Y/m/d H:i:s',###}" data-start-time="{$vo['start_time']}" data-end-time="{$vo['end_time']}" <if condition="(time() egt $vo['start_time']) AND (time() lt $vo['end_time'])">class="red"</if> >
-                        <h3>{$vo['font']}</h3>
-                        <p>
-                            <if condition="time() lt $vo['start_time']">即将开场
-                                <elseif condition="(time() egt $vo['start_time']) AND (time() lt $vo['end_time'])"/>秒杀中
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>秒杀首页</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<link rel="stylesheet" href="__STATIC__/css/reset.css"/>
+    	<link rel="stylesheet" href="__STATIC__/css/seckill_zp/index_zp.css?v=1552388256"/>
+    	<!--公共头部-->
+    	<link rel="stylesheet" href="__STATIC__/css/listdata/public.css" />
+	</head>
+	<body>
+		<div class="wrapper">
+			<!--头部 wrap
+				returnFun()=>data-num="1" 或  不写; => 返回上一页。data-num="跳转路径"; => 返回上一页。
+			-->
+			<div class="headWrap_lb">
+				<p class="returnBut_lb" data-num="1" onclick="returnFun()">
+					<img class="returnIcon_lb" src="__STATIC__/images/public_lb/returnImg_lb.png"/>
+				</p>
+				<!--Tab, data-tab="1"=>从零开始-->
+				<div class="headTab_lb" data-tab="2">
+					<!--页面跳转=>pageJump("路径")-->
+					<p class="headTabTerm_lb" onclick="pageJump('/shop/auction/index')">竞拍</p>
+					<p class="headTabTerm_lb" onclick="pageJump('/shop/groupbuy/grouplist')">拼团</p>
+					<p class="headTabTerm_lb" onclick="pageJump('/shop/activity/falsh_sale_list')">秒杀</p>
+				</div>
+				<!--分享-->
+				<p class="share_box"><img class="share_img" src="__STATIC__/images/seckill_zp/fenxiang_zp@2x@2x.png"/></p>
+			</div>
+			<div class="seckill-wrap-zp">
+				
+				<!--顶部-->
+				<!--<div class="topbar">
+					<span class="return-btn"><a href="javascript:history.back(-1);"><img src="__STATIC__/images/seckill_zp/zuojiantou@2x-zp.png" /></a></span>
+					<div class="topNav">
+						<a href="/shop/auction/index">竞拍</a>
+						<a href="/shop/groupbuy/grouplist">拼团</a>
+						<a href="/shop/seckill/index_zp">秒杀</a>
+					</div>
+					<span class="share-btn"><img src="__STATIC__/images/seckill_zp/fenxiang_zp@2x@2x.png" /></span>
+				</div>-->
+				<!--抢购时间-->
+				<div class="rush-time-zp">
+					<ul>
+						<foreach name="time_space" item="vo" key="k">
+                            <li onclick="reload_flash_sale_list(this);" start-data="{$vo['start_time']|date='Y/m/d H:i:s',###}" end-data="{$vo['end_time']|date='Y/m/d H:i:s',###}" data-start-time="{$vo['start_time']}" data-end-time="{$vo['end_time']}" <if condition="(time() egt $vo['start_time']) AND (time() lt $vo['end_time'])">class="active"</if> >
+                                <span>{$vo['font']}</span>
+                                <span>
+                                <if condition="time() lt $vo['start_time']">即将开场
+                                    <elseif condition="(time() egt $vo['start_time']) AND (time() lt $vo['end_time'])"/>秒杀中
                                 <else />已经结束
-                            </if>
-                        </p>
-                    </li>
-                </foreach>
-            </ul>
-            <div class="nowkill">
-                <span class="fl">正在秒杀，先下单先得哦~</span>
-                <span class="fr" id="surplus"></span>
-                <!--秒杀-end-->
-            </div>
-        </div>
-    </div>
-    <!--顶部时间栏-es-->
-
-    <!--秒杀商品-s-->
-    <div class="floor shopkill">
-        <ul id="flash_sale_list">
-            <if condition="empty($time_space)">
-                <li style="text-align: center;">暂无抢购商品。。。。<li>
-            </if>
-        </ul>
-        <!--加载更多S-->
-            <div class="loadbefore">
-	            <img class="ajaxloading" src="__STATIC__/images/loading.gif" alt="loading...">
-	        </div>
-        <!--加载更多E-->
-    </div>
-    <!--秒杀商品-e-->
-<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
-<script>
-    $(function(){
-        ajax_sourch_submit()
-    })
-    function GetRTime2(){
-        var start_time_data = $('.content30').find('.red').attr('data-start-time');
-        var timestamp   = Date.parse(new Date()).toString().substring(0,10);
-        if(start_time_data > timestamp){
-            var start_time = GetRTime($('.content30').find('.red').attr('start-data'));
-            var start_time_index =  start_time.indexOf("天");
-            $('.nowkill').find(".fl").text("秒杀活动即将开场~");
-            $('.nowkill').find(".fr").html('距离开始'+start_time.substr(start_time_index+1));
-        }else{
-            var end_time = GetRTime($('.content30').find('.red').attr('end-data'));
-            var end_time_index =  end_time.indexOf("天");
-            $('.nowkill').find(".fl").text("正在秒杀，先下单先得哦~");
-            $('.nowkill').find(".fr").html('距离结束'+end_time.substr(end_time_index+1));
-        }
-
-    }
-    setInterval(GetRTime2,1000);
-
-    var page = 0;//页数
-    var start_time = $('.content30').find('.red').attr('data-start-time');
-    var end_time = $('.content30').find('.red').attr('data-end-time');
-    function reload_flash_sale_list(obj)
-    {
-        page = 0;
-        ajax_return_srtatus = 1;
-        $(obj).parent().children().removeClass('red');
-        $(obj).addClass('red');
-        start_time = $(obj).attr('data-start-time');
-        end_time = $(obj).attr('data-end-time');
-        setInterval(GetRTime2,1000);
-        $("#flash_sale_list").empty();
-        ajax_sourch_submit();
-    }
-
-    /**
-     * ajax加载更多商品
-     */
-    var ajax_return_srtatus = 1;
-    function ajax_sourch_submit()
-    {
-        if (ajax_return_srtatus ==0){
-            return false;
-        }
-        ajax_return_srtatus = 0;
-        ++page;
-        $.ajax({
-            type : "GET",
-            url: "/index.php?m=Shop&c=Activity&a=ajax_flash_sale&p=" + page + "&start_time=" + start_time + "&end_time=" + end_time,
-            success: function(data){
-		        if ($.trim(data)) {
-                    ajax_return_srtatus = 1;
-                    $(".shopkill ul").append(data);
-		        } else {
-                    return false;
-		        }
-		    }
-    	});
-    }
-    //滚动加载更多
-    $(window).scroll(
-        function() {
-            var scrollTop = $(this).scrollTop();
-            var scrollHeight = $(document).height();
-            var windowHeight = $(this).height();
-            if (scrollTop + windowHeight == scrollHeight) {
-                ajax_sourch_submit();//调用加载更多
+                                    </if>
+                                </span>
+                            </li>
+                        </foreach>
+					</ul>
+				</div>
+				
+				<!--广告图-->
+				<div class="seckill-ad-zp">
+					<a href="#"><img src="__STATIC__/images/seckill_zp/ggt_zp@2x.png" /></a>
+				</div>
+				
+				<!--秒杀商品列表1-->
+				<div class="seckill-list-zp">
+                    <ul id="flash_sale_list">
+                        <if condition="empty($time_space)">
+                            <li style="text-align: center;">暂无抢购商品。。。。<li>
+                        </if>
+                    </ul>
+                <!--加载更多S-->
+                <div class="loadbefore">
+                    <img class="ajaxloading" src="__STATIC__/images/loading.gif" alt="loading...">
+                </div>
+                <!--加载更多E-->
+					<!-- <ul>			
+						 <li>
+							<div class="pro-img">
+								<a href="###"><img src="__STATIC__/images/seckill_zp/qg02_zp@2x.png" /></a>
+							</div>
+							<div class="text">
+								<h3><a href="###">毛衣外套女羊毛开衫打底衫女上衣潮</a></h3>
+								<p class="dec">歌减针织衫女2018秋冬季新款套头大码女装</p>
+								<p class="discount">4.6折</p>
+								<p class="discount-price">¥158</p>
+								<p class="line-5">
+									<span class="original-price">289</span>
+									<span class="stock">仅剩819件</span>
+								</p>
+								<div class="rush-buy">
+									<a href="###" class="buy-btn">马上抢</a>
+									<p class="progress-bar"><span class="progress"></span></p>
+								</div>
+							</div>
+						</li>						
+					</ul> -->
+				<!-- </div> -->
+				
+				<!--秒杀商品列表2-->
+				<!-- <div class="seckill-list-zp">
+					<ul>
+						<li>
+							<div class="pro-img">
+								<a href="###"><img src="__STATIC__/images/seckill_zp/qg04_zp@2x.png" /></a>
+							</div>
+							<div class="text">
+								<h3><a href="###">恒源祥针织衫女2019春季新款潮流</a></h3>
+								<p class="dec">女装显瘦学生针织开衫外套慵懒风宽松洋气</p>
+								<p class="discount">4.6折</p>
+								<p class="discount-price">¥145元</p>
+								<p class="line-5">
+									<span class="original-price">289</span>
+									<span class="stock">仅剩819件</span>
+								</p>
+								<div class="rush-buy">
+									<a href="###" class="buy-btn">马上抢</a>
+									<p class="progress-bar"><span class="progress"></span></p>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="pro-img">
+								<a href="###"><img src="__STATIC__/images/seckill_zp/qg05_zp@2x.png" /></a>
+							</div>
+							<div class="text">
+								<h3><a href="###">OVBE 风衣外套女2019年春秋品</a></h3>
+								<p class="dec">休闲时尚连帽短款收腰棉风衣女外套春装女</p>
+								<p class="discount">4.6折</p>
+								<p class="discount-price">¥158</p>
+								<p class="line-5">
+									<span class="original-price">289</span>
+									<span class="stock">仅剩819件</span>
+								</p>
+								<div class="rush-buy">
+									<a href="###" class="buy-btn">马上抢</a>
+									<p class="progress-bar"><span class="progress"></span></p>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div> -->
+				
+			</div>
+		</div>
+		<script src="__STATIC__/js/public/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+    	<!--<script src="__STATIC__/js/public/rem.js" type="text/javascript" charset="utf-8"></script>-->
+		<script src="__STATIC__/js/public/public_lb.js"></script>
+		<!--头部 Tab切换样式(跳转)-->
+        <script src="__STATIC__/js/listdata/public.js"></script>
+        <script>
+            $(function(){
+                ajax_sourch_submit()
+            })
+            function GetRTime2(){
+                var start_time_data = $('.content30').find('.active').attr('data-start-time');
+                var timestamp   = Date.parse(new Date()).toString().substring(0,10);
+                if(start_time_data > timestamp){
+                    var start_time = GetRTime($('.content30').find('.active').attr('start-data'));
+                    var start_time_index =  start_time.indexOf("天");
+                    $('.nowkill').find(".fl").text("秒杀活动即将开场~");
+                    $('.nowkill').find(".fr").html('距离开始'+start_time.substr(start_time_index+1));
+                }else{
+                    var end_time = GetRTime($('.content30').find('.active').attr('end-data'));
+                    var end_time_index =  end_time.indexOf("天");
+                    $('.nowkill').find(".fl").text("正在秒杀，先下单先得哦~");
+                    $('.nowkill').find(".fr").html('距离结束'+end_time.substr(end_time_index+1));
+                }
             }
-        }
-    );
-</script>
-</body>
+            setInterval(GetRTime2,1000);
+            
+            var page = 0;//页数
+            var start_time = $('.content30').find('.active').attr('data-start-time');
+            var end_time = $('.content30').find('.active').attr('data-end-time');
+            function reload_flash_sale_list(obj)
+            {
+                page = 0;
+                ajax_return_srtatus = 1;
+                $(obj).parent().children().removeClass('active');
+                $(obj).addClass('active');
+                start_time = $(obj).attr('data-start-time');
+                end_time = $(obj).attr('data-end-time');
+                setInterval(GetRTime2,1000);
+                $("#flash_sale_list").empty();
+                ajax_sourch_submit();
+            }
+            
+             /**
+             * ajax加载更多商品
+             */
+            var ajax_return_srtatus = 1;
+            function ajax_sourch_submit()
+            {
+                if (ajax_return_srtatus ==0){
+                     return false;
+                }
+                ajax_return_srtatus = 0;
+                ++page;
+                $.ajax({
+                    type : "GET",
+                    url: "/index.php?m=Shop&c=Activity&a=ajax_flash_sale&p=" + page + "&start_time=" + start_time + "&end_time=" + end_time,
+                    success: function(data){
+                        if ($.trim(data)) {
+                            ajax_return_srtatus = 1;
+                            $(".seckill-list-zp ul").append(data);
+                        } else {
+                            return false;
+                        }
+                    }
+                });
+            }
+            //滚动加载更多
+            $(window).scroll(
+                function() {
+                    var scrollTop = $(this).scrollTop();
+                    var scrollHeight = $(document).height();
+                    var windowHeight = $(this).height();
+                    if (scrollTop + windowHeight == scrollHeight) {
+                        ajax_sourch_submit();//调用加载更多
+                    }
+                }
+            );
+        </script>
+	</body>
 </html>
