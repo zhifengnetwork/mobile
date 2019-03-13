@@ -39,11 +39,21 @@ class LoginApi extends MobileBase{
         // include_once  "plugins/login/{$this->oauth}/{$this->oauth}.class.php";
         // $this->class_obj->login();
 
-        echo $this->oauth;
-
         $d = $this->GetOpenid();
-
-        dump($d);
+        
+        $data = $logic->thirdLogin($d);
+        //直接去登录，空 就注册
+        if($data['status'] == 1){
+            session('user',$data['result']);
+            setcookie('user_id',$data['result']['user_id'],null,'/');
+            setcookie('is_distribut',$data['result']['is_distribut'],null,'/');
+            setcookie('uname',$data['result']['nickname'],null,'/');
+            // 登录后将购物车的商品的 user_id 改为当前登录的id
+            M('cart')->where("session_id" ,$this->session_id)->save(array('user_id'=>$data['result']['user_id']));
+            $cartLogic = new CartLogic();
+            $cartLogic->setUserId($data['result']['user_id']);
+            $cartLogic->doUserLoginHandle();  //用户登录后 需要对购物车 一些操作
+        }
 
 
     }
