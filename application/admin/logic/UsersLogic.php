@@ -105,15 +105,16 @@ class UsersLogic extends Model
     public function relation($cat_id = 0, $selected = 0, $re_type = true, $level = 0)
     {
         global $goods_category, $goods_category2;            
-        $sql = "SELECT user_id,nickname,mobile,is_distribut,is_agent,first_leader,agent_user FROM  __PREFIX__users ORDER BY first_leader , agent_user ASC";
+        $sql = "SELECT user_id,nickname,mobile,is_distribut,is_agent,first_leader,agent_user FROM  __PREFIX__users where is_agent=1 and first_leader=0 and user_id>0 and agent_user<=6 and agent_user>1 ORDER BY first_leader , agent_user ASC";
         $goods_category = DB::query($sql);
         $goods_category = convert_arr_key($goods_category, 'user_id');
         
         foreach ($goods_category AS $key => $value)
         {
-            if(($value['is_distribut'] == 1 || $value['is_agent'] == 1) && $value['first_leader'] == 0){
-                $this->get_cat_tree($value['user_id'], 0);                               
-            }
+            // if(($value['is_distribut'] == 1 || $value['is_agent'] == 1) && $value['first_leader'] == 0){
+                                           
+            // }
+            $this->get_cat_tree($value['user_id'], 0);    
         }
         return $goods_category2;
     }

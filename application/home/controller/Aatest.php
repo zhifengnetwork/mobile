@@ -46,55 +46,30 @@ class Aatest {
 
         // $fiels = "`uid` as `user_id`,`openid`,`nickname`,`realname`,`mobile`,`weixin`,`isagent`,`avatar` as `head_pic`,`province`,`city`,`alipay`";
 
-        $fiels = '`uid` as `user_id`,`openid`,`falg`';
-        // desc 
-        $sql = "select $fiels from `hs_sz_yi_member` where falg = 0 and uid > 0 order by uid asc limit 100";
+        $fiels = '`user_id`,`agentid`';
+
+        $sql = "select $fiels from `hs_mc_members` where uid > 0 order by uid asc limit 700";
 
         $res = Db::connect($dbconf1)->query($sql);
-        // dump($res);die;
+        dump($res);exit;
         if($res){
 
             foreach($res as $v){
-                
-                $sql1 = "select `uid` from hs_sz_yi_member where openid='$v[openid]'";
-                $insql = "select mc.openid,sum(mc.teams)+sum(mc.total) total from hs_sz_yi_bonusorder mc where mc.openid='$v[openid]'";
-                
-            
-                $res2 = Db::connect($dbconf1)->query($insql);
-                $res1 = Db::connect($dbconf1)->query($sql1);
-
-                $uid = $res1[0]['uid'];
-
-                if($uid == 0){
-                    $sql3 = "UPDATE `hs_sz_yi_member` SET falg = 1 WHERE openid = '$v[openid]'";
-                    Db::connect($dbconf1)->execute($sql3);
-                    // echo ',uid=0:'.$uid."。";
-                    continue;
-                }
-
-                if($res2[0]['openid'] == null){
-                    $sql3 = "UPDATE `hs_sz_yi_member` SET falg = 1 WHERE openid = '$v[openid]'";
-                    Db::connect($dbconf1)->execute($sql3);
-                    // echo ',openid=0:'.$uid."。";
-                    continue;
-                }
-
-                $total = $res2[0]['total'];
+                $v['nickname'] = addslashes($v['nickname']);
+                $insql = "insert into `tp_users_copy` (`user_id`,`nickname`,`realname`,`mobile`,`head_pic`) values ('$v[user_id]','$v[nickname]','$v[realname]','$v[mobile]','$v[avatar]')";
                
-               
-                $insql1 = "insert into `tp_agent_performance` (`user_id`,`agent_per`) values ('$uid','$total')";
-               
-                $r = Db::connect($dbconf2)->execute($insql1);
-                if($r == 1){
-                    $sql3 = "UPDATE `hs_sz_yi_member` SET falg = 1 WHERE openid = '$v[openid]'";
-                    Db::connect($dbconf1)->execute($sql3);
-                    // echo ',ok:'.$uid."。";
-                    continue;
-                }else{
-                    // echo ',fail:'.$uid.",";
-                }
+                if($insql) Db::connect($dbconf2)->execute($insql);
+                $insql = '';
             }
+            // dump($insql);exit;
+            echo $res[count($res) - 1]['user_id'];
         }
+
+
+        
+
+
+        exit;
     }
 
 
