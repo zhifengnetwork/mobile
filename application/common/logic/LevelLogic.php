@@ -26,6 +26,10 @@ class LevelLogic extends Model
 	public function user_in($leaderId)
 	{
 		$top_user = $this->user_info_agent($leaderId);
+		//判断是否购买指定产品
+		if($top_user['is_agent'] != 1){
+			return false;
+		}
 		if($top_user == false){
 			return false;
 		}
@@ -41,12 +45,12 @@ class LevelLogic extends Model
 		{	
 			//没有购买代理指定商品不能成为代理
 			//查询用户购买的所有商品ID
-			$goods = M('order')->alias('order')->join('order_goods', 'order.order_id = order_goods.order_id')
-						->where('order.user_id', $leaderId)->field('order_goods.goods_id')->select();
-			$goodsId = array_column($goods, 'goods_id');
-			//查询是否购买有代理指定商品
-			$agentGood = M('goods')->where(array('goods_id' => array('in', $goodsId)))->where('is_agent', 1)->find();
-			if(!$agentGood) return false;
+			// $goods = M('order')->alias('order')->join('order_goods', 'order.order_id = order_goods.order_id')
+			// 			->where('order.user_id', $leaderId)->field('order_goods.goods_id')->select();
+			// $goodsId = array_column($goods, 'goods_id');
+			// //查询是否购买有代理指定商品
+			// $agentGood = M('goods')->where(array('goods_id' => array('in', $goodsId)))->where('is_agent', 1)->find();
+			// if(!$agentGood) return false;
 
 			//有购买代理商品则成为代理
 			$flag = $this->add_agent($top_user);
