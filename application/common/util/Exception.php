@@ -50,4 +50,12 @@ class Exception extends \Exception
     {
         return json_encode($this->getData());
     }
+
+    /**
+     * @return false|string
+     */
+    public function getFullJson()
+    {
+        return json_encode($this->getFullData());
+    }
 }
