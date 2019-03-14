@@ -1,3 +1,3 @@
-sh²ÎÊıÏê½â
-cd /web/zfmall/mobile/		//	Õ¾µã¸ùÄ¿Â¼
-/usr/local/php7/bin/php /web/zfmall/mobile/index.php /cron/team/run	//phpÖ´ĞĞÎÄ¼ş[Õı³£Çé¿öÏÂÎª/use/local/php/bin/php] /webpath/index.php /Ä£¿é/¿ØÖÆÆ÷/·½·¨
+shå‚æ•°è¯¦è§£
+cd /web/zfmall/mobile/		//	è¿›å…¥ç«™ç‚¹æ ¹ç›®å½•
+/usr/local/php7/bin/php /web/zfmall/mobile/index.php /cron/team/run	//phpæ‰§è¡Œæ–‡ä»¶[phpæ‰§è¡Œæ–‡ä»¶è·¯å¾„ /usr/local/php/bin/php] /webpath/index.php /æ¨¡å—åç§°/æ§åˆ¶å™¨åç§°/æ–¹æ³•åç§°
