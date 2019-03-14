@@ -7,6 +7,8 @@ use think\Db;
 use think\Loader;
 use app\admin\logic\UsersLogic;
 
+use think\Validate;
+
 class Distribut extends Base {
 
     /**
