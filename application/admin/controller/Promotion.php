@@ -748,8 +748,8 @@ class Promotion extends Base
     {
         if (IS_POST) {
             $data = I('post.');
-            $data['preview_time'] = strtotime($data['preview_time']);
             $data['start_time'] = strtotime($data['start_time']);
+            $data['end_time'] = strtotime($data['end_time']);
             $AuctionValidate = Loader::validate('Auction');
             if (!$AuctionValidate->batch()->check($data)) {
                 $return = ['status' => 0, 'msg' => '操作失败', 'result' => $AuctionValidate->getError()];
@@ -798,8 +798,8 @@ class Promotion extends Base
             $auction_now_time = $now_time - 1;
         }
         $auction_now_time = strtotime(date('Y-m-d') . " " . $auction_now_time . ":00:00");
-        $info['start_time'] = date("Y-m-d H:i:s", $auction_now_time);
-        $info['preview_time'] = date("Y-m-d H:i:s", $auction_now_time);
+        $info['start_time'] = date("Y-m-d H:i", $auction_now_time);
+        $info['end_time'] = date("Y-m-d H:i", $auction_now_time);
         $info['is_edit'] = 1;
 
         if ($id > 0) {

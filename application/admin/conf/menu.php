@@ -174,7 +174,7 @@ return array(
 					// array('name' => '优惠促销', 'act'=>'prom_goods_list', 'op'=>'Promotion'),
 					// array('name' => '订单促销', 'act'=>'prom_order_list', 'op'=>'Promotion'),
 					// array('name' => '预售管理','act'=>'index', 'op'=>'PreSell'),
-					// array('name' => '拼团管理','act'=>'index', 'op'=>'Team'),
+					array('name' => '拼团管理','act'=>'index', 'op'=>'Team'),
 					// array('name' => '搭配购管理','act'=>'index', 'op'=>'Combination'),
 			)),
 			// array('name' => '优惠积分','child' => array(
@@ -188,11 +188,12 @@ return array(
 			array('name' => '模式管理', 'child' => array(
 				// array('name' => '分销商品', 'act' => 'goods_list', 'op' => 'Distribut'),
 				// array('name' => '分销商列表', 'act' => 'distributor_list', 'op' => 'Distribut'),
-				array('name' => '等级关系', 'act' => 'tree', 'op' => 'Distribut'),
+				
 				array('name' => '分销商设置', 'act' => 'grade_list', 'op' => 'Distribut'),
-				array('name' => '代理商设置', 'act' => 'agent_grade_list', 'op' => 'Distribut'),
+                array('name' => '代理商设置', 'act' => 'agent_grade_list', 'op' => 'Distribut'),
+                // array('name' => '等级关系', 'act' => 'tree', 'op' => 'Distribut'),
 				// array('name' => '分销设置', 'act' => 'distribut', 'op' => 'System'),
-				// array('name' => '日志', 'act' => 'rebate_log', 'op' => 'Distribut'),
+				array('name' => '日志', 'act' => 'rebate_log', 'op' => 'Distribut'),
 			)),
 	     
     	    array('name' => '微信接入','child' => array(

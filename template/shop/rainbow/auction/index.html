@@ -36,7 +36,7 @@
 				<!--1-->
 				<div class="section">
 					<!--<img src="__STATIC__/auction/pic.png" class="img"/>-->
-					<div class='time'>{$li.start_time}开枪</div>
+					<div class='time'>{$li.start_time}开抢</div>
 					<div class="fu">
 						<if condition="$li[original_img] eq ''">
 							<img src="__STATIC__/auction/lovely.jpg" class="img"/>
@@ -50,7 +50,7 @@
 							<p class="name">{$li.goods_name}</p>
 							<p style="display: inline-block;" class="price">￥{$li.start_price}</p><span>起拍</span>
 						</div>
-						<a class="joinauction" href="detail.html">
+						<a class="joinauction" href="detail.html?id={$li.id}">
 							参与竞拍
 						</a>
 					</div>
@@ -61,7 +61,7 @@
 			<!--2-->
 			<!--<div class="section">-->
 
-				<!--<div class='time'>1月24号  16:00:00开枪</div>-->
+				<!--<div class='time'>1月24号  16:00:00开抢</div>-->
 				<!--<div class="fu">-->
 				<!--<img src="__STATIC__/auction/pic.png" class="img"/>-->
 				<!--</div>-->

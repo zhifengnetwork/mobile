@@ -24,7 +24,7 @@
 					<!--页面跳转=>pageJump("路径")-->
 					<p class="headTabTerm_lb" onclick="pageJump('/shop/auction/index')">竞拍</p>
 					<p class="headTabTerm_lb" onclick="pageJump('/shop/groupbuy/grouplist')">拼团</p>
-					<p class="headTabTerm_lb" onclick="pageJump('/shop/activity/falsh_sale_list')">秒杀</p>
+					<p class="headTabTerm_lb" onclick="pageJump('/shop/activity/flash_sale_list')">秒杀</p>
 				</div>
 				<!--分享-->
 				<p class="share_box"><img class="share_img" src="__STATIC__/images/seckill_zp/fenxiang_zp@2x@2x.png"/></p>
@@ -58,121 +58,51 @@
 					</ul>
 				</div>
 				
-				<!--广告图-->
-				<div class="seckill-ad-zp">
-					<a href="#"><img src="__STATIC__/images/seckill_zp/ggt_zp@2x.png" /></a>
-				</div>
-				
-				<!--秒杀商品列表1-->
+				<!--秒杀商品列表-->
 				<div class="seckill-list-zp">
                     <ul id="flash_sale_list">
                         <if condition="empty($time_space)">
                             <li style="text-align: center;">暂无抢购商品。。。。<li>
                         </if>
                     </ul>
-                <!--加载更多S-->
-                <div class="loadbefore">
-                    <img class="ajaxloading" src="__STATIC__/images/loading.gif" alt="loading...">
-                </div>
-                <!--加载更多E-->
-					<!-- <ul>			
-						 <li>
-							<div class="pro-img">
-								<a href="###"><img src="__STATIC__/images/seckill_zp/qg02_zp@2x.png" /></a>
-							</div>
-							<div class="text">
-								<h3><a href="###">毛衣外套女羊毛开衫打底衫女上衣潮</a></h3>
-								<p class="dec">歌减针织衫女2018秋冬季新款套头大码女装</p>
-								<p class="discount">4.6折</p>
-								<p class="discount-price">¥158</p>
-								<p class="line-5">
-									<span class="original-price">289</span>
-									<span class="stock">仅剩819件</span>
-								</p>
-								<div class="rush-buy">
-									<a href="###" class="buy-btn">马上抢</a>
-									<p class="progress-bar"><span class="progress"></span></p>
-								</div>
-							</div>
-						</li>						
-					</ul> -->
-				<!-- </div> -->
-				
-				<!--秒杀商品列表2-->
-				<!-- <div class="seckill-list-zp">
-					<ul>
-						<li>
-							<div class="pro-img">
-								<a href="###"><img src="__STATIC__/images/seckill_zp/qg04_zp@2x.png" /></a>
-							</div>
-							<div class="text">
-								<h3><a href="###">恒源祥针织衫女2019春季新款潮流</a></h3>
-								<p class="dec">女装显瘦学生针织开衫外套慵懒风宽松洋气</p>
-								<p class="discount">4.6折</p>
-								<p class="discount-price">¥145元</p>
-								<p class="line-5">
-									<span class="original-price">289</span>
-									<span class="stock">仅剩819件</span>
-								</p>
-								<div class="rush-buy">
-									<a href="###" class="buy-btn">马上抢</a>
-									<p class="progress-bar"><span class="progress"></span></p>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="pro-img">
-								<a href="###"><img src="__STATIC__/images/seckill_zp/qg05_zp@2x.png" /></a>
-							</div>
-							<div class="text">
-								<h3><a href="###">OVBE 风衣外套女2019年春秋品</a></h3>
-								<p class="dec">休闲时尚连帽短款收腰棉风衣女外套春装女</p>
-								<p class="discount">4.6折</p>
-								<p class="discount-price">¥158</p>
-								<p class="line-5">
-									<span class="original-price">289</span>
-									<span class="stock">仅剩819件</span>
-								</p>
-								<div class="rush-buy">
-									<a href="###" class="buy-btn">马上抢</a>
-									<p class="progress-bar"><span class="progress"></span></p>
-								</div>
-							</div>
-						</li>
-					</ul>
-				</div> -->
-				
+                	<!--加载更多S-->
+                	<!--<div class="loadbefore">-->
+                    	<!--<img class="ajaxloading" src="__STATIC__/images/loading.gif" alt="loading...">-->
+                	<!--</div>-->
+				</div>
 			</div>
 		</div>
+
 		<script src="__STATIC__/js/public/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
     	<!--<script src="__STATIC__/js/public/rem.js" type="text/javascript" charset="utf-8"></script>-->
 		<script src="__STATIC__/js/public/public_lb.js"></script>
 		<!--头部 Tab切换样式(跳转)-->
         <script src="__STATIC__/js/listdata/public.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
         <script>
             $(function(){
                 ajax_sourch_submit()
             })
             function GetRTime2(){
-                var start_time_data = $('.content30').find('.active').attr('data-start-time');
+                var start_time_data = $('.rush-time-zp').find('.active').attr('data-start-time');
                 var timestamp   = Date.parse(new Date()).toString().substring(0,10);
                 if(start_time_data > timestamp){
-                    var start_time = GetRTime($('.content30').find('.active').attr('start-data'));
+					var start_time = $('.rush-time-zp').find('.active').attr('start-data');
                     var start_time_index =  start_time.indexOf("天");
-                    $('.nowkill').find(".fl").text("秒杀活动即将开场~");
-                    $('.nowkill').find(".fr").html('距离开始'+start_time.substr(start_time_index+1));
+                    // $('.nowkill').find(".fl").text("秒杀活动即将开场~");
+                    // $('.nowkill').find(".fr").html('距离开始'+start_time.substr(start_time_index+1));
                 }else{
-                    var end_time = GetRTime($('.content30').find('.active').attr('end-data'));
+                    var end_time = $('.rush-time-zp').find('.active').attr('end-data');
                     var end_time_index =  end_time.indexOf("天");
-                    $('.nowkill').find(".fl").text("正在秒杀，先下单先得哦~");
-                    $('.nowkill').find(".fr").html('距离结束'+end_time.substr(end_time_index+1));
+                    // $('.nowkill').find(".fl").text("正在秒杀，先下单先得哦~");
+                    // $('.nowkill').find(".fr").html('距离结束'+end_time.substr(end_time_index+1));
                 }
             }
             setInterval(GetRTime2,1000);
             
             var page = 0;//页数
-            var start_time = $('.content30').find('.active').attr('data-start-time');
-            var end_time = $('.content30').find('.active').attr('data-end-time');
+            var start_time = $('.rush-time-zp').find('.active').attr('data-start-time');
+            var end_time = $('.rush-time-zp').find('.active').attr('data-end-time');
             function reload_flash_sale_list(obj)
             {
                 page = 0;
