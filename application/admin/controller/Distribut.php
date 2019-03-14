@@ -273,7 +273,28 @@ class Distribut extends Base {
         $page = new Page($count, 10);
         $log = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
                                ->field('users.nickname, acount.*')->order('log_id DESC')
-                               ->limit($page->firstRow, $page->listRows)->select();
+                               ->where("acount.states = 101 or acount.states = 102")
+                               ->limit($page->firstRow, $page->listRows)
+                               ->select();
+        // dump($log);die;
+        $this->assign('pager', $page);
+        $this->assign('log',$log);
+        return $this->fetch();
+    }
+    /**
+    *消费日志列表
+    */
+    public function consume_log()
+    {
+        $count = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
+        ->count();
+        $page = new Page($count, 10);
+        $log = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
+            ->field('users.nickname, acount.*')->order('log_id DESC')
+            ->where("acount.states = 0")
+            ->limit($page->firstRow, $page->listRows)
+            ->select();
+        // dump($log);die;
         $this->assign('pager', $page);
         $this->assign('log',$log);
         return $this->fetch();
