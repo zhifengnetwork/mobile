@@ -41,6 +41,15 @@ class Team extends Validate
         'share_img.require'         => '分享图片必须上传',
         'team_goods_item.require'   => '请选择参与拼团的商品',
     ];
+
+    public $scene   = [
+        'add'   => ['act_name', 'time_limit', 'needer', 'goods_id', 'bonus', 'stock_limit', 'buy_limit', 'virtual_num', 'share_title', 'share_desc',
+            'share_img', 'team_goods_item'],
+        'edit'  => ['team_id', 'act_name', 'time_limit', 'needer', 'goods_id', 'bonus', 'stock_limit', 'buy_limit', 'virtual_num', 'share_title', 'share_desc',
+            'share_img', 'team_goods_item'],
+        'del'   => ['team_id'],
+    ];
+
     protected function checkTeamGoodsItem($value, $rule ,$data){
         $regex = '([1-9]\d*(\.\d*[1-9])?)|(0\.\d*[1-9])';
         foreach($value as $item){
