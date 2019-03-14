@@ -104,9 +104,10 @@ class Base extends Controller {
     	}
     }
     
-    public function ajaxReturn($data,$type = 'json'){    
-        header('Content-Type:application/json; charset=utf-8');                    
-         exit(json_encode($data,JSON_UNESCAPED_UNICODE));
+    public function ajaxReturn($data = [],$type = 'json'){
+        header('Content-Type:application/json; charset=utf-8');
+        $data   = !empty($data) ? $data : ['status' => 1, 'msg' => '操作成功'];
+        exit(json_encode($data,JSON_UNESCAPED_UNICODE));
     }
 
     /**
