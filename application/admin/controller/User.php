@@ -766,8 +766,18 @@ class User extends Base
         if ($status == 1) $data['check_time'] = time();
         if ($status != 1) $data['refuse_time'] = time();
         $ids = implode(',', $id_arr);
+        $falg = M('withdrawals')->where(['id'=>$ids])->find();
+        $user_find = M('users')->where(['user_id'=>$falg['user_id']])->find();
+        if($user_find['user_money'] < $falg['money'])
+        {
+            $this->ajaxReturn(array('status' => 0, 'msg' => "当前用户余额不足"), 'JSON');
+        }
+        $user_arr = array(
+            'user_money' => $user_find['user_money'] - $falg['money']
+        );
         $r = Db::name('withdrawals')->whereIn('id', $ids)->update($data);
         if ($r !== false) {
+            Db::name('users')->whereIn('user_id', $falg['user_id'])->update($user_arr);
             $this->ajaxReturn(array('status' => 1, 'msg' => "操作成功"), 'JSON');
         } else {
             $this->ajaxReturn(array('status' => 0, 'msg' => "操作失败"), 'JSON');

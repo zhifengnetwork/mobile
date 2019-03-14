@@ -137,15 +137,17 @@ class Team extends Base
     public function selectLevel()
     {
         $status = input('status');
-        $level = input('level');
-        // dump($level);
-        $tpl = input('tpl', 'add_level');
-        // if(status=='add'){
-            
-        // }else{
 
-        // }        
-        return $this->fetch($tpl);
+        // $tpl = input('tpl',);
+        if($status=='add'){
+            $h_val = input('h_val');
+            $h_val = $h_val+1;
+            // 如果删除成功，h_var=h_var-1;  
+        }else{
+            $h_val = input('h_val');
+        }    
+        $this->assign('h_val',$h_val);    
+        return $this->fetch('add_level');
     }
     public function search_goods2()
     {
