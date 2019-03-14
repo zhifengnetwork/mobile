@@ -7,8 +7,8 @@
 	<div class="fixed-bar">
 		<div class="item-title">
 			<div class="subject">
-				<h3>门店自提点管理</h3>
-				<h5>网站系统门店自提点索引与管理</h5>
+				<h3>门店商品管理</h3>
+				<h5>网站系统门店商品索引与管理</h5>
 			</div>
 		</div>
 	</div>
@@ -19,19 +19,19 @@
 			<span title="收起提示" id="explanationZoom" style="display: block;"></span>
 		</div>
 		<ul>
-            <li>>门店自提点操作, 在此管理.</li>
+            <li>>门店商品操作, 在此管理.</li>
         </ul>
 	</div>
 	<div class="flexigrid">
 		<div class="mDiv">
 			<div class="ftitle">
-				<h3>自提点列表</h3>
+				<h3>门店商品列表</h3>
 				<h5>(共{$page->totalRows}条记录)</h5>
 			</div>
 			<div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
-			<form class="navbar-form form-inline" action="{:U('Admin/Shop/index')}" method="get">
+			<form class="navbar-form form-inline" action="{:U('Admin/Shop/shop_goods_list')}" method="get">
 				<div class="sDiv">
-					<div class="sDiv2" style="margin-right: 10px;border: none;">
+					<!--<div class="sDiv2" style="margin-right: 10px;border: none;">
 						<select name="province_id" id="province_id" onchange="get_city(this)">
 							<option value="">所有省</option>
 							<volist name="province_list" id="province" >
@@ -54,7 +54,7 @@
 								<option value="{$district['id']}" <if condition="$Request.param.district_id eq $district['id']">selected</if>>{$district['name']}</option>
 							</volist>
 						</select>
-					</div>
+					</div>-->
 					<div class="sDiv2">
 						<input size="30" name="shop_name" value="{$Request.param.shop_name}" placeholder="自提点名称" class="qsbox" type="text">
 						<input type="submit" class="btn" value="搜索">
@@ -74,28 +74,13 @@
 							<div style="text-align: center; width: 50px;" class="">ID</div>
 						</th>
 						<th align="center" abbr="ac_id" axis="col4" class="">
-							<div style="text-align: left; width: 100px;" class="">自提点名称</div>
+							<div style="text-align: left; width: 100px;" class="">门店名称</div>
 						</th>
 						<th align="center" abbr="article_show" axis="col5" class="">
-							<div style="text-align: center; width: 100px;" class="">省份</div>
+							<div style="text-align: center; width: 100px;" class="">商品名称</div>
 						</th>
 						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 100px;" class="">城市</div>
-						</th>
-						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 100px;" class="">地区</div>
-						</th>
-						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 190px;" class="">自提点地址</div>
-						</th>
-						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 110px;" class="">联系电话</div>
-						</th>
-						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 100px;" class="">供应商</div>
-						</th>
-						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 230px;" class="">营业时间</div>
+							<div style="text-align: center; width: 100px;" class="">添加时间</div>
 						</th>
 						<th align="center" axis="col1" class="handle">
 							<div style="text-align: center; width: 150px;">操作</div>
@@ -110,9 +95,9 @@
 		</div>
 		<div class="tDiv">
 			<div class="tDiv2">
-				<div class="fbutton"> <a href="{:U('Admin/Shop/info')}">
-					<div class="add" title="添加自提点">
-						<span><i class="fa fa-plus"></i>添加自提点</span>
+				<div class="fbutton"> <a href="{:U('Admin/Shop/shop_goods_info')}">
+					<div class="add" title="门店新绑定商品并分配库存">
+						<span><i class="fa fa-plus"></i>门店新绑定商品并分配库存</span>
 					</div>
 				</a> </div>
 			</div>
@@ -128,41 +113,26 @@
 								<div style="width: 24px;"><i class="ico-check"></i></div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: center; width: 50px;">{$shop.shop_id}</div>
+								<div style="text-align: center; width: 50px;">{$shop.shop_goods_id}</div>
 							</td>
 							<td align="left" class="">
 								<div style="text-align: left; width: 100px;">{$shop.shop_name}</div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: center; width: 100px;">{$shop['province']}</div>
+								<div style="text-align: center; width: 100px;">{$shop['goods_name']}</div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: center; width: 100px;">{$shop['city']}</div>
-							</td>
-							<td align="left" class="">
-								<div style="text-align: center; width: 100px;">{$shop['district']}</div>
-							</td>
-							<td align="left" class="">
-								<div style="text-align: center; width: 190px;">{$shop['shop_address']}</div>
-							</td>
-							<td align="left" class="">
-								<div style="text-align: center; width: 110px;">{$shop['shop_phone_code']}{$shop['shop_phone']}</div>
-							</td>
-							<td align="left" class="">
-								<div style="text-align: center; width: 100px;">{$shop['suppliers']['suppliers_name']|default='--'}</div>
-							</td>
-							<td align="left" class="">
-								<div style="text-align: center; width: 240px;line-height: 15px;">{$shop['work_day']}<br/>{$shop['work_start_time']} - {$shop['work_end_time']}</div>
+								<div style="text-align: center; width: 100px;">{$shop['add_time']}</div>
 							</td>
 							<td align="left" class="handle">
 								<div style="text-align: left; width: 240px; max-width:240px;">
-									<if condition="$shop['shop_status'] eq 1">
-										<span style="padding: 1px 6px;margin: 0 5px 0 0;" class="yes" onClick="changeTableVal('shop','shop_id','{$shop.shop_id}','shop_status',this,'开启','关闭')" ><i class="fa fa-check-circle"></i>开启</span>
+									<!--<if condition="$shop['status'] eq 1">
+										<span style="padding: 1px 6px;margin: 0 5px 0 0;" class="yes" onClick="changeTableVal('shop','shopper_id','{$shop.shopper_id}','status',this,'开启','关闭')" ><i class="fa fa-check-circle"></i>开启</span>
 										<else />
-										<span style="padding: 1px 6px;margin: 0 5px 0 0;" class="no" onClick="changeTableVal('shop','shop_id','{$shop.shop_id}','shop_status',this,'开启','关闭')" ><i class="fa fa-ban"></i>关闭</span>
-									</if>
-									<a class="btn blue" href="{:U('Shop/info',array('shop_id'=>$shop['shop_id']))}"><i class="fa fa-pencil-square-o"></i>编辑</a>
-									<a class="btn red" data-url="{:U('Shop/delete')}" data-id="{$shop.shop_id}" onclick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
+										<span style="padding: 1px 6px;margin: 0 5px 0 0;" class="no" onClick="changeTableVal('shop','shopper_id','{$shop.shopper_id}','status',this,'开启','关闭')" ><i class="fa fa-ban"></i>关闭</span>
+									</if>-->
+									<a class="btn blue" href="{:U('Shop/shop_goods_info',array('shop_goods_id'=>$shop['shop_goods_id']))}"><i class="fa fa-pencil-square-o"></i>编辑</a>
+									<!--<a class="btn red" data-url="{:U('Shop/delete')}" data-id="{$shop.shopper_id}" onclick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>-->
 								</div>
 							</td>
 							<td align="" class="" style="width: 100%;">
@@ -176,7 +146,7 @@
 			<div class="iDiv" style="display: none;"></div>
 		</div>
 		<!--分页位置-->
-		{$page} </div>
+		<!--{$page} --></div>
 </div>
 <script>
 	$(document).ready(function(){

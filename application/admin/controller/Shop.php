@@ -364,8 +364,14 @@ class Shop extends Base
      * 门店 - 门店管理 - 核销员列表 - 门店绑定核销员 - 选择核销员
      */
     public function search_user(){
-        $usersList = Db::name('users')->select();
+        //$usersModel = new Users();
+        $count = Db::name('users')->count();
+        $Page = new AjaxPage($count, 20);
+        //$userList = $usersModel->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $usersList = Db::name('users')->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $show = $Page->show();
         $this->assign('usersList', $usersList);
+        $this->assign('page', $show);// 赋值分页输出
         return $this->fetch();
     }
 
@@ -373,8 +379,27 @@ class Shop extends Base
      * 门店 - 门店管理 - 核销员列表 - 门店绑定核销员 - 选择门店
      */
     public function search_shop(){
-        $shopList = Db::name('shop')->select();
+        $count = Db::name('shop')->count();
+        $Page = new AjaxPage($count, 20);
+        $shopList = Db::name('shop')->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $show = $Page->show();
         $this->assign('shopList', $shopList);
+        $this->assign('page', $show);// 赋值分页输出
+        return $this->fetch();
+    }
+
+    /**
+     * 门店 - 门店商品管理 - 门店绑定商品并分配库存 - 选择商品
+     */
+    public function search_goods(){
+        //$usersModel = new Users();
+        $count = Db::name('goods')->count();
+        $Page = new AjaxPage($count, 20);
+        //$userList = $usersModel->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $goodsList = Db::name('goods')->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $show = $Page->show();
+        $this->assign('goodsList', $goodsList);
+        $this->assign('page', $show);// 赋值分页输出
         return $this->fetch();
     }
 
@@ -382,8 +407,76 @@ class Shop extends Base
      * 门店 - 门店管理 - 门店商品管理
      */
     public function shop_goods_list(){
-        $shopList = Db::name('shop')->select();
+        /*$shopList = Db::name('shop')->select();
         $this->assign('shopList', $shopList);
+        return $this->fetch();*/
+        $list = [];
+        //$lists = [];
+        $res = DB::name('shop_goods')->select();
+        //if(!empty($res)){
+        //$users =    DB::name('users')->getField('user_id,nickname');
+        $shop =    DB::name('shop')->getField('shop_id,shop_name');
+        //}
+        /*if ($users && $res) {
+            foreach ($res as $val) {
+                $val['nickname'] = $users[$val['user_id']];
+                $val['add_time'] = date('Y-m-d H:i:s', $val['add_time']);
+                $list[] = $val;
+            }
+        }*/
+        if ($shop && $res) {
+            foreach ($res as $val) {
+                $val['shop_name'] = $shop[$val['shop_id']];
+                $val['add_time'] = date('Y-m-d H:i:s', $val['add_time']);
+                $list[] = $val;
+            }
+        }
+
+        $this->assign('list', $list);
         return $this->fetch();
+    }
+
+    /**
+     * 商品绑定门店并分配门店库存
+     * creat_name 陈焕强
+     * creat_time 2019年3月14日12:00:20
+     */
+    public function store_binding_goods(){
+        $goods_id = I('get.goods_id/d',0);
+        $count = Db::name('shop')->count();
+        $Page = new AjaxPage($count, 10);
+        $goods = [];
+        if($goods_id){
+            $goods = Db::name('goods')->where(['goods_id'=>$goods_id])->find();
+        }
+        $this->assign('goodsList', $goods);
+        $shopList = Db::name('shop')->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $show = $Page->show();
+        $this->assign('usersList', $shopList);
+        $this->assign('page', $show);// 赋值分页输出
+        return $this->fetch();
+    }
+
+    /**
+     * 商品绑定门店并分配门店库存数据处理
+     */
+    public function shop_goodsHandle()
+    {
+        $data = I('post.');
+        $shop_goods_id = $data['shop_goods_id'];
+        unset($data['goods_name']);
+        unset($data['shop_name']);
+        if(empty($shop_goods_id)){
+            unset($data['shop_goods_id']);
+            $data['add_time'] = time();
+            $r = D('shop_goods')->add($data);
+        }else{
+            $r = D('shop_goods')->where('shop_goods_id', $data['shop_goods_id'])->save($data);
+        }
+        if ($r) {
+            $this->ajaxReturn(['status' => 1, 'msg' => '操作成功', 'url' => U('Admin/Shop/store_binding_goods')]);
+        } else {
+            $this->ajaxReturn(['status' => -1, 'msg' => '操作失败']);
+        }
     }
 }

@@ -19,6 +19,26 @@ class Shop extends MobileBase
             ->field('distinct o.shop_id,s.shop_name')
             ->where(['o.user_id'=>cookie('user_id')])
             ->select();
+        if(!empty($shopList)){
+            foreach ($shopList as $key => $value){
+
+                /*echo "<pre>";
+                print_r($value);
+                echo "</pre>";
+                continue;*/
+                $shopGoodsList = Db::name('shop_goods')->alias('sg')
+                    ->join('tp_goods g','g.goods_id = sg.goods_id','inner')
+                    //->field('distinct o.shop_id,s.shop_name')
+                    ->where(['sg.shop_id'=>$value['shop_id']])
+                    ->select();
+                $shopList[$key]['item'] = $shopGoodsList;
+            }
+        }
+
+        /*echo "<pre>";
+        print_r($shopList);
+        echo "</pre>";
+        exit;*/
         $this->assign('shop_title', '门店管理');
         $this->assign('shopList', $shopList);
         return $this->fetch();
