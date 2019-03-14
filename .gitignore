@@ -7,3 +7,6 @@
 .idea
 /public/upload/goods/thumb/
 /public/upload/*
+cron.txt
+cron_team.sh
+/sql

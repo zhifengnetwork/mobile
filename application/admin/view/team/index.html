@@ -157,7 +157,7 @@
 							<td align="left" class="handle">
 								<div style="text-align: left; width: 240px; max-width:240px;">
 									<a class="btn blue" href="{:U('Team/info',array('team_id'=>$team['team_id']))}"><i class="fa fa-pencil-square-o"></i>编辑</a>
-									<a class="btn red" data-url="{:U('Team/delete')}" data-id="{$team.team_id}" onclick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
+									<a class="btn red" data-url="{:U('Team/teamHandle',array('act'=>'del'))}" data-act="del" data-id="{$team.team_id}" onclick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
 								</div>
 							</td>
 							<td align="" class="" style="width: 100%;">
@@ -171,7 +171,7 @@
 			<div class="iDiv" style="display: none;"></div>
 		</div>
 		<!--分页位置-->
-		</div>
+		</div>delfun
 </div>
 <script>
 	$(document).ready(function(){
@@ -193,13 +193,14 @@
 					$.ajax({
 						type: 'post',
 						url: $(obj).attr('data-url'),
-						data: {team_id: $(obj).attr('data-id')},
+						data: {team_id: $(obj).attr('data-id'), act: $(obj).attr('data-act')},
 						dataType: 'json',
 						success: function (data) {
 							layer.closeAll();
 							if (data.status == 1) {
 								layer.msg(data.msg, {icon: 1});
-								$(obj).parent().parent().parent().remove();
+								window.location.reload();
+								// $(obj).parent().parent().parent().remove();
 							} else {
 								layer.msg(data.msg, {icon: 2, time: 2000});
 							}

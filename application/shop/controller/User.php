@@ -327,6 +327,21 @@ class User extends MobileBase
             $orderLogic = new OrderLogic();
             $orderLogic->setUserId($res['result']['user_id']);//登录后将超时未支付订单给取消掉
             $orderLogic->abolishOrder();
+
+
+            //多重保险
+            $openid = $tempuser['openid'];
+            if($openid){
+                $uuuuid = session('user.user_id');
+                $xianzai_openid = M('users')->where(['user_id'=> $res['result']['user_id'] ])->value('openid');
+                if($openid != $xianzai_openid){
+                    //以 新的 为准
+                    M('users')->where(['user_id'=>$res['result']['user_id'] ])->update(['openid'=>$openid,'old_openid'=>$xianzai_openid]);
+                }
+            }
+
+
+
         }
         exit(json_encode($res));
     }
