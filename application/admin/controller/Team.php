@@ -52,6 +52,7 @@ class Team extends Base
 		return $this->fetch();
 	}
 
+    
 	/*
 	 * 添加拼团
 	 *

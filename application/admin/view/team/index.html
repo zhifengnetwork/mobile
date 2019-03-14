@@ -157,7 +157,7 @@
 							<td align="left" class="handle">
 								<div style="text-align: left; width: 240px; max-width:240px;">
 									<a class="btn blue" href="{:U('Team/info',array('team_id'=>$team['team_id']))}"><i class="fa fa-pencil-square-o"></i>编辑</a>
-									<a class="btn red" data-url="{:U('Team/delete')}" data-id="{$team.team_id}" onclick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
+									<a class="btn red" data-url="{:U('Team/teamHandle',array('act'=>'del'))}" data-id="{$team.team_id}" onclick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
 								</div>
 							</td>
 							<td align="" class="" style="width: 100%;">
