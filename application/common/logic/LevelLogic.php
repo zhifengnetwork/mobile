@@ -15,7 +15,7 @@
 
 namespace app\common\logic;
 
-use think\Model;
+use think\Model; 
 use think\Db;
 
 /**
@@ -26,16 +26,33 @@ class LevelLogic extends Model
 	public function user_in($leaderId)
 	{
 		$top_user = $this->user_info_agent($leaderId);
+		//判断是否购买指定产品
+		if($top_user['is_agent'] != 1){
+			return false;
+		}
 		if($top_user == false){
 			return false;
 		}
+
+		//判断是否为代理
 		$agentGrade = $this->is_agent_user($top_user['user_id']);
-		if($agentGrade==6) return true;
+
+		if($agentGrade['level_id']==6) return true;
 		if($agentGrade)
 		{
 			$flag = $this->upgrade_agent($agentGrade['level_id'],$top_user);
 		}else
-		{
+		{	
+			//没有购买代理指定商品不能成为代理
+			//查询用户购买的所有商品ID
+			// $goods = M('order')->alias('order')->join('order_goods', 'order.order_id = order_goods.order_id')
+			// 			->where('order.user_id', $leaderId)->field('order_goods.goods_id')->select();
+			// $goodsId = array_column($goods, 'goods_id');
+			// //查询是否购买有代理指定商品
+			// $agentGood = M('goods')->where(array('goods_id' => array('in', $goodsId)))->where('is_agent', 1)->find();
+			// if(!$agentGood) return false;
+
+			//有购买代理商品则成为代理
 			$flag = $this->add_agent($top_user);
 		}
 		
@@ -158,7 +175,7 @@ class LevelLogic extends Model
 		}
 
 		if($user['first_leader'] == false){
-			return false;
+			$user['first_leader'] = 0;
 		}
 
 		 $data = array(

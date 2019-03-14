@@ -149,11 +149,12 @@ class BonusLogic extends Model
 	public function theAgent($uid)
 	{
 
-		$agentLevel = M('users')->where('user_id', $uid)->value('first_leader');
+		$leaderId = M('users')->where('user_id', $uid)->value('first_leader');
+		if(!$leaderId) return false;
 		//上级升级
 		$top_level = new LevelLogic();
-		$result = $top_level->user_in($agentLevel);
-		
+		$result = $top_level->user_in($leaderId);
+		return true;
 	}
 
 	public function sel($agentId,$price)
