@@ -39,7 +39,7 @@
 							<div style="width: 24px;"><i class="ico-check"></i></div>
 						</th>
 						<th align="left" abbr="article_title" axis="col3" class="">
-							<div style="text-align: center; width: 50px;" class="">等级id</div>
+							<div style="text-align: center; width: 80px;" class="">等级id</div>
 						</th>
 						<th align="center" abbr="article_title" axis="col3" class="">
 							<div style="text-align: center; width: 100px;" class="">等级(0:没有等级)</div>
@@ -115,6 +115,38 @@
 							</td>
 						</tr>
 					</foreach>
+					<tr>
+							<td class="sign">
+								<div style="width: 24px;"><i class="ico-check"></i></div>
+							</td>
+							<td align="left" class="">
+								<div style="text-align: left; width: 80px;">平级奖设置</div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 100px;"></div>
+							</td>
+							<td align="left" class="">
+								<div style="text-align: left; width: 50px;"></div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 150px;"></div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 150px;"></div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 50px;">{$level_12.rate}%</div>
+							</td>
+							<td align="center" class="handle">
+								<div style="text-align: center; width: 170px; max-width:170px;">
+									<a href="{:U('Distribut/level',array('act'=>'edit','level_id'=>12))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+									<!-- <a class="btn red"  href="javascript:void(0)" data-url="{:U('Distribut/levelHandle')}" data-id="{$vo.level_id}" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a> -->
+								</div>
+							</td>
+							<td align="" class="" style="width: 100%;">
+								<div>&nbsp;</div>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
