@@ -62,7 +62,7 @@ class User extends Base
         $this->assign('third_leader', $third_leader);
         $show = $Page->show();
         $this->assign('userList', $userList);
-        $this->assign('level', M('user_level')->getField('level_id,level_name'));
+        $this->assign('level', M('user_level')->getField('level,level_name'));
         $this->assign('page', $show);// 赋值分页输出
         $this->assign('pager', $Page);
         return $this->fetch();

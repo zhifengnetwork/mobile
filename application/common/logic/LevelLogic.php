@@ -27,10 +27,11 @@ class LevelLogic extends Model
 	{
 		$top_user = $this->user_info_agent($leaderId);
 		//判断是否购买指定产品
-		if($top_user['is_agent'] != 1){
+		if($top_user == false){
 			return false;
 		}
-		if($top_user == false){
+		
+		if($top_user['is_agent'] != 1){
 			return false;
 		}
 
