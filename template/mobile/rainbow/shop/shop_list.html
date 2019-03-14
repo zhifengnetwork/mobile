@@ -1,205 +1,132 @@
-<include file="public/header" title="{$shop_title}"/>
-<include file="public/header_nav" title="{$shop_title}" href="javascript:history.back(-1)"/>
-<style>
-    @font-face {
-        font-family: 'PingFangBold';
-        src: url("../../font/PingFangBold.ttf")
-    }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>分类</title>
+    
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/category/category_zp.css?v=1552293663"/>
+    <script src="__STATIC__/js/public/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/public/rem.js" type="text/javascript" charset="utf-8"></script>
+	<script src="__STATIC__/js/category/category_zp.js" type="text/javascript" charset="utf-8"></script>
+	
+	
+</head>
+<body>
+	<style>
+	
+		/*头部*/
+.header-zp{
+	width: 100%;
+	height: 0.88rem;
+	position: relative;
+	border-bottom: 0.01rem solid #bfbfbf;
+	background: #fff;
+}
+.header-zp .inner{
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.3rem;
+	color: #151515;
+}
+.header-zp .inner .return{
+	width: 0.22rem;
+	height: 0.4rem;
+	padding: 0.22rem 0.2rem;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+.header-zp .inner .return img{
+	width: 100%;
+}
+.header-zp .inner .menu-btn{
+	width:0.44rem;
+	height: 0.34rem;
+	padding: 0.27rem 0.2rem;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+.header-zp .inner .menu-btn img{
+	width: 100%;
+}
+	</style>
+	<div class="wrapper">
+		<div class="category-wrap">
 
-    body {
-        overflow: hidden;
-    }
+		<!--头部-->
+		<div class="header-zp">
+			<div class="inner">
+				<a href="javascript:history.back()"><span class="return"><img src="__STATIC__/images/return-zp.png" /></span></a>
+				<h3>商品关注</h3>
+				<!-- <span class="menu-btn"><img src="__STATIC__/images/follow_zp/nav-icon-zp.png" /></span> -->
+			</div>
+		</div>
 
-    .wrapper {
-        width: 100%;
-        height: 100%;
-        background: #f5f5f5;
-        font-family: "PingFangBold";
-    }
-
-    .category-wrap {
-        background: #fff;
-    }
-
-    /*分类主体*/
-    .category-main {
-        display: flex;
-        overflow: hidden;
-    }
-
-    /*左侧菜单*/
-    .category-main .menu {
-        width: 2rem;
-        margin-right: 0.3rem;
-        background: #f7f7f7;
-        height: 11.5rem;
-        overflow-y: auto;
-    }
-
-    .category-main .menu li {
-        height: 0.8rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.26rem;
-        text-align: center;
-    }
-
-    .category-main .menu li i {
-        width: 0.08rem;
-        height: 0.28rem;
-        display: inline-block;
-        margin-right: 0.18rem;
-        display: none;
-    }
-
-    .category-main .menu li.active {
-        background: #fff;
-    }
-
-    .category-main .menu li.active i {
-        background: #f05c3a;
-        display: inline-block;
-    }
-
-    /*分类右侧*/
-    .category-main .main {
-        flex: 1;
-        width: 4.88rem;
-        padding-right: 0.3rem;
-        overflow-y: scroll;
-        height: 11.5rem;
-    }
-
-    .branchList {
-        display: none;
-    }
-
-    .branchList.active {
-        display: block;
-    }
-
-    /*分类广告图*/
-    .category-main .advert {
-        margin-bottom: 0.3rem;
-    }
-
-    .category-main .advert img {
-        width: 100%;
-        display: block;
-    }
-
-    /*分类公共样式*/
-    .category-main .cate-item {
-        margin-bottom: 0.35rem;
-    }
-
-    .category-main .cate-item h3 {
-        line-height: 0.7rem;
-        padding-left: 0.2rem;
-        font-size: 0.32rem;
-        font-weight: bold;
-        margin-bottom: 0.2rem;
-    }
-
-    /*分类列表，三个模块样式一致*/
-    .cate-item .cate-list {
-        display: flex;
-        flex-wrap: wrap;
-        border-radius: 0.1rem;
-    }
-
-    .cate-list .item {
-        width: 1.4rem;
-        margin-right: 0.14rem;
-        text-align: center;
-        margin-bottom: 0.25rem;
-    }
-
-    .cate-list .item a {
-        color: #101010;
-        font-size: 0.24rem;
-    }
-
-    .cate-list .item img {
-        width: 1.4rem;
-        height: 1.6rem;
-        display: block;
-    }
-
-    .cate-list .item p {
-        line-height: 0.5rem;
-        font-size: 0.24rem;
-    }
-
-    /*精选专辑*/
-    .album-list .line-1 a {
-        font-size: 0.28rem;
-        color: #101010;
-        margin-bottom: 0.3rem;
-    }
-
-    /*面部护理*/
-    .nursing-list .item {
-        display: flex;
-        position: relative;
-        border-bottom: 1px solid #f9f6f6;
-        padding: 0.1rem 0;
-    }
-</style>
-<div class="wrapper">
-    <div class="category-wrap">
-        <!--<div style="height: 1rem">
-            <div style="width:2rem;text-align: center">门店列表</div>
-            <div style="width:2rem;text-align: center">门店商品列表</div>
-        </div>-->
-        <div class="category-main">
-            <!--左侧菜单-->
-            <div class="menu">
-                <!--<div style="height:0.5rem;text-align: center;margin-top: 0.1rem;font-size: 0.35rem">门店列表</div>-->
-                <ul>
-                    <volist name="shopList" id="shop" key="k">
-                        <li id="{$shop.shop_id}" <if condition="$k eq 1">class="active"</if>><i></i>{$shop.shop_name}</li>
-                    </volist>
-                    <!--<li><i></i>XX门店</li>
-                    <li><i></i>XX门店</li>
-                    <li><i></i>XX门店</li>
-                    <li><i></i>XX门店</li>-->
-                </ul>
-            </div>
-            <!--右边分类内容-->
-            <div class="main">
-                <!--<div style="height:0.5rem;text-align: center;margin-top: 0.1rem;font-size: 0.35rem">门店商品列表</div>-->
-                <div class="branchList active">
-                    <div class="advert">
-                    </div>
-                    <div class="cate-item">
-                        <h3>名称</h3>
-                        <ul class="cate-list">
-                            <li class="item">
-                                <a href="">
-                                    <img src=""/>
-                                    <p>哥哥哥</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+			<div class="category-main">
+				<!--左侧菜单-->
+				<div class="menu">
+					<ul>
+                        <volist name="shopList" id="shop" key="k">
+                            <li id="{$shop.shop_id}" <if condition="$k eq 1">class="active"</if>><i></i>{$shop.shop_name}</li>
+                        </volist>
+                        <!--<li class="active"><i></i>XX门店</li>
+						<li><i></i>XX门店</li>
+						<li><i></i>XX门店</li>
+						<li><i></i>XX门店</li>
+						<li><i></i>XX门店</li>-->
+					
+					</ul>
                 </div>
-            </div>
+                
+				<!--右边分类内容-->
+				<div class="main">
+                    
+						<div class="branchList active">
+						<div class="advert">
+							
+                        </div>
+                        
+					
+							<div class="cate-item">
+								<h3>名称</h3>
+								<ul class="cate-list">
+									
+										<li class="item">
+											<a href="">
+												<img src="" />
+												<p>哥哥哥</p>
+											</a>
+										</li>
+								
+								
+								</ul>
+							</div>
+						
+
+					
+					</div>
+				
+
+				
+				</div>
+			</div>
+			
+			
+			<!--底部导航-start-->
+    		<link rel="stylesheet" type="text/css" href="__STATIC__/css/reset.css"/>
+            <link rel="stylesheet" type="text/css" href="__STATIC__/css/footer.css?v=1"/>
+            <script src="__STATIC__/js/public/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+            <script src="__STATIC__/js/public/rem.js" type="text/javascript" charset="utf-8"></script>
+
         </div>
     </div>
-</div>
 <!--详情-e-->
-<script type="text/javascript">
-    $(function () {
-        $(".menu li").click(function () {
-            $(".menu li").eq($(this).index()).addClass("active").siblings().removeClass("active");
-            $(".branchList").hide().eq($(this).index()).show();
-            var shopid = $(this).attr('id');
 
-        })
-    });
-</script>
 <include file="public/footer_nav"/>
 </body>
 </html>

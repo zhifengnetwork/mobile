@@ -196,7 +196,7 @@
 
 .baobei{
 	margin-top: .7rem;
-	padding-bottom: .4rem;
+	padding-bottom: .2rem;
 	font-size: .25rem;
 	border-bottom: 6px solid #EEEEEE;
 	
@@ -213,14 +213,15 @@ display: inline-block;
 	
 }
 .pleft span:nth-child(1),.pright span:nth-child(1){
-	
+vertical-align: bottom;		
 display: inline-block;
 width: 1.5rem;
 margin-left: .1rem;
 
 }
 .pleft span:nth-child(2),.pright span:nth-child(2){
-	
+
+vertical-align: bottom;	
 display: inline-block;
 width: 2rem;
 text-overflow: ellipsis;
