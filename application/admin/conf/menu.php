@@ -105,7 +105,7 @@ return array(
         )),
     )),
 
-    'marketing' => array('name' => '营销', 'child' => array(
+    /*'marketing' => array('name' => '营销', 'child' => array(
         array('name' => '促销活动', 'child' => array(
             array('name' => '抢购管理', 'act' => 'flash_sale', 'op' => 'Promotion'),
             array('name' => '团购管理', 'act' => 'group_buy_list', 'op' => 'Promotion'),
@@ -119,9 +119,9 @@ return array(
         // 		array('name' => '优惠券','act'=>'index', 'op'=>'Coupon'),
         // 		array('name' => '积分兑换','act'=>'index', 'op'=>'IntegralMall'),
         // )),
-    )),
+    )),*/
 
-    'distribution' => array('name' => '分销', 'child' => array(
+    /*'distribution' => array('name' => '分销', 'child' => array(
         array('name' => '模式管理', 'child' => array(
             // array('name' => '分销商品', 'act' => 'goods_list', 'op' => 'Distribut'),
             // array('name' => '分销商列表', 'act' => 'distributor_list', 'op' => 'Distribut'),
@@ -139,7 +139,7 @@ return array(
             array('name' => '模板消息', 'act' => 'template_msg', 'op' => 'Wechat'),
             array('name' => '素材管理', 'act' => 'materials', 'op' => 'Wechat'),
         )),
-    )),
+    )),*/
 
     'member' => array('name' => '会员', 'child' => array(
         array('name' => '会员管理', 'child' => array(
@@ -226,6 +226,7 @@ return array(
         array('name' => '门店管理', 'child' => array(
             array('name' => '门店列表', 'act' => 'index', 'op' => 'shop'),
             array('name' => '核销员列表', 'act' => 'write_off_clerk_list', 'op' => 'shop'),
+            array('name' => '门店商品管理', 'act' => 'shop_goods_list', 'op' => 'shop'),
         )),
         array('name' => '线下取货', 'child' => array(
             // array('name' => '取货列表', 'act'=>'pickup_list', 'op'=>'Pickup'),

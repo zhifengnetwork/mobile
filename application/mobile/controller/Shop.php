@@ -3,6 +3,7 @@
 namespace app\mobile\controller;
 
 use think\Db;
+use think\db\Query;
 
 class Shop extends MobileBase
 {
@@ -11,8 +12,35 @@ class Shop extends MobileBase
      */
     public function shop_list()
     {
-        $topicList = M('topic')->where("topic_state=2")->select();
-        $this->assign('topicList', $topicList);
+        /*$orderList = Db::query("select distinct o.shop_id,s.shop_name from tp_order as o
+                      inner join tp_shop as s on s.shop_id = o.shop_id  where o.user_id = ".cookie('user_id'));*/
+        $shopList = Db::name('order')->alias('o')
+            ->join('tp_shop s','s.shop_id = o.shop_id','inner')
+            ->field('distinct o.shop_id,s.shop_name')
+            ->where(['o.user_id'=>cookie('user_id')])
+            ->select();
+        if(!empty($shopList)){
+            foreach ($shopList as $key => $value){
+
+                /*echo "<pre>";
+                print_r($value);
+                echo "</pre>";
+                continue;*/
+                $shopGoodsList = Db::name('shop_goods')->alias('sg')
+                    ->join('tp_goods g','g.goods_id = sg.goods_id','inner')
+                    //->field('distinct o.shop_id,s.shop_name')
+                    ->where(['sg.shop_id'=>$value['shop_id']])
+                    ->select();
+                $shopList[$key]['item'] = $shopGoodsList;
+            }
+        }
+
+        /*echo "<pre>";
+        print_r($shopList);
+        echo "</pre>";
+        exit;*/
+        $this->assign('shop_title', '门店管理');
+        $this->assign('shopList', $shopList);
         return $this->fetch();
     }
 
