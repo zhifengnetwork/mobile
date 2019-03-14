@@ -26,6 +26,9 @@ class LevelLogic extends Model
 	public function user_in($leaderId)
 	{
 		$top_user = $this->user_info_agent($leaderId);
+		if($top_user == false){
+			return false;
+		}
 		$agentGrade = $this->is_agent_user($top_user['user_id']);
 		if($agentGrade==6) return true;
 		if($agentGrade)
@@ -35,7 +38,8 @@ class LevelLogic extends Model
 		{
 			$flag = $this->add_agent($top_user);
 		}
-		die;
+		
+		return false;
 
 	}
 
@@ -148,6 +152,15 @@ class LevelLogic extends Model
 	 */
 	 public function add_agent($user)
 	 {
+
+		if($user['user_id'] == false){
+			return false;
+		}
+
+		if($user['first_leader'] == false){
+			return false;
+		}
+
 		 $data = array(
 			 'uid'=>$user['user_id'],
 			 'head_id'=>$user['first_leader'],
@@ -155,6 +168,7 @@ class LevelLogic extends Model
 			 'create_time'=>time(),
 			 'update_time'=>time()
 		 );
+
 		 return M('agent_info')->add($data);
 	 }
 }
