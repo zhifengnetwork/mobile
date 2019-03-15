@@ -32,21 +32,20 @@ class Team extends Base
 
 	public function info(){
         $act = I('GET.act', 'add');
-        $groupbuy_id = I('get.id/d');
-        $group_info = array();
-        $group_info['start_time'] = date('Y-m-d H:i:s');
-        $group_info['end_time'] = date('Y-m-d H:i:s', time() + 3600 * 365);
-        $group_info['is_edit'] = 1;
+        $groupbuy_id = I('get.team_id/d');
+
         if ($groupbuy_id) {
-            $GroupBy = new GroupBuy();
-            $group_info = $GroupBy->with('specGoodsPrice,goods')->find($groupbuy_id);
-            $group_info['start_time'] = date('Y-m-d H:i:s', $group_info['start_time']);
-            $group_info['end_time'] = date('Y-m-d H:i:s', $group_info['end_time']);
+            $team_id = I('get.team_id/d');
+            if($team_id){
+                $list = Db::name('team_activity')->where('team_id',$team_id)->select();
+                $this->assign('list',$list[0]);
+                // dump($list);
+            }
             $act = 'edit';
         }
 
-        $this->assign('min_date', date('Y-m-d H:i:s'));
-        $this->assign('info', $group_info);
+        // $this->assign('min_date', date('Y-m-d H:i:s'));
+        // $this->assign('info', $group_info);
         $this->assign('act', $act);
 
 		return $this->fetch();
