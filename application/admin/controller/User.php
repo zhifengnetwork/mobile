@@ -108,9 +108,10 @@ class User extends Base
                  $c = M('users')->where("user_id != $uid and mobile = '$mobile'")->count();
                  $c && exit($this->error('手机号不得和已有用户重复'));
              }
- 
-             $userLevel = D('user_level')->where('level_id=' . $_POST['level'])->value('level');
-             $_POST['agent_user'] = $userLevel;
+             if(!empty($_POST['level'])){
+                 $userLevel = D('user_level')->where('level_id=' . $_POST['level'])->value('level');
+                 $_POST['agent_user'] = $userLevel;
+             }
              // dump($_POST);die;
              $agent = M('agent_info')->where(['uid'=>$uid])->find();
              if ($agent) {
