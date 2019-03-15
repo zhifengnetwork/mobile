@@ -8,8 +8,8 @@ class Team extends Validate
     protected $rule = [
         'team_id'                   =>'checkTeamId',
         'act_name'                  =>'require|max:50',
-        'time_limit'                =>'require|number|gt:0',
-        'needer'                    =>'require|number|gt:1|checkNeed',
+        // 'time_limit'                =>'require|number|gt:0',
+        // 'needer'                    =>'require|number|gt:1|checkNeed',
         'goods_id'                  =>'require',
         'bonus'                     =>'checkBonus',
         'stock_limit'               =>'number|checkStockLimit',
@@ -17,18 +17,18 @@ class Team extends Validate
         'virtual_num'               =>'number',
         'share_title'               =>'max:50',
         'share_desc'                =>'max:200',
-        'share_img'                 =>'require',
-        'team_goods_item'           =>'require|checkTeamGoodsItem'
+        // 'share_img'                 =>'require',
+        // 'team_goods_item'           =>'require|checkTeamGoodsItem'
     ];
     //错误信息
     protected $message  = [
         'act_name.require'          => '拼团标题必填',
         'act_name.max'              => '拼团标题长度不得超过50字符',
         'time_limit.require'        => '成团有效期必填',
-        'time_limit.number'         => '成团有效期格式错误',
-        'time_limit.gt'             => '成团有效期必须大于0',
-        'needer.require'            => '需要成团人数必须',
-        'needer.gt'                 => '需要成团人数必须大于1人',
+        // 'time_limit.number'         => '成团有效期格式错误',
+        // 'time_limit.gt'             => '成团有效期必须大于0',
+        // 'needer.require'            => '需要成团人数必须',
+        // 'needer.gt'                 => '需要成团人数必须大于1人',
         'goods_id.require'          => '请选择参与拼团的商品',
         'bonus.checkBonus'          => '团长佣金格式错误',
         'stock_limit.number'        => '抽奖限量格式错误',
@@ -38,8 +38,8 @@ class Team extends Validate
         'virtual_num.number'        => '虚拟销售基数格式错误',
         'share_title.max'           => '分享标题长度不得超过50字符',
         'share_desc.max'            => '分享描述长度不得超过200字符',
-        'share_img.require'         => '分享图片必须上传',
-        'team_goods_item.require'   => '请选择参与拼团的商品',
+        // 'share_img.require'         => '分享图片必须上传',
+        // 'team_goods_item.require'   => '请选择参与拼团的商品',
     ];
 
     public $scene   = [
