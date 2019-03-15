@@ -17,6 +17,8 @@ class Team extends Validate
         'virtual_num'               =>'number',
         'share_title'               =>'max:50',
         'share_desc'                =>'max:200',
+        'start_time'                => 'require|date',
+        'end_time'                  => 'require|date', 
         // 'share_img'                 =>'require',
         // 'group_time'                => 'require'
         'goods_name'                =>'require'
@@ -26,6 +28,8 @@ class Team extends Validate
         'act_name.require'          => '拼团标题必填',
         'act_name.max'              => '拼团标题长度不得超过50字符',
         'time_limit.require'        => '成团有效期必填',
+        'start_time.require'        => '活动开始时间必填',
+        'end_time.require'        => '活动结束时间必填',
         // 'time_limit.number'         => '成团有效期格式错误',
         // 'time_limit.gt'             => '成团有效期必须大于0',
         // 'needer.require'            => '需要成团人数必须',

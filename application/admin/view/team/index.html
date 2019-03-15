@@ -49,7 +49,7 @@
 						</th>
 
 						<th align="left" abbr="ac_id" axis="col4" class="">
-							<div style="text-align: center; width: 100px;" class="">生效时间</div>
+							<div style="text-align: center; width: 150px;" class="">生效时间</div>
 						</th>
 						<th align="left" abbr="ac_id" axis="col4" class="">
 							<div style="text-align: center; width: 80px;" class="">团购类型</div>
@@ -62,7 +62,15 @@
 						<th align="center" abbr="article_time" axis="col6" class="">
 							<div style="text-align: center; width: 80px;" class="">开团人数</div>
 						</th>
-
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 80px;" class="">限购</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 80px;" class="">最大开团数</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 80px;" class="">剩余开团数</div>
+						</th>
 						<th align="left" axis="col1" class="handle">
 							<div style="text-align: center; width: 240px;">操作</div>
 						</th>
@@ -103,18 +111,32 @@
 							</td>
 
 							<td align="left" class="">
-								<div style="text-align: center; width: 100px;">{$team.start_time}</div>
+								<div style="text-align: center; width: 150px;">{:date('Y-m-d h:i:s', $team.start_time)}</div>
 							</td>	
 							<td align="left" class="">
 								<div style="text-align: center; width: 80px;">{$team.team_type}</div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: center; width: 80px;">{$team.status}</div>
-							</td>									
+								
+								<if condition='$team.status eq 0'>
+									<div style="text-align: center; width: 80px;">未开启</div>
+								<else/>		
+									<div style="text-align: center; width: 80px;">已开启</div>
+								</if>
+				
+							</td>							
 							<td align="left" class="">
 								<div style="text-align: center; width: 80px;">{$team.group_number}</div>
 							</td>								
-
+							<td align="left" class="">
+								<div style="text-align: center; width: 80px;">{$team.buy_limit}</div>
+							</td>	
+							<td align="left" class="">
+								<div style="text-align: center; width: 80px;">{$team.max_open_num}</div>
+							</td>
+							<td align="left" class="">
+								<div style="text-align: center; width: 80px;">{$team.max_open_num}</div>
+							</td>															
 							<td align="left" class="handle">
 								<div style="text-align: left; width: 240px; max-width:240px;">
 									<a class="btn blue" href="{:U('Team/info',array('team_id'=>$team['team_id']))}"><i class="fa fa-pencil-square-o"></i>编辑</a>
@@ -208,6 +230,8 @@
 			});
 		})
 	})
+
+
 </script>
 </body>
 </html>
