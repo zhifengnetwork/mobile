@@ -55,19 +55,15 @@ class Team extends Base
     
 	/*
 	 * 添加拼团
-	 *
 	 */
 	public function teamHandle()
     {
-        $data = I('post.');
-
-        $data['create_time'] = date('Y-m-d H:i:s',time());
-        $data['start_time'] = strtotime($data['start_time']);
-        $data['end_time'] = strtotime($data['end_time']);
-        $data['time_limit'] = $data['end_time'];
-        $result = '';
-
-
+        $data = input();
+        // $data['create_time'] = date('Y-m-d H:i:s',time());
+        // $data['start_time'] = strtotime($data['start_time']);
+        // $data['end_time'] = strtotime($data['end_time']);
+        // $data['time_limit'] = $data['end_time'];
+        // $result = '';
         #   数据验证
         $flag   = Validation::instance(request()->module(), request()->controller(), $data, $data['act'])->check();
         if ($flag !== true) $this->ajaxReturn(['status' => 0, 'msg' => $flag, 'result' => '']);
@@ -75,12 +71,13 @@ class Team extends Base
         #   是否需要删除已参团的数据
         if ($data['act'] == 'del')
         {
+            
             $result = Db::name('team_activity')->where('team_id', $data['team_id'])->update(['deleted' => 1]);
             if($result){
-                $this->success('删除成功', 'team/index');
+                ajaxReturn(['status' => 1, 'msg' =>'删除成功', 'result' => $result]);
             } else {
                 //错误页面的默认跳转页面是返回前一页，通常不需要设置
-                $this->error('删除失败');
+                ajaxReturn(['status' => 0, 'msg' =>'删除成功', 'result' => $result]);
             }
         }
 

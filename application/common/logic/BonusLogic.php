@@ -174,7 +174,8 @@ class BonusLogic extends Model
 		$rateArr  = $this->get_js_rate();
 		$maxGrade = 0;
 		// $sourceType = 5;
-		foreach($meetUser as $user){
+		foreach($meetUser as $k => $user){
+			if($k<=0) continue;
 			if(!$user['agent_user'] || $user['is_lock'] == 1) continue;
 			$grade  = $user['agent_user'];
 			$jsRate = $rateArr[$grade]?$rateArr[$grade]:0;
