@@ -5,14 +5,17 @@ use app\common\logic\UsersLogic;
 use app\common\logic\CartLogic;
 use app\common\logic\wechat\WechatUtil;
 use think\Request;
+use think\Controller;
 
-class LoginApi extends MobileBase{
+// MobileBase
+class LoginApi extends Controller {
     public $config;
     public $oauth;
     public $class_obj;
 
     public function __construct(){
-        parent::__construct();    
+        //parent::__construct();  
+          
         $this->oauth = I('get.oauth');
         //获取配置
 
