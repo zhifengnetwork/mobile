@@ -42,8 +42,11 @@ class LoginApi extends MobileBase{
 
         $d = $this->GetOpenid();
 
+        dump($d);
+
         $logic = new UsersLogic(); 
         $data = $logic->thirdLogin($d);
+
         //直接去登录，空 就注册
         if($data['status'] == 1){
             session('user',$data['result']);
@@ -56,7 +59,6 @@ class LoginApi extends MobileBase{
             $cartLogic->setUserId($data['result']['user_id']);
             $cartLogic->doUserLoginHandle();  //用户登录后 需要对购物车 一些操作
         }
-
 
         header("Location:".U('Mobile/User/index'));
         //登录成功跳转
@@ -84,12 +86,12 @@ class LoginApi extends MobileBase{
             $data['head_pic'] = $data2['headimgurl']; 
             $data['subscribe'] = $data2['subscribe'];      
             $data['oauth_child'] = 'mp';
-            $_SESSION['openid'] = $data['openid'];
+            session('openid',$data['openid']);
             $data['oauth'] = 'weixin';
             if(isset($data2['unionid'])){
             	$data['unionid'] = $data2['unionid'];
             }
-            $_SESSION['data'] =$data;
+            session('data',$data);
             return $data;
         }
     }
