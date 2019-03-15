@@ -29,11 +29,12 @@ class Groupbuy extends MobileBase
     public function grouplist()
     {
 
-        $where['status'] = ['=',1];
-        $where['end_time'] = ['<',time()];
+        $where['status'] = ['=', 1];
+        $where['end_time'] = ['<', time()];
+        $where['deleted'] = ['=', 0];
         $count = Db::table('tp_team_activity')->where($where)->count();
         $Page = new Page($count, 15);
-        $list = Db::table('tp_team_activity')->where($where)->order('end_time desc')
+        $list = Db::table('tp_team_activity')->where($where)->order('end_time asc')
             ->limit($Page->firstRow . ',' . $Page->listRows)
             ->alias('t')
             ->Join('goods g',"g.goods_id=t.goods_id",'LEFT')
@@ -52,7 +53,74 @@ class Groupbuy extends MobileBase
      **/
     public function detail()
     {
-        // $data = I('get.');
+        # 用户ID
+        $user_id = cookie('user_id');
+        # 获取 GET 参数
+        $data = I('get.');
+        # 拼团ID
+        $teamid = intval($data['team_id']) > 0 ? intval($data['team_id']) : 0;
+        if(!$teamid){
+            return $this->redirect('grouplist');
+        } 
+        # 查看拼团信息
+        $info = Db::table('tp_team_activity')
+            ->where("team_id", $data['team_id'])
+            ->alias('t')
+            ->join('goods g','g.goods_id = t.goods_id','left')
+            ->field('t.team_id, t.act_name, t.goods_id, t.goods_name, t.group_price, t.cluster_type, t.end_time, t.sales_sum, g.original_img,       g.shop_price, g.market_price')
+            ->find();
+        // dump($info);exit;
+        if($info){
+            # 对拼团信息进行组装
+            $goodsModel = new \app\common\model\Goods();
+            $info['cluster_type'] = [0 => '', 1 => '小团', 2 => '打团', 3 => '阶梯团'][$info['cluster_type']];
+            $info['comment'] = Db::table('tp_comment')->where('goods_id',$info['goods_id'])->count();
+            $info['comment_fr'] = $goodsModel->getCommentStatisticsAttr('', ['goods_id', $info['goods_id']]);
+            $info['end_time'] = $info['end_time'] - time();
+            // dump($info);exit;
+            # 正在开团的数量
+            $team_found_num = Db::table('tp_team_found')
+                ->where('team_id',$info['team_id'])
+                ->where('found_end_time', '<', time())
+                ->where('status', 1)
+                ->count();
+
+            if( $team_found_num){
+                # 正在开团的拼团信息
+                $team_found = Db::table('tp_team_found')
+                    ->field('`found_id`,`found_time`,`found_end_time`,`user_id`,`nickname`,`head_pic`,`order_id`,`join`,`need`')
+                    ->order('found_end_time asc')
+                    ->where('team_id',$info['team_id'])
+                    ->where('found_end_time', '<', time())
+                    ->where('status', 1)
+                    ->limit(3)
+                    ->select();
+
+                $this->assign('team_found_num', $team_found_num);
+                $this->assign('team_found', $team_found);
+            }
+            
+            # 商品轮播图
+            $goodsImg = Db::table('tp_goods_images')->where('goods_id',$info['goods_id'])->select();
+            $this->assign('goodsImg', $goodsImg);
+
+            # 商品收藏
+            $collect = db('goods_collect')->where(array("goods_id" => $info['goods_id'], "user_id" => $user_id))->count(); 
+            $this->assign('collect', $collect);
+        }else{
+            $this->error('商品信息不存在');
+        }
+
+
+        // dump($team_found);exit;
+        $this->assign('info', $info);
+        
+
+
+
+
+
+
         // $teamAct = new TeamActivity();
         // $team = $teamAct->where('deleted',0)->where('team_id',$data['team_id'])
         //     ->alias('t')
