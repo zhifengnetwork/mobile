@@ -17,11 +17,13 @@ class Team extends Validate
         'virtual_num'               =>'number',
         'share_title'               =>'max:50',
         'share_desc'                =>'max:200',
-        'start_time'                => 'require|date',
-        'end_time'                  => 'require|date', 
+        'start_time'                => 'require',
+        'end_time'                  => 'require', 
         // 'share_img'                 =>'require',
         // 'group_time'                => 'require'
-        'goods_name'                =>'require'
+        'goods_name'                =>'require',
+        'group_price'               =>'require',
+        'group_number'              =>'require'
     ];
     //错误信息
     protected $message  = [
@@ -29,11 +31,12 @@ class Team extends Validate
         'act_name.max'              => '拼团标题长度不得超过50字符',
         'time_limit.require'        => '成团有效期必填',
         'start_time.require'        => '活动开始时间必填',
-        'end_time.require'        => '活动结束时间必填',
+        'end_time.require'          => '活动结束时间必填',
         // 'time_limit.number'         => '成团有效期格式错误',
         // 'time_limit.gt'             => '成团有效期必须大于0',
         // 'needer.require'            => '需要成团人数必须',
-        // 'needer.gt'                 => '需要成团人数必须大于1人',
+        'group_price.require'       => '拼团价格必须填写',
+        'group_number.require'       => '拼团人数必须填写',
         'goods_id.require'          => '请选择参与拼团的商品',
         'bonus.checkBonus'          => '团长佣金格式错误',
         'stock_limit.number'        => '抽奖限量格式错误',
@@ -49,10 +52,8 @@ class Team extends Validate
     ];
 
     public $scene   = [
-        'add'   => ['act_name', 'time_limit', 'needer', 'goods_id', 'bonus', 'stock_limit', 'buy_limit', 'virtual_num', 'share_title', 'share_desc',
-            'share_img', 'team_goods_item'],
-        'edit'  => ['team_id', 'act_name', 'time_limit', 'needer', 'goods_id', 'bonus', 'stock_limit', 'buy_limit', 'virtual_num', 'share_title', 'share_desc',
-            'share_img', 'team_goods_item'],
+        'add'   => ['act_name', 'goods_id','time_limit','start_time','end_time','group_number','group_price'],
+        'edit'  => ['act_name', 'goods_id','time_limit','start_time','end_time','group_number','group_price'],
         'del'   => ['team_id'],
     ];
 
