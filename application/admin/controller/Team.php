@@ -75,10 +75,13 @@ class Team extends Base
         #   是否需要删除已参团的数据
         if ($data['act'] == 'del')
         {
-            if(false == Db::name('team_activity')->where('team_id', $data['team_id'])->update(['deleted' => 1])) {
-                $this->ajaxReturn(['status' => 0, 'msg' => '删除失败']);
-            };
-            $this->ajaxReturn();
+            $result = Db::name('team_activity')->where('team_id', $data['team_id'])->update(['deleted' => 1]);
+            if($result){
+                $this->success('删除成功', 'team/index');
+            } else {
+                //错误页面的默认跳转页面是返回前一页，通常不需要设置
+                $this->error('删除失败');
+            }
         }
 
         $data_goods = [];

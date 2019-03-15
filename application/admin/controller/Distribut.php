@@ -269,7 +269,7 @@ class Distribut extends Base {
     public function rebate_log()
     {
         $count = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
-                                 ->count();
+                    ->where("acount.states = 101 or acount.states = 102")->count();
         $page = new Page($count, 10);
         $log = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
                                ->field('users.nickname, acount.*')->order('log_id DESC')
@@ -287,7 +287,7 @@ class Distribut extends Base {
     public function consume_log()
     {
         $count = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
-        ->count();
+                ->where("acount.states = 0")->count();
         $page = new Page($count, 10);
         $log = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
             ->field('users.nickname, acount.*')->order('log_id DESC')
