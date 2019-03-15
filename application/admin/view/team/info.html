@@ -29,8 +29,8 @@
                     <label><em>*</em>拼团活动标题</label>
                 </dt>
                 <dd class="opt">
-                    <input type="text" name="act_name" value="" class="input-txt">
-                    <p class="notic">请填写拼团标题</p>
+                    <input type="text" name="act_name" value="{$list['act_name']}" class="input-txt">
+                    <p class="notic">请填写拼团标题{$list.team_type}</p>
                 </dd>
             </dl>
 			
@@ -39,8 +39,8 @@
                     <label><em>*</em>是否开启</label>
                 </dt>
                 <dd class="opt">
-							  <input type="radio" name="status" value="0" checked/>是
-							  <input type="radio" name="status" value="1"/>否
+							  <input type="radio" name="status" value="1" checked/>是
+							  <input type="radio" name="status" value="0"/>否
                 </dd>
             </dl>	
 			
@@ -60,7 +60,7 @@
 					<label><em>*</em>选择商品</label>
 				</dt>
 				<dd class="opt">
-					<input type="text" readonly  id="goods_name" name="goods_name" value="{$info.goods_name}" class="input-txt">
+					<input type="text" readonly  id="goods_name" name="goods_name" value="{$list['goods_name']}" class="input-txt">
 					<div style="overflow: hidden" id="selected_group_goods">
 						<if condition="$info['goods_id'] gt 0">
 							<div style="float: left;margin-right: 10px" class="selected-group-goods">
@@ -91,16 +91,16 @@
 			        <label><em>*</em>拼团人数:</label>
 			    </dt>
 			    <dd class="opt">
-			        <input type="text" name="group_number" value="" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" class="input-txt">
+			        <input type="text" name="group_number" value="{$list['group_number']}" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" class="input-txt">
 			        <p class="notic">满足人数即可。</p>
 			    </dd>
 			</dl>
 			<dl class="row" id="p_num">
 			    <dt class="tit">
-			        <label><em>*</em>拼团时间:</label>
+			        <label><em>*</em>成团有效期:</label>
 			    </dt>
 			    <dd class="opt">
-			        <input type="text" name="group_time" value="" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" class="input-txt">
+			        <input type="text" name="time_limit" value="{$list['time_limit']}" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" class="input-txt">
 			        <p class="notic">超时则结束拼团(单位:小时)</p>
 			    </dd>
 			</dl>

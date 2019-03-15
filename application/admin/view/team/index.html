@@ -45,41 +45,22 @@
 							<div style="width: 24px;"><i class="ico-check"></i></div>
 						</th>
 						<th align="left" abbr="article_title" axis="col3" class="">
-							<div style="text-align: left; width: 50px;" class="">商品</div>
+							<div style="text-align: left; width: 100px;" class="">商品</div>
 						</th>
 
 						<th align="left" abbr="ac_id" axis="col4" class="">
 							<div style="text-align: center; width: 100px;" class="">生效时间</div>
 						</th>
 						<th align="left" abbr="ac_id" axis="col4" class="">
-							<div style="text-align: center; width: 240px;" class="">团购类型</div>
+							<div style="text-align: center; width: 80px;" class="">团购类型</div>
 						</th>
 
 						<th align="center" abbr="article_time" axis="col6" class="">
 
-							<div style="text-align: center; width: 50px;" class="">状态</div>
+							<div style="text-align: center; width: 80px;" class="">状态</div>
 						</th>
 						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 100px;" class="">开团人数</div>
-						</th>
-						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 100px;" class="">购买数量</div>
-						</th>
-						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 70px;" class="">购买限制数</div>
-						</th>
-						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 70px;" class="">最大开团数</div>
-						</th>
-						
-						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 70px;" class="">剩余开团数</div>
-						</th>
-						
-						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 70px;" class="">是否开启</div>
-						</th>
-							<div style="text-align: center; width: 80px;" class="">团购价</div>
+							<div style="text-align: center; width: 80px;" class="">开团人数</div>
 						</th>
 
 						<th align="left" axis="col1" class="handle">
@@ -118,42 +99,22 @@
 								<div style="text-align: left; width: 50px;">{$team.goods_name}</div>
 							</td> -->
 							<td align="left" class="">
-								<div style="text-align: left; width: 100px;"><a href="{:U('Mobile/Team/info',['team_id'=>$team.team_id, 'item_id'=>$team['team_goods_item'][0]['item_id']])}" target="_blank" >{$team.goods_name|getSubstr=0,20}</a></div>
+								<div style="text-align: left; width: 100px;"><a href="{:U('Mobile/Team/info',['team_id'=>$team.team_id, 'item_id'=>$team['team_goods_item'][0]['item_id']])}" target="_blank" >{$team.act_name}</a></div>
 							</td>
 
 							<td align="left" class="">
-								<div style="text-align: center; width: 80px;">{$team.start_time}</div>
+								<div style="text-align: center; width: 100px;">{$team.start_time}</div>
 							</td>	
 							<td align="left" class="">
-								<div style="text-align: center; width: 80px;">{$team.cluster_type}</div>
+								<div style="text-align: center; width: 80px;">{$team.team_type}</div>
 							</td>
 							<td align="left" class="">
 								<div style="text-align: center; width: 80px;">{$team.status}</div>
 							</td>									
 							<td align="left" class="">
-								<div style="text-align: center; width: 80px;">{$team.group_price}</div>
-							</td>								
-							<td align="left" class="">
 								<div style="text-align: center; width: 80px;">{$team.group_number}</div>
-							</td>
-							<td align="left" class="">
-								<div style="text-align: center; width: 80px;">{$team.purchase_qty}</div>
-							</td>
-							<td align="left" class="">
-								<div style="text-align: center; width: 80px;">{$team.max_open_num}</div>
-							</td>
-							<td align="left" class="">
-								<div style="text-align: center; width: 80px;">0</div>
-							</td>
-							<td align="left" class="">
-								<div style="text-align: center; width: 80px;">
-									<if condition='$team[status] eq 1'>
-										<span class="yes" onClick="changeTableVal('team_activity','team_id','{$team.team_id}','status',this,'是','否')" ><i class="fa fa-check-circle"></i>是</span>
-										<else />
-										<span class="no" onClick="changeTableVal('team_activity','team_id','{$team.team_id}','status',this,'是','否')" ><i class="fa fa-ban"></i>否</span>
-									</if>
-								</div>
-							</td>
+							</td>								
+
 							<td align="left" class="handle">
 								<div style="text-align: left; width: 240px; max-width:240px;">
 									<a class="btn blue" href="{:U('Team/info',array('team_id'=>$team['team_id']))}"><i class="fa fa-pencil-square-o"></i>编辑</a>
@@ -187,6 +148,7 @@
 	});
 
 	function delfun(obj) {
+		// console.log($(obj).attr('data-url'));
 		layer.confirm('确认删除？', {
 					btn: ['确定', '取消'] //按钮
 				}, function () {

@@ -8,7 +8,7 @@ class Team extends Validate
     protected $rule = [
         'team_id'                   =>'checkTeamId',
         'act_name'                  =>'require|max:50',
-        // 'time_limit'                =>'require|number|gt:0',
+        'time_limit'                =>'require|number|gt:0',
         // 'needer'                    =>'require|number|gt:1|checkNeed',
         'goods_id'                  =>'require',
         'bonus'                     =>'checkBonus',
@@ -18,7 +18,8 @@ class Team extends Validate
         'share_title'               =>'max:50',
         'share_desc'                =>'max:200',
         // 'share_img'                 =>'require',
-        // 'team_goods_item'           =>'require|checkTeamGoodsItem'
+        // 'group_time'                => 'require'
+        'goods_name'                =>'require'
     ];
     //错误信息
     protected $message  = [
@@ -39,7 +40,8 @@ class Team extends Validate
         'share_title.max'           => '分享标题长度不得超过50字符',
         'share_desc.max'            => '分享描述长度不得超过200字符',
         // 'share_img.require'         => '分享图片必须上传',
-        // 'team_goods_item.require'   => '请选择参与拼团的商品',
+        // 'group_time.require'        => '拼团时间必须填写'
+        'goods_name.require'        => '请选择参与拼团的商品',
     ];
 
     public $scene   = [
