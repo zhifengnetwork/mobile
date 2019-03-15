@@ -37,26 +37,19 @@ class LevelLogic extends Model
 
 		//判断是否为代理
 		$agentGrade = $this->is_agent_user($top_user['user_id']);
-
-		if($agentGrade['level_id']==6) return true;
-		if($agentGrade)
-		{
-			$flag = $this->upgrade_agent($agentGrade['level_id'],$top_user);
-		}else
-		{	
-			//没有购买代理指定商品不能成为代理
-			//查询用户购买的所有商品ID
-			// $goods = M('order')->alias('order')->join('order_goods', 'order.order_id = order_goods.order_id')
-			// 			->where('order.user_id', $leaderId)->field('order_goods.goods_id')->select();
-			// $goodsId = array_column($goods, 'goods_id');
-			// //查询是否购买有代理指定商品
-			// $agentGood = M('goods')->where(array('goods_id' => array('in', $goodsId)))->where('is_agent', 1)->find();
-			// if(!$agentGood) return false;
-
-			//有购买代理商品则成为代理
-			$flag = $this->add_agent($top_user);
+		if($agentGrade){
+			if($agentGrade['level_id']==6) return true;
+			$this->upgrade_agent($agentGrade['level_id'], $top_user);
+		}else{
+			$money = $this->user_level(1);
+			$res = $this->add_agent($top_user,$money['max_money'],$money['remaining_money']);
+			if($res){
+				$data = array(
+					'agent_user'=>1
+				);
+				M('users')->where(['user_id'=>$top_user['user_id']])->update($data);
+			}
 		}
-		
 		return false;
 
 	}
@@ -75,29 +68,22 @@ class LevelLogic extends Model
 	 */
 	private function upgrade_agent($grade,$user)
 	{
-		if($grade<=0)
+		$money = $this->user_level($grade+1);
+		if($grade==1)
 		{
-			$money = $this->user_level($grade);
 			$is_satisfy = $this->get_child_agent($user['user_id'],$money['max_money'],$money['remaining_money']);
-		}else if($grade<=1)
+
+		}else if($grade==2)
 		{
-			$money = $this->user_level($grade);
 			$is_satisfy = $this->get_child_agent($user['user_id'],$money['max_money'],$money['remaining_money']);
-		}else if($grade<=2)
+		}else if($grade==3)
 		{
-			$money = $this->user_level($grade);
 			$is_satisfy = $this->get_child_agent($user['user_id'],$money['max_money'],$money['remaining_money']);
-		}else if($grade<=3)
+		}else if($grade==4)
 		{
-			$money = $this->user_level($grade);
 			$is_satisfy = $this->get_child_agent($user['user_id'],$money['max_money'],$money['remaining_money']);
-		}else if($grade<=4)
+		}else if($grade==5)
 		{
-			$money = $this->user_level($grade);
-			$is_satisfy = $this->get_child_agent($user['user_id'],$money['max_money'],$money['remaining_money']);
-		}else if($grade<=5)
-		{
-			$money = $this->user_level($grade);
 			$is_satisfy = $this->get_child_agent($user['user_id'],$money['max_money'],$money['remaining_money']);
 		}
 		
@@ -130,18 +116,18 @@ class LevelLogic extends Model
 		}
 		$moneys = array_filter($money_array);
 		rsort($moneys);
-		
+		// dump($moneys);
 		//最大
-		if(count($moneys) >= 2){
-			$max_moneys = max($moneys);
-		}else{
-			$max_moneys = $moneys[0];
-		}
+		$agent_max = array_sum($moneys);
+		// dump($agent_max);
 		array_shift($moneys);
-		$moneys = array_sum($moneys);
-		if($max_moneys>=$max_money && $moneys>=$remaining_money){
-			return $moneys;
+		$agent_remaining = array_sum($moneys);
+		// dump($agent_remaining);
+		if(($agent_max>=$max_money) && ($agent_remaining>=$remaining_money)){
+			// dump('ok');
+			return $agent_remaining;
 		}else{
+			// dump('no');
 			return false;
 		}
 	}
@@ -168,7 +154,7 @@ class LevelLogic extends Model
 	/**
 	 * 添加代理记录
 	 */
-	 public function add_agent($user)
+	 public function add_agent($user,$max_money,$remaining_money)
 	 {
 
 		if($user['user_id'] == false){
@@ -178,15 +164,20 @@ class LevelLogic extends Model
 		if($user['first_leader'] == false){
 			$user['first_leader'] = 0;
 		}
-
+		$falg = $this->get_child_agent($user['user_id'],$max_money,$remaining_money);
+		if($falg){
+			dump('ok');
+		}else{
+			dump('no');
+		}
 		 $data = array(
 			 'uid'=>$user['user_id'],
 			 'head_id'=>$user['first_leader'],
-			 'level_id'=>0,
+			 'level_id'=>1,
 			 'create_time'=>time(),
 			 'update_time'=>time()
 		 );
-
+		//  dump($data);
 		 return M('agent_info')->add($data);
 	 }
 }

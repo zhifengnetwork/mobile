@@ -40,7 +40,7 @@ function get_uper_user($data)
  */
 function getAllUp($invite_id,&$userList=array())
 {           
-    $field  = "user_id,first_leader";
+    $field  = "user_id,first_leader,agent_user,is_lock";
     $UpInfo = M('users')->field($field)->where(['user_id'=>$invite_id])->find();
     if($UpInfo)  //有上级
     {
