@@ -173,25 +173,34 @@ class BonusLogic extends Model
 		//获取分红比例
 		$rateArr  = $this->get_js_rate();
 		$maxGrade = 0;
-		// $sourceType = 5;
+		$sourceType = 5;
+		
 		foreach($meetUser as $k => $user){
 			if($k<=0) continue;
+			
 			if(!$user['agent_user'] || $user['is_lock'] == 1) continue;
 			$grade  = $user['agent_user'];
+			
+			if($grade == $maxGrade) continue;
 			$jsRate = $rateArr[$grade]?$rateArr[$grade]:0;
 			if($jsRate<=0 || $maxGrade>$grade) continue;
 			if($maxGrade<$grade){
 				$jsRate = $rateArr[$grade]-$rateArr[$maxGrade];
 			}
+		
 			$money = $price*$jsRate/100;
-			if($maxGrade==$grade) 
+			if($maxGrade==6) 
 			{
+				
 				$jsRate  = $rateArr[127];
 				$logName = '平级奖';
 				$sourceType = 6;
 				$money = $money*$jsRate/100;
+				$sourceType = $grade;
 			}
+			// if($maxGrade >= $grade)continue;
 			$maxGrade = $grade;
+			// dump($maxGrade);
 			$users = $this->first_leader($user['user_id']);
 			$data = array(
 				'user_money'=>$users['user_money']+$money

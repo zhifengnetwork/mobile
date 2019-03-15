@@ -44,7 +44,7 @@ function getAllUp($invite_id,&$userList=array())
     $UpInfo = M('users')->field($field)->where(['user_id'=>$invite_id])->find();
     if($UpInfo)  //有上级
     {
-        $userList[] = $UpInfo;                                                
+        $userList[] = $UpInfo;                                      
         getAllUp($UpInfo['first_leader'],$userList);
     }
     
