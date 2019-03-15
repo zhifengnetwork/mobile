@@ -40,6 +40,8 @@ class LoginApi extends MobileBase{
         // include_once  "plugins/login/{$this->oauth}/{$this->oauth}.class.php";
         // $this->class_obj->login();
 
+        dump($this->oauth);
+
         $d = $this->GetOpenid();
 
         dump($d);
@@ -85,7 +87,12 @@ class LoginApi extends MobileBase{
             //上面获取到code后这里跳转回来
             $code = $_GET['code'];
             $data = $this->getOpenidFromMp($code);//获取网页授权access_token和用户openid
+            dump($data);
+
             $data2 = $this->GetUserInfo($data['access_token'],$data['openid']);//获取微信用户信息
+            
+            dump($data2);
+
             $data['nickname'] = empty($data2['nickname']) ? '微信用户' : trim($data2['nickname']);
             $data['sex'] = $data2['sex'];
             $data['head_pic'] = $data2['headimgurl']; 
@@ -96,7 +103,7 @@ class LoginApi extends MobileBase{
             if(isset($data2['unionid'])){
             	$data['unionid'] = $data2['unionid'];
             }
-            $_SESSION['data'] =$data;
+            $_SESSION['data'] = $data;
             return $data;
         }
     }
