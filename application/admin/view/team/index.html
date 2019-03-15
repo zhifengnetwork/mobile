@@ -120,14 +120,14 @@
 								<div style="text-align: center; width: 80px;">{$team.team_type}</div>
 							</td>
 							<td align="left" class="">
-								
-								<if condition='$team.status eq 0'>
-									<div style="text-align: center; width: 80px;">未开启</div>
-								<else/>		
-									<div style="text-align: center; width: 80px;">已开启</div>
-								</if>
-				
-							</td>	
+									<div style="text-align: center; width: 80px;">
+										<if condition='$team[status] eq 1'>
+											<span class="yes" onClick="changeTableVal2('team_activity','team_id','{$team.team_id}','status',this,'是','否','{$list.status_desc}')" ><i class="fa fa-check-circle"></i>已开启</span>
+											<else />
+											<span class="no" onClick="changeTableVal2('team_activity','team_id','{$team.team_id}','status',this,'是','否')" ><i class="fa fa-ban"></i>未开启</span>
+										</if>
+									</div>
+							</td>
 							<td align="left" class="">
 									<div style="text-align: center; width: 80px;">{$team.group_price}</div>
 							</td>							
@@ -237,6 +237,66 @@
 		})
 	})
 
+
+    // 修改指定表的指定字段值 包括有按钮点击切换是否 或者 排序 或者输入框文字
+    function changeTableVal2(table, id_name, id_value, field, obj,yes,no,status) {
+        if (status == '进行中') {
+            layer.confirm('活动进行中，确认关闭？', {
+                btn: ['确定', '取消'] //按钮
+            },function () {
+                var value = $(obj).val();
+                if(yes == '' || typeof(yes)== 'undefined')yes='是';
+                if(no == '' || typeof(no) == 'undefined')no='否';
+                if ($(obj).hasClass('yes')) // 图片点击是否操作
+                {
+                    $(obj).removeClass('no').addClass('yes');
+                    $(obj).html("<i class='fa fa-check-circle'></i>"+yes+"");
+                    value = 1;
+                } else if ($(obj).hasClass('yes')) { // 图片点击是否操作
+                    $(obj).removeClass('yes').addClass('no');
+                    $(obj).html("<i class='fa fa-ban'></i>"+no+"");
+                    value = 0;
+                }
+
+                $.ajax({
+                    url: "/index.php?m=Admin&c=Index&a=changeTableVal&table=" + table + "&id_name=" + id_name + "&id_value=" + id_value + "&field=" + field + '&value=' + value,
+                    success: function () {
+                        if (!$(obj).hasClass('no') && !$(obj).hasClass('yes'))
+                            layer.msg('更新成功', {icon: 1});
+                        window.location.reload();
+                    }
+                });
+            },function (index) {
+                layer.close(index);
+                return false;
+            })
+        }else{
+            var value = $(obj).val();
+            if(yes == '' || typeof(yes)== 'undefined')yes='已开启';
+            if(no == '' || typeof(no) == 'undefined')no='未开启';
+            if ($(obj).hasClass('no')) // 图片点击是否操作
+            {
+                $(obj).removeClass('no').addClass('yes');
+                $(obj).html("<i class='fa fa-check-circle'></i>"+yes+"");
+                value = 1;
+            } else if ($(obj).hasClass('yes')) { // 图片点击是否操作
+                $(obj).removeClass('yes').addClass('no');
+                $(obj).html("<i class='fa fa-ban'></i>"+no+"");
+                value = 0;
+            }
+
+            $.ajax({
+                url: "/index.php?m=Admin&c=Index&a=changeTableVal&table=" + table + "&id_name=" + id_name + "&id_value=" + id_value + "&field=" + field + '&value=' + value,
+                success: function () {
+					// alert('aaa');
+                    // if (!$(obj).hasClass('no') && !$(obj).hasClass('yes'))
+                    //     layer.msg('更新成功', {icon: 1});
+                    // window.location.reload();
+                }
+            });
+        }
+
+    }
 
 </script>
 </body>
