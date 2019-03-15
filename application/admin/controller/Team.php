@@ -58,6 +58,8 @@ class Team extends Base
 	public function teamHandle()
     {
         $data = input();
+        // dump($data);
+        // exit();
         // $data['create_time'] = date('Y-m-d H:i:s',time());
         $data['start_time'] = strtotime($data['start_time']);
         $data['end_time'] = strtotime($data['end_time']);
