@@ -15,7 +15,7 @@ class LoginApi extends Controller {
 
     public function __construct(){
         //parent::__construct();  
-          
+
         $this->oauth = I('get.oauth');
         //获取配置
 
@@ -32,7 +32,7 @@ class LoginApi extends Controller {
 
 
         $this->weixin_config = M('wx_user')->find(); //取微获信配置
-        $this->assign('wechat_config', $this->weixin_config);      
+         
 
     }
 
@@ -45,7 +45,6 @@ class LoginApi extends Controller {
 
         $d = $this->GetOpenid();
 
-        dump($d);
 
         $logic = new UsersLogic(); 
         $data = $logic->thirdLogin($d);

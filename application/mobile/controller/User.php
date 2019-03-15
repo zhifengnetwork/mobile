@@ -706,6 +706,7 @@ class User extends MobileBase
         $this->assign('city', $city);
         $this->assign('area', $area);
         $this->assign('user', $user_info);
+
         $this->assign('sex', C('SEX'));
         //从哪个修改用户信息页面进来，
         $dispaly = I('action');
