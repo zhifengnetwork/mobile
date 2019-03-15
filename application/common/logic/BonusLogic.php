@@ -175,7 +175,7 @@ class BonusLogic extends Model
 		$useRate = 0;
 		$pj_money = 0;
 		$userLevel = 0;
-		$sourceType = 5;
+		$sourceType = 4;
 		
 		foreach($meetUser as $k => $user){
 			if($k<=0) continue;
@@ -186,11 +186,11 @@ class BonusLogic extends Model
 			if($jsRate<0) continue;
 		
 			$money = $price*$jsRate/100;
-			if($jsRate==0 && $grade==6) 
+			if($jsRate==0 && $grade==5) 
 			{
 				$jsRate  = $rateArr[127];
 				$logName = '平级奖';
-				$sourceType = 6;
+				$sourceType = 5;
 				$money = $pj_money*$jsRate/100;
 			}
 			$useRate = $rateArr[$grade];
