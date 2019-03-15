@@ -62,6 +62,13 @@ class LoginApi extends Controller {
             $cartLogic->doUserLoginHandle();  //用户登录后 需要对购物车 一些操作
         }
 
+        
+        $first_leader = session('first_leader');
+        if((int)$first_leader > 0){
+            $user_id = session('user.user_id');
+            share_deal_after($user_id,(int)$first_leader);
+        }
+
         header("Location:".U('Mobile/User/index'));
         //登录成功跳转
     }
