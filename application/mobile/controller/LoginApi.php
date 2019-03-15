@@ -42,8 +42,14 @@ class LoginApi extends MobileBase{
 
         $d = $this->GetOpenid();
 
+        dump($d);
+
         $logic = new UsersLogic(); 
         $data = $logic->thirdLogin($d);
+
+        dump($data);
+
+
         //直接去登录，空 就注册
         if($data['status'] == 1){
             session('user',$data['result']);
@@ -55,8 +61,9 @@ class LoginApi extends MobileBase{
             $cartLogic = new CartLogic();
             $cartLogic->setUserId($data['result']['user_id']);
             $cartLogic->doUserLoginHandle();  //用户登录后 需要对购物车 一些操作
-        }
 
+           
+        }
 
         header("Location:".U('Mobile/User/index'));
         //登录成功跳转
