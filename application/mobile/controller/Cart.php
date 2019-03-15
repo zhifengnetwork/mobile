@@ -47,6 +47,9 @@ class Cart extends MobileBase {
         }
     }
 
+
+
+    
     public function index()
     {
         $cartLogic = new CartLogic();
