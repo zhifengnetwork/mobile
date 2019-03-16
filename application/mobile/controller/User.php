@@ -1188,7 +1188,7 @@ class User extends MobileBase
         if (!$team_list) {
             $team_list = $DistributLogic->get_team_list($this->user_id);  //团队列表
         }
-        die;
+        // die;
         $result = array('show'=>$team_list['show'],'result'=>array());
         
         foreach ($team_list['result'] as $key => $value) {
