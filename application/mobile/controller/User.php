@@ -132,6 +132,13 @@ class User extends MobileBase
         $this->assign('url',$url);
         $qr_back = M('config')->where(['name'=>'qr_back'])->value('value');
         $this->assign('qr_back',$qr_back);
+
+        $head_pic = session('user.head_pic');
+        $this->assign('head_pic',$head_pic);
+
+        $nickname = session('user.nickname');
+        $this->assign('nickname',$nickname);
+
         return $this->fetch();
     }
     

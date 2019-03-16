@@ -16,7 +16,6 @@
 </head>
 <body>
 
-<include file="public/header_nav" title="我的分享" href="javascript:history.back(-1)" />
 
 <style>
     body {
@@ -26,7 +25,7 @@
     .qr {
         position: absolute;
         left: 50%;
-        top: 40%;
+        top: 50%;
         transform: translate(-50%, -50%);
         border: 10px solid white;
        
@@ -39,36 +38,49 @@
     	-moz-border-radius:.6rem;
         -ms-border-radius:.6rem;
         -o-border-radius:.6rem;
-    	width: 12rem;
+    	width: 100%;
+        height: 100%;
     	position: absolute;
-    	left: 50%;
-        top: 40%;
-        transform: translate(-50%, -50%);
         z-index: -1;
     }
     #qrcode img{
-        width: 6rem;
-        height: 6rem;
+        width: 4rem;
+        height: 4rem;
+    }
+    .touxiang{
+
+       width: 3rem;
+       height: 3rem;
+       position: fixed;
+       top: 1.8rem;
+       left: .5rem;
+      
+       
+    }
+    .xijing{
+
+        position: fixed;
+        top: 2.5rem;
+        left: 38%;
+        transform: translate(-50%, -50%);
+        font-size: 40px;
+        
+
+
     }
 </style>
 
 <div class="back">
 
-    <div class="two-bothshop">
-        <div class="maleri30">
-            <ul>
-                <!-- class="red"  -->
-                <li style="width:100%;">
-                    <span>截图分享二维码邀请好友</span>
-                </li>
-
-            </ul>
-        </div>
-    </div>
 
     <div id="qrcode" class="qr"></div>
-    <img src="__STATIC__/images/0.jpg"  class="pic"/>
+    <img src="__PUBLIC__/images/bg.jpg"  class="pic"/>
+    
+
+    <img src="{$head_pic}" class="touxiang"/>
     <!--<img src="{$qr_back}" />-->
+
+       <div class="xijing">{$nickname}</div>
 
 </div>
 
