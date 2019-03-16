@@ -214,7 +214,7 @@ var QRCode;
 		};
 		Drawing.prototype.clear = function () {
 			while (this._el.hasChildNodes())
-				this._el.removeChild(this._el.lastChild);
+				this._el.pxoveChild(this._el.lastChild);
 		};
 		return Drawing;
 	})();
@@ -245,7 +245,7 @@ var QRCode;
 				aHTML.push('<tr>');
 				
 				for (var col = 0; col < nCount; col++) {
-					aHTML.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:' + nWidth + 'rem;height:' + nHeight + 'rem;background-color:' + (oQRCode.isDark(row, col) ? _htOption.colorDark : _htOption.colorLight) + ';"></td>');
+					aHTML.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:' + nWidth + 'px;height:' + nHeight + 'px;background-color:' + (oQRCode.isDark(row, col) ? _htOption.colorDark : _htOption.colorLight) + ';"></td>');
 				}
 				
 				aHTML.push('</tr>');
@@ -260,7 +260,7 @@ var QRCode;
 			var nTopMarginTable = (_htOption.height - elTable.offsetHeight) / 2;
 			
 			if (nLeftMarginTable > 0 && nTopMarginTable > 0) {
-				elTable.style.margin = nTopMarginTable + "rem " + nLeftMarginTable + "rem";	
+				elTable.style.margin = nTopMarginTable + "px " + nLeftMarginTable + "px";	
 			}
 		};
 		
