@@ -1,33 +1,23 @@
 <?php
-
 namespace app\mobile\controller;
 
 use Think\Db;
 use app\common\logic\wechat\WechatUtil;
 
-
-
 class Index extends MobileBase {
 
-    /**
-     * 测试
-     */
-    public function test(){
-        agent_performance(629);
-    }
-    
     public function index(){
-        $diy_index = M('mobile_template')->where('is_index=1')->field('template_html,block_info')->find();
-        if($diy_index){
-            $html = htmlspecialchars_decode($diy_index['template_html']);
-            $logo=tpCache('shop_info.wap_home_logo');
-            $this->assign('wap_logo',$logo);
-            $this->assign('html',$html);
-            $this->assign('is_index',"1");
-            $this->assign('info',$diy_index['block_info']);
-            return $this->fetch('index2');
-            exit();
-        }
+        // $diy_index = M('mobile_template')->where('is_index=1')->field('template_html,block_info')->find();
+        // if($diy_index){
+        //     $html = htmlspecialchars_decode($diy_index['template_html']);
+        //     $logo=tpCache('shop_info.wap_home_logo');
+        //     $this->assign('wap_logo',$logo);
+        //     $this->assign('html',$html);
+        //     $this->assign('is_index',"1");
+        //     $this->assign('info',$diy_index['block_info']);
+        //     return $this->fetch('index2');
+        //     exit();
+        // }
         /*
             //获取微信配置
             $wechat_list = M('wx_user')->select();
