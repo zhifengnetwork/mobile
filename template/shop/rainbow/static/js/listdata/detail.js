@@ -20,10 +20,15 @@ var swiper = new Swiper('.swiper-container_lb', {
 
 /*选择款式Fun*/
 function butStyleFun(_index){
-	console.log(_index);
 	$('.chooseStyleBox .chooseStyleBoxTerm').removeClass('chooseActive');
 	/*当前*/
 	$('.chooseStyleBox .chooseStyleBoxTerm').eq(_index).addClass('chooseActive');
+	var buy_type = $('#buy_type').val();
+	if(buy_type == 1){
+		var price = $('.chooseStyleBox .chooseStyleBoxTerm').eq(_index).attr('price');
+		$('.hidden_price').html(price);
+	}
+	
 }
 
 $(document).ready(function(){
@@ -31,10 +36,38 @@ $(document).ready(function(){
 	var count = $('#commNumber_lb').html();
 	/*收藏 按钮*/
 	$('.collectionFun').on('click',function(){
-		alert(123);
-		// $(this).find('.collectionImgL').attr('src','__STATIC__/images/public_lb/collectionIcon_lb.png');
-		// $(this).find('.collectionImgL').attr('src','__STATIC__/images/public_lb/collectionYse_lb.png');
+		var collect = $('.collectionImgL').attr('item');
+		var goodsid = $('.collectionImgL').attr('goodsid');
+		if(collect == 0){
+			$.post("collect",{goods_id:goodsid},function(res){
+				if(res){
+					res = JSON.parse(res);
+					if(res.status == 1){
+						var src = $('.collectionImgL').attr('src');
+						src = src.replace('collectionIcon_lb', 'collectionYes_lb');
+						$('.collectionImgL').attr('src',src);
+						$('.collectionImgL').attr('item',1);
+					}
+				}
+
+			})
+		}
 	})
+
+	/* 点击购买，拼单；弹出选择款式 */
+	$('.purchasePublicNum').on('click', function(){
+		var item = $(this).attr('item');
+		if(item == 1){
+			var price = $('#hidden_buy_price').val();
+		}else{
+			var price = $('#hidden_groupbuy_price').val();
+		}
+		$('#buy_type').val(item);
+		$('.hidden_price').html(price);
+		$('.choiceStyleWrap').show();
+		$('.wrapL').eq(0).css({'overflow':'hidden'})
+	})
+
 	/*关闭-拼单-弹框*/
 	$('.asHeadCIconBox').on('click',function(){
 		$('.assembleAlertWrap').hide();
@@ -61,19 +94,34 @@ $(document).ready(function(){
 	
 	/*确定按钮*/
 	$('.chooseConfirmL').on('click',function(){
+		var buy_type = $('#buy_type').val();
+		var goods_id = $('#goods_id').val();
+		var team_id = $('#team_id').val();
+
+		
+
+
+
 		$('.choiceStyleWrap').hide();
 		$('.wrapL').eq(0).css({'overflow':''});
-		console.log('购买件数:',count);
 	})
 	
 	/*add number*/
 	$('.commNumberL .commNumberAdd').on('click',function(){
 		var thisNumAdd = Number($('#commNumber_lb').html());
-		console.log('加');
-		if(thisNumAdd >= 9999){
-			count = 999;
-			alert('上限');
-		}else {
+		var buy_limit = $('#buy_limit').val();
+		if(buy_limit > 0){
+			if(thisNumAdd > buy_limit || thisNumAdd + 1 > buy_limit){
+				alert('限购：'+buy_limit);
+				return false;
+			}else{
+				count = thisNumAdd+1;
+			}
+		}else{
+			if(thisNumAdd >= 9999){
+				count = 999;
+				alert('上限');
+			}
 			count = thisNumAdd+1;
 		}
 		$('#commNumber_lb').html(count);
@@ -82,13 +130,11 @@ $(document).ready(function(){
 	/*reduce number*/
 	$('.commNumberL .commNumberReduce').on('click',function(){
 		var thisNumReduce = Number($('#commNumber_lb').html());
-		console.log('减',thisNumReduce);
 		if(thisNumReduce <= 1){
 			count = 1;
 			alert('最低购买1件');
 		}else {
 			count = thisNumReduce-1;
-			console.log(count,666);
 		}
 		$('#commNumber_lb').html(count);
 	})
