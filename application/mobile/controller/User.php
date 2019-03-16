@@ -99,11 +99,11 @@ class User extends MobileBase
             //去掉最大业绩之和
             $moneys = array_sum($moneys);
             $agent = $this->child_agent($user['user_id']);
-            $money_total = $agent['ind_per']+$agent['agent_per'];
+            $money_total1 = $agent['ind_per']+$agent['agent_per'];
             $money_total = array(
-                'money_total'=>$money_total,
+                'money_total'=>$money_total1,
                 'max_moneys'=>$max_moneys,
-                'moneys'=>$moneys
+                'moneys'=>$money_total1-$max_moneys
             );
             $this->assign('money_total',$money_total);
         }
@@ -1171,19 +1171,38 @@ class User extends MobileBase
     public function commision(){
     	$DistributLogic = new DistributLogic;
         $result= $DistributLogic->get_commision_log($this->user_id);  //佣金明细
-        // dump($result);
-    	$this->assign('page', $result['show']);
+        $this->assign('page', $result['show']);
         $this->assign('lists', $result['result']);
         if (I('is_ajax')) {
-    		return $this->fetch('ajax_commision_list');
-    	}
-    	return $this->fetch();
+            return $this->fetch('ajax_commision_list');
+        }
+
+        return $this->fetch();
     }
 
     public function team_list(){
     	$DistributLogic = new DistributLogic;
-        $result= $DistributLogic->get_team_list($this->user_id);  //团队列表
-        // $team_list = tpCache('team_list');
+        
+        $team_list = tpCache('team_list');
+        
+        if (!$team_list) {
+            $team_list = $DistributLogic->get_team_list($this->user_id);  //团队列表
+        }
+        // die;
+        $result = array('show'=>$team_list['show'],'result'=>array());
+        
+        foreach ($team_list['result'] as $key => $value) {
+            array_push($result['result'], [$key,'count'=>count($team_list['result'])]);
+        }
+
+        // dump($result);die;
+        // dump($result);die;
+        // $result['show'] = $team_list['show'];
+        // $result['resutl'][0] = $team_list['result'][0];
+        // dump($result);die;
+        // foreach ($team_list as $key => $value) {
+        //     $
+        // }
         // dump($team_list);die;
         // //判断下级是否还有下级
         // dump($result['result']);die;
@@ -1192,11 +1211,20 @@ class User extends MobileBase
         //     // dump($res);  
         // }
         // exit();
-    	$this->assign('page', $result['show']);
+
+     //    if ($data) {
+            
+     //        $list = $team_list['result'][$data-1];
+     //        // dump($list);die;
+     //        $this->assign('list',$list);
+
+     //        return ajaxReturn($list);
+    	// 	// return $this->fetch('ajax_team_list');
+    	// }
+
+        $this->assign('page', $result['show']);
         $this->assign('lists', $result['result']);
-        if (I('is_ajax')) {
-    		return $this->fetch('ajax_team_list');
-    	}
+
     	return $this->fetch();
     }
 

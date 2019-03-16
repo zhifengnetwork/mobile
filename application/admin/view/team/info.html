@@ -56,7 +56,7 @@
 			    </dt>
 			    <dd class="opt">
 					<if condition="($act == 'add')">
-						<input type="text" id="start_time" name="start_time" value="">至<input type="text" id="end_time" name="end_time" value="">
+						<input type="text" id="start_time" name="start_time" value="{:date('Y-m-d h:i:s',time())}">至<input type="text" id="end_time" name="end_time" value="{:date('Y-m-d h:i:s',time())}">
 					<else />
 						<input type="text" id="start_time" name="start_time" value="{:date('Y-m-d h:i:s',$list['start_time'])}">至<input type="text" id="end_time" name="end_time" value="{:date('Y-m-d h:i:s',$list['end_time'])}">
 					</if>	
@@ -70,17 +70,17 @@
 				<dd class="opt">
 					<input type="text" readonly  id="goods_name" name="goods_name" value="{$list['goods_name']}" class="input-txt">
 					<div style="overflow: hidden" id="selected_group_goods">
-						<if condition="$info['goods_id'] gt 0">
+						<if condition="$list['goods_id'] gt 0">
 							<div style="float: left;margin-right: 10px" class="selected-group-goods">
-								<div class="goods-thumb"><img style="width: 162px;height: 162px"  <notempty name="info['specGoodsPrice']">src="{$info['specGoodsPrice']['spec_img']}"<else/>src="{$info['goods_id']|goods_thum_images=162,162}"</notempty>/></div>
+								<div class="goods-thumb"><img style="width: 162px;height: 162px"  <notempty name="list['specGoodsPrice']">src="{$list['specGoodsPrice']['spec_img']}"<else/>src="{$list['goods_id']|goods_thum_images=162,162}"</notempty>/></div>
 								<div class="goods-name">
-									<a target="_blank" href="{:U('Home/Goods/goodsInfo',array('id'=>$info['goods_id']))}">{$info.goods_name}</a>
+									<a target="_blank" href="{:U('Home/Goods/goodsInfo',array('id'=>$list['goods_id']))}">{$list.goods_name}</a>
 								</div>
 								<div class="goods-price">
-									<notempty name="info['specGoodsPrice']">
-										商城价：￥{$info['specGoodsPrice']['price']}库存:{$info['specGoodsPrice']['store_count']}
+									<notempty name="list['specGoodsPrice']">
+										商城价：￥{$list['specGoodsPrice']['price']}库存:{$list['specGoodsPrice']['store_count']}
 										<else/>
-										商城价：￥{$info['goods']['shop_price']}库存:{$info['goods']['store_count']}
+										商城价：￥{$list['goods']['shop_price']}库存:{$list['goods']['store_count']}
 									</notempty>
 								</div>
 							</div>

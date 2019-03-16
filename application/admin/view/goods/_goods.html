@@ -394,6 +394,36 @@
             </dl>
             <dl class="row">
                 <dt class="tit">
+                    <label>是否为分销商品</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label id="is_distribut_label_1" for="is_distribut1" class="cb-enable <if condition='$goods.is_distribut eq 1'>selected</if>">是</label>
+                        <label id="is_distribut_label_0" for="is_distribut0" class="cb-disable <if condition='$goods.is_distribut eq 0'>selected</if>">否</label>
+                        <input id="is_distribut1" autocomplete="off" class="is_distribut" name="is_distribut" value="1" type="radio" <if condition="$goods[is_distribut] eq 1"> checked="checked"</if>>
+                        <input id="is_distribut0" autocomplete="off" class="is_distribut" name="is_distribut" value="0" type="radio" <if condition="$goods[is_distribut] eq 0"> checked="checked"</if>> -->
+                    </div>
+                    <span class="err" id="err_is_distribut"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>是否为代理商品</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label id="is_agent_label_1" for="is_agent1" class="cb-enable <if condition='$goods.is_agent eq 1'>selected</if>">是</label>
+                        <label id="is_agent_label_0" for="is_agent0" class="cb-disable <if condition='$goods.is_agent eq 0'>selected</if>">否</label>
+                        <input id="is_agent1" autocomplete="off" class="is_agent" name="is_agent" value="1" type="radio" <if condition="$goods[is_agent] eq 1"> checked="checked"</if>>
+                        <input id="is_agent0" autocomplete="off" class="is_agent" name="is_agent" value="0" type="radio" <if condition="$goods[is_agent] eq 0"> checked="checked"</if>> -->
+                    </div>
+                    <span class="err" id="err_is_agent"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
                     <label>是否为虚拟商品</label>
                 </dt>
                 <dd class="opt">
