@@ -107,6 +107,7 @@ class Groupbuy extends MobileBase
             # 商品收藏
             $collect = db('goods_collect')->where(array("goods_id" => $info['goods_id'], "user_id" => $user_id))->count(); 
             $this->assign('collect', $collect);
+            
         }else{
             $this->error('商品信息不存在');
         }
