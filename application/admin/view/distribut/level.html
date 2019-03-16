@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
+
     <form class="form-horizontal" id="handleposition" method="post">
         <input type="hidden" name="act" value="{$act}">
         <input type="hidden" name="level_id" value="{$info.level_id}">
@@ -92,107 +92,7 @@
             <div class="bot"><a href="JavaScript:void(0);" onclick="verifyForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
         </div>
     </form>
-=======
-    <if condition="$info.level_id == 12 ">
-            <form class="form-horizontal" id="handleposition" method="post">
-                    <input type="hidden" name="act" value="{$act}">
-                    <input type="hidden" name="level_id" value="{$info.level_id}">
-                    <div class="ncap-form-default">
-                        <dl class="row">
-                            <dt class="tit">
-                                <label for="rate"><em>*</em>佣金占比</label>
-                            </dt>
-                            <dd class="opt">
-                                <input type="text" name="rate" value="{$info.rate}" id="rate" class="input-txt" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
-                                <span class="err" id="err_rate"></span>
-                                <p class="notic">佣金占比单位为百分比，如输入10，表示该代理等级的用户可获得商品原价10%的佣金</p>
-                            </dd>
-                        </dl>
-                        <!-- <dl class="row">
-                            <dt class="tit">
-                                等级描述
-                            </dt>
-                            <dd class="opt">
-                                <textarea  name="describe" class="tarea" rows="6">{$info.remaining_money}</textarea>
-                                <span class="err" id="err_describe"></span>
-                                <p class="notic">会员等级描述信息</p>
-                            </dd>
-                        </dl> -->
-                        <div class="bot"><a href="JavaScript:void(0);" onclick="verifyForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
-                    </div>
-                </form>
-        <else>
-                <form class="form-horizontal" id="handleposition" method="post">
-                        <input type="hidden" name="act" value="{$act}">
-                        <input type="hidden" name="level_id" value="{$info.level_id}">
-                        <div class="ncap-form-default">
-                            <dl class="row">
-                                <dt class="tit">
-                                    <label for="level"><em>*</em>等级</label>
-                                </dt>
-                                <dd class="opt">
-                                    <input type="text" name="level" value="{$info.level}" id="level" class="input-txt" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
-                                    <span class="err" id="err_level"></span>
-                                    <p class="notic">设置代理等级(整型)</p>
-                                </dd>
-                            </dl>
-                            <dl class="row">
-                                <dt class="tit">
-                                    <label for="level_name"><em>*</em>等级名称</label>
-                                </dt>
-                                <dd class="opt">
-                                    <input type="text" name="level_name" value="{$info.level_name}" id="level_name" class="input-txt">
-                                    <span class="err" id="err_level_name"></span>
-                                    <p class="notic">设置代理等级名称</p>
-                                </dd>
-                            </dl>
-                            <dl class="row">
-                                <dt class="tit">
-                                    <label for="max_money"><!-- <em>*</em> -->团队佣金</label>
-                                </dt>
-                                <dd class="opt">
-                                    <input type="text" name="max_money" value="{$info.max_money}" id="max_money" class="input-txt" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''">
-                                    <span class="err" id="err_max_money"></span>
-                                    <p class="notic">达到该等级，团队佣金 单位: 元</p>
-                                </dd>
-                            </dl>
-                            <dl class="row">
-                                <dt class="tit">
-                                    <label for="remaining_money"><!-- <em>*</em> -->代理拥金总和</label>
-                                </dt>
-                                <dd class="opt">
-                                    <input type="text" name="remaining_money" value="{$info.remaining_money}" id="remaining_money" class="input-txt" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''">
-                                    <span class="err" id="err_remaining_money"></span>
-                                    <p class="notic">达到该等级，代理拥金总和 单位: 元</p>
-                                </dd>
-                            </dl>
-                            <dl class="row">
-                                <dt class="tit">
-                                    <label for="rate"><em>*</em>佣金占比</label>
-                                </dt>
-                                <dd class="opt">
-                                    <input type="text" name="rate" value="{$info.rate}" id="rate" class="input-txt" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
-                                    <span class="err" id="err_rate"></span>
-                                    <p class="notic">佣金占比单位为百分比，如输入10，表示该代理等级的用户可获得商品原价10%的佣金</p>
-                                </dd>
-                            </dl>
-                            <!-- <dl class="row">
-                                <dt class="tit">
-                                    等级描述
-                                </dt>
-                                <dd class="opt">
-                                    <textarea  name="describe" class="tarea" rows="6">{$info.remaining_money}</textarea>
-                                    <span class="err" id="err_describe"></span>
-                                    <p class="notic">会员等级描述信息</p>
-                                </dd>
-                            </dl> -->
-                            <div class="bot"><a href="JavaScript:void(0);" onclick="verifyForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
-                        </div>
-                    </form>
-        </else>
-    </if>
-    
->>>>>>> 541733c8f0544170f5780864099177f78fbfbecf
+
 </div>
 <script type="text/javascript">
     function verifyForm(){
