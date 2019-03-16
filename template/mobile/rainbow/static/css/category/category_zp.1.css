@@ -1,4 +1,8 @@
-@font-face{
+/*
+ 重写css
+ */
+
+ @font-face{
 	font-family: 'PingFangBold';
 	src:url("../../font/PingFangBold.ttf")
 }
@@ -18,15 +22,15 @@ body{
 
 /*顶部搜索*/
 .top-bar{
-	height: 1.5rem;
+	height: 0.68rem;
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
-	padding: 0.2rem 0.5rem;
+	padding: 0.1rem 0.3rem;
 }
 .top-bar .search{
-	width: 100%;
-	height: 100%;
+	width: 7.1rem;
+	height: 0.68rem;
 	background: #f8f8f8;
 	border-radius: 0.15rem;
 }
@@ -36,7 +40,7 @@ body{
 	align-items: center;
 }
 .top-bar .search .search-btn{
-	width:0.58rem;
+	width:0.38rem;
 	background: url(../../images/category/search-zp.png) no-repeat;
 	background-size: 100%;
 	margin: 0 0.3rem;
@@ -45,7 +49,7 @@ body{
 .top-bar .search .search-text{
 	width: 100%;
 	background: none;
-	font-size: 0.54rem;
+	font-size: 0.28rem;
 	color: #999999;
 	border: none;
 }
@@ -74,24 +78,23 @@ body{
 
 /*左侧菜单*/
 .category-main .menu{
-	width: 4rem;
+	width: 2rem;
 	margin-right: 0.3rem;
 	background: #f7f7f7;
-	/* height: 26.5rem; */
-	height: 100vh;
+	height: 11.5rem;
     overflow-y: auto;
 }
 .category-main .menu li{
-	height: 1.2rem;
+	height: 0.8rem;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 0.54rem;
+	font-size: 0.26rem;
 	text-align: center;
 }
 .category-main .menu li i{
-	width: 0.15rem;
-	height: 0.52rem;
+	width: 0.08rem;
+	height: 0.28rem;
 	display: inline-block;
 	margin-right: 0.18rem;
 	display: none;
@@ -107,10 +110,10 @@ body{
 /*分类右侧*/
 .category-main .main{
 	flex: 1;
+	width: 4.88rem;
 	padding-right: 0.3rem;
 	overflow-y: scroll;
-	/* height: 24.5rem; */
-	height: 100vh;
+    height: 11.5rem;
 }
 .branchList{
 	display: none;
@@ -126,7 +129,6 @@ body{
 .category-main .advert img{
 	width: 100%;
 	display: block;
-	border-radius: 0.2rem;
 }
 
 /*分类公共样式*/
@@ -136,7 +138,7 @@ body{
 .category-main .cate-item h3{
 	line-height: 0.7rem;
 	padding-left: 0.2rem;
-	font-size: 0.6rem;
+	font-size: 0.32rem;
 	font-weight: bold;
 	margin-bottom: 0.2rem;
 }
@@ -149,7 +151,7 @@ body{
 	border-radius: 0.1rem;
 }
 .cate-list .item{
-	width: 32%;
+	width: 1.4rem;
 	margin-right: 0.14rem;
 	text-align: center;
 	margin-bottom: 0.25rem;
@@ -159,14 +161,13 @@ body{
 	font-size: 0.24rem;
 }
 .cate-list .item img{
-	width: 2.1rem;
-	height: 2.1rem;
+	width: 1.4rem;
+	height: 1.6rem;
 	display: block;
-	margin: 0 auto 0.2rem;
 }
 .cate-list .item p{
 	line-height: 0.5rem;
-	font-size: 0.5rem;
+	font-size: 0.24rem;
 }
 
 
