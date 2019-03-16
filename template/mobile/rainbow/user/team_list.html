@@ -1,7 +1,7 @@
 <include file="public/header" title="团队列表" body=""/>
 <include file="public/header_nav" title="团队列表" href="javascript:history.back(-1)"/>
 <style type="text/css">
-    .application-record .re_tit .li3{
+    /* .application-record .re_tit .li3{
         width: 3.2rem;
     }
     .application-record .re_tit .li2{
@@ -14,7 +14,7 @@
      .application-record ul .li2 {
         width: 6rem;
          margin-right: 0.5rem;
-    }
+    } */
     /*.ser1{
         margin-left: 3rem;
     }*/
@@ -22,7 +22,7 @@
 <div class="application-record">
     <div class="maleri30">
         <ul class="re_tit">
-            <li class="li3"><span>级数</span></li>
+            <li class="li3"><span>序号</span></li>
             <li class="li2"><span>名称</span></li>
             <li class="li1" style="width:33.3%"><span>电话</span></li>
             <!-- <li class="li3"><span>操作</span></li> -->
@@ -31,8 +31,15 @@
                 <div id="show">
                     <ul class="series">
                         <input type="hidden" name="series" value="{$i}">
-                        <li class="li3"><span>{$i+1}级 &gt;</span>
-                        <li class="li1"><span>{$v.count}(人)</span>
+                        <li class="li3"><span>{$i+1}</span>
+                            <li class="li3"><span>{$v.nickname}</span>
+                        <if condition="$v.mobile">
+                            <li class="li1"><span>{$v.mobile}</span>
+                                <else>
+                                    <li class="li1"><span>还未绑定手机号</span>
+                                </else>
+                        </if>
+                        
                     </ul>
                     <div class="ser{$i+1}"></div>
                 </div>
