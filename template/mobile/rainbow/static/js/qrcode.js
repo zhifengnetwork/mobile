@@ -260,7 +260,7 @@ var QRCode;
 			var nTopMarginTable = (_htOption.height - elTable.offsetHeight) / 2;
 			
 			if (nLeftMarginTable > 0 && nTopMarginTable > 0) {
-				elTable.style.margin = nTopMarginTable + "px " + nLeftMarginTable + "px";	
+				elTable.style.margin = nTopMarginTable + "rem " + nLeftMarginTable + "rem";	
 			}
 		};
 		
