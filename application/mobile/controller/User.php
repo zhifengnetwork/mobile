@@ -74,15 +74,15 @@ class User extends MobileBase
         $user = session('user');
         $field = "user_id,first_leader,is_distribut,is_agent"; 
         $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->select();
-        // dump($user);
         if($users)
         {
             if(empty($users)) return false;
             $money_array = [];
             foreach($users as $key=>$val){
                 $get_child_agent = $this->child_agent($val['user_id']);
-                if($get_child_agent['agent_per'] == null) continue;
-                $money_array[]=$get_child_agent['agent_per']+$get_child_agent['ind_per'];
+                $money_array[]=$get_child_agent['agent_per'];
+                // dump($get_child_agent['agent_per']);
+                // $$money_array[] = $get_child_agent['agent_per'];
             }
             if(empty($money_array)){
                 return false;
@@ -95,19 +95,16 @@ class User extends MobileBase
             }else{
                 $max_moneys = $moneys[0];
             }
-            // array_shift($moneys);
+            array_shift($moneys);
             //去掉最大业绩之和
             $moneys = array_sum($moneys);
-            
             $agent = $this->child_agent($user['user_id']);
             $money_total1 = $agent['ind_per']+$agent['agent_per'];
-            
             $money_total = array(
                 'money_total'=>$money_total1,
                 'max_moneys'=>$max_moneys,
                 'moneys'=>$money_total1-$max_moneys
             );
-            // dump($money_total);die;
             $this->assign('money_total',$money_total);
         }
         return $this->fetch();
@@ -124,14 +121,6 @@ class User extends MobileBase
     {
         $MenuCfg = new MenuCfg();
         $menu_list = $MenuCfg->where('is_show', 1)->order('menu_id asc')->select();
-        $shopList = Db::name('shopper')->where(['user_id'=>cookie('user_id')])->select();
-        if(empty($shopList)){
-            foreach ($menu_list as $key =>$value){
-                if($value['menu_name'] == "自提核销"){
-                    unset($menu_list[$key]);
-                }
-            }
-        }
         $this->assign('menu_list', $menu_list);
         return $this->fetch();
     }
@@ -239,8 +228,10 @@ class User extends MobileBase
 //            header("Location: " . U('Mobile/User/index'));
             $this->redirect('Mobile/User/index');
         }else{
+
             //登录页面改了
             header("location:" . U('shop/User/login'));
+
             exit;
         }
         $referurl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : U("Mobile/User/index");
@@ -302,8 +293,8 @@ class User extends MobileBase
             $logic = new UsersLogic();
             //验证码检验
             //$this->verifyHandle('user_reg');
-            $nickname = I('post.useriphone', '');
-            $username = I('post.useriphone', '');
+            $nickname = I('post.nickname', '');
+            $username = I('post.username', '');
             $password = I('post.password', '');
             $password2 = I('post.password2', '');
             $is_bind_account = tpCache('basic.is_bind_account');
