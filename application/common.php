@@ -79,9 +79,6 @@ function getAllUp($invite_id,&$userList=array())
         $res = $model->bonusModel();
 
     }
-
-    agent_performance($order_id);
-    
  }
 
 

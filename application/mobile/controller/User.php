@@ -74,6 +74,7 @@ class User extends MobileBase
         $user = session('user');
         $field = "user_id,first_leader,is_distribut,is_agent"; 
         $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->select();
+        // dump($user);
         if($users)
         {
             if(empty($users)) return false;
@@ -82,8 +83,6 @@ class User extends MobileBase
                 $get_child_agent = $this->child_agent($val['user_id']);
                 if($get_child_agent['agent_per'] == null) continue;
                 $money_array[]=$get_child_agent['agent_per']+$get_child_agent['ind_per'];
-                
-                // $$money_array[] = $get_child_agent['agent_per'];
             }
             if(empty($money_array)){
                 return false;
