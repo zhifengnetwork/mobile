@@ -86,8 +86,8 @@ function getAllUp($invite_id,&$userList=array())
   */
  function agent_performance($order_id){
 
-    $order = M('order')->where(['order_id'=>$order_id])->field('order_amount,user_id')->find();
-    $order_amount = $order['order_amount'];
+    $order = M('order')->where(['order_id'=>$order_id])->field('order_amount,user_id,goods_price')->find();
+    $order_amount = $order['goods_price'];
     $user_id = $order['user_id'];
 
     //加个人业绩(下单人)
