@@ -28,9 +28,7 @@ class MobileBase extends Controller {
         else 
             cookie('is_mobile','0',3600);
         
-        
-        
-        $this->public_assign();
+        //$this->public_assign();
     }
     
     /**
