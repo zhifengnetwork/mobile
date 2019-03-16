@@ -65,21 +65,23 @@
     </div>
 
     <div id="qrcode" class="qr"></div>
-    <img src="__STATIC__/images/0.jpg" class="pic"/>
+    <img src="__STATIC__/images/0.jpg"  class="pic"/>
     <!--<img src="{$qr_back}" />-->
 
 </div>
 
-<script type="text/javascript" src="__STATIC__/js/qrcode.js"></script>
+<script type="text/javascript" src="__STATIC__/js/qrcode.js?v=1"></script>
 
 <script type="text/javascript">
-
+	$(function(){
+		console.log($('#pic').width(),111);
+	})
+	
     var url = "{$url}";
-
     var qrcode = new QRCode("qrcode", {
         text: url,
-        width: 400,
-        height: 400,
+        width: 150,
+        height: 150,
         colorDark: "#000000",
         colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.H
