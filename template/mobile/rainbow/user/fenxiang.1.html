@@ -24,11 +24,11 @@
 
     .qr {
         position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
         border: 10px solid white;
-        right: 1.1rem;
-        bottom: 5.5rem;
-
-
+       
     }
     .pic{
     	
@@ -44,20 +44,43 @@
         z-index: -1;
     }
     #qrcode img{
-        width: 5.5rem;
-        height: 5.5rem;
+        width: 4rem;
+        height: 4rem;
     }
-  
+    .touxiang{
+
+       width: 3rem;
+       height: 3rem;
+       position: fixed;
+       top: 1.8rem;
+       left: .5rem;
+      
+       
+    }
+    .xijing{
+
+        position: fixed;
+        top: 2.5rem;
+        left: 38%;
+        transform: translate(-50%, -50%);
+        font-size: 0.9rem;
+        font-weight: 500;
+
+
+    }
 </style>
 
 <div class="back">
 
 
     <div id="qrcode" class="qr"></div>
-    <img src="__PUBLIC__/images/bg1.jpg"  class="pic"/>
+    <img src="__PUBLIC__/images/bg.jpg"  class="pic"/>
     
 
-    
+    <img src="{$head_pic}" class="touxiang"/>
+    <!--<img src="{$qr_back}" />-->
+
+       <div class="xijing">{$nickname}</div>
 
 </div>
 
