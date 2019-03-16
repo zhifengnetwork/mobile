@@ -99,11 +99,11 @@ class User extends MobileBase
             //去掉最大业绩之和
             $moneys = array_sum($moneys);
             $agent = $this->child_agent($user['user_id']);
-            $money_total = $agent['ind_per']+$agent['agent_per'];
+            $money_total1 = $agent['ind_per']+$agent['agent_per'];
             $money_total = array(
-                'money_total'=>$money_total,
+                'money_total'=>$money_total1,
                 'max_moneys'=>$max_moneys,
-                'moneys'=>$moneys
+                'moneys'=>$money_total1-$max_moneys
             );
             $this->assign('money_total',$money_total);
         }

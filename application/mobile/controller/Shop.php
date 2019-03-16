@@ -49,17 +49,37 @@ class Shop extends MobileBase
      */
     public function shop_order()
     {
-        $topic_id = I('topic_id/d', 1);
+        /*$topic_id = I('topic_id/d', 1);
         $topic = Db::name('topic')->where("topic_id", $topic_id)->find();
-        $this->assign('topic', $topic);
+        $this->assign('topic', $topic);*/
         return $this->fetch();
     }
 
-    public function info()
+
+    public function shop_order_info()
     {
-        $topic_id = I('topic_id/d', 1);
+        $shopOrderList = Db::name('shop_order')->alias('so')
+            ->join('tp_order o','o.order_id = so.order_id','inner')
+            //->field('o.shop_id,s.shop_name')
+            ->where(['so.shop_order_id'=>I('post.write_off_code/d')])
+            ->select();
+        if ($shopOrderList) {
+            $this->assign('shopList', $shopOrderList);
+            $this->ajaxReturn(['status' => 1, 'msg' => '操作成功']);
+        } else {
+            $this->ajaxReturn(['status' => -1, 'msg' => '您好,您的提货码错误,请重新输入']);
+        }
+    }
+
+    /**
+     * 用户个人成为核销员后自提核销功能
+     */
+    public function search_order()
+    {
+        print_r(4444);
+        /*$topic_id = I('topic_id/d', 1);
         $topic = Db::name('topic')->where("topic_id", $topic_id)->find();
-        echo htmlspecialchars_decode($topic['topic_content']);
-        exit;
+        $this->assign('topic', $topic);*/
+        return $this->fetch();
     }
 }
