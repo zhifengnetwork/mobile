@@ -69,7 +69,7 @@ function getAllUp($invite_id,&$userList=array())
     $orderSn = $order['order_sn'];
 
     $goods_list = M('order_goods')->where(['order_id'=>$order_id])->select();
-
+    agent_performance($order_id);
     foreach($goods_list as $k => $v){
 
         $goodId = $v['goods_id'];
@@ -77,7 +77,6 @@ function getAllUp($invite_id,&$userList=array())
 
         $model = new BonusLogic($userId, $goodId,$goodNum,$orderSn,$order_id);
         $res = $model->bonusModel();
-
     }
  }
 
