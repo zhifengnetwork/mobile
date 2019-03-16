@@ -3,6 +3,23 @@
 <script src="__PUBLIC__/js/md5.min.js"></script>
 <script type="text/javascript" src="__STATIC__/js/date.js"></script>
 <script type="text/javascript" src="//api.map.baidu.com/api?ak=iR2qhnXd5vrFI9wUuIRG9AWGIqykVNok&type=lite&v=1.0"></script>
+<style type="text/css">
+	.bg_time{
+		width: 100%;
+		height: 100%;
+		background-color:rgba(0,0,0,0.4);
+		position: absolute;
+		top: 0;
+		z-index: 999999999;		
+	}
+	.bg_time img{
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%,-50%);
+
+	}
+</style>
 <div id="wrapBody">
     <div id="pagePay">
         <form name="cart2_form" id="cart2_form" method="post">
@@ -660,7 +677,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="createnew ">
+                    <div class="createnew newAjax">
                         <a id="address_form_confirm">确认</a>
                     </div>
                 </form>
@@ -788,17 +805,22 @@
             panel();
         });
         //添加地址
-        $(document).on('click', '#address_form_confirm', function () {
+        $(document).on('click', '#address_form_confirm', function () {                   	       	
             $.ajax({
                 type: "POST",
                 url: '/index.php?m=Mobile&c=User&a=addressSave',
                 data:  $("#address_form").serialize(),
                 dataType: "json",
+                beforeSend:function(){
+    				var bgs =$("<div class='bg_time'><img src='__STATIC__/images/timg_zzjj.gif'></div>")
+    				$(".dizhi-pop").append(bgs)    				
+    			},
                 success: function (data) {
+                	$(".bg_time").remove()
                     if (data.status == 1) {
                         $("#address_add_back").trigger('click');
-                        get_address_list(data.result.address_id);
-                    } else {
+                        get_address_list(data.result.address_id); 
+                    } else {                  	
                         var err_msg = data.msg;
                         $.each(data.result, function (index, item) {
                             err_msg = item;
@@ -808,6 +830,7 @@
                 }
             });
         });
+
         //编辑地址弹窗事件
         $(document).on("click", '.address_item', function (e) {
             window.location.hash = "#addressAdd";
@@ -1494,6 +1517,8 @@
     $(document).on('keyup', '#mobile_check', function() {
         $('input[name="mobile"]').val(this.value);
     })
+
+    
 </script>
 </body>
 </html>
