@@ -51,9 +51,6 @@
 						<th align="left" abbr="ac_id" axis="col4" class="">
 							<div style="text-align: center; width: 150px;" class="">生效时间</div>
 						</th>
-						<th align="left" abbr="ac_id" axis="col4" class="">
-							<div style="text-align: center; width: 80px;" class="">团购类型</div>
-						</th>
 
 						<th align="center" abbr="article_time" axis="col6" class="">
 							<div style="text-align: center; width: 80px;" class="">状态</div>
@@ -106,9 +103,6 @@
 							<td class="sign">
 								<div style="width: 24px;"><i class="ico-check"></i></div>
 							</td>
-							<!-- <td align="left" class="">
-								<div style="text-align: left; width: 50px;">{$team.goods_name}</div>
-							</td> -->
 							<td align="left" class="">
 								<div style="text-align: left; width: 100px;"><a href="{:U('Mobile/Team/info',['team_id'=>$team.team_id, 'item_id'=>$team['team_goods_item'][0]['item_id']])}" target="_blank" >{$team.act_name}</a></div>
 							</td>
@@ -116,9 +110,6 @@
 							<td align="left" class="">
 								<div style="text-align: center; width: 150px;">{:date('Y-m-d h:i:s', $team.start_time)}</div>
 							</td>	
-							<td align="left" class="">
-								<div style="text-align: center; width: 80px;">{$team.team_type}</div>
-							</td>
 							<td align="left" class="">
 									<div style="text-align: center; width: 80px;">
 										<if condition='$team[status] eq 1'>
