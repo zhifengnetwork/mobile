@@ -51,7 +51,7 @@ class DistributLogic
      * 获取佣金明细
      */
     public function get_commision_log($user_id,$pay_status=0){
-        $recharge_log_where = ['user_id'=>$user_id];
+        $recharge_log_where ="user_id='".$user_id."' and states =101 or states=102";
         if($pay_status){
             $pay_status['status']=$pay_status;
         }
