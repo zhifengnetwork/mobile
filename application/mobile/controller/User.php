@@ -125,6 +125,14 @@ class User extends MobileBase
     {
         $MenuCfg = new MenuCfg();
         $menu_list = $MenuCfg->where('is_show', 1)->order('menu_id asc')->select();
+        $shopList = Db::name('shopper')->where(['user_id'=>cookie('user_id')])->select();
+        if(empty($shopList)){
+            foreach ($menu_list as $key =>$value){
+                if($value['menu_name'] == "自提核销"){
+                    unset($menu_list[$key]);
+                }
+            }
+        }
         $this->assign('menu_list', $menu_list);
         return $this->fetch();
     }
@@ -232,10 +240,8 @@ class User extends MobileBase
 //            header("Location: " . U('Mobile/User/index'));
             $this->redirect('Mobile/User/index');
         }else{
-
             //登录页面改了
             header("location:" . U('shop/User/login'));
-
             exit;
         }
         $referurl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : U("Mobile/User/index");
@@ -297,8 +303,8 @@ class User extends MobileBase
             $logic = new UsersLogic();
             //验证码检验
             //$this->verifyHandle('user_reg');
-            $nickname = I('post.nickname', '');
-            $username = I('post.username', '');
+            $nickname = I('post.useriphone', '');
+            $username = I('post.useriphone', '');
             $password = I('post.password', '');
             $password2 = I('post.password2', '');
             $is_bind_account = tpCache('basic.is_bind_account');

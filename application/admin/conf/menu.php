@@ -23,6 +23,14 @@ return array(
             array('name' => '运费模板', 'act' => 'index', 'op' => 'Freight'),
             array('name' => '快递公司', 'act' => 'index', 'op' => 'Shipping'),
         )),
+        array('name' => '微信', 'child' => array(
+            array('name' => '公众号配置', 'act' => 'index', 'op' => 'Wechat'),
+            array('name' => '微信菜单管理', 'act' => 'menu', 'op' => 'Wechat'),
+            array('name' => '自动回复', 'act' => 'auto_reply', 'op' => 'Wechat'),
+            array('name' => '粉丝列表', 'act' => 'fans_list', 'op' => 'Wechat'),
+            array('name' => '模板消息', 'act' => 'template_msg', 'op' => 'Wechat'),
+            array('name' => '素材管理', 'act' => 'materials', 'op' => 'Wechat'),
+        )),
         array('name' => '支付', 'child' => array(
             array('name' => '支付配置', 'act' => 'index', 'op' => 'Plugin'),
         )),

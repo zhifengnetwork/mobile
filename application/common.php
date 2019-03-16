@@ -80,6 +80,8 @@ function getAllUp($invite_id,&$userList=array())
 
     }
 
+    agent_performance($order_id);
+    
  }
 
 

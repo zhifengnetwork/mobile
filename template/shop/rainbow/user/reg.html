@@ -30,14 +30,14 @@
     <form action="" method="post" id="regFrom" >
         <input type="hidden" name="auth_code" value="{$Think.config.AUTH_CODE}"/>
         <input type="hidden" name="is_bind" value="{$Request.param.is_bind}">
-        <div class=" reg_width">
+        <!--<div class=" reg_width">
             <label class="zjy_reg" for="username">账&nbsp;&nbsp;&nbsp;号:</label>
             <input type="text" name="username" id="username" value="" placeholder="请输入账号"  class="c-form-txt-normal zjt_regIpunt">
             <span id="mobile_phone_notice"></span>
-        </div>
+        </div>-->
         <div class=" reg_width">
             <label class="zjy_reg" for="useriphone">手机号:</label>
-            <input type="text" name="username" id="useriphone" value="" placeholder="请输入手机号"  class="c-form-txt-normal zjt_regIpunt">
+            <input type="text" name="useriphone" id="useriphone" value="" placeholder="请输入手机号"  class="c-form-txt-normal zjt_regIpunt">
             <span id="mobile_phone_notice"></span>
         </div>
         <if condition="$regis_sms_enable eq 1">
@@ -61,7 +61,7 @@
         </div>
         <div class="zjy_Loginfoos">      	
             <p class="recept">
-            	<input class="zjy_cheock" type="checkbox" name="" id="" value="" />
+            	<input class="zjy_cheock" type="checkbox" name=""  value="" checked="checked"/>
             	<span style="display:inline-block;vertical-align:text-top;">我已经阅读并同意</span>
             	<a href="{:U('Mobile/Article/agreement',['doc_code'=>'agreement'])}">《服务协议》</a>
             </p>
@@ -97,7 +97,7 @@
     //密码
     function check_password() {
         var password = $.trim($('#password').val());
-        var password2 = $.trim($('#password2').val());
+        //var password2 = $.trim($('#password2').val());
         if (password.length < 6 || password.length > 18) {
             showErrorMsg('*登录密码应设置为 6-18 个字符。');
             flag = false;
@@ -108,7 +108,7 @@
     function check_confirm_password() {
         var password = $.trim($('#password').val());
         var password2 = $.trim($('#password2').val());
-        if (password2.length < 6 || password.length > 18) {
+        if (password.length < 6 || password.length > 18) {
             showErrorMsg('*登录密码应设置为 6-18 个字符。');
             flag = false;
         }else if (password2 != password) {
@@ -144,11 +144,16 @@
 
     //发送短信验证码
     function sendcode(obj) {
-        var mobile = $('#username').val();
+        var mobile = $('#useriphone').val();
         if (mobile == '') {
             showErrorMsg('手机不能空');
             flag = false;
-        } else if (checkMobile(mobile)) { //判断手机格式
+        }
+        var mobile_status = checkMobile(mobile);
+        if (!mobile_status) { //判断手机格式
+            showErrorMsg('* 手机号码格式不正确');
+            flag = false;
+        }else{
             $.ajax({
                 type: "GET",
                 url: "/index.php?m=Home&c=Api&a=issetMobile",//+tab,
@@ -159,18 +164,18 @@
                             url: '/index.php?m=Home&c=Api&a=send_validate_code&t=' + Math.random(),
                             type: 'post',
                             dataType: 'json',
-                            data: {type: $(obj).attr('rel'), send: $.trim($('#username').val()), scene: 1},
+                            data: {type: $(obj).attr('rel'), send: $.trim($('#useriphone').val()), scene: 1},
                             success: function (data) {
                                 if (data.status == 1) {
                                     //成功
-                                    countdown(obj)
+                                    countdown(obj);
                                     layer.open({content: data.msg,time:2});
                                 } else {
                                     //失败
                                     showErrorMsg(data.msg);
                                 }
                             }
-                        })
+                        });
                         flag = true;
                     } else {
                         showErrorMsg('* 手机号已存在');
@@ -178,19 +183,16 @@
                     }
                 }
             });
-        } else {
-            showErrorMsg('* 手机号码格式不正确');
-            flag = false;
         }
     }
     $(document).on('keyup', '#password', function() {
         var password = md5($("input[name='auth_code']").val() + this.value);
         $('input[name="password"]').val(password);
-    })
+    });
     $(document).on('keyup', '#password2', function() {
         var password2 = md5($("input[name='auth_code']").val() + this.value);
         $('input[name="password2"]').val(password2);
-    })
+    });
     // 普通 图形验证码
     //    function verify(){
     //        $('#verify_code_img').attr('src','/index.php?m=Home&c=User&a=verify&type=user_reg&r='+Math.random());
@@ -199,17 +201,17 @@
     //提交表单
     function checkSubmit()
     {
-        check_confirm_password()
+        check_confirm_password();
         if(flag == false){
             return ;
         }
-        var mobile = $('#username').val();
+        var mobile = $('#useriphone').val();
         if(mobile == '' ){
             showErrorMsg('* 手机号码不能为空');
             return false;
         }
-        mobile = checkMobile(mobile);
-        if(!mobile ){
+        var mobile_status = checkMobile(mobile);
+        if(!mobile_status ){
             showErrorMsg('* 手机号码格式不正确');
             return false;
         }
@@ -229,35 +231,32 @@
     }
     
     $(document).ready(function(){
-        $(".btn-text-message").on("click",function(){
+        /*$(".btn-text-message").on("click",function(){
         	var num =60;
         	time = setInterval(() => {
                    num--;
-                   $(".btn-text-message").html("重新发送"+(num))
                    if(num == 0){
                        clearInterval(time);
                      $(".btn-text-message").html("发送验证码")                       
                    }
                }, 1000);
  
-        })
+        });*/
         $(".lsu-submit").on("click",function(){
-            $(".zjy_login_zhuce").show()
+            $(".zjy_login_zhuce").show();
             $(".zjy_login_bgs").show()
-        })
+        });
         $(".zjy_login_bgs").on("click",function(){
-            $(this).hide()
+            $(this).hide();
             $(".zjy_login_zhuce").hide()
-        })
+        });
         $(".zjy_login_shanchu").on("click",function(){
-            $(".zjy_login_zhuce").hide()
+            $(".zjy_login_zhuce").hide();
             $(".zjy_login_bgs").hide()
-        })
+        });
         $(".zjy_djdl").on("click",function(){
-            alert("登录成功");
-            $(".zjy_login_zhuce").hide()
+            $(".zjy_login_zhuce").hide();
             $(".zjy_login_bgs").hide()
-
         })
     })
 </script>

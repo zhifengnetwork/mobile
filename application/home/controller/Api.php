@@ -196,7 +196,7 @@ class Api extends Base
      */
     public function issetMobile()
     {
-        $mobile = I("mobile", '0');
+        $mobile = I("get.mobile");
         $users = M('users')->where('mobile', $mobile)->find();
         if ($users)
             exit ('1');
