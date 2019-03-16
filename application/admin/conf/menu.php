@@ -23,6 +23,14 @@ return array(
             array('name' => '运费模板', 'act' => 'index', 'op' => 'Freight'),
             array('name' => '快递公司', 'act' => 'index', 'op' => 'Shipping'),
         )),
+        array('name' => '微信', 'child' => array(
+            array('name' => '公众号配置', 'act' => 'index', 'op' => 'Wechat'),
+            array('name' => '微信菜单管理', 'act' => 'menu', 'op' => 'Wechat'),
+            array('name' => '自动回复', 'act' => 'auto_reply', 'op' => 'Wechat'),
+            array('name' => '粉丝列表', 'act' => 'fans_list', 'op' => 'Wechat'),
+            array('name' => '模板消息', 'act' => 'template_msg', 'op' => 'Wechat'),
+            array('name' => '素材管理', 'act' => 'materials', 'op' => 'Wechat'),
+        )),
         array('name' => '支付', 'child' => array(
             array('name' => '支付配置', 'act' => 'index', 'op' => 'Plugin'),
         )),
@@ -105,7 +113,7 @@ return array(
         )),
     )),
 
-    'marketing' => array('name' => '营销', 'child' => array(
+    /*'marketing' => array('name' => '营销', 'child' => array(
         array('name' => '促销活动', 'child' => array(
             array('name' => '抢购管理', 'act' => 'flash_sale', 'op' => 'Promotion'),
             array('name' => '团购管理', 'act' => 'group_buy_list', 'op' => 'Promotion'),
@@ -119,9 +127,9 @@ return array(
         // 		array('name' => '优惠券','act'=>'index', 'op'=>'Coupon'),
         // 		array('name' => '积分兑换','act'=>'index', 'op'=>'IntegralMall'),
         // )),
-    )),
+    )),*/
 
-    'distribution' => array('name' => '分销', 'child' => array(
+    /*'distribution' => array('name' => '分销', 'child' => array(
         array('name' => '模式管理', 'child' => array(
             // array('name' => '分销商品', 'act' => 'goods_list', 'op' => 'Distribut'),
             // array('name' => '分销商列表', 'act' => 'distributor_list', 'op' => 'Distribut'),
@@ -139,7 +147,7 @@ return array(
             array('name' => '模板消息', 'act' => 'template_msg', 'op' => 'Wechat'),
             array('name' => '素材管理', 'act' => 'materials', 'op' => 'Wechat'),
         )),
-    )),
+    )),*/
 
     'member' => array('name' => '会员', 'child' => array(
         array('name' => '会员管理', 'child' => array(
@@ -174,7 +182,7 @@ return array(
 					// array('name' => '优惠促销', 'act'=>'prom_goods_list', 'op'=>'Promotion'),
 					// array('name' => '订单促销', 'act'=>'prom_order_list', 'op'=>'Promotion'),
 					// array('name' => '预售管理','act'=>'index', 'op'=>'PreSell'),
-					// array('name' => '拼团管理','act'=>'index', 'op'=>'Team'),
+					array('name' => '拼团管理','act'=>'index', 'op'=>'Team'),
 					// array('name' => '搭配购管理','act'=>'index', 'op'=>'Combination'),
 			)),
 			// array('name' => '优惠积分','child' => array(
@@ -188,11 +196,13 @@ return array(
 			array('name' => '模式管理', 'child' => array(
 				// array('name' => '分销商品', 'act' => 'goods_list', 'op' => 'Distribut'),
 				// array('name' => '分销商列表', 'act' => 'distributor_list', 'op' => 'Distribut'),
-				array('name' => '等级关系', 'act' => 'tree', 'op' => 'Distribut'),
+				
 				array('name' => '分销商设置', 'act' => 'grade_list', 'op' => 'Distribut'),
-				array('name' => '代理商设置', 'act' => 'agent_grade_list', 'op' => 'Distribut'),
+                array('name' => '代理商设置', 'act' => 'agent_grade_list', 'op' => 'Distribut'),
+                // array('name' => '等级关系', 'act' => 'tree', 'op' => 'Distribut'),
 				// array('name' => '分销设置', 'act' => 'distribut', 'op' => 'System'),
-				// array('name' => '日志', 'act' => 'rebate_log', 'op' => 'Distribut'),
+				array('name' => '分成日志列表', 'act' => 'rebate_log', 'op' => 'Distribut'),
+				array('name' => '消费日志列表', 'act' => 'consume_log', 'op' => 'Distribut'),
 			)),
 	     
     	    array('name' => '微信接入','child' => array(
@@ -225,6 +235,7 @@ return array(
         array('name' => '门店管理', 'child' => array(
             array('name' => '门店列表', 'act' => 'index', 'op' => 'shop'),
             array('name' => '核销员列表', 'act' => 'write_off_clerk_list', 'op' => 'shop'),
+            array('name' => '门店商品管理', 'act' => 'shop_goods_list', 'op' => 'shop'),
         )),
         array('name' => '线下取货', 'child' => array(
             // array('name' => '取货列表', 'act'=>'pickup_list', 'op'=>'Pickup'),

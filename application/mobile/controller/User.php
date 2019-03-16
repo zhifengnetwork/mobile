@@ -50,9 +50,12 @@ class User extends MobileBase
         $is_bind_account = tpCache('basic.is_bind_account');
         if (!$this->user_id && !in_array(ACTION_NAME, $nologin)) {
             if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger') && $is_bind_account){
-                header("location:" . U('Mobile/User/bind_guide'));//微信浏览器, 调到绑定账号引导页面
+
+                header("location:" . U('shop/User/login'));
+
+                //header("location:" . U('Mobile/User/bind_guide'));//微信浏览器, 调到绑定账号引导页面
             }else{
-                header("location:" . U('Mobile/User/login'));
+                header("location:" . U('shop/User/login'));
             }
             exit;
         }
@@ -96,11 +99,11 @@ class User extends MobileBase
             //去掉最大业绩之和
             $moneys = array_sum($moneys);
             $agent = $this->child_agent($user['user_id']);
-            $money_total = $agent['ind_per']+$agent['agent_per'];
+            $money_total1 = $agent['ind_per']+$agent['agent_per'];
             $money_total = array(
-                'money_total'=>$money_total,
+                'money_total'=>$money_total1,
                 'max_moneys'=>$max_moneys,
-                'moneys'=>$moneys
+                'moneys'=>$money_total1-$max_moneys
             );
             $this->assign('money_total',$money_total);
         }
@@ -224,6 +227,12 @@ class User extends MobileBase
         if ($this->user_id > 0) {
 //            header("Location: " . U('Mobile/User/index'));
             $this->redirect('Mobile/User/index');
+        }else{
+
+            //登录页面改了
+            header("location:" . U('shop/User/login'));
+
+            exit;
         }
         $referurl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : U("Mobile/User/index");
         $this->assign('referurl', $referurl);
@@ -697,6 +706,7 @@ class User extends MobileBase
         $this->assign('city', $city);
         $this->assign('area', $area);
         $this->assign('user', $user_info);
+
         $this->assign('sex', C('SEX'));
         //从哪个修改用户信息页面进来，
         $dispaly = I('action');
@@ -1268,6 +1278,17 @@ class User extends MobileBase
                 $res2=Db::name('user_extend')->add($info);
             }
             $this->ajaxReturn(['status'=>1,'msg'=>'操作成功']);
+        }elseif($data['type']==2){
+            $info['bank_card_number']=$data['card'];
+            $info['user_id']=$user_id;
+            $res=DB::name('user_extend')->where('user_id='.$user_id)->count();
+            if($res){
+                $res2=Db::name('user_extend')->where('user_id='.$user_id)->save($info);
+            }else{
+                $res2=Db::name('user_extend')->add($info);
+            }
+            $this->ajaxReturn(['status'=>1,'msg'=>'操作成功']);
+            
         }else{
             //防止非支付宝类型的表单提交
             $this->ajaxReturn(['status'=>0,'msg'=>'不支持的提现方式']);

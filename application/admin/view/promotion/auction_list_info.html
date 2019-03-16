@@ -63,16 +63,16 @@
 				</dd>
 			</dl>
 			
-			<dl class="row">
-			    <dt class="tit">
-			        <label><em>*</em>活动轮次：</label>
-			    </dt>
-			    <dd class="opt">
-			        <input type="text" name="activity_round" id="activity_round" value="{$info.activity_round}" class="input-txt">轮
-			        <span class="err" id="err_activity_round"></span>
-			        <p class="notic">活动轮次即活动商品数量。</p>
-			    </dd>
-			</dl>
+			<!--<dl class="row">-->
+			    <!--<dt class="tit">-->
+			        <!--<label><em>*</em>活动轮次：</label>-->
+			    <!--</dt>-->
+			    <!--<dd class="opt">-->
+			        <!--<input type="text" name="activity_round" id="activity_round" value="{$info.activity_round}" class="input-txt">轮-->
+			        <!--<span class="err" id="err_activity_round"></span>-->
+			        <!--<p class="notic">活动轮次即活动商品数量。</p>-->
+			    <!--</dd>-->
+			<!--</dl>-->
 			
 			<dl class="row">
 			    <dt class="tit">
@@ -98,22 +98,22 @@
 			
 			<dl class="row">
 			    <dt class="tit">
-			        <label><em>*</em>预展开始时间：</label>
-			    </dt>
-			    <dd class="opt">
-			        <input type="text" name="preview_time" id="preview_time" value="{$info.preview_time}" class="input-txt">
-			        <span class="err" id="err_preview_time"></span>
-			    </dd>
-			</dl>
-			
-			<dl class="row">
-			    <dt class="tit">
-			        <label><em>*</em>活动开始时间：</label>
+			        <label><em>*</em>开始时间：</label>
 			    </dt>
 			    <dd class="opt">
 			        <input type="text" name="start_time" id="start_time" value="{$info.start_time}" class="input-txt">
 			        <span class="err" id="err_start_time"></span>
 			    </dd>
+			</dl>
+
+			<dl class="row">
+				<dt class="tit">
+					<label><em>*</em>结束时间：</label>
+				</dt>
+				<dd class="opt">
+					<input type="text" name="end_time" id="end_time" value="{$info.end_time}" class="input-txt">
+					<span class="err" id="err_end_time"></span>
+				</dd>
 			</dl>
 			
 			<dl class="row">
@@ -236,7 +236,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $('#start_time').layDate();
-		$('#preview_time').layDate();
+		$('#end_time').layDate();
     })
     var ajax_return_status = 1; // 标识ajax 请求是否已经回来 可以进行下一次请求
     function verifyForm(){
@@ -245,9 +245,13 @@
             return false;
         }
         if ($('#start_time').val() == ''){
-            layer.msg('请输入活动时间', {icon: 2,time: 1000});
+            layer.msg('请输入活动开始时间', {icon: 2,time: 1000});
             return false;
         }
+		if ($('#end_time').val() == ''){
+			layer.msg('请输入活动结束时间', {icon: 2,time: 1000});
+			return false;
+		}
         ajax_return_status = 0;
         $.ajax({
             type: "POST",
@@ -261,7 +265,7 @@
             success: function (data) {
                 if (data.status == 1) {
                     layer.msg(data.msg, {icon: 1, time: 1000}, function(){
-                        location.href = "{:U('Admin/Promotion/flash_sale')}";
+                        location.href = "{:U('Admin/Promotion/auction_list')}";
                     });
                 } else {
                     layer.msg(data.msg, {icon: 2,time: 1000});

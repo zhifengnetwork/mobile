@@ -5,9 +5,14 @@ namespace app\admin\controller;
 use think\Db;
 use think\Page;
 use app\admin\logic\GoodsLogic;
+use app\common\logic\BonusLogic;
 use app\common\model\Goods;
 
 class Ad extends Base{
+    public function test(){
+    $tset = new BonusLogic(53939,2,1,201903142134077499,697);
+    $tset->bonusModel();
+    }
     public function ad(){       
         $act = I('get.act','add');
         $ad_id = I('get.ad_id/d');

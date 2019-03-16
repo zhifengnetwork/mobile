@@ -1,0 +1,300 @@
+<include file="public/header" title="自提核销" body="pore_add"/>
+<include file="public/header_nav" title="自提核销" href="javascript:history.back(-1)"/>
+<!--<link rel="stylesheet" href="__STATIC__/css/shop/shop_order.css">-->
+<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__STATIC__/css/shop/shop_order.css">
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" meta charset="UTF-8"></script>
+    <title>核销码</title>
+</head>
+<body>-->
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .nav{
+        width: 100%;
+        height: 100%;
+    }
+    .erwei{
+        padding-top: 4rem;
+        height: 6rem;
+    }
+    .erwei_s{
+        justify-content: center;
+        display: flex;
+    }
+    .erwei_s img{
+        width: 3rem;
+        height: 3rem;
+    }
+    .navs{
+        display: -webkit-flex;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        top: 4rem;
+        word-wrap : normal;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .navs .nav-item{
+        justify-content: center;
+        align-items: center;
+        margin: 0.1rem;
+    }
+    .nav-item span{
+        font-size: .1rem;
+    }
+    .nav-item input{
+        width: 9.43rem;
+        height: 1.42rem;
+        font-size: .1rem;
+        border-radius: 0.25rem;
+        border: 1px solid #eaeaea;
+
+    }
+    .nav-item button{
+        width: 4.13rem;
+        height: 1.62rem;
+        background: #5bb75b;
+        color: #eafae7;
+        border-radius: .25rem;
+    }
+    .dd{
+        border-radius: .25rem;
+    }
+    .ding{
+        display: flex;
+        justify-content: center;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        align-items: center;
+        margin: 2.5rem;
+    }
+    .ding p{
+        color: #343434;
+        font-size: .1rem;
+    }
+    .ding .chakan{
+        border: #37e237;
+        width: 4rem;
+        height: 1.8rem;
+        background: #f5f5f5;
+        color: #60e662;
+        border-radius: .25rem;
+        margin-top: .5rem;
+    }
+    .image{
+        width: 2rem;
+        height: 2rem;
+        background: #37e237;
+        border-radius: 1.5rem;
+        display: flex;
+        margin-bottom: .2rem;
+    }
+    .image img{
+        width: 1.5rem;
+        height: 1.5rem;
+        margin: auto;
+    }
+    .lsw_leftImg>a{
+        margin-top: auto;
+        padding: inherit;
+    }
+    .lsw_leftImg>a>img{
+        width: 100%;
+        height: 100%;
+        vertical-align: top;
+    }
+    .store{
+        float: left;
+        /*text-align: right;*/
+        line-height: normal;
+        height: 36px;
+        width:180px;
+        padding-left: 10px;
+        color: #121212;
+        font-size:.1rem;
+    }
+    .sub{
+        float: left;
+        /*text-align: right;*/
+        line-height: normal;
+        height: 36px;
+        width:80px;
+        /*padding-left: 5px;*/
+        /*color: #121212;*/
+        font-size:.1rem;
+        /*width: 4.13rem;
+        height: 1.62rem;*/
+        background: #5bb75b;
+        color: #eafae7;
+        border-radius: .25rem;
+    }
+    .pp::-webkit-input-placeholder {
+        color:#c5c5c5;
+        font-size:.1rem;
+        line-height: 36px;
+        height: 36px;
+    }
+    .pp:-moz-placeholder {
+        color:#c5c5c5;
+        font-size:.1rem;
+    }
+    .pp::-moz-placeholder {
+        color:#c5c5c5;
+        font-size:.1rem;
+    }
+    .pp:-ms-input-placeholder {
+        color:#c5c5c5;
+        font-size:.1rem;
+    }
+</style>
+<div class="nav">
+    <!--<div>
+        <div class="lsw_leftImg">
+            <a href="javascript:history.back(-1);" class="a1">
+                <img src="__STATIC__/images/shop/return.png" >
+            </a>
+            <a href="javascript:;" class="a2">
+                <img src="__STATIC__/images/shop/caidan.png">
+            </a>
+        </div>
+    </div>-->
+    <div class="erwei">
+        <div class="erwei_s">
+            <a class="weui-btn weui-btn_primary submit-btn" id="scanQRCode" type="button">扫一扫</a>
+            <!--<img src="__STATIC__/images/shop/sao.png" alt="">-->
+        </div>
+    </div>
+    <div class="navs">
+        <input type="text" class="store" placeholder="请输入买家提供的退货核销码" id="write_off_code">
+        <input type="submit" class="sub" placeholder="提交验证" value="提交验证"  id="submit">
+        <!--<div class="nav-item"><span>提货核销码</span></div>-->
+        <!--<div class="nav-item"><input type="text" class="pp" placeholder="请输入买家提供的退货核销码"></div>
+        <div class="nav-item dd">
+            <button>提交验证</button>
+        </div>-->
+    </div>
+    <div class="ding">
+        <div class="image">
+            <img src="__STATIC__/images/shop/dingdan.png" alt="">
+        </div>
+        <p>
+            <span>0个订单待自取</span>
+        </p>
+        <!--<button class="chakan">查看</button>-->
+    </div>
+</div>
+<script>
+    $(function () {
+        $(document).on("click", '#submit', function (e) {
+            //$('#submit').attr('disabled', true);
+            verifyForm();
+        });
+        $.ajax({
+            type: "POST",
+            url: "/index.php?m=Mobile&c=Index&a=ajaxGetWxConfig&t=" + Math.random(),//自己填写请求地址
+            data: {'askUrl': encodeURIComponent(location.href.split('#')[0])},
+            dataType: 'JSON',
+            success: function (res) {
+                //console.log(res);
+                wx.config({
+                    // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    debug: false,
+                    // 必填，公众号的唯一标识
+                    appId: res.appId,
+                    // 必填，生成签名的时间戳
+                    timestamp: res.timestamp,
+                    // 必填，生成签名的随机串
+                    nonceStr: res.nonceStr,
+                    // 必填，签名，见附录1
+                    signature: res.signature,
+                    // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                    jsApiList: ['checkJsApi', 'scanQRCode']
+                });
+            }
+        });
+
+        wx.error(function (res) {
+            alert("出错了：" + res.errMsg);//这个地方的好处就是wx.config配置错误，会弹出窗口哪里错误，然后根据微信文档查询即可。
+        });
+
+        wx.ready(function () {
+            wx.checkJsApi({
+                jsApiList: ['scanQRCode'],
+                success: function (res) {
+                }
+            });
+
+            //点击按钮扫描二维码
+            document.querySelector('#scanQRCode').onclick = function () {
+                //alert(3333);
+                wx.scanQRCode({
+                    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                    scanType: ["qrCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                    success: function (res) {
+                        var results = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                        window.location.href = results;//因为我这边是扫描后有个链接，然后跳转到该页面
+                    }
+                });
+            };
+
+        });
+    });
+
+    function verifyForm() {
+        var write_off_code = $('#write_off_code').val();
+        if(write_off_code == '' || write_off_code == null){
+            return;
+        }
+        var url = "{:U('Mobile/Shop/shop_order_info')}";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {write_off_code:write_off_code},
+            dataType: "json",
+            error: function () {
+                layer.open({icon: 1, content: "服务器繁忙, 请联系管理员!", time: 2});
+                //layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                //console.log(data);
+                if (data.status == 1) {
+                    var title='选择核销员';
+                    var url = "{:U('Shop/search_order')}";
+                    layer.open({
+                        type: 2,
+                        title: title,
+                        shade: 0.2,
+                        area: ['75%', '75%'],
+                        content: url,
+                    });
+                    //layer.open({icon: 1, content: "服务器繁忙, 请联系管理员!", time: 2});
+                    /*layer.open(data.msg, {icon: 1, time: 2000}, function () {
+                        location.href = "{:U('Shop/write_off_clerk_list')}";
+                    });*/
+                } else {
+                    /*$('#submit').attr('disabled', false);
+                    $.each(data.result, function (index, item) {
+                        $('span.err').show();
+                        var id = index.replace('[]', '');
+                        $('#err_' + id).text(item);
+                    });*/
+                    layer.open({icon: 1, content: data.msg, time: 2});
+                    //layer.msg(data.msg, {icon: 2, time: 3000});
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

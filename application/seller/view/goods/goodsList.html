@@ -39,14 +39,14 @@
     <div class="mDiv">
       <div class="ftitle">
         <h3>商品列表</h3>
-        <h5></h5>
+        <!--<h5></h5>
           <div class="fbutton">
               <a href="http://help.tp-shop.cn/Index/Help/info/cat_id/5/id/5.html" target="_blank">
                   <div class="add" title="帮助">
                       <span>帮助</span>
                   </div>
               </a>
-          </div>
+          </div>-->
       </div>
         <a href=""><div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div></a>
 	<form action="" id="search-form2" class="navbar-form form-inline" method="post" onSubmit="return false">
@@ -139,14 +139,14 @@
     <div class="tDiv">
       <div class="tDiv2">
         <div class="fbutton">       
-          <a href="{:U('Admin/goods/addEditGoods')}">
+          <a href="{:U('Seller/goods/addEditGoods')}">
           <div class="add" title="添加商品">
             <span><i class="fa fa-plus"></i>添加商品</span>
           </div>
           </a>          
           </div> 
         <div class="fbutton">
-            <a href="{:U('Admin/Goods/initGoodsSearchWord')}">
+            <a href="{:U('Seller/Goods/initGoodsSearchWord')}">
                 <div class="add" title="初始化商品搜索关键词">
                     <span><i class="fa fa-plus"></i>初始化商品搜索关键词</span>
                 </div>
@@ -164,7 +164,7 @@
     </div>
     <div class="bDiv" style="height: auto;">
      <!--ajax 返回 --> 
-      <div id="flexigrid" cellpadding="0" cellspacing="0" border="0" data-url="{:U('admin/goods/delGoods')}"></div>
+      <div id="flexigrid" cellpadding="0" cellspacing="0" border="0" data-url="{:U('seller/goods/delGoods')}"></div>
     </div>
 
      </div>

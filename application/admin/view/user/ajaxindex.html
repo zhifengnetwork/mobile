@@ -10,11 +10,32 @@
                     <div style="text-align: center; width: 40px;">{$list.user_id}</div>
                 </td>
                 <td align="left" class="">
-                    <div style="text-align: center; width: 150px;">{$list.nickname}</div>
+                    <div style="text-align: center; width: 150px;">{$list.first_leader|get_agent_user}</div>
                 </td>
                 <td align="left" class="">
-                    <div style="text-align: center; width: 50px;">{$level[$list.level]}</div>
+                    <div style="text-align: center; width: 150px;">{$list.nickname}</div>
                 </td>
+                <if condition="$level[$list.agent_user]">
+                        <td align="left" class="">
+                            <div style="text-align: center; width: 80px;">{$level[$list.agent_user]}</div>
+                        </td>
+                    <else>
+                            <td align="left" class="">
+                                <div style="text-align: center; width: 80px; color: brown">否</div>
+                            </td>
+                    </else>
+                </if>
+                
+                <if condition="$list.is_distribut == 1">
+                    <td align="left" class="">
+                        <div style="text-align: center; width: 50px;">是</div>
+                    </td>
+                    <else>
+                            <td align="left" class="">
+                                <div style="text-align: center; width: 50px;color: brown">否</div>
+                            </td>
+                    </else>
+                </if>
                 <td align="left" class="">
                     <div style="text-align: center; width: 50px;">{$list.total_amount}</div>
                 </td>

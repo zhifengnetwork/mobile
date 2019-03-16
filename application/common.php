@@ -40,11 +40,11 @@ function get_uper_user($data)
  */
 function getAllUp($invite_id,&$userList=array())
 {           
-    $field  = "user_id,first_leader";
+    $field  = "user_id,first_leader,agent_user,is_lock";
     $UpInfo = M('users')->field($field)->where(['user_id'=>$invite_id])->find();
     if($UpInfo)  //有上级
     {
-        $userList[] = $UpInfo;                                                
+        $userList[] = $UpInfo;                                      
         getAllUp($UpInfo['first_leader'],$userList);
     }
     
@@ -69,7 +69,7 @@ function getAllUp($invite_id,&$userList=array())
     $orderSn = $order['order_sn'];
 
     $goods_list = M('order_goods')->where(['order_id'=>$order_id])->select();
-
+    agent_performance($order_id);
     foreach($goods_list as $k => $v){
 
         $goodId = $v['goods_id'];
@@ -77,9 +77,7 @@ function getAllUp($invite_id,&$userList=array())
 
         $model = new BonusLogic($userId, $goodId,$goodNum,$orderSn,$order_id);
         $res = $model->bonusModel();
-
     }
-
  }
 
 
@@ -88,8 +86,8 @@ function getAllUp($invite_id,&$userList=array())
   */
  function agent_performance($order_id){
 
-    $order = M('order')->where(['order_id'=>$order_id])->field('order_amount,user_id')->find();
-    $order_amount = $order['order_amount'];
+    $order = M('order')->where(['order_id'=>$order_id])->field('order_amount,user_id,goods_price')->find();
+    $order_amount = $order['goods_price'];
     $user_id = $order['user_id'];
 
     //加个人业绩(下单人)

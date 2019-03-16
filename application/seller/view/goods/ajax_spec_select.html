@@ -116,7 +116,7 @@ function ajaxGetSpecInput2(spec_arr) {
     $.ajax({
         type: 'POST',
         data: {spec_arr: spec_arr, goods_id: goods_id},
-        url: "/index.php/admin/Goods/ajaxGetSpecInput",
+        url: "/index.php/seller/Goods/ajaxGetSpecInput",
         success: function (data) {
             $("#goods_spec_table2").html('').append(data);
             hbdyg();  // 合并单元格

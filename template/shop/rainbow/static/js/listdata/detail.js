@@ -30,10 +30,11 @@ $(document).ready(function(){
 	/*购买的数量(后台)*/
 	var count = $('#commNumber_lb').html();
 	/*收藏 按钮*/
-//	$('.collectionFun').on('click',function(){
-////		$(this).find('.collectionImgL').attr('src','__STATIC__/images/public_lb/collectionIcon_lb.png');
-////		$(this).find('.collectionImgL').attr('src','__STATIC__/images/public_lb/collectionYse_lb.png');
-//	})
+	$('.collectionFun').on('click',function(){
+		alert(123);
+		// $(this).find('.collectionImgL').attr('src','__STATIC__/images/public_lb/collectionIcon_lb.png');
+		// $(this).find('.collectionImgL').attr('src','__STATIC__/images/public_lb/collectionYse_lb.png');
+	})
 	/*关闭-拼单-弹框*/
 	$('.asHeadCIconBox').on('click',function(){
 		$('.assembleAlertWrap').hide();
@@ -91,5 +92,6 @@ $(document).ready(function(){
 		}
 		$('#commNumber_lb').html(count);
 	})
+
 	
 })

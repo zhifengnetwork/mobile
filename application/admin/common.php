@@ -13,6 +13,24 @@ function get_agent_log($user_id){
 
 	return $money;
 }
+function get_agent_user($first_leader){
+
+	
+	$first_leader_user = M('users')->where(['user_id'=>$first_leader])->find();
+	if(empty($first_leader_user)){
+		$name = "无";
+	}else{
+		if($first_leader_user['nickname'] == null)
+		{
+			$name = $first_leader_user['mobile'];
+		}else{
+			$name = $first_leader_user['nickname'];
+		}
+	}
+
+	return $name;
+}
+
 /**
  * 管理员操作记录
  * @param $log_info string 记录信息

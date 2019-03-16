@@ -58,22 +58,7 @@
 							</a>
 						</div>
 					</div>
-                    <div class="myorder p">
-						<div class="content30">
-								<div class="order">
-									<div class="fl">
-										<span>生日</span>
-									</div>
-									<div class="fr" id="birthday_time">
-                                        <form id="birthday_submit" method="post" enctype="multipart/form-data">
-                                            <span>{:date('Y-m-d',$user.birthday)}</span>
-                                            <input  type="hidden" name="birthday" id="birthday" value="{:date('Y-m-d',$user.birthday)}">
-                                            <i class="Mright"></i>
-                                        </form>
-									</div>
-								</div>
-						</div>
-					</div>
+                   
                     <script>
                         var calendar = new datePicker();
                         calendar.init({

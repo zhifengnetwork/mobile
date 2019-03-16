@@ -112,7 +112,7 @@
 	    cur_page = page; //当前页面 保存为全局变量
 	        $.ajax({
 	            type : "POST",
-	            url:"/index.php/Admin/order/ajax_return_list/p/"+page,//+tab,
+	            url:"/index.php/Seller/order/ajax_return_list/p/"+page,//+tab,
 	            data : $('#'+tab).serialize(),// 你的formid
 	            success: function(data){
 	                $("#flexigrid").html('');

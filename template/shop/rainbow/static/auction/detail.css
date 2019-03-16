@@ -12,6 +12,8 @@
 }
 #daoend{
 	display: none;
+	padding-left: .15rem;
+	
 }
 
 .header{
@@ -33,6 +35,9 @@
 	z-index: 100;
 	background: #C7354C;
 	opacity:0.7;
+	
+	
+	
 	
 }
 .fu{
@@ -123,6 +128,7 @@
 	border-bottom: 3px solid #EEEEEE;
 	
 }
+
 .zongshu{
 	
 	width: 96%;
@@ -153,6 +159,7 @@
 	float: right;
 	
 }
+
 .tiaoshu{
 	
 	display: block;
@@ -187,54 +194,128 @@
 	padding-right:9%;
 }
 
+.baobei{
+	margin-top: .7rem;
+	padding-bottom: .2rem;
+	font-size: .25rem;
+	border-bottom: 6px solid #EEEEEE;
+	
+}
+.pleft,.pright{
+
+display: inline-block;
+
+}
+.pright{
+	
+	float: right;
+	
+	
+}
+.pleft span:nth-child(1),.pright span:nth-child(1){
+vertical-align: bottom;		
+display: inline-block;
+width: 1.5rem;
+margin-left: .1rem;
+
+}
+.pleft span:nth-child(2),.pright span:nth-child(2){
+
+vertical-align: bottom;	
+display: inline-block;
+width: 2rem;
+text-overflow: ellipsis;
+overflow: hidden;
+white-space: nowrap;
+color: gray;
+
+
+}
+
+
+
+
+#xiangqing{
+	
+	border-top: none;
+	
+	
+	
+}
+
+
+
 .rule{
 	
 	text-align: center;
 	font-size: .29rem;
     margin-bottom: .2rem;
-   
-	
+  
 
 }
 .number{
 	
-	height: .9rem;
-	border-bottom: 2px solid #EEEEEE;
-	position: relative;
-    top: .7rem; 
+	height: 1.1rem;
+	width: 100%;
+	position: fixed;
+	border-top: 1px solid #eeeeee;
+	bottom: 0px;
+	background: white;
+	
+	
+	
 	
 	
 }
 #form{
-	position: absolute;
-	top: -.5rem;	
+	
+	position: fixed;
+	bottom: .2rem;
+	
+	
+}
+#mmer{
+	
+	margin-left: .06rem;
+	margin-right: .06rem;
+	margin-top:.1rem ;
+	
 }
 
 
 #myprice{
 	
-	margin-bottom: .2rem;
-	position: absolute;
+	
+	position: fixed;
 	right: .5rem;
-	margin-top:-.1rem;
+	bottom: .1rem;
 	background:#C92142;
 	color: white; 
 	display: inline-block;
 	width:2.4rem; 
-	height: .7rem; 
+	height: .7rem;
+	line-height: .7rem;
 	border-radius: .03rem;
-	font-size: .2rem; 
+	font-size: .3rem; 
 	text-align: center; 
 	border-radius:10%;
 	margin-left:3.2rem;
 	cursor: pointer;
 	padding: .1rem 0;
+	vertical-align: bottom;
 
 }
+.ccc{
+	
+	text-align: center;
+	line-height:.35rem ;
+	
+}
+
 
 .content{
 	
-	padding-bottom: 1.4rem;
+	padding-bottom: 1.7rem;
 	
 	
 }
@@ -314,8 +395,8 @@ ul li{
 	border-top: 2px solid #EEEEEE;
 	padding-left: .2rem;
 	font-size: .3rem;
-	height: 1rem;
-	line-height: 1rem;
+	height: .7rem;
+	line-height: .7rem;
 	
 	
 }
@@ -443,7 +524,7 @@ li input  {
 #tobuy1{
 	
 	width: 1.5rem;
-	background: #FF5623;
+	background: #C92142;
 	color: white;
 	font-size: .2rem;
 	padding: .2rem 0;

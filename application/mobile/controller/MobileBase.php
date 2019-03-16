@@ -28,6 +28,33 @@ class MobileBase extends Controller {
         else 
             cookie('is_mobile','0',3600);
         
+               
+        $first_leader = I('first_leader');
+        if((int)$first_leader > 0){
+            session('first_leader',$first_leader);
+            $user_id = session('user.user_id');
+            share_deal_after($user_id,(int)$first_leader);
+        }
+
+        
+        //处理 openid 不一致的 问题
+        $tempuser = session('tempuser');
+    
+        $openid = $tempuser['openid'];
+      
+        if($openid){
+            $uuuuid = session('user.user_id');
+           
+            $xianzai_openid = M('users')->where(['user_id'=>$uuuuid ])->value('openid');
+           
+            if($openid != $xianzai_openid){
+                //以 新的 为准
+               
+                M('users')->where(['user_id'=> $uuuuid ])->update(['openid'=>$openid,'old_openid'=>$xianzai_openid]);
+            }
+        }
+
+
         //微信浏览器
         if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
             $this->weixin_config = M('wx_user')->find(); //取微获信配置
@@ -43,28 +70,55 @@ class MobileBase extends Controller {
                 }
             } 
             if (empty(session('openid'))){
-               
+            
                 if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1){
                     $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
-                     
+                    
+                    session('tempuser',$wxuser);
+                    
+                    //新登录流程
+                    if($wxuser['openid']){
+                        //直接去 user 查找
+
+                        $userdata = M('users')->where(['openid'=>$wxuser['openid']])->find();
+                        if($userdata){
+                            session('user',$userdata);
+                            //登录成功
+                        }else{
+
+                            if(ACTION_NAME != 'login'){
+
+                                //如果不存在，跳去手机号码登录
+                                header('Location:'.U('/shop/User/login'));
+                                exit;
+
+                            }
+                        }
+
+                    }
+                    
+                    exit;
+                    
                     //过滤特殊字符串
                     $wxuser['nickname'] && $wxuser['nickname'] = replaceSpecialStr($wxuser['nickname']);
                     
                     session('subscribe', $wxuser['subscribe']);// 当前这个用户是否关注了微信公众号
                     setcookie('subscribe',$wxuser['subscribe']);
                     $logic = new UsersLogic(); 
+                
                     $is_bind_account = tpCache('basic.is_bind_account');
-                     if ($is_bind_account) {
-                         if (CONTROLLER_NAME != 'User' || ACTION_NAME != 'bind_guide') {
+                    if ($is_bind_account) {
+                        if (CONTROLLER_NAME != 'User' || ACTION_NAME != 'bind_guide') {
                             $data = $logic->thirdLogin_new($wxuser);//微信自动登录
                             if ($data['status'] != 1 && $data['result'] === '100') {
-                                 session("third_oauth" , $wxuser);
-                                 $first_leader = I('first_leader');
-                                 $this->redirect(U('Mobile/User/bind_guide',['first_leader'=>$first_leader]));
-                           }
-                         }
+                                session("third_oauth" , $wxuser);
+                                $first_leader = I('first_leader');
+                                $this->redirect(U('Mobile/User/bind_guide',['first_leader'=>$first_leader]));
+                        }
+                        }
                     } else { 
                         $data = $logic->thirdLogin($wxuser);
+                        //直接去登录，空 就注册
                     }
                     if($data['status'] == 1){
                         session('user',$data['result']);
@@ -83,12 +137,9 @@ class MobileBase extends Controller {
                 setcookie('is_distribut',$user_temp['is_distribut'],null,'/');
             }
         }
+
         
-        $first_leader = I('first_leader');
-        if($first_leader){
-            $user_id = session('user.user_id');
-            share_deal_after($user_id,(int)$first_leader);
-        }
+     
 
         $this->public_assign();
     }

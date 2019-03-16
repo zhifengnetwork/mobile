@@ -32,7 +32,7 @@
         <h5>(共{$page->totalRows}条记录)</h5>
       </div>
       <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
-	  <form class="navbar-form form-inline"  method="post" action="{:U('Admin/order/export_order')}"  name="search-form2" id="search-form2">  
+	  <form class="navbar-form form-inline"  method="post" action="{:U('Seller/order/export_order')}"  name="search-form2" id="search-form2">
 	  		<input type="hidden" name="order_by" value="order_id">
             <input type="hidden" name="sort" value="desc">
             <input type="hidden" name="user_id" value="{$Request.param.user_id}">
@@ -215,7 +215,7 @@
         cur_page = page; //当前页面 保存为全局变量
         $.ajax({
             type : "POST",
-            url:"/index.php/Admin/order/ajaxindex/p/"+page,//+tab,
+            url:"/index.php/Seller/order/ajaxindex/p/"+page,//+tab,
             data : $('#'+tab).serialize(),//
             success: function(data){
                 $("#flexigrid").html('');

@@ -44,13 +44,14 @@ class BonusLogic extends Model
 		if(($good['is_distribut'] == 1) && ($good['is_agent'] == 1)){
 			$dist = $this->distribution();
 			$agent = $this->theAgent($this->userId);
+			$this->sel($this->userId,$price);
 			return true;
 		}else if($good['is_distribut'] == 1){
 			$dist = $this->distribution();
 			return true;
 		}else if($good['is_agent'] == 1){
-			$this->sel($this->userId,$price);
 			$agent = $this->theAgent($this->userId);
+			$this->sel($this->userId,$price);
 			return true;
 		}else{
             return false;
@@ -82,7 +83,7 @@ class BonusLogic extends Model
 
         if ($bool !== false) {
         	$desc = "分销所得佣金";
-        	$log = $this->writeLog($distributor['first_leader'],$commission,$desc); //写入日志
+        	$log = $this->writeLog($distributor['first_leader'],$commission,$desc,101); //写入日志
 
         	return true;
         } else {
@@ -92,7 +93,7 @@ class BonusLogic extends Model
 	}
 
 	//记录日志
-	public function writeLog($userId,$money,$desc)
+	public function writeLog($userId,$money,$desc,$states)
 	{
 		$data = array(
 			'user_id'=>$userId,
@@ -100,7 +101,8 @@ class BonusLogic extends Model
 			'change_time'=>time(),
 			'desc'=>$desc,
 			'order_sn'=>$this->orderSn,
-			'order_id'=>$this->orderId
+			'order_id'=>$this->orderId,
+			'states'=>$states
 		);
 
 		$bool = M('account_log')->insert($data);
@@ -136,7 +138,7 @@ class BonusLogic extends Model
 		return $users;
 	}
 
-	//查询用户上级信息
+	//查询用户信息
 	public function first_leader($user_id){
 
 		$users = M('users')->where(['user_id'=>$user_id])->find();
@@ -144,98 +146,77 @@ class BonusLogic extends Model
 	}
 
 	/**
-	* 代理模式
+	* 代理升级
 	**/
 	public function theAgent($uid)
 	{
 
-		$agentLevel = M('users')->where('user_id', $uid)->value('first_leader');
-		//上级升级
+		$leaderId = M('users')->where('user_id', $uid)->value('first_leader');
+		if(!$leaderId) return false;
 		$top_level = new LevelLogic();
-		$result = $top_level->user_in($agentLevel);
-		
+		$result = $top_level->user_in($leaderId);
+		return true;
 	}
-
+	//极差,平级
 	public function sel($agentId,$price)
 	{
-		$allHead = get_uper_user($agentId);
-		foreach($allHead['recUser'] as $k => $v){
-			$bool = $this->poorAgent($v['user_id'],$v['first_leader'],$price);
+		$meetUser = get_uper_user($agentId);
+		if($meetUser['recUser'] && count($meetUser['recUser'])){
+			$this->bonus($meetUser['recUser'],$price);
 		}
 	}
 
-	//极差
-	public function poorAgent($agentId,$headId,$price)
+
+	public function bonus($meetUser,$price)
 	{
-		//代理信息
-		$agent = $this->agent($agentId);
-
-		$headAgent = $this->headAgent($agentId);
-		if (!$headAgent) {
-			return false;
-		}
-
-		$money = 0;
-		$bool = true;
-
-		if ($agent) {
-			//判断等级
-			if ($agent['level'] > $headAgent['level']) {
-				return false;
-			}
-			//是否同等级
-			if ($headAgent['level'] == $agent['level']) {
-				if ($headAgent['level'] == 6) {
-					$next = $this->agent($agentId);
-
-					if ($next['level'] && $next['level'] == 6) {
-						return false;
-					}
-
-					$money = $price * ($headAgent['rate'] - $agent['rate']) / 100 * 0.1;
-				}
-			} else {
-				$money = $price * ($headAgent['rate'] - $agent['rate']) / 100;
-			}
-		} elseif ($agentId == $this->userId) {
-			 return false;
-		} else {
-			$money = $price * $headAgent['rate'] / 100;
-			$bool = false;
-		}
+		$logName  = '极差奖';
+		//获取分红比例
+		$rateArr  = $this->get_js_rate();
+		$useRate = 0;
+		$pj_money = 0;
+		$userLevel = 0;
+		$sourceType = 4;
 		
-		$is_true = M('users')->where('user_id',$headAgent['uid'])->setInc('user_money',$money);
-
-		if ($is_true !== false) {
-			$desc = "代理所得佣金";
-			$log = $this->writeLog($headAgent['uid'],$money,$desc);  //写入日志		
+		foreach($meetUser as $k => $user){
+			if($k<=0) continue;
+			if(!$user['agent_user'] || $user['is_lock'] == 1) continue;
+			$grade  = $user['agent_user'];
+			if($grade<$userLevel) continue;
+			$jsRate = $rateArr[$grade] - $useRate;
+			if($jsRate<0) continue;
+		
+			$money = $price*$jsRate/100;
+			if($jsRate==0 && $grade==5) 
+			{
+				$jsRate  = $rateArr[127];
+				$logName = '平级奖';
+				$sourceType = 5;
+				$money = $pj_money*$jsRate/100;
+			}
+			$useRate = $rateArr[$grade];
+			$userLevel = $grade;
+			$pj_money = $money;
+			$users = $this->first_leader($user['user_id']);
+			$data = array(
+				'user_money'=>$users['user_money']+$money
+			);
+			$res = M('users')->where(['user_id'=>$users['user_id']])->update($data);
+			if($res)
+			{
+				$this->writeLog($users['user_id'],$money,$logName,101);
+			}
 		}
-
-		return $bool;
 	}
 
-	//上级代理信息
-	public function headAgent($agentId)
+	//获取用户分红比例
+	private function get_js_rate()
 	{
-		$agent = M('agent_info')->alias('info')
-				 ->join('user_level level','level.level = info.level_id')
-				 ->where('info.uid',$agentId)
-				 ->where('level.level','neq',0)
-				 ->field('info.agent_id,level.level,level.rate,info.uid')
-				 ->find();
-
-		return $agent;
-	}
-
-	//代理
-	public function agent($agentId)
-	{
-		$agent = M('agent_info')->alias('info')
-				 ->join('user_level level','level.level = info.level_id')
-				 ->where('info.head_id',$agentId)
-				 ->field('info.agent_id,level.level,level.rate')
-				 ->find();
-
-		return $agent;
+		$user_level = M('user_level')->field("level,rate")->select();
+		$get_js_rate = [];
+		foreach($user_level as $key => $val)
+		{
+			$get_js_rate[$val['level']] = $val['rate'];
+		}
+		return $get_js_rate;
 	}
 }
