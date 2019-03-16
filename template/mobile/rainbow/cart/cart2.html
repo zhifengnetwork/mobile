@@ -1230,6 +1230,16 @@
     }
 
     function submit_order() {
+        var prop = $('#user_money').prop('checked');
+        
+        if(prop){
+            var paypwd = $('#pay_pwd').val();
+            if(!paypwd){
+                showErrorMsg('请输入支付密码');
+                return false;
+            }
+            
+        }
         if ($('.submit_price a').hasClass("disable")) {
             return;
         }
