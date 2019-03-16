@@ -80,8 +80,9 @@ class User extends MobileBase
             $money_array = [];
             foreach($users as $key=>$val){
                 $get_child_agent = $this->child_agent($val['user_id']);
-                $money_array[]=$get_child_agent['agent_per'];
-                // dump($get_child_agent['agent_per']);
+                if($get_child_agent['agent_per'] == null) continue;
+                $money_array[]=$get_child_agent['agent_per']+$get_child_agent['ind_per'];
+                
                 // $$money_array[] = $get_child_agent['agent_per'];
             }
             if(empty($money_array)){
@@ -95,16 +96,19 @@ class User extends MobileBase
             }else{
                 $max_moneys = $moneys[0];
             }
-            array_shift($moneys);
+            // array_shift($moneys);
             //去掉最大业绩之和
             $moneys = array_sum($moneys);
+            
             $agent = $this->child_agent($user['user_id']);
-            $money_total = $agent['ind_per']+$agent['agent_per'];
+            $money_total1 = $agent['ind_per']+$agent['agent_per'];
+            
             $money_total = array(
-                'money_total'=>$money_total,
+                'money_total'=>$money_total1,
                 'max_moneys'=>$max_moneys,
-                'moneys'=>$moneys
+                'moneys'=>$money_total1-$max_moneys
             );
+            // dump($money_total);die;
             $this->assign('money_total',$money_total);
         }
         return $this->fetch();
