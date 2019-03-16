@@ -362,8 +362,8 @@ class User extends MobileBase
             $logic = new UsersLogic();
             //验证码检验
             //$this->verifyHandle('user_reg');
-            $nickname = I('post.nickname', '');
-            $username = I('post.username', '');
+            $nickname = I('post.useriphone', '');
+            $username = I('post.useriphone', '');
             $password = I('post.password', '');
             $password2 = I('post.password2', '');
             $is_bind_account = tpCache('basic.is_bind_account');
