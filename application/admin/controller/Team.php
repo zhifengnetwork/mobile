@@ -33,6 +33,7 @@ class Team extends Base
 	public function info(){
             $act = I('GET.act', 'add');       
             $team_id = I('get.team_id/d');
+            $list = Db::table('tp_users')->find();
             if($team_id){
                 $TeamActivity = new TeamActivity();
                 $team_info = $TeamActivity->with('goods')->find($team_id);
@@ -66,7 +67,6 @@ class Team extends Base
         #   数据验证
         $flag   = Validation::instance(request()->module(), request()->controller(), $data, $data['act'])->check();
         if ($flag !== true) $this->ajaxReturn(['status' => 0, 'msg' => $flag, 'result' => '']);
-
         #   是否需要删除已参团的数据
         if ($data['act'] == 'del')
         {            
@@ -84,12 +84,13 @@ class Team extends Base
 
         if ($data['act'] == 'add')
         {
-                $team_id = Db::name('team_activity')->insertGetId($data);
-                if($team_id){
-                    $this->ajaxReturn(['status' => 1,'msg' =>'操作成功','result' => '']);
-                }else{
-                    $this->ajaxReturn(['status' => 0,'msg' =>'操作失败','result' => '']);
-                }
+            
+            $team_id = Db::name('team_activity')->insertGetId($data);
+            if($team_id){
+                $this->ajaxReturn(['status' => 1,'msg' =>'操作成功','result' => '']);
+            }else{
+                $this->ajaxReturn(['status' => 0,'msg' =>'操作失败','result' => '']);
+            }
 
         }
         if ($data['act'] == 'edit')
