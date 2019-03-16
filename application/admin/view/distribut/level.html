@@ -66,6 +66,18 @@
                     <p class="notic">佣金占比单位为百分比，如输入10，表示该代理等级的用户可获得商品原价10%的佣金</p>
                 </dd>
             </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="peers"><!-- <em>*</em> -->评级奖</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="rate" value="{$info.rate}" id="rate" class="input-txt" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                    <span class="err" id="err_rate"></span>
+                    <p class="notic">
+                        拿平级代理佣金百分比，如输入10，表示拿同等级代理的10%的佣金,最高级才有此奖励
+                    </p>
+                </dd>
+            </dl>
             <!-- <dl class="row">
                 <dt class="tit">
                     等级描述
