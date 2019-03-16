@@ -75,9 +75,10 @@ class DistributLogic
      */
     public function get_team_list($user_id){
         global $result;
+        $id_list = M('users')->field('user_id,first_leader')->select();
+        // $series = $this->get_series($user_id,$id_list);
         $this->get_next($user_id);  //获取下级信息
 
-        // Cache::set('team_list', $result, 3600);
         $page = new Page(count($result),15);
         
         $return = [
@@ -86,8 +87,20 @@ class DistributLogic
             'result'    =>$result,
             'show'      =>$page
         ];
+        
+        Cache::set('team_list', $return, 3600);
+
         return $return;
     }
+
+    // public function get_series($user_id,$id_list)
+    // {
+    //     global $result;
+
+    //     if (array_key_exists($user_id, $id_list)) {
+    //         $result[] = $id_list[$user_id]
+    //     }
+    // }
 
     //获取下级信息
     public function get_next($user_id)
@@ -105,7 +118,7 @@ class DistributLogic
             
             foreach ($next as $key => $value) {
                 if ($value) {
-                    $this->get_team_list($value['user_id'],$result);
+                    $this->get_next($value['user_id']);
                 }
             }
         }

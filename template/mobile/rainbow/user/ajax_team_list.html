@@ -6,14 +6,12 @@
             <li class="li3"><span>+</span></li>
         </ul>
     </foreach> -->
-    <foreach name="lists" item="v" key="i">
-	    <foreach name="v" item="vo" key="j">
-	        <ul> 
-	            <input type="hidden" class="user_id" name="user_id" value="{$vo[user_id]}">  
-	            <li class="li3"><span>{$i+1}级</span>
-	            <li class="li2"><span>{$vo[nickname]}</span></li> 
-	            <li class="li1" style="width:33.3%"><span>{$vo[mobile]}</span></li>  
-	            <!-- <li class="li3"><span id="next">+</span></li> -->
-	        </ul>
-	    </foreach>
+    <foreach name="list" item="v" key="i">
+        <ul> 
+            <input type="hidden" class="user_id" name="user_id" value="{$vo[user_id]}">  
+            <li class="li3"><span></span>
+            <li class="li2"><span>{$vo[nickname]}</span></li> 
+            <li class="li1" style="width:33.3%"><span>{$vo[mobile]}</span></li>  
+            <!-- <li class="li3"><span id="next">+</span></li> -->
+        </ul>
     </foreach>
