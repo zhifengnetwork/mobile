@@ -121,6 +121,14 @@ class User extends MobileBase
     {
         $MenuCfg = new MenuCfg();
         $menu_list = $MenuCfg->where('is_show', 1)->order('menu_id asc')->select();
+        $shopList = Db::name('shopper')->where(['user_id'=>cookie('user_id')])->select();
+        if(empty($shopList)){
+            foreach ($menu_list as $key =>$value){
+                if($value['menu_name'] == "自提核销"){
+                    unset($menu_list[$key]);
+                }
+            }
+        }
         $this->assign('menu_list', $menu_list);
         return $this->fetch();
     }
