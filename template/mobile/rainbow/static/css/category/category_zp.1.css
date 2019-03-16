@@ -1,4 +1,8 @@
-@font-face{
+/*
+ 重写css
+ */
+
+ @font-face{
 	font-family: 'PingFangBold';
 	src:url("../../font/PingFangBold.ttf")
 }

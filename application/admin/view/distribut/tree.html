@@ -66,8 +66,8 @@
         <table cellspacing="0" cellpadding="0" border="0" id="article_cat_table" class="flex-table autoht">
           <tbody id="treet1">
          <foreach name="cat_list" item="vo" key="k" >
-          <input type="hidden" <if condition="name="" id="highest-level">
-          <tr data-level="{$vo[level]}" id="{$vo.level}_{$vo.user_id}" 
+          <input type="hidden" <if condition="" name="" id="highest-level">
+          <tr data-level="{$vo[level]}" id="{$vo.level}_{$vo.user_id}">
           <if condition="$vo.level eq 1">class="parent_id_{$vo.first_leader}"<else />class="parent_id_{$vo.first_leader} tohide"</if>>
               <td class="sign">
                 <div style="text-align: center; width: 24px;"> 

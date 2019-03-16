@@ -31,23 +31,21 @@ class Team extends Base
 	}
 
 	public function info(){
-        $act = I('GET.act', 'add');
-        $groupbuy_id = I('get.team_id/d');
-        
-        if ($groupbuy_id) {
+            $act = I('GET.act', 'add');       
             $team_id = I('get.team_id/d');
             if($team_id){
-                $list = Db::name('team_activity')->where('team_id',$team_id)->select();
-                $this->assign('list',$list[0]);
+                $TeamActivity = new TeamActivity();
+                $team_info = $TeamActivity->with('goods')->find($team_id);
+
+                // $list = Db::name('team_activity')->where('team_id',$team_id)->select();
+                $this->assign('list',$team_info);
                 // dump($list);
+                $act = 'edit';
             }
-            $act = 'edit';
-        }
-        $time=time();
+            
         // $this->assign('min_date', date('Y-m-d H:i:s'));
         // $this->assign('info', $group_info);
         $this->assign('act', $act);
-        $this->assign('time', $time);
 		return $this->fetch();
 	}
 

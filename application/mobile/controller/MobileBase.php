@@ -97,7 +97,7 @@ class MobileBase extends Controller {
 
                     }
                     
-                    exit;
+                   /*
                     
                     //过滤特殊字符串
                     $wxuser['nickname'] && $wxuser['nickname'] = replaceSpecialStr($wxuser['nickname']);
@@ -131,6 +131,9 @@ class MobileBase extends Controller {
                         $cartLogic->setUserId($data['result']['user_id']);
                         $cartLogic->doUserLoginHandle();  //用户登录后 需要对购物车 一些操作
                     }
+
+                    */
+
                 }
             }else{ 
                 setcookie('user_id',$user_temp['user_id'],null,'/');
