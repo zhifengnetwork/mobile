@@ -2,8 +2,8 @@
 /**
  * tpshop 支付宝插件
  * ============================================================================
- * 版权所有 2015-2027 深圳搜豹网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.tp-shop.cn
+ * 版权所有 2015-2027 广州滴蕊生物科技有限公司，并保留所有权利。
+ * 网站地址: http://www.dchqzg1688.com
  * ----------------------------------------------------------------------------
  * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
  * 不允许对程序代码以任何形式任何目的的再发布。
@@ -167,7 +167,7 @@ class alipay extends Model
     // 支付宝批量申请提现转款
     function transfer($data){
     header("Content-type: text/html; charset=utf-8");
-exit("请联系智丰网络客服购买高级版支持此功能");
+exit("请联系DC环球直供网络客服购买高级版支持此功能");
     }
     // 批量申请提现转账回调
     function transfer_response(){
@@ -214,7 +214,7 @@ exit("请联系智丰网络客服购买高级版支持此功能");
     // 支付宝退款原路退回
     public function payment_refund($data){
     header("Content-type: text/html; charset=utf-8");
-exit("请联系智丰网络客服购买高级版支持此功能");
+exit("请联系DC环球直供网络客服购买高级版支持此功能");
     }
     // 退款原路回调
     public function  refund_respose(){
