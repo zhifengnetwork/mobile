@@ -1182,7 +1182,7 @@ class User extends MobileBase
 
     public function team_list(){
     	$DistributLogic = new DistributLogic;
-        Cache::set('team_list','');
+        
         $team_list = tpCache('team_list');
         
         if (!$team_list) {
