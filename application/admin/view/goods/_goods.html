@@ -397,22 +397,12 @@
                     <label>是否为分销商品</label>
                 </dt>
                 <dd class="opt">
-                    <if condition="$goods['is_distribut'] gt 0">
-                        <if condition="$goods['is_distribut'] eq 1">
-                            <span>是</span>
-                            <input name="is_virtual" value="1" type="hidden" disabled="disabled">
-                        <else/>
-                            <span>否</span>
-                            <input name="is_virtual" value="0" type="hidden" disabled="disabled">
-                        </if>
-                    <else/> 
                     <div class="onoff">
-                        <label for="is_distribut1" class="cb-enable <if condition='$goods.is_distribut eq 1'>selected</if>">是</label>
-                        <label for="is_distribut0" class="cb-disable <if condition='$goods.is_distribut eq 0'>selected</if>">否</label>
-                        <input class="is_virtual" id="is_distribut1" name="is_distribut" value="1" type="radio" <if condition="$goods[is_distribut] eq 1"> checked="checked"</if>>
-                        <input class="is_distribut" id="is_distribut0" name="is_distribut" value="0" type="radio" <if condition="$goods[is_distribut] eq 0"> checked="checked"</if>>
+                        <label id="is_distribut_label_1" for="is_distribut1" class="cb-enable <if condition='$goods.is_distribut eq 1'>selected</if>">是</label>
+                        <label id="is_distribut_label_0" for="is_distribut0" class="cb-disable <if condition='$goods.is_distribut eq 0'>selected</if>">否</label>
+                        <input id="is_distribut1" autocomplete="off" class="is_distribut" name="is_distribut" value="1" type="radio" <if condition="$goods[is_distribut] eq 1"> checked="checked"</if>>
+                        <input id="is_distribut0" autocomplete="off" class="is_distribut" name="is_distribut" value="0" type="radio" <if condition="$goods[is_distribut] eq 0"> checked="checked"</if>> -->
                     </div>
-                    </if>
                     <span class="err" id="err_is_distribut"></span>
                     <p class="notic"></p>
                 </dd>
@@ -422,22 +412,12 @@
                     <label>是否为代理商品</label>
                 </dt>
                 <dd class="opt">
-                    <if condition="$goods['goods_id'] gt 0">
-                        <if condition="$goods['is_agent'] eq 1">
-                            <span>是</span>
-                            <input name="is_agent" value="1" type="hidden" disabled="disabled">
-                        <else/>
-                            <span>否</span>
-                            <input name="is_agent" value="0" type="hidden" disabled="disabled">
-                        </if>
-                    <else/>
                     <div class="onoff">
-                        <label for="is_agent1" class="cb-enable <if condition='$goods.is_agent eq 1'>selected</if>">是</label>
-                        <label for="is_agent0" class="cb-disable <if condition='$goods.is_agent eq 0'>selected</if>">否</label>
-                        <input class="is_agent" id="is_agent1" name="is_agent" value="1" type="radio" <if condition="$goods[is_agent] eq 1"> checked="checked"</if>>
-                        <input class="is_agent" id="is_agent0" name="is_agent" value="0" type="radio" <if condition="$goods[is_agent] eq 0"> checked="checked"</if>>
+                        <label id="is_agent_label_1" for="is_agent1" class="cb-enable <if condition='$goods.is_agent eq 1'>selected</if>">是</label>
+                        <label id="is_agent_label_0" for="is_agent0" class="cb-disable <if condition='$goods.is_agent eq 0'>selected</if>">否</label>
+                        <input id="is_agent1" autocomplete="off" class="is_agent" name="is_agent" value="1" type="radio" <if condition="$goods[is_agent] eq 1"> checked="checked"</if>>
+                        <input id="is_agent0" autocomplete="off" class="is_agent" name="is_agent" value="0" type="radio" <if condition="$goods[is_agent] eq 0"> checked="checked"</if>> -->
                     </div>
-                    </if>
                     <span class="err" id="err_is_agent"></span>
                     <p class="notic"></p>
                 </dd>
