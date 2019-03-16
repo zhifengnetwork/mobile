@@ -147,8 +147,8 @@
                 layer.msg('选项不能为空且必须为数字!', {icon: 2,time: 1000});
                 return false;
             }
-            if (service_ratio <= 0) {
-                layer.msg('手续费比例必须大于0!', {icon: 2,time: 1000});
+            if (service_ratio < 0) {
+                layer.msg('手续费不能小于0!', {icon: 2,time: 1000});
                 return false;
             }
             if (service_ratio >= 100) {
