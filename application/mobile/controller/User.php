@@ -1171,13 +1171,13 @@ class User extends MobileBase
     public function commision(){
     	$DistributLogic = new DistributLogic;
         $result= $DistributLogic->get_commision_log($this->user_id);  //佣金明细
-        // dump($result);
-    	$this->assign('page', $result['show']);
+        $this->assign('page', $result['show']);
         $this->assign('lists', $result['result']);
         if (I('is_ajax')) {
-    		return $this->fetch('ajax_commision_list');
-    	}
-    	return $this->fetch();
+            return $this->fetch('ajax_commision_list');
+        }
+
+        return $this->fetch();
     }
 
     public function team_list(){
