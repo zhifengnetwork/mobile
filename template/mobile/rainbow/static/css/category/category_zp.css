@@ -77,8 +77,7 @@ body{
 	width: 4rem;
 	margin-right: 0.3rem;
 	background: #f7f7f7;
-	/* height: 26.5rem; */
-	height: 100vh;
+	height: 26.4rem;
     overflow-y: auto;
 }
 .category-main .menu li{
@@ -109,8 +108,7 @@ body{
 	flex: 1;
 	padding-right: 0.3rem;
 	overflow-y: scroll;
-	/* height: 24.5rem; */
-	height: 100vh;
+	height: 26.6rem;
 }
 .branchList{
 	display: none;
