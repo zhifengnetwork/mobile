@@ -153,13 +153,19 @@
 						<label>团长是否免单</label>
 					</dt>
 					<dd class="opt">
-								  <input type="radio" name="is_free" value="0" onclick="radioClick(1,this.name)" checked='true'/>否
-								  <input type="radio" name="is_free" value="1" onclick="radioClick(1,this.name)"/>是	
+
+							<if condition="($list['is_free'] == 0)">
+									<input type="radio" name="is_free" value="0" onclick="radioClick(1,this.name)" checked='true'/>否
+									<input type="radio" name="is_free" value="1" onclick="radioClick(1,this.name)"/>是								
+									<else />								
+									<input type="radio" name="is_free" value="0" onclick="radioClick(1,this.name)"/>否
+									<input type="radio" name="is_free" value="1" onclick="radioClick(1,this.name)" checked='true'/>是
+							</if>						
 								  <p class="notic">可设置团长是否允许免单或固定价（设置0或空按拼团价来计算)</p>		
 					</dd>
-			</dl>				
-
-            <dl class="row" id="disc">
+			</dl>		
+            <if condition="($list['is_free'] eq 1)">
+            <dl class="row" id="disc" style="display:none">
 					<dt class="tit">
 						<label>固定价格:</label>
 					</dt>
@@ -168,7 +174,17 @@
 							
 					</dd>
 			</dl>
-
+			<else/>
+					<dl class="row" id="disc">
+						<dt class="tit">
+							<label>固定价格:</label>
+						</dt>
+						<dd class="opt">
+								<input type="text" name="discount_price" value="{$list['discount_price']}" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')"/>
+								
+						</dd>
+					</dl>			
+			</if>
 			<dl class="row">
 			    <dt class="tit">
 			        <label>限购:</label>
