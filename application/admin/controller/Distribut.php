@@ -137,12 +137,14 @@ class Distribut extends Base {
     {
         $Ad = M('user_level');
         $p = $this->request->param('p');
-        $res = $Ad->order('level_id')->page($p . ',10')->select();
+        $res = $Ad->order('level_id')->where("level_id <> 12")->page($p . ',10')->select();
         if ($res) {
             foreach ($res as $val) {
                 $list[] = $val;
             }
         }
+        $level_12 = $Ad->where(['level_id'=>12])->find();
+        $this->assign('level_12', $level_12);
         $this->assign('list', $list);
         $count = $Ad->count();
         $Page = new Page($count, 10);
@@ -217,11 +219,8 @@ class Distribut extends Base {
             }
         }
         if ($data['act'] == 'edit') {
-            if (!$validate->batch()->check($data)) {
-                $return = ['status' => 0, 'msg' => '编辑失败', 'result' => $validate->getError()];
-            } else {
-                $rateCount = M('user_level')->where('level_id','neq',$data['level_id'])->sum('rate');
-                if (($rateCount+$data['rate']) > 100) {
+            if($data['level_id'] == 12){
+                if ($data['rate'] > 100) {
                     $return = ['status' => 0, 'msg' => '编辑失败，所有等级佣金比率总和在100内', 'result' => ''];
                 } else {
                     $r = D('user_level')->where('level_id=' . $data['level_id'])->save($data);
@@ -231,6 +230,24 @@ class Distribut extends Base {
                         $return = ['status' => 1, 'msg' => '编辑成功', 'result' => $validate->getError()];
                     } else {
                         $return = ['status' => 0, 'msg' => '编辑失败，数据库未响应', 'result' => ''];
+                    }
+                }
+            }else{
+                if (!$validate->batch()->check($data)) {
+                    $return = ['status' => 0, 'msg' => '编辑失败', 'result' => $validate->getError()];
+                } else {
+                    $rateCount = M('user_level')->where('level_id','neq',$data['level_id'])->sum('rate');
+                    if (($rateCount+$data['rate']) > 100) {
+                        $return = ['status' => 0, 'msg' => '编辑失败，所有等级佣金比率总和在100内', 'result' => ''];
+                    } else {
+                        $r = D('user_level')->where('level_id=' . $data['level_id'])->save($data);
+                        if ($r !== false) {
+                            $data['rate'] = $data['rate'] / 100;
+                            D('users')->where(['level' => $data['level_id']])->save($data);
+                            $return = ['status' => 1, 'msg' => '编辑成功', 'result' => $validate->getError()];
+                        } else {
+                            $return = ['status' => 0, 'msg' => '编辑失败，数据库未响应', 'result' => ''];
+                        }
                     }
                 }
             }
@@ -252,11 +269,32 @@ class Distribut extends Base {
     public function rebate_log()
     {
         $count = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
-                                 ->count();
+                    ->where("acount.states = 101 or acount.states = 102")->count();
         $page = new Page($count, 10);
         $log = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
                                ->field('users.nickname, acount.*')->order('log_id DESC')
-                               ->limit($page->firstRow, $page->listRows)->select();
+                               ->where("acount.states = 101 or acount.states = 102")
+                               ->limit($page->firstRow, $page->listRows)
+                               ->select();
+        // dump($log);die;
+        $this->assign('pager', $page);
+        $this->assign('log',$log);
+        return $this->fetch();
+    }
+    /**
+    *消费日志列表
+    */
+    public function consume_log()
+    {
+        $count = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
+                ->where("acount.states = 0")->count();
+        $page = new Page($count, 10);
+        $log = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
+            ->field('users.nickname, acount.*')->order('log_id DESC')
+            ->where("acount.states = 0")
+            ->limit($page->firstRow, $page->listRows)
+            ->select();
+        // dump($log);die;
         $this->assign('pager', $page);
         $this->assign('log',$log);
         return $this->fetch();

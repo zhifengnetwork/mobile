@@ -32,53 +32,53 @@ class Team extends Base
 
 	public function info(){
         $act = I('GET.act', 'add');
-        $groupbuy_id = I('get.id/d');
-        $group_info = array();
-        $group_info['start_time'] = date('Y-m-d H:i:s');
-        $group_info['end_time'] = date('Y-m-d H:i:s', time() + 3600 * 365);
-        $group_info['is_edit'] = 1;
+        $groupbuy_id = I('get.team_id/d');
+        
         if ($groupbuy_id) {
-            $GroupBy = new GroupBuy();
-            $group_info = $GroupBy->with('specGoodsPrice,goods')->find($groupbuy_id);
-            $group_info['start_time'] = date('Y-m-d H:i:s', $group_info['start_time']);
-            $group_info['end_time'] = date('Y-m-d H:i:s', $group_info['end_time']);
+            $team_id = I('get.team_id/d');
+            if($team_id){
+                $list = Db::name('team_activity')->where('team_id',$team_id)->select();
+                $this->assign('list',$list[0]);
+                // dump($list);
+            }
             $act = 'edit';
         }
-
-        $this->assign('min_date', date('Y-m-d H:i:s'));
-        $this->assign('info', $group_info);
+        $time=time();
+        // $this->assign('min_date', date('Y-m-d H:i:s'));
+        // $this->assign('info', $group_info);
         $this->assign('act', $act);
-
+        $this->assign('time', $time);
 		return $this->fetch();
 	}
 
     
 	/*
 	 * 添加拼团
-	 *
 	 */
 	public function teamHandle()
     {
-        $data = I('post.');
-
-        $data['create_time'] = date('Y-m-d H:i:s',time());
+        $data = input();
+        // dump($data);
+        // exit();
+        // $data['create_time'] = date('Y-m-d H:i:s',time());
         $data['start_time'] = strtotime($data['start_time']);
         $data['end_time'] = strtotime($data['end_time']);
-        $data['time_limit'] = $data['end_time'];
-        $result = '';
-
-
+        // $data['time_limit'] = $data['end_time'];
+        // $result = '';
         #   数据验证
         $flag   = Validation::instance(request()->module(), request()->controller(), $data, $data['act'])->check();
         if ($flag !== true) $this->ajaxReturn(['status' => 0, 'msg' => $flag, 'result' => '']);
 
         #   是否需要删除已参团的数据
         if ($data['act'] == 'del')
-        {
-            if(false == Db::name('team_activity')->where('team_id', $data['team_id'])->update(['deleted' => 1])) {
-                $this->ajaxReturn(['status' => 0, 'msg' => '删除失败']);
-            };
-            $this->ajaxReturn();
+        {            
+            $result = Db::name('team_activity')->where('team_id', $data['team_id'])->update(['deleted' => 1]);
+            if($result){
+                ajaxReturn(['status' => 1, 'msg' =>'删除成功', 'result' => $result]);
+            } else {
+                //错误页面的默认跳转页面是返回前一页，通常不需要设置
+                ajaxReturn(['status' => 0, 'msg' =>'删除成功', 'result' => $result]);
+            }
         }
 
         $data_goods = [];
@@ -86,48 +86,29 @@ class Team extends Base
 
         if ($data['act'] == 'add')
         {
-            try {
-                Db::startTrans();
                 $team_id = Db::name('team_activity')->insertGetId($data);
-                if (!$team_id) throw new Exception('操作失败');
-
-                if(!empty($data_goods))
-                {
-                    if(false == Db::table('team_goods_item')->insert($data_goods))
-                        throw new Exception('添加商品数据失败');
+                if($team_id){
+                    $this->ajaxReturn(['status' => 1,'msg' =>'操作成功','result' => '']);
+                }else{
+                    $this->ajaxReturn(['status' => 0,'msg' =>'操作失败','result' => '']);
                 }
-                if(!empty($data_ladder))
-                {
-                    if (false == Db::table('team_ladder')->insert($data_ladder))
-                        throw new Exception('team_ladder失败');
-                }
-
-                Db::commit();
-                $this->ajaxReturn(['status' => 1,'msg' =>'操作成功','result' => '']);
-            } catch (Exception $e) {
-                Db::rollback();
-                $this->ajaxReturn($e->getData());
-            }
-
 
         }
         if ($data['act'] == 'edit')
         {
-            try {
-                Db::startTrans();
-                $data['update_time'] = date('Y-m-d H:i:s',time());
-                if (false == Db::table('team_activity')->where('team_id', $data['team_id'])->update($data))
-                    throw new Exception('更新拼团失败');
-                if (false == Db::table('team_goods_item')->where('team_id', $data['team_id'])->insert($data_goods))
-                    throw new Exception('更新商品失败');
-                if (false == Db::table('team_ladder')->where('team_id', $data['team_id'])->insert($data_ladder))
-                    throw new Exception('更新ladder失败');
-                Db::commit();
-                $this->ajaxReturn();
-            } catch (Exception $e) {
-                Db::rollback();
-                $this->ajaxReturn($e->getData());
-            }
+           
+                // $data['update_time'] = date('Y-m-d H:i:s',time());
+                $res = Db::name('team_activity')->where('team_id', $data['team_id'])->update($data);
+                if($res){
+                    $this->ajaxReturn(['status' => 1,'msg' =>'操作成功','result' => '']);
+                }else{
+                    $this->ajaxReturn(['status' => 0,'msg' =>'操作失败','result' => '']);
+                }
+                // if($res){
+                //     
+                // }else{
+                //     
+                // }
         }
 
 

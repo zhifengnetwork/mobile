@@ -48,12 +48,12 @@
 								<img class="comListTermImg" alt="{$item.goods_name}" src="{$item.original_img}"/>
 							</p>
 							<!--title-->
-							<p class="comListTermTitle">
+							<p class="comListTermTitle publicEllipsis">
 								<!--<a style="color: #000;text-decoration:none;" href="/shop/Groupbuy/detail?team_id={$item.team_id}&goods_id={$item.goods_id}">{$item.goods_name|mb_substr=0,8,'utf-8'}...</a>-->
 								{$item.goods_name|mb_substr=0,8,'utf-8'}
 							</p>
 							<p class="comListTermText">{$item.goods_name}</p>
-							<p class="comListTermPrice">￥{$item.shop_price}</p>
+							<p class="comListTermPrice">￥{$item.group_price}</p>
 						</div>
 
 				</volist>

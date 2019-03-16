@@ -5,14 +5,17 @@ use app\common\logic\UsersLogic;
 use app\common\logic\CartLogic;
 use app\common\logic\wechat\WechatUtil;
 use think\Request;
+use think\Controller;
 
-class LoginApi extends MobileBase{
+// MobileBase
+class LoginApi extends Controller {
     public $config;
     public $oauth;
     public $class_obj;
 
     public function __construct(){
-        parent::__construct();    
+        //parent::__construct();  
+
         $this->oauth = I('get.oauth');
         //获取配置
 
@@ -29,7 +32,7 @@ class LoginApi extends MobileBase{
 
 
         $this->weixin_config = M('wx_user')->find(); //取微获信配置
-        $this->assign('wechat_config', $this->weixin_config);      
+         
 
     }
 
@@ -42,8 +45,10 @@ class LoginApi extends MobileBase{
 
         $d = $this->GetOpenid();
 
+
         $logic = new UsersLogic(); 
         $data = $logic->thirdLogin($d);
+
         //直接去登录，空 就注册
         if($data['status'] == 1){
             session('user',$data['result']);
@@ -57,6 +62,12 @@ class LoginApi extends MobileBase{
             $cartLogic->doUserLoginHandle();  //用户登录后 需要对购物车 一些操作
         }
 
+        
+        $first_leader = session('first_leader');
+        if((int)$first_leader > 0){
+            $user_id = session('user.user_id');
+            share_deal_after($user_id,(int)$first_leader);
+        }
 
         header("Location:".U('Mobile/User/index'));
         //登录成功跳转
@@ -84,12 +95,12 @@ class LoginApi extends MobileBase{
             $data['head_pic'] = $data2['headimgurl']; 
             $data['subscribe'] = $data2['subscribe'];      
             $data['oauth_child'] = 'mp';
-            $_SESSION['openid'] = $data['openid'];
+            session('openid',$data['openid']);
             $data['oauth'] = 'weixin';
             if(isset($data2['unionid'])){
             	$data['unionid'] = $data2['unionid'];
             }
-            $_SESSION['data'] =$data;
+            session('data',$data);
             return $data;
         }
     }

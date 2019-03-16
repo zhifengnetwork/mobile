@@ -1541,7 +1541,7 @@ input:-ms-input-placeholder {
 	color:#fff;
 	background-color:#646464 ;
 	border-radius:9px;
-	position: absolute;
+	
     right: .3rem;
     height: 100%;
     line-height: 1.6rem;

@@ -45,7 +45,13 @@ class User extends Base
         $usersModel = new Users();
         $count = $usersModel->where($condition)->count();
         $Page = new AjaxPage($count, 10);
-        $userList = $usersModel->where($condition)->order($sort_order)->limit($Page->firstRow . ',' . $Page->listRows)->select();
+
+        if(trim($sort_order) == ''){
+            $userList = $usersModel->where($condition)->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        }else{
+            $userList = $usersModel->where($condition)->order($sort_order)->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        }
+
         $user_id_arr = get_arr_column($userList, 'user_id');
         if (!empty($user_id_arr)) {
             $first_leader = DB::query("select first_leader,count(1) as count  from __PREFIX__users where first_leader in(" . implode(',', $user_id_arr) . ")  group by first_leader");
@@ -102,9 +108,10 @@ class User extends Base
                  $c = M('users')->where("user_id != $uid and mobile = '$mobile'")->count();
                  $c && exit($this->error('手机号不得和已有用户重复'));
              }
- 
-             $userLevel = D('user_level')->where('level_id=' . $_POST['level'])->value('level');
-             $_POST['agent_user'] = $userLevel;
+             if(!empty($_POST['level'])){
+                 $userLevel = D('user_level')->where('level_id=' . $_POST['level'])->value('level');
+                 $_POST['agent_user'] = $userLevel;
+             }
              // dump($_POST);die;
              $agent = M('agent_info')->where(['uid'=>$uid])->find();
              if ($agent) {

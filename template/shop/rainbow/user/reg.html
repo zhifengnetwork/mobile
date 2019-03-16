@@ -1,6 +1,6 @@
 <include file="public/header" title="注册" body=""/>
 <!--<include file="public/header_nav" title="注册" href="javascript:history.back(-1)"/>-->
- <link rel="stylesheet" type="text/css" href="__STATIC__/css/login_zjy/login_zjy.css"/>
+ <link rel="stylesheet" type="text/css" href="__STATIC__/css/login_zjy/login_zjy.css?v=1"/>
 <style>
     #verify_code_img{
         padding: .55467rem .21333rem;
@@ -12,8 +12,9 @@
 </style>
 <div class="zjy_login">
 	<div class="zjy_head">
-        <h3></a>智丰商城注册</h3>	
-        <!-- <a href="javascript:history.back(-1);"><img src="__STATIC__/images/return.png" alt="返回"> -->
+        <h3>
+            <a href="javascript:history.back(-1);"><img src="__STATIC__/images/return.png" alt="返回"></a>智丰商城注册
+         </h3>	
 	</div>
 	<!--背景-->
 	<div class="zjy_login_bgs"></div>
@@ -30,7 +31,7 @@
         <input type="hidden" name="auth_code" value="{$Think.config.AUTH_CODE}"/>
         <input type="hidden" name="is_bind" value="{$Request.param.is_bind}">
         <div class=" reg_width">
-            <label class="zjy_reg" for="username">账&nbsp;&nbsp;&nbsp;&nbsp;号:</label>
+            <label class="zjy_reg" for="username">账&nbsp;&nbsp;&nbsp;号:</label>
             <input type="text" name="username" id="username" value="" placeholder="请输入账号"  class="c-form-txt-normal zjt_regIpunt">
             <span id="mobile_phone_notice"></span>
         </div>
@@ -43,11 +44,11 @@
             <div class="zjy_yanzma_reg">
             	<label class="zjy_reg" for="mobile_code">验证码:</label>         		
                 <input class="zjy_input " type="text" id="mobile_code" value="" name="mobile_code" placeholder="请输入验证码" >
-                <a class="btn-text-message" rel="mobile" onClick="sendcode(this)">获取验证码</a>
+                <a class="btn-text-message" id="text-message" rel="mobile" onClick="sendcode(this)">获取验证码</a>
             </div>
         </if>
         <div class="reg_width">
-            <label class="zjy_reg" for="password">密&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
+            <label class="zjy_reg" for="password">密&nbsp;&nbsp;&nbsp;码:</label>
             <input type="password" id="password" value="" maxlength="16" placeholder="请设置6-16位登录密码" class="c-form-txt-normal zjt_regIpunt" onBlur="check_password();">
             <input type="hidden" name="password" value="" />
             <span id="password_notice"></span>
@@ -61,8 +62,8 @@
         <div class="zjy_Loginfoos">      	
             <p class="recept">
             	<input class="zjy_cheock" type="checkbox" name="" id="" value="" />
-            	<span>我已经阅读并同意</span>
-            	<a href="{:U('Shop/Article/agreement',['doc_code'=>'agreement'])}">《服务协议》</a>
+            	<span style="display:inline-block;vertical-align:text-top;">我已经阅读并同意</span>
+            	<a href="{:U('Mobile/Article/agreement',['doc_code'=>'agreement'])}">《服务协议》</a>
             </p>
         </div>
         <!--<div class="lsu boo zc_se">-->
@@ -214,12 +215,12 @@
         }
         $.ajax({
             type:'POST',
-            url:"/index.php?m=Shop&c=User&a=reg",
+            url:"/index.php?m=Mobile&c=User&a=reg",
             dataType:'JSON',
             data:$('#regFrom').serialize(),
             success:function(data){
                 if(data.status == 1){
-                    location.href='/index.php/Shop/User/index';
+                    location.href='/index.php/Mobile/User/index';
                 }else{
                     showErrorMsg(data.msg);
                 }
@@ -234,7 +235,7 @@
                    num--;
                    $(".btn-text-message").html("重新发送"+(num))
                    if(num == 0){
-                   	clearInterval(time)
+                       clearInterval(time);
                      $(".btn-text-message").html("发送验证码")                       
                    }
                }, 1000);
@@ -247,11 +248,16 @@
         $(".zjy_login_bgs").on("click",function(){
             $(this).hide()
             $(".zjy_login_zhuce").hide()
-
         })
         $(".zjy_login_shanchu").on("click",function(){
             $(".zjy_login_zhuce").hide()
             $(".zjy_login_bgs").hide()
+        })
+        $(".zjy_djdl").on("click",function(){
+            alert("登录成功");
+            $(".zjy_login_zhuce").hide()
+            $(".zjy_login_bgs").hide()
+
         })
     })
 </script>
