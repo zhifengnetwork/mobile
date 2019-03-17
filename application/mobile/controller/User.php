@@ -153,7 +153,23 @@ class User extends MobileBase
         
         //得到二维码的绝对路径
 
-        dump($url_code);
+        $pic = "/home/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg";
+        if( @fopen( $pic, 'r' ) )
+        {
+        	$pic = "/share/picture_ok44/".$uid.".jpg";
+        }
+        else
+        {
+        	$image = \think\Image::open('/home/wwwroot/www.dchqzg1688.com/public/share/bg1.jpg');
+        	// 给原图左上角添加水印并保存water_image.png
+        	$image->water($url_code,\think\Image::WATER_EAST)->save('/home/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg');
+        	
+        	
+        	$pic = "/public/share/picture_ok44/".$user_id.".jpg";
+        }
+        
+
+        dump($pic);
         exit;
 
         $url = SITE_URL.'?first_leader='.$user_id;
