@@ -126,7 +126,10 @@ class User extends MobileBase
         return $this->fetch();
     }
 
-    public function fen()
+    /**
+     * 新的分享
+     */
+    public function fenxiang()
     {
         $user_id = session('user.user_id');
 
@@ -173,7 +176,7 @@ class User extends MobileBase
     }
     
 
-    public function fenxiang()
+    public function fen()
     {
         $user_id = session('user.user_id');
         $url = SITE_URL.'?first_leader='.$user_id;
