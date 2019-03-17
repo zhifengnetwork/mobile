@@ -96,9 +96,14 @@ class ShareLogic
         }
         //$size=strlen($img);
         //文件大小
-        $fp2=@fopen($save_dir.$filename,'a');
-        fwrite($fp2,$img);
-        fclose($fp2);
+        $fp2 = @fopen($save_dir.$filename,'a');
+     
+        if ($fp2) { 
+
+            fwrite($fp2,$img);
+            fclose($fp2);
+        }
+
         unset($img,$url);
         return array('file_name'=>$filename,'save_path'=>$save_dir.$filename,'error'=>0);
     }
