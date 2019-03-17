@@ -15,6 +15,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
 </head>
 <body>
+
+
 <style>
     body {
         /*background-image: url('{$qr_back}');*/
@@ -26,6 +28,11 @@
         /* border: 10px solid white; */
         right: 8%;
         bottom: 20%
+
+      
+
+
+
     }
     .pic{
     	
@@ -48,10 +55,37 @@
 </style>
 
 <div class="back">
-    <img src="{$pic}"  class="pic"/>
+
+
+    <div id="qrcode" class="qr"></div>
+    <img src="__PUBLIC__/images/bg1.jpg"  class="pic"/>
     
+
+    
+
 </div>
 
+<script type="text/javascript" src="__STATIC__/js/qrcode.js?v=2"></script>
+
+<script type="text/javascript">
+	$(function(){
+		console.log($('#pic').width(),111);
+	})
+	
+    var url = "{$url}";
+    var qrcode = new QRCode("qrcode", {
+        text: url,
+        width: 400,
+        height: 400,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+
+</script>
+
+
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
 
 </body>
 
