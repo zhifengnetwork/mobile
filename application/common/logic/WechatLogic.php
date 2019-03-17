@@ -92,9 +92,8 @@ class WechatLogic
                         $userData['third_leader'] = $first_leader['second_leader']; // 第二级推荐人
                         //他上线分销的下线人数要加1
                         Db::name('users')->where('user_id', $userData['first_leader'])->setInc('underling_number');
-                        
-                        //Db::name('users')->where('user_id', $userData['second_leader'])->setInc('underling_number');
-                        //Db::name('users')->where('user_id', $userData['third_leader'])->setInc('underling_number');
+                        Db::name('users')->where('user_id', $userData['second_leader'])->setInc('underling_number');
+                        Db::name('users')->where('user_id', $userData['third_leader'])->setInc('underling_number');
                     }
                 } else {
                     $userData['first_leader'] = 0;
@@ -130,25 +129,29 @@ class WechatLogic
             } 
         }
 
-        $this->replySubscribe($msg['ToUserName'], $openid,$first_leader['nickname']);
+        $this->replySubscribe($msg['ToUserName'], $openid,$first_leader['nickname'],$msg,$userData['first_leader']);
     }
 
     /**
      * 关注时回复消息
      */
-    private function replySubscribe($from, $to ,$nickname)
+    private function replySubscribe($from, $to ,$nickname,$msg,$leader_user_id)
     {
 
         // $result_str = $this->createReplyMsg($from, $to, WxReply::TYPE_FOLLOW);
         //if ( ! $result_str) {
             //没有设置关注回复，则默认回复如下：
-       
+            $store_name = tpCache("shop_info.store_name");
+
             if($nickname){
-                $result_str = self::$wechat_obj->createReplyMsgOfText($from, $to, "您的一级创客 [ $nickname ] 成功关注了本公众号 \n：");
-            }else{
-                $store_name = tpCache("shop_info.store_name");
-                $result_str = self::$wechat_obj->createReplyMsgOfText($from, $to, "欢迎关注 $store_name !\n：");
+                //有上级
+                $to1 =  Db::name('users')->where('user_id', $leader_user_id)->value('openid');
+                $result_str = self::$wechat_obj->createReplyMsgOfText($from, $to1, "您的一级创客 [ $nickname ] 成功关注了本公众号 \n：");
+
+                $result_str = self::$wechat_obj->createReplyMsgOfText($from, $to, "您扫了[ $nickname ]的分享，成功关注 $store_name !");
             }
+
+            $result_str = self::$wechat_obj->createReplyMsgOfText($from, $to, "成功关注了 $store_name !");
 
         // }
 

@@ -29,10 +29,10 @@ class ShareLogic
             $access_token = access_token();
             $url="https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=".$access_token;
             $json = array(
-                'action_name'=>"QR_LIMIT_SCENE",
+                'action_name'=>"QR_LIMIT_STR_SCENE",
                 'action_info'=>array(
                     'scene'=>array(
-                        'scene_id'=>$user_id,
+                        'scene_str'=>$user_id,
                     ),
                 ),
             );
