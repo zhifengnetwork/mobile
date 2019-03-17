@@ -162,7 +162,7 @@ class User extends MobileBase
         {
         	$image = \think\Image::open('/www/wwwroot/www.dchqzg1688.com/public/share/bg1.jpg');
         	// 给原图左上角添加水印并保存water_image.png
-        	$image->water($url_code,\think\Image::WATER_EAST)->save('/www/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg');
+        	$image->water($url_code,\think\Image::DCHQZG)->save('/www/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg');
         	
         	
         	$pic = "/public/share/picture_ok44/".$user_id.".jpg";

@@ -8,7 +8,6 @@
 // +----------------------------------------------------------------------
 // | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
-
 namespace think;
 
 use think\image\Exception as ImageException;
@@ -34,6 +33,7 @@ class Image
     const WATER_SOUTHWEST = 7; //常量，标识左下角水印
     const WATER_SOUTH     = 8; //常量，标识下居中水印
     const WATER_SOUTHEAST = 9; //常量，标识右下角水印
+    const DCHQZG = 10;
     /* 翻转相关常量定义 */
     const FLIP_X = 1; //X轴翻转
     const FLIP_Y = 2; //Y轴翻转
@@ -448,6 +448,15 @@ class Image
                 $x = 0;
                 $y = ($this->info['height'] - $info[1]) / 2;
                 break;
+
+            /* DCHQZG */
+              case self::DCHQZG:
+              $x = 5;
+              //$y = ($this->info['height'] - $info[1]) / 2;
+              $y = 10;
+              
+              break;
+
             default:
                 /* 自定义水印坐标 */
                 if (is_array($locate)) {
