@@ -140,11 +140,11 @@ class User extends MobileBase
         }
         $url= "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=".$ticket;
 
-        $url222 = 'www.dchqzg1688.com/public/share/code/'.$user_id.'.jpg';
+        $url222 = '/home/wwwroot/www.dchqzg1688.com/public/share/code/'.$user_id.'.jpg';
         if( @fopen( $url222, 'r' ) )
         {
             //已经有二维码了
-        	$url_code = '/home/wwwroot/c3w.cc/public/share/code/'.$user_id.'.jpg';
+        	$url_code = '/home/wwwroot/www.dchqzg1688.com/public/share/code/'.$user_id.'.jpg';
         }else{
             //还没有二维码
             $re = $logic->getImage($url,'/www/wwwroot/www.dchqzg1688.com/public/share/code', $user_id.'.jpg');
