@@ -12,6 +12,7 @@ use app\common\model\UserAddress;
 use app\common\model\Users as UserModel;
 use app\common\model\UserMessage;
 use app\common\util\TpshopException;
+use app\common\logic\ShareLogic;
 use think\Cache;
 use think\Page;
 use think\Verify;
@@ -124,6 +125,41 @@ class User extends MobileBase
         $this->assign('menu_list', $menu_list);
         return $this->fetch();
     }
+
+    public function fen()
+    {
+        $user_id = session('user.user_id');
+
+        $logic = new ShareLogic();
+        $ticket = $logic->get_ticket($user_id);
+
+        
+        if( strlen($ticket) < 3){
+            $this->error("ticket不能为空");
+            exit;
+        }
+        $url= "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=".$ticket;
+
+        $re = $logic->getImage($url,'/www/wwwroot/www.dchqzg1688.com/public/share/code', $user_id.'.jpg');
+
+        dump($url);
+        dump($re);
+        exit;
+
+        $url = SITE_URL.'?first_leader='.$user_id;
+        $this->assign('url',$url);
+        $qr_back = M('config')->where(['name'=>'qr_back'])->value('value');
+        $this->assign('qr_back',$qr_back);
+
+        $head_pic = session('user.head_pic');
+        $this->assign('head_pic',$head_pic);
+
+        $nickname = session('user.nickname');
+        $this->assign('nickname',$nickname);
+
+        return $this->fetch();
+    }
+    
 
     public function fenxiang()
     {
