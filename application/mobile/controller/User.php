@@ -1238,52 +1238,11 @@ class User extends MobileBase
         return $this->fetch();
     }
 
+    //团队列表
     public function team_list(){
-    	// $DistributLogic = new DistributLogic;
-        
-        // $team_list = tpCache('team_list');
-        
-        // if (!$team_list) {
-        //     $team_list = $DistributLogic->get_team_list($this->user_id);  //团队列表
-        // }
-        // die;
         $session_user = session('user.user_id');
         $users = M('users')->field('user_id,nickname,mobile')->where(['first_leader'=>$session_user])->select();
-        // dump($users);
-        // $result = array('show'=>$team_list['show'],'result'=>array());
         
-        // foreach ($users['result'] as $key => $value) {
-        //     array_push($result['result'], [$key,'count'=>count($team_list['result'])]);
-        // }
-
-        // dump($result);die;
-        // dump($result);die;
-        // $result['show'] = $team_list['show'];
-        // $result['resutl'][0] = $team_list['result'][0];
-        // dump($result);die;
-        // foreach ($team_list as $key => $value) {
-        //     $
-        // }
-        // dump($team_list);die;
-        // //判断下级是否还有下级
-        // dump($result['result']);die;
-        // foreach($result['result'] as $key=>$value){
-        //     $res=team_list($value['user_id']);
-        //     // dump($res);  
-        // }
-        // exit();
-
-     //    if ($data) {
-            
-     //        $list = $team_list['result'][$data-1];
-     //        // dump($list);die;
-     //        $this->assign('list',$list);
-
-     //        return ajaxReturn($list);
-    	// 	// return $this->fetch('ajax_team_list');
-    	// }
-
-        // $this->assign('page', $result['show']);
         $this->assign('lists', $users);
 
     	return $this->fetch();
