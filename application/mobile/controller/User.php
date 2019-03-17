@@ -164,24 +164,10 @@ class User extends MobileBase
         	// 给原图左上角添加水印并保存water_image.png
         	$image->water($url_code,\think\Image::DCHQZG)->save('/www/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg');
         	
-        	
         	$pic = "/public/share/picture_ok44/".$user_id.".jpg";
         }
-        
-
-        dump($pic);
-        exit;
-
-        $url = SITE_URL.'?first_leader='.$user_id;
-        $this->assign('url',$url);
-        $qr_back = M('config')->where(['name'=>'qr_back'])->value('value');
-        $this->assign('qr_back',$qr_back);
-
-        $head_pic = session('user.head_pic');
-        $this->assign('head_pic',$head_pic);
-
-        $nickname = session('user.nickname');
-        $this->assign('nickname',$nickname);
+    
+        $this->assign('pic',$pic);
 
         return $this->fetch();
     }

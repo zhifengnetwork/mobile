@@ -32,7 +32,7 @@ class ShareLogic
                 'action_name'=>"QR_LIMIT_SCENE",
                 'action_info'=>array(
                     'scene'=>array(
-                        'scene_id'=>$uid,
+                        'scene_id'=>$user_id,
                     ),
                 ),
             );
