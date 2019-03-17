@@ -140,11 +140,11 @@ class User extends MobileBase
         }
         $url= "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=".$ticket;
 
-        $url222 = '/home/wwwroot/www.dchqzg1688.com/public/share/code/'.$user_id.'.jpg';
+        $url222 = '/www/wwwroot/www.dchqzg1688.com/public/share/code/'.$user_id.'.jpg';
         if( @fopen( $url222, 'r' ) )
         {
             //已经有二维码了
-        	$url_code = '/home/wwwroot/www.dchqzg1688.com/public/share/code/'.$user_id.'.jpg';
+        	$url_code = '/www/wwwroot/www.dchqzg1688.com/public/share/code/'.$user_id.'.jpg';
         }else{
             //还没有二维码
             $re = $logic->getImage($url,'/www/wwwroot/www.dchqzg1688.com/public/share/code', $user_id.'.jpg');
@@ -153,16 +153,16 @@ class User extends MobileBase
         
         //得到二维码的绝对路径
 
-        $pic = "/home/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg";
+        $pic = "/www/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg";
         if( @fopen( $pic, 'r' ) )
         {
         	$pic = "/share/picture_ok44/".$uid.".jpg";
         }
         else
         {
-        	$image = \think\Image::open('/home/wwwroot/www.dchqzg1688.com/public/share/bg1.jpg');
+        	$image = \think\Image::open('/www/wwwroot/www.dchqzg1688.com/public/share/bg1.jpg');
         	// 给原图左上角添加水印并保存water_image.png
-        	$image->water($url_code,\think\Image::WATER_EAST)->save('/home/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg');
+        	$image->water($url_code,\think\Image::WATER_EAST)->save('/www/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg');
         	
         	
         	$pic = "/public/share/picture_ok44/".$user_id.".jpg";
