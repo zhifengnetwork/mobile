@@ -22,7 +22,7 @@
 		<input type="hidden" id="goods_id" name="goods_id" value="{$list.goods_id}">
 		<input type="hidden" name="id" value="{$info.id}">
 		<input type="hidden" name="act" value="{$act}">
-		<input type="hidden" name="item_id" value="{$info.item_id}">
+		<input type="hidden" name="goods_item_id" value="{$list.goods_item_id}">
 		<input type="hidden" name="team_id" value="{$list.team_id}">
         <div class="ncap-form-default">
             <dl class="row">
@@ -31,7 +31,7 @@
                 </dt>
                 <dd class="opt">
                     <input type="text" name="act_name" value="{$list['act_name']}" class="input-txt">
-                    <p class="notic">请填写拼团标题{$list.team_type}</p>
+                    <p class="notic">请填写拼团标题</p>
                 </dd>
             </dl>
 			
@@ -326,7 +326,7 @@
                     '<img style="width: 162px;height: 162px" src="'+goodsItem.spec.spec_img+'"/></div> <div class="goods-name"> ' +
                     '<a target="_blank" href="/index.php?m=Home&c=Goods&a=goodsInfo&id='+goodsItem.goods_id+'">'+goodsItem.goods_name+goodsItem.spec.key_name+'</a> </div>' +
                     ' <div class="goods-price">商城价：￥'+goodsItem.spec.price+'库存:'+goodsItem.spec.store_count+'</div> </div>';
-            $('input[name=item_id]').val(goodsItem.spec.item_id)
+            $('input[name=goods_item_id]').val(goodsItem.spec.item_id);
             $('input[name=goods_name]').val(goodsItem.goods_name + goodsItem.spec.key_name);
         }else{
             html = '<div style="float: left;margin: 10px auto;" class="selected-group-goods"><div class="goods-thumb">' +
