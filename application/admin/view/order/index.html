@@ -33,7 +33,8 @@
       </div>
       <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
 	  <form class="navbar-form form-inline"  method="post" action="{:U('Admin/order/export_order')}"  name="search-form2" id="search-form2">  
-	  		<input type="hidden" name="order_by" value="order_id">
+        <input type="hidden" name="order_by" value="order_id">
+        <input type="hidden" name="type" id="type" value="">
             <input type="hidden" name="sort" value="desc">
             <input type="hidden" name="user_id" value="{$Request.param.user_id}">
             <input type="hidden" name="order_ids" value="">
@@ -154,19 +155,29 @@
     <div class="tDiv">
       <div class="tDiv2">
         <div class="fbutton"> 
-        	<a href="javascript:exportReport()">
+        	<a href="javascript:exportReport(0)">
 	          	<div class="add" title="选定行数据导出excel文件,如果不选中行，将导出列表所有数据">
 	            	<span><i class="fa fa-plus"></i>导出数据</span>
 	          	</div>
           	</a> 
-          </div>
-          <div class="fbutton"> 
-        	<!--<a href="/index.php?m=Admin&c=Order&a=add_order">
+        </div>
+
+        <div class="fbutton"> 
+        	<a href="javascript:exportReport(1)">
+	          	<div class="add" title="导出待发货订单">
+	            	<span><i class="fa fa-plus"></i>导出（已支付待发货）订单</span>
+	          	</div>
+          	</a> 
+        </div>
+
+        <!-- <div class="fbutton"> 
+        	<a href="/index.php?m=Admin&c=Order&a=add_order">
 	          	<div class="add" title="添加订单">
 	            	<span><i class="fa fa-plus"></i>添加订单</span>
 	          	</div>
-          	</a> -->
-          </div>
+          	</a> 
+         </div> -->
+
       </div>
       <div style="clear:both"></div>
     </div>
@@ -239,7 +250,8 @@
         ajax_get_table('search-form2',cur_page);
     }
 	
-	function exportReport(){
+	function exportReport(type){
+
         var selected_ids = '';
         $('.trSelected' , '#flexigrid').each(function(i){
             selected_ids += $(this).data('order-id')+',';
@@ -247,7 +259,13 @@
         if(selected_ids != ''){
             $('input[name="order_ids"]').val(selected_ids.substring(0,selected_ids.length-1));
         }
-		$('#search-form2').submit();
+
+        // 待发货 订单
+        if(type == 1){
+          $('#type').val('WAITSEND');
+        }
+
+		    $('#search-form2').submit();
 	}
 	
 	 
