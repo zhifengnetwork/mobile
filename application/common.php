@@ -79,16 +79,26 @@ function getAllUp($invite_id,&$userList=array())
 
 /**
  * 极差代理
+ * 
+ * 登记等级 分钱
  */
  function jichadaili($order_id){
 
     $r = M('order_divide')->where(['order_id'=>$order_id])->find();
+
     //记录表
     if($r['status'] == 1){
         return false;
     }
 
     $order = M('order')->where(['order_id'=>$order_id])->find();
+
+
+    // 如果 订单 小于 9.9 ，不分钱
+    if((float)$order['total_amount'] <= 9.9 ){
+        return false;
+    }
+
     $userId = $order['user_id'];
     $orderSn = $order['order_sn'];
 
