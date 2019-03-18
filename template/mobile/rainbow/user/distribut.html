@@ -17,6 +17,22 @@
     <div class="content">
             <div class="myorder p">
                 <div class="content30">
+                    <div class="order">
+                        <div class="fl">
+                            <empty name="leader">
+                                <span>上级:无上级</span>
+                            <else/>
+                                <span>上级ID: {$leader.user_id}</span><br>
+                                <span>上级名称: {$leader.nickname}</span>
+                            </empty>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+
+            <div class="myorder p">
+                <div class="content30">
                     <a href="{:U('Mobile/User/performance_log')}">
                         <div class="order">
                             <div class="fl">

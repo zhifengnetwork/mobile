@@ -108,6 +108,16 @@ class User extends MobileBase
             );
             $this->assign('money_total',$money_total);
         }
+
+        //上级用户信息
+        $leader_id = M('users')->where('user_id', $user['user_id'])->value('first_leader');
+        if($leader_id){
+            $leader = M('users')->where('user_id', $leader_id)->field('user_id, nickname')->find();
+            if($leader){
+                $this->assign('leader',$leader);
+            }
+        }
+        
         return $this->fetch();
     }
 

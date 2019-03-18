@@ -29,8 +29,8 @@ var ShareLink = httpPrefix+"/index.php?m=Mobile&c=Team&a=found&id={$teamFound[fo
 	var ShareDesc = "{$tpshop_config['shop_info_store_desc']}"; //分享描述
 </if>
 
-var is_distribut = getCookie('is_distribut'); // 是否分销代理
-var user_id = getCookie('user_id'); // 当前用户id
+//var is_distribut = getCookie('is_distribut'); // 是否分销代理
+//var user_id = getCookie('user_id'); // 当前用户id
 // 如果已经登录了, 并且是分销商
 if(parseInt(is_distribut) == 1 && parseInt(user_id) > 0)
 {									
