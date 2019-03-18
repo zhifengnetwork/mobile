@@ -11,6 +11,24 @@ use think\Validate;
 
 class Distribut extends Base {
 
+
+    /**
+    * 订单详情 
+     */
+    public function detail(){
+
+        $order_id = I('order_id');
+
+        $user_id = M('order')->where(['order_id'=>$order_id])->value('user_id');
+        $first_leader = M('users')->where(['user_id'=>$user_id])->value('first_leader');
+
+        
+        return $this->fetch();
+    }
+
+
+
+
     /**
      * 分销商列表
      */
