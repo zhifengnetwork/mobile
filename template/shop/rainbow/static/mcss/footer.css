@@ -1,0 +1,73 @@
+
+/*底部菜单*/
+.footer-zp{
+	width: 100%;
+	height:0.98rem;
+	background: #f7f7f7;
+	position: fixed;
+	bottom: 0;
+}
+.footer-zp ul{
+	display: flex;
+	height:0.98rem;
+	justify-content: center;
+	align-items: center;
+}
+.footer-zp ul li{
+	width: 25%;
+	text-align: center;
+}
+.footer-zp ul li a{
+	display: block;
+}
+.footer-zp ul li span{
+    display: block;
+    width: 100%;
+    font-size: 0.26rem;
+    color: #d6d6d6;
+}
+
+.footer-zp ul li.on span{
+	color: #f75922;
+}
+
+/*底部图标*/
+.footer-zp ul li i{
+	width: 0.4rem;
+	height: 0.4rem;
+	display: block;
+	margin:0.08rem auto;
+}
+.footer-zp ul li .home-icon{
+	background: url(/template/mobile/rainbow/static/images/category/home-icon.png) no-repeat;
+	background-size: 100%;
+}
+.footer-zp ul li .category-icon{
+	background: url(../images/category/cate-icon.png) no-repeat;
+	background-size: 100%;
+}
+.footer-zp ul li .cart-icon{
+	background: url(../images/category/cart-icon.png) no-repeat;
+	background-size: 100%;
+}
+.footer-zp ul li .user-icon{
+	background: url(../images/category/user-icon.png) no-repeat;
+	background-size: 100%;
+}
+
+.footer-zp ul li.on .home-icon{
+	background: url(../images/category/home-icon-on.png) no-repeat;
+	background-size: 100%;
+}
+.footer-zp ul li.on .category-icon{
+	background: url(../images/category/cate-icon-on.png) no-repeat;
+	background-size: 100%;
+}
+.footer-zp ul li.on .cart-icon{
+	background: url(../images/category/cart-icon-on.png) no-repeat;
+	background-size: 100%;
+}
+.footer-zp ul li.on .user-icon{
+	background: url(../images/category/user-icon-on.png) no-repeat;
+	background-size: 100%;
+}

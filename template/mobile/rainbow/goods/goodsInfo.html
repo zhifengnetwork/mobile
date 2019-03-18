@@ -715,6 +715,7 @@
 
             //普通流程
             if (goods_num <= store_count) {
+                
                 form.attr('action', "{:U('mobile/Cart/cart2',['action'=>'buy_now'])}").submit();
             } else {
                 layer.open({icon: 2, content: "购买数量超过此商品购买上限", time: 2});

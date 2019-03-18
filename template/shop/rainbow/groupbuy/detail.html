@@ -362,6 +362,9 @@
 				 * 时间递减 倒计时 格式化 hh:ii:ss
 				 */
 				function TimeFormatHIS(obj,times){
+					if(times <= 0){
+						return false;
+					}
 					var timer=null;
 					timer=setInterval(function(){
 						var day=0,
@@ -379,10 +382,10 @@
 						if (minute <= 9) minute = '0' + minute;
 						if (second <= 9) second = '0' + second;
 
-						if(day){
+						if(day > 0){
 							var rtime = ' '+day+'天 '+hour+':'+minute+':'+second;
 						}else{
-							var rtime = hour+':'+minute+':'+second;
+							var rtime = ' '+hour+':'+minute+':'+second;
 						}
 						
 						$('.'+obj).html(rtime);

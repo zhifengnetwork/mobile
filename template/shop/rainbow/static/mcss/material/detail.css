@@ -1,0 +1,49 @@
+html,
+body,
+div,
+p,
+a,
+span {
+	margin: 0;
+	padding: 0;
+}
+
+#container {
+	padding-top: .88rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
+.title-wrap .title {
+	margin: 3% 0 0 3%;
+	font-size: .35rem;
+	font-weight: 900;
+}
+
+.title-wrap .date {
+	margin: 2% 0 0 3%;
+	font-size: .24rem;
+}
+
+.title-wrap .what p {
+	margin: 5% 0 0 2%;
+	line-height: .46rem !important;
+	width: 95%;
+	font-size: .26rem !important;
+	text-indent: .25rem;
+}
+
+.title-wrap .code {
+	margin: 10% auto;
+	width: 50%;
+}
+
+img {
+	width: 100%;
+}
+
+.lb_headWrap {
+	background: #ffff;
+	border-bottom: .01rem solid #999;
+}

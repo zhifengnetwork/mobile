@@ -1,0 +1,174 @@
+body {
+	background-color: #fff;
+}
+/*最外边框*/
+.wrap_signin {
+	width: 7.5rem;
+	height: auto;
+	touch-action: pan-y;
+}
+/*头部 背景色 -左向右渐变*/
+.topBox_backgroundColor {
+	background:-webkit-linear-gradient(left,#ffba33, #f95112);
+	background:-o-linear-gradient(right,#ffba33, #f95112);
+	background:-moz-linear-gradient(right,#ffba33, #f95112);
+	background: linear-gradient(to right,#ffba33, #f95112);
+}
+
+/*内容*/
+.content_si {
+	width: 100%;
+	height: auto;
+}
+/*顶部大图*/
+.topImgBox {
+	padding-top: .88rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: 4.3rem;
+	background: url(/template/mobile/rainbow/static/image/lj_top_sign.jpg) no-repeat 0 0;
+	background-size: cover;
+	-moz-background-size: cover;
+	-webkit-background-size: cover;
+	-o-background-size: cover;
+}
+.topImgBox_butBox {
+	padding-top: .2rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	/*height: .84rem;*/
+	height: 1.24rem;
+}
+.signInBut {
+	margin: 0 auto;
+	position: relative;
+	padding-left: 1.2rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 3.06rem;
+	height: .84rem;
+	font-size: .34rem;
+	line-height: .8rem;
+	color: #fff;
+	letter-spacing: .02rem;
+	border: .02rem solid #fff;
+	border-radius: .38rem;
+}
+.topImgBox_butBoxImg {
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: .7rem;
+	z-index: 1;
+	margin: auto 0;
+	width: .38rem;
+	height: .4rem;
+}
+.recordBox {
+	padding-top: .02rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+	font-size: .24rem;
+	line-height: .4rem;
+	color: #fff;
+	text-align: center;
+	letter-spacing: .02rem;
+}
+/*日历 wrap*/
+.calendarWrapL {
+	position: relative;
+	width: 100%;
+	min-height: 7.65rem;
+}
+/*日历签到图标*/
+.signInIconL {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	margin: auto;
+	width: .55rem;
+	height: .55rem;
+	border-radius: 50%;
+}
+
+/*签到遮罩层*/
+.model{
+	display: none;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,.6); 
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7F000000,endColorstr=#7F000000);
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 99;
+	font-weight: bold;
+	letter-spacing: .01rem;
+}
+.dialog-sign-zp{
+	display: none;
+	width: 6.4rem;
+	min-height: 6.4rem;
+	background: url(../../images/user_zp/sign-wrap-bg.png) no-repeat;
+	background-size: 100%;
+	text-align: center;
+	color: #e51c23;
+	align-items: center;
+	padding: 1.6rem 0;
+	box-sizing: border-box;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	margin-left: -3.2rem;
+	margin-top: -3.2rem;
+}
+.accumulateL {
+	margin-bottom: .1rem;
+	font-size: .28rem;
+}
+.dialog-sign-zp .time{
+	font-size: .2rem;
+	margin-bottom: .65rem;
+}
+.dialog-sign-zp .white{
+	color: #fff;
+	font-size: .3rem;
+	margin-bottom: .55rem;
+}
+
+.rule_box {
+	padding: 0 10%;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+	color: #ffe42d;
+	letter-spacing: .02rem;
+	font-size: .22rem;
+	line-height: .36rem;
+}
+.rule_box_title {
+	margin: 0 auto;
+	padding-top: 1.1rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 80%;
+	height: 1.6rem;
+	/*line-height: .8rem;*/
+	font-size: .26rem;
+}
