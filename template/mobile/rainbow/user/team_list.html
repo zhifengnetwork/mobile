@@ -29,7 +29,7 @@
         </ul>
             <foreach name="lists" item="v" key="i">
                 <div id="show">
-                    <ul class="series" onclick="team_list('{$v.user_id}')">
+                    <ul class="series" >
                         <!-- <input type="hidden" name="series" value="{$i}"> -->
                         <li class="li3"><span>{$i+1}</span></li>
                             <li class="li3"><span>{$v.nickname}</span></li>
@@ -44,7 +44,7 @@
                     <div class="ser{$i+1}"></div>
                 </div>
             </foreach>
-            <script>
+            <!-- <script>
             function team_list(user_id){
                 console.log(user_id);
                 $.ajax({
@@ -62,12 +62,12 @@
                     }
                 });
             }
-            </script>
+            </script> -->
         
     </div>
-    <div id="getmore"  style="font-size:.32rem;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both;display: none">
+    <!-- <div id="getmore"  style="font-size:.32rem;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both;display: none">
         <a >已显示完所有记录</a>
-    </div>
+    </div> -->
     <!-- <script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script> -->
 </div>
 <!-- <script>

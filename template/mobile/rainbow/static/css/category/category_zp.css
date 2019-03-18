@@ -18,7 +18,7 @@ body{
 
 /*顶部搜索*/
 .top-bar{
-	height: 1.5rem;
+	height: 1.8rem;
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
@@ -81,7 +81,7 @@ body{
     overflow-y: auto;
 }
 .category-main .menu li{
-	height: 1.2rem;
+	height: 1.3rem;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -99,6 +99,7 @@ body{
 	background: #fff;
 }
 .category-main .menu li.active i{
+	height: 0.5rem;
 	background: #f05c3a;
 	display: inline-block;
 }

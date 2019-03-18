@@ -32,7 +32,7 @@
 			</div>
 			<div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
 
-			<form class="navbar-form form-inline" id="search-form" method="get" action="{:U('Distribut/rebate_log')}" onSubmit="return check_form();">
+			<form class="navbar-form form-inline" id="search-form" method="POST" action="{:U('Distribut/rebate_log')}" onSubmit="return check_form();">
 				<div class="sDiv">
 					<div class="sDiv2" style="margin-right: 10px;">
 						<input type="text" size="30" name="start_time" id="start_time" value="{$start_time|date='Y-m-d H:i:s', ###}" placeholder="起始时间" class="qsbox">
