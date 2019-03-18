@@ -23,9 +23,9 @@
 <div id="wrapBody">
     <!--地址-s-->
     <div class="edit_gtfix shipping_div" id="addressDefault">
-        <input type="hidden" class="address_id" value="" />
-        <!-- <if condition="$address">
-        <div class="namephone fl">
+        <input type="hidden" class="input_default_address_id" id="input_default_address_id" value="" />
+        <if condition="$address">
+        <div class="namephone fl" id="address_selected" item="{$address[0]['address_id']}">
             <div class="top">
                 <div class="le fl" id="default_address_consignee">{$address[0]['consignee']}</div>
                 <div class="lr fl" id="default_address_mobile">{$address[0]['mobile']}</div>
@@ -35,7 +35,7 @@
                 <span id="default_address_text">{$region[$address[0]['province']]} {$region[$address[0]['city']]} {$region[$address[0]['district']]} {$address[0]['address']}</span>
             </div>
         </div>
-        </if> -->
+        </if>
         <div class="fr youjter">
             <i class="Mright"></i>
         </div>
@@ -211,46 +211,32 @@
                 <h5>选择地址</h5>
             </div>
             <div id="address_list_html" style="height: 19.5rem;overflow:  scroll;">
-                    <div class="jd_listaddless p "> 
-                        <div class="maleri30"> 
-                            <a class="select_address address_id_20" data-address-id="20" data-mobile="15274851694" data-consignee="夏夏" data-address-area="北京市 市辖区 东城区" data-address="123456489" data-province-id="1"  data-city-id="2" data-district-id="3" data-town-id="0" data-longitude="0.0000000" data-latitude="0.0000000"  > 
-                                <div class="name fl"> 
-                                    <h1>夏夏</h1> 
-                                </div> 
-                                <div class="numberaddress fl"> 
-                                    <span class="number"><i class="number-dh">电话：</i>15274851694</span> 
-                                    <span class="similars">北京市 市辖区 东城区 123456489</span> 
-                                </div> 
-                            </a> 
-                            <div class="editdiv fl"> 
-                                <a class="address_item"> 
-                                    <i class="eedit"></i> 
-                                </a> 
-                            </div> 
-                        </div> 
-                    </div>
-                    <div class="jd_listaddless p "> 
-                        <div class="maleri30"> 
-                            <a class="select_address address_id_19" data-address-id="19" data-mobile="15274851694" data-consignee="夏夏" data-address-area="北京市 市辖区 东城区" data-address="~~~~~~~~~" data-province-id="1"  data-city-id="2" data-district-id="3" data-town-id="0" data-longitude="116.4223970" data-latitude="39.9348280"  > 
-                                <div class="name fl"> 
-                                    <h1>夏夏</h1>
-                                 </div> 
-                                 <div class="numberaddress fl"> 
-                                     <span class="number"><i class="number-dh">电话：</i>15274851694</span> 
-                                     <span class="similars">北京市 市辖区 东城区 ~~~~~~~~~</span> 
+                <if condition="$address">
+                    <volist name="address" id="vo">
+                        <div class="jd_listaddless p "> 
+                            <div class="maleri30"> 
+                                <a class="select_address address_id_{$vo['address_id']}" data-address-id="{$vo['address_id']}" data-mobile="{$vo['mobile']}" data-consignee="{$vo['consignee']}" data-address-area="{$region[$vo['province']]} {$region[$vo['city']]} {$region[$vo['district']]}" data-address="{$vo['address']}" data-province-id="{$vo['province']}"  data-city-id="{$vo['city']}" data-district-id="{$vo['district']}" > 
+                                    <div class="name fl"> 
+                                        <h1>{$vo['consignee']}</h1> 
+                                    </div> 
+                                    <div class="numberaddress fl"> 
+                                        <span class="number"><i class="number-dh">电话：</i>15274851694</span> 
+                                        <span class="similars">{$region[$vo['province']]} {$region[$vo['city']]} {$region[$vo['district']]} {$vo['address']}</span> 
                                     </div> 
                                 </a> 
                                 <div class="editdiv fl"> 
                                     <a class="address_item"> 
-                                        <i class="eedit"></i> 
+                                        <i class="eedit" onclick="addEditaddress("{$vo['address_id']}")"></i> 
                                     </a> 
                                 </div> 
                             </div> 
                         </div>
+                    </volist>
+                </if>
             </div>
             <!--地址-e-->
             <div class="createnew ">
-                <a id="add_address" >+新建地址</a>
+                <a id="add_address" onclick="addEditAddress()">+新建地址</a>
             </div>
         </div>
     </div>
@@ -385,7 +371,13 @@
     </div>
 </div>
 <script type="text/javascript">
+    $(document).ready(function () { 
+        default_address_id();
+
+    });
     $(function(){
+        
+        
 
         // 使用余额
         $('#user_money').on('change',function(){
@@ -407,6 +399,60 @@
             $('#addressList').hide();
         })
 
+        // 选中地址
+        $(document).on('click', '.select_address', function () {
+            var address_id = $(this).data('address-id');
+            var mobile = $(this).data('mobile');
+            var consignee = $(this).data('consignee');
+            var address_area = $(this).data('address-area');
+            var address = $(this).data('address');
+            var province_id = $(this).data('province-id');
+            var city_id = $(this).data('city-id');
+            var district_id = $(this).data('district-id');
 
-    })
+            
+            $('#input_default_address_id').val(address_id);
+            $('#address_selected').attr('item', address_id);
+            $('#default_address_consignee').empty().html(consignee);
+            $('#default_address_mobile').empty().html(mobile);
+            $('#default_address_text').empty().html(address_area + ' ' + address);
+
+            $('#addressList').hide();
+        });
+
+
+        // 关闭 新建/编辑地址
+        $('#address_add_back').on('click',function(){
+            closeAddEditAddress();
+        });
+
+    });
+    function default_address_id(){
+        // 默认使用的收货地址ID
+        var address_id = $('#address_selected').attr('item');
+        $('.input_default_address_id').val(address_id);
+    }
+
+    function addEditAddress(address_id){
+
+
+        if(address_id){
+            alert(address_id);
+
+        }else{
+
+
+
+
+        }
+
+        $('#addressAdd').show();
+
+    }
+
+    function closeAddEditAddress(){
+        $('#addressAdd').hide();
+        $('#address_form').find(':input').val('');
+
+    }
 </script>

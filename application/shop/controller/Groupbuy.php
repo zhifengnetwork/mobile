@@ -248,6 +248,7 @@ class Groupbuy extends MobileBase
                     $region[$reval['id']] = $reval['name'];
                 }
             }
+            // dump($address);exit;
             $this->assign('address', $address);
             $this->assign('region', $region);
         }
