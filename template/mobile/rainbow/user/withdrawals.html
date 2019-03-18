@@ -180,7 +180,7 @@
 				<li class="p">
 					<span class="withdraw-cont-ul-name fl" id="card_title">支付宝账号:</span>
 					<div class="withdraw-cont-input fl">
-						<input type="text" id="pop_card" value="{$user_extend.cash_alipay}" placeholder="请填写支付宝账号" />
+						<input type="text" id="pop_card" value="{$user_extend.cash_alipay}" placeholder="请填写账号" />
 						<label></label>
 					</div>
 				</li>
@@ -313,8 +313,8 @@
 	})
 
 	function isPone(str) {
-		// var myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
-		var myreg = /^[0-9]{16,19}$/;
+		var myreg = /^[1][2,3,4,5,6,7,8,9][0-9]{9}$/;
+		//var myreg = /^[0-9]{16,19}$/;
 		if (!myreg.test(str)) {
 			return false;
 		} else {
@@ -323,8 +323,8 @@
 	}
 
 	function isMail(str) {
-		// var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-		var myreg = /^[0-9]{16,19}$/;
+		 var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+		//var myreg = /^[0-9]{16,19}$/;
 		if (!myreg.test(str)) {
 			return false;
 		}
@@ -345,18 +345,38 @@
 			});
 			return false;
 		}
-		if (isPone(card) && isMail(card)) {
-
-		} else {
+		if (!cash_name) {
 			layer.open({
-				content: '账号必须是手机号或银行卡号',
+				content: '姓名不能为空',
 				icon: 2,
 				time: 1000
 			});
-			// alert('账号必须是手机号或银行卡号')
 			return false;
 		}
-		// 
+
+		if(cash_type == 0){
+			if ( !isPone(card) && !isMail(card)) {
+				layer.open({
+					content: '账号必须是手机号或邮箱',
+					icon: 2,
+					time: 1000
+				});
+				return false;
+			}
+		}
+		if(cash_type == 2){
+
+			var patrn = /^[0-9]*$/;
+			if (!patrn.test(card)) {
+				layer.open({
+					content: '银行卡号不正确',
+					icon: 2,
+					time: 1000
+				});
+				return false;
+			}
+		}
+
 		$.post('{:U("Mobile/User/add_card")}', {
 			'type': cash_type,
 			'card': card,
