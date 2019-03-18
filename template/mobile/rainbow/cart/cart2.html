@@ -965,6 +965,7 @@
                             '<span class="number"><i class="number-dh">电话：</i>'+ data[i].mobile +'</span> <span class="similars">' + data[i].address_area + ' ' + data[i].address +'</span> ' +
                             '</div> </a> <div class="editdiv fl"> <a class="address_item"> <i class="eedit"></i> </a> </div> </div> </div>';
                 }
+                
                 $("#address_list_html").empty().html(address_list_html);
                 if(data.length == 0){
                     $("#add_address").trigger('click');
