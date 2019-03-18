@@ -25,7 +25,8 @@
 					<img class="lb_headWrap_return_img" src="__STATIC__/image/lj_sign_tl.png"/>
 				</p>
 				<span>签到</span>
-				<p class="lb_headWrap_text" onclick="window.location.href='/mobile/Goods/categoryList.html'">领取产品</p>
+				<!--<p class="lb_headWrap_text" onclick="window.location.href='/mobile/Goods/categoryList.html'">领取产品</p>-->
+				<p class="lb_headWrap_text" onclick="receiveFun()">领取产品</p>
 			</div>
 			<!--内容-->
 			<div class="content_si">
@@ -67,6 +68,9 @@
 				</div>
 				
 			</div>
+			
+			
+			
 			
 		</div>
 					
@@ -141,25 +145,29 @@
 							var monthS, dayS ;
 							/*用户是否有-签到的权限*/
 							signObj['admin'] = data['auth'];
-							/**重新对后台传过来的数据，（2019/03/06）进行编辑=> '2019/3/6' **/
-							for(var k=0;k<signArr.length;k++){
-								monthS = Number(signArr[k].split('/')[1]);
-								dayS = Number(signArr[k].split('/')[2]);
-								/*console.log(signArr[k].split('/')[0],monthS,dayS);*/
-								/*signData变量声明在sign.js中*/
-								signData[k] = signArr[k].split('/')[0] + '/' + monthS + '/' + dayS;
-								
-							}
-							console.log('编辑后:',signData);
-//							/*后台传过来的数组*/
-							for(var j=0;j<signData.length;j++){
-								/*.getMonth()=>获取当前月份(0-11,0代表1月)*/
-								for(var i = 0; i < $('.date-marker-body li').length; i++) {
-									/**传过来的数据-不要在月份和日期前加0 =>'2019/3/6' **/
-									if($('.date-marker-body li').eq(i).attr('data-markdate') == signData[j]) {
-										$('.date-marker-body li').eq(i).append(`
-											<img class="signInIconL" src="/template/mobile/rainbow/static/images/sign/signInIconS.png" />
-										`);
+							/*如果后台传个null*/
+							if(signArr){
+								/**重新对后台传过来的数据，（2019/03/06）进行编辑=> '2019/3/6' **/
+								for(var k=0;k<signArr.length;k++){
+									monthS = Number(signArr[k].split('/')[1]);
+									dayS = Number(signArr[k].split('/')[2]);
+									/*console.log(signArr[k].split('/')[0],monthS,dayS);*/
+									/*signData变量声明在sign.js中*/
+									signData[k] = signArr[k].split('/')[0] + '/' + monthS + '/' + dayS;
+									
+								}
+								console.log('编辑后:',signData);
+							
+	//							/*后台传过来的数组*/
+								for(var j=0;j<signData.length;j++){
+									/*.getMonth()=>获取当前月份(0-11,0代表1月)*/
+									for(var i = 0; i < $('.date-marker-body li').length; i++) {
+										/**传过来的数据-不要在月份和日期前加0 =>'2019/3/6' **/
+										if($('.date-marker-body li').eq(i).attr('data-markdate') == signData[j]) {
+											$('.date-marker-body li').eq(i).append(`
+												<img class="signInIconL" src="/template/mobile/rainbow/static/images/sign/signInIconS.png" />
+											`);
+										}
 									}
 								}
 							}
@@ -257,6 +265,11 @@
 				})
 				
 			})
+			/*领取产品*/
+			function receiveFun(){
+				/*领取对话框*/
+				receiveAlert($('.wrap_signin'),'领取产品','分销免费领',"'/Mobile/Goods/goodsList/id/584.html'",'代理免费领',"'/Mobile/Goods/goodsList/id/585.html'");
+			}
 		</script>
 	</body>
 </html>
