@@ -1254,46 +1254,32 @@ class User extends MobileBase
 
     //团队列表
     public function team_list(){
-        $session_user = session('user.user_id');
-        $users = M('users')->field('user_id,nickname,mobile')->where(['first_leader'=>$session_user])->select();
+        $first_leader = I('first_leader');
+        if(!$first_leader){
+            $first_leader = session('user.user_id');
+        }
+        //用户信息
+        $user = M('users')->field('user_id,nickname,mobile')->where(['user_id'=>$first_leader])->find();
+        //下级信息
+        $users = M('users')->field('user_id,nickname,mobile')->where(['first_leader'=>$first_leader])->select();
         
+        $this->assign('user', $user);
         $this->assign('lists', $users);
 
     	return $this->fetch();
     }
 
-    public function next_team_list(){
+    //团队订单列表
+    public function order_list(){  
         $user_id = I('user_id');
-        $DistributLogic = new DistributLogic;
-        $result= $DistributLogic->get_team_list($user_id);
-        // 获取下级id
-        // dump($result);
-        $data = $result['result'];
-        foreach($data as $key=>$value)
-        {
-            
-            $son=$value['user_id'];
-            $son_data=$this->next_team_list($son);
-            dump($son_data);
-        }
 
-        // $num=count($result['result']);
-        // for ($i=0; $i<=$num; $i++) {
-        //      $user_id = $result['result'][$i][] 
-        // } 
-        
-        // dump($result); 
-    	// $DistributLogic = new DistributLogic;
-        // $result= $DistributLogic->get_team_list($user_id);  //团队列表
-        // // dump($result);
-        // // dump($result['result']);
-    	// $this->assign('page', $result['show']);
-        // $this->assign('lists', $result['result']);
-        // if (I('is_ajax')) {
-    	// 	return $this->fetch('ajax_team_list');
-    	// }
-    	// $this->ajaxReturn(['status'=>1,'msg'=>'查询成功','result' => $result]);        
-      
+        $order = M('order')->field('order_sn,add_time')->where('user_id', $user_id)->limit(20)->order('order_id desc')->select();
+ 
+        $user = M('users')->field('user_id,nickname,mobile')->where(['user_id'=>$user_id])->find();
+        $this->assign('user', $user);
+
+        $this->assign('order', $order);
+        return $this->fetch();   
     }
 
 
