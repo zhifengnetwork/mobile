@@ -363,6 +363,9 @@ class User extends MobileBase
             //$this->verifyHandle('user_reg');
             $nickname = I('post.nickname', '');
             $username = I('post.username', '');
+            if(!$username){
+                $username = I('post.useriphone');
+            }
             $password = I('post.password', '');
             $password2 = I('post.password2', '');
             $is_bind_account = tpCache('basic.is_bind_account');
@@ -429,6 +432,7 @@ class User extends MobileBase
             $this->ajaxReturn($data);
             exit;
         }
+        
         $this->assign('regis_sms_enable',$reg_sms_enable); // 注册启用短信：
         $this->assign('regis_smtp_enable',$reg_smtp_enable); // 注册启用邮箱：
         $sms_time_out = tpCache('sms.sms_time_out')>0 ? tpCache('sms.sms_time_out') : 120;
