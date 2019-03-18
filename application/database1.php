@@ -13,13 +13,13 @@ return [
     // 数据库类型
     'type'           => 'mysql',
     // 服务器地址
-    'hostname'       => '',
+    'hostname'       => '112.74.177.40',
     // 数据库名
-    'database'       => '',
+    'database'       => 'facialMaskShop',
     // 用户名
-    'username'       => '',
+    'username'       => 'basestore',
     // 密码
-    'password'       => '',
+    'password'       => 'basestore',
     // 端口
     'hostport'       => '3306',
     // 连接dsn

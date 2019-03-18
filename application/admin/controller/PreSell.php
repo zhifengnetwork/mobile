@@ -14,7 +14,7 @@ class PreSell extends Base
 	public function index()
 	{
 		header("Content-type: text/html; charset=utf-8");
-exit("请联系智丰网络客服购买高级版支持此功能");
+exit("请联系DC环球直供网络客服购买高级版支持此功能");
 	}
 
 	/**
@@ -24,7 +24,7 @@ exit("请联系智丰网络客服购买高级版支持此功能");
 	public function info()
 	{
 		header("Content-type: text/html; charset=utf-8");
-exit("请联系智丰网络客服购买高级版支持此功能");
+exit("请联系DC环球直供网络客服购买高级版支持此功能");
 	}
 
 	/**
@@ -33,7 +33,7 @@ exit("请联系智丰网络客服购买高级版支持此功能");
 	public function save()
 	{
 		header("Content-type: text/html; charset=utf-8");
-exit("请联系智丰网络客服购买高级版支持此功能");
+exit("请联系DC环球直供网络客服购买高级版支持此功能");
 	}
 
 	/**
@@ -41,24 +41,24 @@ exit("请联系智丰网络客服购买高级版支持此功能");
 	 */
 	public function delete(){
 		header("Content-type: text/html; charset=utf-8");
-exit("请联系智丰网络客服购买高级版支持此功能");
+exit("请联系DC环球直供网络客服购买高级版支持此功能");
 	}
 
 	public function succeed()
 	{
 		header("Content-type: text/html; charset=utf-8");
-exit("请联系智丰网络客服购买高级版支持此功能");
+exit("请联系DC环球直供网络客服购买高级版支持此功能");
 	}
 
 	public function fail()
 	{
 		header("Content-type: text/html; charset=utf-8");
-exit("请联系智丰网络客服购买高级版支持此功能");
+exit("请联系DC环球直供网络客服购买高级版支持此功能");
 	}
 
 	public function finish()
 	{
 		header("Content-type: text/html; charset=utf-8");
-exit("请联系智丰网络客服购买高级版支持此功能");
+exit("请联系DC环球直供网络客服购买高级版支持此功能");
 	}
 }

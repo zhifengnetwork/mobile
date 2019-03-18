@@ -153,7 +153,7 @@ class Order extends Base {
     // 虚拟订单
     public function virtual_info(){
     header("Content-type: text/html; charset=utf-8");
-exit("请联系智丰网络客服购买高级版支持此功能");
+exit("请联系DC环球直供网络客服购买高级版支持此功能");
     }
 
     public function virtual_cancel(){
@@ -359,7 +359,7 @@ exit("请联系智丰网络客服购买高级版支持此功能");
                 $pay_code_arr = ['weixin'/*PC+公众号微信支付*/ , 'alipay'/*APP,PC支付宝支付*/   , 'alipayMobile'/*手机支付宝支付*/ , 'miniAppPay'/*小程序微信支付*/  , 'appWeixinPay'/*APP微信支付*/];
                 if(in_array($order['pay_code'] , $pay_code_arr)){
 		header("Content-type: text/html; charset=utf-8");
-exit("请联系智丰网络客服购买高级版支持此功能");
+exit("请联系DC环球直供网络客服购买高级版支持此功能");
                 }else{
                     $this->error('该订单支付方式不支持在线退回');
                 }
@@ -804,7 +804,7 @@ exit("请联系智丰网络客服购买高级版支持此功能");
     */
     public function delivery_batch(){
 		header("Content-type: text/html; charset=utf-8");
-exit("请联系智丰网络客服购买高级版支持此功能");
+exit("请联系DC环球直供网络客服购买高级版支持此功能");
     }
 
     /**
@@ -812,7 +812,7 @@ exit("请联系智丰网络客服购买高级版支持此功能");
     */
     public function delivery_batch_handle(){
 		header("Content-type: text/html; charset=utf-8");
-exit("请联系智丰网络客服购买高级版支持此功能");
+exit("请联系DC环球直供网络客服购买高级版支持此功能");
     }
 
     /**

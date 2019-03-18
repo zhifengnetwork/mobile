@@ -192,9 +192,9 @@
         <!--<a href="/mobile/supplier/index/goods_id/{$order->orderGoods[0]->goods_id}/order_id/{$order.order_id}.html" class="kf" txt="沃购要跳为im">
             联系客服
         </a>-->
-        <if condition="$order['cancel_btn'] eq 1">
+        <!-- <if condition="$order['cancel_btn'] eq 1">
             <a class="closeorder_butt" >取消订单</a>
-        </if>
+        </if> -->
         <if condition="$order['cancel_info'] eq 1">
             <a class="" href="{:U('Order/cancel_order_info',['order_id'=>$order['order_id']])}">取消进度</a>
         </if>

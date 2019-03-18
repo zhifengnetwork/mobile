@@ -13,6 +13,30 @@ define('EXTEND_MINIAPP', 5);
 define("EXTEND_H5",6);//添加终端h5
 define('TIME_MOUTH', 4);
 
+
+function access_token(){
+    $token = M('wx_user')->find();
+	
+    $appid = $token['appid'];
+    $appsecret = $token['appsecret'];
+     
+    //判断是否过了缓存期
+    $expire_time = $token['web_expires'];
+    if($expire_time > time()){
+        return $token['web_access_token'];
+         
+    }
+    $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appid}&secret={$appsecret}";
+    $return = httpRequest($url,'GET');
+    $return = json_decode($return,1);
+    $web_expires = time() + 7140; // 提前60秒过期
+    if($return['access_token']){
+        M('wx_user')->where(array('id'=>25))->save(array('web_access_token'=>$return['access_token'],'web_expires'=>$web_expires));
+    }
+    return $return['access_token'];
+}
+
+
 function share_deal_after($xiaji,$shangji){
    
     if($xiaji == $shangji){
@@ -55,16 +79,26 @@ function getAllUp($invite_id,&$userList=array())
 
 /**
  * 极差代理
+ * 
+ * 登记等级 分钱
  */
  function jichadaili($order_id){
 
     $r = M('order_divide')->where(['order_id'=>$order_id])->find();
+
     //记录表
     if($r['status'] == 1){
         return false;
     }
 
     $order = M('order')->where(['order_id'=>$order_id])->find();
+
+
+    // 如果 订单 小于 9.9 ，不分钱
+    if((float)$order['total_amount'] <= 9.9 ){
+        return false;
+    }
+
     $userId = $order['user_id'];
     $orderSn = $order['order_sn'];
 

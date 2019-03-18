@@ -12,6 +12,7 @@ use app\common\model\UserAddress;
 use app\common\model\Users as UserModel;
 use app\common\model\UserMessage;
 use app\common\util\TpshopException;
+use app\common\logic\ShareLogic;
 use think\Cache;
 use think\Page;
 use think\Verify;
@@ -125,13 +126,70 @@ class User extends MobileBase
         return $this->fetch();
     }
 
+    /**
+     * 新的分享
+     */
     public function fenxiang()
+    {
+        $user_id = session('user.user_id');
+
+        $logic = new ShareLogic();
+        $ticket = $logic->get_ticket($user_id);
+
+        
+        if( strlen($ticket) < 3){
+            $this->error("ticket不能为空");
+            exit;
+        }
+        $url= "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=".$ticket;
+
+        $url222 = '/www/wwwroot/www.dchqzg1688.com/public/share/code/'.$user_id.'.jpg';
+        if( @fopen( $url222, 'r' ) )
+        {
+            //已经有二维码了
+        	$url_code = '/www/wwwroot/www.dchqzg1688.com/public/share/code/'.$user_id.'.jpg';
+        }else{
+            //还没有二维码
+            $re = $logic->getImage($url,'/www/wwwroot/www.dchqzg1688.com/public/share/code', $user_id.'.jpg');
+            $url_code = $re['save_path'];
+        }
+        
+        //得到二维码的绝对路径
+
+        $pic = "/www/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg";
+        if( @fopen( $pic, 'r' ) )
+        {
+        	$pic = "/share/picture_ok44/".$uid.".jpg";
+        }
+        else
+        {
+        	$image = \think\Image::open('/www/wwwroot/www.dchqzg1688.com/public/share/bg1.jpg');
+        	// 给原图左上角添加水印并保存water_image.png
+        	$image->water($url_code,\think\Image::DCHQZG)->save('/www/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg');
+        	
+        	$pic = "/public/share/picture_ok44/".$user_id.".jpg";
+        }
+    
+        $this->assign('pic',$pic);
+
+        return $this->fetch();
+    }
+    
+
+    public function fen()
     {
         $user_id = session('user.user_id');
         $url = SITE_URL.'?first_leader='.$user_id;
         $this->assign('url',$url);
         $qr_back = M('config')->where(['name'=>'qr_back'])->value('value');
         $this->assign('qr_back',$qr_back);
+
+        $head_pic = session('user.head_pic');
+        $this->assign('head_pic',$head_pic);
+
+        $nickname = session('user.nickname');
+        $this->assign('nickname',$nickname);
+
         return $this->fetch();
     }
     
@@ -1180,50 +1238,12 @@ class User extends MobileBase
         return $this->fetch();
     }
 
+    //团队列表
     public function team_list(){
-    	$DistributLogic = new DistributLogic;
+        $session_user = session('user.user_id');
+        $users = M('users')->field('user_id,nickname,mobile')->where(['first_leader'=>$session_user])->select();
         
-        $team_list = tpCache('team_list');
-        
-        if (!$team_list) {
-            $team_list = $DistributLogic->get_team_list($this->user_id);  //团队列表
-        }
-        // die;
-        $result = array('show'=>$team_list['show'],'result'=>array());
-        
-        foreach ($team_list['result'] as $key => $value) {
-            array_push($result['result'], [$key,'count'=>count($team_list['result'])]);
-        }
-
-        // dump($result);die;
-        // dump($result);die;
-        // $result['show'] = $team_list['show'];
-        // $result['resutl'][0] = $team_list['result'][0];
-        // dump($result);die;
-        // foreach ($team_list as $key => $value) {
-        //     $
-        // }
-        // dump($team_list);die;
-        // //判断下级是否还有下级
-        // dump($result['result']);die;
-        // foreach($result['result'] as $key=>$value){
-        //     $res=team_list($value['user_id']);
-        //     // dump($res);  
-        // }
-        // exit();
-
-     //    if ($data) {
-            
-     //        $list = $team_list['result'][$data-1];
-     //        // dump($list);die;
-     //        $this->assign('list',$list);
-
-     //        return ajaxReturn($list);
-    	// 	// return $this->fetch('ajax_team_list');
-    	// }
-
-        $this->assign('page', $result['show']);
-        $this->assign('lists', $result['result']);
+        $this->assign('lists', $users);
 
     	return $this->fetch();
     }

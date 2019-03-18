@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>我的分享--{$tpshop_config['shop_info_store_title']}</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <!--<script src="__STATIC__/js/zepto-1.2.0-min.js" type="text/javascript" charset="utf-8"></script>-->
+    <script src="__STATIC__/js/style.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <script src="__STATIC__/js/swipeSlide.min.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+</head>
+<body>
+
+
+<style>
+    body {
+        /*background-image: url('{$qr_back}');*/
+    }
+
+    .qr {
+
+        position: absolute;
+        /* border: 10px solid white; */
+        right: 8%;
+        bottom: 20%
+
+      
+
+
+
+    }
+    .pic{
+    	
+    	border-radius: .6rem;
+    	border-radius:50%;
+    	-webkit-border-radius: .6rem;
+    	-moz-border-radius:.6rem;
+        -ms-border-radius:.6rem;
+        -o-border-radius:.6rem;
+    	width: 100%;
+        height: 100%;
+    	position: absolute;
+        z-index: -1;
+    }
+    #qrcode img{
+        width: 5.5rem;
+        height: 5.5rem;
+    }
+  
+</style>
+
+<div class="back">
+
+
+    <div id="qrcode" class="qr"></div>
+    <img src="__PUBLIC__/images/bg1.jpg"  class="pic"/>
+    
+
+    
+
+</div>
+
+<script type="text/javascript" src="__STATIC__/js/qrcode.js?v=2"></script>
+
+<script type="text/javascript">
+	$(function(){
+		console.log($('#pic').width(),111);
+	})
+	
+    var url = "{$url}";
+    var qrcode = new QRCode("qrcode", {
+        text: url,
+        width: 400,
+        height: 400,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+
+</script>
+
+
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+
+</body>
+
+</html>

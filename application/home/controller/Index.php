@@ -90,7 +90,7 @@ class Index extends Base {
     public function qr_code_raw(){        
         ob_end_clean();
         // 导入Vendor类库包 Library/Vendor/Zend/Server.class.php
-        //http://www.tp-shop.cn/Home/Index/erweima/data/www.99soubao.com
+        //http://www.dchqzg1688.com/Home/Index/erweima/data/www.99soubao.com
          //require_once 'vendor/phpqrcode/phpqrcode.php';
          vendor('phpqrcode.phpqrcode'); 
           //import('Vendor.phpqrcode.phpqrcode');

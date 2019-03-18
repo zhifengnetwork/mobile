@@ -19,7 +19,7 @@ class MobileBase extends Controller {
     public function _initialize() {
         session('user'); //不用这个在忘记密码不能获取session('validate_code');
 //        Session::start();
-        header("Cache-control: private");  // history.back返回后输入框值丢失问题 参考文章 http://www.tp-shop.cn/article_id_1465.html  http://blog.csdn.net/qinchaoguang123456/article/details/29852881
+        header("Cache-control: private");  // history.back返回后输入框值丢失问题 参考文章 http://www.dchqzg1688.com/article_id_1465.html  http://blog.csdn.net/qinchaoguang123456/article/details/29852881
         $this->session_id = session_id(); // 当前的 session_id
         define('SESSION_ID',$this->session_id); //将当前的session_id保存为常量，供其它方法调用
         // 判断当前用户是否手机                

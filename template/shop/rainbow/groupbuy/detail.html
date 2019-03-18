@@ -24,6 +24,8 @@
 	<body>
 		<!--最外边框-->
 		<div class="wrapL">
+			<input type="hidden" id="goods_id" value="{$info['goods_id']}"/>
+			<input type="hidden" id="team_id" value="{$info['team_id']}"/>
 			<!--返回，分享-->
 			<div class="returnshareWrapL">
 				<!--返回,data-num="1" 或  不写; => 返回上一页。data-num="跳转路径"; => 返回上一页。-->
@@ -144,7 +146,7 @@
 														<span>{$vo.nickname}</span>
 													</div>
 													<div class="spellListTermRightL">
-														还差{$vo.need}人拼成<br />剩余00:05:30
+														还差{$vo.need}人拼成<br />剩余00:00:00
 														<!--拼单按钮 - 绝对定位-->
 														<p class="pellListTermBut">去拼单</p>
 													</div>
@@ -165,10 +167,10 @@
 						<p class="purchaseWrapLeftTermTop" style="padding-top: .17rem;">
 							<!--绝对定位-->
 							<if condition="$collect">
-								<img class="collectionImgL" src="__STATIC__/images/public_lb/collectionYes_lb.png"/>
+								<img class="collectionImgL" item="{$collect}" goodsid="{$info['goods_id']}" src="__STATIC__/images/public_lb/collectionYes_lb.png"/>
 							<else />
 								<!--未收藏-->
-								<img class="collectionImgL" src="__STATIC__/images/public_lb/collectionIcon_lb.png"/>
+								<img class="collectionImgL" item="{$collect}" goodsid="{$info['goods_id']}" src="__STATIC__/images/public_lb/collectionIcon_lb.png"/>
 							</if>
 							
 							
@@ -183,14 +185,17 @@
 						<span>客服</span>
 					</div>
 				</div>
-				<div class="purchaseWrapMiddle purchasePublicNum">
+				<div class="purchaseWrapMiddle purchasePublicNum" item="1">
 					￥{$info.shop_price}<br />
 					<span class="purchasePublicText">单独购买</span>
 				</div>
-				<div class="purchaseWrapRight purchasePublicNum">
+				<div class="purchaseWrapRight purchasePublicNum" item="2">
 					￥{$info.group_price}<br />
 					<span class="purchasePublicText">发起拼单</span>
 				</div>
+				<input type="hidden" id="hidden_groupbuy_price" value="{$info.group_price}">
+				<input type="hidden" id="hidden_buy_price" value="{$info['shop_price']}">
+				<input type="hidden" id="buy_type" value="1">
 			</div>
 			
 			<!--拼团(弹窗)-->
@@ -297,13 +302,17 @@
 					<!--top-->
 					<div class="choiceStyleTopBox">
 						<!--商品img-->
-						<img class="choiceStyleComImgL" src="__STATIC__/images/public_lb/00003.png" alt="" />
-						￥297-397<br /><span class="tispTextL">请选择 :&nbsp;</span><span class="tispTextL newPromptL">款式</span>						
+						<img class="choiceStyleComImgL" src="{$info['original_img']}" alt="" />
+						￥<span class="hidden_price">{$info.shop_price}</span><br />
+						<if condition="$spec">
+							<span class="tispTextL">请选择 :&nbsp;</span><span class="tispTextL newPromptL">款式</span>	
+						</if>				
 						<!--（绝对）关闭按钮 icon-->
 						<p class="choiceStyleIconBox" >
 							<img class="choiceSIconBoxIcon" src="__STATIC__/images/public_lb/close666_lb.png"/>
 						</p>
 					</div>
+					<if condition="$spec">
 					<!--title-->
 					<p class="optionPromptTitle">款式</p>
 					<!--选择样式-->
@@ -311,13 +320,11 @@
 						<!--选项
 							butStyleFun('下标');点击样式: class="chooseActive";
 						-->
-						<p class="chooseStyleBoxTerm" onclick="butStyleFun(0)">黑色</p>
-						<p class="chooseStyleBoxTerm" onclick="butStyleFun(1)">红色</p>
-						<p class="chooseStyleBoxTerm" onclick="butStyleFun(2)">蓝色</p>
-						<p class="chooseStyleBoxTerm" onclick="butStyleFun(3)">红色</p>
-						<p class="chooseStyleBoxTerm" onclick="butStyleFun(4)">白色</p>
-						<p class="chooseStyleBoxTerm" onclick="butStyleFun(5)">红色</p>
+						<volist name="$spec" id="vo" key="key">
+								<p class="chooseStyleBoxTerm" onclick="butStyleFun({$key - 1})" price="{$vo.price}">{$vo.name}</p>
+						</volist>
 					</div>
+					</if>
 					<!--number-->
 					<div class="commNumberL">
 						<!--title-->
@@ -327,7 +334,8 @@
 							<img class="publicDrooping commNumberAddImg" src="__STATIC__/images/public_lb/addIcon333.png"/>
 						</p>
 						<!--num-->
-						<p class="commNumberNum" id="commNumber_lb">9</p>
+						<p class="commNumberNum" id="commNumber_lb">1</p>
+						<input type="hidden" id="buy_limit" value="{$info['buy_limit']}" />
 						<!--减-->
 						<p class="commNumberReduce">
 							<img class="publicDrooping commNumberRedImg" src="__STATIC__/images/public_lb/reduceIcon333.png"/>
@@ -354,6 +362,9 @@
 				 * 时间递减 倒计时 格式化 hh:ii:ss
 				 */
 				function TimeFormatHIS(obj,times){
+					if(times <= 0){
+						return false;
+					}
 					var timer=null;
 					timer=setInterval(function(){
 						var day=0,
@@ -371,10 +382,10 @@
 						if (minute <= 9) minute = '0' + minute;
 						if (second <= 9) second = '0' + second;
 
-						if(day){
+						if(day > 0){
 							var rtime = ' '+day+'天 '+hour+':'+minute+':'+second;
 						}else{
-							var rtime = hour+':'+minute+':'+second;
+							var rtime = ' '+hour+':'+minute+':'+second;
 						}
 						
 						$('.'+obj).html(rtime);

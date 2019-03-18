@@ -34,7 +34,7 @@
 							<li><i></i>{$vo.mobile_name}</li>
 						</foreach> -->
 						<foreach name="categoryList" item="list">
-							<li <if condition="$list[id] eq 581"> class="active" </if> ><i></i>{$list[name]}</li>
+							<li <if condition="$list[id] eq 83"> class="active" </if> ><i></i>{$list[name]}</li>
 						</foreach>
 						<!--<li class="active"><i></i>为您推荐</li>-->
 					</ul>
@@ -42,7 +42,7 @@
 				<!--右边分类内容-->
 				<div class="main">
 					<foreach name="categorys" item="category">
-						<div class="branchList <if condition='$category[0][parent_id] eq 581'> active </if>">
+						<div class="branchList <if condition='$category[0][parent_id] eq 83'> active </if>">
 						<div class="advert">
 							<assign name="k" value="0"></assign>
 							<foreach name="categoryList" item="cate">
@@ -50,7 +50,7 @@
 									<if condition="$cate[id] eq $category[parent_id]">
 										<a href="{$k++}"><img src="{$cate[image]}" /></a>
 									<else>
-										<a href="{$k++}"><img src="__STATIC__/images/category/advert-11.jpg" /></a>
+										<!-- <a href="{$k++}"><img src="__STATIC__/images/category/advert-11.jpg" /></a> -->
 									</if>
 								</if>
 							</foreach>
@@ -61,7 +61,7 @@
 								<ul class="cate-list">
 									<foreach name="catelist.child" item="child">
 										<li class="item">
-											<a href="/Mobile/Goods/goodsList/id/{$catelist[id]}.html">
+											<a href="/Mobile/Goods/goodsList/id/{$child[id]}.html">
 												<img src="{$child[image]}" />
 												<p>{$child[name]}</p>
 											</a>
