@@ -268,15 +268,15 @@ class Distribut extends Base {
      */
     public function rebate_log()
     {
-        $start_time = strtotime(I('start_time'));
-        $end_time = strtotime(I('end_time'));
-        if(!$start_time && !$end_time){
-            $start_time = strtotime(0);
-            $end_time = time();
+        $start_time = strtotime(0);
+        $end_time = time();
+        if(IS_POST){
+            $start_time = strtotime(I('start_time'));
+            $end_time = strtotime(I('end_time'));
         }
         $count = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
-                    ->where("acount.states = 101 or acount.states = 102")
-                    ->whereTime('acount.change_time', 'between', [$start_time, $end_time])->count();
+                    ->whereTime('acount.change_time', 'between', [$start_time, $end_time])
+                    ->where("acount.states = 101 or acount.states = 102")->count();
         $page = new Page($count, 10);
         $log = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
                                ->field('users.nickname, acount.*')->order('log_id DESC')
