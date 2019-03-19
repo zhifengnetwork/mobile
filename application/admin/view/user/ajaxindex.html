@@ -49,9 +49,10 @@
                     <div style="text-align: center; width: 60px;">{$first_leader[$list[user_id]]['count']|default="0"}</div>
                 </td>
                 <td align="left" class="">
-                    <div style="text-align: center; width: 80px;">{$list.mobile}
-                        <if condition="($list['mobile_validated'] eq 0) AND ($list['mobile'])">
+                    <div style="text-align: center; width: 80px;"><if condition="($list['mobile_validated'] eq 0) AND ($list['mobile'])">
                             (未验证)
+                            <else/>
+                            {$list.mobile|default="无"}
                         </if>
                     </div>
                 </td>
