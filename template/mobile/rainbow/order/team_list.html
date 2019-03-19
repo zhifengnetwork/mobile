@@ -100,9 +100,9 @@
                         <if condition="$order[pay_btn] eq 1">
                             <a class="shop-rebuy paysoon" href="{:U('Mobile/Team/order',array('order_id'=>$order[order_id]))}">立即付款</a>
                         </if>
-                        <if condition="$order[cancel_btn] eq 1">
+                        <!-- <if condition="$order[cancel_btn] eq 1">
                             <a class="shop-rebuy " href="javascript:;" onClick="cancel_order({$order.order_id})">取消订单</a>
-                        </if>
+                        </if> -->
                         <if condition="$order[receive_btn] eq 1">
                             <a class="shop-rebuy paysoon"  onclick="order_confirm({$order['order_id']})">确认收货</a>
                         </if>
