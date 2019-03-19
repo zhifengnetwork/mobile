@@ -15,6 +15,7 @@ use app\common\logic\MessageTemplateLogic;
 use app\common\logic\MessageFactory;
 use app\common\model\Withdrawals;
 use app\common\model\Users;
+use app\common\model\AgentInfo;
 use think\Loader;
 
 class User extends Base
@@ -32,6 +33,28 @@ class User extends Base
 
             $res = M('users')->where(['user_id'=>$post['user_id']])->update(['agent_user'=>$post['level']]);
             if($res){
+              
+                //修改  tp_agent_info
+                $is_cun = M('agent_info')->where(['uid'=>$post['user_id']])->find();
+                $head_id = M('users')->where(['user_id'=>$post['user_id']])->value('first_leader');
+
+                if($is_cun){
+                    
+                    M('agent_info')->where(['uid'=>$post['user_id']])->update(['head_id'=>$head_id,'level_id'=>$post['level'],'update_time'=>time()]);
+
+                }else{
+
+                    $model = new AgentInfo();
+                    $model->uid = $post['user_id'];
+                    $model->head_id = $head_id;
+                    $model->level_id = $post['level'];
+                    $model->create_time = time();
+                    $model->update_time = time();
+                    $model->save();
+
+                }
+
+
                 $this->success('修改成功');
             }else{
                 $this->error('修改失败');
