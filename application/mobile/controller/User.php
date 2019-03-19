@@ -42,6 +42,7 @@ class User extends MobileBase
             }
             $this->user_id = $this->user['user_id'];
             $this->assign('user', $this->user); //存储用户信息0
+            $this->assign('', $this->user); //存储用户信息0
         }
         $nologin = array(
             'login', 'pop_login', 'do_login', 'logout', 'verify', 'set_pwd', 'finished',

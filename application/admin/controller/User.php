@@ -20,6 +20,28 @@ use think\Loader;
 class User extends Base
 {
 
+    public function changelevel(){
+        
+        if(IS_POST){
+            $post = I('post.');
+
+            $cunzai = M('users')->where(['user_id'=>$post['user_id'],'agent_user'=>$post['level']])->find();
+            if($cunzai){
+                $this->error('无需修改');
+            }
+
+            $res = M('users')->where(['user_id'=>$post['user_id']])->update(['agent_user'=>$post['level']]);
+            if($res){
+                $this->success('修改成功');
+            }else{
+                $this->error('修改失败');
+            }
+            exit;
+        }
+
+        return $this->fetch();
+    }
+
     public function index()
     {
         return $this->fetch();
