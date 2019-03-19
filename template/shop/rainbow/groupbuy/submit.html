@@ -1,5 +1,5 @@
 <include file="public/mheader" title="填写订单" body="g4"/>
-<include file="public/mheader_nav" title="填写订单" href="javascript:void(0);" back="back"/>
+<include file="public/mheader_nav" title="填写订单" href="javascript:history.go(-1);" back="back"/>
 <script src="__PUBLIC__/js/md5.min.js"></script>
 <script type="text/javascript" src="__STATIC__/js/date.js"></script>
 <script type="text/javascript" src="//api.map.baidu.com/api?ak=iR2qhnXd5vrFI9wUuIRG9AWGIqykVNok&type=lite&v=1.0"></script>
@@ -24,6 +24,9 @@
     <!--地址-s-->
     <div class="edit_gtfix shipping_div" id="addressDefault">
         <input type="hidden" class="input_default_address_id" id="input_default_address_id" value="" />
+        <input type="hidden" class="hidden-buy-type" id="hidden-buy-type" value="{$info['buy_type']}" />
+        <input type="hidden" class="hidden-buy-num" id="hidden-buy-num" value="{$info['buy_num']}" />
+        <input type="hidden" class="hidden-team-id" id="hidden-team-id" value="{$info['team_id']}" />
         <if condition="$address">
         <div class="namephone fl" id="address_selected" item="{$address[0]['address_id']}">
             <div class="top">
@@ -92,6 +95,10 @@
                             <div class="order" id="invoiceDefault">
                                 <div class="fl">
                                     <span>发票信息</span>
+                                    <input type="hidden" name="hidden-invoice-type" id="hidden-invoice-type" value="0" />
+                                    <input type="hidden" name="hidden-invoice-identity" id="hidden-invoice-identity" value="0" />
+                                    <input type="hidden" name="hidden-invoice-title" id="hidden-invoice-title" value="" />
+                                    <input type="hidden" name="hidden-invoice-code" id="hidden-invoice-code" value="" />
                                 </div>
                                 <div class="fr">
                                     <span class="invoice_title" style="margin-top: 0.6rem;">不开发票</span>
@@ -220,13 +227,13 @@
                                         <h1>{$vo['consignee']}</h1> 
                                     </div> 
                                     <div class="numberaddress fl"> 
-                                        <span class="number"><i class="number-dh">电话：</i>15274851694</span> 
+                                        <span class="number"><i class="number-dh">电话：</i>{$vo['mobile']}</span> 
                                         <span class="similars">{$region[$vo['province']]} {$region[$vo['city']]} {$region[$vo['district']]} {$vo['address']}</span> 
                                     </div> 
                                 </a> 
                                 <div class="editdiv fl"> 
                                     <a class="address_item"> 
-                                        <i class="eedit" onclick="addEditaddress("{$vo['address_id']}")"></i> 
+                                        <i class="eedit" onclick="addEditAddress({$vo['address_id']})"></i> 
                                     </a> 
                                 </div> 
                             </div> 
@@ -240,6 +247,39 @@
             </div>
         </div>
     </div>
+    <div id="invoicelist" style="display: none">
+        <!--发票内容-s-->
+        <div class="dizhi-pop">
+            <div class="z-Package-hrader">
+                <i class="z-Package-icon Package-icon-close" id="invoice_list_back"></i>
+                <h5>发票信息</h5>
+            </div>
+            <div class="invoice_con">
+                <div class="invoice_tit">
+                    <h3>发票抬头</h3>
+                    <div class="invoice_type">
+                        <div class="intype_item"><input type="radio" name="radio_title"  checked id="intype1" value="个人"><label for="intype1"></label><span>个人</span></div>
+                        <div class="intype_item"><input type="radio" name="radio_title" id="intype2" value="单位"><label for="intype2"></label><span>单位</span></div>
+                    </div>
+                </div>
+                <hr class="invoice_line">
+                <div class="invoice_deta">
+                    <h3>发票内容</h3>
+                    <div class="invoice_comdel" style="display: none;">
+                        <input type="text" id="invoice_title" placeholder="请填写单位名称" value="">
+                        <input type="text" id="taxpayer" placeholder="请在此填写纳税人识别号"  value="">
+                        <p>开企业抬头发票，请准确填写对应的“纳税人识别号”，以免影响您的发票报销.</p>
+                    </div>
+                    <div class="invoice_type">
+                        <div class="intype_item"><input type="radio" name="radio_cont" checked id="intype3" value="商品明细"><label for="intype3"></label><span>商品明细</span></div>
+                        <div class="intype_item"><input type="radio" name="radio_cont" id="intype4" value="商品类别"><label for="intype4"></label><span>商品类别</span></div>
+                        <div class="intype_item"><input type="radio" name="radio_cont" id="intype5" value="不开发票"><label for="intype5"></label><span>不开发票</span></div>
+                    </div>
+                </div>
+                <div class="invoice_confir"><input type="button" id="submit_invoice" value="确认"></div>
+            </div>
+                    </div>
+    </div>
     <div id="addressAdd" style="display: none">
         <div class="dizhi-pop">
             <div class="z-Package-hrader">
@@ -248,10 +288,10 @@
             </div>
             <div class="floor my p edit">
                 <form id="address_form">
-                    <input type="hidden" value="" name="address_id"/>
-                    <input type="hidden" value="" name="province"/>
-                    <input type="hidden" value="" name="city"/>
-                    <input type="hidden" value="" name="district"/>
+                    <input type="hidden" value="" data-name="" name="address_id"/>
+                    <input type="hidden" value="" data-name="" name="province"/>
+                    <input type="hidden" value="" data-name="" name="city"/>
+                    <input type="hidden" value="" data-name="" name="district"/>
 
                     <div class="content">
                         <div class="floor list7">
@@ -318,7 +358,7 @@
                         </div>
                     </div>
                     <div class="createnew newAjax">
-                        <a id="address_form_confirm">确认</a>
+                        <a id="address_form_confirm" onclick="confirm_address()">确认</a>
                     </div>
                 </form>
             </div>
@@ -340,25 +380,119 @@
                             </div>
                         </div>
                     </div>
-                    <div class="province-list"></div>
-                    <div class="city-list" style="display:none"></div>
-                    <div class="area-list" style="display:none"></div>
+                    <div class="province-list" style="height:27rem;"></div>
+                    <div class="city-list" style="height:27rem;display:none"></div>
+                    <div class="area-list" style="height:27rem;display:none"></div>
                 </div>
             </div>
             <!--选择地区-e-->
+            <script type="text/javascript">
+                function location_address(){
+                    $('.province-list p').remove();
+                    $.get("ajaxAreaSelect",function(res){
+                        if(res){
+                            res = JSON.parse(res);
+                            var _html = '';
+                            for(var i=0;i<res.length;i++){
+                                _html += '<p data-id="'+res[i].id+'" data-last="city" onclick="getlastaddress(this);">'+res[i].name+'</p>';
+                                
+                            }
+                            $('.province-list').append(_html);
+                            $('.container').animate({width: '14.4rem', opacity: 'show'}, 'normal',function(){
+                                $('.container').show();
+                            });
+                            if(!$('.container').is(":hidden")){
+                                $('body').css('overflow','hidden');
+                                $('.mask-filter-div').css('z-index','9999');
+                            }
+                        }
+                    });
+                    
+                }
+
+                function getlastaddress(obj){
+                    var last = $(obj).data('last');
+                    var areaid = $(obj).data('id');
+                    var areaname = $(obj).html();
+                    var downame = '';
+                    $(obj).addClass('co_current');
+                    if(!last || !areaid || !areaname) return false;
+                    if(last == 'city'){
+                        var upname = 'province';
+                        var downame = 'area';
+                    }
+                    if(last == 'area'){
+                        var upname = 'city';
+                        var downame = 'selected';
+                    }
+                    if(last == 'selected'){
+                        var upname = 'district';
+                    }
+                    $('.'+last+'-list p').remove();
+                    $('#address_form input[name='+upname+']').val(areaid);
+                    $('#address_form input[name='+upname+']').attr('data-name',areaname);
+                    if(downame){
+                        $.get("ajaxAreaSelect",{select:last,areaid:areaid},function(res){
+                            if(res){
+                                res = JSON.parse(res);
+                                var _html = '';
+                                for(var i=0;i<res.length;i++){
+                                    _html += '<p data-id="'+res[i].id+'" data-last="'+downame+'" onclick="getlastaddress(this);">'+res[i].name+'</p>';
+                                    
+                                }
+                                $('.'+last+'-list').append(_html);
+                                $('.'+last+'-list').show();
+                                $('.'+upname+'-list').hide();
+                            }
+                        });
+                    }else{
+                        var province = $('#address_form input[name=province]').attr('data-name');
+                        var city = $('#address_form input[name=city]').attr('data-name');
+                        var district = $('#address_form input[name=district]').attr('data-name');
+                        var address = province + ' ' + city + ' ' + district;
+                        $('#area').html(address);
+                        $('.area-list').hide();
+                        $('.city-list').hide();
+                        $('.province-list').show();
+                        $('.container').animate({width: '0', opacity: 'show'}, 'normal',function(){
+                            $('.container').hide();
+                        });
+                        $('.mask-filter-div').css('z-index','inherit');
+                        $('.area-list').hide();
+
+
+                    }
+                    
+                }
+                function close_location(){
+                    var province_div = $('.province-list');
+                    var city_div = $('.city-list');
+                    var area_div = $('.area-list');
+                    if(area_div.is(":hidden") == false){
+                        area_div.hide();
+                        city_div.show();
+                        province_div.hide();
+                        return;
+                    }
+                    if(city_div.is(":hidden") == false){
+                        area_div.hide();
+                        city_div.hide();
+                        province_div.show();
+                        return;
+                    }
+                    if(province_div.is(":hidden") == false){
+                        area_div.hide();
+                        city_div.hide();
+                        $('.container').animate({width: '0', opacity: 'show'}, 'normal',function(){
+                            $('.container').hide();
+                        });
+                        // undercover();
+                        $('.mask-filter-div').css('z-index','inherit');
+                        return;
+                    }
+                }
+            </script>
         </div>
-        <script src="__STATIC__/js/mobile-location.js"></script>
-        <script>
-            //选择地址回调
-            var address_form = $('#address_form');
-            function select_area_callback(province_name, city_name, district_name, province_id, city_id, district_id) {
-                var area = province_name + ' ' + city_name + ' ' + district_name;
-                $("#area").text(area);
-                address_form.find("input[name='province']").val(getCookie('province_id'));
-                address_form.find("input[name='city']").val(getCookie('city_id'));
-                address_form.find("input[name='district']").val(getCookie('district_id'));
-            }
-        </script>
     </div>
     <div class="mask-filter-div" style="display: none;"></div>
     <div class="payit fillpay ma-to-20">
@@ -367,6 +501,7 @@
         </div>
         <div class="fl">
             <p><span class="pmo">应付金额：</span>￥<span id="payables">{$info['wprice']}</span><span></span></p>
+            <input type="hidden" name="hidden-payables" id="hidden-payables" value="{$info['wprice']}">
         </div>
     </div>
 </div>
@@ -376,16 +511,28 @@
 
     });
     $(function(){
-        
-        
-
+       
         // 使用余额
         $('#user_money').on('change',function(){
             var prop = $('#user_money').prop('checked');
-            var user_money = $('#user_money').val();
+            var user_money = parseFloat($('#user_money').val());
             if(prop){
-                $('#balance').html(user_money);
+                var total = parseFloat($('#total_fee').html());
+                if(user_money >= total){
+                    var balance = user_money - total;
+                }else{
+                    var balance = total - user_money;
+                }
+                if(balance > 0){
+                    $('#payables').html(0)
+                    $('#balance').html(total);
+                }else{
+                    $('#payables').html(total - user_money);
+                    $('#balance').html(user_money);
+                }
             }else{
+                var price = $('#hidden-payables').val();
+                $('#payables').html(price);
                 $('#balance').html('0');
             }
         });
@@ -426,23 +573,112 @@
             closeAddEditAddress();
         });
 
+        // 发票
+        $('.invoice_title').on('click',function(){
+            $('#invoicelist').show();
+        });
+
+        // 选择开票身份
+        $('.intype_item input[name=radio_title]').on('change',function(){
+            var identity = $(this).val();
+            if(identity == '个人'){
+                $('.invoice_comdel').hide();
+            }else{
+                $('.invoice_comdel').show();
+            }
+        })
+        // 发票内容
+        $('.intype_item input[name=radio_cont]').on('change',function(){
+            var type = $(this).val();
+            if(type == '不开发票'){
+                $('.invoice_comdel').hide();
+                $('.invoice_tit').hide();
+            }else{
+                var identity = $('.intype_item input[name=radio_title]:checked').val();
+                if(identity == '单位'){
+                    $('.invoice_comdel').show();
+                }
+                $('.invoice_tit').show();
+            }
+        })
+        // 确认发票信息
+        $('#submit_invoice').on('click',function(){
+            var identity = $('.intype_item input[name=radio_title]:checked').val();
+            var type = $('.intype_item input[name=radio_cont]:checked').val();
+            var title = $('#invoice_title').val();
+            var code = $('#taxpayer').val();
+
+            $('#hidden-invoice-identity').val(identity);
+            $('#hidden-invoice-type').val(type);
+            $('#hidden-invoice-title').val(title);
+            $('#hidden-invoice-code').val(code);
+
+            if(type == '不开发票'){
+                _tpl = '不开发票'
+            }
+
+            if(identity == '个人'){
+                _tpl = '纸质（个人-'+type+'）';
+            }else{
+                if(!title || !code){
+                    layer.open({icon: 1, content: "发票抬头不能为空！", time: 2});
+                    return false;
+                }else{
+                    _tpl = '纸质（'+title+'-'+type+'）';
+                }
+            }
+            $('.invoice_title').html(_tpl);
+            $('#invoicelist').hide();
+        });
+        // 关闭发票内容弹窗
+        $('#invoice_list_back').on('click',function(){
+            $('#invoicelist').hide();
+        });
     });
+
+    // 提交订单
+    function submit_order(){
+        var buy_type = $('#hidden-buy-type').val();
+        var buy_num = $('#hidden-buy-num').val();
+        var team_id = $('#hidden-team-id').val();
+        var invoice_type = $('#hidden-invoice-type').val();
+        var invoice_identity = $('#hidden-invoice-identity').val();
+        var invoice_title = $('#hidden-invoice-title').val();
+        var invoice_code = $('#hidden-invoice-code').val();
+        var address_id = $('.input_default_address_id').val();
+        var user_money = $('#user_money').prop('checked') ? 1 : 0;
+
+
+        console.log(user_money);
+    }
+
+
     function default_address_id(){
         // 默认使用的收货地址ID
         var address_id = $('#address_selected').attr('item');
         $('.input_default_address_id').val(address_id);
     }
 
-    function addEditAddress(address_id){
-
+    function addEditAddress(address_id = 0){
 
         if(address_id){
-            alert(address_id);
+            var data = $('.address_id_'+address_id);
+            var mobile = data.data('mobile');
+            var consignee = data.data('consignee');
+            var address_area = data.data('address-area');
+            var address = data.data('address');
+            var province_id = data.data('province-id');
+            var city_id = data.data('city-id');
+            var district_id = data.data('district-id');
+            
+            $('#address_form input[name=address_id]').val(address_id);
+            $('#address_form input[name=province]').val(province_id);
+            $('#address_form input[name=district]').val(district_id);
 
-        }else{
-
-
-
+            $('#address_form input[name=consignee]').val(consignee);
+            $('#address_form input[name=mobile]').val(mobile);
+            $('#address_form #area').html(address_area);
+            $('#address_form input[name=address]').val(address);
 
         }
 
@@ -450,9 +686,73 @@
 
     }
 
+    function confirm_address(){
+        var address_id = $('#address_form input[name=address_id]').val();
+        var province = $('#address_form input[name=province]').val();
+        var city = $('#address_form input[name=city]').val();
+        var district = $('#address_form input[name=district]').val();
+        
+        var consignee = $('#address_form input[name=consignee]').val();
+        var mobile = $('#address_form input[name=mobile]').val();
+        var area = $('#address_form #area').html();
+        var address = $('#address_form input[name=address]').val();
+        
+        $.post("addEditAddress",{
+            address_id: address_id,
+            province: province,
+            city: city,
+            district: district,
+            consignee: consignee,
+            mobile: mobile,
+            area: area,
+            address: address
+        },function(res){
+            if(res){
+                res = JSON.parse(res);
+                if(res.status == 1){
+                    if(!address_id){
+                        nwesAddress(res.id,mobile,consignee,area,address,province,city,district,0);
+                    }else{
+                        nwesAddress(res.id,mobile,consignee,area,address,province,city,district,1);
+                    }
+                    closeAddEditAddress();
+                }else{
+                    layer.open({icon: 1, content: res.msg, time: 2});
+                }
+            }
+        });
+    }
+
+
     function closeAddEditAddress(){
         $('#addressAdd').hide();
         $('#address_form').find(':input').val('');
+        $('#address_form #area').html('');
+    }
 
+    function nwesAddress(id,mobile,consignee,area,address,province,city,district,del=0){
+        var _html = ''+
+        '<div class="jd_listaddless p "> '+
+        '<div class="maleri30">'+
+            '<a class="select_address address_id_'+id+'" data-address-id="'+id+'" data-mobile="'+mobile+'" data-consignee="'+consignee+'" data-address-area="'+area+'" data-address="'+address+'" data-province-id="'+province+'"  data-city-id="'+city+'" data-district-id="'+district+'" > '+
+                '<div class="name fl"> '+
+                    '<h1>'+consignee+'</h1>'+
+                '</div> '+
+                '<div class="numberaddress fl"> '+
+                    '<span class="number"><i class="number-dh">电话：</i>'+mobile+'</span> '+
+                    '<span class="similars">'+area+' '+address+'</span> '+
+                '</div> '+
+            '</a> '+
+            '<div class="editdiv fl"> '+
+                '<a class="address_item"> '+
+                    '<i class="eedit" onclick="addEditAddress('+id+')"></i> '+
+                '</a> '+
+            '</div> '+
+        '</div> '+
+        '</div>';
+        if(del){
+            $('.address_id_'+id).parents('.jd_listaddless').remove();
+        }
+        $('#address_list_html').append(_html);
     }
 </script>
