@@ -30,7 +30,7 @@ class Groupbuy extends MobileBase
      */
     public function grouplist()
     {
-
+        
         $where['status'] = ['=', 1];
         $where['start_time'] = ['<=', time()];
         $where['end_time'] = ['>', time()];
@@ -192,7 +192,7 @@ class Groupbuy extends MobileBase
         $user = session('user');
         $user_id = $user['user_id'];
         if(!$user_id){
-            $this->error('请先登录', 'User/login');
+            $this->error('登陆超时，请先登录', 'User/login');
         }
 
 
@@ -255,7 +255,8 @@ class Groupbuy extends MobileBase
         
         # 组装数据
         $info['price'] = $buy_type == 1 ? $info['shop_price'] : $info['group_price'];
-        $info['buy_num'] = $buy_num;
+        $info['buy_type'] = $buy_type;
+        $info['buy_num'] = $buy_num; 
         $info['wprice'] = (intval($info['price'] * 100) * $buy_num) / 100;
         $info['user_money'] = $user['user_money'];
         // dump($info);exit;
@@ -265,9 +266,86 @@ class Groupbuy extends MobileBase
         return $this->fetch();
     }
 
+    /**
+     * 提交订单 
+     */
+    public function falceOrder(){
+        if(IS_AJAX){
+            $data = input('post.');
+            dump($data);
 
 
 
+        }
+        exit;
+    }
+
+    /**
+     * ajax 省市区三级选项
+     */
+    public function ajaxAreaSelect(){
+        $select = trim(input("get.select"));
+        $areaid = intval(input("get.areaid"));
+        switch($select){
+            case 'city':
+                $res = Db::query("select `id`, `name` from `tp_region` where `level` = 2 and `parent_id` = '$areaid' order by id asc");
+                break;
+            case 'area':
+                $res = Db::query("select `id`, `name` from `tp_region` where `level` = 3 and `parent_id` = '$areaid' order by id asc");
+                break;
+            default:
+                $res = Db::query("select `id`, `name` from `tp_region` where `level` = 1 order by id asc");
+                break;
+        }
+
+        if($res){
+            ajaxReturn($res);
+        }else{
+            exit('');
+        }
+    }
+
+    /**
+     * 新增或修改收货地址
+     */
+    public function addEditAddress(){
+        $data = input('post.');
+        $user_id = cookie('user_id');
+        # 数据验证
+        if(!$user_id){
+            ajaxReturn(['status'=> 0, msg => '未登陆，请先登陆']);
+        }
+        if(!$data['province'] || !$data['area']){
+            ajaxReturn(['status'=> 0, msg => '请选择地区']);
+        }
+        if(!$data['consignee']){
+            ajaxReturn(['status'=> 0, msg => '请填写收货人']);
+        }
+        if(!$data['mobile']){
+            ajaxReturn(['status'=> 0, msg => '请填写联系电话']);
+        }
+
+        if($data['address_id']){
+
+            $upsql = "update `tp_user_address` set `consignee` = '$data[consignee]', `province` = '$data[province]', `city` = '$data[city]', `district` = '$data[district]', `address` = '$data[address]', `mobile` = '$data[mobile]' where `user_id` = '$user_id' and `address_id` = '$data[address_id]'";
+            $res = Db::execute($upsql);
+
+        }else{
+            $insql = "insert into `tp_user_address` (`user_id`,`consignee`,`province`,`city`,`district`,`address`,`mobile`) values ('$user_id','$data[consignee]','$data[province]','$data[city]','$data[district]','$data[address]','$data[mobile]')";
+            $res = Db::execute($insql);
+            if($res){
+                $data['address_id'] = Db::table('tp_user_address')->getLastInsID();
+            }
+        }
+
+        if($res){
+            ajaxReturn(['status'=> 1, id => $data['address_id'], msg => '操作成功']);
+        }else{
+            ajaxReturn(['status'=> 0, msg => '操作失败，请重试']);
+        }
+
+
+    }
 
 
 
