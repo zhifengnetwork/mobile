@@ -1,121 +1,210 @@
 <include file="public/layout" />
 <style>
-    .ncm-goods-gift {
-        text-align: left;
-    }
+  .ncm-goods-gift {
+    text-align: left;
+  }
 
-    .ncm-goods-gift ul {
-        display: inline-block;
-        font-size: 0;
-        vertical-align: middle;
-    }
+  .ncm-goods-gift ul {
+    display: inline-block;
+    font-size: 0;
+    vertical-align: middle;
+  }
 
-    .ncm-goods-gift li {
-        display: inline-block;
-        letter-spacing: normal;
-        margin-right: 4px;
-        vertical-align: top;
-        word-spacing: normal;
-    }
+  .ncm-goods-gift li {
+    display: inline-block;
+    letter-spacing: normal;
+    margin-right: 4px;
+    vertical-align: top;
+    word-spacing: normal;
+  }
 
-    .ncm-goods-gift li a {
-        background-color: #fff;
-        display: table-cell;
-        height: 30px;
-        line-height: 0;
-        overflow: hidden;
-        text-align: center;
-        vertical-align: middle;
-        width: 30px;
-    }
+  .ncm-goods-gift li a {
+    background-color: #fff;
+    display: table-cell;
+    height: 30px;
+    line-height: 0;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: middle;
+    width: 30px;
+  }
 
-    .ncm-goods-gift li a img {
-        max-height: 30px;
-        max-width: 30px;
-    }
+  .ncm-goods-gift li a img {
+    max-height: 30px;
+    max-width: 30px;
+  }
 
-    a.green {
+  a.green {
 
-        background: #16A086 none repeat scroll 0 0;
-        border: 1px solid #f5f5f5;
-        border-radius: 4px;
-        color: #ffffff;
-        cursor: pointer !important;
-        display: inline-block;
-        font-size: 12px;
-        font-weight: normal;
-        height: 20px;
-        letter-spacing: normal;
-        line-height: 20px;
-        margin: 0 5px 0 0;
-        padding: 1px 6px;
-        vertical-align: top;
-    }
+    background: #16A086 none repeat scroll 0 0;
+    border: 1px solid #f5f5f5;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer !important;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: normal;
+    height: 20px;
+    letter-spacing: normal;
+    line-height: 20px;
+    margin: 0 5px 0 0;
+    padding: 1px 6px;
+    vertical-align: top;
+  }
 
-    a.green:hover {
-        color: #FFF;
-        background-color: #1BBC9D;
-        border-color: #16A086;
-    }
+  a.green:hover {
+    color: #FFF;
+    background-color: #1BBC9D;
+    border-color: #16A086;
+  }
 
-    .ncap-order-style .ncap-order-details {
-        margin: 20px auto;
-    }
+  .ncap-order-style .ncap-order-details {
+    margin: 20px auto;
+  }
 
-    .contact-info h3,
-    .contact-info .form_class {
-        display: inline-block;
-        vertical-align: middle;
-    }
+  .contact-info h3,
+  .contact-info .form_class {
+    display: inline-block;
+    vertical-align: middle;
+  }
 
-    .form_class i.fa {
-        vertical-align: text-bottom;
-    }
+  .form_class i.fa {
+    vertical-align: text-bottom;
+  }
 </style>
 <div class="page">
-    <div class="fixed-bar">
-        <div class="item-title"><a class="back" href="javascript:history.go(-1)" title="返回列表"><i
-                    class="fa fa-arrow-circle-o-left"></i></a>
-            <div class="subject">
-                <h3>查看返利情况</h3>
-                <h5>查看返利情况</h5>
-            </div>
-            <div class="subject" style="width:62%">
-
-            </div>
-        </div>
+  <div class="fixed-bar">
+    <div class="item-title"><a class="back" href="javascript:history.go(-1)" title="返回列表"><i
+          class="fa fa-arrow-circle-o-left"></i></a>
+      <div class="subject">
+        <h3>查看返利情况</h3>
+        <h5>查看返利情况</h5>
+      </div>
 
     </div>
-    <div class="ncap-order-style">
-        <div class="titile">
-            <h3>
-                查看返利情况
-            </h3>
-        </div>
 
-        <div class="ncap-order-details">
-            <form id="order-action">
-                <input name="order_id" value="{$order['order_id']}" type="hidden" />
-                <div class="tabs-panels">
-                    <div class="misc-info">
-                        <h3>上级信息</h3>
-                        <dl>
-                            <dt>上级 ID：</dt>
-                            <dd>{$leader.user_id}</dd>
-                            <dt>上级昵称：</dt>
-                            <dd>{$leader.nickname}</dd>
-                            <dt>上级头像：</dt>
-                            <dd>{$leader.head_pic}</dd>
-                        </dl>
-                       
-                    </div>
-                  
-
-                </div>
-            </form>
-        </div>
+  </div>
+  <div class="ncap-order-style">
+    <div class="titile">
+      <h3></h3>
     </div>
+
+    <div class="ncap-order-details">
+
+      <div class="tabs-panels">
+        <div class="misc-info">
+          <h3>订单信息</h3>
+          <dl>
+            <dt>订单编号：</dt>
+            <dd>{$order.order_sn}</dd>
+            <dt>下单人：</dt>
+            <dd>{$order.consignee}</dd>
+            <dt>下单人ID：</dt>
+            <dd>{$order.user_id}</dd>
+          </dl>
+          <dl>
+            <dt>下单时间：</dt>
+            <dd>{$order.add_time|date='Y-m-d H:i:s',###}</dd>
+            <dt>订单金额：</dt>
+            <dd>{$order.order_amount}</dd>
+            <dt>支付状态：</dt>
+            <dd>{$order.pay_status_des}</dd>
+          </dl>
+        </div>
+
+        <div class="misc-info">
+            <h3>上级信息</h3>
+            <dl>
+              <dt>上级的ID：</dt>
+              <dd>{$leader.user_id}</dd>
+              <dt>上级的昵称：</dt>
+              <dd>{$leader.nickname}</dd>
+              <dt>上级的头像：</dt>
+              <dd><img src="{$leader.head_pic}" width="20px;" /></dd>
+            </dl>
+            
+          </div>
+
+
+        <div class="goods-info">
+          <h4>商品信息</h4>
+          <table>
+            <thead>
+              <tr>
+                <th >商品编号</th>
+                <th colspan="2">商品</th>
+                <th>规格属性</th>
+                <th>数量</th>
+                <th>商品价格</th>
+                <th>会员折扣价</th>
+                <th>商品小计</th>
+              </tr>
+            </thead>
+            <tbody>
+            <volist name="$order.orderGoods" id="good">
+              <tr>
+                <td class="w60">{$good.goods_sn}</td>
+                <td class="w30"><div class="goods-thumb"><img alt="" src="{$good['goods_id']|goods_thum_images=200,200}"  width="30px;" /></div></td>
+                <td style="text-align: left;">{$good.goods_name}<br/></td>
+                <td class="w80">{$good.spec_key_name}</td>
+                <td class="w60">{$good.goods_num}</td>
+                <td class="w100">{$good.goods_price}</td>
+                <td class="w60">{$good.member_goods_price}</td>
+                <td class="w80">{$good.total_member_goods_price}</td>
+              </tr>
+              </volist>
+          </table>
+        </div>
+
+
+        <div class="addr-note">
+          <h4>收货信息</h4>
+          <dl>
+            <dt>收货人：</dt>
+            <dd>{$order.consignee}</dd>
+            <dt>联系方式：</dt>
+            <dd>{$order.mobile}</dd>
+          </dl>
+        </div>
+
+        <div class="goods-info">
+          <h4>返利记录</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>记录ID</th>
+                <th>用户ID</th>
+                <th>用户昵称</th>
+                <th>变动金额</th>
+                <th>下单时间</th>
+                <th>订单编号</th>
+                <th>描述</th>
+              </tr>
+            </thead>
+            <tbody>
+              <foreach name="log" item="v">
+                <tr>
+                  <td class="text-center">{$v.log_id}</td>
+                  <td class="text-center">{$v.user_id}</td>
+                  <td class="text-center">{$v.user_id|get_nickname}</td>
+                  <td class="text-center">{$v.user_money}</td>
+                  <td class="text-center">{$v.change_time|date='Y-m-d H:i:s',###}</td>
+                  <td class="text-center">{$v.order_sn}</td>
+                  <td class="text-center">{$v.desc}</td>
+                </tr>
+              </foreach>
+            </tbody>
+          </table>
+        </div>
+
+
+
+      </div>
+    </div>
+
+  </div>
 </div>
+
 
 </body>
 
