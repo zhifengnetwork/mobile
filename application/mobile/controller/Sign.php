@@ -94,18 +94,18 @@ class Sign extends MobileBase {
                     //添加积分   有两种用户   在user表中有两个字段is_agent（代理商）和is_distribut（经销商）  也可能即使代理商又是经销商  user表添加两个字段分别存储代理商抽奖次数agent_free_number和经销商抽奖次数distribut_free_number   读取设置表config中代理商签到次数agent_sign_num和经销商签到次数distribut_sign_num   在签到成功的时候  判断签到记录表中是否达到预定的次数   达到后改变user表中对应的次数+1
 
                     //先查询用户类型
-                    $user_type=M('users')->where(['user_id'=>$user_id])->select();
+                    $user = M('users')->where(['user_id'=>$user_id])->field('is_agent,is_distribut')->find();
                     //获取后台设置的签到天数
-                    $sign_distribut_days=M('config')->where(['name'=>'sign_distribut_days'])->value('value');
-                    $sign_agent_days=M('config')->where(['name'=>'sign_agent_days'])->value('value');
+                    $sign_distribut_days = M ('config')->where(['name'=>'sign_distribut_days'])->value('value');
+                    $sign_agent_days = M('config')->where(['name'=>'sign_agent_days'])->value('value');
                     //代理类型
-//                    var_dump($sign_agent_days);
+                //   var_dump($sign_distribut_days);
 //                    echo '``````````````````';
-//                    var_dump($user_type);
+//                    var_dump($user);
 //                    echo '``````````````````';
-                    if($user_type[0]['is_agent']){
+                    if($user['is_agent'] == 1){
                         //查询签到记录看已经连续签到是次数是否达到了设置的值
-                        $agent_continue_sign_num=$this->goods_continue_sign($user_id,'sign_agent');
+                        $agent_continue_sign_num = $this->goods_continue_sign($user_id,'sign_agent');
 //                        echo $agent_continue_sign_num.'````````````'.$sign_agent_days;
                         if($agent_continue_sign_num>=$sign_agent_days){
                             //使得user表中代理领礼物次数+1
@@ -116,7 +116,7 @@ class Sign extends MobileBase {
                         }
                     }
                     //分销员类型
-                    if($user_type[0]['is_distribut']){
+                    if($user['is_distribut'] == 1){
                         //查询签到记录看已经连续签到是次数是否达到了设置的值
                         $distribut_continue_sign_num=$this->goods_continue_sign($user_id,'sign_distribut');
 //                        echo '|||||||||||||||||'.$distribut_continue_sign_num;die;
