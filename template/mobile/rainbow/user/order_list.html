@@ -29,8 +29,9 @@
         </ul>
         <ul class="re_tit">
             <li style="width:50%"><span>订单编号</span></li>
-            <li style="width:50%"><span>下单时间</span></li>
-
+            <li style="width:25%"><span>收货人</span></li>
+            <li style="width:25%"><span>下单时间</span></li>
+            <!-- <li style="width:25%"><span>订单类型</span></li> -->
         </ul>
         <empty name="order">
             <div class="juzhong">
@@ -41,7 +42,15 @@
                 <ul class="series">
 
                     <li style="width:50%"><span>{$v.order_sn}</span></li>
-                    <li style="width:50%"><span>{$v.add_time|date='Y-m-d',###}</span></li>
+                    <li style="width:25%"><span>{$v.consignee}</span></li>
+                    <li style="width:25%"><span>{$v.add_time|date='Y-m-d',###}</span></li>
+                    <!-- <if condition="$v.states eq 101">
+                        <li style="width:25%"><span>代理</span></li>
+                    <elseif condition="$v.states eq 102"/>
+                        <li style="width:25%"><span>分销</span></li>
+                    <else/>
+                        <li style="width:25%"><span>分销&代理</span></li>
+                    </if> -->
 
                 </ul>
             </foreach>

@@ -32,6 +32,7 @@ class Pay
     private $payPoints = 0;//使用积分
     private $couponPrice = 0;//优惠券抵消金额
     private $signPrice = 0;//签到抵消金额
+    private $deposit = 0;//竞拍订金
 
     private $orderPromId;//订单优惠ID
     private $orderPromAmount = 0;//订单优惠金额
@@ -385,25 +386,50 @@ class Pay
      * 使用签到免费领取
      * @return int
      */
-    public function getUserSign($goods_id)
+    public function getUserSign()
     {
 
-        $goodsModel = new Goods();
-        $this->goods = $goodsModel::get($goods_id);
+//        $goodsModel = new Goods();
+//        $this->goods = $goodsModel::get($goods_id);
 
-        if ($this->goods['cat_id'] == 584 || $this->goods['cat_id'] == 585) {
+//        if ($this->goods['cat_id'] == 584 || $this->goods['cat_id'] == 585) {
+        if ($this->payList[0]['goods']->cat_id == 584 || $this->payList[0]['goods']->cat_id == 585) {
             // 能否领取商品
-            $isReceive = provingReceive($this->user, $this->goods['cat_id']); 
+            $isReceive = provingReceive($this->user, $this->goods['cat_id']);
 
             if($isReceive['status'] == 1){
                 $this->orderAmount = $this->orderAmount - $this->goodsPrice;
                 $this->signPrice = $this->goodsPrice;
             }
-            
         }
-
+        return $this;
     }
 
+    /**
+     * 竞拍使用订金
+     * @return int
+     */
+    public function getAuction()
+    {
+        $query = Db::name('AuctionPrice')
+            ->where(['auction_id' => $this->payList[0]['prom_id'], 'is_out' => 2])
+            ->order('offer_price desc')->find();
+
+        if (!empty($query)) {
+
+            $EarnestMoney = Db::name('AuctionDeposit')
+                ->where(['auction_id' => $this->payList[0]['prom_id'], 'user_id' => $this->user['user_id'], 'status' => 1])
+                ->value('deposit');
+            if(!empty($EarnestMoney)){
+                $this->deposit = $EarnestMoney;
+
+                $this->orderAmount = $EarnestMoney > $query['offer_price'] ? 0 : $query['offer_price'] - $EarnestMoney;
+            }
+
+        }
+
+        return $this;
+    }
 
     /**
      * 获取实际上使用的余额
@@ -477,6 +503,14 @@ class Pay
     }
 
     /**
+     *  竞拍订金
+     * @return int
+     */
+    public function getAuctionDeposit()
+    {
+        return $this->deposit;
+    }
+    /**
      * 商品总价
      * @return int
      */
@@ -529,6 +563,7 @@ class Pay
             'shipping_price' => round($this->shippingPrice, 2),
             'coupon_price' => round($this->couponPrice, 2),
             'sign_price' => round($this->signPrice, 2),
+            'deposit' => round($this->deposit, 2),
             'user_money' => round($this->userMoney, 2),
             'integral_money' => $this->integralMoney,
             'pay_points' => $this->payPoints,

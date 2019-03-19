@@ -2,19 +2,17 @@
 /**
  * 竞拍 的 PHP 后端
  */
-// namespace app\mobile\controller;
 namespace app\shop\controller;
-header('content-type:text/html;charset=utf-8');
+
 use app\common\logic\AuctionLogic;
+use app\common\model\Goods;
 use think\Db;
-use think\Model;
-use think\Page;
 use app\common\model\WxNews;
 
 class Auction extends MobileBase
 {
 
-    public $user_id = 3;
+    public $user_id = 0;
     public $user = array();
     /**
      * 析构流函数
@@ -32,84 +30,73 @@ class Auction extends MobileBase
         }
     }
 
+    /**
+     * 包含一个商品模型
+     * @param $goods_id
+     */
+    public function setGoodsModel($goods_id)
+    {
+        if ($goods_id > 0) {
+
+            $goodsModel = new Goods();
+            $this->goods = $goodsModel::get($goods_id);
+        }
+    }
+
+    /**
+     * 通过item_id包含一个商品规格模型
+     * @param $item_id
+     */
+    public function setSpecGoodsPriceById($item_id)
+    {
+        if ($item_id > 0) {
+            $specGoodsPriceModel = new SpecGoodsPrice();
+            $this->specGoodsPrice = $specGoodsPriceModel::get($item_id, '', 10);
+        }else{
+            $this->specGoodsPrice = null;
+        }
+    }
+
      /**
      * 竞拍
      */
     public function index()
     {
-       //先算分页
-//        $auctionGoodsList=Db::field('goods.original_img')->table(['tp_goods'=>'goods','tp_auction'=>'auction'])->where()->select();
-//        $auction= new Auction();
-        $count =  M('auction')->order('start_time asc')->count();
-//        $count=Db::field('goods.original_img')->table(['tp_goods'=>'goods','tp_auction'=>'auction'])->where()->select();
-        $pagesize = C('PAGESIZE');  //每页显示数
-        $page = new Page($count,$pagesize); // 实例化分页类 传入总记录数和每页显示的记录数
-        $show = $page->show();  // 分页显示输出
-        $this->assign('page',$show);    // 赋值分页输出
-        $list = M('auction')
-            ->alias('au')
-            ->join('__GOODS__ g', 'au.goods_id=g.goods_id AND g.prom_type=8')
-            ->page($page->firstRow, $page->listRows)
-            ->order('start_time asc')
-            ->field('g.original_img,au.id,au.goods_name,au.start_price,au.start_time')
-            ->select();
-//        var_dump($list);die;
-        //处理时间
-        foreach($list as $key=>$value){
-            $list[$key]['start_time']=date('n月j日   H:i:s',$value['start_time']);
-        }
-        $this->assign('list', $list);
-        if(I('is_ajax')) {
-            return $this->fetch('ajax_auction_list');      //输出分页
-        }
-        return $this->fetch();
-    }
-
-//    public function index()
-//    {
-//        $commodity = M('Auction')->order('preview_time asc')->select();
-//        $this->assign('commodity', $commodity);
-//        return $this->fetch();
-//    }
-
-
-    /**
-     * 竞拍成功 付款页面
-     */
-    public function pay()
-    {
        
         return $this->fetch();
     }
 
+
     /**
      * 竞拍详情
      */
-    public function detail()
+    public function auction_detail()
     {
 
-        $goods_id = I("get.id/d");
-        if (empty($goods_id)) {
-            $this->error('商品id不存在');
-        }
+        $auction_id = I("get.id/d");
         $goodsModel = new \app\common\model\Auction();
-        $goods = $goodsModel::get($goods_id);
-        //dump($goods);exit;
-        if (empty($goods) || ($goods['auction_status'] == 0)) {
+        $auction = $goodsModel::get($auction_id);
+
+        $this->setGoodsModel($auction['goods_id']);
+
+        if (empty($auction) || ($auction['auction_status'] == 0)) {
             $this->error('此商品不存在或者已下架');
         }
-        $auctionLogic = new AuctionLogic();
-        $isBond = $auctionLogic->getUserIsBond($this->user_id, $goods_id);
-        $bondUser = $auctionLogic->getHighPrice($goods_id,10);
+        $auction['delay_end_time'] = $auction['end_time']+($auction['delay_num']*$auction['delay_time']*60); //延时结束时间
+
+        $isBond = $this->getUserIsBond($this->user_id, $auction_id);
+        $bondUser = $this->getHighPrice($auction_id);
         //是否有交保证金
         if (empty($isBond)){
-            $goods['isBond'] = 0;
+            $auction['isBond'] = 0;
         }else{
-            $goods['isBond'] = 1;
+            $auction['isBond'] = 1;
         }
 
         $this->assign('bondUser', $bondUser);
-        $this->assign('goods', $goods);
+        $this->assign('bondCount', count($bondUser));
+        $this->assign('auction', $auction);
+        $this->assign('goods', $this->goods);
         return $this->fetch();
     }
 
@@ -118,50 +105,236 @@ class Auction extends MobileBase
      */
     public function offerPrice()
     {
-        $auction_id = 64;//input("goods_id/d"); // 竞拍商品id
-        $price = 20;//input("goods_price/d");// 竞拍价格
+        $auction_id = input("goods_id/d"); // 竞拍商品id
+        $price = input("price/f");// 竞拍价格
 //        if ($this->user_id == 0){
-//            $this->error('请先登录', U('Mobile/User/login'));
+//            $this->ajaxReturn(['status' => -100, 'msg' => '请先登录', 'result' => '']);
 //        }
         $auction = \app\common\model\Auction::get($auction_id);
-        $auctionLogic = new AuctionLogic();
-        $isBond = $auctionLogic->getUserIsBond($this->user_id, $auction_id);
+        $isBond = $this->getUserIsBond($this->user_id, $auction_id);
         if(empty($isBond)){
-            $this->error('未交保证金', U('Mobile/Payment/payBond',array('goods_id'=>$auction_id)));
+            $this->ajaxReturn(['status' => 0, 'msg' => '未交保证金', 'jump' => U('Mobile/Payment/payBond',array('goods_id'=>$auction_id))]);
         }
-        $high = $auctionLogic->getHighPrice($auction_id);
+        $high = $this->getHighPrice($auction_id);
+        // 活动是否已开始
+        if ( time() < $auction['start_time']){
+            $this->ajaxReturn(['status' => 0, 'msg' => '本轮活动还没开始', 'result' => '']);
+        }
         // 当前时间是否已结束
         if ( time() > $auction['end_time']+($auction['delay_num']*$auction['delay_time'])){
-            $this->error('本轮活动已结束！', U('Mobile/Activity/auction_list'));
+            $this->ajaxReturn(['status' => 0, 'msg' => '本轮活动已结束', 'result' => '']);
         }
 
         if (empty($high)){
-            $auctionLogic->addAuctionOffer($this->user_id, $auction_id, $price);
+            $this->addAuctionOffer($this->user_id, $auction_id, $price);
         } else {
             if($this->user_id == $high[0]['user_id']){
-                $this->error('您已经是目前最高出价者了');
+                $this->ajaxReturn(['status' => 0, 'msg' => '您已经是目前最高出价者了', 'result' => '']);
             }
             if($price <= $high[0]['offer_price']){
-                $this->error('您的出价低于别人');
+                $this->ajaxReturn(['status' => 0, 'msg' => '您的出价低于别人', 'result' => '']);
             }
             if ($price < ($high[0]['offer_price']+$auction['increase_price'])){
-                $this->error('加价幅度'.$auction['increase_price']);
+                $this->ajaxReturn(['status' => 0, 'msg' => '加价幅度'.$auction['increase_price'], 'result' => '']);
             }
-            $auctionLogic->addAuctionOffer($this->user_id, $auction_id, $price);
+            // 结束时间小于延时时间的话就添加延时次数
+            if($auction['end_time']-time() <= $auction['delay_time']*60){
+                $this->addDelayTime($auction_id, $auction['delay_time']);
+            }
+
+            $this->addAuctionOffer($this->user_id, $auction_id, $price);
         }
 
-        return $this->fetch('auction_detail','','',array('id'=>$auction_id)); //分跳转 和不 跳转
+        return $this->ajaxReturn(['status' => 1, 'msg' => '出价成功', 'result' => '']);
+//        return $this->fetch('auction_detail', ['id'=>$auction_id,'item_id'=>$item]);
+//        return $this->success('出价成功',U('auction_detail',array('id'=>$auction_id, 'item_id'=>$item))); //分跳转 和不 跳转
 
     }
 
+    /*
+     * 活动结束统计获奖者
+     */
+    public function auctionEnd()
+    {
+        $auction_id = input("aid/d", 0);
+        try {
+            $auction = \app\common\model\Auction::get($auction_id);
+            $this->auction = $auction::get($auction_id);
+            $buyGoods = $this->winnersUser();
 
-	/**
-	 * 条数具体化
-	 */
-	public function tiaoshu()
+        } catch (TpshopException $t) {
+            $error = $t->getErrorArr();
+            $this->ajaxReturn($error);
+        }
+            return $this->ajaxReturn($buyGoods);
+    }
+
+    /**
+     * 竞拍结果弹框
+     */
+    public function auctionResult()
+    {
+        $auction_id = input("aid/d", 0);
+        $victory = M('AuctionPrice')->where(['user_id' => $this->user_id, 'auction_id' => $auction_id, 'is_read' => 0])->order('offer_price desc')->find();
+        if(!empty($victory)){
+            $this->ajaxReturn(['status' => 1, 'msg'=>$victory['is_out']]);
+        } else {
+            $this->ajaxReturn(['status'=>0]);
+        }
+
+    }
+
+    /**
+     * 竞拍失败修改已读状态
+     */
+    public function alreadyRead()
+    {
+        $auction_id = input("aid/d", 0);
+        $victory = M('AuctionPrice')->where(['user_id' => $this->user_id, 'auction_id' => $auction_id])->save(['is_read'=>1]);
+        if(!empty($victory)){
+            $this->ajaxReturn(['status' => 1]);
+        } else {
+            $this->ajaxReturn(['status'=>0]);
+        }
+    }
+
+    /**
+     * 条数具体化
+     */
+    public function tiaoshu()
     {
 
+        $goods_id = I("get.id/d");
+        $bondUser = $this->getHighPrice($goods_id);
+        $this->assign('bondUser', $bondUser);
         return $this->fetch();
     }
+
+    /**
+     *临时方法-交定金扣余额
+     */
+    public function addBond()
+    {
+        $goods_id = I("get.goods_id/d");
+
+        $money = Db::name('Auction')->where('id',$goods_id)->value('deposit');
+
+        $user = session('user');
+        $data['deposit'] = $money;
+        $data['user_id'] = $user['user_id'];
+        $data['auction_id'] = $goods_id;
+        $data['order_sn'] = 'Bond'.get_rand_str(10,0,1);
+        $data['create_time'] = time();
+        $data['status'] = 1;
+        $order_id = M('auctionDeposit')->add($data);
+        if ($order_id!=0) {
+            $this->ajaxReturn(['status' => 1]);
+        } else {
+            $this->ajaxReturn(['status'=>0]);
+        }
+    }
+
+    /**
+     * 用户是否有交保证金
+     * @param type $sort_type
+     * @param type $page_index
+     * @param type $page_size
+     */
+    public function getUserIsBond($user_id, $auction_id)
+    {
+        $where['user_id'] = $user_id;
+        $where['auction_id'] = $auction_id;
+        $where['status'] = 1; // 1已支付，2退款
+
+        $query = M('AuctionDeposit')
+            ->where($where)
+            ->select();
+
+        return $query;
+    }
+
+    /**
+     * 获取出价者按价格排序
+     * @param type $sort_type
+     * @param type $page_index
+     * @param type $page_size
+     */
+    public function getHighPrice($auction_id,$limit = '')
+    {
+        $where['auction_id'] = $auction_id;
+        $query = M('AuctionPrice')
+            ->where($where)
+            ->order('offer_price desc')
+            ->limit($limit)
+            ->select();
+
+        return $query;
+    }
+
+    /**
+     * 添加竞拍出价
+     * @param type $sort_type
+     * @param type $page_index
+     * @param type $page_size
+     */
+    public function addAuctionOffer($uid,$auction_id,$money)
+    {
+
+        try{
+            $data=[
+                'user_id'      => $uid,
+                'offer_price'  => $money,
+                'offer_time'   => time(),
+                'auction_id'  => $auction_id,
+                'is_out'  => 1,
+            ];
+            $id = M('AuctionPrice')
+                ->add($data);
+
+            $map['auction_id']  = ['=', $auction_id];
+            $map['id']  = ['<>', $id];
+            M('AuctionPrice')->where($map)->save(['is_out'=>0]);
+        } catch (TpshopException $t) {
+            $error = $t->getErrorArr();
+            $this->ajaxReturn($error);
+        }
+
+    }
+
+
+    /**
+     * 添加竞拍延时
+     * @param type $sort_type
+     * @param type $page_index
+     * @param type $page_size
+     */
+    public function addDelayTime($id)
+    {
+
+        $query = M('Auction')->where('id',$id)->setInc('delay_num');
+
+        return $query;
+    }
+
+    /*
+     * 活动结束统计获奖者
+     */
+    public function winnersUser()
+    {
+
+        if (empty($this->auction)) {
+            return $data = ['status' => 0, 'msg' => '竞拍商品不存在', 'result' => ''];
+        }
+
+        if($this->auction['is_end'] == 1){
+            return $data = ['status' => 0, 'msg' => '活动已结束', 'result' => ''];
+        }
+
+        $price = $this->getHighPrice($this->auction['id'],1);
+        Db::name('Auction')->where('id', $this->auction['id'])->save(['is_end' => 1, 'transaction_price' => $price[0]['offer_price']]);
+        Db::name('AuctionPrice')->where(['auction_id' => $this->auction['id'], 'is_out' => 1])->save(['is_out' => 2]);
+
+    }
+
 
 }

@@ -1,0 +1,556 @@
+
+*{
+	
+	margin: 0px;
+	padding: 0px;
+	
+	
+}
+.detail{
+	margin-top:.8rem ;
+	
+}
+#daoend{
+	display: none;
+	padding-left: .15rem;
+	
+}
+
+.header{
+	
+	position: relative;
+	
+}
+.starttime{
+	
+	width: 6.6rem;
+	font-size: .3rem;
+	height: .8rem;
+	line-height: .8rem;
+	color: white;
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%,0);
+	bottom: 0rem;
+	z-index: 100;
+	background: #C7354C;
+	opacity:0.7;
+	
+	
+	
+	
+}
+.fu{
+	
+	width:6.6rem;
+	height: 4.5rem;
+	position: relative;
+	left: 50%;
+	transform: translate(-50%,0);
+	overflow: hidden;
+	
+	
+	
+}
+.img{
+	
+	
+	width: 6.6rem;
+	/*margin: 0 7%;*/
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%,0);
+
+}
+.desc{
+	width: 6.6rem;
+	font-size:.28rem;
+	position: relative;
+	left: 50%;
+	top: .2rem;
+	transform: translate(-50%,0);
+	
+}
+
+.jiatou{
+	width: 6.56rem;
+	height: 1rem;
+	position: relative;
+	top: .2rem;
+	left: 50%;
+	transform: translate(-50%,0);
+	
+}
+.priceear{
+	
+	position: absolute;
+    font-size: .3rem;
+    display: inline-block;
+    bottom: 0rem;
+	
+}
+
+.price{	
+	
+	 color: #E8315D;
+	 font-size: .5rem;
+	 display: inline-block;"		
+	 
+}
+.priceear span{
+	
+	font-size: .2rem;	
+	
+}
+.priceear{
+	position: absolute;
+	 font-size: .3rem;
+
+}
+
+.right{
+	
+	position: absolute;
+	font-size: .30rem;
+	vertical-align: bottom;
+	bottom: 0rem;
+	right: 0rem;
+
+}
+
+
+.headpicear{
+	
+	width: 100%;
+	position: relative;
+	top:.5rem;
+	border-top: 2px solid #EEEEEE;
+	border-bottom: 3px solid #EEEEEE;
+	
+}
+
+.zongshu{
+	
+	width: 96%;
+	padding: 3% 2%;
+	font-size: .3rem;
+	color: #B0B0B0;
+	display: block;
+	text-decoration: none;
+	
+	
+}
+.zongshu span:nth-child(1){
+	
+	 padding-right:.3rem;
+	 border-right: 1px solid #EEEEEE;
+	 color: black;
+	
+}
+.zongshu span:nth-child(2){
+	
+	margin-left:.3rem ;
+	
+	
+}
+.zongshu span:nth-child(3){
+	
+	padding: 0 6%;
+	float: right;
+	
+}
+
+.tiaoshu{
+	
+	display: block;
+	color: #818181;
+	
+}
+.tiaoshu li{
+	
+	font-size: .23rem;
+
+}
+.tiaoshu li:nth-child(1){
+	
+	color:#C41C35;
+	
+}
+.tiaoshu li span:nth-child(1){
+	display: inline-block;
+	width: 1.5rem;
+
+}
+.tiaoshu li span:nth-child(2){
+	display: inline-block;
+	width: 1rem;
+	text-align: center;
+
+}
+.tiaoshu li span:nth-child(4){
+	display: inline-block;
+	text-align: center;
+	float: right;
+	padding-right:9%;
+}
+
+.baobei{
+	margin-top: .7rem;
+	padding-bottom: .2rem;
+	font-size: .25rem;
+	border-bottom: 6px solid #EEEEEE;
+	
+}
+.pleft,.pright{
+
+display: inline-block;
+
+}
+.pright{
+	
+	float: right;
+	
+	
+}
+.pleft span:nth-child(1),.pright span:nth-child(1){
+vertical-align: bottom;		
+display: inline-block;
+width: 1.5rem;
+margin-left: .1rem;
+
+}
+.pleft span:nth-child(2),.pright span:nth-child(2){
+
+vertical-align: bottom;	
+display: inline-block;
+width: 2rem;
+text-overflow: ellipsis;
+overflow: hidden;
+white-space: nowrap;
+color: gray;
+
+
+}
+
+
+
+
+#xiangqing{
+	
+	border-top: none;
+	
+	
+	
+}
+
+
+
+.rule{
+	
+	text-align: center;
+	font-size: .29rem;
+    margin-bottom: .2rem;
+  
+
+}
+.number{
+	
+	height: 1.1rem;
+	width: 100%;
+	position: fixed;
+	border-top: 1px solid #eeeeee;
+	bottom: 0px;
+	background: white;
+	
+	
+	
+	
+	
+}
+#form{
+	
+	position: fixed;
+	bottom: .2rem;
+	
+	
+}
+#mmer{
+	
+	margin-left: .06rem;
+	margin-right: .06rem;
+	margin-top:.1rem ;
+	
+}
+
+
+#myprice{
+	
+	
+	position: fixed;
+	right: .5rem;
+	bottom: .1rem;
+	background:#C92142;
+	color: white; 
+	display: inline-block;
+	width:2.4rem; 
+	height: .7rem;
+	line-height: .7rem;
+	border-radius: .03rem;
+	font-size: .3rem; 
+	text-align: center; 
+	border-radius:10%;
+	margin-left:3.2rem;
+	cursor: pointer;
+	padding: .1rem 0;
+	vertical-align: bottom;
+
+}
+.ccc{
+	
+	text-align: center;
+	line-height:.35rem ;
+	
+}
+
+
+.content{
+	
+	padding-bottom: 1.7rem;
+	
+	
+}
+
+
+.content p{
+	
+	font-size: .3rem;
+	padding: 0 .3rem;
+	
+	
+	
+}
+
+#mask{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top:0;
+    left: 0;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.tanchuk{
+	
+	width: 5rem;
+	height: 3rem;
+	background: white;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	border-radius: 10%;
+	text-align: center;
+	
+}
+.paicheng{
+	
+	font-size: .4rem;
+	padding:.2rem 0 ;
+	border-bottom:1rem solid #EEEEEE ;
+	
+}
+.paicheng1{
+	font-size: .3rem;
+	padding:.2rem 0 ;
+
+}
+#tobuy{
+	
+	width: 1.5rem;
+	background: #C92142;
+	color: white;
+	font-size: .3rem;
+	padding: .2rem 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,50%);
+	border-radius: 10%;
+	cursor: pointer;
+
+}
+.bianji{
+	
+	background: white;
+    position: fixed;
+    bottom: 1rem;
+    right: 0rem;
+    left: 0rem;
+
+}
+
+ul li{
+	
+	position: relative;
+	border-top: 2px solid #EEEEEE;
+	padding-left: .2rem;
+	font-size: .3rem;
+	height: .7rem;
+	line-height: .7rem;
+	
+	
+}
+
+li span:nth-child(1){
+	
+display: inline-block;	
+width: 1.6rem;
+
+}
+.fuhao{
+	
+  position: absolute;
+  right: .6rem;
+	
+	
+}
+
+
+li input  {
+	
+	width: 3rem;
+	outline: none;
+	border: none;
+	margin-left: 1.8rem;
+
+}
+
+.xieyi{
+	width: 100%;
+	height: .5rem;
+	line-height:.01rem;
+	position: relative;
+	color: #767676;
+	background: white;
+	
+}
+.inputbiao{
+	
+	position: absolute;
+	left: .2rem;
+	bottom: .1rem;
+	
+}
+.xieyi span{
+	
+	font-size: .3rem;
+	margin-left:.7rem ;
+	
+	
+}
+.xieyi span:nth-child(3){
+	color: red;
+	position: absolute;
+	right: .5rem;
+	bottom: .2rem;
+	
+}
+.submit{
+	
+	
+ background: #C92142;
+ color: white;
+ font-size: .5rem;
+ position: fixed;
+ bottom: 0rem;
+ width: 100%;
+ height: 1rem;
+ text-align: center;
+ line-height: 1rem;
+ cursor:pointer;
+
+	
+	
+	
+}
+#mask2{
+	
+	display: none;
+	width: 100%;
+    height: 100%;
+    position: fixed;
+    top:0;
+    left: 0;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 200;
+	
+}
+#mask3{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top:0;
+    left: 0;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.tanchuk{
+	
+	width: 5rem;
+	height: 3rem;
+	background: white;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	border-radius: 10%;
+	text-align: center;
+	
+}
+.paicheng{
+	
+	font-size: .4rem;
+	padding:.2rem 0;
+	border-bottom:.1rem solid #EEEEEE ;
+	
+	
+}
+.paicheng1{
+	font-size: .3rem;
+	padding:.2rem 0 ;
+
+}
+#tobuy1{
+	
+	width: 1.5rem;
+	background: #C92142;
+	color: white;
+	font-size: .2rem;
+	padding: .2rem 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,50%);
+	border-radius: 10%;
+	cursor:pointer;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

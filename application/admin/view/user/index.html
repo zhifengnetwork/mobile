@@ -34,6 +34,7 @@
                 <input type="hidden" name="sort" value="desc">
                 <input type="hidden" name="account" value="" id="account" />
                 <input type="hidden" name="nickname" value="" id="nickname" />
+                <input type="hidden" name="user_id" value="" id="user_id" />
                 <input type="hidden" name="user_ids" value="" id="user_ids" />
                 <!--分销时查看下级人数都有哪些-->
                 <input type="hidden" name="first_leader" value="{$_GET['first_leader']}">
@@ -43,6 +44,7 @@
                     <div class="sDiv2">
                         <select class="select" name="search_type" id="search_type">
                             <option value="nickname">会员昵称</option>
+                            <option value="user_id">会员ID</option>
                             <option value="search_key">会员账户</option>
                         </select>
                         <input type="text" id="search_key" size="30" class="qsbox" placeholder="查询"
@@ -67,10 +69,13 @@
                             <div style="text-align: center; width: 150px;" class="">推荐上级</div>
                         </th>
                         <th align="left" abbr="nickname" axis="col4" class="">
-                            <div style="text-align: center; width: 150px;" class="">会员昵称</div>
+                            <div style="text-align: center; width: 120px;" class="">会员昵称</div>
+                        </th>
+                        <th align="left" abbr="realname" axis="col4" class="">
+                            <div style="text-align: center; width: 80px;" class="">真实姓名</div>
                         </th>
                         <th align="center" abbr="level" axis="col5" class="">
-                            <div style="text-align: center; width: 50px;" class="">会员等级</div>
+                            <div style="text-align: center; width: 80px;" class="">代理等级</div>
                         </th>
                         <th align="center" abbr="level" axis="col5" class="">
                             <div style="text-align: center; width: 50px;" class="">分销商</div>
@@ -245,9 +250,15 @@
             if(search_type == 'search_key'){
                 $('#account').val(search_key);
                 $('#nickname').val('');
+                $('#user_id').val('');
+            }else if(search_type == 'user_id'){
+                $('#user_id').val(search_key);
+                $('#account').val('');
+                $('#nickname').val('');
             }else{
                 $('#nickname').val(search_key);
                 $('#account').val('');
+                $('#user_id').val('');
             }
         }
         cur_page = page; //当前页面 保存为全局变量

@@ -340,6 +340,14 @@
                             <a> ￥<span id="signFee">0</span>元</a>
                         </div>
                     </div>
+                    <div class="p z-monry-cont">
+                        <div class="fl">
+                            已交订金
+                        </div>
+                        <div class="fr">
+                            <a> ￥<span id="deposit">0</span>元</a>
+                        </div>
+                    </div>
                     <!-- <div class="p z-monry-cont">
                         <div class="fl">
                             优惠券抵扣
@@ -1215,6 +1223,9 @@
         }
         if(typeof(data.result.sign_price) != 'undefined'){
             $("#signFee").text(data.result.sign_price.toFixed(2));// 签到抵消
+        }
+        if(typeof(data.result.deposit) != 'undefined'){
+            $("#deposit").text(data.result.deposit.toFixed(2));// 竞拍订金
         }
         if(typeof(data.result.order_amount) != 'undefined'){
             $("#payables").text(data.result.order_amount.toFixed(2));// 应付

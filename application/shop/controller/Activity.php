@@ -16,6 +16,7 @@ namespace app\shop\controller;
 use app\common\logic\GoodsLogic;
 use app\common\model\FlashSale;
 use app\common\model\GroupBuy;
+use app\common\model\Auction;
 use app\common\model\PreSell;
 use think\Db;
 use think\Page;
@@ -161,7 +162,6 @@ class Activity extends MobileBase {
         $this->assign('flash_sale_goods',$flash_sale_goods);
         return $this->fetch();
     }
-
 
     /**
      * 竞拍

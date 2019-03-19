@@ -34,6 +34,9 @@ class BonusLogic extends Model
 
 	public function bonusModel()
 	{
+
+
+		
 		$price = M('goods')->where(['goods_id'=>$this->goodId])->value('shop_price');
 		//判断商品是否是分销商品或者代理商品
 		$good = M('goods')

@@ -338,6 +338,7 @@ color: gray;
     left: 0;
     display: none;
     background-color: rgba(0, 0, 0, 0.6);
+    z-index: 200;
 }
 .tanchuk{
 	

@@ -12,27 +12,22 @@
 		
 		<div class="fanghui">
 			
-			<a style="text-decoration: none;"><</a>
+			<a style="text-decoration: none;" href="javascript:history.go(-1)"><</a>
 			
 		</div>
 		
 		<ul class="tiaoshu">
-				
+
+			<foreach name="bondUser" item="vo" >
 				<li>
-					<span>L4933</span><span>领先</span><span>03.11 10:11:27</span><span>￥38,001</span>
+					<span>{$vo.id}</span>
+					<span><if condition="$vo.is_out eq 2">成交<elseif condition="$vo.is_out eq 1" />领先<else/>出局</if></span>
+					<span>{$vo.offer_time|date="m.d H:i:s",###}</span><span>￥{$vo.offer_price}</span>
 				</li>
-				<li>
-					<span>L4933</span><span>出局</span><span>03.11 10:11:27</span><span>￥38,001</span>
-				</li>
-				<li>
-					<span>L4933</span><span>出局</span><span>03.11 10:11:27</span><span>￥38,001</span>
-				</li>
-			</ul>
+			</foreach>
+
+		</ul>
 		
-		
-		
-		
-		
-		
+
 	</body>
 </html>

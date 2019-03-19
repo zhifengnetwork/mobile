@@ -146,6 +146,38 @@ class Activity extends MobileBase {
         return $this->fetch();
     }
 
+    /**
+     * 竞拍
+     */
+    public function auction_list()
+    {
+        $commodity = M('Auction')->order('preview_time desc')->select();
+        $this->assign('commodity', $commodity);
+        return $this->fetch();
+    }
+
+    /**
+     * 竞拍活动列表ajax
+     */
+    public function ajax_auction()
+    {
+        $p = I('p',1);
+        $where = [
+            'g.is_on_sale'=>1,
+            'fl.is_end'=>0
+        ];
+
+        $Auction = new Auction();
+        $auction_goods = $Auction->alias('fl')->join('__GOODS__ g', 'g.goods_id = fl.goods_id')->with(['specGoodsPrice','goods'])
+            ->field('fl.*,100*(FORMAT(buy_num/1,2)) as percent')
+            ->where($where)
+            ->page($p,10)
+            ->select();
+
+        $this->assign('auction_goods',$auction_goods);
+        return $this->fetch();
+    }
+
     public function coupon_list()
     {
         $atype = I('atype', 1);

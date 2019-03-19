@@ -215,7 +215,8 @@ class Cart extends MobileBase {
             }
 
             $pay->setUserId($this->user_id)->setShopById($shop_id)->delivery($address['district'])->orderPromotion()
-                ->useCouponById($coupon_id)->useUserMoney($user_money)->usePayPoints($pay_points,false,'mobile')->getUserSign($goods_id);
+                ->useCouponById($coupon_id)->useUserMoney($user_money)->usePayPoints($pay_points,false,'mobile')->getUserSign($goods_id)
+                ->getAuction()->getUserSign();
             // 提交订单
             if ($_REQUEST['act'] == 'submit_order') {
                 $placeOrder = new PlaceOrder($pay);

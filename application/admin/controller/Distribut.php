@@ -6,6 +6,7 @@ use think\Page;
 use think\Db;
 use think\Loader;
 use app\admin\logic\UsersLogic;
+use app\common\model\Order as OrderModel;
 
 use think\Validate;
 
@@ -16,13 +17,39 @@ class Distribut extends Base {
     * 订单详情 
      */
     public function detail(){
-
         $order_id = I('order_id');
 
-        $user_id = M('order')->where(['order_id'=>$order_id])->value('user_id');
-        $first_leader = M('users')->where(['user_id'=>$user_id])->value('first_leader');
+        $order = M('order')->where(['order_id'=>$order_id])->find();
+        if($order['pay_status'] == 0){
+            $this->error('该订单未支付，没有返利');
+        } 
 
-        
+        $first_leader = M('users')->where(['user_id'=>$order['user_id']])->value('first_leader');
+
+        $leader = M('users')->where(['user_id'=>$first_leader])->find();
+        $this->assign('leader', $leader);
+
+        $log = M('account_log')->where(['order_sn'=>$order['order_sn']])->select();
+        $this->assign('log', $log);
+
+       $order_id = input('order_id', 0);
+        $orderModel = new OrderModel();
+        $order = $orderModel::get(['order_id'=>$order_id]);
+        if(empty($order)){
+            $this->error('订单不存在或已被删除');
+        }
+        if($order['pay_status'] == 1){
+            $order['pay_status_des'] = '已支付';
+        }else{
+            $order['pay_status_des'] = '未支付';
+        }
+
+        if($order['order_amount'] <= 9.9 ){
+            $this->error('该订单小于9.9元，没有返利');
+        } 
+
+
+        $this->assign('order', $order);
         return $this->fetch();
     }
 

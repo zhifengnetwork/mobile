@@ -1,5 +1,14 @@
 <?php
 
+
+
+/**
+ * 获取昵称
+ */
+function get_nickname($user_id){
+	return M('users')->where(['user_id'=>$user_id])->value('nickname');
+}
+
 function get_agent_log($user_id){
 
 	

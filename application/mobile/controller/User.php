@@ -1273,11 +1273,27 @@ class User extends MobileBase
     public function order_list(){  
         $user_id = I('user_id');
 
-        $order = M('order')->field('order_sn,add_time')->where('user_id', $user_id)->limit(20)->order('order_id desc')->select();
- 
+        // $states['log.states'] = array('in', '101, 102');
+        $order = M('order')->field('order_sn, consignee, add_time')->where('user_id', $user_id)
+                            ->limit(20)->order('order_id desc')->select();
+        // //序列化去重
+        // foreach($order as $key => $value){
+        //     $order[$key] = serialize($value);
+        // }
+
+        // $order = array_unique($order);
+        // //反序列化
+        // foreach($order as $key => $value){
+        //     $order[$key] = unserialize($value);
+        //     if($key != 0){
+        //         if($order[$key]['order_sn'] = $order[$key-1]['order_sn']){
+        //             unset($order[$key-1]);
+        //             $order[$key]['states'] = 103;
+        //         }
+        //     }
+        // }
         $user = M('users')->field('user_id,nickname,mobile')->where(['user_id'=>$user_id])->find();
         $this->assign('user', $user);
-
         $this->assign('order', $order);
         return $this->fetch();   
     }

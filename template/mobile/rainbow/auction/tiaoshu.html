@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" href="__STATIC__/auction/tiaoshu.css" />
+		<script src="__STATIC__/js/rem.js"></script>
+		<title></title>
+	</head>
+	<body>
+		
+		
+		<div class="fanghui">
+			
+			<a style="text-decoration: none;" href="javascript:history.go(-1)"><</a>
+			
+		</div>
+		
+		<ul class="tiaoshu">
+
+			<foreach name="bondUser" item="vo" >
+				<li>
+					<span>{$vo.id}</span>
+					<span><if condition="$vo.is_out eq 0">领先<else />出局</if></span>
+					<span>{$vo.offer_time|date="m.d H:i:s",###}</span><span>￥{$vo.offer_price}</span>
+				</li>
+			</foreach>
+
+		</ul>
+		
+
+	</body>
+</html>

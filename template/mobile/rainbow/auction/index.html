@@ -1,0 +1,121 @@
+<!-- 竞拍 页面 -->
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<script src="__STATIC__/js/rem.js"></script>
+		<link rel="stylesheet" href="__STATIC__/auction/index.css" />
+		<link rel="stylesheet" href="__STATIC__/css/listdata/public.css" />
+
+	</head>
+
+	<body>
+
+		<div class="big">
+			<!--头部 wrap
+				returnFun()=>data-num="1" 或  不写; => 返回上一页。data-num="跳转路径"; => 返回上一页。
+			-->
+			<div class="headWrap_lb">
+				<p class="returnBut_lb" data-num="1" onclick="returnFun()">
+					<img class="returnIcon_lb" src="__STATIC__/images/public_lb/returnImg_lb.png" />
+				</p>
+				<!--Tab, data-tab="1"=>从零开始-->
+				<div class="headTab_lb" data-tab="0">
+					<!--页面跳转=>pageJump("路径")-->
+					<p class="headTabTerm_lb" onclick="pageJump('路径url')">竞拍</p>
+					<p class="headTabTerm_lb" onclick="pageJump('路径url')">拼团</p>
+					<p class="headTabTerm_lb" onclick="pageJump('路径url')">秒杀</p>
+				</div>
+			</div>
+
+			<!--1-->
+			<div class="section">
+
+				<div class='time'>1月24号  16:00:00开枪</div>
+				<div class="fu">
+					<img src="__STATIC__/auction/lovely.jpg" class="img"/>
+				</div>
+				<div class="bottom">
+					<div class="priceear">
+						<p class="name">商品名称</p>
+						<p style="display: inline-block;" class="price">￥72</p><span>起拍</span>
+					</div>
+					<a class="joinauction" href="/mobile/auction/detail.html">
+						参与竞拍
+					</a>
+
+				</div>
+
+			</div>
+
+			<!--2-->
+			<div class="section">
+
+				<div class='time'>1月24号  16:00:00开抢</div>
+				<div class="fu">
+					<img src="__STATIC__/auction/pic.png" class="img"/>
+				</div>
+
+				<div class="priceear">
+					<p class="name">中麦通信4G联通网络手机靓号 170手机卡电话卡靓号卡可选号包邮</p>
+					<p style="display: inline-block;" class="price">￥2</p><span>起拍</span>
+				</div>
+				<a class="joinauction" href="detail.html">
+					参与竞拍
+				</a>
+
+			</div>
+
+		</div>
+
+		<script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			$(function(){
+				ajax_sourch_submit()
+			})
+
+			var page = 0;//页数
+
+			/**
+			 * ajax加载更多商品
+			 */
+			function ajax_sourch_submit()
+			{
+				++page;
+				$.ajax({
+					type : "GET",
+					url: "/index.php?m=Mobile&c=Activity&a=ajax_flash_sale&p=" + page,
+					success: function(data){
+						if ($.trim(data)) {
+							$(".section").append(data);
+						} else {
+							return false;
+						}
+					}
+				});
+			}
+			//滚动加载更多
+			$(window).scroll(
+					function() {
+						var scrollTop = $(this).scrollTop();
+						var scrollHeight = $(document).height();
+						var windowHeight = $(this).height();
+						if (scrollTop + windowHeight == scrollHeight) {
+							ajax_sourch_submit();//调用加载更多
+						}
+					}
+			);
+		</script>
+
+		<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
+		<script src="__STATIC__/js/public/public_lb.js"></script>
+		<!--头部 Tab切换样式(跳转)-->
+		<script src="__STATIC__/js/listdata/public.js"></script>
+
+	</body>
+
+</html>

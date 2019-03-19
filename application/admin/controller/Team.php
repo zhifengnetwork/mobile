@@ -37,33 +37,26 @@ class Team extends Base
             if($team_id){
                 $TeamActivity = new TeamActivity();
                 $team_info = $TeamActivity->with('goods')->find($team_id);
-
+                dump($team_info);   
                 // $list = Db::name('team_activity')->where('team_id',$team_id)->select();
                 $this->assign('list',$team_info);
                 // dump($list);
                 $act = 'edit';
             }
             
-        // $this->assign('min_date', date('Y-m-d H:i:s'));
-        // $this->assign('info', $group_info);
         $this->assign('act', $act);
 		return $this->fetch();
-	}
-
-    
+	}   
 	/*
 	 * 添加拼团
 	 */
 	public function teamHandle()
     {
         $data = input();
-        // dump($data);
-        // exit();
-        // $data['create_time'] = date('Y-m-d H:i:s',time());
-        $data['start_time'] = strtotime($data['start_time']);
+
+        $data['start_time'] = strtotime($data['start_time']);        
         $data['end_time'] = strtotime($data['end_time']);
-        // $data['time_limit'] = $data['end_time'];
-        // $result = '';
+
         #   数据验证
         $flag   = Validation::instance(request()->module(), request()->controller(), $data, $data['act'])->check();
         if ($flag !== true) $this->ajaxReturn(['status' => 0, 'msg' => $flag, 'result' => '']);
@@ -84,30 +77,22 @@ class Team extends Base
 
         if ($data['act'] == 'add')
         {
-            
-            $team_id = Db::name('team_activity')->insertGetId($data);
-            if($team_id){
-                $this->ajaxReturn(['status' => 1,'msg' =>'操作成功','result' => '']);
-            }else{
-                $this->ajaxReturn(['status' => 0,'msg' =>'操作失败','result' => '']);
-            }
-
+                $team_id = Db::name('team_activity')->insertGetId($data);
+                if($team_id){
+                    $this->ajaxReturn(['status' => 1,'msg' =>'操作成功','result' => '']);
+                }else{
+                    $this->ajaxReturn(['status' => 0,'msg' =>'操作失败','result' => '']);
+                }
         }
         if ($data['act'] == 'edit')
         {
-           
-                // $data['update_time'] = date('Y-m-d H:i:s',time());
                 $res = Db::name('team_activity')->where('team_id', $data['team_id'])->update($data);
                 if($res){
                     $this->ajaxReturn(['status' => 1,'msg' =>'操作成功','result' => '']);
                 }else{
                     $this->ajaxReturn(['status' => 0,'msg' =>'操作失败','result' => '']);
                 }
-                // if($res){
-                //     
-                // }else{
-                //     
-                // }
+
         }
 
 

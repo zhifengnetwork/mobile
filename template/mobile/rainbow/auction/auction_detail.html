@@ -1,0 +1,380 @@
+<!-- 开始 竞拍  -->
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href="__STATIC__/auction/detail.css" />
+	<!--<link rel="stylesheet" href="__STATIC__/css/style.css">-->
+	<script src="__STATIC__/js/rem.js"></script>
+	<script src="__STATIC__/js/jquery-1.8.3.min.js"></script>
+	<script src="__STATIC__/auction/detail.js"></script>
+	<script src="__STATIC__/auction/daojishi.js"></script>
+	<script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+	<link rel="stylesheet" href="__STATIC__/css/listdata/public.css" />
+</head>
+<style>
+	.layermcont {
+		padding: .24rem 0.375rem;
+		text-align: center;
+		background-color: #000;
+		font-size: 0.4rem;
+		line-height: 1.024rem;
+		border-radius: 0.1875rem;
+		box-shadow: 0 0 0.5rem rgba(0,0,0,.1);
+	}
+	i{font-style:normal}
+	.layermbox0 .layermchild{min-width: .375rem !important;}
+</style>
+<body>
+
+<div class="detail">
+
+	<div class="header">
+
+		<div class="timerbg starttime" id="starttime">
+			<div id="daoend">本次活动已结束</div>
+			<div id="dao" style="padding-left: 10px">
+				<strong id="RemainD"><i></i>天</strong><strong id="RemainH"><i></i>时</strong><strong id="RemainM"><i></i>分</strong><strong id="RemainS"><i></i>秒</strong><strong id="RemainI"><i></i></strong>&nbsp;&nbsp;<if condition="$auction.delay_num gt 0">延时{$auction.delay_num}次</if>
+			</div>
+		</div>
+
+		<div class="fu">
+			<img src="{$auction[goods_id]|goods_thum_images=400,400}" class="img" />
+		</div>
+
+	</div>
+
+
+	<p class="desc">{$auction.goods_name}</p>
+
+
+	<div class="jiatou">
+		<div class="priceear">
+			<if condition="$auction['is_end'] eq 1">
+				<p class="price">￥{$auction['transaction_price']}</p><span>落槌价</span>
+			<else/>
+				<if condition="$bondUser[0] eq ''">
+					<p class="price">￥{$auction['start_price']}</p><span>起拍价</span>
+				<else/>
+					<p class="price">￥{$bondUser[0]['offer_price']}</p><span>当前价</span>
+				</if>
+			</if>
+		</div>
+		<div class="right">
+			<span>报名</span><span>{$auction['buy_num']}</span>人
+		</div>
+
+	</div>
+
+
+
+
+	<div class="headpicear">
+
+		<a class="zongshu" href="{:U('Mobile/Auction/tiaoshu',array('id'=>$auction.id))}">
+			<span>拍卖纪录</span><span>{$bondCount}</span>条<span>></span>
+		</a>
+		<ul class="tiaoshu">
+			<foreach name="bondUser" item="vo" length="3">
+				<li>
+					<span>L4933</span>
+					<span><if condition="$vo.is_out eq 2">成交<elseif condition="$vo.is_out eq 1" />领先<else/>出局</if></span>
+					<span>{$vo.offer_time|date="m.d H:i:s",###}</span><span>￥{$vo.offer_price}</span>
+				</li>
+			</foreach>
+		</ul>
+
+	</div>
+	<!--宝贝详情-->
+	<div class="baobei">
+
+		<p>
+			<div class="pleft">
+				<span>保证金</span><span>￥{$auction.deposit}</span>
+			</div>
+			<div class="pright">
+				<span>起拍价</span><span>￥{$auction.start_price}</span>
+			</div>
+		</p>
+
+		<p>
+			<div class="pleft">
+				<span>延时周期</span><span>{$auction.delay_time}分/次</span>
+			</div>
+			<div class="pright">
+				<span>加价幅度</span><span>￥{$auction.increase_price}</span>
+			</div>
+		</p>
+		<p>
+			<div class="pleft">
+				<span>开拍时间</span><span>{$auction.start_time|date="m月d日 H:i",###}</span>
+			</div>
+			<div class="pright">
+				<span>结束时间</span><span>{$auction.end_time|date="m月d日 H:i",###}</span>
+			</div>
+		</p>
+		<p>
+			<div class="pleft">
+				<span>保留价</span><span>有</span>
+			</div>
+			<div class="pright">
+				<span>预支付时间</span><span>{$auction.payment_time}小时内</span>
+			</div>
+		</p>
+
+
+	</div>
+
+
+	<!--onClick="javascript:this.form.amount.value--;"-->
+	<div class="number">
+		<form name="price_form" id="form" style="margin-left: .5rem; display: inline-block">
+
+			<input type="hidden" name="goods_id" value="{$auction.id}">
+			<input type=button value="-"
+				   style="background: #FFFFFF; border-radius: 50%;width:.3rem;border: 1px solid black;outline: none;" id="jian">
+			<input type=text name=price value=<if condition="$bondUser[0] eq ''">{$auction.start_price}<else />{$bondUser[0]['offer_price']}</if>
+				   style="width: .8rem; text-align: center;outline: none;" id="mmer">
+			<input type=button value="+" onClick="javascript:this.form.amount.value++;"
+				   style="background:#FFFFFF; color: white;width: .3rem;border-radius: 50%;border: 1px solid black;color: black;outline: none;" id="jia">
+		</form>
+		<div id="myprice">
+
+			<if condition="time() lt $auction.delay_end_time AND $auction['isBond'] eq 0">
+				<div class="ccc" onclick="deposit()">
+					<p>立即参拍</p>
+					<p>保证金(￥2000)</p>
+				</div>
+			<elseif condition="time() gt $auction.delay_end_time" />
+				<p>活动已结束</p>
+			<else />
+				<p onclick="offer()">确认出价</p>
+			</if>
+
+		</div>
+	</div>
+
+	<div style="margin-top:.4rem;" class="content">
+
+		<h1 class="rule">竞拍规则</h1>
+		<p>1.集满福袋的人才可以参与竞拍</p>
+		<p>2.竞拍时间30分钟，价高者得</p>
+		<p>3.竞拍成功需要在{$auction.payment_time}小时内支付，如不支付购买，奖品取消，并且取消已获取的的福袋</p>
+		<p>4.对于恶意抬价，活动方有奇效该用户以后参与活动</p>
+
+	</div>
+</div>
+</div>
+
+<div id="mask">
+	<div class="tanchuk">
+		<form name="buy_goods_form" method="post" id="buy_goods_form">
+			<input type="hidden" name="goods_id" value="{$goods.goods_id}"><!-- 商品id -->
+			<input type="hidden" name="spec_goods_price" value='{$goods.spec_goods_price|json_encode=true}'>
+			<input type="hidden" name="goods_prom_type" value="{$goods.prom_type}"/><!-- 活动类型 -->
+			<input type="hidden" name="shop_price" value="{$auction.transaction_price}"/><!-- 活动价格 -->
+			<input type="hidden" name="store_count" value="{$goods.store_count}"/><!-- 活动库存 -->
+			<input type="hidden" name="market_price" value="￥{$goods.market_price}"/><!-- 商品原价 -->
+			<input type="hidden" name="start_time" value="{$auction.start_time}"/><!-- 活动开始时间 -->
+			<input type="hidden" name="end_time" value="{$auction.end_time}"/><!-- 活动结束时间 -->
+			<input type="hidden" name="activity_title" value="{$auction.activity_name}"/><!-- 活动标题 -->
+			<input type="hidden" name="item_id" value="{$Request.param.item_id}"/><!-- 商品规格id -->
+			<input type="hidden" name="prom_id" value="{$goods.prom_id}"/><!-- 活动ID -->
+			<input type="hidden" name="is_virtual" value="{$goods.is_virtual}"/><!-- 是否是虚拟商品 -->
+			<input type="hidden" name="virtual_limit" id="virtual_limit" value="{$goods.virtual_limit|default=0}"/>
+			<input type="hidden" name="deposit_price" value=""/><!-- 订金 -->
+			<input type="hidden" name="balance_price" value=""/><!-- 尾款 -->
+			<input type="hidden" name="ing_amount" value=""/><!-- 已预订了多少 -->
+			<div class="choose_shop_aready p">
+				<!--商品信息-s-->
+				<input type="hidden" id="goods_name" name="goods_id" value="{$goods.goods_id}">
+				<!--商品信息-e-->
+
+				<input type="hidden" id="number" name="goods_num" value="1" ><!--选择数量-->
+				<volist name="goods['spec']" id="spec">
+					<!-------商品属性值-s------->
+					<volist name="spec['spec_item']" id="spec_item">
+						<div class="plus choic-sel">
+							<a id="goods_spec_a_{$spec_item['id']}" title="{$spec_item['item']}" class="spec_item"
+							<volist name="goods['spec_image']" id="spec_image">
+								<if condition="$spec_image['spec_image_id'] eq $spec_item['id']">
+									data-img-src="{$spec_image['src']}"
+								</if>
+							</volist>
+							>
+							<input id="goods_spec_{$spec_item['id']}" style="display: none" type="radio" name="goods_spec[{$spec['name']}]" value="{$spec_item['id']}"/>{$spec_item['item']}
+							</a>
+						</div>
+					</volist>
+					<!-------商品属性值-e-------->
+				</volist>
+			</div>
+		</form>
+		<p class="paicheng">竞拍成功</p>
+		<p class="paicheng1">恭喜你拍到产品，请在{$auction.payment_time}小时内完成付款</p>
+		<p id="tobuy">付款购买</p>
+	</div>
+</div>
+<div id="mask3">
+	<div class="tanchuk">
+		<p class="paicheng">竞拍失败</p>
+		<p class="paicheng1">抱歉，竞拍失败，下次继续努力</p>
+		<p id="tobuy1">完成</p>
+	</div>
+</div>
+
+<script>
+	//定义方法
+	$(document).ready(function () {
+
+		<if condition="$auction.delay_end_time lt time()">activityResult();</if>
+		<if condition="$auction.delay_end_time lt time() AND $auction.is_end eq 0">submit_order();</if>
+		<if condition="$auction.start_time lt time()">
+			//定义参数 显示出GetRTime()方法 1000毫秒以后启动
+			var timer_rt = window.setInterval("GetRTime({$auction.delay_end_time})", 100);
+		<else/>
+			$('#dao').html('活动未开始');
+		</if>
+
+	});
+
+	var step = {$auction.increase_price}; // 起拍价
+	document.getElementById("jian").onclick=function(){
+
+		$("#mmer").val($("#mmer").val()*1-step);
+		if($("#mmer").val()*1<0){
+
+			$("#mmer").val(0);
+
+		}
+
+	};
+	document.getElementById("jia").onclick=function(){
+
+		$("#mmer").val($("#mmer").val()*1+step);
+
+	};
+
+	// 活动结束
+	function submit_order() {
+
+		var goods_id = $('input[name="goods_id"]').val();
+		$.ajax({
+			type: "GET",
+			url: "{:U('Mobile/Auction/auctionEnd')}",
+			data: {aid:goods_id},
+			dataType: "json",
+			success: function (data) {
+				layer.closeAll();
+				if (data.status != 1) {
+					layer.open({content:data.msg, time:3});  //执行有误
+					return false;
+				}
+				window.location.reload();
+			}
+		});
+	}
+	// 交定金
+	function deposit() {
+		$.ajax({
+			type: "POST",
+			url: "/index.php?m=Mobile&c=Auction&a=addBond",//+tab,
+			data: {goods_id:goods_id},
+			dataType: "json",
+			success: function (data) {
+				layer.closeAll();
+				// 登录超时
+				if (data.status == -100){
+					location.href = "{:U('Mobile/User/login')}";
+				}
+				if (data.status != 1) {
+
+					layer.open({content:data.msg, time:3});  //执行有误
+
+					return false;
+				}
+
+				setTimeout(function(){window.location.reload();},100);
+			}
+		});
+	}
+	//出价
+	function offer(){
+		var price_form = $('#form');
+		$.ajax({
+			type: "POST",
+			url: "/index.php?m=Mobile&c=Auction&a=offerPrice",//+tab,
+			data: price_form.serialize(),// 你的formid
+			dataType: "json",
+			success: function (data) {
+				layer.closeAll();
+				// 登录超时
+				if (data.status == -100){
+					location.href = "{:U('Mobile/User/login')}";
+				}
+				if (data.status != 1) {
+
+					layer.open({content:data.msg, time:3});  //执行有误
+
+					return false;
+				}
+
+				layer.open({content:data.msg, time:2});
+				setTimeout(function(){window.location.reload();},2100);
+			}
+		});
+
+	};
+
+	//活动结束判断弹框
+	function activityResult(){
+		var goods_id = $('input[name="goods_id"]').val();
+		$.ajax({
+			type: "POST",
+			url: "/index.php?m=Mobile&c=Auction&a=auctionResult",//+tab,
+			data: {aid:goods_id},
+			dataType: "json",
+			success: function (data) {
+				// 登录超时
+				if (data.status == -100){
+					location.href = "{:U('Mobile/User/login')}";
+				}
+				if (data.status == 1 && data.msg == 2) {
+					$("#mask").show();
+					return false;
+				}
+				if (data.status == 1 && data.msg == 0) {
+					$("#mask3").show();
+				}
+
+			}
+		});
+
+	};
+
+	//购买按钮
+	$(document).on('click', '#tobuy', function () {
+		if ($(this).hasClass('buy_bt_disable')) {
+			return;
+		}
+		var store_count = $("input[name='store_count']").attr('value');// 商品原始库存
+		var goods_num = parseInt($("input[name='goods_num']").val());
+		var form = $('#buy_goods_form');
+
+
+		//普通流程
+		if (goods_num <= store_count) {
+
+			form.attr('action', "{:U('mobile/Cart/cart2',['action'=>'buy_now'])}").submit();
+		} else {
+			layer.open({icon: 2, content: "购买数量超过此商品购买上限", time: 2});
+		}
+	})
+</script>
+
+</body>
+
+</html>

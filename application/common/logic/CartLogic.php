@@ -116,7 +116,7 @@ class CartLogic extends Model
     public function buyNow()
     {
         if (empty($this->goods)) {
-            throw new TpshopException('立即购买', 0, ['status' => 0, 'msg' => '购买商品不存在', 'result' => '']);
+            throw new TpshopException('立即购买', 0, ['status' => 0, 'msg' => '购买商品不存在1', 'result' => '']);
         }
         // 是否可免费领取
         if ($this->goods['cat_id'] == 584 || $this->goods['cat_id'] == 585 ) {
@@ -124,8 +124,8 @@ class CartLogic extends Model
              $isReceive = provingReceive($this->user, $this->goods['cat_id']); 
 
             if($isReceive['status'] == 0){
-                throw new TpshopException('立即购买', 0, ['status' => 0, 'msg' => '购买商品不存在', 'result' => '']);
-                // throw new TpshopException("立即购买",0, $isReceive);
+                // throw new TpshopException('立即购买', 0, ['status' => 0, 'msg' => '购买商品不存在2', 'result' => '']);
+                throw new TpshopException("立即购买",0, $isReceive);
             }
         }
         if (empty($this->goodsBuyNum)) {

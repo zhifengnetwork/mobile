@@ -23,6 +23,14 @@ class Weixin
      */
     public function index()
     {
+
+        $data = file_get_contents("php://input");
+    	if ($data) {
+    		$re = $this->xmlToArray($data);
+	    	$url = SITE_URL.'/mobile/message/index?eventkey='.$re['EventKey'].'&openid='.$re['FromUserName'].'&event='.$re['Event'];
+	    	httpRequest($url);
+        }
+
         $config = Db::name('wx_user')->find();
         if ($config['wait_access'] == 0) {
             ob_clean();
@@ -30,6 +38,15 @@ class Weixin
         }
         $logic = new WechatLogic($config);
         $logic->handleMessage();
+    }
+
+
+    public function xmlToArray($xml)
+    {
+    	$obj = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
+		$json = json_encode($obj);
+		$arr = json_decode($json, true);  
+		return $arr;
     }
     
 }
