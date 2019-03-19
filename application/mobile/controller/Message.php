@@ -23,13 +23,10 @@ class Message extends MobileBase
         $model->openid = $openid;
         $model->event = $event;
         $res = $model->save();
-        echo $res;
+      
+        $this->handle();
 
-        if( $event == 'SCAN'){
-            $xiaji = M('users')->where(['openid'=>$openid])->value('user_id');
-            share_deal_after($xiaji,$eventkey);
-            $model->where(['openid'=>$openid])->update(['flag'=>8]);
-        }
+        echo $res;
     }
 
 
@@ -39,22 +36,27 @@ class Message extends MobileBase
     public function handle(){
 
         $model = new WxMessage();
-        $all = $model->where(['flag'=>0])->select();
-
+        $all = $model->where(['flag'=>0])->limit(10)->select();
 
         foreach($all as $k => $v){
 
+            $xiaji = M('users')->where(['openid'=>$v['openid']])->value('user_id');
+
             if( $v['event'] == 'SCAN'){
-                $xiaji = M('users')->where(['openid'=>$v['openid']])->value('user_id');
+              
                 share_deal_after($xiaji,$v['eventkey']);
                 $model->where(['openid'=>$openid])->update(['flag'=>8]);
+
+            }elseif( $v['event'] == 'subscribe'){
+
+                $first_leader = substr($v['eventkey'], strlen('qrscene_'));
+                share_deal_after($xiaji,$first_leader);
+                $model->where(['openid'=>$openid])->update(['flag'=>8]);
+
             }else{
                 $model->where(['id'=>$v['id']])->update(['flag'=>9]);
             }
         }
-
-       
-        
     }
 
 }
