@@ -1,0 +1,84 @@
+/*头部 wepa*/
+.headWrap_lb {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	/*padding-left: .76rem;*/
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	/*width: 7.5rem;*/
+	width: 100%;
+	height: .88rem;
+	box-shadow: 0 .03rem 0.1rem #ccc;
+	background-color: #fff;
+}
+.returnBut_lb {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	/*width: .76rem;*/
+	width: 10%;
+	height: 100%;
+}
+.returnBut_lb .returnIcon_lb {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	width: .18rem;
+	height: .27rem;
+}
+/*Tab*/
+.headTab_lb {
+	margin: 0 auto;
+	display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-around;
+	justify-content: space-around;
+	-moz-box-pack: space-around;
+	-webkit--moz-box-pack:space-around;
+	box-pack:space-around;
+	/*width: 5.98rem;*/
+	width: 80%;
+	height: 100%;
+}
+/*项*/
+.headTabTerm_lb {
+	font-size: .3rem;
+	line-height: .88rem;
+	letter-spacing: .02rem;
+	color: #000;
+}
+/*active*/
+.activeTab_lb {
+	color: #e82f5c;
+	border-bottom: .05rem solid #e82f5c;
+}
+.share_box {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 10;
+	width: 10%;
+	height: 100%;
+}
+.share_img {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	margin: auto;
+	width: .28rem;
+	height: .3rem;
+}

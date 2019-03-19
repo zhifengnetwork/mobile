@@ -74,7 +74,7 @@
 
 	<div class="headpicear">
 
-		<a class="zongshu" href="{:U('shop/Auction/tiaoshu',array('id'=>$auction.id))}">
+		<a class="zongshu" href="{:U('Mobile/Auction/tiaoshu',array('id'=>$auction.id))}">
 			<span>拍卖纪录</span><span>{$bondCount}</span>条<span>></span>
 		</a>
 		<ul class="tiaoshu">
@@ -146,7 +146,7 @@
 			<if condition="time() lt $auction.delay_end_time AND $auction['isBond'] eq 0">
 				<div class="ccc" onclick="deposit()">
 					<p>立即参拍</p>
-					<p>保证金(￥{$auction.deposit})</p>
+					<p>保证金(￥2000)</p>
 				</div>
 			<elseif condition="time() gt $auction.delay_end_time" />
 				<p>活动已结束</p>
@@ -264,7 +264,7 @@
 		var goods_id = $('input[name="goods_id"]').val();
 		$.ajax({
 			type: "GET",
-			url: "{:U('Shop/Auction/auctionEnd')}",
+			url: "{:U('Mobile/Auction/auctionEnd')}",
 			data: {aid:goods_id},
 			dataType: "json",
 			success: function (data) {
@@ -277,13 +277,11 @@
 			}
 		});
 	}
-
 	// 交定金
 	function deposit() {
-		var goods_id = $('input[name="goods_id"]').val();
 		$.ajax({
 			type: "POST",
-			url: "/index.php?m=Shop&c=Auction&a=addBond",//+tab,
+			url: "/index.php?m=Mobile&c=Auction&a=addBond",//+tab,
 			data: {goods_id:goods_id},
 			dataType: "json",
 			success: function (data) {
@@ -303,13 +301,12 @@
 			}
 		});
 	}
-
 	//出价
 	function offer(){
 		var price_form = $('#form');
 		$.ajax({
 			type: "POST",
-			url: "/index.php?m=Shop&c=Auction&a=offerPrice",//+tab,
+			url: "/index.php?m=Mobile&c=Auction&a=offerPrice",//+tab,
 			data: price_form.serialize(),// 你的formid
 			dataType: "json",
 			success: function (data) {
@@ -337,7 +334,7 @@
 		var goods_id = $('input[name="goods_id"]').val();
 		$.ajax({
 			type: "POST",
-			url: "/index.php?m=shop&c=Auction&a=auctionResult",//+tab,
+			url: "/index.php?m=Mobile&c=Auction&a=auctionResult",//+tab,
 			data: {aid:goods_id},
 			dataType: "json",
 			success: function (data) {
@@ -371,7 +368,7 @@
 		//普通流程
 		if (goods_num <= store_count) {
 
-			form.attr('action', "{:U('shop/Cart/cart2',['action'=>'buy_now'])}").submit();
+			form.attr('action', "{:U('mobile/Cart/cart2',['action'=>'buy_now'])}").submit();
 		} else {
 			layer.open({icon: 2, content: "购买数量超过此商品购买上限", time: 2});
 		}

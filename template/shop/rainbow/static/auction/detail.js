@@ -1,57 +1,25 @@
 $(function(){
-	
-	var step=20
-	document.getElementById("myprice").onclick=function(){
-		
-		$('#mask').show();
-		
-	};
-	
-	document.getElementById("tobuy").onclick=function(){
-		
-		$('#mask').hide();
-		$('#mask2').show();
-		$("#mask3").hide()
-	
-	};
+
+
 	document.getElementById("tobuy1").onclick=function(){
-		
-		
-		$("#mask3").hide()
+
+        var goods_id = $('input[name="goods_id"]').val();
+        $.ajax({
+            type: "POST",
+            url: "/index.php?m=Mobile&c=Auction&a=alreadyRead",//+tab,
+            data: {aid:goods_id},
+            dataType: "json",
+            success: function (data) {
+                if (data.status == 1) {
+                    $("#mask3").hide();
+                    // return false;
+                }
+
+            }
+        });
 	
 	};
-	document.getElementById("jian").onclick=function(){
-		
-		
-		
-        $("#mmer").val($("#mmer").val()*1-step);
-        if($("#mmer").val()*1<0){
-			
-		    $("#mmer").val(0);	
-			
-		}
-       
-	};
-	document.getElementById("jia").onclick=function(){
-		
-        $("#mmer").val($("#mmer").val()*1+step);
-       
-	};
-	
-	
-	
-	
-	
-	
+
 		
 })
-
-            
-	   
-
-     
-     
-     
-
-
 

@@ -1,0 +1,51 @@
+*{
+	margin: 0px;
+	padding: 0px;
+	
+}
+.fanghui{
+	
+	width: 98%;
+	font-size: .6rem;
+	height: .8rem;
+	line-height: .7rem;
+	border: 1.5px solid #EEEEEE;
+	padding-left: 2%;
+	
+}
+
+li{
+	list-style: none;
+}
+.tiaoshu{
+	
+	display: block;
+	color: #818181;
+	
+}
+.tiaoshu li{
+	
+	font-size: .23rem;
+	border-bottom: 1px solid #EEEEEE;
+	padding: 3% 2%;
+
+}
+
+.tiaoshu li span:nth-child(1){
+	display: inline-block;
+	width: 1.5rem;
+
+}
+.tiaoshu li span:nth-child(2){
+	display: inline-block;
+	width: 1rem;
+	text-align: center;
+
+}
+.tiaoshu li span:nth-child(4){
+	display: inline-block;
+	text-align: center;
+	float: right;
+	padding-right:9%;
+}
+

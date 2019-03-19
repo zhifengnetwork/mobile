@@ -20,16 +20,15 @@
         returnFun()=>data-num="1" 或  不写; => 返回上一页。data-num="跳转路径"; => 返回上一页。
     -->
 	<div class="headWrap_lb">
-		<p class="returnBut_lb" data-num="/mobile/Index/index.html" onclick="returnFun()">
+		<p class="returnBut_lb" data-num="1" onclick="returnFun()">
 			<img class="returnIcon_lb" src="__STATIC__/images/public_lb/returnImg_lb.png" />
 		</p>
-
 		<!--Tab, data-tab="1"=>从零开始-->
 		<div class="headTab_lb" data-tab="0">
 			<!--页面跳转=>pageJump("路径")-->
-			<p class="headTabTerm_lb" onclick="pageJump('/shop/activity/auction_list')">竞拍</p>
-			<p class="headTabTerm_lb" onclick="pageJump('/shop/groupbuy/grouplist')">拼团</p>
-			<p class="headTabTerm_lb" onclick="pageJump('/shop/activity/flash_sale_list')">秒杀</p>
+			<p class="headTabTerm_lb" onclick="pageJump('路径url')">竞拍</p>
+			<p class="headTabTerm_lb" onclick="pageJump('路径url')">拼团</p>
+			<p class="headTabTerm_lb" onclick="pageJump('路径url')">秒杀</p>
 		</div>
 	</div>
 
@@ -58,7 +57,7 @@
 		++page;
 		$.ajax({
 			type : "GET",
-			url: "/index.php?m=Shop&c=Activity&a=ajax_auction&p=" + page,
+			url: "/index.php?m=Mobile&c=Activity&a=ajax_auction&p=" + page,
 			success: function(data){
 				if ($.trim(data)) {
 					$(".shopkill").append(data);

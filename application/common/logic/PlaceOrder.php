@@ -66,6 +66,7 @@ class PlaceOrder
         $this->deductionCoupon();//扣除优惠券
         $this->addOrderSignReceive();//添加免费领取记录
         $this->changUserPointMoney($this->order);//扣除用户积分余额
+        $this->changAuctionPrice();//修改竞拍状态
         $this->queueDec();
     }
 
@@ -438,6 +439,23 @@ class PlaceOrder
             } elseif ($catId == 585) {
                 Db::name('users')->where('user_id', $user['user_id'])->setDec('agent_free_num');// 代理领取次数减一
             }
+        }
+    }
+
+    /**
+     * 竞拍支付
+     * @param $order
+     */
+    public function changAuctionPrice()
+    {
+        $deposit = $this->pay->getAuctionDeposit();
+        if($deposit > 0){
+            $user = $this->pay->getUser();
+            $payList = $this->pay->getPayList();
+            Db::name('AuctionPrice')
+                ->where(['auction_id' => $payList[0]['prom_id'], 'user_id' => $user['user_id'], 'is_out' => 2])
+                ->save(['pay_status'=>1, 'is_read'=>1]);
+
         }
     }
 

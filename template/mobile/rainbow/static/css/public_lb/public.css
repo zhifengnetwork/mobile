@@ -1,8 +1,6 @@
 * {
 	margin: 0;
 	padding: 0;
-	-webkit-tap-highlight-color: rgba(0,0,0,0);
-	-webkit-tap-highlight-color: transparent;
 }
 /*字体库*/
 @font-face{
@@ -76,7 +74,6 @@ input, select {
 	height: 100vh;
 	background: rgba(0,0,0,.5);
 }
-
 /*public head*/
 .lb_headWrap {
 	position: fixed;

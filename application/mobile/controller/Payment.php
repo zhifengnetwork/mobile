@@ -166,6 +166,42 @@ class Payment extends MobileBase
         return $this->fetch('recharge'); //分跳转 和不 跳转
     }
 
+    //竞拍保证金
+    public function payBond(){
+
+        header("Content-type:text/html;charset=utf-8");
+        $goods_id = I("get.goods_id/d");
+
+        $money = Db::name('Auction')->where('id',$goods_id)->value('deposit');
+
+        $user = session('user');
+        $data['deposit'] = $money;
+        $data['user_id'] = $user['user_id'];
+        $data['auction_id'] = $goods_id;
+        $data['order_sn'] = 'Bond'.get_rand_str(10,0,1);
+        $data['create_time'] = time();
+        $order_id = M('auctionDeposit')->add($data);
+
+        if($order_id){
+            $order = M('auctionDeposit')->where("id", $order_id)->find();
+            if(is_array($order) && $order['status']==0){
+                $order['order_amount'] = $order['deposit'];
+                //微信JS支付
+                if($this->pay_code == 'weixin' && $_SESSION['openid'] && strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
+                    $code_str = $this->payment->getJSAPI($order);
+                    exit($code_str);
+                }
+            }else{
+                $this->error('您已交过保证金!');
+            }
+        }else{
+            $this->error('提交失败,参数有误!');
+        }
+
+        $this->assign('order_id', $order_id);
+        return $this->fetch('payment'); //分跳转 和不 跳转
+
+    }
     // 服务器点对点 // http://www.dchqzg1688.com/index.php/Home/Payment/notifyUrl
     public function notifyUrl()
     {

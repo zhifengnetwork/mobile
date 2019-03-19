@@ -1,0 +1,72 @@
+
+.clear{clear: both;}
+/*最外边框*/
+.wrap_com {
+	padding-top: .88rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 7.5rem;
+	height: auto;
+}
+/*Tab切换*/
+.tabWrap_com {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-justify-content: space-around;
+	justify-content: space-around;
+	-moz-box-pack: space-around;
+	-webkit-box-pack: space-around;
+	box-pack: space-around;
+	width: 7.5rem;
+	height: .88rem;
+}
+.tabBox_com {
+	padding-top: .1rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 20%;
+	height: .88rem;
+	text-align: center;
+	font: .26rem/.34rem "微软雅黑";
+	color: #333;
+	letter-spacing: .01rem;
+}
+.tabBox_com_active {
+	color: #e82f5c;
+	border-bottom: .08rem solid #e82f5c;
+}
+/*内容*/
+.content {
+	width: 100%;
+	height: auto;
+}
+.contentTabWrap {
+	display: none;
+	width: 100%;
+	height: auto;
+	padding: 0.3rem 0.21rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	/*border-bottom: 1px solid #f5f5f5;*/
+	/*height: 3.25rem;*/
+}
+
+.contentTabWrap_item1{width: 100%;font-size: 0.16rem;border-bottom: 2px solid #f5f5f5;margin-bottom: 0.3rem;}
+.contentTabWrap_l p{
+	display: inline-block;
+	font-size: 0.16rem;color: #333333;
+	
+}
+.contentTabWrap_l img{display: inline-block;width: 0.17rem;height: 0.15rem;}
+.contentTabWrap_p p{font-size: 0.2rem;color: #333333;margin-top: 0.24rem;}
+.contentTabWrap_list{margin-top: 0.25rem;height: 1.35rem;}
+.contentTabWrap_list ul li{float: left;margin-left: 0.2rem;list-style: none;}
+.contentTabWrap_list ul li:first-child{margin-left: 0;}
+
+.contentTabWrap_p2 p{font-size: 0.16rem;color: #999999;margin-bottom: 0.2rem;}
