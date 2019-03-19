@@ -57,7 +57,7 @@
                 <dd class="opt">
                 	<select id="level" name="level">
                         <option value="" selected>---请选择等级---</option>
-                		<tpshop sql="select * from `__PREFIX__user_level`" key="k" item='v'>
+                		<tpshop sql="select * from `__PREFIX__user_level` where level_id != 12" key="k" item='v'>
                 		<option value="{$v[level_id]}" <if condition="$v.level_id eq $user.level"></if>>{$v[level_name]}</option>
                 		</tpshop>
                 	</select>
