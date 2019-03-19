@@ -28,6 +28,35 @@
                     {$list.goods_name|getSubstr=0,33}
                 </div>
             </td>
+
+
+             <td align="center" axis="col0">
+                <div style="text-align: center; width: 60px;">
+                    <if condition='$list[is_distribut] eq 1'>
+                        <span class="yes" onClick="changeTableVal('goods','goods_id','{$list.goods_id}','is_distribut',this)"><i
+                                class="fa fa-check-circle"></i>是</span>
+                        <else/>
+                        <span class="no"
+                              onClick="changeTableVal('goods','goods_id','{$list.goods_id}','is_distribut',this)"><i
+                                class="fa fa-ban"></i>否</span>
+                    </if>
+                </div>
+            </td>
+
+            <td align="center" axis="col0">
+                <div style="text-align: center; width: 60px;">
+                    <if condition='$list[is_agent] eq 1'>
+                        <span class="yes"
+                              onClick="changeTableVal('goods','goods_id','{$list.goods_id}','is_agent',this)"><i
+                                class="fa fa-check-circle"></i>是</span>
+                        <else/>
+                        <span class="no"
+                              onClick="changeTableVal('goods','goods_id','{$list.goods_id}','is_agent',this)"><i
+                                class="fa fa-ban"></i>否</span>
+                    </if>
+                </div>
+            </td>
+
             <td align="center" axis="col0">
                 <div style="text-align: center; width: 100px;">{$list.goods_sn}</div>
             </td>
