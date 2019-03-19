@@ -3,7 +3,7 @@
 namespace app\mobile\controller;
 
 use think\Db;
-use app\common\model\WxNews;
+use app\common\model\WxMessage;
  
 class Message extends MobileBase
 {
@@ -13,7 +13,17 @@ class Message extends MobileBase
     public function index()
     {
         // SITE_URL.'/mobile/message/index?eventkey='.$re['EventKey'].'&openid='.$re['FromUserName'].'&event='.$re['Event'];
-       echo '1';
+        $eventkey = I('eventkey');
+        $openid = I('openid');
+        $event = I('event');
+        
+        $model = new WxMessage();
+
+        $model->eventkey = $eventkey;
+        $model->openid = $openid;
+        $model->event = $event;
+        $res = $model->save();
+        echo $res;
     }
 
 }
