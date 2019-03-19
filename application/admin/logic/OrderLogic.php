@@ -436,7 +436,7 @@ class OrderLogic
 
     //订单发货在线下单、电子面单
     public function submitOrderExpress($data,$orderGoods){
-		return array('status'=>0,'msg'=>'请联系智丰网络客服购买高级版支持此功能');
+		return array('status'=>0,'msg'=>'请联系DC环球直供网络客服购买高级版支持此功能');
     }
     
     //识别单号

@@ -115,7 +115,8 @@ class WechatLogic
                     $pay_points = tpCache('integral.reg_integral');
                 }
                 if($pay_points > 0){
-                    accountLog($user_id, 0,$pay_points, '会员注册赠送积分'); // 记录日志流水
+
+                    //accountLog($user_id, 0,$pay_points, '会员注册赠送积分'); // 记录日志流水
                 }
                  
                 Db::name('oauth_users')->insert([
@@ -128,20 +129,41 @@ class WechatLogic
             } 
         }
 
-        $this->replySubscribe($msg['ToUserName'], $openid);
+        $this->replySubscribe($msg['ToUserName'], $openid,$msg);
     }
 
     /**
      * 关注时回复消息
      */
-    private function replySubscribe($from, $to)
+    private function replySubscribe($from, $to ,$msg)
     {
-        $result_str = $this->createReplyMsg($from, $to, WxReply::TYPE_FOLLOW);
-        if ( ! $result_str) {
+        $store_name = tpCache("shop_info.store_name");
+        $first_leader = substr($msg['EventKey'], strlen('qrscene_'));
+
+        if($first_leader > 0){
+            //有分享
+            //有上级
+            //$to1 =  Db::name('users')->where('user_id', $leader_user_id)->value('nickname');
+            //$to1 =  Db::name('users')->where('user_id', $leader_user_id)->value('openid');
+            //$result_str = self::$wechat_obj->createReplyMsgOfText($from, $to1, "您的一级创客 [ $nickname ] 成功关注了本公众号 \n：".$msg);
+
+            //有分享
+            $xiaji = Db::name('oauth_users')->where('openid', $$to)->value('user_id');
+            share_deal_after($xiaji,$first_leader);
+
+            $leader_nickname =  Db::name('users')->where('user_id', $first_leader)->value('nickname');
+            $result_str = self::$wechat_obj->createReplyMsgOfText($from, $to, "您扫了[ $leader_nickname ]的分享，成功关注 $store_name !");
+//
+        }else{
+            $result_str = self::$wechat_obj->createReplyMsgOfText($from, $to, "成功关注了 $store_name !");
+       }
+
+       
+        // $result_str = $this->createReplyMsg($from, $to, WxReply::TYPE_FOLLOW);
+        //if ( ! $result_str) {
             //没有设置关注回复，则默认回复如下：
-            $store_name = tpCache("shop_info.store_name");
-            $result_str = self::$wechat_obj->createReplyMsgOfText($from, $to, "欢迎来到 $store_name !\n商城入口：".SITE_URL.'/mobile');
-        }
+           
+        // }
 
         exit($result_str);
     }

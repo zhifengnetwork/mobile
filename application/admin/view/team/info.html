@@ -56,9 +56,9 @@
 			    </dt>
 			    <dd class="opt">
 					<if condition="($act == 'add')">
-						<input type="text" id="start_time" name="start_time" value="{:date('Y-m-d h:i:s',time())}">至<input type="text" id="end_time" name="end_time" value="{:date('Y-m-d h:i:s',time())}">
+						<input type="text" id="start_time" name="start_time" value="{:date('Y-m-d H:i:s',time())}">至<input type="text" id="end_time" name="end_time" value="{:date('Y-m-d H:i:s',time())}">
 					<else />
-						<input type="text" id="start_time" name="start_time" value="{:date('Y-m-d h:i:s',$list['start_time'])}">至<input type="text" id="end_time" name="end_time" value="{:date('Y-m-d h:i:s',$list['end_time'])}">
+						<input type="text" id="start_time" name="start_time" value="{:date('Y-m-d H:i:s',$list['start_time'])}">至<input type="text" id="end_time" name="end_time" value="{:date('Y-m-d H:i:s',$list['end_time'])}">
 					</if>	
 				</dd>
 			</dl>

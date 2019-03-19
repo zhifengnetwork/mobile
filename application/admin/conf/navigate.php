@@ -17,7 +17,7 @@
             	    )
                ),             		
               'admin/index'=>array(
-                'name' =>'智丰网络',
+                'name' =>'DC环球直供网络',
                 'action'=>array(
                      'index'=>'欢迎页面',                     
          	       )

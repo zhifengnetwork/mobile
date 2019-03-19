@@ -57,8 +57,11 @@ class Material extends MobileBase {
         if(!$atDetail){
             return json(['code'=>'-1', 'msg'=>'获取的内容不存在']);
         }
+
+        $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';  
+
         // 获取当前url
-        $url = $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"].'&first_leader='.session('user.user_id');
+        $url = $http_type.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"].'&first_leader='.session('user.user_id');
 
         
 

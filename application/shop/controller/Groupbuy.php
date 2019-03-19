@@ -12,6 +12,7 @@ use app\common\model\GoodsImages;
 use app\common\model\Comment;
 use think\Page;
 use app\common\model\Goods;
+
 class Groupbuy extends MobileBase
 {
 
@@ -30,7 +31,7 @@ class Groupbuy extends MobileBase
     {
 
         $where['status'] = ['=', 1];
-        $where['end_time'] = ['<', time()];
+        $where['end_time'] = ['>', time()];
         $where['deleted'] = ['=', 0];
         $count = Db::table('tp_team_activity')->where($where)->count();
         $Page = new Page($count, 15);
@@ -41,7 +42,7 @@ class Groupbuy extends MobileBase
             ->field('t.team_id,t.act_name,t.goods_name,t.goods_id,t.group_price,t.start_time,t.end_time,t.group_number,t.purchase_qty,g.shop_price,g.market_price,g.original_img')
             ->select();
         
-        // dump($list);exit;
+        // dump(Db::table('tp_team_activity')->getLastSql());exit;
         $this->assign('list', $list);
         $this->assign('page', $Page);
         return $this->fetch();
@@ -67,7 +68,7 @@ class Groupbuy extends MobileBase
             ->where("team_id", $data['team_id'])
             ->alias('t')
             ->join('goods g','g.goods_id = t.goods_id','left')
-            ->field('t.team_id, t.act_name, t.goods_id, t.goods_name, t.group_price, t.cluster_type, t.end_time, t.sales_sum, g.original_img,       g.shop_price, g.market_price')
+            ->field('t.team_id, t.act_name, t.goods_id, t.needer, t.goods_name, t.group_price, t.cluster_type, t.end_time, t.buy_limit, t.sales_sum, g.original_img, g.shop_price, g.market_price')
             ->find();
         // dump($info);exit;
         if($info){
@@ -107,55 +108,80 @@ class Groupbuy extends MobileBase
             # 商品收藏
             $collect = db('goods_collect')->where(array("goods_id" => $info['goods_id'], "user_id" => $user_id))->count(); 
             $this->assign('collect', $collect);
+
+
+            # 商品规格样式
+            // $field = '`item_id`,`goods_id`,`key`,`key_name`,`price`,`store_count`';
+            // $spec = Db::query("select $field from `tp_spec_goods_price` where `goods_id` = '$info[goods_id]'");
+            // if($spec){
+            //     $spec_min_pric = $spec_max_pric = 0;
+            //     foreach($spec as $key => $val){
+            //         $spec[$key]['name'] = str_replace(array('选择颜色:', '码数:'), '', $val['key_name']);
+            //         if($spec_min_pric == 0) $spec_min_pric = $val['price'];
+            //         $spec_min_pric = $spec_min_pric > $val['price'] ? $val['price'] : $spec_min_pric;
+            //         $spec_max_pric = $spec_max_pric < $val['price'] ? $val['price'] : $spec_max_pric;
+            //     }
+            //     $this->assign('spec', $spec);
+            //     $this->assign('spec_min_pric', $spec_min_pric);
+            //     $this->assign('spec_max_pric', $spec_max_pric);
+            // }
             
         }else{
             $this->error('商品信息不存在');
         }
 
 
-        // dump($team_found);exit;
+        // dump($info);exit;
         $this->assign('info', $info);
+        
+        return $this->fetch();
+    }
+
+    /**
+     * 确认 发起订单
+     */
+    public function submitOrder(){
         
 
 
 
 
 
-
-        // $teamAct = new TeamActivity();
-        // $team = $teamAct->where('deleted',0)->where('team_id',$data['team_id'])
-        //     ->alias('t')
-        //     ->Join('goods g',"g.goods_id=t.goods_id",'LEFT')
-        //     ->field('t.team_id,t.act_name,t.goods_name,t.goods_id,t.group_price,t.start_time,t.end_time,t.group_number,t.purchase_qty,g.shop_price,g.market_price,g.original_img')
-        //     ->find();
-
-        // $goodsImg = new GoodsImages();
-        // $gImg = $goodsImg->where('goods_id',$data['goods_id'])
-        //     ->field('image_url,img_id')
-        //     ->select();
-
-        // $common = new Comment();
-        // $comList = $common->where('goods_id',$data['goods_id'])
-        //             ->field('comment_id,goods_id,username,content,img,add_time,user_id,goods_rank,service_rank,rec_id')->limit(3)
-        //             ->select();
-        // $info = [];
-        // foreach ($comList as $k => $v){
-        //     $info[$k]['goods_id'] = $v['goods_id'];
-        //     $info[$k]['username'] = $v['username'];
-        //     $info[$k]['content'] = $v['content'];
-        //     $info[$k]['add_time'] = date('Y-m-d',time());
-        //     $info[$k]['goods_rank'] = $v['goods_rank'];
-        //     $info[$k]['img'] = unserialize($v['img']);
-        // }
-
-
-        // $this->assign('team', $team);
-        // $this->assign('goodsImg', $gImg);
-        // $this->assign('comList', $info);
-        return $this->fetch();
     }
 
 
+
+
+
+
+
+    /**
+     * 商品收藏
+     */
+    public function collect(){
+        $goods_id = intval(input('post.goods_id'));
+        $user_id = cookie('user_id');
+        if($goods_id && $user_id){
+            $goodsInfo = Db::table('tp_goods')->where('goods_id',$goods_id)->find();
+            if($goodsInfo){
+                $collect = Db::table('tp_goods_collect')->where(array("goods_id" => $goods_id, "user_id" => $user_id))->count();
+               if($collect){
+                    ajaxReturn(['status' => 1]);
+                    exit;
+                } 
+                $time = time();
+                $insql = "insert into `tp_goods_collect` (`user_id`, `goods_id`, `add_time`) values ('$user_id', '$goods_id', '$time')";
+                $res = Db::execute($insql);
+                if($res){
+                    ajaxReturn(['status' => 1]);
+                    exit;
+                }
+                
+            }
+        }
+        ajaxReturn(['status' => 0]);
+
+    }
 
      /**
      * 用户 评价

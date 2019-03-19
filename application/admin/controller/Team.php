@@ -33,10 +33,11 @@ class Team extends Base
 	public function info(){
             $act = I('GET.act', 'add');       
             $team_id = I('get.team_id/d');
+            $list = Db::table('tp_users')->find();
             if($team_id){
                 $TeamActivity = new TeamActivity();
                 $team_info = $TeamActivity->with('goods')->find($team_id);
-
+                dump($team_info);   
                 // $list = Db::name('team_activity')->where('team_id',$team_id)->select();
                 $this->assign('list',$team_info);
                 // dump($list);
@@ -52,12 +53,13 @@ class Team extends Base
 	public function teamHandle()
     {
         $data = input();
-        $data['start_time'] = strtotime($data['start_time']);
+
+        $data['start_time'] = strtotime($data['start_time']);        
         $data['end_time'] = strtotime($data['end_time']);
+
         #   数据验证
         $flag   = Validation::instance(request()->module(), request()->controller(), $data, $data['act'])->check();
         if ($flag !== true) $this->ajaxReturn(['status' => 0, 'msg' => $flag, 'result' => '']);
-
         #   是否需要删除已参团的数据
         if ($data['act'] == 'del')
         {            
