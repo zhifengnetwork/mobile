@@ -95,15 +95,16 @@ $(document).ready(function(){
 	/*确定按钮*/
 	$('.chooseConfirmL').on('click',function(){
 		var buy_type = $('#buy_type').val();
-		var goods_id = $('#goods_id').val();
+		var buy_num = Number($('#commNumber_lb').html());
 		var team_id = $('#team_id').val();
-
-		
-
-
-
-		$('.choiceStyleWrap').hide();
-		$('.wrapL').eq(0).css({'overflow':''});
+		var url = "/shop/groupbuy/submit?"+
+			"buy_type="+buy_type+
+			"&team_id="+team_id+
+			"&buy_num="+buy_num
+		window.location.href = url;
+		return false;
+		// $('.choiceStyleWrap').hide();
+		// $('.wrapL').eq(0).css({'overflow':''});
 	})
 	
 	/*add number*/

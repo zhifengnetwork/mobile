@@ -1135,8 +1135,19 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
                     break;
             }
         }
+
+        $type = I('type');
+        $pre_name = '';
+        if($type == 'WAITSEND'){    
+            //待发货
+            $where['order_status'] = array('in','0,1');
+            $where['shipping_status'] = 0;
+            $where['pay_status'] = 1;
+            $pre_name = '已支付待发货';
+        }
+
         $orderList = Db::name('order')->field("*,FROM_UNIXTIME(add_time,'%Y-%m-%d') as create_time")->where($where)->order('order_id')->select();
-    	$strTable ='<table width="500" border="1">';
+    	$strTable ='<table width="500" border="0">';
     	$strTable .= '<tr>';
     	$strTable .= '<td style="text-align:center;font-size:12px;width:120px;">订单编号</td>';
     	$strTable .= '<td style="text-align:center;font-size:12px;" width="100">日期</td>';
@@ -1170,19 +1181,19 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
                 $goods_num = 0;
 	    		foreach($orderGoods as $goods){
                     $goods_num = $goods_num + $goods['goods_num'];
-	    			$strGoods .= "商品编号：".$goods['goods_sn']." 商品名称：".$goods['goods_name'];
+	    			$strGoods .= $goods['goods_name']."  数量：".$goods['goods_num'];
 	    			if ($goods['spec_key_name'] != '') $strGoods .= " 规格：".$goods['spec_key_name'];
 	    			$strGoods .= "<br />";
 	    		}
 	    		unset($orderGoods);
-                $strTable .= '<td style="text-align:left;font-size:12px;">'.$goods_num.' </td>';
+                $strTable .= '<td style="text-align:left;font-size:12px;">总'.$goods_num.' </td>';
 	    		$strTable .= '<td style="text-align:left;font-size:12px;">'.$strGoods.' </td>';
 	    		$strTable .= '</tr>';
 	    	}
 	    }
     	$strTable .='</table>';
     	unset($orderList);
-    	downloadExcel($strTable,'order');
+    	downloadExcel($strTable,$pre_name.'order');
     	exit();
     }
     

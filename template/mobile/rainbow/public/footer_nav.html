@@ -42,6 +42,7 @@
 </div>
 <script src="__PUBLIC__/js/jqueryUrlGet.js"></script><!--获取get参数插件-->
 <script type="text/javascript">
+	
 $(document).ready(function(){
 	  var cart_cn = getCookie('cn');
 
@@ -58,7 +59,7 @@ $(document).ready(function(){
 	  $('#cart_quantity').html(cart_cn);
 });
 
-set_first_leader();//设置推荐人
+//set_first_leader();//设置推荐人
 if($(".footer ul li a").hasClass("yello")){
 	$(".footer ul li .yello").find(".icon_tp2").show();
 	$(".footer ul li .yello").find(".icon_tp1").hide();
@@ -66,5 +67,5 @@ if($(".footer ul li a").hasClass("yello")){
 
 </script>
 <!-- 微信浏览器 调用微信 分享js-->
-<include file="public/wx_share"/>
+
 <!-- 微信浏览器 调用微信 分享js  end-->

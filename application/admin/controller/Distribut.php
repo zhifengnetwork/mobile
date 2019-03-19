@@ -11,6 +11,24 @@ use think\Validate;
 
 class Distribut extends Base {
 
+
+    /**
+    * 订单详情 
+     */
+    public function detail(){
+
+        $order_id = I('order_id');
+
+        $user_id = M('order')->where(['order_id'=>$order_id])->value('user_id');
+        $first_leader = M('users')->where(['user_id'=>$user_id])->value('first_leader');
+
+        
+        return $this->fetch();
+    }
+
+
+
+
     /**
      * 分销商列表
      */
@@ -268,15 +286,25 @@ class Distribut extends Base {
      */
     public function rebate_log()
     {
+        $start_time = strtotime(0);
+        $end_time = time();
+        if(IS_POST){
+            $start_time = strtotime(I('start_time'));
+            $end_time = strtotime(I('end_time'));
+        }
         $count = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
+                    ->whereTime('acount.change_time', 'between', [$start_time, $end_time])
                     ->where("acount.states = 101 or acount.states = 102")->count();
         $page = new Page($count, 10);
         $log = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
                                ->field('users.nickname, acount.*')->order('log_id DESC')
+                               ->whereTime('acount.change_time', 'between', [$start_time, $end_time])
                                ->where("acount.states = 101 or acount.states = 102")
                                ->limit($page->firstRow, $page->listRows)
                                ->select();
-        // dump($log);die;
+        
+        $this->assign('start_time', $start_time);
+        $this->assign('end_time', $end_time);
         $this->assign('pager', $page);
         $this->assign('log',$log);
         return $this->fetch();

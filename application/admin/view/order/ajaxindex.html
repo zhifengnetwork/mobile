@@ -46,10 +46,8 @@
         <td align="center" abbr="article_time" axis="col6" class="">
           <div style="text-align: center; width: 120px;" class="">{$list.add_time|date='Y-m-d H:i',###}</div>
         </td>
-        <td align="left"  axis="col1" align="center">
-            <div style="text-align: left; width: 150px;">{$list.invoice_title}</div>
-        </td>
-		<td style="width: 100%;">
+     
+		    <td style="width: 100%;">
             <div style="text-align: left; ">
                 <a class="btn green" href="{:U('Admin/order/detail',array('order_id'=>$list['order_id']))}"><i class="fa fa-list-alt"></i>查看</a>
                 <if condition="($list['order_status'] eq 3  and $list['pay_status'] eq 0) or ($list['order_status'] eq 5)">
@@ -58,7 +56,11 @@
                 <!--<if condition="($list['order_status'] eq 3  and $list['pay_status'] eq 1)">
                     <a class="btn green" href="{:U('Admin/order/detail',array('order_id'=>$list['order_id']))}"><i class="fa fa-list-alt"></i>查看</a>
                 </if>-->
+                 <a class="btn green" href="{:U('Admin/distribut/detail',array('order_id'=>$list['order_id']))}"><i class="fa fa-money"></i>查看返利</a>
             </div>
+
+           
+
         </td>
       </tr>
       </volist>

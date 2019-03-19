@@ -40,6 +40,7 @@ class Cart extends MobileBase {
      */
     public function  __construct() {
         parent::__construct();
+        return 134;exit;
         $this->cartLogic = new CartLogic();
         if (session('?user')) {
             $user = session('user');

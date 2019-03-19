@@ -58,33 +58,36 @@ class SmsLogic
         $log_id = M('sms_log')->insertGetId(array('mobile' => $sender, 'code' => $code, 'add_time' => time(), 'session_id' => $session_id, 'status' => 0, 'scene' => $scene, 'msg' => $msg));
         if ($sender != '' && check_mobile($sender)) {//如果是正常的手机号码才发送
             try {
-                //$resp = $this->realSendSms($sender, $smsTemp['sms_sign'], $smsParam, $smsTemp['sms_tpl_code']);
+                $resp = $this->realSendSms($sender, $smsTemp['sms_sign'], $smsParam, $smsTemp['sms_tpl_code']);
                 
-                $account = M('config')->where(['name'=>'sms_appkey'])->value('value');
-                $password = M('config')->where(['name'=>'sms_secretKey'])->value('value');;
-                $logic = new SmsChuanglanLogic($account,$password);
+                // 创蓝 start
+
+                // $account = M('config')->where(['name'=>'sms_appkey'])->value('value');
+                // $password = M('config')->where(['name'=>'sms_secretKey'])->value('value');
+                // $logic = new SmsChuanglanLogic($account,$password);
                 
-                $message = '【'.$smsTemp['sms_sign'].'】'.$msg;
-                $res = $logic->sendSMS($sender, $message, 'true');
-                $res = json_decode($res,true);
+                // $message = '【'.$smsTemp['sms_sign'].'】'.$msg;
+                // $res = $logic->sendSMS($sender, $message, 'true');
+                // $res = json_decode($res,true);
 
                 // "{"code":"0","msgId":"19031122454723995","time":"20190311224547","errorMsg":""}"
                 
-                if((int)$res['code'] == 0 ){
-                    $status = 1;
-                }else{
-                    $status = 0;
-                }
+                // if((int)$res['code'] == 0 ){
+                //     $status = 1;
+                // }else{
+                //     $status = 0;
+                // }
 
-                if((int)$res['code'] == 0 ){
-                    $msg = '发送成功';
+                // if((int)$res['code'] == 0 ){
+                //     $msg = '发送成功';
                     
-                }else{
-                    $msg = $res['errorMsg'];
-                }
+                // }else{
+                //     $msg = $res['errorMsg'];
+                // }
 
-                return array('status' => $status, 'msg' => $msg);
+                //return array('status' => $status, 'msg' => $msg);
 
+                // 创蓝end
 
             } catch (\Exception $e) {
                 $resp = ['status' => -1, 'msg' => $e->getMessage()];
@@ -143,24 +146,24 @@ class SmsLogic
     private function realSendSms($mobile, $smsSign, $smsParam, $templateCode)
     {
         $type = (int)$this->config['sms_platform'] ?: 0;
-        switch($type) {
-            case 0:
-                $result = $this->sendSmsByAlidayu($mobile, $smsSign, $smsParam, $templateCode);
-                break;
-            case 1:
+        // switch($type) {
+        //     case 0:
+        //         $result = $this->sendSmsByAlidayu($mobile, $smsSign, $smsParam, $templateCode);
+        //         break;
+        //     case 1:
                 $result = $this->sendSmsByAliyun($mobile, $smsSign, $smsParam, $templateCode);
-                break;
-            case 2:
-                //重新组装发送内容, 将变量内容组装成:  13800138006##张三格式
-                foreach ($smsParam as $k => $v){
-                    $contents[] = $v;
-                }
-                $content = implode($contents, "##");
-                $result = $this->sendSmsByCloudsp($mobile, $smsSign, $content, $templateCode);
-                break;
-            default:
-                $result = ['status' => -1, 'msg' => '不支持的短信平台'];
-        }
+        //         break;
+        //     case 2:
+        //         //重新组装发送内容, 将变量内容组装成:  13800138006##张三格式
+        //         foreach ($smsParam as $k => $v){
+        //             $contents[] = $v;
+        //         }
+        //         $content = implode($contents, "##");
+        //         $result = $this->sendSmsByCloudsp($mobile, $smsSign, $content, $templateCode);
+        //         break;
+        //     default:
+        //         $result = ['status' => -1, 'msg' => '不支持的短信平台'];
+        // }
         
         return $result;
     }
@@ -262,8 +265,12 @@ class SmsLogic
         include_once './vendor/aliyun-php-sdk-core/Config.php';
         include_once './vendor/Dysmsapi/Request/V20170525/SendSmsRequest.php';
         
-        $accessKeyId = $this->config['sms_appkey'];
-        $accessKeySecret = $this->config['sms_secretKey'];
+
+        $accessKeyId = M('config')->where(['name'=>'sms_appkey'])->value('value');
+        $accessKeySecret = M('config')->where(['name'=>'sms_secretKey'])->value('value');
+
+        // $accessKeyId = $this->config['sms_appkey'];
+        // $accessKeySecret = $this->config['sms_secretKey'];
         
         //短信API产品名
         $product = "Dysmsapi";

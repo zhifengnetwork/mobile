@@ -10,6 +10,7 @@ use app\common\model\WxNews;
 use app\common\model\TeamActivity;
 use app\common\model\GoodsImages;
 use app\common\model\Comment;
+use app\common\model\UserAddress;
 use think\Page;
 use app\common\model\Goods;
 
@@ -31,6 +32,7 @@ class Groupbuy extends MobileBase
     {
 
         $where['status'] = ['=', 1];
+        $where['start_time'] = ['<=', time()];
         $where['end_time'] = ['>', time()];
         $where['deleted'] = ['=', 0];
         $count = Db::table('tp_team_activity')->where($where)->count();
@@ -68,16 +70,33 @@ class Groupbuy extends MobileBase
             ->where("team_id", $data['team_id'])
             ->alias('t')
             ->join('goods g','g.goods_id = t.goods_id','left')
-            ->field('t.team_id, t.act_name, t.goods_id, t.needer, t.goods_name, t.group_price, t.cluster_type, t.end_time, t.buy_limit, t.sales_sum, g.original_img, g.shop_price, g.market_price')
+            ->field('t.team_id, t.act_name, t.goods_id, t.goods_item_id, t.needer, t.goods_name, t.deleted, t.group_price, t.cluster_type, t.start_time, t.end_time, t.buy_limit, t.sales_sum, t.max_open_num, g.original_img, g.shop_price, g.market_price')
             ->find();
         // dump($info);exit;
         if($info){
+            # 对拼团活动状态进行判断
+            if($info['start_time'] > time()){
+                $this->error('活动未开启');
+            }
+            if($info['end_time'] <= time()){
+                $this->error('活动已结束');
+            }
+            if($info['deleted']){
+                $this->error('活动已关闭');
+            }
+
+
             # 对拼团信息进行组装
             $goodsModel = new \app\common\model\Goods();
             $info['cluster_type'] = [0 => '', 1 => '小团', 2 => '打团', 3 => '阶梯团'][$info['cluster_type']];
             $info['comment'] = Db::table('tp_comment')->where('goods_id',$info['goods_id'])->count();
             $info['comment_fr'] = $goodsModel->getCommentStatisticsAttr('', ['goods_id', $info['goods_id']]);
-            $info['end_time'] = $info['end_time'] - time();
+            $info['end_time'] = $info['end_time'] > time() ? $info['end_time'] - time() : 0;
+            if($info['goods_item_id']){
+                # 当商品为特定规格商品时，获取价格。
+                $spec_price = Db::table('tp_spec_goods_price')->field('price')->find($info['goods_item_id']);
+                $info['shop_price'] = $spec_price['price'];
+            }
             // dump($info);exit;
             # 正在开团的数量
             $team_found_num = Db::table('tp_team_found')
@@ -138,15 +157,112 @@ class Groupbuy extends MobileBase
     }
 
     /**
-     * 确认 发起订单
+     * 检查开团数
      */
-    public function submitOrder(){
+    public function checkTeamCount(){
+        $teamid = intval(input('post.teamid'));
+        if(!$teamid) ajaxReturn(['status' => 0, 'msg' => '参数错误！']);
+        $info = Db::query("select `team_id`,`max_open_num` from `tp_team_activity` where `team_id` = '$teamid'");
+        if(!$info) ajaxReturn(['status' => 0, 'msg' => '商品信息不存在！']);
+        $info = $info[0];
         
 
+        ajaxReturn(['status' => 1]);
+    }
+
+    /**
+     * 确认 发起订单
+     */
+    public function submit(){
+        
+        $team_id = intval(input('get.team_id'));
+        $buy_num = intval(input('get.buy_num'));
+        $buy_type = intval(input('get.buy_type'));
+        
+        
+
+        # 数据验证
+        if(!$team_id){
+            $this->error('参数错误！');
+        }
+        if(!$buy_num){
+            $this->error('请输入购买数量');
+        }
+
+        $user = session('user');
+        $user_id = $user['user_id'];
+        if(!$user_id){
+            $this->error('请先登录', 'User/login');
+        }
 
 
+        # 获取商品信息
+        $info = Db::table('tp_team_activity')
+            ->where("team_id", $team_id)
+            ->alias('t')
+            ->join('goods g','g.goods_id = t.goods_id','left')
+            ->field('t.team_id, t.act_name, t.goods_id, t.goods_item_id, t.needer, t.goods_name, t.deleted, t.group_price, t.cluster_type, t.start_time, t.end_time, t.buy_limit, t.sales_sum, t.max_open_num, g.original_img, g.shop_price, g.market_price')
+            ->find();
 
+        if(!$info){
+            $this->error('商品信息不存在');
+        }
 
+        # 对拼团活动状态进行判断
+        if($info['start_time'] > time()){
+            $this->error('活动未开启');
+        }
+        if($info['end_time'] <= time()){
+            $this->error('活动已结束');
+        }
+        if($info['deleted']){
+            $this->error('活动已关闭');
+        }
+        if($info['buy_limit'] > 0 && $buy_num > $info['buy_limit']){
+            $this->error('最大限购数量：'.$info['buy_limit']);
+        }
+        # 发起拼团，判断开团最大数
+        if($buy_type == 2 && $info['max_open_num']){
+            $open_team = Db::query("select count(*) from `tp_team_found` where `team_id` = '$info[team_id]' and `status` in ('1','2')");
+            if($open_team && $info['max_open_num'] <= $open_team[0]['count']){
+                $this->error('已达到最大开团数，发起拼团失败');
+            }
+        }
+
+        # 收货地址
+        $address = Db::table('tp_user_address')
+            ->field('address_id,consignee,address,is_default,province,city,district,mobile')
+            ->where('user_id',$user_id)
+            ->order('is_default desc')
+            ->select();
+        if($address){
+            foreach($address as $val){
+                $region[$val['province']] = $val['province'];
+                $region[$val['city']] = $val['city'];
+                $region[$val['district']] = $val['district'];
+            }
+            $regionstr = implode("','",$region);
+            $regionarr = Db::query("select `id`,`name` from `tp_region` where `id` in ('$regionstr')");
+            if($regionarr){
+                foreach($regionarr as $reval){
+                    $region[$reval['id']] = $reval['name'];
+                }
+            }
+            // dump($address);exit;
+            $this->assign('address', $address);
+            $this->assign('region', $region);
+        }
+        
+        # 组装数据
+        $info['price'] = $buy_type == 1 ? $info['shop_price'] : $info['group_price'];
+        $info['buy_num'] = $buy_num;
+        $info['wprice'] = (intval($info['price'] * 100) * $buy_num) / 100;
+        $info['user_money'] = $user['user_money'];
+        // dump($info);exit;
+        
+
+        $this->assign('info', $info);
+        return $this->fetch();
     }
 
 

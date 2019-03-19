@@ -1,167 +1,65 @@
 <include file="public/header" title="团队列表" body=""/>
 <include file="public/header_nav" title="团队列表" href="javascript:history.back(-1)"/>
 <style type="text/css">
-    /* .application-record .re_tit .li3{
-        width: 3.2rem;
+    .left{
+        margin-left: 20px;
     }
-    .application-record .re_tit .li2{
-        width: 6rem;
-        margin-right: 0.5rem;
+    .juzhong{
+
+     position: absolute;
+     left: 50%;
+     top: 50%;
+     transform: translate(-50%,-50%);
+     font-size: 36px;
+
+
     }
-    .application-record ul .li3 {
-        width: 3.2rem;
-    }
-     .application-record ul .li2 {
-        width: 6rem;
-         margin-right: 0.5rem;
-    } */
-    /*.ser1{
-        margin-left: 3rem;
-    }*/
 </style>
+
 <div class="application-record">
     <div class="maleri30">
         <ul class="re_tit">
-            <li class="li3"><span>序号</span></li>
-            <li class="li2"><span>名称</span></li>
-            <li class="li1" style="width:33.3%"><span>电话</span></li>
-            <!-- <li class="li3"><span>操作</span></li> -->
+            <li>{$user.nickname}[ID: {$user.user_id}]的下级</li>
         </ul>
-            <foreach name="lists" item="v" key="i">
-                <div id="show">
-                    <ul class="series" onclick="team_list('{$v.user_id}')">
-                        <!-- <input type="hidden" name="series" value="{$i}"> -->
-                        <li class="li3"><span>{$i+1}</span></li>
-                            <li class="li3"><span>{$v.nickname}</span></li>
-                        <if condition="$v.mobile">
-                            <li class="li1"><span>{$v.mobile}</span></li>
-                        <else>
-                            <li class="li1"><span>还未绑定手机号</span></li>
-                        </else>
-                        </if>
-                        
-                    </ul>
-                    <div class="ser{$i+1}"></div>
+        <ul class="re_tit">
+            <li style="width:25%"><span>用户ID</span></li>
+            <li style="width:25%"><span>名称</span></li>
+            <li style="width:25%"><span>电话</span></li>
+            <li style="width:25%"><span>订单</span></li>
+        </ul>
+            <empty name="lists">
+                <div class="juzhong">
+                    该用户没有下级
                 </div>
-            </foreach>
-            <script>
-            function team_list(user_id){
-                console.log(user_id);
-                $.ajax({
-                    type:'GET',
-                    url:"{:url(')}",
-                    success:function(data){
-                        if($.trim(data)==''){
-                            // 数据如果为空
-                            $('#getmore').show();
-                            // $('#getmore').css('display','block');
-                            return data;
-                        }else{
-                            $('.maleri30').append(data);
-                        }
-                    }
-                });
-            }
-            </script>
-        
+            <else/>
+                <foreach name="lists" item="v">
+                    <div onclick="team_list('{$v.user_id}');">
+                        <ul class="series" >
+                            <!-- <input type="hidden" name="series" value="{$i}"> -->
+                            <li style="width:25%"><span>{$v.user_id}</span></li>
+                            <li style="width:25%"><span>{$v.nickname}</span></li>
+                            <if condition="$v.mobile">
+                                <li style="width:25%"><span>{$v.mobile}</span></li>
+                            <else>
+                                <li style="width:25%"><span>还未绑定手机号</span></li>
+                            </if>
+                            <li style="width:25%; margin:line-height;" >
+                                <a href="{:url('Mobile/User/order_list', array('user_id'=>$v.user_id))}">查看</a>
+                            </li>
+                        </ul>
+                        <div class="ser{$i+1}"></div>
+                    </div>
+                </foreach> 
+            </empty>
     </div>
-    <div id="getmore"  style="font-size:.32rem;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both;display: none">
-        <a >已显示完所有记录</a>
-    </div>
-    <!-- <script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script> -->
-</div>
-<!-- <script>
-    var page = 1;
-    // function ajax_sourch_submit(){
-    //     page++;
-    //     $.ajax({
-    //         type:'GET',
-    //         url:'/index.php/Mobile/User/team_list/is_ajax/1/p/'+page,
-    //         success:function(data){
-    //             if($.trim(data)==''){
-    //                 // 数据如果为空
-    //                 $('#getmore').show();
-    //                 // $('#getmore').css('display','block');
-    //                 return data;
-    //             }else{
-    //                 $('.maleri30').append(data);
-    //             }
-    //         }
-    //     });
-    // }
-    // // 查询下级
-    // $("#next").click(function(){
-    //     var user_id = $('.user_id').val();
-    //     // console.log(user_id);
-    //     $.ajax({
-    //         type:'GET',
-    //         url:'/index.php/Mobile/User/next_team_list/user_id/'+user_id,
-    //         success:function(data){
-    //             // console.log(data.result);
-    //             // console.log(data.result[0]);
-                
-    //             var html = '';
-    //             html = '<div><ul><input type="hidden" class="user_id" name="user_id" value="{$v[user_id]}"> ' +
-    //             '<li class="li2"><span>'+data.result[0]['user_id']+'</span></li>'+
-    //             // '<li class="li1" style="width:33.3%"><span>{$v[tel]}</span></li>'+
-    //             // '<li class="li3"><span id="next">+</span></li>'+
-    //             '</ul></div>';
-    //             $('#next').append(html);               
+</div>  
 
-    //         }
-    //     });
-    // });
-
-    var show = 0;
-    var bool = true;
-
-    $(".series").click(function(){
-        var ser = $(".series").index(this);
-        ser += 1;
-        child = '.ser'+ser;
-        
-        if($(child).children("div").length>0){
-            if (show == ser){
-                if (bool == true) {
-                    $(child).hide()
-                    bool = false;
-                } else {
-                    $(child).show()
-                    bool = true;
-                }
-            } else {
-                $child.hide()
-                bool = false;
-            }
-        } else {
-            show = ser;
-            // console.log(show);
-            $.ajax({
-                type:"POST",
-                url:"/index.php/Mobile/User/team_list/",
-                data:{'series':show},
-                success:function(data){
-                    // console.log(data);
-                    var list = JSON.parse(data);
-                    var html = "";
-
-                    for (var i = 0; i < list.length; i++) {
-                        // console.log(list[i]['user_id'])
-                        html = '<div><ul>'+
-                            '<li class="li2"><span>'+list[i]['nickname']+'</span></li>'+
-                            '<li class="li1" style="width:33.3%"><span>'+list[i]['mobile']+'</span></li>'+
-                            '</ul></div>';
-
-                        tr = '.ser'+show;
-                        $(tr).append(html);
-                    }
-
-                    $(tr).css('margin-left','3rem');
-                }
-            });
-        }
-
-    })
-</script> -->
+<script>
+    function team_list(user_id){
+        console.log(user_id);
+        var url = "/Mobile/User/team_list?first_leader=" + user_id;
+        window.location.href=url; 
+    }
+</script>
 </body>
 </html>

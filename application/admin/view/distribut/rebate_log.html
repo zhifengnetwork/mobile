@@ -32,19 +32,21 @@
 			</div>
 			<div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
 
-			<!-- <form class="navbar-form form-inline" id="search-form" method="post" action="{:U('Report/userTop')}" onSubmit="return check_form();">
+			<form class="navbar-form form-inline" id="search-form" method="POST" action="{:U('Distribut/rebate_log')}" onSubmit="return check_form();">
 				<div class="sDiv">
 					<div class="sDiv2" style="margin-right: 10px;">
-						<input type="text" size="30" name="user" id="user" value="" placeholder="用户" class="qsbox">
+						<input type="text" size="30" name="start_time" id="start_time" value="{$start_time|date='Y-m-d H:i:s', ###}" placeholder="起始时间" class="qsbox">
+						<input type="button" class="btn" value="起始时间">
 					</div>
 					<div class="sDiv2" style="margin-right: 10px;">
-						<input type="text" size="30" name="good" id="good" value="" placeholder="商品名称" class="qsbox">
+						<input type="text" size="30" name="end_time" id="end_time" value="{$end_time|date='Y-m-d H:i:s', ###}" placeholder="截止时间" class="qsbox">
+						<input type="button" class="btn" value="截止时间">
 					</div>
 					<div class="sDiv2">
 						<input class="btn" value="搜索" type="submit">
 					</div>
 				</div>
-			</form> -->
+			</form>
 		</div>
 
 		<div class="hDiv">
@@ -124,6 +126,7 @@
 			{$pager->show()}
 		 </div>
 </div>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
 <script>
 	$(document).ready(function(){
 		// 表格行点击选中切换
@@ -135,31 +138,26 @@
 		$('.fa-refresh').click(function(){
 			location.href = location.href;
 		});
+
+
+		// 起始位置日历控件
+        $('#start_time').layDate();
+        $('#end_time').layDate();
 	});
 
-	// function delfun(obj) {
-	// 	// 删除按钮
-	// 	layer.confirm('确认删除？', {
-	// 		btn: ['确定', '取消'] //按钮
-	// 	}, function () {
-	// 		$.ajax({
-	// 			type: 'post',
-	// 			url: $(obj).attr('data-url'),
-	// 			data : {act:'del',del_id:$(obj).attr('data-id')},
-	// 			dataType: 'json',
-	// 			success: function (data) {
-	// 				layer.closeAll();
-	// 				if (data) {
-	// 					$(obj).parent().parent().parent().remove();
-	// 				} else {
-	// 					layer.alert('删除失败', {icon: 2});  //alert('删除失败');
-	// 				}
-	// 			}
-	// 		})
-	// 	}, function () {
-	// 		layer.closeAll();
-	// 	});
-	// }
+	function check_form(){
+		var start_time = $.trim($('#start_time').val());
+		var end_time =  $.trim($('#end_time').val());
+		if(start_time == '' ^ end_time == ''){
+			layer.alert('请选择完整的时间间隔', {icon: 2});
+			return false;
+		}	
+		if(start_time > end_time){
+			layer.alert('请选择正确的起始时间', {icon: 2});
+			return false;
+		}		 
+		return true;
+	}
 </script>
 </body>
 </html>

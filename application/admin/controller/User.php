@@ -33,9 +33,13 @@ class User extends Base
         // 搜索条件
         $condition = array();
         $nickname = I('nickname');
+        $user_id = input('user_id');
         $account = I('account');
+        // dump($user_id);exit;
         $account ? $condition['email|mobile'] = ['like', "%$account%"] : false;
         $nickname ? $condition['nickname'] = ['like', "%$nickname%"] : false;
+        $user_id ? $condition['user_id'] = ['like', "%$user_id%"] : 
+            false;
 
         I('first_leader') && ($condition['first_leader'] = I('first_leader')); // 查看一级下线人有哪些
         I('second_leader') && ($condition['second_leader'] = I('second_leader')); // 查看二级下线人有哪些
