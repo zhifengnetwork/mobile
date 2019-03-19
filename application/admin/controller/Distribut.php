@@ -43,6 +43,12 @@ class Distribut extends Base {
         }else{
             $order['pay_status_des'] = '未支付';
         }
+
+        if($order['order_amount'] <= 9.9 ){
+            $this->error('该订单小于9.9元，没有返利');
+        } 
+
+
         $this->assign('order', $order);
         return $this->fetch();
     }
