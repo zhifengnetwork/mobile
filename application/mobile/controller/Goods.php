@@ -590,7 +590,11 @@ class Goods extends MobileBase
     {
         $cat_id = I('cat_id/d');
 
-        $user = session('user');
+        $user = Db::name('users')->where(['user_id' => cookie('user_id')])->find();
+
+        if(empty($user)){
+            $result = ['status' => -9, 'msg' => '未找到用户', 'result' => ''];
+        }
 
         $result = provingReceive($user, $cat_id);
 
