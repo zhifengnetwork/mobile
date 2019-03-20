@@ -50,9 +50,6 @@ class Test {
                 M('agent_info')->where(['uid'=>$v['uid']])->update(['flag'=>1]);
             }
         }
-
-
-        
     }
 
 }
