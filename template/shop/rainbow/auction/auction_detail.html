@@ -290,7 +290,7 @@
 				layer.closeAll();
 				// 登录超时
 				if (data.status == -100){
-					location.href = "{:U('Mobile/User/login')}";
+					location.href = "{:U('Shop/User/login')}";
 				}
 				if (data.status != 1) {
 
@@ -316,7 +316,7 @@
 				layer.closeAll();
 				// 登录超时
 				if (data.status == -100){
-					location.href = "{:U('Mobile/User/login')}";
+					location.href = "{:U('Shop/User/login')}";
 				}
 				if (data.status != 1) {
 
@@ -343,7 +343,7 @@
 			success: function (data) {
 				// 登录超时
 				if (data.status == -100){
-					location.href = "{:U('Mobile/User/login')}";
+					location.href = "{:U('Shop/User/login')}";
 				}
 				if (data.status == 1 && data.msg == 2) {
 					$("#mask").show();

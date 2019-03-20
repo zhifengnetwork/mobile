@@ -34,6 +34,7 @@
                 <input type="hidden" name="sort" value="desc">
                 <input type="hidden" name="account" value="" id="account" />
                 <input type="hidden" name="nickname" value="" id="nickname" />
+                <input type="hidden" name="realname" value="" id="realname" />
                 <input type="hidden" name="user_id" value="" id="user_id" />
                 <input type="hidden" name="user_ids" value="" id="user_ids" />
                 <!--分销时查看下级人数都有哪些-->
@@ -44,6 +45,7 @@
                     <div class="sDiv2">
                         <select class="select" name="search_type" id="search_type">
                             <option value="nickname">会员昵称</option>
+                            <option value="realname">会员姓名</option>
                             <option value="user_id">会员ID</option>
                             <option value="search_key">会员账户</option>
                         </select>
@@ -251,14 +253,22 @@
                 $('#account').val(search_key);
                 $('#nickname').val('');
                 $('#user_id').val('');
+                $('#realname').val('');
             }else if(search_type == 'user_id'){
                 $('#user_id').val(search_key);
+                $('#account').val('');
+                $('#nickname').val('');
+                $('#realname').val('');
+            }else if(search_type == 'realname'){
+                $('#realname').val(search_key);
+                $('#user_id').val('');
                 $('#account').val('');
                 $('#nickname').val('');
             }else{
                 $('#nickname').val(search_key);
                 $('#account').val('');
                 $('#user_id').val('');
+                $('#realname').val('');
             }
         }
         cur_page = page; //当前页面 保存为全局变量

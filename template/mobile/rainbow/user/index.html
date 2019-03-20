@@ -12,11 +12,15 @@
             <div class="user_top_title">
                 <br>
                 <!-- 代理 -->
-                {$user.agent_user|agent_level}
-                <!-- 分销 -->
-                <if condition="($user.is_distribut == 1)"><a href="javascript:void(0);">　[分销商]</a>
+                <if condition="($user.is_agent == 1)">
+                    {$user.agent_user|agent_level}
+                <else/>
+                    <!-- 分销 -->
+                    <if condition="($user.is_distribut == 1)">
+                        <a href="javascript:void(0);">分销商</a>
                     <else/>
-                    <a href="javascript:void(0);">[普通用户]</a>
+                        <a href="javascript:void(0);">普通用户</a>
+                    </if>
                 </if>
             </div>
         </div>
@@ -25,7 +29,7 @@
             <ul>
                 <li style="width:100%">
                     <a href="{:U('Mobile/User/account')}">
-                        <div class="user_down_dev" style="color: #ffffff;">{$user['user_money']}</div>
+                        <div class="user_down_dev" style="color: #ffffff;">{$user_money}</div>
                         <div class="user_down_name">余额</div>
                     </a>
                 </li>

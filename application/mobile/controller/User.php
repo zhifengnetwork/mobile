@@ -119,6 +119,9 @@ class User extends MobileBase
             }
         }
         
+        $this->assign('user_id', $user['user_id']);
+        $underling_number = M('users')->where(['user_id'=>$user['user_id']])->value('underling_number');
+        $this->assign('underling_number', $underling_number);
         return $this->fetch();
     }
 
@@ -133,6 +136,12 @@ class User extends MobileBase
     {
         $MenuCfg = new MenuCfg();
         $menu_list = $MenuCfg->where('is_show', 1)->order('menu_id asc')->select();
+        
+        $user_id = session('user.user_id');
+        $user_money = M('users')->where(['user_id'=>$user_id])->value('user_money');
+        $this->assign('user_money', $user_money);
+
+
         $this->assign('menu_list', $menu_list);
         return $this->fetch();
     }

@@ -29,7 +29,7 @@ class DistributLogic
             $Page = new Page($count, 15);
             $recharge_log = M('agent_performance_log')->where($recharge_log_where)
                 ->limit($Page->firstRow . ',' . $Page->listRows)
-                ->select(); 
+                ->select();   
         }else{
             $count = M('recharge')->where($recharge_log_where)->count();
             $Page = new Page($count, 15);

@@ -26,39 +26,32 @@ class User extends Base
         if(IS_POST){
             $post = I('post.');
 
-            $cunzai = M('users')->where(['user_id'=>$post['user_id'],'agent_user'=>$post['level']])->find();
-            if($cunzai){
-                $this->error('无需修改');
-            }
+            $is_agent = (int)$post['level'] > 0 ? 1 : 0;
+            //大于0 是1，否则是0
 
-            $res = M('users')->where(['user_id'=>$post['user_id']])->update(['agent_user'=>$post['level']]);
-            if($res){
-              
-                //修改  tp_agent_info
-                $is_cun = M('agent_info')->where(['uid'=>$post['user_id']])->find();
-                $head_id = M('users')->where(['user_id'=>$post['user_id']])->value('first_leader');
+            $is_distribut = (int)$post['is_distribut'];
 
-                if($is_cun){
-                    
-                    M('agent_info')->where(['uid'=>$post['user_id']])->update(['head_id'=>$head_id,'level_id'=>$post['level'],'update_time'=>time()]);
+            M('users')->where(['user_id'=>$post['user_id']])->update(['agent_user'=>$post['level'],'is_agent'=>$is_agent,'is_distribut'=> $is_distribut]);
+          
+            //修改  tp_agent_info
+            $is_cun = M('agent_info')->where(['uid'=>$post['user_id']])->find();
+            $head_id = M('users')->where(['user_id'=>$post['user_id']])->value('first_leader');
 
-                }else{
-
-                    $model = new AgentInfo();
-                    $model->uid = $post['user_id'];
-                    $model->head_id = $head_id;
-                    $model->level_id = $post['level'];
-                    $model->create_time = time();
-                    $model->update_time = time();
-                    $model->save();
-
-                }
-
-
-                $this->success('修改成功');
+            if($is_cun){
+                M('agent_info')->where(['uid'=>$post['user_id']])->update(['head_id'=>$head_id,'level_id'=>$post['level'],'update_time'=>time()]);
             }else{
-                $this->error('修改失败');
+
+                $model = new AgentInfo();
+                $model->uid = $post['user_id'];
+                $model->head_id = $head_id;
+                $model->level_id = $post['level'];
+                $model->create_time = time();
+                $model->update_time = time();
+                $model->save();
+
             }
+              
+            $this->success('修改成功');
             exit;
         }
 
@@ -78,13 +71,14 @@ class User extends Base
         // 搜索条件
         $condition = array();
         $nickname = I('nickname');
+        $realname = I('realname');
         $user_id = input('user_id');
         $account = I('account');
         // dump($user_id);exit;
         $account ? $condition['email|mobile'] = ['like', "%$account%"] : false;
         $nickname ? $condition['nickname'] = ['like', "%$nickname%"] : false;
-        $user_id ? $condition['user_id'] = ['like', "%$user_id%"] : 
-            false;
+        $realname ? $condition['realname'] = ['like', "%$realname%"] : false;
+        $user_id ? $condition['user_id'] = ['like', "%$user_id%"] : false;
 
         I('first_leader') && ($condition['first_leader'] = I('first_leader')); // 查看一级下线人有哪些
         I('second_leader') && ($condition['second_leader'] = I('second_leader')); // 查看二级下线人有哪些

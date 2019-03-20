@@ -27,6 +27,34 @@ class Goods extends MobileBase
     // {
     //     return $this->fetch();
     // }
+//    public function categoryList(){
+//
+//        //获取要访问的一级分类的ID  如果没有传ID默认展示为你推荐栏目
+////        $id=I(id,31);
+//
+//        $category=new GoodsCategory();
+//
+//        //获取所有要展示的一级分类
+//        $categoryList = $category->get_first_level_category();
+//        //获取当前要展示的分类的2，3级信息
+//        $ids=array_column($categoryList,'id');
+//        //创建数组包含所有的2，3级分类
+////        var_dump($ids);
+//        $categorys=array();
+//        foreach($ids as $k=>$v){
+//            $categorys[$k]=$category->get_children_category($v);
+////            $cids=array_column($categorys[$k],'id');
+//            foreach($categorys[$k] as $ke=>$va){
+//                $categorys[$k][$ke]['child']=$category->get_children_category($va['id']);
+//            }
+//        }
+////        var_dump(array_column($categorys[0],'id'));
+//        $this->assign('categoryList',$categoryList);
+//        $this->assign('categorys',$categorys);
+////        print_r($categorys[0]);die;
+//        return $this->fetch();
+//    }
+//20190320 直接显示二级列表和三级分类及其图片名称
     public function categoryList(){
 
         //获取要访问的一级分类的ID  如果没有传ID默认展示为你推荐栏目
@@ -34,24 +62,34 @@ class Goods extends MobileBase
 
         $category=new GoodsCategory();
 
-        //获取所有要展示的一级分类
-        $categoryList = $category->get_first_level_category();
-        //获取当前要展示的分类的2，3级信息
-        $ids=array_column($categoryList,'id');
-        //创建数组包含所有的2，3级分类
-//        var_dump($ids);
-        $categorys=array();
-        foreach($ids as $k=>$v){
-            $categorys[$k]=$category->get_children_category($v);
-//            $cids=array_column($categorys[$k],'id');
-            foreach($categorys[$k] as $ke=>$va){
-                $categorys[$k][$ke]['child']=$category->get_children_category($va['id']);
+        //获取所有要展示的二级分类
+        $secondCategoryList = $category->get_level_category(2);
+//        $ids=array_column($secondCategoryList,'id');
+        //获取所有要展示的三级分类
+//        $threadCategoryList = $category->get_level_category(3);
+//        $ids=array_column($threadCategoryList,'id');
+        //获取这些三级栏目的商品
+        foreach($secondCategoryList as $key=>$value){
+            $threadCategorys=$category->get_children_category($value['id']);
+            if(empty($threadCategorys)){
+                continue;
+            }
+            $secondCategoryList[$key]['child']=$threadCategorys;
+            foreach($secondCategoryList[$key]['child'] as $k=>$v){
+                $threadCategorysGoods=$category->get_by_parensid_goods($v['id']);
+                if(empty($threadCategorysGoods)){
+                    continue;
+                }
+                $secondCategoryList[$key]['child'][$k]['child']=$category->get_by_parensid_goods($v);
             }
         }
+
+//        $goods=$category->get_by_parensid_goods(implode(',',$ids));
 //        var_dump(array_column($categorys[0],'id'));
-        $this->assign('categoryList',$categoryList);
-        $this->assign('categorys',$categorys);
-//        print_r($categorys[0]);die;
+        $this->assign('secondCategoryList',$secondCategoryList);
+//        $this->assign('threadCategoryList',$threadCategoryList);
+//        $this->assign('goods',$goods);
+//        print_r($secondCategoryList);die;
         return $this->fetch();
     }
 
@@ -590,7 +628,11 @@ class Goods extends MobileBase
     {
         $cat_id = I('cat_id/d');
 
-        $user = session('user');
+        $user = Db::name('users')->where(['user_id' => cookie('user_id')])->find();
+
+        if(empty($user)){
+            $result = ['status' => -9, 'msg' => '未找到用户', 'result' => ''];
+        }
 
         $result = provingReceive($user, $cat_id);
 

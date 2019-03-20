@@ -48,13 +48,31 @@
                 </dt>
                 <dd class="opt">
                 	<select id="level" name="level">
-                        <option value="" selected>---请选择等级---</option>
+                        <option value="0" selected>---不选择等级---</option>
                 		<tpshop sql="select * from `__PREFIX__user_level` where level_id != 12" key="k" item='v'>
                 		<option value="{$v[level_id]}">{$v[level_name]}</option>
                 		</tpshop>
                 	</select>
                 </dd>
             </dl>
+
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>分销商</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label for="is_distribut1" class="cb-enable <if condition="$user['is_distribut'] eq 1">selected</if>"><span>是</span></label>
+                        <label for="is_distribut2" class="cb-disable <if condition="$user['is_distribut'] eq 0">selected</if>"><span>否</span></label>
+                        <input id="is_distribut1" name="is_distribut" value="1" type="radio" <if condition="$user['is_distribut'] eq 1">checked</if>>
+                        <input id="is_distribut2" name="is_distribut" value="0" type="radio" <if condition="$user['is_distribut'] eq 0">checked</if>>
+                    </div>
+                    <p class="notic">如果开启，会员参与分销。</p>
+                </dd>
+            </dl>
+
+
           
             <div class="bot"><a href="JavaScript:void(0);" onclick="checkUserUpdate();" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
 
