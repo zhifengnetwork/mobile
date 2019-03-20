@@ -22,19 +22,20 @@ class Team extends Validate
         // 'share_img'                 =>'require',
         // 'group_time'                => 'require'
         'goods_name'                =>'require',
-        'group_price'               =>'require',
-        'group_number'              =>'require'
+        'group_price'               =>'require|egt:0',
+        'group_number'              =>'require|gt:1',
+        'max_open_num'              =>'gt:0'
     ];
     //错误信息
     protected $message  = [
         'act_name.require'          => '拼团标题必填',
         'act_name.max'              => '拼团标题长度不得超过50字符',
         'time_limit.require'        => '成团有效期必填',
+        'time_limit.gt'             => '成团有效期必须大于0',
         'start_time.require'        => '活动开始时间必填',
         'end_time.require'          => '活动结束时间必填',
-        // 'time_limit.number'         => '成团有效期格式错误',
-        // 'time_limit.gt'             => '成团有效期必须大于0',
-        // 'needer.require'            => '需要成团人数必须',
+        // 'time_limit.number'         => '成团有效期格式错误',       
+        'max_open_num.gt'            => '最大开团数必须大于0',
         'group_price.require'       => '拼团价格必须填写',
         'group_number.require'       => '拼团人数必须填写',
         'goods_id.require'          => '请选择参与拼团的商品',
@@ -46,8 +47,8 @@ class Team extends Validate
         'virtual_num.number'        => '虚拟销售基数格式错误',
         'share_title.max'           => '分享标题长度不得超过50字符',
         'share_desc.max'            => '分享描述长度不得超过200字符',
-        // 'share_img.require'         => '分享图片必须上传',
-        // 'group_time.require'        => '拼团时间必须填写'
+        'group_number.gt'         => '成团人数必须大于1',
+        'group_price.egt'           => '团购价必须大于等于0',
         'goods_name.require'        => '请选择参与拼团的商品',
     ];
 
