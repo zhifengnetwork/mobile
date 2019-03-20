@@ -33,37 +33,37 @@
 						<!-- <foreach name="category" item="vo" key="i">
 							<li><i></i>{$vo.mobile_name}</li>
 						</foreach> -->
-						<foreach name="categoryList" item="list">
-							<li <if condition="$list[id] eq 83"> class="active" </if> ><i></i>{$list[name]}</li>
+						<foreach name="secondCategoryList" item="list">
+							<li <if condition="$list[id] eq 111"> class="active" </if> ><i></i>{$list[name]}</li>
 						</foreach>
 						<!--<li class="active"><i></i>为您推荐</li>-->
 					</ul>
 				</div>
 				<!--右边分类内容-->
 				<div class="main">
-					<foreach name="categorys" item="category">
-						<div class="branchList <if condition='$category[0][parent_id] eq 83'> active </if>">
-						<div class="advert">
-							<assign name="k" value="0"></assign>
-							<foreach name="categoryList" item="cate">
-								<if condition="$k<1">
-									<if condition="$cate[id] eq $category[parent_id]">
-										<a href="{$k++}"><img src="{$cate[image]}" /></a>
-									<else>
-										<!-- <a href="{$k++}"><img src="__STATIC__/images/category/advert-11.jpg" /></a> -->
-									</if>
-								</if>
-							</foreach>
-						</div>
-						<foreach name="category" item="catelist">
+					<foreach name="secondCategoryList" item="category" key="key">
+						<div class="branchList <if condition='$category[id] eq 111'> active </if>">
+						<!--<div class="advert">-->
+							<!--<assign name="k" value="0"></assign>-->
+							<!--<foreach name="categoryList" item="cate">-->
+								<!--<if condition="$k<1">-->
+									<!--<if condition="$cate[id] eq $category[parent_id]">-->
+										<!--<a href="{$k++}"><img src="{$cate[image]}" /></a>-->
+									<!--<else>-->
+										<!--&lt;!&ndash; <a href="{$k++}"><img src="__STATIC__/images/category/advert-11.jpg" /></a> &ndash;&gt;-->
+									<!--</if>-->
+								<!--</if>-->
+							<!--</foreach>-->
+						<!--</div>-->
+						<foreach name="category.child" item="catelist">
 							<div class="cate-item">
 								<h3>{$catelist[name]}</h3>
 								<ul class="cate-list">
 									<foreach name="catelist.child" item="child">
 										<li class="item">
-											<a href="/Mobile/Goods/goodsList/id/{$child[id]}.html">
-												<img src="{$child[image]}" />
-												<p>{$child[name]}</p>
+											<a href="/Mobile/Goods/goodsList/id/{$child[goods_id]}.html">
+												<img src="{$child[original_img]}" />
+												<p>{$child[goods_name]}</p>
 											</a>
 										</li>
 									</foreach>
