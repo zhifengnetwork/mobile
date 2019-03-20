@@ -109,8 +109,11 @@ class Sign extends MobileBase {
 //                        echo $agent_continue_sign_num.'````````````'.$sign_agent_days;
                         if($agent_continue_sign_num>=$sign_agent_days){
                             //使得user表中代理领礼物次数+1
-//                            M('user')->where(['user_id'=>$user_id])->save(['agent_free_num'=>'agent_free_num+1']);
-                            M('users')->where(['user_id'=>$user_id])->setInc('agent_free_num');
+//                           M('user')->where(['user_id'=>$user_id])->save(['agent_free_num'=>'agent_free_num+1']);
+
+                            $agent_free_num = M('users')->where(['user_id'=>$user_id])->value('agent_free_num');
+                            M('users')->where(['user_id'=>$user_id])->save(['agent_free_num'=>$agent_free_num + 1]);
+
                             //变更这几次的签到记录中的标志值
                             M('sign_log')->where(['user_id'=>$user_id])->order('sign_day desc')->limit($sign_agent_days)->save(['sign_agent'=>1]);
                         }
@@ -123,7 +126,10 @@ class Sign extends MobileBase {
                         if($distribut_continue_sign_num>=$sign_distribut_days){
                             //使得user表中代理领礼物次数+1
 //                            M('user')->where(['user_id'=>$user_id])->save(['distribut_free_num'=>'distribut_free_num+1']);
-                            M('users')->where(['user_id'=>$user_id])->setInc('distribut_free_num');
+
+                            $distribut_free_num = M('users')->where(['user_id'=>$user_id])->value('distribut_free_num');
+                            M('users')->where(['user_id'=>$user_id])->save(['distribut_free_num'=>$distribut_free_num+1]);
+
                             //变更这几次的签到记录中的标志值
                             M('sign_log')->where(['user_id'=>$user_id])->order('sign_day desc')->limit($sign_distribut_days)->save(['sign_distribut'=>1]);
                         }
