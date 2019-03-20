@@ -17,11 +17,11 @@ class AddOneLogic extends Model
         $is_finish = false;
 
         //上级id为空则退出
-        if(!$leader_id) return false;
+        if(!$leader_id) return 'leader_id为空';
 
         //没有这个上级的记录则退出
         $is_exist = M('users')->where('user_id', $leader_id)->find();
-        if(!$is_exist) return false;
+        if(!$is_exist) return '没有这个上级的记录';
 
         //开启事务
         // Db::startTrans();
