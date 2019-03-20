@@ -18,11 +18,11 @@ class Test {
             $flag = $addOneLogic->team_total($leader['first_leader']);
             if($flag){
                 $flag_update = M('users')->where('user_id', $leader['user_id'])->update(['underling_number_flag'=>1]);
-                return $flag_update;
+                return $flag_update.'完成:'.$leader['user_id'];
             }
         }else{
             $flag_update = M('users')->where('user_id', $leader['user_id'])->update(['underling_number_flag'=>1]);
-            return $flag_update;
+            return $flag_update.'完成:'.$leader['user_id'];
         }
     }
 }
