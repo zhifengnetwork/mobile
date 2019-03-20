@@ -615,18 +615,20 @@
 
             if(type == '不开发票'){
                 _tpl = '不开发票'
-            }
-
-            if(identity == '个人'){
-                _tpl = '纸质（个人-'+type+'）';
             }else{
-                if(!title || !code){
-                    layer.open({icon: 1, content: "发票抬头不能为空！", time: 2});
-                    return false;
+                if(identity == '个人'){
+                    _tpl = '纸质（个人-'+type+'）';
                 }else{
-                    _tpl = '纸质（'+title+'-'+type+'）';
+                    if(!title || !code){
+                        layer.open({icon: 1, content: "发票抬头不能为空！", time: 2});
+                        return false;
+                    }else{
+                        _tpl = '纸质（'+title+'-'+type+'）';
+                    }
                 }
             }
+
+            
             $('.invoice_title').html(_tpl);
             $('#invoicelist').hide();
         });
@@ -634,6 +636,16 @@
         $('#invoice_list_back').on('click',function(){
             $('#invoicelist').hide();
         });
+    });
+
+    // 用户备注字符长度限制
+    $('#user_note').on('keyup',function(){
+        var user_note = $('#user_note').val();
+        var len = parseInt(user_note.length);
+        $('#zero').html(50 - len);
+        if(len >= 50){
+            return false;
+        }
     });
 
     // 提交订单
@@ -647,9 +659,24 @@
         var invoice_code = $('#hidden-invoice-code').val();
         var address_id = $('.input_default_address_id').val();
         var user_money = $('#user_money').prop('checked') ? 1 : 0;
+        var user_note = $('#user_note').val();
 
-
-        console.log(user_money);
+        var data = {
+            buy_type:   buy_type,
+            buy_num:    buy_num,
+            team_id:    team_id,
+            invoice_type:   invoice_type,
+            invoice_identity:   invoice_identity,
+            invoice_title:  invoice_title,
+            invoice_code:   invoice_code,
+            address_id: address_id,
+            user_money: user_money,
+            user_note:  user_note
+        };
+        $.post('falceOrder',{data:data},function(res){
+            console.log(res);
+        });
+        
     }
 
 
