@@ -315,18 +315,25 @@ class Distribut extends Base {
     {
         $start_time = strtotime(0);
         $end_time = time();
+        $condition = array();
         if(IS_POST){
             $start_time = strtotime(I('start_time'));
             $end_time = strtotime(I('end_time'));
+            $search_type = I('search_type');
+            $search_value = I('search_value');
+            $condition['users.'.$search_type] = ['like', "%".$search_value."%"];
+            $this->assign('search_type',$search_type);
+            $this->assign('search_value',$search_value);
         }
         $count = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
                     ->whereTime('acount.change_time', 'between', [$start_time, $end_time])
-                    ->where("acount.states = 101 or acount.states = 102")->count();
+                    ->where($condition)->where("acount.states = 101 or acount.states = 102")->count();
         $page = new Page($count, 10);
         $log = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
-                               ->field('users.nickname, acount.*')->order('log_id DESC')
+                               ->field('users.nickname, users.user_id, acount.*')->order('log_id DESC')
                                ->whereTime('acount.change_time', 'between', [$start_time, $end_time])
                                ->where("acount.states = 101 or acount.states = 102")
+                               ->where($condition)
                                ->limit($page->firstRow, $page->listRows)
                                ->select();
         

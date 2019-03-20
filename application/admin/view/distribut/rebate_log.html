@@ -42,8 +42,13 @@
 						<input type="text" size="30" name="end_time" id="end_time" value="{$end_time|date='Y-m-d H:i:s', ###}" placeholder="截止时间" class="qsbox">
 						<input type="button" class="btn" value="截止时间">
 					</div>
-					<div class="sDiv2">
-						<input class="btn" value="搜索" type="submit">
+					<div class="sDiv2"> 
+							<select class="select" name="search_type">
+									<option value="user_id" <if condition="$search_type eq user_id">selected</if>>会员ID</option>
+									<option value="nickname" <if condition="$search_type eq nickname">selected</if>>会员昵称</option>
+							</select>
+							<input type="text" size="30" name="search_value" value="{$search_value}" placeholder="模糊查询" class="qsbox">
+							<input type="submit" class="btn" value="搜索">
 					</div>
 				</div>
 			</form>
@@ -58,8 +63,11 @@
 							<div style="width: 24px;"><i class="ico-check"></i></div>
 						</th>
 						<th align="center" abbr="article_title" axis="col3" class="">
-							<div style="text-align: center; width: 50px;" class="">ID</div>
+							<div style="text-align: center; width: 50px;" class="">记录ID</div>
 						</th>
+						<th align="center" abbr="article_title" axis="col3" class="">
+								<div style="text-align: center; width: 50px;" class="">用户ID</div>
+							</th>
 						<th align="center" abbr="ac_id" axis="col4" class="">
 							<div style="text-align: center; width: 100px;" class="">用户</div>
 						</th>
@@ -93,7 +101,10 @@
 								<div style="width: 24px;"><i class="ico-check"></i></div>
 							</td>
 							<td align="center" class="">
-								<div style="text-align: center; width: 50px;">{$vo.log_id}</div>
+									<div style="text-align: center; width: 50px;">{$vo.log_id}</div>
+								</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 50px;">{$vo.user_id}</div>
 							</td>
 							<td align="center" class="">
 								<div style="text-align: center; width: 100px;">{$vo.nickname}</div>
