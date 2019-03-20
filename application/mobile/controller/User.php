@@ -119,6 +119,9 @@ class User extends MobileBase
             }
         }
         
+        $this->assign('user_id', $user['user_id']);
+        $underling_number = M('users')->where(['user_id'=>$user['user_id']])->value('underling_number');
+        $this->assign('underling_number', $underling_number);
         return $this->fetch();
     }
 
