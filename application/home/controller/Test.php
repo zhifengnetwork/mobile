@@ -6,6 +6,38 @@ use app\common\logic\AddOneLogic;
 use think\Db;
 
 class Test {
+
+
+    /**
+     * 100 个
+     */
+    public function big(){
+        set_time_limit(0);
+        $addOneLogic = new AddOneLogic();
+
+
+        $leader = M('users')->where('underling_number_flag', 0)->order('user_id desc')->field('user_id, first_leader')->limit(100)->select();
+
+        foreach($leader as $k => $v){
+
+            if($v['first_leader'] > 0){
+                $flag = $addOneLogic->team_total($v['first_leader']);
+               
+                //if($flag){
+                    $flag_update = M('users')->where('user_id', $v['user_id'])->update(['underling_number_flag'=>1]);
+                    echo $flag_update.'完成:'.$v['user_id'];
+                //}
+            }else{
+                $flag_update = M('users')->where('user_id', $v['user_id'])->update(['underling_number_flag'=>1]);
+                echo $flag_update.'完成:'.$v['user_id'];
+            }
+
+        }
+    }
+
+
+
+
     //团队总人数
     public function index(){
         set_time_limit(0);
