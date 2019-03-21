@@ -1430,6 +1430,16 @@ class User extends MobileBase
             }
 
             if (M('withdrawals')->add($data)) {
+                // 发送公众号消息给用户
+                if(is_weixin()){
+                    $user = Db::name('OauthUsers')->where(['user_id'=>$this->user['user_id'] , 'oauth'=>'weixin' , 'oauth_child'=>'mp'])->find();
+                    if ($user) {
+                        $wx_content = "您的提现申请已提交，正在处理...";
+                        $wechat = new \app\common\logic\wechat\WechatUtil();
+                        $wechat->sendMsg($user['openid'], 'text', $wx_content);
+
+                    }
+                }
                 $this->ajaxReturn(['status'=>1,'msg'=>"已提交申请",'url'=>U('User/account',['type'=>2])]);
             } else {
                 $this->ajaxReturn(['status'=>0,'msg'=>'提交失败,联系客服!']);

@@ -1055,6 +1055,18 @@ function update_pay_status($order_sn,$ext=array())
             $OrderLogic->make_virtual_code($order);
         }
         $order['pay_time']=$time;
+
+        // 发送公众号消息给用户
+        if(is_weixin()){
+            $user = Db::name('OauthUsers')->where(['user_id'=>$order['user_id'] , 'oauth'=>'weixin' , 'oauth_child'=>'mp'])->find();
+            if ($user) {
+                $wx_content = "订单支付成功！\n\n订单：{$order_sn}\n支付时间：{$time}\n商户：DC环球直供\n金额：{$order['order_amount']}(含运费{$order['shipping_price']}元)\n\n【DC环球直供】欢迎您的再次购物！";
+                $wechat = new \app\common\logic\wechat\WechatUtil();
+                $wechat->sendMsg($user['openid'], 'text', $wx_content);
+
+            }
+        }
+
         //用户支付, 发送短信给商家
         $res = checkEnableSendSms("4");
         if ($res && $res['status'] ==1) {
