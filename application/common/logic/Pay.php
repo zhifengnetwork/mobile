@@ -395,7 +395,7 @@ class Pay
 //        if ($this->goods['cat_id'] == 584 || $this->goods['cat_id'] == 585) {
         if ($this->payList[0]['goods']->cat_id == 584 || $this->payList[0]['goods']->cat_id == 585) {
             // 能否领取商品
-            $isReceive = provingReceive($this->user, $this->goods['cat_id']);
+            $isReceive = provingReceive($this->user, $this->goods['cat_id'], $this->totalNum);
 
             if($isReceive['status'] == 1){
                 $this->orderAmount = $this->orderAmount - $this->goodsPrice;
