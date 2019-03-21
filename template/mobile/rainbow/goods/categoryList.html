@@ -55,11 +55,11 @@
 								<!--</if>-->
 							<!--</foreach>-->
 						<!--</div>-->
-						<foreach name="category.child" item="catelist">
+
 							<div class="cate-item">
-								<h3>{$catelist[name]}</h3>
+								<h3>{$category[name]}</h3>
 								<ul class="cate-list">
-									<foreach name="catelist.child" item="child">
+									<foreach name="category.child" item="child">
 										<li class="item">
 											<a href="/Mobile/Goods/goodsList/id/{$child[goods_id]}.html">
 												<img src="{$child[original_img]}" />
@@ -69,7 +69,7 @@
 									</foreach>
 								</ul>
 							</div>
-						</foreach>
+
 					</div>
 					</foreach>
 
