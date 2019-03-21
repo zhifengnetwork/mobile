@@ -313,50 +313,80 @@ class Distribut extends Base {
      */
     public function rebate_log()
     {
-        $start_time = strtotime(0);
-        $end_time = time();
-        $condition = array();
-        if(IS_POST){
-            $start_time = strtotime(I('start_time'));
-            $end_time = strtotime(I('end_time'));
-            $search_type = I('search_type');
-            $search_value = I('search_value');
-            $condition['users.'.$search_type] = ['like', "%".$search_value."%"];
-            $this->assign('search_type',$search_type);
-            $this->assign('search_value',$search_value);
+        $timegap = urldecode(I('timegap'));
+        $search_type = I('search_type');
+        $search_value = I('search_value');
+        $map = array();
+        if ($timegap) {
+            $gap = explode(',', $timegap);
+            $begin = $gap[0];
+            $end = $gap[1];
+            $map['change_time'] = array('between', array(strtotime($begin), strtotime($end)));
+            $this->assign('begin', $begin);
+            $this->assign('end', $end);
         }
+        if ($search_value) {
+            if($search_type == 'account'){
+                $map['mobile|email'] = array('like', "%$search_value%");
+            }else{
+                $map['users.'.$search_type] = array('like', "%$search_value%");
+            }
+            
+            $this->assign('search_type', $search_type);
+            $this->assign('search_value', $search_value);
+        }
+
         $count = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
-                    ->whereTime('acount.change_time', 'between', [$start_time, $end_time])
-                    ->where($condition)->where("acount.states = 101 or acount.states = 102")->count();
+                    ->where("acount.states = 101 or acount.states = 102")
+                    ->where($map)->count();
         $page = new Page($count, 10);
         $log = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
-                               ->field('users.nickname, users.user_id, acount.*')->order('log_id DESC')
-                               ->whereTime('acount.change_time', 'between', [$start_time, $end_time])
-                               ->where("acount.states = 101 or acount.states = 102")
-                               ->where($condition)
-                               ->limit($page->firstRow, $page->listRows)
-                               ->select();
+                               ->field('users.nickname, users.user_id, users.mobile, acount.*')->order('log_id DESC')
+                               ->where("acount.states = 101 or acount.states = 102")->where($map)
+                               ->limit($page->firstRow, $page->listRows)->select();
         
-        $this->assign('start_time', $start_time);
-        $this->assign('end_time', $end_time);
         $this->assign('pager', $page);
         $this->assign('log',$log);
         return $this->fetch();
     }
+
     /**
     *消费日志列表
     */
     public function consume_log()
     {
+        $timegap = urldecode(I('timegap'));
+        $search_type = I('search_type');
+        $search_value = I('search_value');
+        $map = array();
+        if ($timegap) {
+            $gap = explode(',', $timegap);
+            $begin = $gap[0];
+            $end = $gap[1];
+            $map['change_time'] = array('between', array(strtotime($begin), strtotime($end)));
+            $this->assign('begin', $begin);
+            $this->assign('end', $end);
+        }
+        if ($search_value) {
+            if($search_type == 'account'){
+                $map['mobile|email'] = array('like', "%$search_value%");
+            }else{
+                $map['users.'.$search_type] = array('like', "%$search_value%");
+            }
+            
+            $this->assign('search_type', $search_type);
+            $this->assign('search_value', $search_value);
+        }
+
         $count = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
-                ->where("acount.states = 0")->count();
+                ->where("acount.states = 0")->where($map)->count();
         $page = new Page($count, 10);
         $log = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
-            ->field('users.nickname, acount.*')->order('log_id DESC')
-            ->where("acount.states = 0")
+            ->field('users.user_id, users.nickname, users.mobile, acount.*')->order('log_id DESC')
+            ->where("acount.states = 0")->where($map)
             ->limit($page->firstRow, $page->listRows)
             ->select();
-        // dump($log);die;
+
         $this->assign('pager', $page);
         $this->assign('log',$log);
         return $this->fetch();

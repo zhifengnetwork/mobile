@@ -32,19 +32,28 @@
 			</div>
 			<div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
 
-			<!-- <form class="navbar-form form-inline" id="search-form" method="post" action="{:U('Report/userTop')}" onSubmit="return check_form();">
+			<form class="navbar-form form-inline" id="search-form" method="POST" action="" onSubmit="return check_form();">
+				<input type="hidden" name="timegap" id="timegap" value="{$timegap}">
 				<div class="sDiv">
 					<div class="sDiv2" style="margin-right: 10px;">
-						<input type="text" size="30" name="user" id="user" value="" placeholder="用户" class="qsbox">
+						<input type="text" size="30" id="start_time" value="{$begin}" placeholder="起始时间" class="qsbox">
+						<input type="button" class="btn" value="起始时间">
 					</div>
 					<div class="sDiv2" style="margin-right: 10px;">
-						<input type="text" size="30" name="good" id="good" value="" placeholder="商品名称" class="qsbox">
+						<input type="text" size="30" id="end_time" value="{$end}" placeholder="截止时间" class="qsbox">
+						<input type="button" class="btn" value="截止时间">
 					</div>
 					<div class="sDiv2">
-						<input class="btn" value="搜索" type="submit">
+						<select class="select" name="search_type">
+                            <option value="user_id" <if condition="$search_type eq 'user_id'">selected</if>>会员ID</option>
+                            <option value="nickname" <if condition="$search_type eq 'nickname'">selected</if>>会员昵称</option>
+                            <option value="account" <if condition="$search_type eq 'account'">selected</if>>会员账户</option>
+                        </select>
+                        <input type="text" size="30" name="search_value" value="{$search_value}" placeholder="模糊查询" class="qsbox">
+						<input type="button" onclick="clickSearch(this,'search-form')"  class="btn" value="搜索">
 					</div>
 				</div>
-			</form> -->
+			</form>
 		</div>
 
 		<div class="hDiv">
@@ -55,19 +64,22 @@
 						<th class="sign" axis="col0">
 							<div style="width: 24px;"><i class="ico-check"></i></div>
 						</th>
-						<th align="center" abbr="article_title" axis="col3" class="">
-							<div style="text-align: center; width: 50px;" class="">ID</div>
+						<th align="center" axis="col3" class="">
+							<div style="text-align: center; width: 50px;" class="">会员ID</div>
 						</th>
-						<th align="center" abbr="ac_id" axis="col4" class="">
-							<div style="text-align: center; width: 100px;" class="">用户</div>
+						<th align="center" axis="col4" class="">
+							<div style="text-align: center; width: 100px;" class="">会员昵称</div>
 						</th>
-						<th align="center" abbr="article_show" axis="col5" class="">
+						<th align="center" axis="col4" class="">
+							<div style="text-align: center; width: 100px;" class="">手机号码</div>
+						</th>
+						<th align="center" axis="col5" class="">
 							<div style="text-align: center; width: 200px;" class="">分成金额</div>
 						</th>
-						<th align="center" abbr="article_time" axis="col6" class="">
+						<th align="center" axis="col6" class="">
 							<div style="text-align: center; width: 200px;" class="">描述</div>
 						</th>
-						<th align="center" abbr="article_time" axis="col6" class="">
+						<th align="center" axis="col6" class="">
 							<div style="text-align: center; width: 150px;" class="">时间</div>
 						</th>
 						<th align="center" axis="col1" class="handle">
@@ -91,10 +103,13 @@
 								<div style="width: 24px;"><i class="ico-check"></i></div>
 							</td>
 							<td align="center" class="">
-								<div style="text-align: center; width: 50px;">{$vo.log_id}</div>
+								<div style="text-align: center; width: 50px;">{$vo.user_id}</div>
 							</td>
 							<td align="center" class="">
 								<div style="text-align: center; width: 100px;">{$vo.nickname}</div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 100px;">{$vo.mobile}</div>
 							</td>
 							<td align="center" class="">
 								<div style="text-align: center; width: 200px;">{$vo.user_money}</div>
@@ -135,31 +150,47 @@
 		$('.fa-refresh').click(function(){
 			location.href = location.href;
 		});
+
+		//选中全部
+		$('.hDivBox .sign').click(function(){
+			var sign = $('#flexigrid > table>tbody>tr');
+			if($(this).parent().hasClass('trSelected')){
+				sign.each(function(){
+					$(this).removeClass('trSelected');
+				});
+				$(this).parent().removeClass('trSelected');
+			}else{
+				sign.each(function(){
+					$(this).addClass('trSelected');
+				});
+				$(this).parent().addClass('trSelected');
+			}
+		})
+
+		// 起始位置日历控件
+        $('#start_time').layDate();
+        $('#end_time').layDate();
 	});
 
-	// function delfun(obj) {
-	// 	// 删除按钮
-	// 	layer.confirm('确认删除？', {
-	// 		btn: ['确定', '取消'] //按钮
-	// 	}, function () {
-	// 		$.ajax({
-	// 			type: 'post',
-	// 			url: $(obj).attr('data-url'),
-	// 			data : {act:'del',del_id:$(obj).attr('data-id')},
-	// 			dataType: 'json',
-	// 			success: function (data) {
-	// 				layer.closeAll();
-	// 				if (data) {
-	// 					$(obj).parent().parent().parent().remove();
-	// 				} else {
-	// 					layer.alert('删除失败', {icon: 2});  //alert('删除失败');
-	// 				}
-	// 			}
-	// 		})
-	// 	}, function () {
-	// 		layer.closeAll();
-	// 	});
-	// }
+	function check_form(){
+		var start_time = $.trim($('#start_time').val());
+		var end_time =  $.trim($('#end_time').val());
+		if(start_time == '' ^ end_time == ''){
+			layer.alert('请选择完整的时间间隔', {icon: 2});
+			return false;
+		}	
+		if(start_time > end_time){
+			layer.alert('请选择正确的起始时间', {icon: 2});
+			return false;
+		}
+		if(start_time !== '' && end_time !== ''){
+				$('#timegap').val(start_time+","+end_time);
+		}
+		if(start_time == '' && end_time == ''){
+				$('#timegap').val('');
+		}		 
+		return true;
+	}
 </script>
 </body>
 </html>
