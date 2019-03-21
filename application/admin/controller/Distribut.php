@@ -391,6 +391,79 @@ class Distribut extends Base {
         $this->assign('log',$log);
         return $this->fetch();
     }
+
+    /**
+     * 导出日志
+     */
+    public function export_log()
+    {
+        $strTable = '<table width="500" border="1">';
+        $strTable .= '<tr>';
+        $strTable .= '<td style="text-align:center;font-size:12px;width:120px;">日志ID</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;width:120px;">会员ID</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;" width="100">会员昵称</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">手机号码</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">金额</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">时间</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">描述</td>';
+        $strTable .= '</tr>';
+
+        //区分日志类型
+        $condition = array();
+        $type = I('type');
+        if($type == 'rebate_log'){
+            $status = array(101, 102);
+            $condition['states'] = ['in', $status];
+        }else{
+            $condition['states'] = 0;
+        }
+
+        //接收搜索条件,按搜索条件导出表格
+        $timegap = urldecode(I('timegap'));
+        $search_type = I('search_type');
+        $search_value = I('search_value');
+        if ($timegap) {
+            $gap = explode(',', $timegap);
+            $begin = $gap[0];
+            $end = $gap[1];
+            $condition['change_time'] = array('between', array(strtotime($begin), strtotime($end)));
+        }
+        if ($search_value) {
+            if($search_type == 'account'){
+                $condition['mobile|email'] = array('like', "%$search_value%");
+            }else{
+                $condition['users.'.$search_type] = array('like', "%$search_value%");
+            }
+        }
+
+        $count = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
+                ->where($condition)->count();
+        $p = ceil($count / 5000);
+        for ($i = 0; $i < $p; $i++) {
+            $start = $i * 5000;
+            $end = ($i + 1) * 5000;
+            $userList = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
+                        ->field('users.nickname, users.user_id, users.mobile, acount.*')->order('log_id DESC')
+                        ->where($condition)->limit($start,5000)->select();
+            if (is_array($userList)) {
+                foreach ($userList as $k => $val) {
+                    $strTable .= '<tr>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;">' . $val['log_id'] . '</td>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;">' . $val['user_id'] . '</td>';
+                    $strTable .= '<td style="text-align:left;font-size:12px;">' . $val['nickname'] . ' </td>';
+                    $strTable .= '<td style="text-align:left;font-size:12px;">' . $val['mobile'] . '</td>';
+                    $strTable .= '<td style="text-align:left;font-size:12px;">' . $val['user_money'] . '</td>';
+                    $strTable .= '<td style="text-align:left;font-size:12px;">' . date('Y-m-d H:i', $val['change_time']) . '</td>';
+                    $strTable .= '<td style="text-align:left;font-size:12px;">' . $val['desc'] . '</td>';
+                    $strTable .= '</tr>';
+                }
+                unset($userList);
+            }
+        }
+        $strTable .= '</table>';
+        downloadExcel($strTable, $type . $i);
+        exit();
+    }
     
     /**
      * 分成日志详情

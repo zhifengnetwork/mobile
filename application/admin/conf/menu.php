@@ -192,7 +192,7 @@ return array(
 			// )),
 	)),
 		
-	'distribution'=>array('name'=>'分销','child'=>array(
+	'distribution'=>array('name'=>'奖金模式','child'=>array(
 		
 			array('name' => '模式管理', 'child' => array(
 				// array('name' => '分销商品', 'act' => 'goods_list', 'op' => 'Distribut'),
