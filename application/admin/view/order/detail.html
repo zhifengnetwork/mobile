@@ -128,8 +128,8 @@ a.green:hover { color: #FFF; background-color: #1BBC9D; border-color: #16A086; }
                     <dd>{$order.pay_name|default='其他方式'}</dd>
                     <dt>发票抬头：</dt>
                     <dd>{$order.invoice_title|default='N'}</dd>
-                    <dt>纳税人识别号：</dt>
-                    <dd>{$order.taxpayer|default='N'}</dd>
+                    <dt>业务单号：</dt>
+                    <dd>{$order.transaction_id|default='N'}</dd>
                 </dl>
             </div>
             <div class="addr-note">
