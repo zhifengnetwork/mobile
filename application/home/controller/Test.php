@@ -25,17 +25,15 @@ class Test {
                
                 //if($flag){
                     $flag_update = M('users')->where('user_id', $v['user_id'])->update(['underling_number_flag'=>1]);
-                    echo $flag_update.'完成:'.$v['user_id'];
+                    echo '完成:'.$v['user_id'].'<br>';
                 //}
             }else{
                 $flag_update = M('users')->where('user_id', $v['user_id'])->update(['underling_number_flag'=>1]);
-                echo $flag_update.'完成:'.$v['user_id'];
+                echo '完成:'.$v['user_id'].'<br>';
             }
 
         }
     }
-
-
 
 
     //团队总人数

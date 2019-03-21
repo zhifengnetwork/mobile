@@ -87,7 +87,7 @@ function getAllUp($invite_id,&$userList=array())
 
 
 /**
- * 极差代理
+ * 级差代理
  * 
  * 登记等级 分钱
  */

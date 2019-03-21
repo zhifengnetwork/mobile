@@ -160,7 +160,7 @@ class BonusLogic extends Model
 		$result = $top_level->user_in($leaderId);
 		return true;
 	}
-	//极差,平级
+	//级差,平级
 	public function sel($agentId,$price)
 	{
 		$meetUser = get_uper_user($agentId);
@@ -172,7 +172,7 @@ class BonusLogic extends Model
 
 	public function bonus($meetUser,$price)
 	{
-		$logName  = '极差奖';
+		$logName  = '级差奖';
 		//获取分红比例
 		$rateArr  = $this->get_js_rate();
 		$useRate = 0;
