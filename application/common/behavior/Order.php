@@ -29,20 +29,17 @@ class Order
         if(is_weixin()){
             $user = Db::name('OauthUsers')->where(['user_id'=>$order['user_id'] , 'oauth'=>'weixin' , 'oauth_child'=>'mp'])->find();
             if ($user) {
-                // $goods = Db::name('OrderGoods')->where(['order_id'=>$order['order_id']])->select();
-                // $text = '';
-                // foreach ($goods as $key => $value) {
-                //     $text .= $value['goods_name'].'(规格：'.$value['spec_key_name'].',数量：'.$value['goods_num'].',价格：'.$value['final_price'].');';
-                // }
-                // $wx_contents = "您的订单已提交成功！\n
-                //                 \n
-                //                 店铺：DC环球直供\n
-                //                 下单时间：{$time}\n
-                //                 商品：{$text}\n
-                //                 金额：{$order['order_amount']}\n
-                //                 \n
-                //                 您的订单我们已经收到，支付后我们将尽快配送~~";
-                $wx_content = "您刚刚下了一笔订单:{$order['order_sn']}!";
+                $goods = Db::name('OrderGoods')->where(['order_id'=>$order['order_id']])->select();
+                $text = '';
+                foreach ($goods as $key => $value) {
+                    $text .= $value['goods_name'].'(规格：'.$value['spec_key_name'].',数量：'.$value['goods_num'].',价格：'.$value['final_price'].');';
+                }
+                $wx_content = "您的订单已提交成功！\n
+                                \n
+                                店铺：DC环球直供\n下单时间：{$time}\n商品：{$text}\n金额：{$order['order_amount']}\n
+                                \n
+                                您的订单我们已经收到，支付后我们将尽快配送~~";
+                // $wx_content = "您刚刚下了一笔订单:{$order['order_sn']}!";
                 $wechat = new WechatUtil();
                 $wechat->sendMsg($user['openid'], 'text', $wx_content);
 
