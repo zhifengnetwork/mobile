@@ -49,6 +49,14 @@ function share_deal_after($xiaji,$shangji){
 
     M('users')->where(['user_id'=>$xiaji])->save(['first_leader'=>$shangji]);
 
+
+    //给上级发送消息
+    $shangji_openid = M('users')->where(['user_id'=>$shangji])->value('openid');
+    $xiaji_nickname = M('users')->where(['user_id'=>$xiaji])->value('nickname');
+    $wx_content = "您的一级创客[".$xiaji_nickname."]关注了公众号";
+    $wechat = new \app\common\logic\wechat\WechatUtil();
+    $wechat->sendMsg($shangji_openid, 'text', $wx_content);
+
     return true;
 }
 

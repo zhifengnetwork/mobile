@@ -25,7 +25,7 @@ class Message extends MobileBase
         $res = $model->save();
       
         $this->handle();
-
+      
         echo $res;
     }
 
