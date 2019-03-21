@@ -1157,10 +1157,10 @@ class WechatLogic
             return ['status' => -1, 'msg' => '消息模板不存在'];
         }
 
-        $tpl_msg = WxTplMsg::get(['template_sn' => $template_sn, 'is_use' => 1]);
-        if ( ! $tpl_msg || ! $tpl_msg->template_id) {
-            return ['status' => -1, 'msg' => '消息模板未开启'];
-        }
+        // $tpl_msg = WxTplMsg::get(['template_sn' => $template_sn, 'is_use' => 1]);
+        // if ( ! $tpl_msg || ! $tpl_msg->template_id) {
+        //     return ['status' => -1, 'msg' => '消息模板未开启'];
+        // }
 
         $user = Db::name('oauth_users')->where(['user_id' => $deliver['user_id'], 'oauth' => 'weixin', 'oauth_child' => 'mp'])->find();
         if ( ! $user || ! $user['openid']) {

@@ -826,8 +826,14 @@ class User extends Base
         $id_arr = I('id/a');
         $data['status'] = $status = I('status');
         $data['remark'] = I('remark');
-        if ($status == 1) $data['check_time'] = time();
-        if ($status != 1) $data['refuse_time'] = time();
+        if ($status == 1){
+            $data['check_time'] = time();
+            $wx_content = "您提交的提现申请已通过审核\n将在24小时内到账，请注意查收！\n备注：{$data['remark']}";
+        }
+        if ($status != 1){
+            $wx_content = "您提交的提现申请未通过审核！\n备注：{$data['remark']}";
+            $data['refuse_time'] = time();
+        }
         $ids = implode(',', $id_arr);
         $falg = M('withdrawals')->where(['id'=>$ids])->find();
         $user_find = M('users')->where(['user_id'=>$falg['user_id']])->find();
@@ -841,6 +847,14 @@ class User extends Base
         $r = Db::name('withdrawals')->whereIn('id', $ids)->update($data);
         if ($r !== false) {
             Db::name('users')->whereIn('user_id', $falg['user_id'])->update($user_arr);
+                // 发送公众号消息给用户
+                if(is_weixin()){
+                    $user = Db::name('OauthUsers')->where(['user_id'=>$falg['user_id'] , 'oauth'=>'weixin' , 'oauth_child'=>'mp'])->find();
+                    if ($user) {
+                        $wechat = new \app\common\logic\wechat\WechatUtil();
+                        $wechat->sendMsg($user['openid'], 'text', $wx_content);
+                    }
+                }
             $this->ajaxReturn(array('status' => 1, 'msg' => "操作成功"), 'JSON');
         } else {
             $this->ajaxReturn(array('status' => 0, 'msg' => "操作失败"), 'JSON');
