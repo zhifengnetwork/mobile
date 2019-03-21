@@ -121,7 +121,7 @@ class CartLogic extends Model
         // 是否可免费领取
         if ($this->goods['cat_id'] == 584 || $this->goods['cat_id'] == 585 ) {
 
-             $isReceive = provingReceive($this->user, $this->goods['cat_id']); 
+             $isReceive = provingReceive($this->user, $this->goods['cat_id'], $this->goodsBuyNum); 
 
             if($isReceive['status'] == 0){
                 // throw new TpshopException('立即购买', 0, ['status' => 0, 'msg' => '购买商品不存在2', 'result' => '']);

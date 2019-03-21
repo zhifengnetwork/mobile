@@ -1803,7 +1803,7 @@ function continue_sign($user_id){
     * $user_id 用户id
     * $num 领取数量
     */
-    function provingReceive($user, $cat_id, $num){
+    function provingReceive($user, $cat_id, $num = 1){
 
         if ($user['is_distribut'] == 0 && $cat_id == 584) {
             $result = array('status'=>0,'msg'=>'成为分销商才可领取','result'=>array());
