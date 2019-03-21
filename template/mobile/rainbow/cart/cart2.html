@@ -1469,7 +1469,9 @@
     function get_invoice() {
         var str = "";
         $.get("{:U('Cart/invoice')}", function (json) {
-            var data = eval("(" + json + ")");
+
+            var data = JSON.stringify(json);
+
             if (data.status > 0) {
                 if (data.result.invoice_title != "") {
                     $('#wap_invoice_title').val(data.result.invoice_title);
