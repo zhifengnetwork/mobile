@@ -1,91 +1,108 @@
-<include file="public/header" title="我的分销" body="g4"/>
-<include file="public/header_nav" title="我的分销" href="{:U('/Mobile/User/index')}"/>
+<include file="public/header" title="我的分销" body="g4" />
+<include file="public/header_nav" title="我的分销" href="{:U('/Mobile/User/index')}" />
 <div class="loginsingup-input mobil_topup" style="padding:0 0.64rem;">
-  <div class="recharge-curent">
-      <span>总业绩<span class="cash"><i>￥</i>{$money_total.money_total}</span></span>
-  </div>
-  <div class="recharge-curent">
-      <span>最大用户业绩<span class="cash"><i>￥</i>{$money_total.max_moneys}</span></span>
-  </div>
-  <div class="recharge-curent">
-      <span>剩余用户业绩之和<span class="cash"><i>￥</i>{$money_total.moneys}</span></span>
-  </div>
-  <div class="recharge-curent">
-    <span>团队总人数<span class="cash">{$underling_number}</span></span>
-</div>
+    <div class="recharge-curent">
+        <span>总业绩<span class="cash"><i>￥</i>{$money_total.money_total}</span></span>
+    </div>
+    <div class="recharge-curent">
+        <span>最大用户业绩<span class="cash"><i>￥</i>{$money_total.max_moneys}</span></span>
+    </div>
+    <div class="recharge-curent">
+        <span>剩余用户业绩之和<span class="cash"><i>￥</i>{$money_total.moneys}</span></span>
+    </div>
+    <div class="recharge-curent" id="update">
+        <span style="text-align:center;">团队总人数  <span style="font-size:13px;float: right;">点击更新</span><span class="cash" id="update_num">{$underling_number}</span></span>
+    </div>
 </div>
 <br>
 <br>
 <div class="floor my p">
     <div class="content">
-            <div class="myorder p">
-                <div class="content30">
-                    <div class="order">
-                        <div class="fl">
-                            <empty name="leader">
-                                <span>上级:无上级</span>
-                            <else/>
-                                <span>上级ID: {$leader.user_id}</span><br>
-                                <span>上级名称: {$leader.nickname}</span>
-                            </empty>
-                        </div>
+        <div class="myorder p">
+            <div class="content30">
+                <div class="order">
+                    <div class="fl">
+                        <empty name="leader">
+                            <span>上级:无上级</span>
+                            <else />
+                            <span>上级ID: {$leader.user_id}</span><br>
+                            <span>上级名称: {$leader.nickname}</span>
+                        </empty>
                     </div>
                 </div>
             </div>
-            <br>
-
-            <div class="myorder p">
-                <div class="content30">
-                    <a href="{:U('Mobile/User/performance_log')}">
-                        <div class="order">
-                            <div class="fl">
-                                <span>业绩明细</span>
-                            </div>
-                            <div class="fr">
-                                <i class="Mright"></i>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <br>
-
-            <div class="myorder p">
-                <div class="content30">
-                    <a href="{:U('Mobile/User/commision')}">
-                        <div class="order">
-                            <div class="fl">
-                                <span>明细记录</span>
-                            </div>
-                            <div class="fr">
-                                <i class="Mright"></i>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <br>
-
-            <div class="myorder p">
-                <div class="content30">
-                    <a href="{:U('Mobile/User/team_list')}">
-                        <div class="order">
-                            <div class="fl">
-                                <span>团队列表</span>
-                            </div>
-                            <div class="fr">
-                                <i class="Mright"></i>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            
         </div>
+        <br>
+
+        <div class="myorder p">
+            <div class="content30">
+                <a href="{:U('Mobile/User/performance_log')}">
+                    <div class="order">
+                        <div class="fl">
+                            <span>业绩明细</span>
+                        </div>
+                        <div class="fr">
+                            <i class="Mright"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <br>
+
+        <div class="myorder p">
+            <div class="content30">
+                <a href="{:U('Mobile/User/commision')}">
+                    <div class="order">
+                        <div class="fl">
+                            <span>明细记录</span>
+                        </div>
+                        <div class="fr">
+                            <i class="Mright"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <br>
+
+        <div class="myorder p">
+            <div class="content30">
+                <a href="{:U('Mobile/User/team_list')}">
+                    <div class="order">
+                        <div class="fl">
+                            <span>团队列表</span>
+                        </div>
+                        <div class="fr">
+                            <i class="Mright"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
     </div>
-  
-    <!--底部导航-start-->
-    <include file="public/footer_nav"/>
-    <!--底部导航-end-->
-    </body>
-    </html>
+</div>
+
+
+<script>
+
+    $("#update").click(function () {
+        $("#update_num").html('<font size=2>正在更新</font>');
+        var url = "/api/distribut/get_team_num?user_id={$user_id}";
+        $.ajax({
+            url: url, success: function (result) {
+                console.log(result);
+                $("#update_num").text(result);
+            }
+        });
+        
+    });
+
+</script>
+<!--底部导航-start-->
+<include file="public/footer_nav" />
+<!--底部导航-end-->
+</body>
+
+</html>
