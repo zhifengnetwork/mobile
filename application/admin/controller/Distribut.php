@@ -339,7 +339,7 @@ class Distribut extends Base {
         $count = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
                     ->where("acount.states = 101 or acount.states = 102")
                     ->where($map)->count();
-        $page = new Page($count, 10);
+        $page = new Page($count, 20);
         $log = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
                                ->field('users.nickname, users.user_id, users.mobile, acount.*')->order('log_id DESC')
                                ->where("acount.states = 101 or acount.states = 102")->where($map)
@@ -380,7 +380,7 @@ class Distribut extends Base {
 
         $count = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
                 ->where("acount.states = 0")->where($map)->count();
-        $page = new Page($count, 10);
+        $page = new Page($count, 20);
         $log = M('account_log')->alias('acount')->join('users', 'users.user_id = acount.user_id')
             ->field('users.user_id, users.nickname, users.mobile, acount.*')->order('log_id DESC')
             ->where("acount.states = 0")->where($map)
