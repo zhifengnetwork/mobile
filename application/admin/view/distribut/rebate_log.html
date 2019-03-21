@@ -217,6 +217,7 @@
 	function exportUser() {
         $('#search-form').attr('action',"{:U('Distribut/export_log', array('type'=>'rebate_log'))}")
         $('#search-form').submit();
+		$('#search-form').attr('action',"");
     }
 </script>
 </body>

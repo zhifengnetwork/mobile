@@ -698,7 +698,7 @@ class User extends Base
     public function withdrawals()
     {
         $this->get_withdrawals_list();
-        $this->assign('withdraw_status', C('WITHDRAW_STATUS'));
+        $this->assign('withdraw_status', C('WITHDRAW_STATUS')); 
         return $this->fetch();
     }
 
@@ -708,6 +708,7 @@ class User extends Base
         $user_id = I('user_id/d');
         $realname = I('realname');
         $bank_card = I('bank_card');
+
         $create_time = urldecode(I('create_time'));
         $create_time = $create_time ? $create_time : date('Y-m-d H:i:s', strtotime('-1 year')) . ',' . date('Y-m-d H:i:s', strtotime('+1 day'));
         $create_time3 = explode(',', $create_time);
@@ -724,6 +725,18 @@ class User extends Base
         if ($id) {
             $where['w.id'] = ['in', $id];
         }
+
+        //会员信息搜索
+        $search_type = I('search_type');
+        $search_value = I('search_value');
+        if($search_type == 'account'){
+            $where['u.mobile|u.email'] = array('like', "%$search_value%");
+        }else if($search_type == 'user_id'){
+            $where['w.user_id'] = array('like', "%$search_value%");
+        }else{
+            $where['u.nickname'] = array('like', "%$search_value%");
+        }
+
         $user_id && $where['u.user_id'] = $user_id;
         $realname && $where['w.realname'] = array('like', '%' . $realname . '%');
         $bank_card && $where['w.bank_card'] = array('like', '%' . $bank_card . '%');
@@ -759,7 +772,7 @@ class User extends Base
             exit();
         }
         $count = Db::name('withdrawals')->alias('w')->join('__USERS__ u', 'u.user_id = w.user_id', 'INNER')->where($where)->count();
-        $Page = new Page($count, 20);
+        $Page = new Page($count, 10);
         $list = Db::name('withdrawals')->alias('w')->field('w.*,u.nickname')->join('__USERS__ u', 'u.user_id = w.user_id', 'INNER')->where($where)->order("w.id desc")->limit($Page->firstRow . ',' . $Page->listRows)->select();
         //$this->assign('create_time',$create_time2);
         $show = $Page->show();

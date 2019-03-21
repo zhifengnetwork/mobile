@@ -214,8 +214,9 @@
 
 	//导出表格
 	function exportUser() {
-        $('#search-form').attr('action',"{:U('Distribut/export_log', array('type'=>'consume_log'))}")
+        $('#search-form').attr('action',"{:U('Distribut/export_log', array('type'=>'consume_log'))}");
         $('#search-form').submit();
+		$('#search-form').attr('action',"")
     }
 </script>
 </body>
