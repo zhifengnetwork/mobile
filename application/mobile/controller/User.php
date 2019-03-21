@@ -121,7 +121,7 @@ class User extends MobileBase
         
         $this->assign('user_id', $user['user_id']);
         $underling_number = M('users')->where(['user_id'=>$user['user_id']])->value('underling_number');
-        $underling_number == NULL ? $underling_number = '<font size=2>点击更新</font>' : $underling_number;
+        $underling_number == NULL ? $underling_number = '<div style="font-size:0.6rem;">正在更新</div>' : $underling_number;
         $this->assign('underling_number', $underling_number);
 
         $this->assign('user_id',$user['user_id']);
