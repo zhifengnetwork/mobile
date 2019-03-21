@@ -11,7 +11,7 @@
         <span>剩余用户业绩之和<span class="cash"><i>￥</i>{$money_total.moneys}</span></span>
     </div>
     <div class="recharge-curent" id="update">
-        <span style="text-align:center;">团队总人数  <span style="font-size:0.6rem;float: right;">点击更新</span><span class="cash" id="update_num">{$underling_number}</span></span>
+        <span style="text-align:center;">团队总人数  <span style="font-size:0.6rem;float: right;" id="update_num">点击更新</span><span class="cash" id="all_num">{$underling_number}</span></span>
     </div>
 </div>
 <br>
@@ -88,12 +88,13 @@
 <script>
 
     $("#update").click(function () {
-        $("#update_num").html('<div style="font-size:0.6rem;">正在更新</div>');
+        $("#update_num").html('正在更新');
         var url = "/api/distribut/get_team_num?user_id={$user_id}";
         $.ajax({
             url: url, success: function (result) {
                 console.log(result);
-                $("#update_num").text(result);
+                $("#all_num").text(result);
+                $("#update_num").html('已更新');
             }
         });
         
