@@ -45,7 +45,8 @@ class LevelLogic extends Model
 			$res = $this->add_agent($top_user,$money['max_money'],$money['remaining_money']);
 			if($res){
 				$data = array(
-					'agent_user'=>1
+					'agent_user'=> 1,
+					'is_agent' => 1
 				);
 				M('users')->where(['user_id'=>$top_user['user_id']])->update($data);
 			}
