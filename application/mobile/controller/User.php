@@ -1289,7 +1289,7 @@ class User extends MobileBase
 
         // $states['log.states'] = array('in', '101, 102');
         $order = M('order')->field('order_sn, consignee, add_time')->where('user_id', $user_id)
-                            ->limit(20)->order('order_id desc')->select();
+                            ->limit(20)->order('order_id DESC')->select();
         // //序列化去重
         // foreach($order as $key => $value){
         //     $order[$key] = serialize($value);
