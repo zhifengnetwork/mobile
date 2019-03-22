@@ -432,11 +432,11 @@ class PlaceOrder
             $data['addend_time'] = time();
             Db::name('OrderSignReceive')->save($data);
 
-            $catId = Db::name('order_goods')->where('order_id', $this->order['order_id'])->value('cat_id');
+            $catId = Db::name('order_goods')->where('order_id', $this->order['order_id'])->find();
 
-            if ($catId == 584) {
+            if ($catId['cat_id'] == 584) {
                 Db::name('users')->where('user_id', $user['user_id'])->setDec('distribut_free_num', $catId['goods_num']);// 分销领取次数减一
-            } elseif ($catId == 585) {
+            } elseif ($catId['cat_id'] == 585) {
                 Db::name('users')->where('user_id', $user['user_id'])->setDec('agent_free_num', $catId['goods_num']);// 代理领取次数减一
             }
         }
