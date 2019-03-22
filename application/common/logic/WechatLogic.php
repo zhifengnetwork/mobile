@@ -1197,9 +1197,9 @@ class WechatLogic
      * @param $deliver array 物流信息
      */
     public function sendTemplateMsgOnDeliverNew($deliver){
-
-       if ( ! $order) {
-            return ['status' => -1, 'msg' => '订单不存在'];
+        
+        if ( ! $deliver) {
+            return ['status' => -1, 'msg' => '订单物流不存在'];
         }
 
         $province = getRegionName($deliver['province']);
