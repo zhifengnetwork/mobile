@@ -59,24 +59,7 @@
 						</div>
 					</div>
                    
-                    <script>
-                        var calendar = new datePicker();
-                        calendar.init({
-                            'trigger': '#birthday_time', /*按钮选择器，用于触发弹出插件*/
-                            'type'   : 'date',      /*模式：date日期；datetime日期时间；time时间；ym年月；*/
-                            'minDate':'1900-1-1',   /*最小日期*/
-                            'maxDate':'2100-12-31',   /*最大日期*/
-                            'onSubmit':function(){  /*确认时触发事件*/
-                                $('#birthday').val(calendar.value);
-                                $('#birthday_submit').submit();
-                            },
-                            'onClose':function(){   /*取消时触发事件*/
-                            }
-                        });
-                        $("#birthday_time").focus(function(){
-                            document.activeElement.blur();
-                        });
-                    </script>
+                  
 					<div class="myorder p">
 						<div class="content30">
 							<a href="{:U('Mobile/User/setMobile')}">
@@ -166,13 +149,14 @@
 				</div>-->
 			</div>
 			<div class="close">
-                
 				<a href="{:U('User/logout')}" id="logout">安全退出</a>
-                
-				<a id="asubmit" style="display:none;" href="javascript:;" onclick="javascript:$('#head_pic').submit();">保存头像</a>
 			</div>
 		</div>
-      </div>
+	  </div>
+	  
+	  <a id="asubmit" style="display:none;" href="javascript:;" onclick="javascript:$('#head_pic').submit();">保存头像</a>
+
+
 <script>
 //显示上传照片
 window.URL = window.URL || window.webkitURL;
