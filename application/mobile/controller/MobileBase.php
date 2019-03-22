@@ -28,7 +28,7 @@ class MobileBase extends Controller {
 
         session('user'); //不用这个在忘记密码不能获取session('validate_code');
 //        Session::start();
-        header("Cache-control: private");  // history.back返回后输入框值丢失问题 参考文章 http://www.dchqzg1688.com/article_id_1465.html  http://blog.csdn.net/qinchaoguang123456/article/details/29852881
+        header("Cache-control: private");  
         $this->session_id = session_id(); // 当前的 session_id
         define('SESSION_ID',$this->session_id); //将当前的session_id保存为常量，供其它方法调用
         // 判断当前用户是否手机                
@@ -47,7 +47,7 @@ class MobileBase extends Controller {
 
         //微信浏览器
         //if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
-            
+
             $this->weixin_config = M('wx_user')->find(); //取微获信配置
             $this->assign('wechat_config', $this->weixin_config);            
             $user_temp = session('user');
@@ -65,13 +65,38 @@ class MobileBase extends Controller {
                 if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1){
                     $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
                     
+                    if(!$wxuser){
+                        exit('<h1>出错：获取不到用户信息</h1>');
+                    }
+
+
                     //新登录流程
                     if($wxuser['openid']){
                         //直接去 user 查找
 
-                        //ID最小值
 
-                        $userdata = M('users')->where(['openid'=>$wxuser['openid']])->find();
+                        $user_id111 = M('oauth_users')->where(['openid'=>$wxuser['openid']])->value('user_id');
+
+                        if(!$user_id111){
+                            //注册
+                            $logic = new UsersLogic(); 
+                            $logic->thirdLogin($wxuser);
+                        }
+
+                        //ID最小值
+                        $count_openid = M('oauth_users')->where(['openid'=>$wxuser['openid']])->count();
+                        if($count_openid > 1){
+                            exit("<h1>存在多账户问题，登录失败，你的ID：{$user_id111}</h1>");
+                        }
+
+                        $user_id = M('oauth_users')->where(['openid'=>$wxuser['openid']])->value('user_id');
+
+                        $userdata = M('users')->where(['user_id'=>$user_id])->find();
+                        if(!$userdata){
+                            exit("<h1>账户异常，登录失败，你的ID：{$user_id111}</h1>");
+                        }
+
+
                         if($userdata){
                             session('user',$userdata);
                             //登录成功
@@ -84,15 +109,9 @@ class MobileBase extends Controller {
                                 //exit;
 
                             //}
-                        }else{
-
-                            //注册
-                            $logic = new UsersLogic(); 
-                            $logic->thirdLogin($wxuser);
                         }
 
-                    }else{
-                        exit('<h1>出错：获取不到用户信息</h1>');
+
                     }
                     
                    /*
