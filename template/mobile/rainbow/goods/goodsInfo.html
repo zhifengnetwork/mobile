@@ -572,7 +572,7 @@
 </a>
 <div class="mask-filter-div" style="display: none;"></div>
 <script type="text/javascript" src="__STATIC__/js/mobile-location.js"></script>
-<include file="public/wx_share"/>
+
 <!--优惠卷弹窗打开和关闭-->
 <script type="text/javascript">
 	$(document).on("click","#zYHJ-POP",function  () {
@@ -584,13 +584,9 @@
 	
 </script>
 <script type="text/javascript">
-    $(function(){
-        if(isWeiXin()){
-            $('.contact').attr('href',"tel:{$tpshop_config['shop_info_phone']}");
-        }else{
-            $('.contact').attr('href',"mqqwpa://im/chat?chat_type=wpa&uin={$tpshop_config['shop_info_qq']}&version=1&src_type=web&web_src=www.chinesestack.com");
-        }
-    })
+   
+    $('.contact').attr('href',"tel:{$tpshop_config['shop_info_phone']}");
+        
     var commentType = 1;// 默认评论类型
     var spec_goods_price = $.parseJSON($('#buy_goods_form').find("input[name='spec_goods_price']").val());//规格库存价格
     var ajax_return_stauts = 1;//规格库存价格

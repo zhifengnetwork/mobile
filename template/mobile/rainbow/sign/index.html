@@ -132,7 +132,7 @@
 				/*签到记录、积分、连续天数、对应的规则等请求*/
 				$.ajax({
 					type: "GET",
-					url: "/mobile/sign/get_sign_day?user_id=" + {$user_id},
+					url: "/api/sign/get_sign_day?user_id=" + {$user_id},
 					async: true,
 					success: function(data){
 						if(data['status'] == 1){
@@ -214,7 +214,7 @@
 					if(!signObj['stateD']){
 						$.ajax({
 							type: "GET",
-							url: "/mobile/sign/sign?user_id=" + {$user_id},
+							url: "/api/sign/sign?user_id=" + {$user_id},
 							async: true,
 							success: function(_re){
 								console.log('点击签到:',_re);

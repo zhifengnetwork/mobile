@@ -111,9 +111,9 @@ class weixin
         //echo '<font color="#f00"><b>统一下单支付单信息</b></font><br/>';
         //printf_info($order);exit;  
         $jsApiParameters = $tools->GetJsApiParameters($order2);
-        if(tpCache("debug.wx_mp_pay_debug")){
-            $is_alert ="alert(res.err_code+res.err_desc+res.err_msg);" ;
-        }
+        // if(tpCache("debug.wx_mp_pay_debug")){
+        //     $is_alert ="alert(res.err_code+res.err_desc+res.err_msg);" ;
+        // }
         
         $html = <<<EOF
 	<script type="text/javascript">
@@ -127,8 +127,8 @@ class weixin
 				 if(res.err_msg == "get_brand_wcpay_request:ok") {
 				    location.href='$go_url';
 				 }else{
-				    $is_alert;
-				 	alert(res.err_code+res.err_desc+res.err_msg);
+				    //$is_alert;
+				 	//alert(res.err_code+res.err_desc+res.err_msg);
 				    location.href='$back_url';
 				 }
 			}
