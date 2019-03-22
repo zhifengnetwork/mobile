@@ -1,5 +1,5 @@
 <?php
-
+use think\Route;
 //
 //return [
 //    '__pattern__' => [
@@ -17,3 +17,5 @@
 //Route::get('goodsInfo/:id','home/goods/goodsInfo',['cache'=>['Home/Goods/goodsInfo',300]]);// 访问方式 http://www.tpshop2.0.com/goodsInfo/77.html
 
 // http://www.tpshop2.0.com/home/goods/goodsInfo/id/77.html
+
+Route::any('report','mobile/test/index');
