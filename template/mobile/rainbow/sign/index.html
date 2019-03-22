@@ -8,12 +8,12 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<title>签到</title>
 		<script src="__STATIC__/js/public/rem.js"></script>
-		<link rel="stylesheet" href="__STATIC__/css/sign/index.css?v=1600000000"/>
-		<link rel="stylesheet" href="__STATIC__/css/public_lb/public.css?v=1600000000" />
+		<link rel="stylesheet" href="__STATIC__/css/sign/index.css?v=1553228580"/>
+		<link rel="stylesheet" href="__STATIC__/css/public_lb/public.css?v=1553228580" />
 		<!--日历 css-->
     	<link rel="stylesheet" href="__STATIC__/css/sign/date.css" media="screen" title="no title" charset="utf-8">
 		<!--弹框-->
-		<link rel="stylesheet" href="__STATIC__/css/public_lb/alertWrap.css?v=1600000000" />
+		<link rel="stylesheet" href="__STATIC__/css/public_lb/alertWrap.css?v=1553228580" />
 		
 	</head>
 	<body>
@@ -26,7 +26,7 @@
 				</p>
 				<span>签到</span>
 				<!--<p class="lb_headWrap_text" onclick="window.location.href='/mobile/Goods/categoryList.html'">领取产品</p>-->
-				<p class="lb_headWrap_text" onclick="receiveFun()">领取产品</p>
+				<p class="lb_headWrap_text receive_button">领取产品</p>
 			</div>
 			<!--内容-->
 			<div class="content_si">
@@ -74,13 +74,13 @@
 			
 		</div>
 					
-		<script src="__STATIC__/js/public/jquery-1.8.3.min.js?v=1600000000"></script>
-		<script src="__STATIC__/js/public/public_lb.js?v=1600000000"></script>
+		<script src="__STATIC__/js/public/jquery-1.8.3.min.js?v=1553228580"></script>
+		<script src="__STATIC__/js/public/public_lb.js?v=1553228580"></script>
 		<!--以下两个，日历js-->
-		<script src="__STATIC__/js/sign/sign.js?v=1600000000"></script>
-		<script src="__STATIC__/js/sign/DateMarker.js?v=1600000000"></script>
+		<script src="__STATIC__/js/sign/sign.js?v=1553228580"></script>
+		<script src="__STATIC__/js/sign/DateMarker.js?v=1553228580"></script>
 		<!--弹窗 函数的js -->
-		<script src="__STATIC__/js/public/publicAlert.js?v=1600000000"></script>
+		<script src="__STATIC__/js/public/publicAlert.js?v=1553228580"></script>
 		
 		<script>
 			/*微信h5页面禁止下拉露出网页来源*/
@@ -266,10 +266,10 @@
 				
 			})
 			/*领取产品*/
-			function receiveFun(){
+			$('.receive_button').on('click',function(){
 				/*领取对话框*/
 				receiveAlert($('.wrap_signin'),'领取产品','分销免费领',"'/Mobile/Goods/goodsList/id/584.html'",'代理免费领',"'/Mobile/Goods/goodsList/id/585.html'");
-			}
+			})
 		</script>
 	</body>
 </html>

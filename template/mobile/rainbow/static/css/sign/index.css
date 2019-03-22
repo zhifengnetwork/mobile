@@ -18,7 +18,8 @@ body {
 /*内容*/
 .content_si {
 	width: 100%;
-	height: auto;
+	height: 100vh;
+	overflow-y: auto;
 }
 /*顶部大图*/
 .topImgBox {
