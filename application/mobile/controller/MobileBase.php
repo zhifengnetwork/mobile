@@ -46,7 +46,8 @@ class MobileBase extends Controller {
         }
 
         //微信浏览器
-        if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
+        //if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
+            
             $this->weixin_config = M('wx_user')->find(); //取微获信配置
             $this->assign('wechat_config', $this->weixin_config);            
             $user_temp = session('user');
@@ -68,21 +69,30 @@ class MobileBase extends Controller {
                     if($wxuser['openid']){
                         //直接去 user 查找
 
+                        //ID最小值
+
                         $userdata = M('users')->where(['openid'=>$wxuser['openid']])->find();
                         if($userdata){
                             session('user',$userdata);
                             //登录成功
-                        }else{
+                        //}else{
 
-                            if(ACTION_NAME != 'login'){
+                            //if(ACTION_NAME != 'login'){
 
                                 //如果不存在，跳去手机号码登录
-                                header('Location:'.U('/shop/User/login'));
-                                exit;
+                                //header('Location:'.U('/shop/User/login'));
+                                //exit;
 
-                            }
+                            //}
+                        }else{
+
+                            //注册
+                            $logic = new UsersLogic(); 
+                            $logic->thirdLogin($wxuser);
                         }
 
+                    }else{
+                        exit('<h1>出错：获取不到用户信息</h1>');
                     }
                     
                    /*
@@ -123,10 +133,10 @@ class MobileBase extends Controller {
                     */
 
                 }
-            }else{ 
-                setcookie('user_id',$user_temp['user_id'],null,'/');
-                setcookie('is_distribut',$user_temp['is_distribut'],null,'/');
-            }
+            //}else{ 
+              //  setcookie('user_id',$user_temp['user_id'],null,'/');
+               // setcookie('is_distribut',$user_temp['is_distribut'],null,'/');
+           // }
         }
 
         

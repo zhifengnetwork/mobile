@@ -316,11 +316,11 @@ class UsersLogic extends Model
             Db::name('OauthUsers')->save($data);
 
             //生成小程序专属二维码
-            if ($data['oauth'] == 'miniapp') {
-                $qrcode = $this->checkUserQrcode($row_id);
-                if(!$user['xcx_qrcode'])
-                    $user['xcx_qrcode'] = $qrcode;
-            }
+            // if ($data['oauth'] == 'miniapp') {
+            //     $qrcode = $this->checkUserQrcode($row_id);
+            //     if(!$user['xcx_qrcode'])
+            //         $user['xcx_qrcode'] = $qrcode;
+            // }
             
         } else {
             //兼容以前登录的小程序用户没有获取到openid

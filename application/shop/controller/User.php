@@ -284,6 +284,9 @@ class User extends MobileBase
      */
     public function login()
     {
+        
+        exit('<h1>出错：请用微信访问</h1>');
+
         if ($this->user_id > 0) {
 //            header("Location: " . U('Mobile/User/index'));
             $this->redirect('Mobile/User/index');
