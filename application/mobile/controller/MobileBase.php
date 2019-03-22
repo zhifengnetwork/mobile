@@ -18,12 +18,13 @@ class MobileBase extends Controller {
      */
     public function _initialize() {
 
-        exit('<h1>站点关闭</h1>');
-        //重复用户不能进
-
+        if(I('debug') == 1){
+           //正常
+        }else{
+            exit('<h1>站点关闭</h1>');
+        }
         
-
-
+        //重复用户不能进
 
         session('user'); //不用这个在忘记密码不能获取session('validate_code');
 //        Session::start();
@@ -36,32 +37,13 @@ class MobileBase extends Controller {
         else 
             cookie('is_mobile','0',3600);
         
-               
+
         $first_leader = I('first_leader');
         if((int)$first_leader > 0){
             session('first_leader',$first_leader);
             $user_id = session('user.user_id');
             share_deal_after($user_id,(int)$first_leader);
         }
-
-        
-        //处理 openid 不一致的 问题
-        $tempuser = session('tempuser');
-    
-        $openid = $tempuser['openid'];
-      
-        if($openid){
-            $uuuuid = session('user.user_id');
-           
-            $xianzai_openid = M('users')->where(['user_id'=>$uuuuid ])->value('openid');
-           
-            if($openid != $xianzai_openid){
-                //以 新的 为准
-               
-                M('users')->where(['user_id'=> $uuuuid ])->update(['openid'=>$openid,'old_openid'=>$xianzai_openid]);
-            }
-        }
-
 
         //微信浏览器
         if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
@@ -76,13 +58,11 @@ class MobileBase extends Controller {
                 }else{
                     session('openid', $user['openid']);
                 }
-            } 
+            }
             if (empty(session('openid'))){
             
                 if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1){
                     $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
-                    
-                    session('tempuser',$wxuser);
                     
                     //新登录流程
                     if($wxuser['openid']){
