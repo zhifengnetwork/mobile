@@ -739,7 +739,7 @@ class OrderLogic
 
         // 发送微信模板消息通知
         $wechat = new WechatLogic;
-        $wechat->sendTemplateMsgOnDeliver($data);
+        $wechat->sendTemplateMsgOnDeliverNew($data);
 
         if($r){
 

@@ -1157,10 +1157,10 @@ class WechatLogic
             return ['status' => -1, 'msg' => '消息模板不存在'];
         }
 
-        // $tpl_msg = WxTplMsg::get(['template_sn' => $template_sn, 'is_use' => 1]);
-        // if ( ! $tpl_msg || ! $tpl_msg->template_id) {
-        //     return ['status' => -1, 'msg' => '消息模板未开启'];
-        // }
+        $tpl_msg = WxTplMsg::get(['template_sn' => $template_sn, 'is_use' => 1]);
+        if ( ! $tpl_msg || ! $tpl_msg->template_id) {
+            return ['status' => -1, 'msg' => '消息模板未开启'];
+        }
 
         $user = Db::name('oauth_users')->where(['user_id' => $deliver['user_id'], 'oauth' => 'weixin', 'oauth_child' => 'mp'])->find();
         if ( ! $user || ! $user['openid']) {
@@ -1192,6 +1192,31 @@ class WechatLogic
         return ['status' => 1, 'msg' => '发送模板消息成功'];
     }
 
+    /**
+     * 发送模板消息（订单发货通知）新
+     * @param $deliver array 物流信息
+     */
+    public function sendTemplateMsgOnDeliverNew($deliver){
+
+       if ( ! $order) {
+            return ['status' => -1, 'msg' => '订单不存在'];
+        }
+
+        $province = getRegionName($deliver['province']);
+        $city = getRegionName($deliver['city']);
+        $district = getRegionName($deliver['district']);
+        $full_address = $province.' '.$city.' '.$district.' '. $deliver['address'];
+
+        $order_goods = Db::name('order_goods')->where('order_id', $deliver['order_id'])->find();
+
+        $user = Db::name('OauthUsers')->where(['user_id'=>$deliver['user_id'] , 'oauth'=>'weixin' , 'oauth_child'=>'mp'])->find();
+        if ($user) {
+            $wechat = new \app\common\logic\wechat\WechatUtil();
+            $wechat->sendMsg($user['openid'], 'text', $wx_content);
+            $wx_content = "订单{$deliver['order_sn']}发货成功！\n订单内容：{$order_goods['goods_name']}\n"."物流服务：{$deliver['shipping_name']}\n"."快递单号：{$deliver['delivery_sn']}\n"."收货信息：{$full_address}\n"
+        }
+    }
+    
     /**
      * 图片插件中展示的列表
      * @param $size int 拉取多少

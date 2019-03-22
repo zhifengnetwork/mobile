@@ -848,12 +848,10 @@ class User extends Base
         if ($r !== false) {
             Db::name('users')->whereIn('user_id', $falg['user_id'])->update($user_arr);
                 // 发送公众号消息给用户
-                if(is_weixin()){
-                    $user = Db::name('OauthUsers')->where(['user_id'=>$falg['user_id'] , 'oauth'=>'weixin' , 'oauth_child'=>'mp'])->find();
-                    if ($user) {
-                        $wechat = new \app\common\logic\wechat\WechatUtil();
-                        $wechat->sendMsg($user['openid'], 'text', $wx_content);
-                    }
+                $user = Db::name('OauthUsers')->where(['user_id'=>$falg['user_id'] , 'oauth'=>'weixin' , 'oauth_child'=>'mp'])->find();
+                if ($user) {
+                    $wechat = new \app\common\logic\wechat\WechatUtil();
+                    $wechat->sendMsg($user['openid'], 'text', $wx_content);
                 }
             $this->ajaxReturn(array('status' => 1, 'msg' => "操作成功"), 'JSON');
         } else {
