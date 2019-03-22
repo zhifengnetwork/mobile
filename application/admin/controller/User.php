@@ -155,15 +155,17 @@ class User extends Base
                  $userLevel = D('user_level')->where('level_id=' . $_POST['level'])->value('level');
                  $_POST['agent_user'] = $userLevel;
              }
-             // dump($_POST);die;
+         
              $agent = M('agent_info')->where(['uid'=>$uid])->find();
+            
              if ($agent) {
-                 $data = array('level_id'=>$userLevel);
+                 $data = array('level_id' => (int)$userLevel);
                  M('agent_info')->where(['uid'=>$uid])->save($data);
              }else{
-                 $this->agent_add($user['user_id'],$user['first_leader'],$userLevel);
+                 $this->agent_add($user['user_id'],$user['first_leader'],(int)$userLevel);
                  $_POST['is_agent'] = 1;
              }
+            
              $row = M('users')->where(array('user_id' => $uid))->save($_POST);
              if ($row){
                  exit($this->success('修改成功'));
