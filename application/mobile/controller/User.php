@@ -254,6 +254,11 @@ class User extends MobileBase
             return $this->fetch('ajax_account_list');
             exit;
         }
+
+        $money = M('users')->where(['user_id'=>$user['user_id']])->value('user_money');
+        $this->assign('money', $money);
+
+
         return $this->fetch();
     }
 
