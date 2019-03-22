@@ -1213,10 +1213,10 @@ class WechatLogic
         if ($user) {
             $wechat = new \app\common\logic\wechat\WechatUtil();
             $wechat->sendMsg($user['openid'], 'text', $wx_content);
-            $wx_content = "订单{$deliver['order_sn']}发货成功！\n订单内容：{$order_goods['goods_name']}\n"."物流服务：{$deliver['shipping_name']}\n"."快递单号：{$deliver['delivery_sn']}\n"."收货信息：{$full_address}\n"
+            $wx_content = "订单{$deliver['order_sn']}发货成功！\n订单内容：{$order_goods['goods_name']}\n"."物流服务：{$deliver['shipping_name']}\n"."快递单号：{$deliver['delivery_sn']}\n"."收货信息：{$full_address}\n";
         }
     }
-    
+
     /**
      * 图片插件中展示的列表
      * @param $size int 拉取多少
