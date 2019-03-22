@@ -435,9 +435,9 @@ class PlaceOrder
             $catId = Db::name('order_goods')->where('order_id', $this->order['order_id'])->value('cat_id');
 
             if ($catId == 584) {
-                Db::name('users')->where('user_id', $user['user_id'])->setDec('distribut_free_num');// 分销领取次数减一
+                Db::name('users')->where('user_id', $user['user_id'])->setDec('distribut_free_num', $catId['goods_num']);// 分销领取次数减一
             } elseif ($catId == 585) {
-                Db::name('users')->where('user_id', $user['user_id'])->setDec('agent_free_num');// 代理领取次数减一
+                Db::name('users')->where('user_id', $user['user_id'])->setDec('agent_free_num', $catId['goods_num']);// 代理领取次数减一
             }
         }
     }

@@ -165,16 +165,28 @@ class User extends Base
                  $_POST['is_agent'] = 1;
              }
              $row = M('users')->where(array('user_id' => $uid))->save($_POST);
-             if ($row)
- 
+             if ($row){
                  exit($this->success('修改成功'));
-             exit($this->error('未作内容修改或修改失败'));
+             }else{
+                exit($this->error('未作内容修改或修改失败'));
+             }
          }
  
          $user['first_lower'] = M('users')->where("first_leader = {$user['user_id']}")->count();
          $user['second_lower'] = M('users')->where("second_leader = {$user['user_id']}")->count();
          $user['third_lower'] = M('users')->where("third_leader = {$user['user_id']}")->count();
  
+         //一级是分销商数量
+         $first_leader_distribut = M('users')->where("first_leader = {$user['user_id']}")->field('user_id')->select();
+         $first_leader_distribut_num = 0;
+         foreach($first_leader_distribut as $key => $val){
+            $is_distribut = M('users')->where(["user_id"=>$val['user_id']])->value('is_distribut');
+            if($is_distribut == 1){
+                $first_leader_distribut_num += 1;
+            }
+         }
+         $this->assign('first_leader_distribut_num', $first_leader_distribut_num);
+        
          $this->assign('user', $user);
          return $this->fetch();
      }

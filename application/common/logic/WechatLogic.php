@@ -69,10 +69,13 @@ class WechatLogic
             $this->replyError($msg , "不是关注事件");   
         }
 
-        if (! Db::name('oauth_users')->where('openid', $openid)->find()) {
-            if (false === ($wxdata = self::$wechat_obj->getFanInfo($openid))) {
+        $userinfo = Db::name('oauth_users')->where('openid', $openid)->find();
+        if (!$userinfo) {
+            $wxdata = self::$wechat_obj->getFanInfo($openid);
+            if (false === $wxdata ){
                 $this->replyError($msg , self::$wechat_obj->getError());
             }
+
             $userData = [
                 'head_pic'  => $wxdata['headimgurl'],
                 'nickname'  => $wxdata['nickname'] ?: '微信用户',
@@ -99,34 +102,43 @@ class WechatLogic
                     $userData['first_leader'] = 0;
                 }
             }
-            $is_bind_account = tpCache('basic.is_bind_account');
-            if($is_bind_account && $userData['first_leader']){
+            //$is_bind_account = tpCache('basic.is_bind_account');
+            //if($is_bind_account && $userData['first_leader']){
                 //如果是绑定账号, 把first_leader保存到cookie
-                setcookie('user_id', $userData['first_leader'] ,null,'/');
+                //setcookie('user_id', $userData['first_leader'] ,null,'/');
                 //缓存关注时候传过来的上级id，User/bind_guide用到
-                Cache::set($openid,$userData['first_leader'],86400);
-            }else if(!$is_bind_account){//非绑定账号才给注册
+                //Cache::set($openid,$userData['first_leader'],86400);
+            //}else if(!$is_bind_account){//非绑定账号才给注册
                 //此处注册也送积分
-                $user_id = Db::name('users')->insertGetId($userData);
-                 
+
+               
+                $is_cunzai = Db::name('users')->where(['openid'=>$openid])->find();
+                if(!$is_cunzai ){
+                    $user_id = Db::name('users')->insertGetId($userData);
+                }
+
                 $isRegIntegral = tpCache('integral.is_reg_integral');
                 $pay_points = 0;
                 if($isRegIntegral==1){
                     $pay_points = tpCache('integral.reg_integral');
                 }
                 if($pay_points > 0){
-
                     //accountLog($user_id, 0,$pay_points, '会员注册赠送积分'); // 记录日志流水
                 }
-                 
-                Db::name('oauth_users')->insert([
-                'user_id' => $user_id,
-                'openid' => $openid,
-                'unionid' => isset($wxdata['unionid']) ? $wxdata['unionid'] : '',
-                'oauth' => 'weixin',
-                'oauth_child' => 'mp',
-                ]);
-            } 
+                
+                $is_cunzai2 = Db::name('oauth_users')->where(['openid'=>$openid])->find();
+                if(!$is_cunzai2 ){
+                    Db::name('oauth_users')->insert([
+                    'user_id' => $user_id,
+                    'openid' => $openid,
+                    'unionid' => isset($wxdata['unionid']) ? $wxdata['unionid'] : '',
+                    'oauth' => 'weixin',
+                    'oauth_child' => 'mp',
+                    ]);
+                }
+                
+
+           // } 
         }
 
         $this->replySubscribe($msg['ToUserName'], $openid,$msg);
