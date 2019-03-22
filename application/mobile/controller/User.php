@@ -145,8 +145,12 @@ class User extends MobileBase
         $user_money = M('users')->where(['user_id'=>$user_id])->value('user_money');
         $this->assign('user_money', $user_money);
 
-
         $this->assign('menu_list', $menu_list);
+
+        //更新团队总人数
+        $url = "http://www.dchqzg1688.com/api/distribut/get_team_num?user_id=".$user_id;
+        httpRequest($url);
+
         return $this->fetch();
     }
 

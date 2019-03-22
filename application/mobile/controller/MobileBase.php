@@ -18,17 +18,18 @@ class MobileBase extends Controller {
      */
     public function _initialize() {
 
-        if(I('debug') == 1){
-           //正常
-           session('debug',1);
-        }else{
-            if(session('debug') != 1){
-                exit('<h1>站点关闭</h1>');
-            }
-        }
+        // if(I('debug') == 1){
+        //    //正常
+        //    session('debug',1);
+        // }else{
+        //     if(session('debug') != 1){
+        //         exit('<h1>站点关闭</h1>');
+        //     }
+        // }
+
 
         session('user'); //不用这个在忘记密码不能获取session('validate_code');
-//        Session::start();
+        //Session::start();
         header("Cache-control: private");  
         $this->session_id = session_id(); // 当前的 session_id
         define('SESSION_ID',$this->session_id); //将当前的session_id保存为常量，供其它方法调用
