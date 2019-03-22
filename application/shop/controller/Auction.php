@@ -279,7 +279,8 @@ class Auction extends MobileBase
      */
     public function addAuctionOffer($uid,$auction_id,$money)
     {
-
+        // 启动事务
+        Db::startTrans();
         try{
             $data=[
                 'user_id'      => $uid,
@@ -288,13 +289,16 @@ class Auction extends MobileBase
                 'auction_id'  => $auction_id,
                 'is_out'  => 1,
             ];
-            $id = M('AuctionPrice')
-                ->add($data);
+            $id = M('AuctionPrice')->lock(true)->add($data);
 
             $map['auction_id']  = ['=', $auction_id];
             $map['id']  = ['<>', $id];
             M('AuctionPrice')->where($map)->save(['is_out'=>0]);
+            // 提交事务
+            Db::commit(); 
         } catch (TpshopException $t) {
+            // 回滚事务
+            Db::rollback();
             $error = $t->getErrorArr();
             $this->ajaxReturn($error);
         }
