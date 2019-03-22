@@ -20,11 +20,12 @@ class MobileBase extends Controller {
 
         if(I('debug') == 1){
            //正常
+           session('debug',1);
         }else{
-            exit('<h1>站点关闭</h1>');
+            if(session('debug') != 1){
+                exit('<h1>站点关闭</h1>');
+            }
         }
-        
-        //重复用户不能进
 
         session('user'); //不用这个在忘记密码不能获取session('validate_code');
 //        Session::start();
