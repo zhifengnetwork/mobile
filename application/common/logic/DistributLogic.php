@@ -26,16 +26,19 @@ class DistributLogic
         }
         if($table='agent_performance_log'){
             $count = M('agent_performance_log')->where($recharge_log_where)->count();
-            $Page = new Page($count, 15);
+            //$Page = new Page($count, 15);
             $recharge_log = M('agent_performance_log')->where($recharge_log_where)
-                ->limit($Page->firstRow . ',' . $Page->listRows)
+              //  ->limit($Page->firstRow . ',' . $Page->listRows)
+                ->order('performance_id desc')
+                ->limit(50)
                 ->select();   
         }else{
             $count = M('recharge')->where($recharge_log_where)->count();
-            $Page = new Page($count, 15);
+          //  $Page = new Page($count, 15);
             $recharge_log = M('recharge')->where($recharge_log_where)
                 ->order('order_id desc')
-                ->limit($Page->firstRow . ',' . $Page->listRows)
+                ->limit(50)
+               // ->limit($Page->firstRow . ',' . $Page->listRows)
                 ->select(); 
         }
 
@@ -43,7 +46,7 @@ class DistributLogic
             'status'    =>1,
             'msg'       =>'',
             'result'    =>$recharge_log,
-            'show'      =>$Page->show()
+           // 'show'      =>$Page->show()
         ];
         return $return;
     }    

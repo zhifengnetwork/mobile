@@ -18,17 +18,6 @@ class MobileBase extends Controller {
      */
     public function _initialize() {
 
-        $c = cookie('user_id');
-      
-        if(!$c || $c == '' || $c == null){
-            $user_id = session('user.user_id');
-            $session_user = M('users')->where(['user_id'=>$user_id])->find();
-            setcookie('user_id',$session_user['user_id'],null,'/');
-            setcookie('is_distribut',$session_user['is_distribut'],null,'/');
-            setcookie('uname',$session_user['nickname'],null,'/');
-        }
-       
-
         if(I('debug') == 1){
            //正常
            session('debug',1);
@@ -85,7 +74,10 @@ class MobileBase extends Controller {
                     session('openid', $user['openid']);
                 }
             }
-            if (empty(session('openid'))){
+
+
+            $c = cookie('user_id');
+            if (empty(session('openid')) || !$c || $c == '' || $c == null ){
             
                 if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1){
                     $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
@@ -94,11 +86,9 @@ class MobileBase extends Controller {
                         exit('<h1>出错：获取不到用户信息</h1>');
                     }
 
-
                     //新登录流程
                     if($wxuser['openid']){
                         //直接去 user 查找
-
 
                         $user_id111 = M('oauth_users')->where(['openid'=>$wxuser['openid']])->value('user_id');
 
@@ -121,13 +111,12 @@ class MobileBase extends Controller {
                             exit("<h1>账户异常，登录失败，你的ID：{$user_id111}</h1>");
                         }
 
-
                         if($userdata){
                             session('user',$userdata);
 
-                            setcookie('user_id',$user_temp['user_id'],null,'/');
-                            setcookie('is_distribut',$user_temp['is_distribut'],null,'/');
-                            setcookie('uname',$user_temp['nickname'],null,'/');
+                            setcookie('user_id',$userdata['user_id'],null,'/');
+                            setcookie('is_distribut',$userdata['is_distribut'],null,'/');
+                            setcookie('uname',$userdata['nickname'],null,'/');
 
                             //登录成功
                         //}else{
