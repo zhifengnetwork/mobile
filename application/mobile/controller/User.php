@@ -110,9 +110,9 @@ class User extends MobileBase
         }
 
         //上级用户信息
-        $leader_id = M('users')->where('user_id', $user['user_id'])->value('first_leader');
+        $leader_id = M('users')->where(['user_id'=> $user['user_id']])->value('first_leader');
         if($leader_id){
-            $leader = M('users')->where('user_id', $leader_id)->field('user_id, nickname')->find();
+            $leader = M('users')->where(['user_id'=>$leader_id])->field('user_id, nickname')->find();
             if($leader){
                 $this->assign('leader',$leader);
             }
