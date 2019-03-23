@@ -42,7 +42,6 @@ class User extends MobileBase
             }
             $this->user_id = $this->user['user_id'];
             $this->assign('user', $this->user); //存储用户信息0
-            $this->assign('', $this->user); //存储用户信息0
         }
         $nologin = array(
             'login', 'pop_login', 'do_login', 'logout', 'verify', 'set_pwd', 'finished',
@@ -52,11 +51,9 @@ class User extends MobileBase
         $is_bind_account = tpCache('basic.is_bind_account');
         if (!$this->user_id && !in_array(ACTION_NAME, $nologin)) {
             if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger') && $is_bind_account){
-
-               // header("location:" . U('shop/User/login'));
                 header("location:" . U('Mobile/User/bind_guide'));//微信浏览器, 调到绑定账号引导页面
             }else{
-                //header("location:" . U('shop/User/login'));
+                header("location:" . U('Mobile/User/login'));
             }
             exit;
         }
@@ -69,6 +66,9 @@ class User extends MobileBase
         );
         $this->assign('order_status_coment', $order_status_coment);
     }
+
+
+
 
     public function distribut()
     {
@@ -309,7 +309,7 @@ class User extends MobileBase
         return $this->fetch();
     }
 
-    /**
+   /**
      *  登录
      */
     public function login()
@@ -317,12 +317,6 @@ class User extends MobileBase
         if ($this->user_id > 0) {
 //            header("Location: " . U('Mobile/User/index'));
             $this->redirect('Mobile/User/index');
-        }else{
-
-            //登录页面改了
-            header("location:" . U('shop/User/login'));
-
-            exit;
         }
         $referurl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : U("Mobile/User/index");
         $this->assign('referurl', $referurl);
@@ -330,6 +324,7 @@ class User extends MobileBase
         $this->assign('alipay_url', urlencode(SITE_URL.U("Mobile/LoginApi/login",['oauth'=>'alipaynew'])));
         return $this->fetch();
     }
+
 
     /**
      * 登录
