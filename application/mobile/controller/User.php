@@ -216,6 +216,11 @@ class User extends MobileBase
         $user_id = session('user.user_id');
         $head_pic_url = M('users')->where(['user_id'=>$user_id])->value('head_pic');
 
+        //本地图片
+        if(strpos($head_pic_url,'public') !== false){ 
+            $head_pic_url = '/www/wwwroot/www.dchqzg1688.com'.$head_pic_url;
+        }
+
         $logic = new ShareLogic();
         $ticket = $logic->get_ticket($user_id);
 
