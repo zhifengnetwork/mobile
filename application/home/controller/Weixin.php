@@ -15,7 +15,11 @@ class Weixin
 
         $data = file_get_contents("php://input");
     	if ($data) {
-    		$re = $this->xmlToArray($data);
+            $re = $this->xmlToArray($data);
+            
+            $this->write_log(json_encode($re));
+
+
 	    	$url = SITE_URL.'/mobile/message/index?eventkey='.$re['EventKey'].'&openid='.$re['FromUserName'].'&event='.$re['Event'];
 	    	httpRequest($url);
         }
@@ -36,6 +40,20 @@ class Weixin
 		$json = json_encode($obj);
 		$arr = json_decode($json, true);  
 		return $arr;
+    }
+
+    public function write_log($content)
+    {
+        $content = "[".date('Y-m-d H:i:s')."]".$content."\r\n";
+        $dir = rtrim(str_replace('\\','/',$_SERVER['DOCUMENT_ROOT']),'/').'/logs';
+        if(!is_dir($dir)){
+            mkdir($dir,0777,true);
+        }
+        if(!is_dir($dir)){
+            mkdir($dir,0777,true);
+        }
+        $path = $dir.'/'.date('Ymd').'.txt';
+        file_put_contents($path,$content,FILE_APPEND);
     }
     
 }

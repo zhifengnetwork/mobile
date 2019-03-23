@@ -18,7 +18,7 @@ class Message extends Controller
         M('wx_message')->where(['event'=>'unsubscribe'])->delete();
         M('wx_message')->where(['event'=>'VIEW'])->delete();
        
-        
+
         $data = M('wx_message')->limit(100)->select();
 
 
@@ -41,5 +41,8 @@ class Message extends Controller
         
 
     }
+
+
+    
 
 }
