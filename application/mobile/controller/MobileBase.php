@@ -82,6 +82,7 @@ class MobileBase extends Controller {
                 if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1){
                     $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
                     
+                
                     if(!$wxuser){
                         exit('<h1>出错：获取不到用户信息</h1>');
                     }
@@ -222,9 +223,7 @@ class MobileBase extends Controller {
     // 网页授权登录获取 OpendId
     public function GetOpenid()
     {
-        if(session('openid')){
-            return session('data');
-        }
+        
         //通过code获得openid
         if (!isset($_GET['code'])){
             //触发微信返回code码

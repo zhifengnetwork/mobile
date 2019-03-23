@@ -3,9 +3,12 @@
 namespace app\mobile\controller;
 
 use think\Db;
+use think\Controller;
+
 use app\common\model\WxMessage;
+
  
-class Message extends MobileBase
+class Message extends Controller
 {
     /**
      * 消息处理
