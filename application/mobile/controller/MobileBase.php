@@ -19,7 +19,9 @@ class MobileBase extends Controller {
     public function _initialize() {
 
         $c = cookie('user_id');
+      
         if(!$c || $c == '' || $c == null){
+            $user_id = session('user.user_id');
             $session_user = M('users')->where(['user_id'=>$user_id])->find();
             setcookie('user_id',$session_user['user_id'],null,'/');
             setcookie('is_distribut',$session_user['is_distribut'],null,'/');
