@@ -268,7 +268,6 @@ class User extends MobileBase
         	$pic = "/public/share/picture_ok44/".$user_id.".jpg";
         }
     
-
         //再次叠加
 
         $pic111 = "/www/wwwroot/www.dchqzg1688.com/public/share/picture_888/".$user_id.".jpg";
@@ -276,7 +275,6 @@ class User extends MobileBase
         {
         	$picture = "/public/share/picture_888/".$uid.".jpg";
         }
-      
         else
         {
            
@@ -289,9 +287,8 @@ class User extends MobileBase
 
         $this->assign('pic',$picture);
 
-        return $this->fetch();
+        return $this->fetch('fenxiang');
     }
-        
 
     public function fen()
     {
