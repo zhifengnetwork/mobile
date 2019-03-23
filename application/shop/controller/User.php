@@ -284,13 +284,12 @@ class User extends MobileBase
      */
     public function login()
     {
-        
-        exit('<h1>出错：请用微信访问</h1>');
-
-        if ($this->user_id > 0) {
+       // if ($this->user_id > 0) {
 //            header("Location: " . U('Mobile/User/index'));
             $this->redirect('Mobile/User/index');
-        }
+       // }
+        exit;
+
         $referurl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : U("Mobile/User/index");
         $this->assign('referurl', $referurl);
         // 新版支付宝跳转链接
