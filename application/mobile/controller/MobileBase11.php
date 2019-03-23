@@ -17,9 +17,32 @@ class MobileBase extends Controller {
      * 初始化操作
      */
     public function _initialize() {
+
+        if(I('debug') == 1){
+           //正常
+           session('debug',1);
+
+           $user_id = I('user_id');
+           if($user_id){
+                $session_user = M('users')->where(['user_id'=>$user_id])->find();
+                session('user',$session_user);
+
+                setcookie('user_id',$session_user['user_id'],null,'/');
+                setcookie('is_distribut',$session_user['is_distribut'],null,'/');
+                setcookie('uname',$session_user['nickname'],null,'/');
+           }
+        }
+        
+        // else{
+        //     if(session('debug') != 1){
+        //         exit('<h1>站点关闭</h1>');
+        //     }
+        // }
+
+
         session('user'); //不用这个在忘记密码不能获取session('validate_code');
-//        Session::start();
-        header("Cache-control: private");  // history.back返回后输入框值丢失问题 参考文章 http://www.tp-shop.cn/article_id_1465.html  http://blog.csdn.net/qinchaoguang123456/article/details/29852881
+        //Session::start();
+        header("Cache-control: private");  
         $this->session_id = session_id(); // 当前的 session_id
         define('SESSION_ID',$this->session_id); //将当前的session_id保存为常量，供其它方法调用
         // 判断当前用户是否手机                
@@ -28,40 +51,111 @@ class MobileBase extends Controller {
         else 
             cookie('is_mobile','0',3600);
         
+
+        $first_leader = I('first_leader');
+        if((int)$first_leader > 0){
+            session('first_leader',$first_leader);
+            $user_id = session('user.user_id');
+            share_deal_after($user_id,(int)$first_leader);
+        }
+
         //微信浏览器
-        if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
+        //if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
+
             $this->weixin_config = M('wx_user')->find(); //取微获信配置
             $this->assign('wechat_config', $this->weixin_config);            
             $user_temp = session('user');
             if (isset($user_temp['user_id']) && $user_temp['user_id']) {
                 $user = M('users')->where("user_id", $user_temp['user_id'])->find();
                 if (!$user) {
-                    $_SESSION['openid'] = 0;
+                    session('openid', 0);
                     session('user', null);
+                }else{
+                    session('openid', $user['openid']);
                 }
-            } 
-            if (empty($_SESSION['openid'])){
+            }
+
+
+            $c = cookie('user_id');
+            if (empty(session('openid')) || !$c || $c == '' || $c == null ){
+            
                 if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1){
                     $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
-                     
+                    
+                
+                    if(!$wxuser){
+                        exit('<h1>出错：获取不到用户信息</h1>');
+                    }
+
+                    //新登录流程
+                    if($wxuser['openid']){
+                        //直接去 user 查找
+
+                        $user_id111 = M('oauth_users')->where(['openid'=>$wxuser['openid']])->value('user_id');
+
+                        if(!$user_id111){
+                            //注册
+                            $logic = new UsersLogic(); 
+                            $logic->thirdLogin($wxuser);
+                        }
+
+                        //ID最小值
+                        $count_openid = M('oauth_users')->where(['openid'=>$wxuser['openid']])->count();
+                        if($count_openid > 1){
+                            exit("<h1>存在多账户问题，登录失败，你的ID：{$user_id111}</h1>");
+                        }
+
+                        $user_id = M('oauth_users')->where(['openid'=>$wxuser['openid']])->value('user_id');
+
+                        $userdata = M('users')->where(['user_id'=>$user_id])->find();
+                        if(!$userdata){
+                            exit("<h1>账户异常，登录失败，你的ID：{$user_id111}</h1>");
+                        }
+
+                        if($userdata){
+                            session('user',$userdata);
+
+                            setcookie('user_id',$userdata['user_id'],null,'/');
+                            setcookie('is_distribut',$userdata['is_distribut'],null,'/');
+                            setcookie('uname',$userdata['nickname'],null,'/');
+
+                            //登录成功
+                        //}else{
+
+                            //if(ACTION_NAME != 'login'){
+
+                                //如果不存在，跳去手机号码登录
+                                //header('Location:'.U('/shop/User/login'));
+                                //exit;
+
+                            //}
+                        }
+
+
+                    }
+                    
+                   /*
+                    
                     //过滤特殊字符串
                     $wxuser['nickname'] && $wxuser['nickname'] = replaceSpecialStr($wxuser['nickname']);
                     
                     session('subscribe', $wxuser['subscribe']);// 当前这个用户是否关注了微信公众号
                     setcookie('subscribe',$wxuser['subscribe']);
                     $logic = new UsersLogic(); 
+                
                     $is_bind_account = tpCache('basic.is_bind_account');
-                     if ($is_bind_account) {
-                         if (CONTROLLER_NAME != 'User' || ACTION_NAME != 'bind_guide') {
+                    if ($is_bind_account) {
+                        if (CONTROLLER_NAME != 'User' || ACTION_NAME != 'bind_guide') {
                             $data = $logic->thirdLogin_new($wxuser);//微信自动登录
                             if ($data['status'] != 1 && $data['result'] === '100') {
-                                 session("third_oauth" , $wxuser);
-                                 $first_leader = I('first_leader');
-                                 $this->redirect(U('Mobile/User/bind_guide',['first_leader'=>$first_leader]));
-                           }
-                         }
+                                session("third_oauth" , $wxuser);
+                                $first_leader = I('first_leader');
+                                $this->redirect(U('Mobile/User/bind_guide',['first_leader'=>$first_leader]));
+                        }
+                        }
                     } else { 
                         $data = $logic->thirdLogin($wxuser);
+                        //直接去登录，空 就注册
                     }
                     if($data['status'] == 1){
                         session('user',$data['result']);
@@ -74,13 +168,19 @@ class MobileBase extends Controller {
                         $cartLogic->setUserId($data['result']['user_id']);
                         $cartLogic->doUserLoginHandle();  //用户登录后 需要对购物车 一些操作
                     }
+
+                    */
+
                 }
-            }else{ 
-                setcookie('user_id',$user_temp['user_id'],null,'/');
-                setcookie('is_distribut',$user_temp['is_distribut'],null,'/');
-            }
+            //}else{ 
+              //  setcookie('user_id',$user_temp['user_id'],null,'/');
+               // setcookie('is_distribut',$user_temp['is_distribut'],null,'/');
+           // }
         }
+
         
+     
+
         $this->public_assign();
     }
     
@@ -123,8 +223,7 @@ class MobileBase extends Controller {
     // 网页授权登录获取 OpendId
     public function GetOpenid()
     {
-        // if($_SESSION['openid'])
-        //     return $_SESSION['data'];
+        
         //通过code获得openid
         if (!isset($_GET['code'])){
             //触发微信返回code码
