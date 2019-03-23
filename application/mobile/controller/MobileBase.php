@@ -109,6 +109,11 @@ class MobileBase extends Controller {
 
                         if($userdata){
                             session('user',$userdata);
+
+                            setcookie('user_id',$user_temp['user_id'],null,'/');
+                            setcookie('is_distribut',$user_temp['is_distribut'],null,'/');
+                            setcookie('uname',$user_temp['nickname'],null,'/');
+
                             //登录成功
                         //}else{
 
