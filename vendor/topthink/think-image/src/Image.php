@@ -34,6 +34,7 @@ class Image
     const WATER_SOUTH     = 8; //常量，标识下居中水印
     const WATER_SOUTHEAST = 9; //常量，标识右下角水印
     const DCHQZG = 10;
+    const TOUXIANG = 11;
     /* 翻转相关常量定义 */
     const FLIP_X = 1; //X轴翻转
     const FLIP_Y = 2; //Y轴翻转
@@ -456,6 +457,14 @@ class Image
               $y = 1065;
 
               break;
+
+            /* TOUXIANG */
+            case self::TOUXIANG:
+                $x = 40;
+                //$y = ($this->info['height'] - $info[1]) / 2;
+                $y = 40;
+ 
+               break;
 
             default:
                 /* 自定义水印坐标 */
