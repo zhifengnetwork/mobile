@@ -76,6 +76,9 @@ class User extends MobileBase
         $user = session('user');
         $field = "user_id,first_leader,is_distribut,is_agent"; 
         $user_agent_money = $this->child_agent($user['user_id']);
+        if(empty($user_agent_money)){
+            return false;
+        }
         //个人,团队业绩之和
         $money_array = $user_agent_money['ind_per']+$user_agent_money['agent_per'];
         $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->find();
