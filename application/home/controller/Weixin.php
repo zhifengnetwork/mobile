@@ -17,8 +17,7 @@ class Weixin
     	if ($data) {
             $re = $this->xmlToArray($data);
             
-            $this->write_log(json_encode($re));
-
+            // $this->write_log(json_encode($re));
 
 	    	$url = SITE_URL.'/mobile/message/index?eventkey='.$re['EventKey'].'&openid='.$re['FromUserName'].'&event='.$re['Event'];
 	    	httpRequest($url);

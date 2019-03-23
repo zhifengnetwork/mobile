@@ -27,18 +27,16 @@ class Message extends Controller
         $model->event = $event;
         $res = $model->save();
       
-        // if( $event == 'SCAN'){
-        //     $this->deal($openid,$eventkey);
-        // }
+        if( $event == 'SCAN'){
+            $this->deal($openid,$eventkey);
+        }
 
-
-        // if( $event == 'subscribe'){
-        //     $shangji_user_id = substr($eventkey, strlen('qrscene_'));
-        //     $this->deal($openid,$shangji_user_id);
-        // }
+        if( $event == 'subscribe'){
+            $shangji_user_id = substr($eventkey, strlen('qrscene_'));
+            $this->deal($openid,$shangji_user_id);
+        }
         
         //$this->handle();
-
         echo $res;
     }
 
@@ -46,7 +44,27 @@ class Message extends Controller
     //处理关系
     public function deal($xiaji_openid,$shangji_user_id){
         
-        $this->write_log($xiaji_openid.'-------deal--------'.$shangji_user_id);
+        if(is_numeric($shangji_user_id) == false)   {
+            $this->write_log('------上级shangji_user_id不是数字----'.$xiaji_openid);
+        }
+
+        if(!$xiaji_openid){
+            $this->write_log('------下级openid不存在----'.$xiaji_openid);
+        }
+
+        if(!$shangji_user_id){
+            $this->write_log('------上级user_id不存在----'.$xiaji_openid);
+        }
+
+        if(!$xiaji_openid){
+           return false;
+        }
+        if(!$shangji_user_id){
+            return false;
+        }
+
+
+        $this->write_log($xiaji_openid.'-------处理--------'.$shangji_user_id);
 
         //有用户绑定
         $xiaji = M('users')->where(['openid'=>$xiaji_openid])->find();
