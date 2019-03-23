@@ -262,7 +262,7 @@ class UsersLogic extends Model
             if ($r) {
                 return array('status' => 1, 'msg' => '绑定成功', 'result' => $user2);
             } else {
-                return array('status' => -1, 'msg' => '您的' . $data['oauth'] . '账号已经绑定过账号', 'bind_status' => 0);
+                return array('status' => 1, 'msg' => '您的' . $data['oauth'] . '账号已经绑定过账号', 'bind_status' => 0,'result' => $user2);
             }
         }
 

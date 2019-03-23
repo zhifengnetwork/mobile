@@ -41,7 +41,7 @@ class MobileBase extends Controller {
                 }
             } 
             if (empty(session('openid'))){
-            
+              
                 // && $this->weixin_config['wait_access'] == 1
                 if(is_array($this->weixin_config) ){
                     $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
@@ -64,12 +64,14 @@ class MobileBase extends Controller {
                          }
                     } else { 
                         $data = $logic->thirdLogin($wxuser);
+                        
                     }
                     if($data['status'] == 1){
                         session('user',$data['result']);
                         setcookie('user_id',$data['result']['user_id'],null,'/');
                         setcookie('is_distribut',$data['result']['is_distribut'],null,'/');
                         setcookie('uname',$data['result']['nickname'],null,'/');
+                        session('openid',$data['result']['openid']);//增加openid
                         // 登录后将购物车的商品的 user_id 改为当前登录的id
                         M('cart')->where("session_id" ,$this->session_id)->save(array('user_id'=>$data['result']['user_id']));
                         $cartLogic = new CartLogic();
