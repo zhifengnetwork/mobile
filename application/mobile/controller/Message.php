@@ -33,7 +33,7 @@ class Message extends Controller
 
 
         if( $event == 'subscribe'){
-            $shangji_user_id = substr($v['eventkey'], strlen('qrscene_'));
+            $shangji_user_id = substr($eventkey, strlen('qrscene_'));
             $this->deal($openid,$shangji_user_id);
         }
         
