@@ -28,6 +28,30 @@ class MobileBase extends Controller {
         else 
             cookie('is_mobile','0',3600);
         
+
+        /**
+         * 模拟登录
+         */
+        if(I('debug') == 1 && I('user_id') > 0){
+
+            $user_id =  I('user_id');
+            if(!$user_id){
+                exit("user_id不能为空");
+            }
+    
+            $user = M('users')->where(['user_id'=>$user_id])->find();
+            if(!$user){
+                exit("user为空");
+            }
+    
+            session('user',$user);
+            setcookie('user_id',$user['user_id'],null,'/');
+            setcookie('is_distribut',$user['is_distribut'],null,'/');
+            setcookie('uname',$user['nickname'],null,'/');
+            session('openid',$user['openid']);
+        }
+
+
         //微信浏览器
         if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
             $this->weixin_config = M('wx_user')->find(); //取微获信配置
