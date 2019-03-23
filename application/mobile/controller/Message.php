@@ -27,10 +27,73 @@ class Message extends Controller
         $model->event = $event;
         $res = $model->save();
       
-        $this->handle();
-      
+        if( $event == 'SCAN'){
+            $this->deal($openid,$eventkey);
+        }
+
+
+        if( $event == 'subscribe'){
+            $shangji_user_id = substr($v['eventkey'], strlen('qrscene_'));
+            $this->deal($openid,$shangji_user_id);
+        }
+        
+        //$this->handle();
+
         echo $res;
     }
+
+
+    //处理关系
+    public function deal($xiaji_openid,$shangji_user_id){
+        
+        $this->write_log($xiaji_openid.'-------deal--------'.$shangji_user_id);
+
+        //有用户绑定
+        $xiaji = M('users')->where(['openid'=>$xiaji_openid])->find();
+        if(!$xiaji){
+
+            //注册用户
+            $new_data = array(
+                'openid' => $xiaji_openid
+            );
+            $xiaji_user_id = M('users')->add($new_data);
+
+            //先注册 users 表
+
+            $oauth_data = array(
+                'openid' => $xiaji_openid,
+                'user_id' => $xiaji_user_id
+            );
+            M('oauth_users')->add($new_data);
+
+            $this->write_log($xiaji_user_id.'-------注册成功--------'.$shangji_user_id);
+        }
+
+       //注册好了，
+       // 绑定关系
+       share_deal_after($xiaji_user_id,$shangji_user_id);
+       $this->write_log($xiaji_user_id.'-------绑定成功--------'.$shangji_user_id);
+
+        $xiaji_user_id = $xiaji['user_id'];
+
+
+    }
+
+
+    public function write_log($content)
+    {
+        $content = "[".date('Y-m-d H:i:s')."]".$content."\r\n";
+        $dir = rtrim(str_replace('\\','/',$_SERVER['DOCUMENT_ROOT']),'/').'/logs';
+        if(!is_dir($dir)){
+            mkdir($dir,0777,true);
+        }
+        if(!is_dir($dir)){
+            mkdir($dir,0777,true);
+        }
+        $path = $dir.'/'.date('Ymd').'.txt';
+        file_put_contents($path,$content,FILE_APPEND);
+    }
+    
 
 
     /**
