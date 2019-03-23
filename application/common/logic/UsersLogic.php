@@ -271,6 +271,7 @@ class UsersLogic extends Model
         $map['last_login'] = time();
         
         $user = $this->getThirdUser($data);
+ 
         if(!$user){
             //账户不存在 注册一个
             $map['password'] = '';
@@ -301,7 +302,15 @@ class UsersLogic extends Model
             // if($distribut_condition == 0){    // 直接成为分销商, 每个人都可以做分销
             //     $map['is_distribut']  = 1;
             // } 
-            $row_id = Db::name('users')->add($map);
+
+            $is_cunzai = Db::name('users')->where(array('openid'=>$map['openid']))->find();
+            if(!$is_cunzai){
+                $row_id = Db::name('users')->add($map);
+            }else{
+                Db::name('users')->where(array('openid'=>$map['openid']))->update($map);
+                $row_id = $is_cunzai['user_id'];
+
+            }
 
             $user = Db::name('users')->where(array('user_id'=>$row_id))->find();
             
@@ -313,7 +322,15 @@ class UsersLogic extends Model
             $data['user_id'] = $user['user_id'];
             $user_level =Db::name('user_level')->where('amount = 0')->find(); //折扣
             $data['discount'] = !empty($user_level) ? $user_level['discount']/100 : 1;  //新注册的会员都不打折
-            Db::name('OauthUsers')->save($data);
+
+         
+            $OauthUsers_is_cunzai = Db::name('OauthUsers')->where(array('openid'=>$map['openid']))->find();
+            if(!$OauthUsers_is_cunzai){
+                Db::name('OauthUsers')->add($map);
+            }else{
+                Db::name('OauthUsers')->where(array('openid'=>$map['openid']))->update($data);
+            }
+            
 
             //生成小程序专属二维码
             // if ($data['oauth'] == 'miniapp') {

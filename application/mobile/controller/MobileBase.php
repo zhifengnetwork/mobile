@@ -36,14 +36,16 @@ class MobileBase extends Controller {
             if (isset($user_temp['user_id']) && $user_temp['user_id']) {
                 $user = M('users')->where("user_id", $user_temp['user_id'])->find();
                 if (!$user) {
-                    $_SESSION['openid'] = 0;
+                    session('openid',null);
                     session('user', null);
                 }
             } 
-            if (empty($_SESSION['openid'])){
-                if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1){
+            if (empty(session('openid'))){
+            
+                // && $this->weixin_config['wait_access'] == 1
+                if(is_array($this->weixin_config) ){
                     $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
-                     
+                
                     //过滤特殊字符串
                     $wxuser['nickname'] && $wxuser['nickname'] = replaceSpecialStr($wxuser['nickname']);
                     
