@@ -18,6 +18,15 @@ class MobileBase extends Controller {
      */
     public function _initialize() {
 
+        $c = cookie('user_id');
+        if(!$c || $c == '' || $c == null){
+            $session_user = M('users')->where(['user_id'=>$user_id])->find();
+            setcookie('user_id',$session_user['user_id'],null,'/');
+            setcookie('is_distribut',$session_user['is_distribut'],null,'/');
+            setcookie('uname',$session_user['nickname'],null,'/');
+        }
+       
+
         if(I('debug') == 1){
            //正常
            session('debug',1);
@@ -26,6 +35,10 @@ class MobileBase extends Controller {
            if($user_id){
                 $session_user = M('users')->where(['user_id'=>$user_id])->find();
                 session('user',$session_user);
+
+                setcookie('user_id',$session_user['user_id'],null,'/');
+                setcookie('is_distribut',$session_user['is_distribut'],null,'/');
+                setcookie('uname',$session_user['nickname'],null,'/');
            }
         }
         
