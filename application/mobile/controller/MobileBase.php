@@ -84,8 +84,30 @@ class MobileBase extends Controller {
         }
         
         $this->public_assign();
+        $this->update_userinfo();
+
     }
     
+    /**
+     * 处理用户数据
+     */
+    public function update_userinfo(){
+
+        $openid = session('user.openid');
+        if(!$openid){
+            return false;
+        }
+
+        $OauthUsers_is_cunzai = Db::name('OauthUsers')->where(array('openid'=>$openid))->find();
+        if(!$OauthUsers_is_cunzai){
+            $map['openid'] = $openid;
+            $map['user_id'] = session('user.user_id');
+            Db::name('OauthUsers')->add($map);
+        }
+
+    }
+
+
     /**
      * 保存公告变量到 smarty中 比如 导航 
      */   
