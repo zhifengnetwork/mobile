@@ -27,15 +27,15 @@ class Message extends Controller
         $model->event = $event;
         $res = $model->save();
       
-        if( $event == 'SCAN'){
-            $this->deal($openid,$eventkey);
-        }
+        // if( $event == 'SCAN'){
+        //     $this->deal($openid,$eventkey);
+        // }
 
 
-        if( $event == 'subscribe'){
-            $shangji_user_id = substr($eventkey, strlen('qrscene_'));
-            $this->deal($openid,$shangji_user_id);
-        }
+        // if( $event == 'subscribe'){
+        //     $shangji_user_id = substr($eventkey, strlen('qrscene_'));
+        //     $this->deal($openid,$shangji_user_id);
+        // }
         
         //$this->handle();
 
