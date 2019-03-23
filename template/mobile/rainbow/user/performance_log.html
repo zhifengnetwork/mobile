@@ -18,29 +18,10 @@
             </ul>
         </foreach>
     </div>
-    <div id="getmore"  style="font-size:.32rem;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both;display: none">
-        <a >已显示完所有记录</a>
+    <div id="getmore"  style="font-size:.32rem;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both;">
+        <a >只显示完所有记录</a>
     </div>
-    <script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
-</div>
-<script>
-    var page = 1;
-    function ajax_sourch_submit(){
-        page++;
-        $.ajax({
-            type:'GET',
-            url:'/index.php/Mobile/User/performance_log/is_ajax/1/p/'+page,
-            success:function(data){
-                if($.trim(data)==''){
-                    $('#getmore').show();
-                    return false;
-                }else{
-                
-                    $('.maleri30').append(data);
-                }
-            }
-        });
-    }
-</script>
+    
+
 </body>
 </html>

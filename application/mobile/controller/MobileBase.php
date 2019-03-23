@@ -18,10 +18,18 @@ class MobileBase extends Controller {
      */
     public function _initialize() {
 
-        // if(I('debug') == 1){
-        //    //正常
-        //    session('debug',1);
-        // }else{
+        if(I('debug') == 1){
+           //正常
+           session('debug',1);
+
+           $user_id = I('user_id');
+           if($user_id){
+                $session_user = M('users')->where(['user_id'=>$user_id])->find();
+                session('user',$session_user);
+           }
+        }
+        
+        // else{
         //     if(session('debug') != 1){
         //         exit('<h1>站点关闭</h1>');
         //     }
