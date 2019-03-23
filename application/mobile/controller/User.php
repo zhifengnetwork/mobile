@@ -53,11 +53,10 @@ class User extends MobileBase
         if (!$this->user_id && !in_array(ACTION_NAME, $nologin)) {
             if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger') && $is_bind_account){
 
-                header("location:" . U('shop/User/login'));
-
-                //header("location:" . U('Mobile/User/bind_guide'));//微信浏览器, 调到绑定账号引导页面
+               // header("location:" . U('shop/User/login'));
+                header("location:" . U('Mobile/User/bind_guide'));//微信浏览器, 调到绑定账号引导页面
             }else{
-                header("location:" . U('shop/User/login'));
+                //header("location:" . U('shop/User/login'));
             }
             exit;
         }
