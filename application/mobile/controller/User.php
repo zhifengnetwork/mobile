@@ -72,9 +72,13 @@ class User extends MobileBase
 
     public function distribut()
     {
+        
         $user = session('user');
         $field = "user_id,first_leader,is_distribut,is_agent"; 
-        $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->select();
+        $user_agent_money = $this->child_agent($user['user_id']);
+        //个人,团队业绩之和
+        $money_array = $user_agent_money['ind_per']+$user_agent_money['agent_per'];
+        $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->find();
         if($users)
         {
             if(empty($users)) return false;
@@ -82,8 +86,6 @@ class User extends MobileBase
             foreach($users as $key=>$val){
                 $get_child_agent = $this->child_agent($val['user_id']);
                 $money_array[]=$get_child_agent['agent_per'];
-                // dump($get_child_agent['agent_per']);
-                // $$money_array[] = $get_child_agent['agent_per'];
             }
             if(empty($money_array)){
                 return false;
@@ -106,9 +108,11 @@ class User extends MobileBase
                 'max_moneys'=>$max_moneys,
                 'moneys'=>$money_total1-$max_moneys
             );
-            $this->assign('money_total',$money_total);
         }
-
+        $money_total['money_total'] = $money_total['money_total']+$money_array;
+        $money_total['max_moneys'] = 0;
+        $money_total['moneys'] = 0;
+        $this->assign('money_total',$money_total);
         //上级用户信息
         $leader_id = M('users')->where(['user_id'=> $user['user_id']])->value('first_leader');
         if($leader_id){
