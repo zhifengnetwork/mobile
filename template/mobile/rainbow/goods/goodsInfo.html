@@ -496,7 +496,7 @@
     <input type="hidden" name="prom_id" value="{$goods.prom_id}"/><!-- 活动ID -->
     <input type="hidden" name="exchange_integral" value="{$goods.exchange_integral}"/><!-- 积分 -->
     <input type="hidden" name="point_rate" value="{$tpshop_config['integral_point_rate']}"/><!-- 积分兑换比 -->
-    <input type="hidden" name="is_sign" value="{$goods.cat_id}"/><!-- 签到免费领取 -->
+    <input type="hidden" name="is_sign" value="{$goods.sign_free_receive}"/><!-- 签到免费领取 -->
     <input type="hidden" name="is_virtual" value="{$goods.is_virtual}"/><!-- 是否是虚拟商品 -->
     <input type="hidden" name="virtual_limit" id="virtual_limit" value="{$goods.virtual_limit|default=0}"/>
     <input type="hidden" name="deposit_price" value=""/><!-- 订金 -->
@@ -633,7 +633,7 @@
             buy_now.html('立即预订').show();
             return;
         }
-        if(is_sign == 584 || is_sign == 585){
+        if(is_sign != 0){
             buy_now_li.find('.choise_num').html('免费领取');
             buy_now_li.width('100%').show();
             buy_now.html('免费领取').show();
@@ -702,7 +702,7 @@
             }
 
             // 免费领取
-            if(is_sign == 584 || is_sign == 585){
+            if(is_sign != 0 ){
                 if (goods_num <= store_count) {
                     sign_receive(is_sign);
                     return;
@@ -824,12 +824,12 @@
     }
     
     //验证是否可以免费领取
-    function sign_receive(cat_id){
+    function sign_receive(type){
         $.ajax({
             type : "GET",
             dataType: "json",
             url:"/index.php?m=mobile&c=goods&a=sign_receive",//+tab,
-            data: {cat_id:cat_id},
+            data: {type:type},
             success: function(data){
                 if(data.status == 0){
                     layer.open({content:data.msg, time:3});
