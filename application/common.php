@@ -1830,11 +1830,6 @@ function continue_sign($user_id){
     */
     function provingReceive($user, $type, $num = 1){
 
-        if ($user['is_distribut'] == 0 ) {
-            $result = array('status'=>-1,'msg'=>'普通用户原价购买','result'=>array());
-            return $result;
-        }
-
         if ($user['is_distribut'] == 0 && $type == 1) {
             $result = array('status'=>0,'msg'=>'成为分销商才可领取','result'=>array());
             return $result;

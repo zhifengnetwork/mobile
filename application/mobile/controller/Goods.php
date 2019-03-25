@@ -315,7 +315,7 @@ class Goods extends MobileBase
             $collect = db('goods_collect')->where(array("goods_id" => $goods_id, "user_id" => $user_id))->count(); //当前用户收藏
             $this->assign('collect', $collect);
         }
-        
+
         $recommend_goods = M('goods')->where("is_recommend=1 and is_on_sale=1 and cat_id = {$goods['cat_id']}")->cache(7200)->limit(9)->field("goods_id, goods_name, shop_price")->select();
         $this->assign('recommend_goods', $recommend_goods);
         $this->assign('goods', $goods);
@@ -334,6 +334,10 @@ class Goods extends MobileBase
         if(empty($goods) || ($goods['is_on_sale'] == 0) || ($goods['is_virtual']==1 && $goods['virtual_indate'] <= time())){
             $this->error('此商品不存在或者已下架');
         }
+        if ($goods['sign_free_receive'] != 0 ) {
+             // $isReceive = provingReceive($this->user, $goods['sign_free_receive'], $goods['']);
+        }
+
         if (cookie('user_id')) {
             $goodsLogic->add_visit_log(cookie('user_id'), $goods);
         }

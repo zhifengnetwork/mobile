@@ -717,8 +717,17 @@
                 layer.open({icon: 2, content: "购买数量超过此商品购买上限", time: 2});
             }
         })
+
         //加入购物车
         $(document).on('click', '#join_cart', function () {
+            var is_sign = $('input[name="is_sign"]').attr('value'); //是否签到兑换商品
+            // 免费领取
+            if(is_sign != 0 ){
+                if (goods_num <= store_count) {
+                    sign_receive(is_sign);
+                    return;
+                }
+            }
             if ($(this).hasClass('buy_bt_disable')) {
                 return;
             }

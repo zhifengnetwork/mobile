@@ -13,6 +13,7 @@
         <input type="hidden" name="prom_id" value="{$goods.prom_id}"/><!-- 活动ID -->
         <input type="hidden" name="exchange_integral" value="{$goods.exchange_integral}"/><!-- 积分 -->
         <input type="hidden" name="point_rate" value="{$point_rate}"/><!-- 积分兑换比 -->
+        <input type="hidden" name="is_sign" value="{$goods.sign_free_receive}"/><!-- 签到免费领取 -->
         <input type="hidden" name="is_virtual" value="{$goods.is_virtual}"/><!-- 是否是虚拟商品 -->
         <input type="hidden" name="virtual_limit" id="virtual_limit" value="{$goods.virtual_limit|default=0}"/>
         <input type="hidden" name="deposit_price" value=""/><!-- 订金 -->
@@ -203,6 +204,17 @@
         })
         //加入购物车
         $('#join_cart').click(function(){
+            var store_count = $("input[name='store_count']").attr('value');// 商品原始库存
+            var goods_num = parseInt($("input[name='goods_num']").val());
+            var is_sign = $('input[name="is_sign"]').attr('value'); //是否签到兑换商品
+            // 免费领取
+            if(is_sign != 0 ){
+                if (goods_num <= store_count) {
+                    sign_receive(is_sign);
+                    return;
+                }
+            }
+
             if ($(this).hasClass('buy_bt_disable')) {
                 return;
             }
@@ -315,6 +327,23 @@
                 if(data.status == 1){
                     //收藏点亮
                     $('.de_font .keep').find('i').addClass('red');
+                }
+            }
+        });
+    }
+    //验证是否可以免费领取
+    function sign_receive(type){
+        $.ajax({
+            type : "GET",
+            dataType: "json",
+            url:"/index.php?m=mobile&c=goods&a=sign_receive",//+tab,
+            data: {type:type},
+            success: function(data){
+                if(data.status == 0){
+                    layer.open({content:data.msg, time:3});
+                    return false;
+                }else{
+                    $('#buy_goods_form').attr('action', "{:U('mobile/Cart/cart2',['action'=>'buy_now'])}").submit();
                 }
             }
         });

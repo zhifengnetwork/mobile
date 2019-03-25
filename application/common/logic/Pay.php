@@ -393,7 +393,7 @@ class Pay
 //        $this->goods = $goodsModel::get($goods_id);
 
 //        if ($this->goods['cat_id'] == 584 || $this->goods['cat_id'] == 585) {
-        if ($this->payList[0]['goods']->cat_id == 584 || $this->payList[0]['goods']->cat_id == 585) {
+        if ($this->payList[0]['goods']->sign_free_receive != 0 ) {
             // 能否领取商品
             $isReceive = provingReceive($this->user, $this->goods['sign_free_receive'], $this->totalNum);
 
