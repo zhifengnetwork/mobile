@@ -145,9 +145,19 @@ class User extends MobileBase
         $menu_list = $MenuCfg->where('is_show', 1)->order('menu_id asc')->select();
         
         $user_id = session('user.user_id');
+
+        //当前登录用户信息
+        $logic = new UsersLogic();
+        $user_info = $logic->get_info($user_id); 
+
+        $order_info['waitPay'] = $user_info['result']['waitPay'];
+        $order_info['waitReceive'] = $user_info['result']['waitReceive'];
+        $order_info['uncomment_count'] = $user_info['result']['uncomment_count'];
+        $order_info['return_count'] = Db::name('return_goods')->where("user_id", $user_id)->count();
+
         $user_money = M('users')->where(['user_id'=>$user_id])->value('user_money');
         $this->assign('user_money', $user_money);
-
+        $this->assign('order_info', $order_info);
         $this->assign('menu_list', $menu_list);
 
         //更新团队总人数
