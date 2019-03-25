@@ -1,5 +1,5 @@
 <include file="public/header" title="个人中心" body=""/>
-<link rel="stylesheet" type="text/css" href="__STATIC__/css/personal.css"/>
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/personal.css?v=1"/>
 <div class="z_user_vs">
     <div class="z_user_head">
         <div class="z_user_top">
@@ -71,29 +71,32 @@
                             <ul>
                                 <li>
                                     <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITPAY'))}">
-                                        <img src="__PUBLIC__/static/images/q1.png"/>
+                                        <img class="z_img" src="__PUBLIC__/static/images/q1.png"/>
+                                        <span class="z_num">{$order_info.waitPay}</span>
 
                                         <p>待付款</p>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{:U('/Mobile/Order/wait_receive',array('type'=>'WAITRECEIVE'))}">
-                                        <img src="__PUBLIC__/static/images/q2.png"/>
+                                        <img class="z_img" src="__PUBLIC__/static/images/q2.png"/>
+                                        <span class="z_num">{$order_info.waitReceive}</span>
 
                                         <p>待收货</p>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{:U('Mobile/Order/comment',array('status'=>0))}">
-                                        <img src="__PUBLIC__/static/images/q3.png"/>
+                                        <img class="z_img" src="__PUBLIC__/static/images/q3.png"/>
+                                        <span class="z_num">{$order_info.uncomment_count}</span>
 
                                         <p>待评价</p>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{:U('Mobile/Order/return_goods_list',array('type'=>1))}">
-                                        <img src="__PUBLIC__/static/images/q4.png"/>
-
+                                        <img class="z_img" src="__PUBLIC__/static/images/q4.png"/>
+                                        <span class="z_num">{$order_info.return_count}</span>
                                         <p>售后服务</p>
                                     </a>
                                 </li>

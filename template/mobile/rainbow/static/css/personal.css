@@ -183,3 +183,19 @@
 	margin-top: 0.21333333333333335rem;
 	color: #666666;
 } 
+.z_img{
+	position: relative;
+}
+.z_num{
+	width: .6rem;
+	height: .6rem;
+	background: red;
+	border-radius: 50%;
+	color: #fff;
+	display: inline-block;
+	position: absolute;
+	top: .6rem;
+    right: 1.2rem;
+	font-size:.4rem;
+	padding-top: 5px;
+}
