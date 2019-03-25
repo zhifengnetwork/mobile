@@ -838,6 +838,11 @@ class User extends Base
     public function withdrawals_update()
     {
         $id_arr = I('id/a');
+       
+        if(count($id_arr) > 1){
+            $this->ajaxReturn(array('status' => 0, 'msg' => "操作失败，请单选"), 'JSON');
+        }
+
         $data['status'] = $status = I('status');
         $data['remark'] = I('remark');
         if ($status == 1){
