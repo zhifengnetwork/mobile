@@ -16,43 +16,36 @@ class Sign extends Controller
         exit(json_encode($data,JSON_UNESCAPED_UNICODE));
     }
 
-
-
     /**
      * 签到.
      */
     public function sign()
     {
         $user_model = new Users();
-
-
         $user_id = I('user_id');
         if (!$user_id) {
             return $this->ajaxReturn(['status' => -1, 'msg' => '签到user_id不能为空']);
         }
-
         $con['sign_day'] = array('like', date('Y-m-d', time()).'%');
         $cunzai = M('sign_log')->where(['user_id' => $user_id])->where($con)->find();
-
         $date = $this->deal_time(date('Y-m-d H:i:s', time()));
-       
         if ($cunzai) {
             return $this->ajaxReturn(['status' => 1, 'msg' => '今日已签到', 'date' => $date]);
         }
-     
+
         Db::startTrans();
         try{
 
             $r = M('sign_log')->save(['user_id' => $user_id, 'sign_day' => date('Y-m-d H:i:s')]);
-
-            $user = $user_model->where(['user_id' => $user_id])->field('is_agent,is_distribut')->find();
-
+            $user = $user_model->where(['user_id' => $user_id])->field('is_agent,super_nsign,is_distribut')->find();
             //获取后台设置的签到天数
             $sign_distribut_days = M('config')->where(['name' => 'sign_distribut_days'])->value('value');
             $sign_agent_days = M('config')->where(['name' => 'sign_agent_days'])->value('value');
             //代理类型
 
-            if ($user['is_agent'] == 1) {
+            //更改成是否  有资格
+            // is_agent
+            if ($user['super_nsign'] == 1) {
                 //查询签到记录看已经连续签到是次数是否达到了设置的值
                 $agent_continue_sign_num = $this->goods_continue_sign($user_id, 'sign_agent');
                 if ($agent_continue_sign_num >= $sign_agent_days) {
@@ -65,8 +58,16 @@ class Sign extends Controller
 
                     // //变更这几次的签到记录中的标志值
                     M('sign_log')->where(['user_id' => $user_id])->order('sign_day desc')->limit($sign_agent_days)->update(['sign_agent' => 1]);
+
+                    // 写日志
+                    $log = array(
+                        'user_id' => $user_id,
+                        'type' => 'AGENT'
+                    );
+                    M('log_receive_sign_free')->add($log);
                 }
             }
+
             //分销员类型
             if ($user['is_distribut'] == 1) {
                 //查询签到记录看已经连续签到是次数是否达到了设置的值
@@ -84,6 +85,13 @@ class Sign extends Controller
 
                     // //变更这几次的签到记录中的标志值
                     M('sign_log')->where(['user_id' => $user_id])->order('sign_day desc')->limit($sign_distribut_days)->save(['sign_distribut' => 1]);
+
+                    // 写日志
+                    $log = array(
+                        'user_id' => $user_id,
+                        'type' => 'DISTRIBUT'
+                    );
+                    M('log_receive_sign_free')->add($log);
                 }
             }
 
@@ -161,9 +169,10 @@ class Sign extends Controller
     private function check_auth($user_id)
     {
         //检查身份
-        //只有  分销 和 代理 可以签到
-        $is_ok = M('users')->where(['user_id' => $user_id])->field('is_distribut,is_agent')->find();
-        if ($is_ok['is_distribut'] == 1 || $is_ok['is_agent'] == 1) {
+        //只有  分销 和 （购买399可以签到） 可以签到
+        //   super_nsign   用户表  = 1
+        $is_ok = M('users')->where(['user_id' => $user_id])->field('is_distribut,super_nsign')->find();
+        if ($is_ok['is_distribut'] == 1 || $is_ok['super_nsign'] == 1) {
             return 1;
         } else {
             return 0;

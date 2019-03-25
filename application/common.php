@@ -1094,9 +1094,39 @@ function update_pay_status($order_sn,$ext=array())
         // 发送微信消息模板提醒
         $wechat = new \app\common\logic\WechatLogic;
         $wechat->sendTemplateMsgOnPaySuccess($order);
+
+        //买了399的东西
+        can_super_nsign($order['order_id'],$order['user_id']);
     }
 }
 
+/**
+ * 买了399的东西
+ */
+function can_super_nsign($order_id,$user_id){
+    //super_nsign判断是不是1
+    $super_nsign = M('users')->where(['user_id'=>$user_id])->value('super_nsign');
+ 
+    if($super_nsign == 1){
+        return true;
+    }
+    $goods = M('order_goods')->where(['order_id'=>$order_id])->field('order_id,goods_id')->select();
+
+    foreach($goods as $key => $val){
+        $sign_free_receive = M('goods')->where(['goods_id'=>$val['goods_id']])->value('sign_free_receive');
+      
+        if((int)$sign_free_receive == 2){
+            M('users')->where(['user_id'=>$user_id])->update(['super_nsign'=>1]);
+            //写日志
+            $data = array(
+            'user_id'=>$user_id,
+            'order_id'=>$order_id
+            );
+            M('log_super_nsign')->add($data);
+        }
+    }
+    return true;
+}
 
 
 /**
