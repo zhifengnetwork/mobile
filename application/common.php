@@ -1865,8 +1865,8 @@ function continue_sign($user_id){
             return $result;
         }
 
-        if ($user['is_agent'] == 0 && $type == 2) {
-            $result = array('status'=>0,'msg'=>'成为代理商才可领取','result'=>array());
+        if ($user['super_nsign'] == 0 && $type == 2) {
+            $result = array('status'=>0,'msg'=>'购买指定产品才有资格领取','result'=>array());
             return $result;
         }
 
@@ -1879,8 +1879,9 @@ function continue_sign($user_id){
             $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格！','result'=>array());
             return $result;
         }
+
         // 是代理并且有领取次数
-        if ($user['is_agent'] == 1 && $type == 2 &&  $user['agent_free_num'] < $num ) {
+        if ($user['super_nsign'] == 1 && $type == 2 &&  $user['agent_free_num'] < $num ) {
             $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格！','result'=>array());
             return $result;
         }
@@ -1891,13 +1892,13 @@ function continue_sign($user_id){
             $addTimeM = date('m', $data[0]['addend_time']); //最近下单月份
 
             //代理超出领取次数
-            if ($user['is_agent'] == 1 && count($data)  == 12 ) {
+            if ($user['super_nsign'] == 1 && count($data)  == 12 ) {
                 $result = array('status'=>0,'msg'=>'已超出领取次数','result'=>array());
                 return $result;
             }
 
             //是代理又是分销的情况
-            if ( $user['is_agent'] == 1 && $user['is_distribut'] == 0) {
+            if ( $user['super_nsign'] == 1 && $user['is_distribut'] == 0) {
                 //代理每月可领取1次
                 if ($newTimeM == $addTimeM ) {
                     $result = array('status'=>0,'msg'=>'本月已领取过了','result'=>array());
