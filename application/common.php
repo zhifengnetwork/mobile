@@ -1835,15 +1835,15 @@ function continue_sign($user_id){
             return $result;
         }
 
-        // if ($user['is_distribut'] == 0 && $type == 1) {
-        //     $result = array('status'=>0,'msg'=>'成为分销商才可领取','result'=>array());
-        //     return $result;
-        // }
+        if ($user['is_distribut'] == 0 && $type == 1) {
+            $result = array('status'=>0,'msg'=>'成为分销商才可领取','result'=>array());
+            return $result;
+        }
 
-        // if ($user['is_agent'] == 0 && $type == 2) {
-        //     $result = array('status'=>0,'msg'=>'成为代理商才可领取','result'=>array());
-        //     return $result;
-        // }
+        if ($user['is_agent'] == 0 && $type == 2) {
+            $result = array('status'=>0,'msg'=>'成为代理商才可领取','result'=>array());
+            return $result;
+        }
 
         $data = M('order_sign_receive')->where('uid',$user['user_id'])->order('addend_time desc')->select();
 
