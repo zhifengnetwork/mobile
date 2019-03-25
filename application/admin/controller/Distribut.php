@@ -328,6 +328,8 @@ class Distribut extends Base {
         if ($search_value) {
             if($search_type == 'account'){
                 $map['mobile|email'] = array('like', "%$search_value%");
+            }else if($search_type == 'user_id'){
+                $map['users.'.$search_type] = $search_value;
             }else{
                 $map['users.'.$search_type] = array('like', "%$search_value%");
             }
@@ -370,6 +372,8 @@ class Distribut extends Base {
         if ($search_value) {
             if($search_type == 'account'){
                 $map['mobile|email'] = array('like', "%$search_value%");
+            }else if($search_type == 'user_id'){
+                $map['users.'.$search_type] = $search_value;
             }else{
                 $map['users.'.$search_type] = array('like', "%$search_value%");
             }
