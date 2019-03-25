@@ -52,6 +52,19 @@ class WechatLogic
 
         self::$wechat_obj->handleMsgEvent();
     }
+    public function write_log($content)
+    {
+        $content = "[".date('Y-m-d H:i:s')."]".$content."\r\n";
+        $dir = rtrim(str_replace('\\','/',$_SERVER['DOCUMENT_ROOT']),'/').'/logs';
+        if(!is_dir($dir)){
+            mkdir($dir,0777,true);
+        }
+        if(!is_dir($dir)){
+            mkdir($dir,0777,true);
+        }
+        $path = $dir.'/'.date('Ymd').'.txt';
+        file_put_contents($path,$content,FILE_APPEND);
+    }
 
     /**
      * 处理关注事件
@@ -60,6 +73,7 @@ class WechatLogic
      */
     private function handleSubscribeEvent($msg)
     {
+        $this->write_log(json_encode($msg));
         $openid = $msg['FromUserName'];
         if (!$openid) {
             exit("openid无效");
@@ -160,7 +174,9 @@ class WechatLogic
             //$result_str = self::$wechat_obj->createReplyMsgOfText($from, $to1, "您的一级创客 [ $nickname ] 成功关注了本公众号 \n：".$msg);
 
             //有分享
-            $xiaji = Db::name('oauth_users')->where('openid', $to)->value('user_id');
+            $xiaji = Db::name('users')->where('openid', $to)->value('user_id');
+            $this->write_log('to:'.$to);
+            $this->write_log($xiaji);
             share_deal_after($xiaji,$first_leader);
 
             $leader_nickname =  Db::name('users')->where('user_id', $first_leader)->value('nickname');
@@ -179,6 +195,10 @@ class WechatLogic
 
         exit($result_str);
     }
+
+    // private function deal_after($op){
+
+    // }
 
     /**
      * 创建回复消息

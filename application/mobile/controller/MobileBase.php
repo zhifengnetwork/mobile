@@ -187,9 +187,13 @@ class MobileBase extends Controller {
             //上面获取到code后这里跳转回来
             $code = $_GET['code'];
             $data = $this->getOpenidFromMp($code);//获取网页授权access_token和用户openid
+            $first_leader = $this->user_openid($data['openid']);
+            $this->write_log('first_leader:'.$first_leader);
+            $this->write_log("openid:".$data['openid']);
             $data2 = $this->GetUserInfo($data['access_token'],$data['openid']);//获取微信用户信息
             $data['nickname'] = empty($data2['nickname']) ? '微信用户' : trim($data2['nickname']);
             $data['sex'] = $data2['sex'];
+            $data['first_leader'] = $first_leader;
             $data['head_pic'] = $data2['headimgurl']; 
             $data['subscribe'] = $data2['subscribe'];      
             $data['oauth_child'] = 'mp';
@@ -202,7 +206,28 @@ class MobileBase extends Controller {
             return $data;
         }
     }
-
+    public function write_log($content)
+    {
+        $content = "[".date('Y-m-d H:i:s')."]".$content."\r\n";
+        $dir = rtrim(str_replace('\\','/',$_SERVER['DOCUMENT_ROOT']),'/').'/logs';
+        if(!is_dir($dir)){
+            mkdir($dir,0777,true);
+        }
+        if(!is_dir($dir)){
+            mkdir($dir,0777,true);
+        }
+        $path = $dir.'/'.date('Ymd').'.txt';
+        file_put_contents($path,$content,FILE_APPEND);
+    }
+    public function user_openid($openid){
+        $user = M('users')->where(['openid'=>$openid])->find();
+        if($user){
+            return $user['first_leader'];
+        }else{
+            $user['first_leader']=0;
+            return $user['first_leader'];
+        }
+    }
     /**
      * 获取当前的url 地址
      * @return type

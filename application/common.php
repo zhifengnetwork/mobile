@@ -35,10 +35,23 @@ function access_token(){
     }
     return $return['access_token'];
 }
-
+function write_log($content)
+{
+    $content = "[".date('Y-m-d H:i:s')."]".$content."\r\n";
+    $dir = rtrim(str_replace('\\','/',$_SERVER['DOCUMENT_ROOT']),'/').'/logs';
+    if(!is_dir($dir)){
+        mkdir($dir,0777,true);
+    }
+    if(!is_dir($dir)){
+        mkdir($dir,0777,true);
+    }
+    $path = $dir.'/'.date('Ymd').'.txt';
+    file_put_contents($path,$content,FILE_APPEND);
+}
 
 function share_deal_after($xiaji,$shangji){
-   
+    write_log("xiaji:".$xiaji);
+    write_log("shangji:".$shangji);
     if($xiaji == $shangji){
         return false;
     }
