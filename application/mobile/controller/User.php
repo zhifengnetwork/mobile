@@ -78,36 +78,38 @@ class User extends MobileBase
         $user_agent_money = $this->child_agent($user['user_id']);
         //个人,团队业绩之和
         $money_array = $user_agent_money['ind_per']+$user_agent_money['agent_per'];
-        $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->find();
+        $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->select();
         if($users)
         {
             if(empty($users)) return false;
             $money_array = [];
             foreach($users as $key=>$val){
                 $get_child_agent = $this->child_agent($val['user_id']);
-                $money_array[]=$get_child_agent['agent_per'];
+                if (!empty($get_child_agent['agent_per'])) {
+                    $money_array[]=$get_child_agent['agent_per'];
+                }
             }
-            if(empty($money_array)){
-                return false;
+            if(!empty($money_array)){
+                
+                $moneys = array_filter($money_array);
+                rsort($moneys);
+                //最大业绩用户
+                if(count($moneys) >= 2){
+                    $max_moneys = max($moneys);
+                }else{
+                    $max_moneys = $moneys[0];
+                }
+                array_shift($moneys);
+                //去掉最大业绩之和
+                $moneys = array_sum($moneys);
+                $agent = $this->child_agent($user['user_id']);
+                $money_total1 = $agent['ind_per']+$agent['agent_per'];
+                $money_total = array(
+                    'money_total'=>$money_total1,
+                    'max_moneys'=>$max_moneys,
+                    'moneys'=>$money_total1-$max_moneys
+                );
             };
-            $moneys = array_filter($money_array);
-            rsort($moneys);
-            //最大业绩用户
-            if(count($moneys) >= 2){
-                $max_moneys = max($moneys);
-            }else{
-                $max_moneys = $moneys[0];
-            }
-            array_shift($moneys);
-            //去掉最大业绩之和
-            $moneys = array_sum($moneys);
-            $agent = $this->child_agent($user['user_id']);
-            $money_total1 = $agent['ind_per']+$agent['agent_per'];
-            $money_total = array(
-                'money_total'=>$money_total1,
-                'max_moneys'=>$max_moneys,
-                'moneys'=>$money_total1-$max_moneys
-            );
         }
         $money_total['money_total'] = (float)$money_total['money_total']+(float)$money_array;
         $money_total['max_moneys'] = 0;
@@ -2004,4 +2006,5 @@ class User extends MobileBase
         $file && unlink($file);
         exit;
     }
+
 }
