@@ -1487,8 +1487,9 @@ class User extends MobileBase
             }
 
             // 统计所有0，1的金额
-            $status = ['in','0,1'];   
-            $total_money = Db::name('withdrawals')->where(array('user_id' => $this->user_id, 'status' => $status))->sum('money');
+            //$status = ['in','0,1'];   
+            // $status
+            $total_money = Db::name('withdrawals')->where(array('user_id' => $this->user_id, 'status' => 0))->sum('money');
             if ($total_money + $data['money'] > $this->user['user_money']) {
                 $this->ajaxReturn(['status'=>0, 'msg'=>"您有提现申请待处理，本次提现余额不足"]);
             }
