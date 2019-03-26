@@ -213,6 +213,7 @@ class User extends MobileBase
         	$pic = "/public/share/picture_ok44/".$user_id.".jpg";
         }
     
+        $pic = $pic.'?v='.time();
         $this->assign('pic',$pic);
 
         return $this->fetch();
@@ -302,6 +303,7 @@ class User extends MobileBase
         	$picture = "/public/share/picture_888/".$user_id.".jpg";
         }
 
+        $picture = $picture.'?v='.time();
         $this->assign('pic',$picture);
 
         return $this->fetch('fenxiang');
