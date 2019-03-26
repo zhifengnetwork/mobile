@@ -1833,7 +1833,7 @@ function continue_sign($user_id){
         $data = M('order_sign_receive')->where('uid',$user['user_id'])->order('addend_time desc')->select();
         $user = M('Users')->where('user_id',$user['user_id'])->find();
 
-        if ($user['distribut_free_num'] > 0) {
+        if ($user['agent_free_num'] <= 0) {
             return array('status'=>1,'msg'=>'正常购物流程','result'=>array());
         }
         if ($user['is_distribut'] == 0 && $type == 1) {
