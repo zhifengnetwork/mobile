@@ -418,12 +418,14 @@ class PlaceOrder
     }
 
     /**
-     * 添加免费领取记录
+     * 扣除免费领取记录
      * @param $order
      */
     public function addOrderSignReceive()
     {
         $signPrice = $this->pay->getSignPrice();
+        $payList = $this->pay->getPayList();
+        
         if($signPrice > 0){
             $user = $this->pay->getUser();
 
@@ -433,10 +435,9 @@ class PlaceOrder
             Db::name('OrderSignReceive')->save($data);
 
             $catId = Db::name('order_goods')->where('order_id', $this->order['order_id'])->find();
-
-            if ($catId['cat_id'] == 584) {
+            if ($payList[0]['goods']->sign_free_receive == 1) {
                 Db::name('users')->where('user_id', $user['user_id'])->setDec('distribut_free_num', $catId['goods_num']);// 分销领取次数减一
-            } elseif ($catId['cat_id'] == 585) {
+            } elseif ($payList[0]['goods']->sign_free_receive == 2) {
                 Db::name('users')->where('user_id', $user['user_id'])->setDec('agent_free_num', $catId['goods_num']);// 代理领取次数减一
             }
         }

@@ -1841,7 +1841,6 @@ function continue_sign($user_id){
         // }
 
         $data = M('order_sign_receive')->where('uid',$user['user_id'])->order('addend_time desc')->select();
-
         $user = M('Users')->where('user_id',$user['user_id'])->find();
 
         // 是分销并且有领取次数
@@ -1867,7 +1866,7 @@ function continue_sign($user_id){
             }
 
             //是代理又是分销的情况
-            if ( $user['is_agent'] == 1 && $user['is_distribut'] == 0) {
+            if ( $user['is_agent'] == 1 && $type == 2) {
                 //代理每月可领取1次
                 if ($newTimeM == $addTimeM ) {
                     $result = array('status'=>0,'msg'=>'本月已领取过了','result'=>array());
