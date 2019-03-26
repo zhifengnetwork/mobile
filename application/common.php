@@ -1863,38 +1863,36 @@ function continue_sign($user_id){
         $data = M('order_sign_receive')->where('uid',$user['user_id'])->order('addend_time desc')->select();
         $user = M('Users')->where('user_id',$user['user_id'])->find();
 
-        //没有领取资格走正常购物流程
-        if ($user['super_nsign'] == 0) {
-            return array('status'=>1,'msg'=>'正常购物流程','result'=>array());
-        }
-        // 是分销并且没有购买399 不可领取
-        if ($user['is_distribut'] == 1 && $type == 2 &&  $user['super_nsign'] == 0 ) {
-            $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格1！','result'=>array());
-            return $result;
-        }
-
         //9.9产品(type=1)不是分销商不可领取
         if ($user['is_distribut'] == 0 && $type == 1) {
             $result = array('status'=>0,'msg'=>'成为分销商才可领取','result'=>array());
             return $result;
         }
 
+        // 是分销并且有领取次数
+        if ($user['is_distribut'] == 1 && $type == 1 &&  $user['distribut_free_num'] < $num ) {
+            $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格！','result'=>array());
+            return $result;
+        }
+
+        // 是分销并且没有购买399 不可领取
+        if ($user['is_distribut'] == 1 && $type == 2 &&  $user['super_nsign'] == 0 ) {
+            $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格1！','result'=>array());
+            return $result;
+        }
+
+
+
         // if ($user['super_nsign'] == 0 && $type == 2) {
         //     $result = array('status'=>0,'msg'=>'购买指定产品才可领取','result'=>array());
         //     return $result;
         // }
 
+        //没有领取资格走正常购物流程
+        if ($user['super_nsign'] == 0 && $type == 2 ) {
+            return array('status'=>1,'msg'=>'正常购物流程','result'=>array());
+        }
 
-        // 是分销并且有领取次数
-        if ($user['is_distribut'] == 1 && $type == 1 &&  $user['distribut_free_num'] < $num ) {
-            $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格1！','result'=>array());
-            return $result;
-        }
-        // 是分销并且没有购买399 不可领取
-        if ($user['is_distribut'] == 1 && $type == 2 &&  $user['super_nsign'] == 0 ) {
-            $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格！！','result'=>array());
-            return $result;
-        }
         // 是代理或购买过指定产品并且有领取次数
         if ($user['super_nsign'] == 1 ) {
             if ($user['is_agent'] == 1 && $type == 2 ) {
@@ -1924,6 +1922,6 @@ function continue_sign($user_id){
             // }
 
         }
-        
+
         return array('status'=>2,'msg'=>'可领取','result'=>array());
     }
