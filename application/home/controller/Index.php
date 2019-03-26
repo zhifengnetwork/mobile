@@ -9,7 +9,19 @@ class Index extends Base {
     
 
     public function test(){
+        // ini_set('max_execution_time', '0');
 
+        // $order = M('order')->where(['pay_status'=>1])->field('order_id,user_id')->select();
+
+        // dump($order);
+
+        // foreach($order as $key => $val){
+        //     $res = can_super_nsign($val['order_id'],$val['user_id']);
+        // }
+
+        // exit;
+
+    
         // $account = M('config')->where(['name'=>'sms_appkey'])->value('value');
         // $password = M('config')->where(['name'=>'sms_secretKey'])->value('value');;
         // $logic = new SmsChuanglanLogic($account,$password);

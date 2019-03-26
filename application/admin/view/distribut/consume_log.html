@@ -21,6 +21,7 @@
 		</div>
 		 <ul>
 			<li>会员消费日志信息管理,可以按搜索条件导出表格</li>
+			<li>搜索会员账户可以对用户的手机或者邮箱进行模糊搜索</li>
 		</ul>
 	</div>
 	
@@ -49,7 +50,7 @@
                             <option value="nickname" <if condition="$search_type eq 'nickname'">selected</if>>会员昵称</option>
                             <option value="account" <if condition="$search_type eq 'account'">selected</if>>会员账户</option>
                         </select>
-                        <input type="text" size="30" name="search_value" value="{$search_value}" placeholder="模糊查询" class="qsbox">
+                        <input type="text" size="30" name="search_value" value="{$search_value}" placeholder="查询" class="qsbox">
 						<input type="button" onclick="clickSearch(this,'search-form')"  class="btn" value="搜索">
 					</div>
 				</div>

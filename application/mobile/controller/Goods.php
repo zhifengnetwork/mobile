@@ -133,7 +133,7 @@ class Goods extends MobileBase
     public function goodsList()
     {
         $filter_param = array(); // 帅选数组
-        $id = I('id/d', 1); // 当前分类id
+        $id = I('id'); // 当前分类id
         $brand_id = I('brand_id/d', 0);
         $spec = I('spec', 0); // 规格
         $attr = I('attr', ''); // 属性
@@ -143,7 +143,23 @@ class Goods extends MobileBase
         $start_price = trim(I('start_price', '0')); // 输入框价钱
         $end_price = trim(I('end_price', '0')); // 输入框价钱
         if ($start_price && $end_price) $price = $start_price . '-' . $end_price; // 如果输入框有价钱 则使用输入框的价钱
-        $filter_param['id'] = $id; //加入帅选条件中
+
+       
+
+        //如果分类是数字
+        if(is_numeric($id)){
+            $filter_param['id'] = $id; //加入帅选条件中
+        }else{
+           
+            //如果不是字母
+            if($id == 'DISTRIBUT'){
+                $con['sign_free_receive'] = 1;
+            }
+            if($id == 'AGENT'){
+                $con['sign_free_receive'] = 2;
+            }
+        }
+           
         $brand_id && ($filter_param['brand_id'] = $brand_id); //加入帅选条件中
         $spec && ($filter_param['spec'] = $spec); //加入帅选条件中
         $attr && ($filter_param['attr'] = $attr); //加入帅选条件中
@@ -197,7 +213,7 @@ class Goods extends MobileBase
             $sort_arr = ['sales_sum','shop_price','is_new','comment_count','sort'];
             if(!in_array($sort,$sort_arr)) $sort='sort'; // 防注入
 
-            $goods_list = M('goods')->where("goods_id", "in", implode(',', $filter_goods_id))->order([$sort => $sort_asc])->limit($page->firstRow . ',' . $page->listRows)->select();
+            $goods_list = M('goods')->where("goods_id", "in", implode(',', $filter_goods_id))->where($con)->order([$sort => $sort_asc])->limit($page->firstRow . ',' . $page->listRows)->select();
             $filter_goods_id2 = get_arr_column($goods_list, 'goods_id');
             if ($filter_goods_id2)
                 $goods_images = M('goods_images')->where("goods_id", "in", implode(',', $filter_goods_id2))->cache(true)->select();
@@ -315,7 +331,7 @@ class Goods extends MobileBase
             $collect = db('goods_collect')->where(array("goods_id" => $goods_id, "user_id" => $user_id))->count(); //当前用户收藏
             $this->assign('collect', $collect);
         }
-        
+
         $recommend_goods = M('goods')->where("is_recommend=1 and is_on_sale=1 and cat_id = {$goods['cat_id']}")->cache(7200)->limit(9)->field("goods_id, goods_name, shop_price")->select();
         $this->assign('recommend_goods', $recommend_goods);
         $this->assign('goods', $goods);
@@ -334,6 +350,10 @@ class Goods extends MobileBase
         if(empty($goods) || ($goods['is_on_sale'] == 0) || ($goods['is_virtual']==1 && $goods['virtual_indate'] <= time())){
             $this->error('此商品不存在或者已下架');
         }
+        if ($goods['sign_free_receive'] != 0 ) {
+             // $isReceive = provingReceive($this->user, $goods['sign_free_receive'], $goods['']);
+        }
+
         if (cookie('user_id')) {
             $goodsLogic->add_visit_log(cookie('user_id'), $goods);
         }

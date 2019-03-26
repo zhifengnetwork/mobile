@@ -78,7 +78,7 @@ class User extends Base
         $account ? $condition['email|mobile'] = ['like', "%$account%"] : false;
         $nickname ? $condition['nickname'] = ['like', "%$nickname%"] : false;
         $realname ? $condition['realname'] = ['like', "%$realname%"] : false;
-        $user_id ? $condition['user_id'] = ['like', "%$user_id%"] : false;
+        $user_id ? $condition['user_id'] = $user_id : false;
 
         I('first_leader') && ($condition['first_leader'] = I('first_leader')); // 查看一级下线人有哪些
         I('second_leader') && ($condition['second_leader'] = I('second_leader')); // 查看二级下线人有哪些
@@ -838,6 +838,11 @@ class User extends Base
     public function withdrawals_update()
     {
         $id_arr = I('id/a');
+       
+        if(count($id_arr) > 1){
+            $this->ajaxReturn(array('status' => 0, 'msg' => "操作失败，请单选"), 'JSON');
+        }
+
         $data['status'] = $status = I('status');
         $data['remark'] = I('remark');
         if ($status == 1){
@@ -848,7 +853,9 @@ class User extends Base
             $wx_content = "您提交的提现申请未通过审核！\n备注：{$data['remark']}";
             $data['refuse_time'] = time();
         }
+
         $ids = implode(',', $id_arr);
+
         $falg = M('withdrawals')->where(['id'=>$ids])->find();
         $user_find = M('users')->where(['user_id'=>$falg['user_id']])->find();
         if($user_find['user_money'] < $falg['money'])
@@ -858,16 +865,29 @@ class User extends Base
         $user_arr = array(
             'user_money' => $user_find['user_money'] - $falg['money']
         );
+
+        if($ids == ''){
+            $this->ajaxReturn(array('status' => 0, 'msg' => "操作失败，ID不能为空"), 'JSON');
+        }
+
+        //写记录（扣钱）
+        $rr = accountLog($falg['user_id'], -$falg['money'], 0, '提现编号:'.$ids,0, 0 , 0);
+        if($rr == false){
+            // 发送公众号消息给用户
+            $wechat = new \app\common\logic\wechat\WechatUtil();
+            $wechat->sendMsg($user_find['openid'], 'text', '您提交的提现申请操作失败！');
+            $this->ajaxReturn(array('status' => 0, 'msg' => "操作失败"), 'JSON');
+        }
+
         $r = Db::name('withdrawals')->whereIn('id', $ids)->update($data);
         if ($r !== false) {
-            Db::name('users')->whereIn('user_id', $falg['user_id'])->update($user_arr);
-                // 发送公众号消息给用户
-                $user = Db::name('OauthUsers')->where(['user_id'=>$falg['user_id'] , 'oauth'=>'weixin' , 'oauth_child'=>'mp'])->find();
-                if ($user) {
-                    $wechat = new \app\common\logic\wechat\WechatUtil();
-                    $wechat->sendMsg($user['openid'], 'text', $wx_content);
-                }
+            // Db::name('users')->whereIn('user_id', $falg['user_id'])->update($user_arr);
+            // 发送公众号消息给用户
+            $wechat = new \app\common\logic\wechat\WechatUtil();
+            $wechat->sendMsg($user_find['openid'], 'text', $wx_content);
+
             $this->ajaxReturn(array('status' => 1, 'msg' => "操作成功"), 'JSON');
+
         } else {
             $this->ajaxReturn(array('status' => 0, 'msg' => "操作失败"), 'JSON');
         }

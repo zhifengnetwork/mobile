@@ -78,36 +78,38 @@ class User extends MobileBase
         $user_agent_money = $this->child_agent($user['user_id']);
         //个人,团队业绩之和
         $money_array = $user_agent_money['ind_per']+$user_agent_money['agent_per'];
-        $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->find();
+        $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->select();
         if($users)
         {
             if(empty($users)) return false;
             $money_array = [];
             foreach($users as $key=>$val){
                 $get_child_agent = $this->child_agent($val['user_id']);
-                $money_array[]=$get_child_agent['agent_per'];
+                if (!empty($get_child_agent['agent_per'])) {
+                    $money_array[]=$get_child_agent['agent_per'];
+                }
             }
-            if(empty($money_array)){
-                return false;
+            if(!empty($money_array)){
+                
+                $moneys = array_filter($money_array);
+                rsort($moneys);
+                //最大业绩用户
+                if(count($moneys) >= 2){
+                    $max_moneys = max($moneys);
+                }else{
+                    $max_moneys = $moneys[0];
+                }
+                array_shift($moneys);
+                //去掉最大业绩之和
+                $moneys = array_sum($moneys);
+                $agent = $this->child_agent($user['user_id']);
+                $money_total1 = $agent['ind_per']+$agent['agent_per'];
+                $money_total = array(
+                    'money_total'=>$money_total1,
+                    'max_moneys'=>$max_moneys,
+                    'moneys'=>$money_total1-$max_moneys
+                );
             };
-            $moneys = array_filter($money_array);
-            rsort($moneys);
-            //最大业绩用户
-            if(count($moneys) >= 2){
-                $max_moneys = max($moneys);
-            }else{
-                $max_moneys = $moneys[0];
-            }
-            array_shift($moneys);
-            //去掉最大业绩之和
-            $moneys = array_sum($moneys);
-            $agent = $this->child_agent($user['user_id']);
-            $money_total1 = $agent['ind_per']+$agent['agent_per'];
-            $money_total = array(
-                'money_total'=>$money_total1,
-                'max_moneys'=>$max_moneys,
-                'moneys'=>$money_total1-$max_moneys
-            );
         }
         $money_total['money_total'] = (float)$money_total['money_total']+(float)$money_array;
         $money_total['max_moneys'] = 0;
@@ -211,6 +213,7 @@ class User extends MobileBase
         	$pic = "/public/share/picture_ok44/".$user_id.".jpg";
         }
     
+        $pic = $pic.'?v='.time();
         $this->assign('pic',$pic);
 
         return $this->fetch();
@@ -272,7 +275,7 @@ class User extends MobileBase
         $pic = "/www/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg";
         if( @fopen( $pic, 'r' ) )
         {
-        	$pic = "/share/picture_ok44/".$uid.".jpg";
+        	$pic = "/share/picture_ok44/".$user_id.".jpg";
         }
         else
         {
@@ -288,7 +291,7 @@ class User extends MobileBase
         $pic111 = "/www/wwwroot/www.dchqzg1688.com/public/share/picture_888/".$user_id.".jpg";
         if( @fopen( $pic111, 'r' ) )
         {
-        	$picture = "/public/share/picture_888/".$uid.".jpg";
+        	$picture = "/public/share/picture_888/".$user_id.".jpg";
         }
         else
         {
@@ -300,6 +303,7 @@ class User extends MobileBase
         	$picture = "/public/share/picture_888/".$user_id.".jpg";
         }
 
+        $picture = $picture.'?v='.time();
         $this->assign('pic',$picture);
 
         return $this->fetch('fenxiang');
@@ -1485,8 +1489,9 @@ class User extends MobileBase
             }
 
             // 统计所有0，1的金额
-            $status = ['in','0,1'];   
-            $total_money = Db::name('withdrawals')->where(array('user_id' => $this->user_id, 'status' => $status))->sum('money');
+            //$status = ['in','0,1'];   
+            // $status
+            $total_money = Db::name('withdrawals')->where(array('user_id' => $this->user_id, 'status' => 0))->sum('money');
             if ($total_money + $data['money'] > $this->user['user_money']) {
                 $this->ajaxReturn(['status'=>0, 'msg'=>"您有提现申请待处理，本次提现余额不足"]);
             }
@@ -1791,6 +1796,36 @@ class User extends MobileBase
         return $this->fetch();
     }
 
+    /**
+     * 重置支付密码
+     * @return mixed
+     */
+    public function paypwd_reset()
+    {
+        //检查是否第三方登录用户
+        $user = M('users')->where('user_id', $this->user_id)->find();
+        if ($user['mobile'] == '')
+            $this->error('请先绑定手机号',U('User/setMobile',['source'=>'paypwd']));
+        $step = I('step', 1);
+        if ($step > 1) {
+            $check = session('validate_code');
+            if (empty($check)) {
+                $this->error('验证码还未验证通过', U('mobile/User/paypwd'));
+            }
+        }
+        if (IS_POST && $step == 2) {
+            $new_password = trim(I('new_password'));
+            $confirm_password = trim(I('confirm_password'));
+         
+            $userLogic = new UsersLogic();
+            $data = $userLogic->paypwd($this->user_id, $new_password, $confirm_password);
+            $this->ajaxReturn($data);
+            exit;
+        }
+        $this->assign('step', $step);
+        return $this->fetch();
+    }
+
 
     /**
      * 会员签到积分奖励
@@ -2004,4 +2039,5 @@ class User extends MobileBase
         $file && unlink($file);
         exit;
     }
+
 }
