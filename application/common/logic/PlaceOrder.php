@@ -438,6 +438,7 @@ class PlaceOrder
 
             $data['uid'] = $user['user_id'];
             $data['order_id'] = $this->order['order_id'];
+            $data['type'] = $payList[0]['goods']->sign_free_receive;
             $data['addend_time'] = time();
             Db::name('OrderSignReceive')->save($data);
 
