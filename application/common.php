@@ -1830,6 +1830,12 @@ function continue_sign($user_id){
     */
     function provingReceive($user, $type, $num = 1){
 
+        $data = M('order_sign_receive')->where('uid',$user['user_id'])->order('addend_time desc')->select();
+        $user = M('Users')->where('user_id',$user['user_id'])->find();
+
+        if ($user['distribut_free_num'] > 0) {
+            return array('status'=>1,'msg'=>'正常购物流程','result'=>array());
+        }
         if ($user['is_distribut'] == 0 && $type == 1) {
             $result = array('status'=>0,'msg'=>'成为分销商才可领取','result'=>array());
             return $result;
@@ -1840,8 +1846,6 @@ function continue_sign($user_id){
         //     return $result;
         // }
 
-        $data = M('order_sign_receive')->where('uid',$user['user_id'])->order('addend_time desc')->select();
-        $user = M('Users')->where('user_id',$user['user_id'])->find();
 
         // 是分销并且有领取次数
         if ($user['is_distribut'] == 1 && $type == 1 &&  $user['distribut_free_num'] < $num ) {
