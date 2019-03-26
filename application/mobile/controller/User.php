@@ -240,6 +240,9 @@ class User extends MobileBase
     {
         $user_id = session('user.user_id');
 
+        $this->redirect('fanxiang1');
+        //正在跳转
+
         $logic = new ShareLogic();
         $ticket = $logic->get_ticket($user_id);
 
