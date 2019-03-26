@@ -408,7 +408,7 @@ class Pay
                         $isReceive = ['status' => 0] ;
                     }
                 }
-
+                
                 if($isReceive['status'] == 2){
                     $this->orderAmount = $this->orderAmount - $this->goodsPrice;
                     $this->signPrice = $this->goodsPrice;

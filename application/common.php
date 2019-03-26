@@ -1897,13 +1897,10 @@ function continue_sign($user_id){
         }
         // 是代理或购买过指定产品并且有领取次数
         if ($user['super_nsign'] == 1 ) {
-            if ( $user['agent_free_num'] >= $num ) {
-                if ($user['is_agent'] == 1 && $type == 2 ) {
-                    $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格！！！','result'=>array());
-                    return $result;
+            if ($user['is_agent'] == 1 && $type == 2 ) {
+                if ( $user['agent_free_num'] <= $num ) {
+                    return array('status'=>1,'msg'=>'正常购物流程','result'=>array());
                 }
-            } else {
-                return array('status'=>1,'msg'=>'正常购物流程','result'=>array());
             }
         }
 
@@ -1927,6 +1924,6 @@ function continue_sign($user_id){
             // }
 
         }
-
+        
         return array('status'=>2,'msg'=>'可领取','result'=>array());
     }
