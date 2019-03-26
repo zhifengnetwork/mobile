@@ -1860,7 +1860,7 @@ function continue_sign($user_id){
     */
     function provingReceive($user, $type, $num = 1){
 
-        $data = M('order_sign_receive')->where('uid',$user['user_id'])->order('addend_time desc')->select();
+        $data = M('order_sign_receive')->where(['uid'=>$user['user_id'], 'type'=>2])->order('addend_time desc')->select();
         $user = M('Users')->where('user_id',$user['user_id'])->find();
 
         //9.9产品(type=1)不是分销商不可领取
