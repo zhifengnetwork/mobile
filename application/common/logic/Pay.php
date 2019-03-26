@@ -396,7 +396,6 @@ class Pay
             if ( $this->user['super_nsign'] != 0 || $this->user['is_distribut'] != 0 || $this->user['is_agent'] != 0 ) {
 
                 $isReceive = provingReceive($this->user, $this->goods['sign_free_receive'], $this->totalNum);
-
                 //是代理又是分销的情况
                 if ( $this->user['is_agent'] == 1 && $this->payList[0]['goods']->sign_free_receive == 2) {
 
@@ -410,7 +409,7 @@ class Pay
                     }
                 }
 
-                if($isReceive['status'] == 1){
+                if($isReceive['status'] == 2){
                     $this->orderAmount = $this->orderAmount - $this->goodsPrice;
                     $this->signPrice = $this->goodsPrice;
                 }

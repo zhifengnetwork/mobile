@@ -720,6 +720,8 @@
 
         //加入购物车
         $(document).on('click', '#join_cart', function () {
+            var store_count = $("input[name='store_count']").attr('value');// 商品原始库存
+            var goods_num = parseInt($("input[name='goods_num']").val());
             var is_sign = $('input[name="is_sign"]').attr('value'); //是否签到兑换商品
             // 免费领取
             if(is_sign != 0 ){
