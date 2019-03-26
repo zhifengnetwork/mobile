@@ -758,24 +758,28 @@ class User extends Base
         if ($export == 1) {
             $strTable = '<table width="500" border="1">';
             $strTable .= '<tr>';
+            $strTable .= '<td style="text-align:center;font-size:12px;width:120px;">ID</td>';
             $strTable .= '<td style="text-align:center;font-size:12px;width:120px;">申请人</td>';
             $strTable .= '<td style="text-align:center;font-size:12px;" width="100">提现金额</td>';
             $strTable .= '<td style="text-align:center;font-size:12px;" width="*">银行名称</td>';
             $strTable .= '<td style="text-align:center;font-size:12px;" width="*">银行账号</td>';
             $strTable .= '<td style="text-align:center;font-size:12px;" width="*">开户人姓名</td>';
             $strTable .= '<td style="text-align:center;font-size:12px;" width="*">申请时间</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">审核时间</td>';
             $strTable .= '<td style="text-align:center;font-size:12px;" width="*">提现备注</td>';
             $strTable .= '</tr>';
             $remittanceList = Db::name('withdrawals')->alias('w')->field('w.*,u.nickname')->join('__USERS__ u', 'u.user_id = w.user_id', 'INNER')->where($where)->order("w.id desc")->select();
             if (is_array($remittanceList)) {
                 foreach ($remittanceList as $k => $val) {
                     $strTable .= '<tr>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;">' . $val['id'] . '</td>';
                     $strTable .= '<td style="text-align:center;font-size:12px;">' . $val['nickname'] . '</td>';
                     $strTable .= '<td style="text-align:left;font-size:12px;">' . $val['money'] . ' </td>';
                     $strTable .= '<td style="text-align:left;font-size:12px;">' . $val['bank_name'] . '</td>';
                     $strTable .= '<td style="vnd.ms-excel.numberformat:@">' . $val['bank_card'] . '</td>';
                     $strTable .= '<td style="text-align:left;font-size:12px;">' . $val['realname'] . '</td>';
                     $strTable .= '<td style="text-align:left;font-size:12px;">' . date('Y-m-d H:i:s', $val['create_time']) . '</td>';
+                    $strTable .= '<td style="text-align:left;font-size:12px;">' . date('Y-m-d H:i:s', $val['check_time']) . '</td>';
                     $strTable .= '<td style="text-align:left;font-size:12px;">' . $val['remark'] . '</td>';
                     $strTable .= '</tr>';
                 }
