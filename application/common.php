@@ -1094,39 +1094,9 @@ function update_pay_status($order_sn,$ext=array())
         // 发送微信消息模板提醒
         $wechat = new \app\common\logic\WechatLogic;
         $wechat->sendTemplateMsgOnPaySuccess($order);
-
-        //买了399的东西
-        can_super_nsign($order['order_id'],$order['user_id']);
     }
 }
 
-/**
- * 买了399的东西
- */
-function can_super_nsign($order_id,$user_id){
-    //super_nsign判断是不是1
-    $super_nsign = M('users')->where(['user_id'=>$user_id])->value('super_nsign');
- 
-    if($super_nsign == 1){
-        return true;
-    }
-    $goods = M('order_goods')->where(['order_id'=>$order_id])->field('order_id,goods_id')->select();
-
-    foreach($goods as $key => $val){
-        $sign_free_receive = M('goods')->where(['goods_id'=>$val['goods_id']])->value('sign_free_receive');
-      
-        if((int)$sign_free_receive == 2){
-            M('users')->where(['user_id'=>$user_id])->update(['super_nsign'=>1]);
-            //写日志
-            $data = array(
-            'user_id'=>$user_id,
-            'order_id'=>$order_id
-            );
-            M('log_super_nsign')->add($data);
-        }
-    }
-    return true;
-}
 
 
 /**
@@ -1865,10 +1835,10 @@ function continue_sign($user_id){
             return $result;
         }
 
-        if ($user['super_nsign'] == 0 && $type == 2) {
-            $result = array('status'=>0,'msg'=>'购买指定产品才有资格领取','result'=>array());
-            return $result;
-        }
+        // if ($user['super_nsign'] == 0 && $type == 2) {
+        //     $result = array('status'=>0,'msg'=>'购买指定产品才可领取','result'=>array());
+        //     return $result;
+        // }
 
         $data = M('order_sign_receive')->where('uid',$user['user_id'])->order('addend_time desc')->select();
 
@@ -1879,9 +1849,8 @@ function continue_sign($user_id){
             $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格！','result'=>array());
             return $result;
         }
-
-        // 是代理并且有领取次数
-        if ($user['super_nsign'] == 1 && $type == 2 &&  $user['agent_free_num'] < $num ) {
+        // 是代理或购买过指定产品并且有领取次数
+        if ($user['super_nsign'] == 1 || $user['is_agent'] == 1 && $type == 2 &&  $user['agent_free_num'] < $num ) {
             $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格！','result'=>array());
             return $result;
         }
@@ -1892,13 +1861,13 @@ function continue_sign($user_id){
             $addTimeM = date('m', $data[0]['addend_time']); //最近下单月份
 
             //代理超出领取次数
-            if ($user['super_nsign'] == 1 && count($data)  == 12 ) {
+            if ($user['is_agent'] == 1 && count($data)  == 12 ) {
                 $result = array('status'=>0,'msg'=>'已超出领取次数','result'=>array());
                 return $result;
             }
 
             //是代理又是分销的情况
-            if ( $user['super_nsign'] == 1 && $user['is_distribut'] == 0) {
+            if ( $user['is_agent'] == 1 && $user['is_distribut'] == 0) {
                 //代理每月可领取1次
                 if ($newTimeM == $addTimeM ) {
                     $result = array('status'=>0,'msg'=>'本月已领取过了','result'=>array());
