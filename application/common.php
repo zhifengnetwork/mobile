@@ -1866,6 +1866,8 @@ function continue_sign($user_id){
         if ($user['agent_free_num'] == 0) {
             return array('status'=>1,'msg'=>'正常购物流程','result'=>array());
         }
+        
+        //9.9产品(type=1)不是分销商不可领取
         if ($user['is_distribut'] == 0 && $type == 1) {
             $result = array('status'=>0,'msg'=>'成为分销商才可领取','result'=>array());
             return $result;
