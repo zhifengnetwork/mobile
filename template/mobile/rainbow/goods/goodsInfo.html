@@ -711,7 +711,6 @@
 
             //普通流程
             if (goods_num <= store_count) {
-                
                 form.attr('action', "{:U('mobile/Cart/cart2',['action'=>'buy_now'])}").submit();
             } else {
                 layer.open({icon: 2, content: "购买数量超过此商品购买上限", time: 2});
@@ -723,21 +722,23 @@
             var store_count = $("input[name='store_count']").attr('value');// 商品原始库存
             var goods_num = parseInt($("input[name='goods_num']").val());
             var is_sign = $('input[name="is_sign"]').attr('value'); //是否签到兑换商品
-            // 免费领取
-            if(is_sign != 0 ){
-                if (goods_num <= store_count) {
-                    sign_receive(is_sign);
-                    return;
-                }
-            }
+
             if ($(this).hasClass('buy_bt_disable')) {
                 return;
             }
+            // 免费领取
+            if(is_sign != 0 ){
+                if (goods_num <= store_count) {
+                    cart_sign_receive(is_sign);
+                    return;
+                }
+            }
+            
             var goods_id = $("input[name='goods_id']").val();
             AjaxAddCart(goods_id, 1);
-
         })
     })
+
     //有规格id的时候，解析规格id选中规格
     function initSpec() {
         var item_id = $("input[name='item_id']").val();
@@ -847,6 +848,25 @@
                     return false;
                 }else{
                     $('#buy_goods_form').attr('action', "{:U('mobile/Cart/cart2',['action'=>'buy_now'])}").submit();
+                }
+            }
+        });
+    }
+
+    //加入购物车验证是否可以免费领取
+    function cart_sign_receive(type){
+        $.ajax({
+            type : "GET",
+            dataType: "json",
+            url:"/index.php?m=mobile&c=goods&a=sign_receive",//+tab,
+            data: {type:type},
+            success: function(data){
+                if(data.status == 0){
+                    layer.open({content:data.msg, time:3});
+                    return false;
+                }else{
+                    var goods_id = $("input[name='goods_id']").val();
+                    AjaxAddCart(goods_id, 1);
                 }
             }
         });
