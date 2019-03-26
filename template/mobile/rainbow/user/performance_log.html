@@ -4,7 +4,7 @@
     <div class="maleri30">
         <ul class="re_tit">
             
-            <li class="li2"><span>日期</span></li>
+            <li class="li2"><span>订单号</span></li>
             <li class="li1" style="width:33.3%"><span>金额</span></li>
             
             <li class="li3"><span>备注</span></li>
@@ -12,7 +12,7 @@
         </ul>
         <foreach name="lists" item="v">
             <ul>   
-                <li class="li2"><span>{$v[create_time]}</span></li> 
+                <li class="li2"><span>订单{$v[order_id]}</span></li> 
                 <li class="li1" style="width:33.3%"><span>{$v[money]}</span></li>  
                 <li class="li3"><span>{$v[note]}</span></li>
             </ul>
