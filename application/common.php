@@ -187,13 +187,26 @@ function agent_performance($order_id)
  */
 function agent_performance_log($user_id, $order_amount, $order_id)
 {
-    $log = array(
-        'user_id' => $user_id,
-        'money' => $order_amount,
-        'create_time' => date('Y-m-d H:i:s'),
-        'note' => '订单' . $order_id . '业绩'
-    );
-    M('agent_performance_log')->add($log);
+
+    //验证OK
+    
+    //先判断是否有记录
+    $is_cunzai = M('agent_performance_log')->where(['user_id'=>$user_id,'order_id'=>$order_id])->find();
+    if($is_cunzai){
+       
+        return false;
+
+    }else{
+        $log = array(
+            'user_id' => $user_id,
+            'money' => $order_amount,
+            'create_time' => date('Y-m-d H:i:s'),
+            'note' => '订单' . $order_id . '业绩',
+            'order_id' => $order_id
+        );
+        M('agent_performance_log')->add($log);
+    }
+
 }
 
 /**
