@@ -34,16 +34,12 @@ class BonusLogic extends Model
 
 	public function bonusModel()
 	{
-
-
-		
 		$price = M('goods')->where(['goods_id'=>$this->goodId])->value('shop_price');
 		//判断商品是否是分销商品或者代理商品
 		$good = M('goods')
 				->where('goods_id', $this->goodId)
 				->field('is_distribut,is_agent')
                 ->find();
-		
 		if(($good['is_distribut'] == 1) && ($good['is_agent'] == 1)){
 			$dist = $this->distribution();
 			$agent = $this->theAgent($this->userId);
@@ -67,34 +63,26 @@ class BonusLogic extends Model
 	public function distribution()
 	{
         $distributor = $this->users($this->userId);
-
         if ($distributor['is_distribut'] != 1) {
         	M('users')->where('user_id',$this->userId)->update(['is_distribut'=>1]);
         }
-        
 		//判断上级用户是否为分销商
         if (!$distributor['first_leader']){
         	return false;
         }
-
         $goods = $this->goods();
-
         $distribut = M('distribut')->find();
         $commission = $goods['shop_price'] * ($distribut['rate'] / 100) * $this->goodNum; //计算佣金
-
         $bool = M('users')->where('user_id',$distributor['first_leader'])->setInc('user_money',$commission);
 
         if ($bool !== false) {
         	$desc = "分销所得佣金";
         	$log = $this->writeLog($distributor['first_leader'],$commission,$desc,101); //写入日志
-
         	return true;
         } else {
         	return false;
         }
-
 	}
-
 	//记录日志
 	public function writeLog($userId,$money,$desc,$states)
 	{
@@ -107,12 +95,8 @@ class BonusLogic extends Model
 			'order_id'=>$this->orderId,
 			'states'=>$states
 		);
-
 		$bool = M('account_log')->insert($data);
-
-
 		if($bool){
-
 			//分钱记录
 			$data = array(
 				'order_id'=>$this->orderId,
@@ -122,9 +106,8 @@ class BonusLogic extends Model
 				'money'=>$money
 			);
 			M('order_divide')->add($data);
-		
+            agent_performance_log($userId, $money, $this->orderId);
 		}
-		
 		return $bool;
 	}
 
@@ -179,15 +162,13 @@ class BonusLogic extends Model
 		$pj_money = 0;
 		$userLevel = 0;
 		$sourceType = 4;
-		
 		foreach($meetUser as $k => $user){
 			if($k<=0) continue;
 			if(!$user['agent_user'] || $user['is_lock'] == 1) continue;
 			$grade  = $user['agent_user'];
-			if($grade<$userLevel) continue;
+			if($grade < $userLevel) continue;
 			$jsRate = $rateArr[$grade] - $useRate;
 			if($jsRate<0) continue;
-		
 			$money = $price*$jsRate/100;
 			if($jsRate==0 && $grade==5) 
 			{
