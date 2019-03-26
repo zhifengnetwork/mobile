@@ -2,7 +2,12 @@
 <include file="public/header_nav" title="我的分销" href="{:U('/Mobile/User/index')}" />
 <div class="loginsingup-input mobil_topup" style="padding:0 0.64rem;">
     <div class="recharge-curent">
-        <span>总业绩<span class="cash"><i>￥</i>{$money_total.money_total}</span></span>
+        <span>总业绩
+            <if condition="$oldPerformance">
+                <span style="font-size:0.6rem;float: right;">原￥{$oldPerformance}</span>
+            </if>
+            <span class="cash"><i>￥</i>{$money_total.money_total}</span>
+        </span>
     </div>
     <div class="recharge-curent">
         <span>最大用户业绩<span class="cash"><i>￥</i>{$money_total.max_moneys}</span></span>
@@ -11,7 +16,10 @@
         <span>剩余用户业绩之和<span class="cash"><i>￥</i>{$money_total.moneys}</span></span>
     </div>
     <div class="recharge-curent" id="update">
-        <span style="text-align:center;">团队总人数  <span style="font-size:0.6rem;float: right;" id="update_num">点击更新</span><span class="cash" id="all_num">{$underling_number}</span></span>
+        <span style="text-align:center;">团队总人数  
+            <span style="font-size:0.6rem;float: right;" id="update_num">点击更新</span>
+            <span class="cash" id="all_num">{$underling_number}</span>
+        </span>
     </div>
 </div>
 <br>

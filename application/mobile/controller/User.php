@@ -121,6 +121,7 @@ class User extends MobileBase
         $logic = new \app\common\logic\AgentPerformanceOldLogic();
         $oldPerformance = $logic->getAllData($user['openid']);
         //这是老的历史业绩，加上新的
+        $this->assign('oldPerformance',$oldPerformance);
 
         //dump($oldPerformance);
        
@@ -129,9 +130,9 @@ class User extends MobileBase
 
         //个人,团队业绩之和
         if($user_agent_money){
-            $per_total = $user_agent_money['ind_per']+$user_agent_money['agent_per'];
+            $per_total = $user_agent_money['ind_per']+$user_agent_money['agent_per'] + $oldPerformance;
         }else{
-            $per_total = 0;
+            $per_total = $oldPerformance;
         }  
         $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->select();
 

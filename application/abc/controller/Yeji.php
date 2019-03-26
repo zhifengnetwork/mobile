@@ -11,6 +11,7 @@ class Yeji extends Controller
 {
     public function index(){
 
+
         $before = I('before');
         $after = I('after');
 
@@ -20,6 +21,8 @@ class Yeji extends Controller
         dump($all_order);
 
         foreach($all_order as $k => $v){
+            dump($v['user_id']);
+
             agent_performance($v['order_id']);
             //业绩（包含个人+团队）
         }
