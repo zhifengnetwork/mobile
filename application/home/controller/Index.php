@@ -9,6 +9,16 @@ class Index extends Base {
     
 
     public function test(){
+
+       
+        // $res = M('users')->where(['is_distribut'=>0,'is_agent'=>1])->field('user_id,nickname,is_distribut,is_agent')->limit(100)->select();
+        
+        // foreach($res as $k => $v){
+        //     M('users')->where(['user_id'=>$v['user_id']])->update(['is_distribut'=>1]);
+        // }
+
+        // dump($res);
+
         // ini_set('max_execution_time', '0');
 
         // $order = M('order')->where(['pay_status'=>1])->field('order_id,user_id')->select();
@@ -21,7 +31,6 @@ class Index extends Base {
 
         // exit;
 
-    
         // $account = M('config')->where(['name'=>'sms_appkey'])->value('value');
         // $password = M('config')->where(['name'=>'sms_secretKey'])->value('value');;
         // $logic = new SmsChuanglanLogic($account,$password);

@@ -115,7 +115,15 @@ class User extends MobileBase
         // $money_total['max_moneys'] = 0;
         // $money_total['moneys'] = 0;
 
+        //古老的历史业绩
         $user = session('user');
+
+        $logic = new \app\common\logic\AgentPerformanceOldLogic();
+        $oldPerformance = $logic->getAllData($user['openid']);
+        //这是老的历史业绩，加上新的
+
+        //dump($oldPerformance);
+       
         $field = "user_id,first_leader,is_distribut,is_agent"; 
         $user_agent_money = $this->child_agent($user['user_id']);
 
