@@ -106,7 +106,7 @@ class BonusLogic extends Model
 				'money'=>$money
 			);
 			M('order_divide')->add($data);
-            agent_performance_log($userId, $money, $this->orderId);
+            //agent_performance_log($userId, $money, $this->orderId);
 		}
 		return $bool;
 	}
@@ -136,7 +136,6 @@ class BonusLogic extends Model
 	**/
 	public function theAgent($uid)
 	{
-
 		$leaderId = M('users')->where('user_id', $uid)->value('first_leader');
 		if(!$leaderId) return false;
 		$top_level = new LevelLogic();

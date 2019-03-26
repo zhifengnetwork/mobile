@@ -240,6 +240,130 @@ class Index extends Base {
         $this->assign('favourite_goods',$favourite_goods);
         return $this->fetch();
     }
-    
-    
+
+    /**
+     * 所有订单统计业绩方法
+     */
+    public function all_order_fous(){
+        set_time_limit(0);
+        $order_list = Db::name("order")->alias('o')
+            ->join('tp_order_goods og','og.order_id = o.order_id')
+            ->join('tp_goods g ',' g.goods_id = og.goods_id')
+            ->join('tp_users u ',' u.user_id = o.user_id')
+            ->order('o.order_id asc')
+            ->field('o.order_id, o.total_amount, o.order_sn, o.user_id, og.goods_id, og.goods_num,
+            og.order_id, g.shop_price, g.is_distribut, g.is_agent, u.first_leader')
+            ->select();
+        if(!empty($order_list)) {
+            $order_list_data  = [];
+            foreach ($order_list as $item) {
+                $order_list_data[$item['order_id']][] = $item;
+            }
+            if(!empty($order_list_data)){
+                //获取分红比例
+                $rateArr  = M('user_level')->getField("level,rate");
+                foreach ($order_list_data as $key =>$value){
+                    if($value[0]['total_amount'] <= 9.9){
+                        continue;
+                    }
+                    if(!$value[0]['first_leader']){
+                        continue;
+                    }
+
+
+                    $recUser = getAllUp($value[0]['user_id']);
+                    $shop_price = 0;
+                    $is_distribut_shop_price = 0;
+                    $is_distribut = 0;
+                    $is_agent = 0;
+                    foreach ($value as $ke => $va){
+                        if($va['is_agent'] == 1){
+                            $is_agent = 1;
+                            $shop_price += ($va['shop_price'] * $va['goods_num']);
+                        }
+                        if($va['is_distribut'] == 1){
+                            $is_distribut = 1;
+                            $is_distribut_shop_price += ($va['shop_price'] * $va['goods_num']);
+                        }
+                    }
+                    $distribut = M('distribut')->find();
+                    $first_leader = M('users')->where(['user_id'=>$value[0]['first_leader']])->find();
+                    if($first_leader['is_distribut'] == 1){
+                        $commission = $is_distribut_shop_price * ($distribut['rate'] / 100);
+                        agent_performance_log($first_leader['user_id'], $commission, $value[0]['order_id']);
+                        /*$bool = M('users')->where('user_id',$first_leader['user_id'])->setInc('user_money',$commission);
+                        if($bool){
+                            agent_performance_log($users['user_id'], $money, $value[0]['order_id']);
+                        }*/
+                    }
+                    $logName  = '级差奖';
+                    $useRate = 0;
+                    $pj_money = 0;
+                    $userLevel = 0;
+                    $sourceType = 4;
+                    foreach($recUser as $k => $user){
+                        if($k<=0) continue;
+                        if(!$user['agent_user'] || $user['is_lock'] == 1) continue;
+                        $grade  = $user['agent_user'];
+                        if($grade < $userLevel) continue;
+                        $jsRate = intval($rateArr[$grade]) - $useRate;
+                        if($jsRate<0) continue;
+                        $money = $shop_price * $jsRate/100;
+                        if($jsRate==0 && $grade==5)
+                        {
+                            $jsRate  = $rateArr[127];
+                            $logName = '平级奖';
+                            $sourceType = 5;
+                            $money = $pj_money*$jsRate/100;
+                        }
+                        $useRate = $rateArr[$grade];
+                        $userLevel = $grade;
+                        $pj_money = $money;
+                        //$users = M('users')->where(['user_id'=>$user['user_id']])->find();
+                        /*$data = array(
+                            'user_money'=>$users['user_money']+$money
+                        );*/
+                        //$res = M('users')->where(['user_id'=>$users['user_id']])->update($data);
+                        agent_performance_log($user['user_id'], $money, $value[0]['order_id']);
+                        /*if($res)
+                        {
+                            agent_performance_log($users['user_id'], $money, $value[0]['order_id']);
+                            //$this->writeLog($users['user_id'],$money,$value[0]['order_sn'],$value[0]['order_id'],$value[0]['goods_id'],$logName,101);
+                        }*/
+                    }
+                }
+            }
+            /*echo  Db::name("order_goods")->getLastSql();
+            echo "<pre>";
+            print_r($order_list_data);
+            echo "</pre>";*/
+        }
+    }
+    //记录日志
+    public function writeLog($userId,$money,$orderSn,$orderId,$goodsId,$desc,$states)
+    {
+        $data = array(
+            'user_id'=>$userId,
+            'user_money'=>$money,
+            'change_time'=>time(),
+            'desc'=>$desc,
+            'order_sn'=>$orderSn,
+            'order_id'=>$orderId,
+            'states'=>$states
+        );
+        $bool = M('account_log')->insert($data);
+        if($bool){
+            //分钱记录
+            $data = array(
+                'order_id'=>$orderId,
+                'user_id'=>$userId,
+                'status'=>1,
+                'goods_id'=>$goodsId,
+                'money'=>$money
+            );
+            M('order_divide')->add($data);
+            agent_performance_log($userId, $money, $orderId);
+        }
+        return $bool;
+    }
 }

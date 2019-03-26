@@ -123,7 +123,7 @@ function jichadaili($order_id)
     $orderSn = $order['order_sn'];
 
     $goods_list = M('order_goods')->where(['order_id' => $order_id])->select();
-    //agent_performance($order_id);
+    agent_performance($order_id);
     foreach ($goods_list as $k => $v) {
         $goodId = $v['goods_id'];
         $goodNum = $v['goods_num'];
@@ -148,7 +148,7 @@ function agent_performance($order_id)
         $data['ind_per'] = $cunzai['ind_per'] + $order_amount;
         $data['update_time'] = date('Y-m-d H:i:s');
         $res = M('agent_performance')->where(['user_id' => $user_id])->save($data);
-        //agent_performance_log($user_id, $order_amount, $order_id);
+        agent_performance_log($user_id, $order_amount, $order_id);
     } else {
         $data['user_id'] = $user_id;
         $data['ind_per'] = $order_amount;
@@ -156,7 +156,7 @@ function agent_performance($order_id)
         $data['update_time'] = date('Y-m-d H:i:s');
         $res = M('agent_performance')->add($data);
 
-        //agent_performance_log($user_id, $order_amount, $order_id);
+        agent_performance_log($user_id, $order_amount, $order_id);
     }
     $first_leader = M('users')->where(['user_id' => $user_id])->value('first_leader');
     $arr = get_uper_user($first_leader);
@@ -175,7 +175,7 @@ function agent_performance($order_id)
             $data1['update_time'] = date('Y-m-d H:i:s');
             $res = M('agent_performance')->add($data1);
         }
-        //agent_performance_log($v['user_id'], $order_amount, $order_id);
+        agent_performance_log($v['user_id'], $order_amount, $order_id);
     }
 
 
