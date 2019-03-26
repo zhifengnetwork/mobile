@@ -123,7 +123,10 @@ function jichadaili($order_id)
     $orderSn = $order['order_sn'];
 
     $goods_list = M('order_goods')->where(['order_id' => $order_id])->select();
+
     agent_performance($order_id);
+    //业绩（包含个人+团队）
+
     foreach ($goods_list as $k => $v) {
         $goodId = $v['goods_id'];
         $goodNum = $v['goods_num'];
@@ -134,47 +137,24 @@ function jichadaili($order_id)
 
 
 /**
- * 业绩
+ * 业绩（包含个人+团队）
  */
 function agent_performance($order_id)
 {
     $order = M('order')->where(['order_id' => $order_id])->field('order_amount,user_id,goods_price')->find();
     $order_amount = $order['goods_price'];
     $user_id = $order['user_id'];
+
     //加个人业绩(下单人)
     $cunzai = M('agent_performance')->where(['user_id' => $user_id])->find();
-    //存在
-    if ($cunzai) {
-        $data['ind_per'] = $cunzai['ind_per'] + $order_amount;
-        $data['update_time'] = date('Y-m-d H:i:s');
-        $res = M('agent_performance')->where(['user_id' => $user_id])->save($data);
-        agent_performance_log($user_id, $order_amount, $order_id);
-    } else {
-        $data['user_id'] = $user_id;
-        $data['ind_per'] = $order_amount;
-        $data['create_time'] = date('Y-m-d H:i:s');
-        $data['update_time'] = date('Y-m-d H:i:s');
-        $res = M('agent_performance')->add($data);
+    agent_performance_person_log($user_id, $order_amount, $order_id);
+    
 
-        agent_performance_log($user_id, $order_amount, $order_id);
-    }
     $first_leader = M('users')->where(['user_id' => $user_id])->value('first_leader');
     $arr = get_uper_user($first_leader);
     //加 团队业绩
     foreach ($arr['recUser'] as $k => $v) {
         $cunzai = M('agent_performance')->where(['user_id' => $v['user_id']])->find();
-        //存在
-        if ($cunzai) {
-            $data1['agent_per'] = $cunzai['agent_per'] + $order_amount;
-            $data1['update_time'] = date('Y-m-d H:i:s');
-            $res = M('agent_performance')->where(['user_id' => $v['user_id']])->save($data1);
-        } else {
-            $data1['user_id'] = $v['user_id'];
-            $data1['agent_per'] = $order_amount;
-            $data1['create_time'] = date('Y-m-d H:i:s');
-            $data1['update_time'] = date('Y-m-d H:i:s');
-            $res = M('agent_performance')->add($data1);
-        }
         agent_performance_log($v['user_id'], $order_amount, $order_id);
     }
 
@@ -182,8 +162,47 @@ function agent_performance($order_id)
 }
 
 
+
 /**
- * log
+ * 累加到 agent_performance
+ */
+function add_agent_performance($user_id,$order_amount,$order_id,$type){
+
+    //查询是否存在
+    $is_cunzai = M('agent_performance')->where(['user_id'=>$user_id])->find();
+    if($is_cunzai){
+
+        //存在
+        if($type == 'agent_per'){
+            $data1['agent_per'] = $is_cunzai['agent_per'] + $order_amount;
+        }
+        if($type == 'ind_per'){
+            $data1['ind_per'] = $is_cunzai['ind_per'] + $order_amount;
+        }
+        $data1['update_time'] = date('Y-m-d H:i:s');
+        M('agent_performance')->where(['user_id' => $user_id])->update($data1);
+
+    }else{
+
+        $new_data['user_id'] = $user_id;
+        if($type == 'agent_per'){
+            $new_data['agent_per'] = $order_amount;
+        }
+        if($type == 'ind_per'){
+            $new_data['ind_per'] = $order_amount;
+        }
+
+        $new_data['create_time'] = date('Y-m-d H:i:s');
+        $new_data['update_time'] = date('Y-m-d H:i:s');
+        M('agent_performance')->add($new_data);
+
+    }
+
+}
+
+
+/**
+ * log（团队日志）
  */
 function agent_performance_log($user_id, $order_amount, $order_id)
 {
@@ -205,6 +224,36 @@ function agent_performance_log($user_id, $order_amount, $order_id)
             'order_id' => $order_id
         );
         M('agent_performance_log')->add($log);
+
+        //累加，先写日志表，再累加
+        add_agent_performance($user_id,$order_amount,$order_id,'agent_per');
+    }
+
+}
+
+
+/**
+ * 个人业绩日志记录表
+ */
+function agent_performance_person_log($user_id, $order_amount, $order_id){
+ 
+    //先判断是否有记录
+    $is_cunzai = M('agent_performance_person_log')->where(['user_id'=>$user_id,'order_id'=>$order_id])->find();
+    if($is_cunzai){
+        return false;
+    }else{
+
+        $log = array(
+            'user_id' => $user_id,
+            'money' => $order_amount,
+            'create_time' => date('Y-m-d H:i:s'),
+            'note' => '订单' . $order_id . '业绩',
+            'order_id' => $order_id
+        );
+        M('agent_performance_person_log')->add($log);
+
+        //累加，先写日志表，再累加
+        add_agent_performance($user_id,$order_amount,$order_id,'ind_per');
     }
 
 }
