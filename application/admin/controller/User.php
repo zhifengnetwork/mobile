@@ -870,8 +870,8 @@ class User extends Base
             $this->ajaxReturn(array('status' => 0, 'msg' => "操作失败，ID不能为空"), 'JSON');
         }
 
-        //写记录
-        $rr = accountLog($falg['user_id'], $falg['money'], 0, '提现编号:'.$ids,0, 0 , 0);
+        //写记录（扣钱）
+        $rr = accountLog($falg['user_id'], -$falg['money'], 0, '提现编号:'.$ids,0, 0 , 0);
         if($rr == false){
             // 发送公众号消息给用户
             $wechat = new \app\common\logic\wechat\WechatUtil();
