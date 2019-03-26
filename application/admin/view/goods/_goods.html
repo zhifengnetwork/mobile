@@ -416,7 +416,7 @@
                         <label id="is_agent_label_1" for="is_agent1" class="cb-enable <if condition='$goods.is_agent eq 1'>selected</if>">是</label>
                         <label id="is_agent_label_0" for="is_agent0" class="cb-disable <if condition='$goods.is_agent eq 0'>selected</if>">否</label>
                         <input id="is_agent1" autocomplete="off" class="is_agent" name="is_agent" value="1" type="radio" <if condition="$goods[is_agent] eq 1"> checked="checked"</if>>
-                        <input id="is_agent0" autocomplete="off" class="is_agent" name="is_agent" value="0" type="radio" <if condition="$goods[is_agent] eq 0"> checked="checked"</if>> -->
+                        <input id="is_agent0" autocomplete="off" class="is_agent" name="is_agent" value="0" type="radio" <if condition="$goods[is_agent] eq 0"> checked="checked"</if>>
                     </div>
                     <span class="err" id="err_is_agent"></span>
                     <p class="notic"></p>
@@ -458,6 +458,22 @@
                         <input id="sign_free_receive" type="radio" <if condition="$goods[sign_free_receive] eq 2"> checked="checked"</if>name="sign_free_receive" value="2"><label for="">代理10天领取</label>
                     <span class="err" id="err_is_virtual"></span>
                     <p class="notic"></p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>购买后得10天签到权限</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label id="buy_super_nsign_label_1" for="buy_super_nsign1" class="cb-enable <if condition='$goods.buy_super_nsign eq 1'>selected</if>">是</label>
+                        <label id="buy_super_nsign_label_0" for="buy_super_nsign0" class="cb-disable <if condition='$goods.buy_super_nsign eq 0'>selected</if>">否</label>
+                        <input id="buy_super_nsign1" autocomplete="off" class="buy_super_nsign" name="buy_super_nsign" value="1" type="radio" <if condition="$goods[buy_super_nsign] eq 1"> checked="checked"</if>>
+                        <input id="buy_super_nsign0" autocomplete="off" class="buy_super_nsign" name="buy_super_nsign" value="0" type="radio" <if condition="$goods[buy_super_nsign] eq 0"> checked="checked"</if>>
+                    </div>
+                    <span class="err" id="err_buy_super_nsign"></span>
+                    <p class="notic">购买后得10天签到权限</p>
                 </dd>
             </dl>
 
