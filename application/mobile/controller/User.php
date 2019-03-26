@@ -240,7 +240,7 @@ class User extends MobileBase
     {
         $user_id = session('user.user_id');
 
-        return $this->fetch('fenxiang1');
+        $this->redirect('fenxiang1');
         //正在跳转
 
         $logic = new ShareLogic();
