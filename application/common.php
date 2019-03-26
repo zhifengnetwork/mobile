@@ -1869,14 +1869,7 @@ function continue_sign($user_id){
                 return $result;
             }
 
-            //是代理又是分销的情况
-            if ( $user['is_agent'] == 1 && $type == 2) {
-                //代理每月可领取1次
-                if ($newTimeM == $addTimeM ) {
-                    $result = array('status'=>0,'msg'=>'本月已领取过了','result'=>array());
-                    return $result;
-                }
-            }
+
 
             // $addTimeD = strtotime(date('Y-m-d', $data[0]['addend_time'])); //最近下单天份
             // if ($addTimeD+259200 < time() && $this->user['is_agent'] == 1 ) {

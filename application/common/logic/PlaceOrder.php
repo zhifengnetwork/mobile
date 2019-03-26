@@ -64,7 +64,7 @@ class PlaceOrder
             update_pay_status($this->order['order_sn']);
         }
         $this->deductionCoupon();//扣除优惠券
-        $this->addOrderSignReceive();//添加免费领取记录
+        $this->addOrderSignReceive();//扣除免费领取记录
         $this->changUserPointMoney($this->order);//扣除用户积分余额
         $this->changAuctionPrice();//修改竞拍状态
         $this->queueDec();
@@ -176,8 +176,15 @@ class PlaceOrder
         }
         $pay_points = $this->pay->getPayPoints();
         $user_money = $this->pay->getUserMoney();
+        $payList = $this->pay->getPayList();
+        $user = $this->pay->getUser();
+        if($payList[0]['goods']->sign_free_receive == 1 && $user['distribut_free_num'] == 0 && $this->pay->getSignPrice() != 0){
+                throw new TpshopException('提交订单', 0, ['status' => -7, 'msg' => "免费领取次数不够", 'result' => '']);
+        }
+        if($payList[0]['goods']->sign_free_receive == 2 && $user['agent_free_num'] == 0 && $this->pay->getSignPrice() != 0){
+                throw new TpshopException('提交订单', 0, ['status' => -7, 'msg' => "免费领取次数不够", 'result' => '']);
+        }
         if ($pay_points || $user_money) {
-            $user = $this->pay->getUser();
             if ($user['is_lock'] == 1) {
                 throw new TpshopException('提交订单', 0, ['status' => -5, 'msg' => "账号异常已被锁定，不能使用余额支付！", 'result' => '']);
             }
@@ -425,7 +432,7 @@ class PlaceOrder
     {
         $signPrice = $this->pay->getSignPrice();
         $payList = $this->pay->getPayList();
-        
+
         if($signPrice > 0){
             $user = $this->pay->getUser();
 
