@@ -261,7 +261,7 @@ class Index extends Base {
             ->join('tp_users u ',' u.user_id = o.user_id')
             ->order('o.order_id asc')
             ->field('o.order_id, o.total_amount, o.order_sn, o.user_id, og.goods_id, og.goods_num,
-            og.order_id, g.shop_price, g.is_distribut, g.is_agent, u.first_leader')
+            g.shop_price, g.is_distribut, g.is_agent, u.first_leader')
             ->select();
         if(!empty($order_list)) {
             $order_list_data  = [];
@@ -270,7 +270,13 @@ class Index extends Base {
             }
             if(!empty($order_list_data)){
                 //获取分红比例
-                $rateArr  = M('user_level')->getField("level,rate");
+                //$rateArr  = M('user_level')->getField("level,rate");
+                $user_list = M('users')->field('user_id,first_leader,agent_user,is_lock')->select();
+                $user_list_data = [];
+                foreach ($user_list as $item){
+                    $user_list_data[$item['user_id']][] = $item;
+                }
+
                 foreach ($order_list_data as $key =>$value){
                     if($value[0]['total_amount'] <= 9.9){
                         continue;
@@ -278,20 +284,18 @@ class Index extends Base {
                     if(!$value[0]['first_leader']){
                         continue;
                     }
-
-
-                    $recUser = getAllUp($value[0]['user_id']);
+                    $recUser = $this->get_all_up($user_list_data,$value[0]['user_id']);
                     $shop_price = 0;
                     $is_distribut_shop_price = 0;
-                    $is_distribut = 0;
-                    $is_agent = 0;
+                    //$is_distribut = 0;
+                    //$is_agent = 0;
                     foreach ($value as $ke => $va){
                         if($va['is_agent'] == 1){
-                            $is_agent = 1;
+                            //$is_agent = 1;
                             $shop_price += ($va['shop_price'] * $va['goods_num']);
                         }
                         if($va['is_distribut'] == 1){
-                            $is_distribut = 1;
+                            //$is_distribut = 1;
                             $is_distribut_shop_price += ($va['shop_price'] * $va['goods_num']);
                         }
                     }
@@ -299,53 +303,18 @@ class Index extends Base {
                     $first_leader = M('users')->where(['user_id'=>$value[0]['first_leader']])->find();
                     if($first_leader['is_distribut'] == 1){
                         $commission = $is_distribut_shop_price * ($distribut['rate'] / 100);
-                        agent_performance_log($first_leader['user_id'], $commission, $value[0]['order_id']);
-                        /*$bool = M('users')->where('user_id',$first_leader['user_id'])->setInc('user_money',$commission);
-                        if($bool){
-                            agent_performance_log($users['user_id'], $money, $value[0]['order_id']);
-                        }*/
-                    }
-                    $logName  = '级差奖';
-                    $useRate = 0;
-                    $pj_money = 0;
-                    $userLevel = 0;
-                    $sourceType = 4;
-                    foreach($recUser as $k => $user){
-                        if($k<=0) continue;
-                        if(!$user['agent_user'] || $user['is_lock'] == 1) continue;
-                        $grade  = $user['agent_user'];
-                        if($grade < $userLevel) continue;
-                        $jsRate = intval($rateArr[$grade]) - $useRate;
-                        if($jsRate<0) continue;
-                        $money = $shop_price * $jsRate/100;
-                        if($jsRate==0 && $grade==5)
-                        {
-                            $jsRate  = $rateArr[127];
-                            $logName = '平级奖';
-                            $sourceType = 5;
-                            $money = $pj_money*$jsRate/100;
+                        if($commission){
+                            agent_performance_person_log($first_leader['user_id'], $commission, $value[0]['order_id']);
                         }
-                        $useRate = $rateArr[$grade];
-                        $userLevel = $grade;
-                        $pj_money = $money;
-                        //$users = M('users')->where(['user_id'=>$user['user_id']])->find();
-                        /*$data = array(
-                            'user_money'=>$users['user_money']+$money
-                        );*/
-                        //$res = M('users')->where(['user_id'=>$users['user_id']])->update($data);
-                        agent_performance_log($user['user_id'], $money, $value[0]['order_id']);
-                        /*if($res)
-                        {
-                            agent_performance_log($users['user_id'], $money, $value[0]['order_id']);
-                            //$this->writeLog($users['user_id'],$money,$value[0]['order_sn'],$value[0]['order_id'],$value[0]['goods_id'],$logName,101);
-                        }*/
+                    }
+                    foreach($recUser as $k => $user){
+                        $money = $shop_price;
+                        if($money){
+                            agent_performance_log($user['user_id'], $money, $value[0]['order_id']);
+                        }
                     }
                 }
             }
-            /*echo  Db::name("order_goods")->getLastSql();
-            echo "<pre>";
-            print_r($order_list_data);
-            echo "</pre>";*/
         }
     }
     //记录日志
@@ -374,5 +343,16 @@ class Index extends Base {
             agent_performance_log($userId, $money, $orderId);
         }
         return $bool;
+    }
+
+    /**
+     * 获取用户所有上级
+     */
+    public function get_all_up($data,$user_id,&$list = array()){
+        if($data[$user_id][0]['first_leader'] > 0){
+            $list[] = $data[$user_id][0];
+            $this->get_all_up($data,$data[$user_id][0]['first_leader'],$list);
+        }
+        return $list;
     }
 }
