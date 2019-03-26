@@ -1032,17 +1032,25 @@ function update_pay_status($order_sn, $ext = array())
             $OrderLogic = new \app\common\logic\OrderLogic();
             $OrderLogic->make_virtual_code($order);
         }
-        $order['pay_time'] = $time;
+        
+        $time = date('Y-m-d H:i:s',time());
 
         // 发送公众号消息给用户
-        if (is_weixin()) {
-            $user = Db::name('OauthUsers')->where(['user_id' => $order['user_id'], 'oauth' => 'weixin', 'oauth_child' => 'mp'])->find();
-            if ($user) {
-                $wx_content = "订单支付成功！\n\n订单：{$order_sn}\n支付时间：{$time}\n商户：DC环球直供\n金额：{$order['order_amount']}(含运费{$order['shipping_price']}元)\n\n【DC环球直供】欢迎您的再次购物！";
-                $wechat = new \app\common\logic\wechat\WechatUtil();
-                $wechat->sendMsg($user['openid'], 'text', $wx_content);
 
+        $userinfo = Db::name('users')->where(['user_id' => $order['user_id']])->field('openid,first_leader')->find();
+        if ($userinfo['openid']) {
+            $wx_content = "订单支付成功！\n\n订单：{$order_sn}\n支付时间：{$time}\n商户：DC环球直供\n金额：{$order['total_amount']}\n\n【DC环球直供】欢迎您的再次购物！";
+            $wechat = new \app\common\logic\wechat\WechatUtil();
+            $wechat->sendMsg($userinfo['openid'], 'text', $wx_content);
+
+            //发给上级
+            $first_leader_openid = Db::name('users')->where(['user_id' => $userinfo['first_leader']])->value('openid');
+            if($first_leader_openid){
+                $wx_first_leader_content = "你的下级订单支付成功！\n\n订单：{$order_sn}\n支付时间：{$time}\n金额：{$order['total_amount']}\n\n支付成功可获得返利";
+                $wechat = new \app\common\logic\wechat\WechatUtil();
+                $wechat->sendMsg($first_leader_openid, 'text', $wx_first_leader_content);
             }
+
         }
 
         //用户支付, 发送短信给商家
