@@ -45,14 +45,17 @@ class BonusLogic extends Model
                 ->find();
 		
 		if(($good['is_distribut'] == 1) && ($good['is_agent'] == 1)){
+			$this->change_role(1,1);
 			$dist = $this->distribution();
 			$agent = $this->theAgent($this->userId);
 			$this->sel($this->userId,$price);
 			return true;
 		}else if($good['is_distribut'] == 1){
+			$this->change_role(1,0);
 			$dist = $this->distribution();
 			return true;
 		}else if($good['is_agent'] == 1){
+			$this->change_role(1,1);
 			$agent = $this->theAgent($this->userId);
 			$this->sel($this->userId,$price);
 			return true;
@@ -62,15 +65,23 @@ class BonusLogic extends Model
 	}
 
 	/**
+	* 更改身份
+	*/
+	public function change_role($distributor,$agent)
+	{
+		M('users')->where('user_id',$this->userId)->update(['is_distribut'=>$distributor,'is_agent'=>$agent]);
+	}
+
+	/**
 	* 分销模式
 	**/
 	public function distribution()
 	{
         $distributor = $this->users($this->userId);
 
-        if ($distributor['is_distribut'] != 1) {
-        	M('users')->where('user_id',$this->userId)->update(['is_distribut'=>1]);
-        }
+        // if ($distributor['is_distribut'] != 1) {
+        // 	M('users')->where('user_id',$this->userId)->update(['is_distribut'=>1]);
+        // }
         
 		//判断上级用户是否为分销商
         if (!$distributor['first_leader']){

@@ -46,7 +46,8 @@ class LevelLogic extends Model
 			if($res){
 				$data = array(
 					'agent_user'=> 1,
-					'is_agent' => 1
+					'is_agent' => 1,
+					'is_distribut' => 1,
 				);
 				M('users')->where(['user_id'=>$top_user['user_id']])->update($data);
 			}
