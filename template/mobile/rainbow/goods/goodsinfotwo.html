@@ -217,11 +217,11 @@
             // 免费领取
             if(is_sign != 0 ){
                 if (goods_num <= store_count) {
-                    sign_receive(is_sign);
+                    cart_sign_receive(is_sign);
                     return;
                 }
             }
-            
+
             var goods_id = $("input[name='goods_id']").val();
             AjaxAddCart(goods_id, 1);
         })
