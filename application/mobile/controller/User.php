@@ -275,7 +275,7 @@ class User extends MobileBase
         $pic = "/www/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg";
         if( @fopen( $pic, 'r' ) )
         {
-        	$pic = "/share/picture_ok44/".$uid.".jpg";
+        	$pic = "/share/picture_ok44/".$user_id.".jpg";
         }
         else
         {
@@ -291,7 +291,7 @@ class User extends MobileBase
         $pic111 = "/www/wwwroot/www.dchqzg1688.com/public/share/picture_888/".$user_id.".jpg";
         if( @fopen( $pic111, 'r' ) )
         {
-        	$picture = "/public/share/picture_888/".$uid.".jpg";
+        	$picture = "/public/share/picture_888/".$user_id.".jpg";
         }
         else
         {
