@@ -1849,12 +1849,12 @@ function continue_sign($user_id){
 
         // 是分销并且有领取次数
         if ($user['is_distribut'] == 1 && $type == 1 &&  $user['distribut_free_num'] < $num ) {
-            $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格！','result'=>array());
+            $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格1！','result'=>array());
             return $result;
         }
         // 是代理或购买过指定产品并且有领取次数
         if ($user['super_nsign'] == 1 || $user['is_agent'] == 1 && $type == 2 &&  $user['agent_free_num'] < $num ) {
-            $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格！','result'=>array());
+            $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格2！','result'=>array());
             return $result;
         }
 
