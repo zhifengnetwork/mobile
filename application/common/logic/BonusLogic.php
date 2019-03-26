@@ -167,7 +167,7 @@ class BonusLogic extends Model
 			if(!$user['agent_user'] || $user['is_lock'] == 1) continue;
 			$grade  = $user['agent_user'];
 			if($grade < $userLevel) continue;
-			$jsRate = $rateArr[$grade] - $useRate;
+			$jsRate = intval($rateArr[$grade]) - $useRate;
 			if($jsRate<0) continue;
 			$money = $price*$jsRate/100;
 			if($jsRate==0 && $grade==5) 
@@ -195,12 +195,7 @@ class BonusLogic extends Model
 	//获取用户分红比例
 	private function get_js_rate()
 	{
-		$user_level = M('user_level')->field("level,rate")->select();
-		$get_js_rate = [];
-		foreach($user_level as $key => $val)
-		{
-			$get_js_rate[$val['level']] = $val['rate'];
-		}
-		return $get_js_rate;
+		$user_level = M('user_level')->getField("level,rate");//->select();
+        return $user_level;
 	}
 }
