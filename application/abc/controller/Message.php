@@ -2,7 +2,7 @@
 /**
  * 测试
  */
-namespace app\test\controller;
+namespace app\abc\controller;
 
 
 use think\Db;
