@@ -73,47 +73,102 @@ class User extends MobileBase
     public function distribut()
     {
         
+        // $user = session('user');
+        // $field = "user_id,first_leader,is_distribut,is_agent"; 
+        // $user_agent_money = $this->child_agent($user['user_id']);
+        // //个人,团队业绩之和
+        // $money_array = $user_agent_money['ind_per']+$user_agent_money['agent_per'];
+        // $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->select();
+        // if($users)
+        // {
+        //     if(empty($users)) return false;
+        //     $money_array = [];
+        //     foreach($users as $key=>$val){
+        //         $get_child_agent = $this->child_agent($val['user_id']);
+        //         if (!empty($get_child_agent['agent_per'])) {
+        //             $money_array[]=$get_child_agent['agent_per'];
+        //         }
+        //     }
+        //     if(!empty($money_array)){
+
+        //         $moneys = array_filter($money_array);
+        //         rsort($moneys);
+        //         //最大业绩用户
+        //         if(count($moneys) >= 2){
+        //             $max_moneys = max($moneys);
+        //         }else{
+        //             $max_moneys = $moneys[0];
+        //         }
+        //         array_shift($moneys);
+        //         //去掉最大业绩之和
+        //         $moneys = array_sum($moneys);
+        //         $agent = $this->child_agent($user['user_id']);
+        //         $money_total1 = $agent['ind_per']+$agent['agent_per'];
+        //         $money_total = array(
+        //             'money_total'=>$money_total1,
+        //             'max_moneys'=>$max_moneys,
+        //             'moneys'=>$money_total1-$max_moneys
+        //         );
+        //     };
+        // }
+        // $money_total['money_total'] = (float)$money_total['money_total']+(float)$money_array;
+        // $money_total['max_moneys'] = 0;
+        // $money_total['moneys'] = 0;
+
         $user = session('user');
         $field = "user_id,first_leader,is_distribut,is_agent"; 
         $user_agent_money = $this->child_agent($user['user_id']);
+
         //个人,团队业绩之和
-        $money_array = $user_agent_money['ind_per']+$user_agent_money['agent_per'];
+        if($user_agent_money){
+            $per_total = $user_agent_money['ind_per']+$user_agent_money['agent_per'];
+        }else{
+            $per_total = 0;
+        }  
         $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->select();
+
         if($users)
         {
             if(empty($users)) return false;
-            $money_array = [];
+            $agent_array = [];
             foreach($users as $key=>$val){
                 $get_child_agent = $this->child_agent($val['user_id']);
-                if (!empty($get_child_agent['agent_per'])) {
-                    $money_array[]=$get_child_agent['agent_per'];
+                if($get_child_agent){
+                    $agent_array[]=$get_child_agent['agent_per'];
                 }
             }
-            if(!empty($money_array)){
-                
-                $moneys = array_filter($money_array);
+    
+            if(!empty($agent_array)){
+                $moneys = array_filter($agent_array);
                 rsort($moneys);
                 //最大业绩用户
                 if(count($moneys) >= 2){
-                    $max_moneys = max($moneys);
+                    $agent_max = max($moneys);
                 }else{
-                    $max_moneys = $moneys[0];
+                    $agent_max = $moneys[0];
                 }
                 array_shift($moneys);
                 //去掉最大业绩之和
-                $moneys = array_sum($moneys);
-                $agent = $this->child_agent($user['user_id']);
-                $money_total1 = $agent['ind_per']+$agent['agent_per'];
+                $agent_money = array_sum($moneys);
                 $money_total = array(
-                    'money_total'=>$money_total1,
-                    'max_moneys'=>$max_moneys,
-                    'moneys'=>$money_total1-$max_moneys
+                    'money_total' => (float)$per_total,
+                    'max_moneys'  => (float)$agent_max,
+                    'moneys' => (float)$agent_money,
                 );
-            };
+            }else{
+                $money_total = array(
+                    'money_total' => (float)$per_total,
+                    'max_moneys' => 0,
+                    'moneys' => 0,
+                );
+            }
+        }else{
+            $money_total = array(
+                'money_total' => (float)$per_total,
+                'max_moneys' => 0,
+                'moneys' => 0,
+            );
         }
-        $money_total['money_total'] = (float)$money_total['money_total']+(float)$money_array;
-        $money_total['max_moneys'] = 0;
-        $money_total['moneys'] = 0;
         $this->assign('money_total',$money_total);
         //上级用户信息
         $leader_id = M('users')->where(['user_id'=> $user['user_id']])->value('first_leader');
