@@ -206,16 +206,12 @@ function add_agent_performance($user_id,$order_amount,$order_id,$type){
  */
 function agent_performance_log($user_id, $order_amount, $order_id)
 {
-
     //验证OK
     
     //先判断是否有记录
     $is_cunzai = M('agent_performance_log')->where(['user_id'=>$user_id,'order_id'=>$order_id])->find();
-    if($is_cunzai){
-       
-        return false;
-
-    }else{
+    if(!$is_cunzai){
+    
         $log = array(
             'user_id' => $user_id,
             'money' => $order_amount,
@@ -239,10 +235,8 @@ function agent_performance_person_log($user_id, $order_amount, $order_id){
  
     //先判断是否有记录
     $is_cunzai = M('agent_performance_person_log')->where(['user_id'=>$user_id,'order_id'=>$order_id])->find();
-    if($is_cunzai){
-        return false;
-    }else{
-
+    if(!$is_cunzai){
+        
         $log = array(
             'user_id' => $user_id,
             'money' => $order_amount,
