@@ -1853,9 +1853,11 @@ function continue_sign($user_id){
             return $result;
         }
         // 是代理或购买过指定产品并且有领取次数
-        if ($user['super_nsign'] == 1 || $user['is_agent'] == 1 && $type == 2 &&  $user['agent_free_num'] < $num ) {
-            $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格2！','result'=>array());
-            return $result;
+        if ($user['super_nsign'] == 1 ) {
+            if ($user['is_agent'] == 1 && $type == 2 &&  $user['agent_free_num'] < $num ) {
+                $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格2！','result'=>array());
+                return $result;
+            }
         }
 
         if(!empty($data)){
