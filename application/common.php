@@ -1875,11 +1875,7 @@ function continue_sign($user_id){
             return $result;
         }
 
-        // 是分销并且没有购买399 不可领取
-        if ($user['is_distribut'] == 1 && $type == 2 &&  $user['super_nsign'] == 0 ) {
-            $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格1！','result'=>array());
-            return $result;
-        }
+
 
 
 
@@ -1893,6 +1889,12 @@ function continue_sign($user_id){
             return array('status'=>1,'msg'=>'正常购物流程','result'=>array());
         }
 
+        // 是分销并且没有购买399 不可领取
+        if ($user['is_distribut'] == 1 && $type == 2 &&  $user['super_nsign'] == 0 ) {
+            $result = array('status'=>0,'msg'=>'没有领取资格，坚持签到可获得资格1！','result'=>array());
+            return $result;
+        }
+        
         // 是代理或购买过指定产品并且有领取次数
         if ($user['super_nsign'] == 1 ) {
             if ($user['is_agent'] == 1 && $type == 2 ) {
