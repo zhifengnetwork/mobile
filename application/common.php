@@ -67,14 +67,41 @@ function share_deal_after($xiaji, $shangji)
     if ($res) {
         $before = '成功';
     }
-    //给上级发送消息
-    $shangji_openid = M('users')->where(['user_id' => $shangji])->value('openid');
-    $xiaji_nickname = M('users')->where(['user_id' => $xiaji])->value('nickname');
-    $wx_content = "您的一级创客[" . $xiaji_nickname . "][ID:" . $xiaji . "]" . $before . "关注了公众号";
-    $wechat = new \app\common\logic\wechat\WechatUtil();
-    $wechat->sendMsg($shangji_openid, 'text', $wx_content);
+    
+     //给上级发送消息
+     $shangji_openid = M('users')->where(['user_id' => $shangji])->value('openid');
+     if($shangji_openid){
+         $xiaji_nickname = M('users')->where(['user_id' => $xiaji])->value('nickname');
+         if($xiaji_nickname == ''){
+             $xiaji_nickname = get_nickname($xiaji);
+         }
+         $wx_content = "您的一级创客[" . $xiaji_nickname . "][ID:" . $xiaji . "]" . $before . "关注了公众号";
+         $wechat = new \app\common\logic\wechat\WechatUtil();
+         $wechat->sendMsg($shangji_openid, 'text', $wx_content);
+     }
 
     return true;
+}
+
+
+//获取用户昵称
+function get_nickname($user_id){
+    $user = M('users')->where(['user_id'=>$user_id])->find();
+    $access_token = access_token();
+    $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$user['openid'].'&lang=zh_CN';
+
+    $resp = httpRequest($url, "GET");
+    $res = json_decode($resp, true);
+
+    if($user['nickname'] == ''){
+        $data = array(
+            'nickname'=>$res['nickname'],
+            'head_pic'=>$res['headimgurl']
+        );
+        M('users')->where(['user_id'=>$user_id])->update($data);
+    }
+
+    return $res['nickname'];
 }
 
 //获取推荐上级

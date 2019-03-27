@@ -10,7 +10,6 @@ class Index extends Base {
 
     public function test(){
 
-       
         // $res = M('users')->where(['is_distribut'=>0,'is_agent'=>1])->field('user_id,nickname,is_distribut,is_agent')->limit(100)->select();
         
         // foreach($res as $k => $v){
