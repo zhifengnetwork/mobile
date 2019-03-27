@@ -220,12 +220,28 @@ class Api extends Base
     public function queryExpress($shipping_code, $invoice_no)
     {
 
+        
         // $shipping_code = I('shipping_code');
         // $invoice_no = I('invoice_no');
 
         //判断变量是否为空
         if((!$shipping_code) or (!$invoice_no)){
-            return ['status' => 0, 'message' => '参数有误', 'result' => ''];
+            return ['status' => -1, 'message' => '参数有误', 'result' => ''];
+        }
+
+        //快递公司转换
+        switch ($shipping_code) {
+            case 'YD':
+            $shipping_code = 'YUNDA';
+                break;
+            
+            case 'shunfeng':
+            $shipping_code = 'SFEXPRESS';
+                break;
+        
+            default:
+            $shipping_code = '';
+                break;
         }
 
         $condition = array(
@@ -265,9 +281,8 @@ class Api extends Base
             $result = $this->getDelivery($shipping_code, $invoice_no);
             $result = json_decode($result, true);
 
-            $order = M('delivery_doc')->where($condition)->field('order_id, order_sn')->find();
             if($result['status'] == '0'){
-                $flag = $this->insertData($result, $order, $shipping_code, $invoice_no);
+                $flag = $this->insertData($result, $shipping_code, $invoice_no);
                 return $result;
             }else{
                 return $result;
@@ -308,11 +323,9 @@ class Api extends Base
     }
 
     //物流插表
-    public function insertData($result, $order, $shipping_code, $invoice_no)
+    public function insertData($result, $shipping_code, $invoice_no)
     {
         $data = array(
-            'order_id' => $order['order_id'],
-            'order_sn' => $order['order_sn'],
             'shipping_code' => $shipping_code,
             'invoice_no' => $invoice_no,
             'result' => serialize($result),

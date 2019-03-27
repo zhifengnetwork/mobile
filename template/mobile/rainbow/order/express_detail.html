@@ -12,17 +12,19 @@
             <div class="jd_listaddless p">
                 <div class="maleri30">
 
-                    <div class="name fl">
+                    <div class="name fl" style="width:100%;">
                         <h1>{$list.time}</h1>
                     </div>
-                    <div class="numberaddress fl">
+                    <div class="numberaddress fl" style="width:100%;">
                         <span class="similars">{$list.status}</span>
                     </div>
                 </div>
             </div>
         </volist>
     <else/>
-        <a href="">{$result.msg}</a>
+        <div style="font-size:0.6rem;text-align:center;padding-top: 4.8rem;">
+            {$result.msg}
+        </div>
     </if>
 </div>
 </body>
