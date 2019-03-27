@@ -1,0 +1,29 @@
+<include file="public/header" title="物流详情" body="pore_add"/>
+<include file="public/header_nav" title="物流详情" href="javascript:history.back(-1)"/>
+<!--地址-s-->
+<style type="text/css">
+    body {
+        min-height: auto !important;
+    }
+</style>
+<div style="height: 19.5rem; overflow: scroll;">
+    <if condition="$result.status eq 0">
+        <volist name="result.result" id="list">
+            <div class="jd_listaddless p">
+                <div class="maleri30">
+
+                    <div class="name fl">
+                        <h1>{$list.time}</h1>
+                    </div>
+                    <div class="numberaddress fl">
+                        <span class="similars">{$list.status}</span>
+                    </div>
+                </div>
+            </div>
+        </volist>
+    <else/>
+        <a href="">{$result.msg}</a>
+    </if>
+</div>
+</body>
+</html>

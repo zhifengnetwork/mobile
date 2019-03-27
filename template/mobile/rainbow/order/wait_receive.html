@@ -17,7 +17,7 @@
                     </div>
                     
                     <!--物流信息-s-->
-                    <div class="wuliumess" id="wuliumess{$order.order_id}">
+                    <!-- <div class="wuliumess" id="wuliumess{$order.order_id}">
                         <if condition="$order.shipping_status gt 0">
                         <script>
                             queryExpress();
@@ -44,7 +44,7 @@
                         </script>
 
                         </if>
-                    </div>
+                    </div> -->
                     <!--物流信息-e-->
                 </div>
             </div>
@@ -87,6 +87,9 @@
                     </p>
                     <p class="butna">
                         <!--<a href="">再次购买</a>-->
+                        <if condition="$order.shipping_status eq 1 ">
+                            <a href="{:U('Mobile/Order/express_detail',array('id'=>$order.order_id))}">查看物流</a>
+                        </if>
                         <a href="{:U('Mobile/Order/order_detail',array('id'=>$order.order_id,'waitreceive'=>1))}">查看详情</a>
                         <a style="display: none" class="tuid" href="javascript:void(0);" onclick="expedite('{$order.order_id}')">我要催单</a>
                         <!--<a href="{:U('Mobile/User/express',array('order_id'=>$order.order_id))}">查看物流</a>-->
