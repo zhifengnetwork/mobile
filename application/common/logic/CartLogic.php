@@ -118,6 +118,7 @@ class CartLogic extends Model
         if (empty($this->goods)) {
             throw new TpshopException('立即购买', 0, ['status' => 0, 'msg' => '购买商品不存在1', 'result' => '']);
         }
+        dump($this->goods['sign_free_receive']);exit;
         // 是否可免费领取
         if ($this->goods['sign_free_receive'] != 0 ) {
 
