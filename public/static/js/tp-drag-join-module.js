@@ -32,7 +32,7 @@ var diyHtml={
         '<ul class="tpdm-coupon-list tpdm-coupon-lis2"><li><div class="tpdm-coupon-wrap"><span><i>￥</i>100</span><label>满200使用</label><a href="javascript:;">立即领取</a></div></li><li><div class="tpdm-coupon-wrap"><span><i>￥</i>100</span><label>满200使用</label><a href="javascript:;">立即领取</a></div></li></ul>'
     ],
 
-    'tpd-search':['<div class="tpd-search-warp clearfix"><div class="tpd-search-tm"></div><a class="tpd-logo" href="javascript:;"><img src="/public/static/images/logo.png" alt="" /></a><form class="tpd-search-form" action=""><i class="ico-head-search"></i><a href="/mobile/Goods/ajaxSearch.html"><input type="text" placeholder="请输入您所搜索的商品" /></a></form><a id="login_url" class="tpd-personal-warp" href="/Mobile/User/login.html"> <span id="login_ico">登录</span> <i class="ico-head-personal"></i> </a></div>'],
+    'tpd-search':['<div class="tpd-search-warp clearfix"><div class="tpd-search-tm"></div><a class="tpd-logo" href="javascript:;"><img src="/public/static/images/logo.png" alt="" /></a><form class="tpd-search-form" action=""><i class="ico-head-search"></i><a href="/mobile/Goods/ajaxSearch.html"><input type="text" placeholder="请输入您所搜索的商品" /></a></form><a id="login_url" class="tpd-personal-warp" href="/Mobile/User/Login_login.html"> <span id="login_ico">登录</span> <i class="ico-head-personal"></i> </a></div>'],
 
     'tpd-storeh':['<div class="tpd-store-head"><div class="tpd-storeh-cont tpd-storeh-cont1"><a class="tpd-storeh-logo" href="javascript:;"><img src="/public/static/images/logo.png" alt="" /></a><div class="tpd-storeh-name"><span>店铺名称</span><i class="tpd-storeh-collect">收藏</i></div><div class="tpd-storeh-des">一句话介绍你的店铺</div></div></div>'],
 
