@@ -73,7 +73,7 @@ function share_deal_after($xiaji, $shangji)
      if($shangji_openid){
          $xiaji_nickname = M('users')->where(['user_id' => $xiaji])->value('nickname');
          if($xiaji_nickname == ''){
-             $xiaji_nickname = get_nickname($xiaji);
+             $xiaji_nickname = get_nickname_new($xiaji);
          }
          $wx_content = "您的一级创客[" . $xiaji_nickname . "][ID:" . $xiaji . "]" . $before . "关注了公众号";
          $wechat = new \app\common\logic\wechat\WechatUtil();
@@ -85,7 +85,7 @@ function share_deal_after($xiaji, $shangji)
 
 
 //获取用户昵称
-function get_nickname($user_id){
+function get_nickname_new($user_id){
     $user = M('users')->where(['user_id'=>$user_id])->find();
     $access_token = access_token();
     $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$user['openid'].'&lang=zh_CN';
