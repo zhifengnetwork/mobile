@@ -391,7 +391,7 @@ class Pay
 
 //        $goodsModel = new Goods();
 //        $this->goods = $goodsModel::get($goods_id);
-        dump($this->payList[0]['goods']->sign_free_receive);exit;
+        
        if ($this->payList[0]['goods']->sign_free_receive != 0 ) {
             if ( $this->user['super_nsign'] != 0 || $this->user['is_distribut'] != 0 || $this->user['is_agent'] != 0 ) {
                 $isReceive = provingReceive($this->user, $this->payList[0]['goods']->sign_free_receive, $this->totalNum);
