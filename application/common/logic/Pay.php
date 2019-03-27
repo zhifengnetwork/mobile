@@ -391,7 +391,7 @@ class Pay
 
 //        $goodsModel = new Goods();
 //        $this->goods = $goodsModel::get($goods_id);
-        
+
        if ($this->payList[0]['goods']->sign_free_receive != 0 ) {
             if ( $this->user['super_nsign'] != 0 || $this->user['is_distribut'] != 0 || $this->user['is_agent'] != 0 ) {
                 $isReceive = provingReceive($this->user, $this->payList[0]['goods']->sign_free_receive, $this->totalNum);
@@ -408,7 +408,13 @@ class Pay
                     }
                 }
                 if($isReceive['status'] == 2){
-                    $this->orderAmount = $this->orderAmount - $this->payList[0]['goods']->shop_price; // 应付金额
+                    if ($this->payList[0]['goods']->sign_free_receive == 1) {
+                        // 免费领取的不限制数量
+                        $this->orderAmount = $this->orderAmount - $this->payList[0]['goods']->shop_price * $this->totalNum; // 应付金额
+                    }else{
+                        // 代理商品只扣取一份价钱
+                        $this->orderAmount = $this->orderAmount - $this->payList[0]['goods']->shop_price; // 应付金额
+                    }
                     $this->signPrice = $this->payList[0]['goods']->shop_price; //签到抵扣
                 }
             }
