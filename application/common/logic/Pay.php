@@ -409,7 +409,7 @@ class Pay
                 }
                 
                 if($isReceive['status'] == 2){
-                    $this->orderAmount = $this->orderAmount - $this->goodsPrice;
+                    $this->orderAmount = $this->orderAmount - $this->payList[0]['goods']->shop_price;
                     $this->signPrice = $this->goodsPrice;
                 }
             }
