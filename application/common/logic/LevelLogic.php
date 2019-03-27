@@ -38,7 +38,7 @@ class LevelLogic extends Model
 		//判断是否为代理
 		$agentGrade = $this->is_agent_user($top_user['user_id']);
 		if($agentGrade){
-			if($agentGrade['level_id']==6) return true;
+			if($agentGrade['level_id']==5) return true;
 			$this->upgrade_agent($agentGrade['level_id'], $top_user);
 		}else{
 			$money = $this->user_level(1);
@@ -84,10 +84,11 @@ class LevelLogic extends Model
 		}else if($grade==4)
 		{
 			$is_satisfy = $this->get_child_agent($user['user_id'],$money['max_money'],$money['remaining_money']);
-		}else if($grade==5)
-		{
-			$is_satisfy = $this->get_child_agent($user['user_id'],$money['max_money'],$money['remaining_money']);
 		}
+		// else if($grade==5)
+		// {
+		// 	$is_satisfy = $this->get_child_agent($user['user_id'],$money['max_money'],$money['remaining_money']);
+		// }
 		
 		if(!$is_satisfy) return false;
 		$newGrade 	= $grade + 1;
@@ -111,6 +112,7 @@ class LevelLogic extends Model
 	private function get_child_agent($userId,$max_money,$remaining_money)
 	{
 		$leader_find = M('users')->where(['first_leader'=>$userId])->select();
+		$openid = M('users')->where('user_id', $userId)->value('openid');
 		$money_array = [];
 		foreach($leader_find as $v){
 			$get_child_agent = $this->child_agent($v['user_id']);
@@ -118,13 +120,20 @@ class LevelLogic extends Model
 		}
 		$moneys = array_filter($money_array);
 		rsort($moneys);
-		// dump($moneys);
+
 		//最大
-		$agent_max = array_sum($moneys);
-		// dump($agent_max);
+		$logic = new \app\common\logic\AgentPerformanceOldLogic();
+        $oldPerformance = $logic->getAllData($openid);
+
+		$agent_max = array_sum($moneys);	
 		array_shift($moneys);
 		$agent_remaining = array_sum($moneys);
-		// dump($agent_remaining);
+
+		if($oldPerformance){
+			$agent_max = $agent_max + $oldPerformance;
+			$agent_remaining = $agent_remaining + $oldPerformance;
+		}
+        
 		if(($agent_max>=$max_money) && ($agent_remaining>=$remaining_money)){
 			// dump('ok');
 			return $agent_remaining;

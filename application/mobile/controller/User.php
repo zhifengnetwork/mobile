@@ -162,20 +162,20 @@ class User extends MobileBase
                 $money_total = array(
                     'money_total' => (float)$per_total,
                     'max_moneys'  => (float)$agent_max,
-                    'moneys' => (float)$agent_money,
+                    'moneys' => (float)$agent_money + $oldPerformance,
                 );
             }else{
                 $money_total = array(
                     'money_total' => (float)$per_total,
                     'max_moneys' => 0,
-                    'moneys' => 0,
+                    'moneys' => $oldPerformance,
                 );
             }
         }else{
             $money_total = array(
                 'money_total' => (float)$per_total,
                 'max_moneys' => 0,
-                'moneys' => 0,
+                'moneys' => $oldPerformance,
             );
         }
         $this->assign('money_total',$money_total);
