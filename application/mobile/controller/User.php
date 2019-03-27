@@ -240,6 +240,12 @@ class User extends MobileBase
     {
         $user_id = session('user.user_id');
 
+        $userinfo = M('users')->where(['user_id'=>$user_id])->find();
+        if($userinfo['is_distribut'] == 0 && $userinfo['is_agent'] == 0){
+            return $this->fetch('fenxiang_no');
+        }
+
+
         $this->redirect('fenxiang1');
         //正在跳转
 
