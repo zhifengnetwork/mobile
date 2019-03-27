@@ -15,6 +15,7 @@
                         <span class="naem">订单号：{$order[order_sn]}</span>
                         <span class="red">{$order.OrderStatusDetail}</span>
                     </div>
+                    
                     <!--物流信息-s-->
                     <div class="wuliumess" id="wuliumess{$order.order_id}">
                         <if condition="$order.shipping_status gt 0">
@@ -41,6 +42,7 @@
                                 });
                             }
                         </script>
+
                         </if>
                     </div>
                     <!--物流信息-e-->

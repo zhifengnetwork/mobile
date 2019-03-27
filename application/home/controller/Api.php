@@ -219,36 +219,47 @@ class Api extends Base
      */
     public function queryExpress()
     {
-        $express_switch = tpCache('express.express_switch');
-        $express_switch_input = input('express_switch/d');
-        $express_switch = is_null($express_switch_input) ? $express_switch : $express_switch_input;
-        if ($express_switch == 1) {
-            require_once(PLUGIN_PATH . 'kdniao/kdniao.php');
-            $kdniao = new \kdniao();
-            $data['OrderCode'] = empty(I('order_sn')) ? date('YmdHis') : I('order_sn');
-            $data['ShipperCode'] = I('shipping_code');
-            $data['LogisticCode'] = I('invoice_no');
-            $res = $kdniao->getOrderTracesByJson(json_encode($data));
-            $res = json_decode($res, true);
-            if ($res['State'] == 3) {
-                foreach ($res['Traces'] as $val) {
-                    $tmp['context'] = $val['AcceptStation'];
-                    $tmp['time'] = $val['AcceptTime'];
-                    $res['data'][] = $tmp;
-                }
-                $res['status'] = "200";
-            } else {
-                $res['message'] = $res['Reason'];
-            }
-            return json($res);
-        } else {
-            $shipping_code = input('shipping_code');
-            $invoice_no = input('invoice_no');
-            if (empty($shipping_code) || empty($invoice_no)) {
-                return json(['status' => 0, 'message' => '参数有误', 'result' => '']);
-            }
-            return json(queryExpress($shipping_code, $invoice_no));
-        }
+
+        $shipping_code = I('shipping_code');
+        $invoice_no = I('invoice_no');
+
+        //调用
+
+
+
+
+        // $express_switch = tpCache('express.express_switch');
+        // $express_switch_input = input('express_switch/d');
+        // $express_switch = is_null($express_switch_input) ? $express_switch : $express_switch_input;
+        // if ($express_switch == 1) {
+        //     require_once(PLUGIN_PATH . 'kdniao/kdniao.php');
+        //     $kdniao = new \kdniao();
+        //     $data['OrderCode'] = empty(I('order_sn')) ? date('YmdHis') : I('order_sn');
+        //     $data['ShipperCode'] = I('shipping_code');
+        //     $data['LogisticCode'] = I('invoice_no');
+        //     $res = $kdniao->getOrderTracesByJson(json_encode($data));
+        //     $res = json_decode($res, true);
+        //     if ($res['State'] == 3) {
+        //         foreach ($res['Traces'] as $val) {
+        //             $tmp['context'] = $val['AcceptStation'];
+        //             $tmp['time'] = $val['AcceptTime'];
+        //             $res['data'][] = $tmp;
+        //         }
+        //         $res['status'] = "200";
+        //     } else {
+        //         $res['message'] = $res['Reason'];
+        //     }
+        //     return json($res);
+        // } else {
+        //     $shipping_code = input('shipping_code');
+        //     $invoice_no = input('invoice_no');
+        //     if (empty($shipping_code) || empty($invoice_no)) {
+        //         return json(['status' => 0, 'message' => '参数有误', 'result' => '']);
+        //     }
+        //     return json(queryExpress($shipping_code, $invoice_no));
+        // }
+
+
     }
 
     /**
