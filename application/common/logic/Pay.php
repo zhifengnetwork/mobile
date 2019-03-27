@@ -411,10 +411,12 @@ class Pay
                     if ($this->payList[0]['goods']->sign_free_receive == 1) {
                         // 免费领取的不限制数量
                         $this->orderAmount = $this->orderAmount - $this->payList[0]['goods']->shop_price * $this->totalNum; // 应付金额
+                        $this->totalAmount = $this->totalAmount - $this->payList[0]['goods']->shop_price * $this->totalNum;
                         $this->signPrice = $this->payList[0]['goods']->shop_price * $this->totalNum; //签到抵扣
                     }else{
                         // 代理商品只扣取一份价钱
                         $this->orderAmount = $this->orderAmount - $this->payList[0]['goods']->shop_price; // 应付金额
+                        $this->totalAmount = $this->totalAmount - $this->payList[0]['goods']->shop_price;;
                         $this->signPrice = $this->payList[0]['goods']->shop_price; //签到抵扣
                     }
                 }
