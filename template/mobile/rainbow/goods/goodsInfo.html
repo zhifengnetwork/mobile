@@ -704,7 +704,7 @@
             // 免费领取
             if(is_sign != 0 ){
                 if (goods_num <= store_count) {
-                    sign_receive(is_sign);
+                    sign_receive(is_sign,goods_num);
                     return;
                 }
             }
@@ -729,7 +729,7 @@
             // 免费领取
             if(is_sign != 0 ){
                 if (goods_num <= store_count) {
-                    cart_sign_receive(is_sign);
+                    cart_sign_receive(is_sign,goods_num);
                     return;
                 }
             }
@@ -836,12 +836,12 @@
     }
     
     //验证是否可以免费领取
-    function sign_receive(type){
+    function sign_receive(type,num){
         $.ajax({
             type : "GET",
             dataType: "json",
             url:"/index.php?m=mobile&c=goods&a=sign_receive",//+tab,
-            data: {type:type},
+            data: {type:type,num:num},
             success: function(data){
                 if(data.status == 0){
                     layer.open({content:data.msg, time:3});
@@ -854,12 +854,12 @@
     }
 
     //加入购物车验证是否可以免费领取
-    function cart_sign_receive(type){
+    function cart_sign_receive(type,num){
         $.ajax({
             type : "GET",
             dataType: "json",
             url:"/index.php?m=mobile&c=goods&a=sign_receive",//+tab,
-            data: {type:type},
+            data: {type:type,num:num},
             success: function(data){
                 if(data.status == 0){
                     layer.open({content:data.msg, time:3});

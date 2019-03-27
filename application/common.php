@@ -1885,6 +1885,7 @@ function provingReceive($user, $type, $num = 1)
         $result = array('status' => 0, 'msg' => '成为分销商才可领取', 'result' => array());
         return $result;
     }
+
     // 是分销并且有领取次数
     if ($user['is_distribut'] == 1 && $type == 1 && $user['distribut_free_num'] < $num) {
         $result = array('status' => 0, 'msg' => '没有领取资格，坚持签到可获得资格！', 'result' => array());
