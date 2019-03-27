@@ -1931,5 +1931,6 @@ function provingReceive($user, $type, $num = 1)
         //     return $this->ajaxReturn($result);
         // }
     }
+    
     return array('status' => 2, 'msg' => '可领取', 'result' => array());
 }

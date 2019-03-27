@@ -78,7 +78,7 @@
                                 <p class="weight">
                                     <span>{$vo[comment_count]}条评价</span>
                                     <span class="proli-eva">98%好评</span>
-                                    <span goods_id="{$vo.goods_id}" class="add_cart"><img src="__STATIC__/images/red-icon-cart.png" alt=""></span>
+                                    <if condition="$vo.sign_free_receive neq 1"><span goods_id="{$vo.goods_id}" class="add_cart"><img src="__STATIC__/images/red-icon-cart.png" alt=""></span></if>
                                 </p>
                             </div>
                         </div>
