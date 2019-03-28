@@ -5,40 +5,46 @@
 namespace app\api\controller;
 use app\common\model\Users;
 use think\Db;
-use think\Controller;
 
-
-class User extends Controller
+class User extends ApiBase
 {
 
-    public function ajaxReturn($data){
-        header('Content-Type:application/json; charset=utf-8');
-        exit(json_encode($data,JSON_UNESCAPED_UNICODE));
-    }
-
-   
+   /**
+    * 登录接口
+    */
     public function login()
     {
             $mobile = I('mobile');
             $password1 = I('password');
             $password = md5('TPSHOP'.$password1);
 
-            $data = Db::name("users")->where('mobile',$mobile)->find();
-        
+            $data = Db::name("users")->where('mobile',$mobile)
+            ->field('password,user_id,nickname,user_money,head_pic,agent_user,first_leader,realname,mobile,is_distribut,is_agent')
+            ->find();
+
             if(!$data){
                 $this->ajaxReturn(['status' => -1 , 'msg'=>'手机不存在或错误','data'=>'']);
             }
             if ($password != $data['password']) {
                 $this->ajaxReturn(['status' => -1 , 'msg'=>'登录密码错误','data'=>'']);
             }
-            
+            unset($data['password']);
             //重写
-            $data['token'] = md5(time().$data['openid']);
+            $data['token'] = $this->create_token($data['user_id']);
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'登录成功','data'=>$data]);
+    }
 
-            Db::name("users")->where('user_id',$data['user_id'])->update(['token'=>$data['token']]);
 
-            $this->ajaxReturn(['status' => 1 , 'msg'=>'登录成功','data'=>$data]);
-       
+    /**
+     * 解密
+     */
+    public function jiemi(){
+
+        //解密token
+        $token = '';
         
+        $rere = $this->decode_token($token);
+
+        dump($rere);
     }
 }
