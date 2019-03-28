@@ -12032,9 +12032,9 @@ pre {
 
 .zjy_a{
 	display: block;
-    width: 1.5rem;
-    height: 1.5rem;
-    line-height: 1.5rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    line-height: 1.8rem;
 	border: 1px solid #ccc;
 	border-radius: 50%;
 	background: #eee;
@@ -12044,8 +12044,8 @@ pre {
 	text-align: center;
 }
 .zjy_a img{
-	width: 1.4rem !important;
-	height: 1.4rem !important;
+	width: 1.8rem !important;
+	height: 1.8rem !important;
 	display: inline-block;
 }
 
