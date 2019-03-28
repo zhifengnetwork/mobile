@@ -341,7 +341,16 @@ class User extends MobileBase
         }
         
 
-        // dump($url_head_pp);
+         //判断图片大小
+         $logo = \think\Image::open($url_head_pp);
+         $logo_width = $logo->height();
+         $logo_height = $logo->width();
+ 
+        if($logo_height > 200 || $logo_width > 200){
+            //压缩图片
+             $url_head_file = '/www/wwwroot/www.dchqzg1688.com/public/share/head/'.$user_id.'.jpg';
+             $logo->thumb(132, 132)->save($url_head_file , null, 100);
+        }
 
         //得到二维码的绝对路径
 

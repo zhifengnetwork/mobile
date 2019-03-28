@@ -272,7 +272,7 @@ class Index extends Base {
             ->join('tp_users u ',' u.user_id = o.user_id')
             ->order('o.order_id asc')
             ->field('o.order_id, o.total_amount, o.order_sn, o.user_id, og.goods_id, og.goods_num,
-            g.shop_price, g.is_distribut, g.is_agent, u.first_leader')
+            g.shop_price, g.is_distribut, g.is_agent, u.first_leader, u.is_agent as is_user_agent, u.is_distribut as is_user_distribut')
             ->select();
         if(!empty($order_list)) {
             $order_list_data  = [];
@@ -282,7 +282,7 @@ class Index extends Base {
             if(!empty($order_list_data)){
                 //获取分红比例
                 //$rateArr  = M('user_level')->getField("level,rate");
-                $user_list = M('users')->field('user_id,first_leader,agent_user,is_lock')->select();
+                $user_list = M('users')->field('user_id,first_leader')->select();
                 $user_list_data = [];
                 foreach ($user_list as $item){
                     $user_list_data[$item['user_id']][] = $item;
@@ -310,12 +310,14 @@ class Index extends Base {
                             $is_distribut_shop_price += ($va['shop_price'] * $va['goods_num']);
                         }
                     }
-                    $distribut = M('distribut')->find();
-                    $first_leader = M('users')->where(['user_id'=>$value[0]['first_leader']])->find();
-                    if($first_leader['is_distribut'] == 1){
-                        $commission = $is_distribut_shop_price * ($distribut['rate'] / 100);
-                        if($commission){
-                            agent_performance_person_log($first_leader['user_id'], $commission, $value[0]['order_id']);
+                    // $distribut = M('distribut')->find();
+                    // $first_leader = M('users')->where(['user_id'=>$value[0]['first_leader']])->find();
+
+                    //只有代理?
+                    if($value[0]['is_user_agent'] == 1 || $value[0]['is_user_distribut'] == 1){
+                        // $commission = $is_distribut_shop_price * ($distribut['rate'] / 100);
+                        if($is_distribut_shop_price){
+                            agent_performance_person_log($first_leader['user_id'], $is_distribut_shop_price, $value[0]['order_id']);
                         }
                     }
                     foreach($recUser as $k => $user){
@@ -328,6 +330,8 @@ class Index extends Base {
             }
         }
     }
+
+    
     //记录日志
     public function writeLog($userId,$money,$orderSn,$orderId,$goodsId,$desc,$states)
     {
