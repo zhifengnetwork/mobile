@@ -460,9 +460,9 @@ class Image
 
             /* TOUXIANG */
             case self::TOUXIANG:
-                $x = 40;
+                $x = 20;
                 //$y = ($this->info['height'] - $info[1]) / 2;
-                $y = 40;
+                $y = 20;
  
                break;
 
