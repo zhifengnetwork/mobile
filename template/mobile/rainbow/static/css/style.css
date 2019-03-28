@@ -4515,7 +4515,12 @@ input:-ms-input-placeholder {
 	padding:.42667rem 0
 }
 .guesslike .likeshop ul li .similer-product .similar-product-text {
-	height:1.19467rem
+	width: 6rem;
+	height:1.19467rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	display: inline-block;
 }
 .enkecor {
 	font-size:.55467rem;
@@ -12025,5 +12030,23 @@ pre {
 	display: inline-block;
 }
 
+.zjy_a{
+	display: block;
+    width: 1.8rem;
+    height: 1.8rem;
+    line-height: 1.8rem;
+	border: 1px solid #ccc;
+	border-radius: 50%;
+	background: #eee;
+	position: fixed;
+	bottom: 3.6rem;
+	right: 1.1rem;
+	text-align: center;
+}
+.zjy_a img{
+	width: 1.8rem !important;
+	height: 1.8rem !important;
+	display: inline-block;
+}
 
 
