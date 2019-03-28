@@ -125,7 +125,7 @@ class User extends MobileBase
 
         //dump($oldPerformance);
        
-        $field = "user_id,first_leader,is_distribut,is_agent"; 
+        $field = "user_id, first_leader, is_distribut, is_agent, openid";
         $user_agent_money = $this->child_agent($user['user_id']);
 
         //个人,团队业绩之和
@@ -142,8 +142,11 @@ class User extends MobileBase
             $agent_array = [];
             foreach($users as $key=>$val){
                 $get_child_agent = $this->child_agent($val['user_id']);
+                $get_childoldPerformance = $logic->getAllData($val['openid']);
                 if($get_child_agent){
-                    $agent_array[]=$get_child_agent['agent_per'];
+                    $agent_array[]= $get_child_agent['agent_per'] + $get_childoldPerformance;
+                }else{
+                    $agent_array[]= $get_childoldPerformance;
                 }
             }
     
