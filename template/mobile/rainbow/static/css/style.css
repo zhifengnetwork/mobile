@@ -4515,6 +4515,7 @@ input:-ms-input-placeholder {
 	padding:.42667rem 0
 }
 .guesslike .likeshop ul li .similer-product .similar-product-text {
+	width: 6rem;
 	height:1.19467rem
 }
 .enkecor {
@@ -12024,6 +12025,18 @@ pre {
 	white-space: initial;
 	display: inline-block;
 }
-
+.products_kuang{
+	position: relative;
+}
+.zjy_a{
+	display: inline-block;
+	position: absolute;
+	bottom: 1.6rem;
+	right: .1rem;
+}
+.zjy_a img{
+	width: 1rem !important;
+	height: 1rem !important;
+}
 
 
