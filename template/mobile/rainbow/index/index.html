@@ -281,7 +281,7 @@
 						<li>
 
 							<div class="similer-product products_kuang">
-								<a href="/mobile/kefu" class="zjy_a"><img src="__STATIC__/images/zjy_kf.png"/></a>    							
+
 								
 								<a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}" title="{$v.goods_name}">
 									<img src="{$v[goods_id]|goods_thum_images=400,400}" />
@@ -318,7 +318,7 @@
 					<foreach name="agent_goods" item="v">
 						<li>
 							<div class="similer-product products_kuang">
-								<a href="/mobile/kefu" class="zjy_a"><img src="__STATIC__/images/zjy_kf.png"/></a>    							
+								  							
 								
 								<a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}" title="{$v.goods_name}">
 									<img src="{$v[goods_id]|goods_thum_images=400,400}" />
@@ -355,7 +355,7 @@
 
 							<li>
 								<div class="similer-product products_kuang">
-									<a href="/mobile/kefu" class="zjy_a"><img src="__STATIC__/images/zjy_kf.png"/></a>    															
+
 									<a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}" title="{$v.goods_name}">
 										<img src="{$v[goods_id]|goods_thum_images=400,400}" />
 										<span class="similar-product-text">{$v[goods_name]|getSubstr=0,20}</span>
@@ -379,7 +379,9 @@
 			</div>
 		</div>
 		<!--猜您喜欢-end-->
-
+		
+		<!--客服-->
+		<a href="/mobile/kefu" class="zjy_a"><img src="__STATIC__/images/zjy_kf.png"/></a>    							
 		<script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
 		
 		<!--<script src="__STATIC__/js/zepto-1.2.0-min.js" type="text/javascript" charset="utf-8"></script>-->

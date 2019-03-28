@@ -12029,18 +12029,24 @@ pre {
 	white-space: initial;
 	display: inline-block;
 }
-.products_kuang{
-	position: relative;
-}
+
 .zjy_a{
-	display: inline-block;
-	position: absolute;
-	bottom: 1.6rem;
-	right: .1rem;
+	display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+	border: 1px solid #ccc;
+	border-radius: 50%;
+	background: #eee;
+	position: fixed;
+	bottom: 3.6rem;
+	right: 1.1rem;
+	text-align: center;
 }
 .zjy_a img{
-	width: 1rem !important;
-	height: 1rem !important;
+	width: 1.2rem !important;
+	height: 1.2rem !important;
+	display: inline-block;
 }
 
 
