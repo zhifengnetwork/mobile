@@ -58,6 +58,19 @@ class ShareLogic
 
     
     public function getImage($url,$save_dir='',$filename='',$type=0){
+
+        //本地图片
+        if(strpos($url,'public') !== false){ 
+            $url = '/www/wwwroot/www.dchqzg1688.com'.$url;
+        }else{
+            
+            //是微信图片
+            
+
+        }
+
+
+
         if(trim($url)==''){
             return array('file_name'=>'','save_path'=>'','error'=>1);
         }

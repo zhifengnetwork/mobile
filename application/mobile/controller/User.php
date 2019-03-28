@@ -273,6 +273,21 @@ class User extends MobileBase
             $url_code = $re['save_path'];
         }
         
+
+        
+        //判断图片大小
+        $logo_url = \think\Image::open($url_code);
+        $logo_url_logo_width = $logo_url->height();
+        $logo_url_logo_height = $logo_url->width();
+  
+         if($logo_url_logo_height > 420 || $logo_url_logo_width > 420){
+             //压缩图片
+              $url_code = '/www/wwwroot/www.dchqzg1688.com/public/share/code/'.$user_id.'.jpg';
+              $logo_url->thumb(410, 410)->save($url_code , null, 100);
+         }
+
+
+         
         //得到二维码的绝对路径
 
         $pic = "/www/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg";
