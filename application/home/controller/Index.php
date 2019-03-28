@@ -12,15 +12,17 @@ class Index extends Base {
 
         // $user = M('users')->where(['user_id'=>$user_id])->find();
 
-        // $access_token = access_token();
-        // $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$user['openid'].'&lang=zh_CN';
+
+
+        $access_token = access_token();
+        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid=oqyJi0YV4hZOVm9Lcg3dLiIS0LHg&lang=zh_CN';
     
-        // $resp = httpRequest($url, "GET");
-        // $res = json_decode($resp, true);
+        $resp = httpRequest($url, "GET");
+        $res = json_decode($resp, true);
 
-        // dump($res);
+        dump($res);
 
-        //
+        
 
         // $res = M('users')->where(['is_distribut'=>0,'is_agent'=>1])->field('user_id,nickname,is_distribut,is_agent')->limit(100)->select();
         
