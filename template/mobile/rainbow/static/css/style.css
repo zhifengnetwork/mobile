@@ -4516,7 +4516,11 @@ input:-ms-input-placeholder {
 }
 .guesslike .likeshop ul li .similer-product .similar-product-text {
 	width: 6rem;
-	height:1.19467rem
+	height:1.19467rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	display: inline-block;
 }
 .enkecor {
 	font-size:.55467rem;
