@@ -32,11 +32,12 @@
             <form class="navbar-form form-inline" method="post"  id="search-form2">
                 <input type="hidden" name="order_by" value="user_id">
                 <input type="hidden" name="sort" value="desc">
-                <input type="hidden" name="account" value="" id="account" />
                 <input type="hidden" name="nickname" value="" id="nickname" />
                 <input type="hidden" name="realname" value="" id="realname" />
                 <input type="hidden" name="user_id" value="" id="user_id" />
                 <input type="hidden" name="user_ids" value="" id="user_ids" />
+                <input type="hidden" name="mobile" value="" id="mobile" />
+                <input type="hidden" name="leader" value="" id="leader" />
                 <!--分销时查看下级人数都有哪些-->
                 <input type="hidden" name="first_leader" value="{$_GET['first_leader']}">
                 <input type="hidden" name="second_leader" value="{$_GET['second_leader']}">
@@ -47,7 +48,8 @@
                             <option value="nickname">会员昵称</option>
                             <option value="realname">会员姓名</option>
                             <option value="user_id">会员ID</option>
-                            <option value="search_key">会员账户</option>
+                            <option value="mobile">会员账户</option>
+                            <option value="leader">推荐上级ID</option>
                         </select>
                         <input type="text" id="search_key" size="30" class="qsbox" placeholder="查询"
                                value="{$Request.param.search_key}">
@@ -247,26 +249,36 @@
         var search_key = $.trim($('#search_key').val());
         var search_type = $.trim($('#search_type').val());
         if(search_key.length > 0){
-            if(search_type == 'search_key'){
-                $('#account').val(search_key);
+            if(search_type == 'mobile'){
+                $('#mobile').val(search_key);
                 $('#nickname').val('');
                 $('#user_id').val('');
+                $('#realname').val('');
+                $('#leader').val('');
+            }else if(search_type == 'leader'){
+                $('#leader').val(search_key);
+                $('#user_id').val('');
+                $('#mobile').val('');
+                $('#nickname').val('');
                 $('#realname').val('');
             }else if(search_type == 'user_id'){
                 $('#user_id').val(search_key);
-                $('#account').val('');
+                $('#mobile').val('');
                 $('#nickname').val('');
                 $('#realname').val('');
+                $('#leader').val('');
             }else if(search_type == 'realname'){
                 $('#realname').val(search_key);
                 $('#user_id').val('');
-                $('#account').val('');
+                $('#mobile').val('');
                 $('#nickname').val('');
+                $('#leader').val('');
             }else{
                 $('#nickname').val(search_key);
-                $('#account').val('');
+                $('#mobile').val('');
                 $('#user_id').val('');
                 $('#realname').val('');
+                $('#leader').val('');
             }
         }
         cur_page = page; //当前页面 保存为全局变量

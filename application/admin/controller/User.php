@@ -73,9 +73,11 @@ class User extends Base
         $nickname = I('nickname');
         $realname = I('realname');
         $user_id = input('user_id');
-        $account = I('account');
+        $mobile = I('mobile');
+        $leader = I('leader');
         // dump($user_id);exit;
-        $account ? $condition['email|mobile'] = ['like', "%$account%"] : false;
+        $mobile ? $condition['mobile'] = ['like', "%$mobile%"] : false;
+        $leader ? $condition['first_leader'] = $leader : false;
         $nickname ? $condition['nickname'] = ['like', "%$nickname%"] : false;
         $realname ? $condition['realname'] = ['like', "%$realname%"] : false;
         $user_id ? $condition['user_id'] = $user_id : false;
@@ -743,10 +745,10 @@ class User extends Base
         //会员信息搜索
         $search_type = I('search_type');
         $search_value = I('search_value');
-        if($search_type == 'account'){
-            $where['u.mobile|u.email'] = array('like', "%$search_value%");
+        if($search_type == 'mobile'){
+            $where['u.mobile'] = array('like', "%$search_value%");
         }else if($search_type == 'user_id'){
-            $where['w.user_id'] = array('like', "%$search_value%");
+            $where['w.user_id'] = $search_value;
         }else{
             $where['u.nickname'] = array('like', "%$search_value%");
         }
@@ -793,6 +795,7 @@ class User extends Base
         $Page = new Page($count, 10);
         $list = Db::name('withdrawals')->alias('w')->field('w.*,u.nickname')->join('__USERS__ u', 'u.user_id = w.user_id', 'INNER')->where($where)->order("w.id desc")->limit($Page->firstRow . ',' . $Page->listRows)->select();
         //$this->assign('create_time',$create_time2);
+    
         $show = $Page->show();
         $this->assign('show', $show);
         $this->assign('list', $list);

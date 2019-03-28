@@ -56,93 +56,93 @@ class Distribut extends Base {
 
 
 
-    /**
-     * 分销商列表
-     */
-    public function distributor_list()
-    {
-        $count = M('users')->count();
-        $pager = new Page($count, 10);
-        $distributor = M('users')
-                    ->where('is_lock', 0)
-                    ->where('is_distribut', 1)
-                    ->limit($pager->firstRow, $pager->listRows)
-                    ->field('user_id, nickname, level, first_leader, province, mobile, email')
-                    ->select();
-        $this->assign('pager', $pager);
-        $this->assign('distributor', $distributor);
-        return $this->fetch();
-    }
+    // /**
+    //  * 分销商列表
+    //  */
+    // public function distributor_list()
+    // {
+    //     $count = M('users')->count();
+    //     $pager = new Page($count, 10);
+    //     $distributor = M('users')
+    //                 ->where('is_lock', 0)
+    //                 ->where('is_distribut', 1)
+    //                 ->limit($pager->firstRow, $pager->listRows)
+    //                 ->field('user_id, nickname, level, first_leader, province, mobile, email')
+    //                 ->select();
+    //     $this->assign('pager', $pager);
+    //     $this->assign('distributor', $distributor);
+    //     return $this->fetch();
+    // }
 
-    /**
-     * 分销商删除
-     */
-    public function distributor_del()
-    {
-        $id = I('del_id/d');
-        if ($id) {
-            $result = M('users')->where(['user_id' => $id])->update(['is_distribut' => 0]);
-            if($result){
-                exit(json_encode(1));
-            }else{
-                exit(json_encode(0));
-            }
-        } else {
-            exit(json_encode(0));
-        }
-    }
+    // /**
+    //  * 分销商删除
+    //  */
+    // public function distributor_del()
+    // {
+    //     $id = I('del_id/d');
+    //     if ($id) {
+    //         $result = M('users')->where(['user_id' => $id])->update(['is_distribut' => 0]);
+    //         if($result){
+    //             exit(json_encode(1));
+    //         }else{
+    //             exit(json_encode(0));
+    //         }
+    //     } else {
+    //         exit(json_encode(0));
+    //     }
+    // }
 
-    /**
-     * 代理列表
-     */
-    public function agent_list()
-    {
-        $count = M('users')->count();
-        $pager = new Page($count, 10);
-        $distributor = M('users')
-                    ->where('is_lock', 0)
-                    ->where('is_distribut', 1)
-                    ->limit($pager->firstRow, $pager->listRows)
-                    ->field('user_id, nickname, level, first_leader, province, mobile, email')
-                    ->select();
-        $this->assign('pager', $pager);
-        $this->assign('distributor', $distributor);
-        return $this->fetch();
-    }
+    // /**
+    //  * 代理列表
+    //  */
+    // public function agent_list()
+    // {
+    //     $count = M('users')->count();
+    //     $pager = new Page($count, 10);
+    //     $distributor = M('users')
+    //                 ->where('is_lock', 0)
+    //                 ->where('is_distribut', 1)
+    //                 ->limit($pager->firstRow, $pager->listRows)
+    //                 ->field('user_id, nickname, level, first_leader, province, mobile, email')
+    //                 ->select();
+    //     $this->assign('pager', $pager);
+    //     $this->assign('distributor', $distributor);
+    //     return $this->fetch();
+    // }
 
-    /**
-     * 代理删除
-     */
-    public function agent_del()
-    {
-        $id = I('del_id/d');
-        if ($id) {
-            $result = M('users')->where(['user_id' => $id])->update(['is_distribut' => 0]);
-            if($result){
-                exit(json_encode(1));
-            }else{
-                exit(json_encode(0));
-            }
-        } else {
-            exit(json_encode(0));
-        }
-    }
+    // /**
+    //  * 代理删除
+    //  */
+    // public function agent_del()
+    // {
+    //     $id = I('del_id/d');
+    //     if ($id) {
+    //         $result = M('users')->where(['user_id' => $id])->update(['is_distribut' => 0]);
+    //         if($result){
+    //             exit(json_encode(1));
+    //         }else{
+    //             exit(json_encode(0));
+    //         }
+    //     } else {
+    //         exit(json_encode(0));
+    //     }
+    // }
     
-    //关系图
-    public function tree()
-    {
-        $UsersLogic = new UsersLogic();    
-        $cat_list = $UsersLogic->relation();
-        // dump($cat_list);die;
-        if($cat_list){
-            $level = array_column($cat_list, 'level');
-            $heightLevel = max($level);
-        }
-        $this->assign('heightLevel',$heightLevel);  
-        $this->assign('cat_list',$cat_list);    
+    // //关系图
+    // public function tree()
+    // {
+    //     $UsersLogic = new UsersLogic();    
+    //     $cat_list = $UsersLogic->relation();
+    //     // dump($cat_list);die;
+    //     if($cat_list){
+    //         $level = array_column($cat_list, 'level');
+    //         $heightLevel = max($level);
+    //     }
+    //     $this->assign('heightLevel',$heightLevel);  
+    //     $this->assign('cat_list',$cat_list);    
         
-        return $this->fetch();
-    }
+    //     return $this->fetch();
+    // }
     
     /**
     * 分销商设置
@@ -326,9 +326,7 @@ class Distribut extends Base {
             $this->assign('end', $end);
         }
         if ($search_value) {
-            if($search_type == 'account'){
-                $map['mobile|email'] = array('like', "%$search_value%");
-            }else if($search_type == 'user_id'){
+            if($search_type == 'user_id'){
                 $map['users.'.$search_type] = $search_value;
             }else{
                 $map['users.'.$search_type] = array('like', "%$search_value%");
@@ -370,9 +368,7 @@ class Distribut extends Base {
             $this->assign('end', $end);
         }
         if ($search_value) {
-            if($search_type == 'account'){
-                $map['mobile|email'] = array('like', "%$search_value%");
-            }else if($search_type == 'user_id'){
+            if($search_type == 'user_id'){
                 $map['users.'.$search_type] = $search_value;
             }else{
                 $map['users.'.$search_type] = array('like', "%$search_value%");
