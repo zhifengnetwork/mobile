@@ -65,7 +65,10 @@ class ShareLogic
         }else{
             
             //是微信图片
-            
+            $end = substr($url,-3);
+            if($end == '132'){
+                $url = substr($url,0,count($url)-4).'0';
+            }
 
         }
 

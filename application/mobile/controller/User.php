@@ -312,10 +312,10 @@ class User extends MobileBase
         $logo_height = $logo->width();
  
         //头像变成200
-        if($logo_height > 280 || $logo_width > 280){
+        if($logo_height > 260 || $logo_width > 260){
             //压缩图片
              $url_head_file = '/www/wwwroot/www.dchqzg1688.com/public/share/head/'.$user_id.'.jpg';
-             $logo->thumb(250, 250)->save($url_head_file , null, 100);
+             $logo->thumb(240, 240)->save($url_head_file , null, 100);
         }
         
         //得到二维码的绝对路径

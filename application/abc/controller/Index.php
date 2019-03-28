@@ -12,17 +12,17 @@ use think\Controller;
 class Index extends Controller
 {
 
-    /**
-     * 测试重复数据
-     * 能不能插入
-     */
-    public function ad(){
-        exit;
-        $data = array(
-            'openid' => 'oqyJi0YiZWZvIV_jbEj8gzFnJ7YM'
-        );
-        M('oauth_users')->add($data);
+    public function index(){
+        $url = "http://thirdwx.qlogo.cn/mmopen/vi_32/1ZeNR1gSiczejQL7picQwpFHxQJbmqQPuyvnMBmEphISvBlPmHeC1wsEPuy9KRMtiacbrje3kH9ic1Cvib0hkFpp4vw/132";
+
+        $end = substr($url,-3);
+        if($end == '132'){
+            $url = substr($url,0,count($url)-4).'0';
+            dump($url);
+        }
     }
+
+
 
     /**
      * 补
@@ -43,7 +43,7 @@ class Index extends Controller
     }
 
     
-    public function index()
+    public function aa()
     {
         exit('结束');
         // select username,count(*) as count from hk_test group by username having count>1;
