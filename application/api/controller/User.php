@@ -38,17 +38,8 @@ class User extends ApiBase
 
     public function userinfo(){
         //解密token
-        $token = I('token');
-        if(!$token){
-              $this->ajaxReturn(['status' => -1 , 'msg'=>'token不存在','data'=>'']);
-        }
-        $rere = $this->decode_token($token);
-        if(!$rere){
-            if($rere['iat']>$rere['exp']){
-                $this->ajaxReturn(['status' => -1 , 'msg'=>'token已过期','data'=>'']);
-            }
-        }
-        $user_id = $rere['user_id'];
+        
+        $user_id = $this->get_user_id();
         if($user_id!=""){
             $data = Db::name("users")->where('user_id',$user_id)->field('user_id,nickname,user_money,head_pic,agent_user,first_leader,realname,mobile,is_distribut,is_agent')->find();
         }else{

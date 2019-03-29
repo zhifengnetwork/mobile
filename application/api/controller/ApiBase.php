@@ -40,4 +40,47 @@ class ApiBase extends Controller
         $payload = json_decode(json_encode(JWT::decode($token, $key, ['HS256'])),true);
         return $payload;
     }
+
+    /**
+    *
+    *接收头信息
+    **/
+    public function em_getallheaders()
+    {
+       foreach ($_SERVER as $name => $value)
+       {
+           if (substr($name, 0, 5) == 'HTTP_')
+           {
+               $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+           }
+       }
+       return $headers;
+    }
+
+    /**
+     * 获取user_id
+     */
+    public function get_user_id(){
+        $headers = $this->em_getallheaders();
+
+        $token = $headers['Authorization'];
+        if(!$token){
+              $this->ajaxReturn(['status' => -1 , 'msg'=>'8888token已过期','data'=>$headers]);
+        }
+
+
+        $res = $this->decode_token($token);
+
+        if(!$res){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'token已过期','data'=>'']);
+
+        }
+        if($res['iat']>$res['exp']){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'token已过期','data'=>'']);
+        }
+        
+        
+       return $res['user_id'];
+       
+    }
 }
