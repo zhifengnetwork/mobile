@@ -454,15 +454,15 @@ class Image
               case self::DCHQZG:
               $x = 605;
               //$y = ($this->info['height'] - $info[1]) / 2;
-              $y = 1065;
+              $y = 1075;
 
               break;
 
             /* TOUXIANG */
             case self::TOUXIANG:
-                $x = 40;
+                $x = 10;
                 //$y = ($this->info['height'] - $info[1]) / 2;
-                $y = 40;
+                $y = 10;
  
                break;
 

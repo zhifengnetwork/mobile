@@ -11,6 +11,8 @@ use app\common\logic\OrderLogic;
 use app\common\logic\MessageFactory;
 use app\common\model\ReturnGoods;
 use app\common\util\TpshopException;
+//物流api
+use app\home\controller\Api;
 use think\AjaxPage;
 use think\Page;
 use think\Db;
@@ -381,6 +383,16 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
         if(empty($order)){
             $this->error('订单不存在或已被删除');
         }
+
+        $Api = new Api;
+        $data = M('delivery_doc')->where('order_id', $order_id)->find();
+        $shipping_code = $data['shipping_code'];
+        $invoice_no = $data['invoice_no'];
+        $result = $Api->queryExpress($shipping_code, $invoice_no);
+        if ($result['status'] == 0) {
+            $result['result'] = $result['result']['list'];
+        }
+        $this->assign('result', $result);
         $this->assign('order', $order);
         return $this->fetch();
     }

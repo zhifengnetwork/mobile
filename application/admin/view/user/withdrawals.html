@@ -56,9 +56,9 @@
                         <select class="select" name="search_type">
                             <option value="user_id" <if condition="$_REQUEST['search_type'] eq 'user_id'">selected</if>>会员ID</option>
                             <option value="nickname" <if condition="$_REQUEST['search_type'] eq 'nickname'">selected</if>>会员昵称</option>
-                            <option value="account" <if condition="$_REQUEST['search_type'] eq 'account'">selected</if>>会员账户</option>
+                            <option value="mobile" <if condition="$_REQUEST['search_type'] eq 'mobile'">selected</if>>会员账户</option>
                         </select>
-                        <input type="text" size="30" name="search_value" value="{$_GET[search_value]}" placeholder="模糊查询" class="qsbox">
+                        <input type="text" size="30" name="search_value" value="{$_GET[search_value]}" placeholder="查询" class="qsbox">
                     </div>
                     <div class="sDiv2" style="margin-right: 10px;">
                         <input size="30" placeholder="收款账户真实姓名" value="{$_GET[realname]}" name="realname" class="qsbox" type="text">
