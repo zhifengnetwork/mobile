@@ -860,14 +860,7 @@ class User extends Base
         if ($status == 1){
             $data['check_time'] = time();
             $wx_content = "您提交的提现申请已通过审核\n将在24小时内到账，请注意查收！\n备注：{$data['remark']}";
-            // 发送公众号消息给用户
-            $wechat = new \app\common\logic\wechat\WechatUtil();
-            $wechat->sendMsg($user_find['openid'], 'text', $wx_content);
 
-
-            Db::name('withdrawals')->whereIn('id', $ids)->update($data);
-            $this->ajaxReturn(array('status' => 1, 'msg' => "操作成功"), 'JSON');
-            exit;
         }
         if ($status != 1){
             $wx_content = "您提交的提现申请未通过审核！\n备注：{$data['remark']}";
