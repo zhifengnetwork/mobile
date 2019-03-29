@@ -96,6 +96,5 @@ class User extends ApiBase
 
             }
             $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
-        
     }
 }
