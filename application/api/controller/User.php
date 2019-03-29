@@ -95,10 +95,10 @@ class User extends ApiBase
                     // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
                     // echo $info->getSaveName();
                     // 输出 42a79759f284b767dfcb2a0197904287.jpg
-                    $data = 'public/upload/'.DS.$info->getFilename(); 
+                    $data = ROOT_PATH . DS.'public/upload/'.$info->getSaveName(); 
                     
                 }else{
-                    $this->ajaxReturn(['status' => -1 , 'msg'=>'上传失败','data'=>$file->getError()]);
+                    $this->ajaxReturn(['status' => -2 , 'msg'=>'上传失败','data'=>$file->getError()]);
                 }
 
             }
