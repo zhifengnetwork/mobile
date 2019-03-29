@@ -63,9 +63,9 @@ class ApiBase extends Controller
     public function get_user_id(){
         $headers = $this->em_getallheaders();
 
-        $token = $headers['Authorization'];
+        $token = $headers['Token'];
         if(!$token){
-              $this->ajaxReturn(['status' => -1 , 'msg'=>'8888token已过期','data'=>$headers]);
+              $this->ajaxReturn(['status' => -1 , 'msg'=>'已过期','data'=>$headers]);
         }
 
 

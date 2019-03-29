@@ -45,7 +45,7 @@ class User extends ApiBase
         }else{
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
-        $this->ajaxReturn(['status' => 0 , 'msg'=>'成功','data'=>$data]);
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
 
     }
 
