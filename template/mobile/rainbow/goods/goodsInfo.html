@@ -18,23 +18,11 @@
     .spxq-ggcs{
         position: static;
     }
-    .spxq-ggcs li.on{
-        color:#ec5151;
-    }
     .guesslike{
         margin-bottom: 0;
     }
 </style>
 
-<script>
-$(function(){
-    $('#tab-tit-zp li').click(function(){
-        $("#tab-tit-zp li").eq($(this).index()).addClass("on").siblings().removeClass("on");
-		$(".sg").hide().eq($(this).index()).show();
-    })
-})
-
-</script>
 
 <div class="he_sustain">
     <div class="classreturn loginsignup detail">
@@ -366,7 +354,7 @@ $(function(){
     <!-- 商品详情 -->
     <div class="spxq-ggcs po-fi gizle sabit">
         <ul id="tab-tit-zp">
-            <li class="on">商品详情</li>
+            <li class="red">商品详情</li>
             <li>规格参数</li>
         </ul>
     </div>
@@ -425,7 +413,7 @@ $(function(){
 
 <!--评论列表-s-->
 <div class="xq_details">
-    <div class="spxq-ggcs comment_de p">
+    <div class="spxq-ggcs comment_de p" id="evaluate-tab-zp">
         <ul>
             <!--1 全部 2好评 3 中评 4差评-->
             <li class="red">全部评价 <br /><span ctype="1">{$goods['comment_statistics']['total_sum']}</span></li>
@@ -1118,20 +1106,34 @@ $(function(){
     //     }
     // });
 
+    /*
+    *详情与规格导航切换
+    */
+    $('#tab-tit-zp li').click(function(){
+        $("#tab-tit-zp li").eq($(this).index()).addClass("red").siblings().removeClass("red");
+		$(".sg").hide().eq($(this).index()).show();
+    })
+
     /**
      * 内部导航切换
-     */
-    $('.spxq-ggcs ul li').click(function () {
+     */ 
+     $('#evaluate-tab-zp ul li').click(function () {
         $(this).addClass('red').siblings().removeClass('red');
-        var sg = $('.spxq-ggcs ul li').index(this);
-        $('.sg').eq(sg).show().siblings('.sg').hide();
         var $commentType = $(this).children('span').attr('ctype');
-        
-        //切换到评论按钮才加载评论列表
-        if ($('.detail .search span').eq(2).hasClass('sxp')) {
-            ajaxComment($commentType, 1);// ajax 加载评价列表
-        }
+        ajaxComment($commentType, 1);// ajax 加载评价列表
     });
+
+    // $('.spxq-ggcs ul li').click(function () {
+    //     $(this).addClass('red').siblings().removeClass('red');
+    //     var sg = $('.spxq-ggcs ul li').index(this);
+    //     $('.sg').eq(sg).show().siblings('.sg').hide();
+    //     var $commentType = $(this).children('span').attr('ctype');
+    //     //切换到评论按钮才加载评论列表
+    //     if ($('.detail .search span').eq(2).hasClass('sxp')) {
+    //         ajaxComment($commentType, 1);// ajax 加载评价列表
+    //     }
+    // });
+    
     //查看商品详情
     function seedeadei(obj) {
         $('.xq_details').eq(1).show(); //显示详情
