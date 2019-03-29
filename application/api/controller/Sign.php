@@ -184,11 +184,16 @@ class Sign extends Controller
      */
     private function deal_time($time)
     {
-        $time = strtotime("$time -1 month");
+        //
+        $m=date('m',$time)-1;
+        $y=date('Y',$time);
+        $d=date('d',$time);
+        $newtime="$y-$m-$d";
+//        $time = strtotime("$time -1 month");
         //前端要求  减去 1个月
-        $time = date('Y-m-d', $time);
+//        $time = date('Y-m-d', $time);
 
-        return str_replace('-', '/', $time);
+        return str_replace('-', '/', $newtime);
     }
 
     //仅供生成连续签到奖品次数用的获取连续签到数
