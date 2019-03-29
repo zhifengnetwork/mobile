@@ -172,6 +172,7 @@ class User extends MobileBase
                     'money_total' => (float)$per_total,
                     'max_moneys' => 0,
                     'moneys' => $oldPerformance,
+                );
                     
             }
         }else{
@@ -1629,10 +1630,14 @@ class User extends MobileBase
         $oauthUsers = M("OauthUsers")->where(['user_id'=>$this->user_id, 'oauth'=>'weixin'])->find();
         $openid = $oauthUsers['openid'];
         if(empty($oauthUsers)){
-            $openid = Db::name('oauth_users')->where(['user_id'=>$this->user_id, 'oauth'=>'wx'])->value('openid');
+            $openid = Db::name('users')->where(['user_id'=>$this->user_id])->value('openid');
         }
         if($openid){
-            $this->ajaxReturn(['status'=>1,'result'=>$openid]);
+            if(strpos($openid, 'oqy') === 0){
+                $this->ajaxReturn(['status'=>1,'result'=>$openid]);
+            }else{
+                $this->ajaxReturn(['status'=>0,'result'=>'']);
+            }
         }else{
             $this->ajaxReturn(['status'=>0,'result'=>'']);   
         }
