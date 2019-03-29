@@ -47,18 +47,7 @@ class User extends ApiBase
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
 
     }
-    /**
-     * 解密
-     */
-    public function jiemi(){
-
-        //解密token
-        $token = '';
-        
-        $rere = $this->decode_token($token);
-
-        dump($rere);
-    }
+    
 
     /*
     注册接口
@@ -79,7 +68,10 @@ class User extends ApiBase
     // 
     // 
     
-      public function update_head_pic(){//头像上传
+    /**
+     * 头像上传
+     */
+      public function update_head_pic(){
 
             $user_id = $this->get_user_id();
             if($user_id!=""){
@@ -95,7 +87,8 @@ class User extends ApiBase
                     // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
                     // echo $info->getSaveName();
                     // 输出 42a79759f284b767dfcb2a0197904287.jpg
-                    $data = ROOT_PATH . DS.'public/upload/'.$info->getSaveName(); //输出路径
+                    $data = SITE_URL.'/public/upload/'.$info->getSaveName(); //输出路径
+                    // ROOT_PATH . DS.
                     
                 }else{
                     $this->ajaxReturn(['status' => -2 , 'msg'=>'上传失败','data'=>$file->getError()]);
