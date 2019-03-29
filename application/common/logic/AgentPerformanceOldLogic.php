@@ -20,10 +20,13 @@ class AgentPerformanceOldLogic
         }
         $data = M('agent_performance_old')->where(['openid'=>$openid])->field('teams,total')->select();
         $total = 0;
-        foreach($data as $k => $v){
-            $total = $total + $v['teams'] + $v['total'];
+        if(!empty($data)) {
+            foreach ($data as $k => $v) {
+                $total += $v['teams'] + $v['total'];
+            }
+            return $total;
         }
-        return $total;
+        return 0;
     }
     
 }
