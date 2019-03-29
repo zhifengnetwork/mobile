@@ -259,34 +259,33 @@ class Api extends Base
                 return $result;
             }
 
-            //请求时间间隔小于两小时则不请求新数据
             $pre_time = time();
             $flag_time = (int)$is_exists['update_time'];
             $space_time = $pre_time - $flag_time;
-            if($space_time < 7200){
-                return $result;
-            }else{
-                $result = $this->getDelivery($shipping_code, $invoice_no);
-                $result = json_decode($result, true);
-                //状态等于0代表成功,更新表数据
-                if($result['status'] == 0){
-                    $flag = $this->updateData($result, $is_exists['id']);
+            //请求状态正常的数据请求时间间隔小于两小时则不请求新数据
+            //其他数据请求时间间隔小于半小时则不请求新数据
+            if($result['status'] == 0){
+                if($space_time < 7200){
                     return $result;
-                }else{
+                }
+            }else{
+                if($space_time < 1800){
                     return $result;
                 }
             }
+            
+            $result = $this->getDelivery($shipping_code, $invoice_no);
+            $result = json_decode($result, true);
+            //更新表数据
+            $flag = $this->updateData($result, $is_exists['id']);
+            return $result;
             
         }else{
             $result = $this->getDelivery($shipping_code, $invoice_no);
             $result = json_decode($result, true);
 
-            if($result['status'] == '0'){
-                $flag = $this->insertData($result, $shipping_code, $invoice_no);
-                return $result;
-            }else{
-                return $result;
-            }
+            $flag = $this->insertData($result, $shipping_code, $invoice_no);
+            return $result;
         }
         // $express_switch = tpCache('express.express_switch');
         // $express_switch_input = input('express_switch/d');
@@ -329,9 +328,12 @@ class Api extends Base
             'shipping_code' => $shipping_code,
             'invoice_no' => $invoice_no,
             'result' => serialize($result),
-            'issign' => $result['result']['issign'],
+            // 'issign' => $result['result']['issign'],
             'update_time' => time(),
         );
+        if(isset($result['result']['issign'])){
+            $data['issign'] = $result['result']['issign'];
+        }
        
         return M('delivery_express')->insert($data);
     }
@@ -341,9 +343,13 @@ class Api extends Base
     {
         $data = array(
             'result' => serialize($result),
-            'issign' => $result['result']['issign'],
+            // 'issign' => $result['result']['issign'],
             'update_time' => time(),
         );
+        if(isset($result['result']['issign'])){
+            $data['issign'] = $result['result']['issign'];
+        }
+        
         return M('delivery_express')->where('id', $id)->update($data);
     }
 
