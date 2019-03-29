@@ -84,10 +84,10 @@ class User extends ApiBase
             $user_id = $this->get_user_id();
             if($user_id!=""){
                 // 获取表单上传文件 例如上传了001.jpg
-                $file = request()->file('file');
+                $file = request()->file('image');
                 // 移动到框架应用根目录/uploads/ 目录下
                 $info = $file->validate(['size'=>204800,'ext'=>'jpg,png,gif']);
-                $info = $file->rule('md5')->move(ROOT_PATH . DS.'public/upload');
+                $info = $file->rule('md5')->move(ROOT_PATH . DS.'public/upload');//加密->保存路径
                 if($info){
                     // 成功上传后 获取上传信息
                     // 输出 jpg
@@ -95,7 +95,7 @@ class User extends ApiBase
                     // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
                     // echo $info->getSaveName();
                     // 输出 42a79759f284b767dfcb2a0197904287.jpg
-                    $data = ROOT_PATH . DS.'public/upload/'.$info->getSaveName(); 
+                    $data = ROOT_PATH . DS.'public/upload/'.$info->getSaveName(); //输出路径
                     
                 }else{
                     $this->ajaxReturn(['status' => -2 , 'msg'=>'上传失败','data'=>$file->getError()]);
