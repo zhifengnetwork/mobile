@@ -1476,6 +1476,29 @@ class User extends MobileBase
         return $this->fetch();   
     }
 
+    //下级分销订单
+    public function distribut_order()
+    {
+        $user_id = session('user.user_id');
+
+        //所有下级ID
+        $lower_id = M('users')->where('first_leader', $user_id)->column('user_id');
+        $lower = M('users')->where('first_leader', $user_id)->column('user_id, nickname');
+
+        $data['log.states'] = array('in',['101', '102']);
+        $fir = 'log.user_id, log.change_time, goods_num, goods_price';
+        $result = M('order_goods')->alias('good')->join('account_log log', 'good.order_id = log.order_id', 'LEFT')
+                ->where('user_id', ['in', $lower_id])->where($data)->field($fir)->order('good.rec_id DESC')
+                ->limit(30)->select();
+
+        foreach($result as $key => $value){
+            $result[$key]['nickname'] = $lower[$value['user_id']];
+            $result[$key]['goods_price'] = $value['goods_price'] * $value['goods_num'];
+        }
+        $this->assign('result', $result);
+        return $this->fetch();    
+    }
+
 
     //添加、编辑提现支付宝账号
     public function add_card(){

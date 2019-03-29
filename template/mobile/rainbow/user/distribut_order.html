@@ -1,0 +1,53 @@
+<include file="public/header" title="下级分销订单" body="" />
+<include file="public/header_nav" title="下级分销订单" href="javascript:history.back(-1)" />
+<style type="text/css">
+    .left {
+        margin-left: 20px;
+    }
+
+    .juzhong {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 0.6rem;
+    }
+
+    .foot {
+        font-size: 20px;
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 20px;
+
+    }
+</style>
+
+<div class="application-record">
+    <div class="maleri30">
+        <ul class="re_tit">
+            <li style="width:25%"><span>昵称</span></li>
+            <li style="width:25%"><span>数量</span></li>
+            <li style="width:25%"><span>金额</span></li>
+            <li style="width:25%"><span>时间</span></li>
+        </ul>
+        <empty name="result">
+            <div class="juzhong">
+                下级还没有消费
+            </div>
+            <else />
+            <foreach name="result" item="v">
+                <ul class="series">
+                    <li style="width:25%"><span>{$v.nickname}</span></li>
+                    <li style="width:25%"><span>{$v.goods_num}</span></li>
+                    <li style="width:25%"><span>{$v.goods_price}</span></li>
+                    <li style="width:25%"><span>{$v.change_time|date='Y-m-d',###}</span></li>
+                </ul>
+            </foreach>
+            <div class="foot">
+                只显示最近30个订单
+            </div>
+        </empty>
+    </div>
+</div>
+</body>
+</html>
