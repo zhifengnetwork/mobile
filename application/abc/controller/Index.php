@@ -12,6 +12,21 @@ use think\Controller;
 class Index extends Controller
 {
 
+    /**
+     * 买399加一次机会
+     */
+    public function add_time(){
+        exit('--');
+        $order = M('order')
+        ->alias('o')
+        ->join('order_goods g','o.order_id = g.order_id','LEFT')
+        ->field('o.order_id,o.pay_status,o.order_sn,o.total_amount,o.user_id,g.goods_name,g.goods_sn,g.goods_price,g.goods_num,g.final_price,g.cost_price')
+        ->where(['pay_status'=>1,'total_amount'=>['egt',399],'g.goods_price'=>['egt',399]])
+        ->select();
+
+        dump($order);
+    }
+
     public function index(){
         $url = "http://thirdwx.qlogo.cn/mmopen/vi_32/1ZeNR1gSiczejQL7picQwpFHxQJbmqQPuyvnMBmEphISvBlPmHeC1wsEPuy9KRMtiacbrje3kH9ic1Cvib0hkFpp4vw/132";
 
@@ -21,8 +36,6 @@ class Index extends Controller
             dump($url);
         }
     }
-
-
 
     /**
      * 补
@@ -78,22 +91,5 @@ class Index extends Controller
 
     }
 
-
-    public function dele(){
-
-        exit;
-
-        $user_id = $_GET['user_id'];
-
-        // echo $user_id;die;
-
-        $rs = M('oauth_users')->where(['user_id'=>$user_id])->delete();
-        $r = M('users')->where(['user_id'=>$user_id])->delete();
-
-        dump("删除成功：".$rs);
-        dump("删除成功：".$r);
-
-        $this->redirect('index');
-    }
 
 }

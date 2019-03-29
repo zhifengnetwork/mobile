@@ -172,6 +172,7 @@ class User extends MobileBase
                     'money_total' => (float)$per_total,
                     'max_moneys' => 0,
                     'moneys' => $oldPerformance,
+                );
                     
             }
         }else{
