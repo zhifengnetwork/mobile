@@ -185,9 +185,9 @@ class Sign extends Controller
     private function deal_time($time)
     {
         //
-        $m=date('m',$time)-1;
-        $y=date('Y',$time);
-        $d=date('d',$time);
+        $m=date('m',strtotime($time))-1;
+        $y=date('Y',strtotime($time));
+        $d=date('d',strtotime($time));
         $newtime="$y-$m-$d";
 //        $time = strtotime("$time -1 month");
         //前端要求  减去 1个月
