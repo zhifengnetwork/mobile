@@ -748,8 +748,8 @@ class User extends Base
         if($search_type == 'mobile'){
             $where['u.mobile'] = array('like', "%$search_value%");
         }else if($search_type == 'user_id'){
-            $where['w.user_id'] = $search_value;
-        }else{
+            $where['w.user_id'] = $search_value ? $search_value : array('like', "%$search_value%");                
+        }else if($search_type == 'nickname'){
             $where['u.nickname'] = array('like', "%$search_value%");
         }
 
@@ -868,7 +868,7 @@ class User extends Base
             // 发送公众号消息给用户
             $wechat = new \app\common\logic\wechat\WechatUtil();
             $wechat->sendMsg($user_find['openid'], 'text', $wx_content);
-
+            dump($data);die;
             Db::name('withdrawals')->whereIn('id', $ids)->update($data);
 
             $this->ajaxReturn(array('status' => 1, 'msg' => "操作成功"), 'JSON');

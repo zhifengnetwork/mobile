@@ -429,8 +429,8 @@ class Distribut extends Base {
             $condition['change_time'] = array('between', array(strtotime($begin), strtotime($end)));
         }
         if ($search_value) {
-            if($search_type == 'account'){
-                $condition['mobile|email'] = array('like', "%$search_value%");
+            if($search_type == 'user_id'){
+                $condition['users.user_id'] = $search_value;
             }else{
                 $condition['users.'.$search_type] = array('like', "%$search_value%");
             }
