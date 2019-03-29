@@ -129,11 +129,11 @@ class User extends MobileBase
         $user_agent_money = $this->child_agent($user['user_id']);
 
         //个人,团队业绩之和
-        if($user_agent_money){
+        /*if($user_agent_money){
             $per_total = $user_agent_money['ind_per']+$user_agent_money['agent_per'] + $oldPerformance;
-        }else{
+        }else{*/
             $per_total = $oldPerformance;
-        }  
+        //}
         $users = M('users')->where(['first_leader'=>$user['user_id']])->field($field)->select();
 
         if($users)
@@ -143,11 +143,11 @@ class User extends MobileBase
             foreach($users as $key=>$val){
                 $get_child_agent = $this->child_agent($val['user_id']);
                 $get_childoldPerformance = $logic->getAllData($val['openid']);
-                if($get_child_agent){
+                /*if($get_child_agent){
                     $agent_array[]= $get_child_agent['agent_per'] + $get_childoldPerformance;
-                }else{
+                }else{*/
                     $agent_array[]= $get_childoldPerformance;
-                }
+                //}
             }
     
             if(!empty($agent_array)){
