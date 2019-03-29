@@ -27,7 +27,7 @@ class User extends ApiBase
                 $this->ajaxReturn(['status' => -1 , 'msg'=>'手机不存在或错误','data'=>null]);
             }
             if ($password != $data['password']) {
-                $this->ajaxReturn(['status' => -1 , 'msg'=>'登录密码错误','data'=>null]);
+                $this->ajaxReturn(['status' => -2 , 'msg'=>'登录密码错误','data'=>null]);
             }
             unset($data['password']);
             //重写
