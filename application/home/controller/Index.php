@@ -266,71 +266,80 @@ class Index extends Base {
     /**
      * 所有订单统计业绩方法
      */
-    public function all_order_fous(){
+    public function all_order_fous()
+    {
         set_time_limit(0);
+        $agent_performance_log_order_id = Db::name("agent_performance_log")->group('order_id')->getField("order_id,order_id as order_ids");//field(' distinct order_id')->select();
+        $agent_performance_person_log_order_id = Db::name("agent_performance_person_log")->group('order_id')->getField("order_id,order_id as order_ids");//field(' distinct order_id')->select();
+        $order_order_id = Db::name("order")->group('order_id')->getField("order_id,order_id as order_ids");//field(' distinct order_id')->select();
+        if (!empty($agent_performance_log_order_id)) {
+            $order_id = array_unique(array_diff($order_order_id, $agent_performance_log_order_id));
+        } else {
+            $order_id = array_unique($order_order_id);
+        }
+        if (!empty($agent_performance_person_log_order_id)) {
+            $order_ids = array_unique(array_diff($order_id, $agent_performance_person_log_order_id));
+        } else {
+            $order_ids = array_unique($order_id);
+        }
+        /*echo "<pre>";
+        print_r($order_ids);
+        echo "</pre>";*/
+        /*$count = Db::name("order")->count();
+        $limitcount = 100;
+        $mun = ceil($count/$limitcount);
+        for ($i = 0;$i<$mun;$i++) {
+            $at = $limitcount * $i;
+            $en = $limitcount * ($i + 1);*/
         $order_list = Db::name("order")->alias('o')
-            ->join('tp_order_goods og','og.order_id = o.order_id')
-            ->join('tp_goods g ',' g.goods_id = og.goods_id')
-            ->join('tp_users u ',' u.user_id = o.user_id')
+            ->join('tp_order_goods og', 'og.order_id = o.order_id', 'left')
+            ->join('tp_goods g ', ' g.goods_id = og.goods_id', 'left')
+            ->join('tp_users u ', ' u.user_id = o.user_id')
             ->order('o.order_id asc')
-            ->field('o.order_id, o.total_amount, o.order_sn, o.user_id, og.goods_id, og.goods_num,
-            g.shop_price, g.is_distribut, g.is_agent, u.first_leader, u.is_agent as is_user_agent, u.is_distribut as is_user_distribut')
+            ->field('o.order_id, o.user_id, og.goods_num, g.shop_price, g.is_distribut, g.is_agent, u.first_leader, u.is_agent as is_user_agent')
+            ->where(['o.order_id' => ['in', $order_ids], 'order_status' => ['gt', 0]])
             ->select();
-        if(!empty($order_list)) {
-            $order_list_data  = [];
+        if (!empty($order_list)) {
+            $order_list_data = [];
             foreach ($order_list as $item) {
                 $order_list_data[$item['order_id']][] = $item;
             }
-            if(!empty($order_list_data)){
-                //获取分红比例
-                //$rateArr  = M('user_level')->getField("level,rate");
-                $user_list = M('users')->field('user_id,first_leader')->select();
+            if (!empty($order_list_data)) {
+                //获取所有用户
+                $user_list = M('users')->field('user_id, first_leader, is_agent')->select();
                 $user_list_data = [];
-                foreach ($user_list as $item){
+                //根据用户ID重新组合数组
+                foreach ($user_list as $item) {
                     $user_list_data[$item['user_id']][] = $item;
                 }
-
-                foreach ($order_list_data as $key =>$value){
-                    if($value[0]['total_amount'] <= 9.9){
-                        continue;
-                    }
-                    if(!$value[0]['first_leader']){
-                        continue;
-                    }
-                    $recUser = $this->get_all_up($user_list_data,$value[0]['user_id']);
+                //订单数组
+                foreach ($order_list_data as $key => $value) {
                     $shop_price = 0;
-                    $is_distribut_shop_price = 0;
-                    //$is_distribut = 0;
-                    //$is_agent = 0;
-                    foreach ($value as $ke => $va){
-                        if($va['is_agent'] == 1){
-                            //$is_agent = 1;
+                    foreach ($value as $ke => $va) {
+                        if ($va['shop_price'] <= 9.9) {
+                            continue;
+                        }
+                        if (($va['is_agent'] == 1) || $va['is_distribut']) {
                             $shop_price += ($va['shop_price'] * $va['goods_num']);
                         }
-                        if($va['is_distribut'] == 1){
-                            //$is_distribut = 1;
-                            $is_distribut_shop_price += ($va['shop_price'] * $va['goods_num']);
+                    }
+                    //if ($shop_price) {
+                    //if ($value[0]['is_user_agent']) {
+                    agent_performance_person_log($value[0]['user_id'], $shop_price, $value[0]['order_id']);
+                    //}
+                    if ($value[0]['first_leader']) {
+                        $recUser = $this->get_all_up($user_list_data, $value[0]['first_leader']);
+                        foreach ($recUser as $k => $user) {
+                            //if ($user['is_agent']) {
+                            agent_performance_log($user['user_id'], $shop_price, $value[0]['order_id']);
+                            //}
                         }
                     }
-                    // $distribut = M('distribut')->find();
-                    // $first_leader = M('users')->where(['user_id'=>$value[0]['first_leader']])->find();
-
-                    //只有代理?
-                    if($value[0]['is_user_agent'] == 1 || $value[0]['is_user_distribut'] == 1){
-                        // $commission = $is_distribut_shop_price * ($distribut['rate'] / 100);
-                        if($is_distribut_shop_price){
-                            agent_performance_person_log($first_leader['user_id'], $is_distribut_shop_price, $value[0]['order_id']);
-                        }
-                    }
-                    foreach($recUser as $k => $user){
-                        $money = $shop_price;
-                        if($money){
-                            agent_performance_log($user['user_id'], $money, $value[0]['order_id']);
-                        }
-                    }
+                    // }
                 }
             }
         }
+        //}
     }
 
     

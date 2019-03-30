@@ -134,7 +134,11 @@ class User extends MobileBase
         }else{
             $per_total = $oldPerformance;
         }
-        $users = M('users')->where(['first_leader'=>$user['user_id']])->field('max(team) as team')->find();
+        $users = M('users')->alias('u')
+            ->join('tp_agent_performance ag','ag.user_id = u.user_id')
+            ->where(['u.first_leader'=>$user['user_id']])
+            ->field('max(u.team + ag.agent_per) as team')
+            ->find();
 
         $max_team_taotal = $users['team'];
         $money_total = array(
