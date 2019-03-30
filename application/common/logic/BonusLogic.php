@@ -34,17 +34,17 @@ class BonusLogic extends Model
 
 	public function bonusModel()
 	{
-		$price = M('goods')->where(['goods_id'=>$this->goodId])->value('shop_price');
+		//$price = M('goods')->where(['goods_id'=>$this->goodId])->value('shop_price');
 		//判断商品是否是分销商品或者代理商品
 		$good = M('goods')
 				->where('goods_id', $this->goodId)
-				->field('is_distribut,is_agent')
+				->field('is_distribut,is_agent,shop_price')
                 ->find();
 		if(($good['is_distribut'] == 1) && ($good['is_agent'] == 1)){
 			$this->change_role(1,1);
 			$dist = $this->distribution();
 			$agent = $this->theAgent($this->userId);
-			$this->sel($this->userId,$price);
+			$this->sel($this->userId,$good['shop_price']);
 			return true;
 		}else if($good['is_distribut'] == 1){
 			$this->change_role(1,0);
@@ -53,7 +53,7 @@ class BonusLogic extends Model
 		}else if($good['is_agent'] == 1){
 			$this->change_role(1,1);
 			$agent = $this->theAgent($this->userId);
-			$this->sel($this->userId,$price);
+			$this->sel($this->userId,$good['shop_price']);
 			return true;
 		}else{
             return false;
@@ -65,7 +65,16 @@ class BonusLogic extends Model
 	*/
 	public function change_role($distributor,$agent)
 	{
-		M('users')->where('user_id',$this->userId)->update(['is_distribut'=>$distributor,'is_agent'=>$agent]);
+	    $data = [];
+	    if($distributor){
+	        $data['is_distribut'] = $distributor;
+        }
+        if($agent){
+            $data['is_agent'] = $agent;
+        }
+        if($data){
+            M('users')->where('user_id',$this->userId)->update($data);
+        }
 	}
 
 	/**
