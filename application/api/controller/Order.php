@@ -37,9 +37,10 @@ class Order extends ApiBase
             'tp_order_goods.goods_price',//本店价格
             'tp_order_goods.goods_num',//购买数
             'tp_order.order_amount',//应付金额
-            'seller_name'//商家名称
+            'seller_name',//商家名称
+            'tp_goods.original_img',//商品上传原始图
         );
-        $order = Db::name('order')->join('tp_order_goods','tp_order.order_id=tp_order_goods.order_id','right')->join('tp_seller','tp_order_goods.seller_id = tp_seller.seller_id','left')->field($name)->where($data)->select();
+        $order = Db::name('order')->join('tp_order_goods','tp_order.order_id=tp_order_goods.order_id','right')->join('tp_seller','tp_order_goods.seller_id = tp_seller.seller_id','left')->join('tp_goods','tp_goods.goods_id = tp_order_goods.goods_id')->field($name)->where($data)->select();
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$order]);
     }
 
