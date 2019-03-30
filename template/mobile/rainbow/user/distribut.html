@@ -1,14 +1,14 @@
 <include file="public/header" title="我的分销" body="g4" />
 <include file="public/header_nav" title="我的分销" href="{:U('/Mobile/User/index')}" />
 <div class="loginsingup-input mobil_topup" style="padding:0 0.64rem;">
-    <div class="recharge-curent">
-        <span>
-            <span style="padding-left: 33%;">总业绩</span>
-            <if condition="$oldPerformance">
-                <span style="font-size:0.5rem;float: right;margin-right: .4rem;">原￥{$oldPerformance}</span>
-            </if>
-            <span class="cash"><i>￥</i>{$money_total.money_total}</span>
-        </span>
+    <div class="recharge-curent" style="position:relative;">
+    
+        <span>总业绩</span>
+        <if condition="$oldPerformance">
+            <span style="position:absolute;top:.4rem;right:.4rem;font-size:.5rem;overflow: inherit;">原￥{$oldPerformance}</span>
+        </if>
+        <span class="cash"><i>￥</i>{$money_total.money_total}</span>
+        
     </div>
     <div class="recharge-curent">
         <span>最大用户业绩<span class="cash"><i>￥</i>{$money_total.max_moneys}</span></span>
@@ -20,7 +20,7 @@
         <span>
              
             <span style="padding-left: 17%;">团队总人数</span> 
-            <span style="font-size:0.5rem;float: right; margin-right: .4rem;" id="update_num">点击更新</span>
+            <span style="font-size:0.5rem;float: right; margin-right: .4rem;overflow: initial;" id="update_num">点击更新</span>
             <span class="cash" id="all_num">{$underling_number}</span>
         </span>
     </div>
