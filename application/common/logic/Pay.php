@@ -395,7 +395,7 @@ class Pay
                 //是代理又是分销的情况
                 if ( $this->user['is_agent'] == 1 && $this->payList[0]['goods']->sign_free_receive == 2) {
 
-                    $data = M('order_sign_receive')->where('uid',$this->user['user_id'])->order('addend_time desc')->select();
+                    $data = M('order_sign_receive')->where(['uid' => $this->user['user_id'], 'type' => 2])->order('addend_time desc')->select();
                     $newTimeM = date('m', time());//当前月份
                     $addTimeM = date('m', $data[0]['addend_time']); //最近下单月份
                     //代理每月可领取1次
