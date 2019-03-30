@@ -174,7 +174,7 @@ class Payment extends MobileBase
     public function payBond(){
 
         header("Content-type:text/html;charset=utf-8");
-        $goods_id = I("get.goods_id/d");
+        $goods_id = I("gid/d");
 
         $money = Db::name('Auction')->where('id',$goods_id)->value('deposit');
 

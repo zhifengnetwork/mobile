@@ -144,10 +144,15 @@
 		<div id="myprice">
 
 			<if condition="time() lt $auction.delay_end_time AND $auction['isBond'] eq 0">
-				<div class="ccc" onclick="deposit()">
-					<p>立即参拍</p>
-					<p>保证金(￥{$auction.deposit})</p>
-				</div>
+				<form action="{:U('Mobile/Payment/payBond')}" method="post" name="cart5_form" id="cart5_form">
+					<div class="ccc" onclick="deposit()">
+						<p>立即参拍</p>
+						<p>保证金(￥{$auction.deposit})</p>
+	                    <input type="hidden" value="pay_code=weixin" name="pay_radio" style="display:none;"/>
+	                    <input type="hidden" value="maleBee" name="beeType" style="display:none;"/>
+						<input type="hidden" name="gid" value="{$auction.id}" style="display:none;">
+					</div>
+				</form>
 			<elseif condition="time() gt $auction.delay_end_time" />
 				<p>活动已结束</p>
 			<else />
@@ -260,7 +265,6 @@
 
 	// 活动结束
 	function submit_order() {
-
 		var goods_id = $('input[name="goods_id"]').val();
 		$.ajax({
 			type: "GET",
@@ -280,28 +284,7 @@
 
 	// 交定金
 	function deposit() {
-		var goods_id = $('input[name="goods_id"]').val();
-		$.ajax({
-			type: "POST",
-			url: "/index.php?m=Mobile&c=Payment&a=payBond",//+tab,
-			data: {goods_id:goods_id},
-			dataType: "json",
-			success: function (data) {
-				layer.closeAll();
-				// 登录超时
-				if (data.status == -100){
-					location.href = "{:U('Mobile/User/login')}";
-				}
-				if (data.status != 1) {
-
-					layer.open({content:data.msg, time:3});  //执行有误
-
-					return false;
-				}
-
-				setTimeout(function(){window.location.reload();},100);
-			}
-		});
+        $('#cart5_form').submit();
 	}
 
 	//出价
