@@ -66,26 +66,6 @@
 					</div>
 				</div>
 			</div>
-			<!--领取产品，引入弹框样式-->
-			<div class="productWrap">
-				<div class="productBox">
-					<div class="productBox-title">
-						<span>领取产品</span>
-						<p class="productBox_closeImgBox" onclick="closeButton()">
-							 <img class="productBox_closeImg" src="/template/mobile/rainbow/static/images/public_lb/closeIcon.png"/>
-						 </p>
-					 </div>
-					 <div class="productBox-buttonC">
-						 <p class="productBox-collar" onclick="window.location.href = '/Mobile/Goods/goodsList/id/DISTRIBUT.html'">分销免费领</p>
-					 </div>
-					 <div class="productBox-buttonC">
-						 <p class="productBox-collar" onclick="window.location.href = '/Mobile/Goods/goodsList/id/AGENT.html'">代理免费领</p>
-					 </div>
-				 </div>
-			</div>
-			
-			
-			
 			
 			
 		</div>
@@ -101,8 +81,7 @@
 		<script>
 			/*领取产品*/
 			$('.receive_button').on('click',function(){
-				console.log('领取产品');
-				$('.productWrap').show();
+				window.location.href="/shop/Goods/goodsList/id/DISTRIBUT.html";
 			})
 			/*关闭-按钮*/
 			function closeButton() {

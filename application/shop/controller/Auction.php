@@ -107,9 +107,9 @@ class Auction extends MobileBase
     {
         $auction_id = input("goods_id/d"); // 竞拍商品id
         $price = input("price/f");// 竞拍价格
-//        if ($this->user_id == 0){
-//            $this->ajaxReturn(['status' => -100, 'msg' => '请先登录', 'result' => '']);
-//        }
+        if ($this->user_id == 0){
+           $this->ajaxReturn(['status' => -100, 'msg' => '请先登录', 'result' => '']);
+        }
         $auction = \app\common\model\Auction::get($auction_id);
         $isBond = $this->getUserIsBond($this->user_id, $auction_id);
         if(empty($isBond)){
@@ -203,7 +203,6 @@ class Auction extends MobileBase
      */
     public function tiaoshu()
     {
-
         $goods_id = I("get.id/d");
         $bondUser = $this->getHighPrice($goods_id);
         $this->assign('bondUser', $bondUser);
@@ -212,7 +211,7 @@ class Auction extends MobileBase
 
     /**
      *临时方法-交定金扣余额
-     */
+     
     public function addBond()
     {
         $goods_id = I("get.goods_id/d");
@@ -233,7 +232,7 @@ class Auction extends MobileBase
             $this->ajaxReturn(['status'=>0]);
         }
     }
-
+*/
     /**
      * 用户是否有交保证金
      * @param type $sort_type

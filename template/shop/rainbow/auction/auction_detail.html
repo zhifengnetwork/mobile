@@ -283,14 +283,14 @@
 		var goods_id = $('input[name="goods_id"]').val();
 		$.ajax({
 			type: "POST",
-			url: "/index.php?m=Shop&c=Auction&a=addBond",//+tab,
+			url: "/index.php?m=Mobile&c=Payment&a=payBond",//+tab,
 			data: {goods_id:goods_id},
 			dataType: "json",
 			success: function (data) {
 				layer.closeAll();
 				// 登录超时
 				if (data.status == -100){
-					location.href = "{:U('Shop/User/login')}";
+					location.href = "{:U('Mobile/User/login')}";
 				}
 				if (data.status != 1) {
 
