@@ -47,16 +47,16 @@ class Order extends ApiBase
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
-
-
-        $order_id = I('order_id');
+        $order_id = I('id');
         //验证是否本人的
-
-
-
-        $data = '订单详情数据';
-        
-
+        $order = Db::name('order')->where('order_id',$order_id)->select();
+        if(!$order){
+            $this->ajaxReturn(['status' => -3 , 'msg'=>'订单不存在','data'=>null]);
+        }
+        if($order['0']['user_id']!=$user_id){
+            $this->ajaxReturn(['status' => -2 , 'msg'=>'非本人订单','data'=>null]);
+        }
+        $data = Db::name('order')->where('order_id',$order_id)->where('user_id',$user_id)->select();
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
     }
 
