@@ -63,7 +63,32 @@ class Order extends ApiBase
         if($order['0']['user_id']!=$user_id){
             $this->ajaxReturn(['status' => -2 , 'msg'=>'非本人订单','data'=>null]);
         }
-        $data = Db::name('order')->where('order_id',$order_id)->where('user_id',$user_id)->select();
+        $name = array(
+            'tp_order.order_id',//订单ID
+            'tp_order.order_sn',//订单编号
+            'tp_order.order_status',//订单状态
+            'tp_order.consignee',//收货人
+            'tp_order.country',//国家
+            'tp_order.province',//省份
+            'tp_order.city',//城市
+            'tp_order.district',//县区
+            'tp_order.twon',//乡镇
+            'tp_order.address',//地址
+            'seller_name',//商家名称
+            'tp_goods.original_img',//商品上传原始图
+            'tp_order_goods.goods_name',//商品名称
+            'tp_order_goods.spec_key_name',//商品规格名
+            'tp_order_goods.goods_price',//本店价格
+            'tp_order_goods.goods_num',//购买数
+            'tp_order.shipping_price',//邮费
+            'tp_order.total_amount',//订单总价
+            'tp_order.order_amount',//应付金额
+            'tp_order.pay_time',//支付时间
+            'tp_order.pay_name',//支付方式名称
+            'tp_order.mobile',//手机号
+            'tp_order.user_money',//使用余额
+        );
+        $data = Db::name('order')->join('tp_order_goods','tp_order.order_id=tp_order_goods.order_id','right')->join('tp_seller','tp_order_goods.seller_id = tp_seller.seller_id','left')->join('tp_goods','tp_goods.goods_id = tp_order_goods.goods_id')->field($name)->where('tp_order.order_id',$order_id)->find();
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
     }
 
