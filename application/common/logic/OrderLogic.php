@@ -63,8 +63,7 @@ class OrderLogic
 			$this->alterReturnGoodsInventory($order);
 		}
         $this->orderActionLog($order_id,$action_note,'用户取消订单');
-		if(!$row)
-			return array('status'=>-1,'msg'=>'操作失败','result'=>'');
+		if(!$row)return array('status'=>-1,'msg'=>'操作失败','result'=>'');
 		return array('status'=>1,'msg'=>'操作成功','result'=>'');
 
 	}

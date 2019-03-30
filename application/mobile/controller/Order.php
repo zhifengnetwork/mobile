@@ -212,6 +212,12 @@ class Order extends MobileBase
         //检查是否有积分，余额支付
         $logic = new OrderLogic();
         $data = $logic->cancel_order($this->user_id, $id);
+        $res = Db::name('order_sign_receive')->where('order_id',$id)->find();
+        if($res['type']==1){
+            Db::name('users')->where('user_id',$res['uid']) ->setInc('distribut_free_num');
+        }elseif($res['type']==2){
+            Db::name('users')->where('user_id',$res['uid']) ->setInc('agent_free_num');
+        }
         $this->ajaxReturn($data);
     }
 
