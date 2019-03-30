@@ -179,13 +179,13 @@ class BonusLogic extends Model
 			if($grade < $userLevel) continue;
 			$jsRate = intval($rateArr[$grade]) - $useRate;
 			if($jsRate<0) continue;
-			$money = $price*$jsRate/100;
+			$money = ($price*$jsRate/100) * $this->goodNum;
 			if($jsRate==0 && $grade==5) 
 			{
 				$jsRate  = $rateArr[127];
 				$logName = '平级奖';
 				$sourceType = 5;
-				$money = $pj_money*$jsRate/100;
+				$money = ($pj_money*$jsRate/100) * $this->goodNum;
 			}
 			$useRate = $rateArr[$grade];
 			$userLevel = $grade;
