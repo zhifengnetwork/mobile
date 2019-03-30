@@ -238,6 +238,12 @@ class Order extends MobileBase
         //检查是否有积分，余额支付
         $logic = new OrderLogic();
         $data = $logic->cancel_order($this->user_id, $id);
+        $res = Db::name('order_sign_receive')->where('order_id',$id)->select();
+        if($res[0]['type']==1){
+            $user = Db::query('update tp_users set distribut_free_num=distribut_free_num+1 where user_id='.$res[0]['uid']);
+        }elseif($res[0]['type']==2){
+            $user = Db::query('update tp_users set agent_free_num=agent_free_num+1 where user_id='.$res[0]['uid']);
+        }
         $this->ajaxReturn($data);
     }
 
