@@ -327,6 +327,8 @@ class UsersLogic extends Model
          
             $OauthUsers_is_cunzai = Db::name('OauthUsers')->where(array('openid'=>$map['openid']))->find();
             if(!$OauthUsers_is_cunzai){
+                $map['user_id'] = $user['user_id'];
+                $map['nick_name'] = $user['nickname'];
                 Db::name('OauthUsers')->add($map);
             }else{
                 Db::name('OauthUsers')->where(array('openid'=>$map['openid']))->update($data);
