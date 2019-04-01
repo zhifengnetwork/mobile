@@ -114,7 +114,7 @@ function get_uper_user($data)
 /*
  * 获取所有上级
  */
-function getAllUp($invite_id, $userList = array())
+function getAllUp($invite_id, &$userList = array())
 {
     $field = "user_id, first_leader, agent_user, is_lock, is_agent";
     $UpInfo = M('users')->field($field)->where(['user_id' => $invite_id])->find();
@@ -142,9 +142,9 @@ function jichadaili($order_id)
     }
     $order = M('order')->where(['order_id' => $order_id])->find();
     // 如果 订单 小于 9.9 ，不分钱
-    if ((float)$order['total_amount'] <= 9.9) {
+    /*if ((float)$order['total_amount'] <= 9.9) {
         return false;
-    }
+    }*/
 
     $userId = $order['user_id'];
     $orderSn = $order['order_sn'];

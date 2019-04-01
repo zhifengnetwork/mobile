@@ -374,9 +374,10 @@ class Index extends Base {
     /**
      * 获取用户所有上级
      */
-    public function get_all_up($data,$user_id,&$list = array()){
+    public function get_all_up($data,$user_id, &$list = array())
+    {
+        $list[] = $data[$user_id][0];
         if($data[$user_id][0]['first_leader'] > 0){
-            $list[] = $data[$user_id][0];
             $this->get_all_up($data,$data[$user_id][0]['first_leader'],$list);
         }
         return $list;
