@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<title>商品信息</title>
+		<script src="__STATIC__/js/public/rem.js" ></script>
+		<!-- <script src="js/jquery-1.8.3.min.js" ></script> -->
+		<style type="text/css">
+			*{margin: 0;padding: 0;}
+			.lj_header{width: 100%;height: 0.8rem;background: #f5f5f5;line-height: 0.8rem;}
+			.lj_header a img{width: 0.24rem;height: 0.38rem;position: absolute;top: 0.2rem;left: 0.3rem;}
+			.lj_header p{text-align: center;font-size: 0.3rem;}
+			.lj_main{ border-radius: 0.09rem;width: 93%;margin: 0 auto;margin-top: 0.3rem;font-size: 0.3rem;}
+			.lj_main_c1{display: flex;letter-spacing: 0.02rem;}
+			.lj_main_c1 span:nth-child(2){padding: 0.1rem;word-wrap: break-word;width: 80%;margin-left: 0.3rem;border-radius: 0.1rem;}
+			.lj_main_span{padding-top: 0.1rem;box-sizing: border-box;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;}
+			.lj_mian_p{width: 100%;height: 0.3rem;background: #f5f5f5;}
+			.juzhong {position: absolute;left: 50%;top: 50%;transform: translate(-50%, -50%);font-size: 0.3rem;}
+		</style>
+	</head>
+	<body>
+		<!--头部-->
+		<div class="lj_header">
+			<a href="javascript:history.back(-1)"><img src="/template/mobile/rainbow/static/images/return.png" /></a>
+			<p>商品信息</p>
+		</div>
+		<!--循环整个div-->
+		<empty name="result">
+			<span class="juzhong">暂无数据</span>
+		<else/>
+			<foreach name="result" item="item">
+				<div class="lj_all">
+					<div class="lj_main">
+						<div class="lj_main_c1">
+							<span class="lj_main_span">名称:</span>
+							<span>{$item.goods_name}</span>
+						</div>
+						<div class="lj_main_c1">
+							<span class="lj_main_span">数量:</span>
+							<span>{$item.goods_num}</span>
+						</div>
+						<div class="lj_main_c1">
+							<span class="lj_main_span">金额:</span>
+							<span>{$item.goods_price}</span>
+						</div>
+						<div class="lj_main_c1">
+							<span class="lj_main_span">时间:</span>
+							<span>{$item.add_time}</span>
+						</div>
+					</div>
+					<div class="lj_mian_p"></div>
+				</div>
+			</foreach>
+		</empty>
+		
+	</body>
+</html>

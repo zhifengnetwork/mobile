@@ -1458,22 +1458,7 @@ class User extends MobileBase
         // $states['log.states'] = array('in', '101, 102');
         $order = M('order')->field('order_sn, consignee, add_time')->where('user_id', $user_id)
                             ->limit(20)->order('order_id DESC')->select();
-        // //序列化去重
-        // foreach($order as $key => $value){
-        //     $order[$key] = serialize($value);
-        // }
-
-        // $order = array_unique($order);
-        // //反序列化
-        // foreach($order as $key => $value){
-        //     $order[$key] = unserialize($value);
-        //     if($key != 0){
-        //         if($order[$key]['order_sn'] = $order[$key-1]['order_sn']){
-        //             unset($order[$key-1]);
-        //             $order[$key]['states'] = 103;
-        //         }
-        //     }
-        // }
+        
         $user = M('users')->field('user_id,nickname,mobile')->where(['user_id'=>$user_id])->find();
         $this->assign('user', $user);
         $this->assign('order', $order);
@@ -1485,22 +1470,52 @@ class User extends MobileBase
     {
         $user_id = session('user.user_id');
 
-        //所有下级ID
         $lower_id = M('users')->where('first_leader', $user_id)->column('user_id');
         $lower = M('users')->where('first_leader', $user_id)->column('user_id, nickname');
-
-        $data['log.states'] = array('in',['101', '102']);
-        $fir = 'log.user_id, log.change_time, goods_num, goods_price';
-        $result = M('order_goods')->alias('good')->join('account_log log', 'good.order_id = log.order_id', 'LEFT')
-                ->where('user_id', ['in', $lower_id])->where($data)->field($fir)->order('good.rec_id DESC')
+        
+        //找出符合条件的订单信息
+        $fir = 'log.user_id, log.order_id, log.order_sn, divide.add_time';
+        $data = array(
+            'log.user_id' => ['in', $lower_id],
+            'log.states' => 0,
+            'divide.user_id' => $user_id,
+            'divide.states' => 102,
+        );
+        $result = M('account_log')->alias('log')->join('order_divide divide', 'log.order_id = divide.order_id')
+                ->join('order_goods goods', 'goods.goods_id = divide.goods_id and goods.order_id = divide.order_id')
+                ->where($data)->field($fir)->group('order_sn')->order('log.log_id DESC')
                 ->limit(30)->select();
-
+        //添加下级昵称
         foreach($result as $key => $value){
             $result[$key]['nickname'] = $lower[$value['user_id']];
-            $result[$key]['goods_price'] = $value['goods_price'] * $value['goods_num'];
+        }
+        $this->assign('user_id', $user_id);
+        $this->assign('result', $result);
+        return $this->fetch();  
+    }
+
+    //下级分销订单商品信息
+    public function distribut_order_detail()
+    {
+        $order_id = I('order_id');
+        $user_id = I('user_id');
+        $data = array(
+            'divide.order_id' => $order_id,
+            'divide.user_id' => $user_id,
+            'divide.states' => '102',
+        );
+        //关联分钱表和订单商品表找分销类型的商品
+        $result = M('order_divide')->alias('divide')
+                ->join('order_goods goods', 'divide.goods_id = goods.goods_id and divide.order_id = goods.order_id') 
+                ->where($data)->field('divide.add_time, goods.goods_name, goods.goods_num, goods.goods_price')
+                ->select();
+        
+        //商品数量*单价获取总额
+        foreach($result as $key => $value){
+            $result[$key]['goods_prizce'] = $value['goods_price'] * $value['goods_num'];
         }
         $this->assign('result', $result);
-        return $this->fetch();    
+        return $this->fetch(); 
     }
 
 

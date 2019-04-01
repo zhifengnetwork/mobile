@@ -1,5 +1,5 @@
 <include file="public/header" title="下级分销订单" body="" />
-<include file="public/header_nav" title="下级分销订单" href="javascript:history.back(-1)" />
+<include file="public/header_nav" title="推荐下级分销订单" href="javascript:history.back(-1)" />
 <style type="text/css">
     .left {
         margin-left: 20px;
@@ -26,21 +26,21 @@
     <div class="maleri30">
         <ul class="re_tit">
             <li style="width:25%"><span>昵称</span></li>
-            <li style="width:25%"><span>数量</span></li>
-            <li style="width:25%"><span>金额</span></li>
+            <!-- <li style="width:25%"><span>数量</span></li> -->
+            <li style="width:50%"><span>订单编号</span></li>
             <li style="width:25%"><span>时间</span></li>
         </ul>
         <empty name="result">
             <div class="juzhong">
-                下级还没有消费
+                直推下级还没有消费
             </div>
             <else />
             <foreach name="result" item="v">
-                <ul class="series">
+                <ul class="series" onclick="getData('{$v.order_id}', '{$user_id}');">
                     <li style="width:25%"><span>{$v.nickname}</span></li>
-                    <li style="width:25%"><span>{$v.goods_num}</span></li>
-                    <li style="width:25%"><span>{$v.goods_price}</span></li>
-                    <li style="width:25%"><span>{$v.change_time|date='Y-m-d',###}</span></li>
+                    <!-- <li style="width:25%"><span>{$v.goods_num}</span></li> -->
+                    <li style="width:50%"><span>{$v.order_sn}</span></li>
+                    <li style="width:25%"><span>{$v.add_time}</span></li>
                 </ul>
             </foreach>
             <div class="foot">
@@ -49,5 +49,11 @@
         </empty>
     </div>
 </div>
+<!-- <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script> -->
+<script>
+    function getData(order_id, user_id){
+        window.location.href="/mobile/user/distribut_order_detail?order_id="+order_id+"&user_id="+user_id;
+    }
+</script>
 </body>
 </html>
