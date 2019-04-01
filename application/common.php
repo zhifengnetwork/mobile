@@ -165,8 +165,7 @@ function jichadaili($order_id)
             }
         }
     }
-    agent_performance($order_id,$total);
-    //业绩（包含个人+团队）
+   
 
     foreach ($goods_list as $k => $v) {
         $goodId = $v['goods_id'];
@@ -180,8 +179,28 @@ function jichadaili($order_id)
 /**
  * 业绩（包含个人+团队）
  */
-function agent_performance($order_id,$price)
+function agent_performance($order_id)
 {
+
+    $goods_list = M('order_goods')->alias('og')
+    ->join('tp_goods g ',' g.goods_id = og.goods_id')
+    ->field(" g.goods_id, og.goods_num, g.shop_price,g.is_distribut,is_agent")
+    ->where(['og.order_id' => $order_id])
+    ->select();
+
+    $price = 0;
+    if(!empty($goods_list)){
+        foreach ($goods_list as $key =>$value){
+            if($value['shop_price'] <= 9.9){
+                continue;
+            }
+            if(($value['is_distribut'] == 1) || ($value['is_agent'] == 1)){
+                $price += ($value['shop_price'] * $value['goods_num']);
+            }
+        }
+    }
+
+
     if($price) {
         $order = M('order')->alias('o')
             ->join('tp_users u ', ' u.user_id = o.user_id')
@@ -1129,7 +1148,17 @@ function update_pay_status($order_sn, $ext = array())
         $distribut_condition = tpCache('distribut.condition');
         //if($distribut_condition == 1)  // 购买商品付款才可以成为分销商
         //M('users')->where("user_id", $order['user_id'])->save(array('is_distribut'=>1));
+
+
+        //分开调用
         change_role($order['order_id']);
+
+        //分钱
+        jichadaili($order['order_id']);
+
+        agent_performance($order['order_id']);
+        //业绩（包含个人+团队）
+
 
         //虚拟服务类商品支付
         if ($order['prom_type'] == 5) {
@@ -1233,7 +1262,7 @@ function change_role($order_id)
         }
     }
 
-    jichadaili($order_id);
+   
 }
 
 

