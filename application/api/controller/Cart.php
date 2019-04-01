@@ -5,9 +5,10 @@
 namespace app\api\controller;
 use app\common\model\Users;
 use app\common\logic\UsersLogic;
+use app\common\logic\CartLogic;
 use think\Db;
 
-class Index extends ApiBase
+class Cart extends ApiBase
 {
 
     /**
@@ -41,13 +42,11 @@ class Index extends ApiBase
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
-
-
-
-
-
-        $data = '购物车数据';
-        $this->ajaxReturn(['status' => 0 , 'msg'=>'加入购物车成功','data'=>$data]);
+        $cartLogic = new CartLogic();
+        $cartLogic->setUserId($user_id);
+        $data = $cartLogic->getCartList();//用户购物车
+        // $data = '购物车数据';
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'购物车列表成功','data'=>$data]);
     }
 
 
@@ -56,8 +55,20 @@ class Index extends ApiBase
      */
     public function delcart()
     {
-
-
+        $user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }
+        $id = I('id/a');
+        $cartLogic = new CartLogic();
+        $cartLogic->setUserId($user_id);
+        $data = $cartLogic->delete($id);
+        if($data){
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'删除成功','data'=>$data]);
+        }else{
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'删除失败','data'=>$data]);
+        }
+        
     }
 
 
