@@ -45,6 +45,18 @@ class Cart extends ApiBase
         $cartLogic = new CartLogic();
         $cartLogic->setUserId($user_id);
         $data = $cartLogic->getCartList();//用户购物车
+        $seller = Db::name('seller')->select();
+        foreach ($data as $k=>$v) {
+            /*$a=$v['goods']['seller_id'];
+            if($a==0){
+                $b=$v['goods']['seller_name']=10;
+            }*/
+            if($v['goods']['seller_id']==$seller[0]['seller_id']){
+                $v['seller_name']=$seller[0]['seller_name'];
+            }else{
+                $v['seller_name']="";
+            }
+        }
         // $data = '购物车数据';
         $this->ajaxReturn(['status' => 0 , 'msg'=>'购物车列表成功','data'=>$data]);
     }
