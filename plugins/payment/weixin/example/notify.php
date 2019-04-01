@@ -57,7 +57,7 @@ class PayNotifyCallBack extends WxPayNotify
         if (stripos($order_sn, 'recharge') !== false) {
             $order_amount = M('recharge')->where(['order_sn' => $order_sn, 'pay_status' => 0])->value('account');
         } elseif (stripos($order_sn, 'Bond') !== false) {
-            $order_amount = M('auctionDeposit')->where(['order_sn' => $order_sn])->value('deposit');
+            $order_amount = M('AuctionDeposit')->where(['order_sn' => $order_sn])->value('deposit');
         } else {
             $order_amount = M('order')->where(['order_sn' => "$order_sn"])->value('order_amount');
         }
