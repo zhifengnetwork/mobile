@@ -13,7 +13,12 @@
                 <br>
                 <!-- 代理 -->
                 <if condition="($user.is_agent == 1)">
-                    {$user.agent_user|agent_level}
+                        <if condition="($user.agent_user == 0)">
+                                普通代理
+                            <else/>
+                                {$user.agent_user|agent_level}
+                        </if>
+
                 <else/>
                     <!-- 分销 -->
                     <if condition="($user.is_distribut == 1)">

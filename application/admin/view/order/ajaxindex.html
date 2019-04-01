@@ -56,7 +56,7 @@
                 <!--<if condition="($list['order_status'] eq 3  and $list['pay_status'] eq 1)">
                     <a class="btn green" href="{:U('Admin/order/detail',array('order_id'=>$list['order_id']))}"><i class="fa fa-list-alt"></i>查看</a>
                 </if>-->
-                <if condition="($list['pay_status'] eq 1  and $list['order_amount'] gt 9.9 )">
+                <if condition="($list['pay_status'] eq 1  and $list['total_amount'] gt 9.9 )">
                   <a class="btn green" href="{:U('Admin/distribut/detail',array('order_id'=>$list['order_id']))}"><i class="fa fa-money"></i>查看返利</a>
                 </if>
             </div>
