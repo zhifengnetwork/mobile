@@ -1072,6 +1072,8 @@ function update_pay_status($order_sn, $ext = array())
         $order = M('auctionDeposit')->where(['order_sn' => $order_sn, 'status' => 0])->find();
         if (!$order) return false;// 看看有没已经处理过这笔订单  支付宝返回不重复处理操作
         M('auctionDeposit')->where("order_sn", $order_sn)->save(array('status' => 1, 'pay_time' => $time));
+        // 报名人数加一
+        M('Auction')->where('id',$order['auction_id'])->setInc('buy_num');
     } else {
         // 如果这笔订单已经处理过了
         $count = M('order')->master()->where("order_sn = :order_sn and (pay_status = 0 OR pay_status = 2)")->bind(['order_sn' => $order_sn])->count();   // 看看有没已经处理过这笔订单  支付宝返回不重复处理操作
