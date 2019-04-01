@@ -72,7 +72,7 @@ class Auction extends MobileBase
      */
     public function auction_detail()
     {
-
+        
         $auction_id = I("get.id/d");
         $goodsModel = new \app\common\model\Auction();
         $auction = $goodsModel::get($auction_id);

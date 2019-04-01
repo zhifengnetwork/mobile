@@ -97,7 +97,7 @@ class BonusLogic extends Model
 
         if ($bool !== false) {
         	$desc = "分销所得佣金";
-        	$log = $this->writeLog($distributor['first_leader'],$commission,$desc,101); //写入日志
+        	$log = $this->writeLog($distributor['first_leader'],$commission,$desc,102); //写入日志
         	return true;
         } else {
         	return false;
@@ -123,7 +123,8 @@ class BonusLogic extends Model
 				'user_id'=>$userId,
 				'status'=>1,
 				'goods_id'=>$this->goodId,
-				'money'=>$money
+				'money'=>$money,
+				'states'=>$states
 			);
 			M('order_divide')->add($data);
             //agent_performance_log($userId, $money, $this->orderId);
