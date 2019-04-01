@@ -48,6 +48,22 @@ class User extends ApiBase
 
     }
     
+    public function reset_pwd(){//重置密码
+        $user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }
+        $password1 = I('password');
+        $password = md5('TPSHOP'.$password1);
+        $data = array('password'=>$password);
+        $data = Db::name('users')->data($data)->where('user_id',$user_id)->save();
+        if($data){
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'修改成功','data'=>$data]);
+        }else{
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'修改失败','data'=>$data]);
+        }
+        
+    }
 
     /*
     注册接口
@@ -97,4 +113,22 @@ class User extends ApiBase
             }
             $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
     }
+
+    public function address_list(){//地址管理列表
+        $user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }
+        $data =  db('user_address')->where('user_id', $user_id)->select();
+        $region_list = db('region')->cache(true)->getField('id,name');
+        foreach ($data as $k => $v) {
+            $v['province']=$region_list[$v['province']];
+            $v['city']=$region_list[$v['city']];
+            $v['district'] = $region_list[$v['district']];
+            $v['twon']=$region_list[$v['twon']];
+        }
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
+    }
+
+
 }
