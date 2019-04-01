@@ -140,7 +140,7 @@ function jichadaili($order_id)
     if ($r['status'] == 1) {
         return false;
     }
-    $order = M('order')->where(['order_id' => $order_id])->find();
+    $order = M('order')->where(['order_id' => $order_id])->field('user_id,order_sn')->find();
     // 如果 订单 小于 9.9 ，不分钱
     /*if ((float)$order['total_amount'] <= 9.9) {
         return false;
