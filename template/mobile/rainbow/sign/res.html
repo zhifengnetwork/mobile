@@ -1,0 +1,24 @@
+<include file="public/header" title="签到详情" body="g4" />
+<include file="public/header_nav" title="签到详情" href="{:U('/Mobile/User/index')}" />
+<div class="loginsingup-input mobil_topup" style="padding:0 0.64rem;">
+    
+    
+    <div class="recharge-curent" style="position:relative;background-color:blue;">
+        <span>3天签到次数</span>
+        <span class="cash">{$user.distribut_free_num}</span>
+    </div>
+
+    <div class="recharge-curent" style="background-color:blue;">
+        <span>10天签到次数<span class="cash">{$user.agent_free_num}</span></span>
+    </div>
+    
+
+    
+</div>
+
+<!--底部导航-start-->
+<include file="public/footer_nav" />
+<!--底部导航-end-->
+</body>
+
+</html>

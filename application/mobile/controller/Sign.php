@@ -36,5 +36,19 @@ class Sign extends MobileBase
         return $this->fetch();
     }
 
+
+    public function res()
+    {
+        $user_id = session('user.user_id');
+  
+
+        $user = M('users')->where(['user_id'=>$user_id])->field('distribut_free_num,agent_free_num')->find();
+
+        $this->assign('user', $user);
+
+
+        return $this->fetch();
+    }
+
     
 }
