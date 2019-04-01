@@ -72,8 +72,7 @@ class Auction extends MobileBase
      */
     public function auction_detail()
     {
-$a = update_pay_status('BondNy9zEJLgN7');
-dump($a);exit;
+        
         $auction_id = I("get.id/d");
         $goodsModel = new \app\common\model\Auction();
         $auction = $goodsModel::get($auction_id);
