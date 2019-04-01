@@ -297,7 +297,7 @@ class Index extends Base {
             ->join('tp_users u ', ' u.user_id = o.user_id')
             ->order('o.order_id asc')
             ->field('o.order_id, o.user_id, og.goods_num, g.shop_price, g.is_distribut, g.is_agent, u.first_leader, u.is_agent as is_user_agent')
-            ->where(['o.order_id' => ['in', $order_ids], 'order_status' => ['gt', 0]])
+            ->where(['o.order_id' => ['in', $order_ids], 'pay_status' => ['gt', 0]])
             ->select();
         if (!empty($order_list)) {
             $order_list_data = [];

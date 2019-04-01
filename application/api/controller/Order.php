@@ -29,7 +29,7 @@ class Order extends ApiBase
         if ($type=='WAITCCOMMENT')$data = array('tp_order.order_status'=>2,);//'待评价',
         // $data = '订单列表数据';
         $data['tp_order.user_id'] = $user_id;
-        $name = array(
+        /*$name = array(
             'tp_order.order_id',//订单id
             'tp_order.add_time',//下单时间
             'tp_order_goods.goods_name',//商品名称
@@ -39,8 +39,11 @@ class Order extends ApiBase
             'tp_order.order_amount',//应付金额
             'seller_name',//商家名称
             'tp_goods.original_img',//商品上传原始图
-        );
-        $order = Db::name('order')->join('tp_order_goods','tp_order.order_id=tp_order_goods.order_id','right')->join('tp_seller','tp_order_goods.seller_id = tp_seller.seller_id','left')->join('tp_goods','tp_goods.goods_id = tp_order_goods.goods_id')->field($name)->where($data)->select();
+        );*/
+        $order = Db::name('order')->join('tp_order_goods','tp_order.order_id=tp_order_goods.order_id','right')->join('tp_seller','tp_order_goods.seller_id = tp_seller.seller_id','left')->join('tp_goods','tp_goods.goods_id = tp_order_goods.goods_id')->where($data)->select();
+        foreach($order as &$k){
+            $k['original_img']=SITE_URL.$k['original_img'];
+        }
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$order]);
     }
 
