@@ -174,7 +174,8 @@
                 <a class="red receipt" href="javascript:void(0);" onclick="confirmReceive('{$order.order_id}'">确认收货</a>
                 </if>
             <if condition="$order['shipping_btn'] eq 1 && $order.shipping_name neq '' ">
-                <a href="{:U('Order/express',array('order_id'=>$order['order_id']))}" class="on_comment">查看物流</a>
+                <!-- <a href="{:U('Order/express',array('order_id'=>$order['order_id']))}" class="on_comment">查看物流</a> -->
+                <a href="{:U('Mobile/Order/express_detail',array('id'=>$order.order_id))}">查看物流</a>
             </if>
         </p>
     </div>
