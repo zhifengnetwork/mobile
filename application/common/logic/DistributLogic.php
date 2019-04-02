@@ -11,6 +11,28 @@ use think\Cache;
 class DistributLogic
 {
 
+
+    /**
+     * 补发
+     */
+    public function bufa($order_id){
+
+        //补发业绩
+        agent_performance($order_id);
+        //补发返利
+        jichadaili($order_id);
+
+        $data = array(
+            'order_id'=>$order_id
+        );
+
+        M('bufa_log')->add($data);
+    }
+
+
+
+
+
     /**
      * 用户充值记录
      * $author lxl 2017-4-26

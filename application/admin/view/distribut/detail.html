@@ -82,6 +82,7 @@
       </div>
 
     </div>
+</div>
 
   </div>
   <div class="ncap-order-style">
@@ -195,7 +196,18 @@
               </foreach>
             </tbody>
           </table>
+
+          <div onclick="javascript:bufa();" style="text-align:center;font-size: 1.2rem;width: 10rem;height: 2rem;line-height: 2rem;background:#1AAD19;border-radius: .25rem;margin: .5rem auto;color: #fff;">
+            返利补发
+          </div>
+
+          <div style="text-align:center;font-size: 0.8rem;">
+            如发现漏发，请点击补发按钮，只补漏发，不会重复发
+
+          </div>
+
         </div>
+
 
 
 
@@ -205,6 +217,35 @@
   </div>
 </div>
 
+<script>
+  function bufa(){
+
+    // 补发操作
+
+    var order_id = "{$order.order_id}";
+
+
+    $.ajax({
+        type : "POST",
+        url: "{:U('Admin/distribut/bufa')}",
+        data: {order_id:order_id},
+        dataType:'json',
+        async:false,
+        success: function(data){
+            if(data.status ==1){
+                layer.alert(data.msg, {icon: 1});
+                // window.location.href='/Admin/distribut/detail?order_id='+order_id;
+            }else{
+                layer.alert(data.msg, {icon: 2});
+            }
+        },
+        error:function(){
+            layer.alert('网络异常，请稍后重试',{icon: 2});
+        }
+          
+    })
+  }
+</script>
 
 </body>
 

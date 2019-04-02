@@ -272,7 +272,7 @@ function add_agent_performance($user_id,$order_amount,$type){
  */
 function agent_performance_log($user_id, $order_amount, $order_id)
 {
-    dump($user_id);
+   
     //验证OK
     //先判断是否有记录
     $is_cunzai = M('agent_performance_log')->where(['user_id'=>$user_id,'order_id'=>$order_id])->find();
