@@ -29,7 +29,9 @@ class Distribut extends Base {
         $leader = M('users')->where(['user_id'=>$first_leader])->find();
         $this->assign('leader', $leader);
 
-        $log = M('account_log')->where(['order_sn'=>$order['order_sn']])->select();
+        $log = M('account_log')->alias('log')->join('users', 'users.user_id = log.user_id')
+                ->field('log.*, users.agent_user')->where('log.states', ['in', ['101', '102']])
+                ->where(['order_sn'=>$order['order_sn']])->select();
         $this->assign('log', $log);
 
        $order_id = input('order_id', 0);
