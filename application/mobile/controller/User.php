@@ -1508,7 +1508,7 @@ class User extends MobileBase
         $result = M('order_divide')->alias('divide')
                 ->join('order_goods goods', 'divide.goods_id = goods.goods_id and divide.order_id = goods.order_id') 
                 ->where($data)->field('divide.add_time, goods.goods_name, goods.goods_num, goods.goods_price')
-                ->select();
+                ->group('divide.goods_id')->select();
         
         //商品数量*单价获取总额
         foreach($result as $key => $value){
