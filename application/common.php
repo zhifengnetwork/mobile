@@ -213,14 +213,15 @@ function agent_performance($order_id)
         //$cunzai = M('agent_performance')->where(['user_id' => $user_id])->find();
         $first_leader = M('users')->where(['user_id' => $order['user_id']])->value('first_leader');
         $arr = get_uper_user($first_leader);
+        
         //加 团队业绩
         foreach ($arr['recUser'] as $k => $v) {
             //$cunzai = M('agent_performance')->where(['user_id' => $v['user_id']])->find();
             /*if($v['is_lock']){
             }*/
-            if($v['is_agent']){
+            // if($v['is_agent']){
                 agent_performance_log($v['user_id'], $price, $order_id);
-            }
+            // }
         }
 
     }
@@ -271,6 +272,7 @@ function add_agent_performance($user_id,$order_amount,$type){
  */
 function agent_performance_log($user_id, $order_amount, $order_id)
 {
+    dump($user_id);
     //验证OK
     //先判断是否有记录
     $is_cunzai = M('agent_performance_log')->where(['user_id'=>$user_id,'order_id'=>$order_id])->find();
