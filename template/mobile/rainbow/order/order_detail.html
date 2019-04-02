@@ -373,7 +373,8 @@
             <a href="{:U('Mobile/Order/order_confirm',array('id'=>$order['order_id']))}">收货确认</a>
         </if>
         <if condition="$order['shipping_btn'] eq 1">
-            <a href="{:U('Mobile/Order/express',array('order_id'=>$order['order_id']))}" >查看物流</a>
+            <!-- <a href="{:U('Mobile/Order/express',array('order_id'=>$order['order_id']))}" >查看物流</a> -->
+            <a href="{:U('Mobile/Order/express_detail',array('id'=>$order.order_id))}">查看物流</a>
         </if>
         <if condition="$order.pay_tail_btn eq 1">
             <a href="{:U('/Mobile/Cart/cart4',array('order_id'=>$order[order_id]))}">支付尾款</a>

@@ -69,7 +69,8 @@
         <p>您的订单已经交由<span class="red">{$order.shipping_name}</span>进行配送，运单号为<span class="red">{$order.delivery_doc[invoice_no]}</span></p>
         <div class="weiyi p">
             <a href="javascript:void(0);">取消</a>
-            <a class="eno" href="{:U('Mobile/Order/express',array('order_id'=>$order.order_id))}">查看物流</a>
+            <!-- <a class="eno" href="{:U('Mobile/Order/express',array('order_id'=>$order.order_id))}">查看物流</a> -->
+            <a class="eno" href="{:U('Mobile/Order/express_detail',array('id'=>$order.order_id))}">查看物流</a>
         </div>
     </div>
     <!--我要催单弹窗-e-->

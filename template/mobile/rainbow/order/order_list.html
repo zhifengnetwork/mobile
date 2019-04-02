@@ -113,7 +113,8 @@
                             <a class="shop-rebuy" href="{:U('/Mobile/Order/comment')}">评价</a>
                         </if>
                         <if condition="$order.shipping_btn eq 1 && $order.shipping_name neq '' ">
-                            <a class="shop-rebuy" href="{:U('Mobile/Order/express',array('order_id'=>$order['order_id']))}">查看物流</a>
+                            <!-- <a class="shop-rebuy" href="{:U('Mobile/Order/express',array('order_id'=>$order['order_id']))}">查看物流</a> -->
+                            <a class="shop-rebuy" href="{:U('Mobile/Order/express_detail',array('id'=>$order.order_id))}">查看物流</a>
                         </if>
                     </div>
                 </div>
