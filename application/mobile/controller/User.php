@@ -1553,27 +1553,28 @@ class User extends MobileBase
     {
         $user_id = session('user.user_id');
 
-        $lower_id = M('users')->where('first_leader', $user_id)->column('user_id');
-        $lower = M('users')->where('first_leader', $user_id)->column('user_id, nickname');
-        
-        //找出符合条件的订单信息
-        $fir = 'log.user_id, log.order_id, log.order_sn, divide.add_time';
+        // $lower_id = M('users')->where('first_leader', $user_id)->column('user_id');
+        // $lower = M('users')->where('first_leader', $user_id)->column('user_id, nickname');
         $data = array(
-            'log.user_id' => ['in', $lower_id],
-            'log.states' => 0,
-            'divide.user_id' => $user_id,
-            'divide.states' => 102,
+            'user_id' => $user_id,
+            'states' => 102,
         );
-        $result = M('account_log')->alias('log')->join('order_divide divide', 'log.order_id = divide.order_id')
-                ->join('order_goods goods', 'goods.goods_id = divide.goods_id and goods.order_id = divide.order_id')
-                ->where($data)->field($fir)->group('order_sn')->order('log.log_id DESC')
-                ->limit(30)->select();
+
+        $divide_order = M('order_divide')->where($data)->group('order_id')
+                   ->limit(30)->column('order_id');
+
+        $orders = M('order')->where('order_id', ['in', $divide_order])->order('order_id DESC')
+                ->field('user_id, order_id, pay_time')->select();
+        $user_ids = array_column($orders, 'user_id');
+        $lower = M('users')->where('user_id', ['in', $user_ids])->column('user_id, nickname');
+
         //添加下级昵称
-        foreach($result as $key => $value){
-            $result[$key]['nickname'] = $lower[$value['user_id']];
+        foreach($orders as $key => $value){
+            $orders[$key]['nickname'] = $lower[$value['user_id']];
         }
+    
         $this->assign('user_id', $user_id);
-        $this->assign('result', $result);
+        $this->assign('result', $orders);
         return $this->fetch();  
     }
 
