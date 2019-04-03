@@ -31,7 +31,7 @@
     <div class="content">
         <div class="myorder p">
             <div class="content30">
-                <div class="order">
+                <!-- <div class="order" >
                     <div class="fl">
                         <empty name="leader">
                             <span>【还未绑定上级】</span>
@@ -39,6 +39,21 @@
                             <span>上级ID: {$leader.user_id}</span><br>
                             <span>上级名称: {$leader.nickname}</span>
                         </empty>
+                    </div>
+                </div> -->
+                <div class="order">
+                    <div class="up-zp" style="overflow:hidden">
+                        <div class="fl">
+                            <empty name="leader">
+                                <span>【还未绑定上级】</span>
+                                <else />
+                                <span>上级ID: {$leader.user_id}</span><br>
+                            </empty>
+                        </div>
+                        <div class="fr" style="font-size:.64rem;margin-top:0">我的ID:{$user_id}</div>
+                    </div>
+                    <div class="down-zp">
+                        <span style="font-size:.64rem">上级名称: {$leader.nickname}</span>
                     </div>
                 </div>
             </div>
