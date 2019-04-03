@@ -1077,6 +1077,7 @@ function rechargevip_rebate($order)
 function update_pay_status($order_sn, $ext = array())
 {
     $time = time();
+    dump($order_sn);exit;
     if (stripos($order_sn, 'recharge') !== false) {
         //用户在线充值
         $order = M('recharge')->where(['order_sn' => $order_sn, 'pay_status' => 0])->find();
@@ -1090,9 +1091,9 @@ function update_pay_status($order_sn, $ext = array())
         }
         accountLog($order['user_id'], $order['account'], 0, $msg, 0, 0, $order_sn);
     } elseif (stripos($order_sn, 'Bond') !== false) {
-        $order = M('auctionDeposit')->where(['order_sn' => $order_sn, 'status' => 0])->find();
+        $order = M('AuctionDeposit')->where(['order_sn' => $order_sn, 'status' => 0])->find();
         if (!$order) return false;// 看看有没已经处理过这笔订单  支付宝返回不重复处理操作
-        M('auctionDeposit')->where("order_sn", $order_sn)->save(array('status' => 1, 'pay_time' => $time));
+        M('AuctionDeposit')->where("order_sn", $order_sn)->save(array('status' => 1, 'pay_time' => $time));
         // 报名人数加一
         M('Auction')->where('id',$order['auction_id'])->setInc('buy_num');
     } else {
