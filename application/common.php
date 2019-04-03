@@ -1077,7 +1077,6 @@ function rechargevip_rebate($order)
 function update_pay_status($order_sn, $ext = array())
 {
     $time = time();
-    dump($order_sn);exit;
     if (stripos($order_sn, 'recharge') !== false) {
         //用户在线充值
         $order = M('recharge')->where(['order_sn' => $order_sn, 'pay_status' => 0])->find();
@@ -1986,15 +1985,16 @@ function provingReceive($user, $type, $num = 1)
         return $result;
     }
     // 是代理或购买过指定产品并且有领取次数
-    if ($user['super_nsign'] == 1) {
-        if ($user['is_agent'] == 1 && $type == 2) {
-            if ($num > 1) {
-                return array('status' => 0, 'msg' => '超过领取数量，每月只能领取一件！', 'result' => array());
-            }
+    if ($user['super_nsign'] == 1 && $type == 2) {
+        
+        if ($user['agent_free_num'] < $num) {
+            return array('status' => 1, 'msg' => '正常购物流程', 'result' => array());
+        }
 
-            if ($user['agent_free_num'] < $num) {
-                return array('status' => 1, 'msg' => '正常购物流程', 'result' => array());
-            }
+        if ($user['is_agent'] == 1) {
+            // if ($num > 1) {
+            //     return array('status' => 0, 'msg' => '超过领取数量，每月只能领取一件！', 'result' => array());
+            // }
         }
     }
     if (!empty($data)) {
