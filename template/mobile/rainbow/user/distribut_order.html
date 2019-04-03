@@ -36,7 +36,7 @@
             </div>
             <else />
             <foreach name="result" item="v">
-                <ul class="series" onclick="getData('{$v.order_id}', '{$user_id}');">
+                <ul class="series" onclick="getData('{$v.order_id}', '{$v.pay_time}', '{$user_id}');">
                     <li style="width:33.3%"><span>{$v.nickname}</span></li>
                     <!-- <li style="width:25%"><span>{$v.goods_num}</span></li> -->
                     <li style="width:33.3%"><span>订单{$v.order_id}</span></li>
@@ -51,8 +51,8 @@
 </div>
 <!-- <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script> -->
 <script>
-    function getData(order_id, user_id){
-        window.location.href="/mobile/user/distribut_order_detail?order_id="+order_id+"&user_id="+user_id;
+    function getData(order_id, pay_time, user_id){
+        window.location.href="/mobile/user/distribut_order_detail?order_id="+order_id+"&user_id="+user_id+"&pay_time="+pay_time;
     }
 </script>
 </body>

@@ -1549,6 +1549,7 @@ class User extends MobileBase
     {
         $order_id = I('order_id');
         $user_id = I('user_id');
+        $pay_time = I('pay_time');
         $data = array(
             'divide.order_id' => $order_id,
             'divide.user_id' => $user_id,
@@ -1557,12 +1558,13 @@ class User extends MobileBase
         //关联分钱表和订单商品表找分销类型的商品
         $result = M('order_divide')->alias('divide')
                 ->join('order_goods goods', 'divide.goods_id = goods.goods_id and divide.order_id = goods.order_id') 
-                ->where($data)->field('divide.add_time, goods.goods_name, goods.goods_num, goods.goods_price')
+                ->where($data)->field('goods.goods_name, goods.goods_num, goods.goods_price')
                 ->group('divide.goods_id')->select();
         
         //商品数量*单价获取总额
         foreach($result as $key => $value){
             $result[$key]['goods_prizce'] = $value['goods_price'] * $value['goods_num'];
+            $result[$key]['pay_time'] = $pay_time;
         }
         $this->assign('result', $result);
         return $this->fetch(); 
