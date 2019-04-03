@@ -12,6 +12,7 @@ class ApiBase extends Controller
 {
 
     public function ajaxReturn($data){
+        header('Access-Control-Allow-Origin:*');
         header('Content-Type:application/json; charset=utf-8');
         exit(json_encode($data,JSON_UNESCAPED_UNICODE));
     }
