@@ -1090,9 +1090,9 @@ function update_pay_status($order_sn, $ext = array())
         }
         accountLog($order['user_id'], $order['account'], 0, $msg, 0, 0, $order_sn);
     } elseif (stripos($order_sn, 'Bond') !== false) {
-        $order = M('auctionDeposit')->where(['order_sn' => $order_sn, 'status' => 0])->find();
+        $order = M('AuctionDeposit')->where(['order_sn' => $order_sn, 'status' => 0])->find();
         if (!$order) return false;// 看看有没已经处理过这笔订单  支付宝返回不重复处理操作
-        M('auctionDeposit')->where("order_sn", $order_sn)->save(array('status' => 1, 'pay_time' => $time));
+        M('AuctionDeposit')->where("order_sn", $order_sn)->save(array('status' => 1, 'pay_time' => $time));
         // 报名人数加一
         M('Auction')->where('id',$order['auction_id'])->setInc('buy_num');
     } else {
@@ -1985,15 +1985,16 @@ function provingReceive($user, $type, $num = 1)
         return $result;
     }
     // 是代理或购买过指定产品并且有领取次数
-    if ($user['super_nsign'] == 1) {
-        if ($user['is_agent'] == 1 && $type == 2) {
-            if ($num > 1) {
-                return array('status' => 0, 'msg' => '超过领取数量，每月只能领取一件！', 'result' => array());
-            }
+    if ($user['super_nsign'] == 1 && $type == 2) {
+        
+        if ($user['agent_free_num'] < $num) {
+            return array('status' => 1, 'msg' => '正常购物流程', 'result' => array());
+        }
 
-            if ($user['agent_free_num'] < $num) {
-                return array('status' => 1, 'msg' => '正常购物流程', 'result' => array());
-            }
+        if ($user['is_agent'] == 1) {
+            // if ($num > 1) {
+            //     return array('status' => 0, 'msg' => '超过领取数量，每月只能领取一件！', 'result' => array());
+            // }
         }
     }
     if (!empty($data)) {

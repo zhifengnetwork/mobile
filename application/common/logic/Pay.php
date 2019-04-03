@@ -315,12 +315,12 @@ class Pay
      */
     public function delivery($district_id){
         if (array_key_exists('is_virtual', $this->payList[0]) && $this->payList[0]['is_virtual'] == 0) {
-            if (empty($this->shop) && empty($district_id)) {
+            if (empty($this->shop) && empty($district_id['district'])) {
                 throw new TpshopException("计算订单价格", 0, ['status' => -1, 'msg' => '请填写收货信息', 'result' => ['']]);
             }
         }
         $GoodsLogic = new GoodsLogic();
-        $checkGoodsShipping = $GoodsLogic->checkGoodsListShipping($this->payList, $district_id);
+        $checkGoodsShipping = $GoodsLogic->checkGoodsListShipping($this->payList, $district_id['district']);
         foreach($checkGoodsShipping as $shippingKey => $shippingVal){
             if($shippingVal['shipping_able'] != true){
                 throw new TpshopException("计算订单价格",0,['status'=>-1, 'code' => 301,
@@ -336,9 +336,18 @@ class Pay
         if ($this->payList[0]['prom_type'] == 4) {
             return $this;
         }
+        //非免费产品，内蒙、西藏、新疆满4件包邮
+        if ($this->payList[0]['goods']->sign_free_receive != 1 ) {
+            if ($district_id['province'] == 4670 || $district_id['province'] == 41103 || $district_id['province'] == 46047) {
+                if ($this->totalNum >= 4 ) {
+                    return $this;
+                }
+            }
+        }
+
         $freight_free = tpCache('shopping.freight_free'); // 全场满多少免运费
         if($this->goodsPrice < $freight_free || $freight_free == 0){
-            $this->shippingPrice = $GoodsLogic->getFreight($this->payList, $district_id);
+            $this->shippingPrice = $GoodsLogic->getFreight($this->payList, $district_id['district']);
             $this->orderAmount = $this->orderAmount + $this->shippingPrice;
             $this->totalAmount = $this->totalAmount + $this->shippingPrice;
         }else{

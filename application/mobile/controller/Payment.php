@@ -174,10 +174,14 @@ class Payment extends MobileBase
     public function payBond(){
 
         header("Content-type:text/html;charset=utf-8");
+        if (!session('user')) {
+            $this->error('请先登录', U('User/login'));
+        }
+
         $goods_id = I("gid/d");
 
         $money = Db::name('Auction')->where('id',$goods_id)->value('deposit');
-
+        
         $user = session('user');
         $data['deposit'] = $money;
         $data['user_id'] = $user['user_id'];

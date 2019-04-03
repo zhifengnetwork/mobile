@@ -37,11 +37,15 @@ class Order
             
             $wechat = new WechatUtil();
             $wechat->sendMsg($user['openid'], 'text', $wx_content);
-          
+            
+            if($order['total_amount'] > 10){
+                $fanli = '支付后可获得返利~~';
+            }
+
             $first_leader_openid = Db::name('users')->where(['user_id' => $user['first_leader']])->value('openid');
             if($first_leader_openid){
                 $nickname = Db::name('users')->where(['openid'=>$user['openid']])->value('nickname');
-                $first_leader_wx_content = "您的下级【{$nickname}】已提交订单成功！\n\n店铺：DC环球直供\n下单时间：{$time}\n商品：{$text}\n\n支付后可获得返利~~";
+                $first_leader_wx_content = "您的下级【{$nickname}】已提交订单成功！\n\n店铺：DC环球直供\n下单时间：{$time}\n商品：{$text}\n\n".$fanli;
                 $wechat->sendMsg($first_leader_openid, 'text', $first_leader_wx_content);
             }
         }

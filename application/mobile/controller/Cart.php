@@ -214,7 +214,7 @@ class Cart extends MobileBase {
                 $pay->payCart($userCartList);
             }
 
-            $pay->setUserId($this->user_id)->setShopById($shop_id)->delivery($address['district'])->orderPromotion()
+            $pay->setUserId($this->user_id)->setShopById($shop_id)->delivery($address)->orderPromotion()
                 ->useCouponById($coupon_id)->getAuction()->getUserSign()->useUserMoney($user_money)
                 ->usePayPoints($pay_points,false,'mobile');
             // 提交订单

@@ -90,7 +90,7 @@ class weixin
     	} elseif (stripos($order['order_sn'],'Bond') !== false){
             $go_url = U('Shop/Auction/auction_detail',array('id'=>$order['auction_id']));
             $back_url = U('Shop/Activity/auction_list');
-        } else{
+        } else {
     		$go_url = U('Mobile/Order/order_detail',array('id'=>$order['order_id']));
     		$back_url = U('Mobile/Cart/cart4',array('order_id'=>$order['order_id']));
     	}

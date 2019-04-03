@@ -7,6 +7,7 @@ use app\common\logic\Message;
 use app\common\logic\UsersLogic;
 use app\common\logic\DistributLogic;
 use app\common\logic\OrderLogic;
+use app\common\logic\LevelLogic;
 use app\common\model\MenuCfg;
 use app\common\model\UserAddress;
 use app\common\model\Users as UserModel;
@@ -68,9 +69,86 @@ class User extends MobileBase
     }
 
 
+    public function distribut(){
+
+        $user_id = session('user.user_id');
+       
+
+        $money_total = $this->ddddd();
+       
+        //补业绩
+        if($money_total['moneys'] < 0){
+            $bu_moneys = -1 * $money_total['moneys'] * 2; //补 两倍 的 差值
+            //这里重新
+            $add_logic = new \app\common\logic\AgentPerformanceAddLogic();
+            $add_logic->add($user_id,$bu_moneys);
+           
+            //重新来
+            $money_total = $this->ddddd();
+        }
+
+        $this->assign('money_total',$money_total);
+
+        //上级用户信息
+        $leader_id = M('users')->where(['user_id'=> $user_id])->value('first_leader');
+        if($leader_id){
+            $leader = M('users')->where(['user_id'=>$leader_id])->field('user_id, nickname')->find();
+            if($leader){
+                $this->assign('leader',$leader);
+            }
+        }
+      
+        $underling_number = M('users')->where(['user_id'=>$user_id])->value('underling_number');
+        $underling_number == NULL ? $underling_number = '0' : $underling_number;
+        $this->assign('underling_number', $underling_number);
+ 
+        $this->assign('user_id',$user_id);
+
+        return $this->fetch();
+    }
 
 
-    public function distribut()
+    /**
+     * 抽离
+     */
+    private function ddddd(){
+        $user_id = session('user.user_id');
+        $openid = session('user.openid');
+       
+        $user_agent_money = $this->child_agent($user_id);
+        $tuandui_money =  (float)$user_agent_money['agent_per'];
+
+        $logic = new \app\common\logic\AgentPerformanceOldLogic();
+        $oldPerformance = $logic->getAllData($openid);
+        //这是老的历史业绩，加上新的
+        $this->assign('oldPerformance',$oldPerformance);
+
+        $add_logic = new \app\common\logic\AgentPerformanceAddLogic();
+        $xiubu_yeji = $add_logic->get_bu($user_id);
+
+        $zong_yeji = $tuandui_money + $oldPerformance + $xiubu_yeji;
+        //总业绩
+    
+        $per_logic = new \app\common\logic\PerformanceLogic();
+        $max_team_total  = $per_logic->tuandui_max_yeji($user_id);
+
+        //加上 老系统的 最大用户业绩
+        //$max_team_total = $max_team_total + session('user.team');
+
+        $money_total = array(
+            'money_total' => (float)$zong_yeji,
+            'max_moneys'  => (float)$max_team_total,
+            'moneys' => (float)bcsub((float)$zong_yeji,(float)$max_team_total),
+         
+        );
+
+        return $money_total;
+
+    }
+
+
+
+    public function distribut_42()
     {
         
         // $user = session('user');
@@ -209,7 +287,7 @@ class User extends MobileBase
 
         $this->assign('user_id',$user['user_id']);
 
-        return $this->fetch();
+        return $this->fetch('distribut');
     }
 
     private function child_agent($user_id)
@@ -243,6 +321,11 @@ class User extends MobileBase
         //更新团队总人数
         $url = "http://www.dchqzg1688.com/api/distribut/get_team_num?user_id=".$user_id;
         httpRequest($url);
+
+
+        // $top_level = new LevelLogic();
+        // $top_level->user_in($user_id);
+        
 
         return $this->fetch();
     }
@@ -1470,27 +1553,28 @@ class User extends MobileBase
     {
         $user_id = session('user.user_id');
 
-        $lower_id = M('users')->where('first_leader', $user_id)->column('user_id');
-        $lower = M('users')->where('first_leader', $user_id)->column('user_id, nickname');
-        
-        //找出符合条件的订单信息
-        $fir = 'log.user_id, log.order_id, log.order_sn, divide.add_time';
+        // $lower_id = M('users')->where('first_leader', $user_id)->column('user_id');
+        // $lower = M('users')->where('first_leader', $user_id)->column('user_id, nickname');
         $data = array(
-            'log.user_id' => ['in', $lower_id],
-            'log.states' => 0,
-            'divide.user_id' => $user_id,
-            'divide.states' => 102,
+            'user_id' => $user_id,
+            'states' => 102,
         );
-        $result = M('account_log')->alias('log')->join('order_divide divide', 'log.order_id = divide.order_id')
-                ->join('order_goods goods', 'goods.goods_id = divide.goods_id and goods.order_id = divide.order_id')
-                ->where($data)->field($fir)->group('order_sn')->order('log.log_id DESC')
-                ->limit(30)->select();
+
+        $divide_order = M('order_divide')->where($data)->group('order_id')
+                   ->limit(30)->column('order_id');
+
+        $orders = M('order')->where('order_id', ['in', $divide_order])->order('order_id DESC')
+                ->field('user_id, order_id, pay_time')->select();
+        $user_ids = array_column($orders, 'user_id');
+        $lower = M('users')->where('user_id', ['in', $user_ids])->column('user_id, nickname');
+
         //添加下级昵称
-        foreach($result as $key => $value){
-            $result[$key]['nickname'] = $lower[$value['user_id']];
+        foreach($orders as $key => $value){
+            $orders[$key]['nickname'] = $lower[$value['user_id']];
         }
+    
         $this->assign('user_id', $user_id);
-        $this->assign('result', $result);
+        $this->assign('result', $orders);
         return $this->fetch();  
     }
 

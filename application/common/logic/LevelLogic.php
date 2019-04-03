@@ -23,24 +23,38 @@ use think\Db;
  */
 class LevelLogic extends Model
 {
-	public function user_in($leaderId)
+	/**
+	 * 判断一个人是否可以升级
+	 */
+	public function user_in($user_id)
 	{
-		$top_user = $this->user_info_agent($leaderId);
+		// $top_user = $this->user_info_agent($leaderId);
+		$top_user = M('users')->where('user_id',$user_id)->field('is_agent,user_id')->find();
+
 		//判断是否购买指定产品
-		if($top_user == false){
+		$con['user_id'] = $user_id;
+		$con['pay_status'] = 1;
+		$con['total_amount'] = array('egt',399);
+		$is_399 = M('order')->where($con)->field('user_id,pay_status,total_amount')->select();
+		$num = count($is_399);
+		if($num == 0){
 			return false;
 		}
 		
+		//如果不是 代理，则返回
 		if($top_user['is_agent'] != 1){
 			return false;
 		}
-
+		
 		//判断是否为代理
 		$agentGrade = $this->is_agent_user($top_user['user_id']);
+		
+
 		if($agentGrade){
 			if($agentGrade['level_id']==5) return true;
 			$this->upgrade_agent($agentGrade['level_id'], $top_user);
 		}else{
+			//不存在
 			$money = $this->user_level(1);
 			$res = $this->add_agent($top_user,$money['max_money'],$money['remaining_money']);
 			if($res){
@@ -159,6 +173,7 @@ class LevelLogic extends Model
 	private function is_agent_user($user_id)
 	{		
 		$agent = M('agent_info')->where(['uid'=>$user_id])->find();
+		
 		return $agent;
 	}
 
