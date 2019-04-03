@@ -1,20 +1,7 @@
 <?php
-/**
- * DC环球直供网络
- * ============================================================================
- * 版权所有 2015-2027 广州滴蕊生物科技有限公司，并保留所有权利。
- * 网站地址: http://www.dchqzg1688.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * 采用TP5助手函数可实现单字母函数M D U等,也可db::name方式,可双向兼容
- * ============================================================================
- * Author: lhb
- * Date: 2017-05-15
- */
-
 namespace app\common\logic;
 
+use app\common\logic\PerformanceLogic;
 use think\Model; 
 use think\Db;
 
@@ -28,8 +15,8 @@ class LevelLogic extends Model
 	 */
 	public function user_in($user_id)
 	{
-		// $top_user = $this->user_info_agent($leaderId);
-		$top_user = M('users')->where('user_id',$user_id)->field('is_agent,user_id')->find();
+		
+		$user = M('users')->where('user_id',$user_id)->field('is_agent,user_id,first_leader')->find();
 
 		//判断是否购买指定产品
 		$con['user_id'] = $user_id;
@@ -42,168 +29,80 @@ class LevelLogic extends Model
 		}
 		
 		//如果不是 代理，则返回
-		if($top_user['is_agent'] != 1){
+		if($user['is_agent'] != 1){
 			return false;
 		}
 		
 		//判断是否为代理
-		$agentGrade = $this->is_agent_user($top_user['user_id']);
+		$agentGrade = M('agent_info')->where(['uid'=>$user['user_id']])->find();
 		
-
-		if($agentGrade){
-			if($agentGrade['level_id']==5) return true;
-			$this->upgrade_agent($agentGrade['level_id'], $top_user);
-		}else{
-			//不存在
-			$money = $this->user_level(1);
-			$res = $this->add_agent($top_user,$money['max_money'],$money['remaining_money']);
-			if($res){
-				$data = array(
-					'agent_user'=> 1,
-					'is_agent' => 1,
-					'is_distribut' => 1,
-				);
-				M('users')->where(['user_id'=>$top_user['user_id']])->update($data);
-			}
+		if($agentGrade['level_id'] == 5 ){
+			return true;
 		}
-		return false;
+		
+		//判断条件是否满足
+		if($this->check_can_upgrade($agentGrade['level_id'], $user) == true){
+			//dump('符合条件');
 
-	}
+			$up = $agentGrade['level_id'] + 1;
+			$userdata = array(
+				'agent_user'=> $up,
+				'is_agent' => 1,
+				'is_distribut' => 1,
+			);
+			M('users')->where(['user_id'=>$user['user_id']])->update($userdata);
+			//写完user表
+		
+	
+			//写  agent_info
+			//判断是否存在
+			$is_cunzai = M('agent_info')->where(['uid'=>$user['user_id']])->find();
+			if(!$is_cunzai){
+				$new_data = array(
+					'uid' => $user['user_id'],
+					'head_id' => $user['first_leader'],
+					'level_id' => $up,
+					'create_time' => time(),
+					'update_time' => time()
+				);
+				M('agent_info')->add($new_data);
 
-	/**
-	 * 获取上级用户信息
-	 */
-	private function user_info_agent($userId)
-	{
-		$top_user = M('users')->where('user_id',$userId)->find();
-		return $top_user?$top_user:false;
+			}else{
+
+				$update = array(
+					'level_id' => $up,
+					'update_time' => time()
+				);
+
+				M('agent_info')->where(['uid'=>$user['user_id']])->update($update);
+			}
+			
+
+		}
+
 	}
 
 	/**
 	 * 代理升级
 	 */
-	private function upgrade_agent($grade,$user)
+	private function check_can_upgrade($grade,$user)
 	{
-		$money = $this->user_level($grade+1);
-		if($grade==1)
-		{
-			$is_satisfy = $this->get_child_agent($user['user_id'],$money['max_money'],$money['remaining_money']);
+		//升级 下一级  需要 的条件
+		$grade = (int)$grade + 1;
 
-		}else if($grade==2)
-		{
-			$is_satisfy = $this->get_child_agent($user['user_id'],$money['max_money'],$money['remaining_money']);
-		}else if($grade==3)
-		{
-			$is_satisfy = $this->get_child_agent($user['user_id'],$money['max_money'],$money['remaining_money']);
-		}else if($grade==4)
-		{
-			$is_satisfy = $this->get_child_agent($user['user_id'],$money['max_money'],$money['remaining_money']);
-		}
-		// else if($grade==5)
-		// {
-		// 	$is_satisfy = $this->get_child_agent($user['user_id'],$money['max_money'],$money['remaining_money']);
-		// }
-		
-		if(!$is_satisfy) return false;
-		$newGrade 	= $grade + 1;
-		$data       = array('level_id'=>$newGrade);
-		$flag       = M('agent_info')->where(['uid'=>$user['user_id']])->update($data);
-		$data1 = array('agent_user'=>$newGrade);
-		M('users')->where('user_id',$user['user_id'])->update($data1);
-		return $flag;
-	}
-
-	/**
-	 * 获取用户升级条件
-	 */
-	private function user_level($grade)
-	{
-		$grade_level = M('user_level')->where(['level'=>$grade])->find();
-		return $grade_level;
-	}
-
-	//判断直推条件是否满足
-	private function get_child_agent($userId,$max_money,$remaining_money)
-	{
-		$leader_find = M('users')->where(['first_leader'=>$userId])->select();
-		$openid = M('users')->where('user_id', $userId)->value('openid');
-		$money_array = [];
-		foreach($leader_find as $v){
-			$get_child_agent = $this->child_agent($v['user_id']);
-			$money_array[] = $get_child_agent;
-		}
-		$moneys = array_filter($money_array);
-		rsort($moneys);
-
-		//最大
-		$logic = new \app\common\logic\AgentPerformanceOldLogic();
-        $oldPerformance = $logic->getAllData($openid);
-
-		$agent_max = array_sum($moneys);	
-		array_shift($moneys);
-		$agent_remaining = array_sum($moneys);
-
-		if($oldPerformance){
-			$agent_max = $agent_max + $oldPerformance;
-			$agent_remaining = $agent_remaining + $oldPerformance;
-		}
-        
-		if(($agent_max>=$max_money) && ($agent_remaining>=$remaining_money)){
-			// dump('ok');
-			return $agent_remaining;
-		}else{
-			// dump('no');
-			return false;
-		}
-	}
-
-	/**
-	*	查询用户业绩
-	*/
-	public function child_agent($user_id)
-	{
-		$performance = M('agent_performance')->where(['user_id'=>$user_id])->find();
-		if(empty($performance)) return false;
-		return $performance['agent_per'];
-	}
+		$grade_condition = M('user_level')->where(['level'=>$grade])->find();
 	
-	/**
-	 * 判断用户是否为代理
-	 */
-	private function is_agent_user($user_id)
-	{		
-		$agent = M('agent_info')->where(['uid'=>$user_id])->find();
-		
-		return $agent;
-	}
+		$per_logic =  new PerformanceLogic();
+		$money_total = $per_logic->distribut_caculate();
 
-	/**
-	 * 添加代理记录
-	 */
-	 public function add_agent($user,$max_money,$remaining_money)
-	 {
-
-		if($user['user_id'] == false){
+		//比较条件
+		if($money_total['money_total'] >= $grade_condition['max_money'] && $money_total['moneys'] >= $grade_condition['remaining_money']){
+			// dump("符合条件");
+			return true;
+		}else{
+			//dump("不符合条件");
 			return false;
 		}
+	}
 
-		if($user['first_leader'] == false){
-			$user['first_leader'] = 0;
-		}
-		$falg = $this->get_child_agent($user['user_id'],$max_money,$remaining_money);
-		if($falg){
-			dump('ok');
-		}else{
-			dump('no');
-		}
-		 $data = array(
-			 'uid'=>$user['user_id'],
-			 'head_id'=>$user['first_leader'],
-			 'level_id'=>1,
-			 'create_time'=>time(),
-			 'update_time'=>time()
-		 );
-		//  dump($data);
-		 return M('agent_info')->add($data);
-	 }
 }

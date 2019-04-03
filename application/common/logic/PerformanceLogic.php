@@ -9,6 +9,49 @@ use think\Db;
 class PerformanceLogic
 {
   
+  
+     /**
+     * 抽离
+     */
+    public function distribut_caculate(){
+        $user_id = session('user.user_id');
+        $openid = session('user.openid');
+       
+        $user_agent_money = M('agent_performance')->where(['user_id'=>$user_id])->find();
+     
+        $tuandui_money =  (float)$user_agent_money['agent_per'];
+
+        $logic = new \app\common\logic\AgentPerformanceOldLogic();
+        $oldPerformance = $logic->getAllData($openid);
+        //这是老的历史业绩，加上新的
+       
+
+        $add_logic = new \app\common\logic\AgentPerformanceAddLogic();
+        $xiubu_yeji = $add_logic->get_bu($user_id);
+
+        $zong_yeji = $tuandui_money + $oldPerformance + $xiubu_yeji;
+        //总业绩
+    
+        $per_logic = new \app\common\logic\PerformanceLogic();
+        $max_team_total  = $per_logic->tuandui_max_yeji($user_id);
+
+        //加上 老系统的 最大用户业绩
+        //$max_team_total = $max_team_total + session('user.team');
+
+        $money_total = array(
+            'money_total' => (float)$zong_yeji,
+            'max_moneys'  => (float)$max_team_total,
+            'moneys' => (float)bcsub((float)$zong_yeji,(float)$max_team_total),
+            'oldPerformance' => $oldPerformance
+        );
+
+        return $money_total;
+
+    }
+
+
+
+
     /**
      * 个人的业绩
      */

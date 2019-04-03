@@ -4,8 +4,8 @@
     <div class="recharge-curent" style="position:relative;">
     
         <span>总业绩</span>
-        <if condition="$oldPerformance">
-            <span style="position:absolute;top:.4rem;right:.4rem;font-size:.5rem;overflow: inherit;">原￥{$oldPerformance}</span>
+        <if condition="$money_total['oldPerformance']">
+            <span style="position:absolute;top:.4rem;right:.4rem;font-size:.5rem;overflow: inherit;">原￥{$money_total.oldPerformance}</span>
         </if>
         <span class="cash"><i>￥</i>{$money_total.money_total}</span>
         

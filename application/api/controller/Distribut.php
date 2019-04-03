@@ -4,6 +4,7 @@
  */
 namespace app\api\controller;
 use app\common\model\Users;
+use app\common\logic\LevelLogic;
 
 use think\Db;
 use think\Controller;
@@ -11,6 +12,20 @@ use think\Controller;
 
 class Distribut extends Controller
 {
+
+    /**
+     * api调用 升级
+     */
+    public function upgrade(){
+        $user_id = I('user_id');
+        if(!$user_id){
+            return 'user_id不存在';
+        }
+
+        $top_level = new LevelLogic();
+        $top_level->user_in($user_id);
+        
+    }
 
     /**
      * 获取团队总人数

@@ -6,6 +6,7 @@ use app\common\logic\CartLogic;
 use app\common\logic\Message;
 use app\common\logic\UsersLogic;
 use app\common\logic\DistributLogic;
+use app\common\logic\PerformanceLogic;
 use app\common\logic\OrderLogic;
 use app\common\logic\LevelLogic;
 use app\common\model\MenuCfg;
@@ -73,8 +74,8 @@ class User extends MobileBase
 
         $user_id = session('user.user_id');
        
-
-        $money_total = $this->ddddd();
+        $per_logic =  new PerformanceLogic();
+        $money_total = $per_logic->distribut_caculate();
        
         //补业绩
         if($money_total['moneys'] < 0){
@@ -84,7 +85,8 @@ class User extends MobileBase
             $add_logic->add($user_id,$bu_moneys);
            
             //重新来
-            $money_total = $this->ddddd();
+            $per_logic =  new PerformanceLogic();
+            $money_total = $per_logic->distribut_caculate();
         }
 
         $this->assign('money_total',$money_total);
@@ -110,44 +112,7 @@ class User extends MobileBase
     }
 
 
-    /**
-     * 抽离
-     */
-    private function ddddd(){
-        $user_id = session('user.user_id');
-        $openid = session('user.openid');
-       
-        $user_agent_money = $this->child_agent($user_id);
-        $tuandui_money =  (float)$user_agent_money['agent_per'];
-
-        $logic = new \app\common\logic\AgentPerformanceOldLogic();
-        $oldPerformance = $logic->getAllData($openid);
-        //这是老的历史业绩，加上新的
-        $this->assign('oldPerformance',$oldPerformance);
-
-        $add_logic = new \app\common\logic\AgentPerformanceAddLogic();
-        $xiubu_yeji = $add_logic->get_bu($user_id);
-
-        $zong_yeji = $tuandui_money + $oldPerformance + $xiubu_yeji;
-        //总业绩
-    
-        $per_logic = new \app\common\logic\PerformanceLogic();
-        $max_team_total  = $per_logic->tuandui_max_yeji($user_id);
-
-        //加上 老系统的 最大用户业绩
-        //$max_team_total = $max_team_total + session('user.team');
-
-        $money_total = array(
-            'money_total' => (float)$zong_yeji,
-            'max_moneys'  => (float)$max_team_total,
-            'moneys' => (float)bcsub((float)$zong_yeji,(float)$max_team_total),
-         
-        );
-
-        return $money_total;
-
-    }
-
+   
 
 
     public function distribut_42()
@@ -325,9 +290,8 @@ class User extends MobileBase
         httpRequest($url);
 
 
-        // $top_level = new LevelLogic();
-        // $top_level->user_in($user_id);
-        
+        $up_url = "http://www.dchqzg1688.com/api/distribut/upgrade?user_id=".$user_id;
+        httpRequest($up_url);
 
         return $this->fetch();
     }
