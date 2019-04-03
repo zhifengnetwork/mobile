@@ -104,6 +104,8 @@ class User extends MobileBase
  
         $this->assign('user_id',$user_id);
 
+        $this->assign('time',date('Y-m-d H:i'));
+
         return $this->fetch();
     }
 
