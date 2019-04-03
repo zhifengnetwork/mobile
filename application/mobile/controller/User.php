@@ -72,34 +72,22 @@ class User extends MobileBase
     public function distribut(){
 
         $user_id = session('user.user_id');
-        $openid = session('user.openid');
        
-        $user_agent_money = $this->child_agent($user_id);
-        $tuandui_money =  (float)$user_agent_money['agent_per'];
 
-        $logic = new \app\common\logic\AgentPerformanceOldLogic();
-        $oldPerformance = $logic->getAllData($openid);
-        //这是老的历史业绩，加上新的
-        $this->assign('oldPerformance',$oldPerformance);
-
-        $zong_yeji = $tuandui_money + $oldPerformance;
-        //总业绩
+        $money_total = $this->ddddd();
        
-        $per_logic = new \app\common\logic\PerformanceLogic();
-        $max_team_total  = $per_logic->tuandui_max_yeji($user_id);
+        //补业绩
+        if($money_total['moneys'] < 0){
+            $bu_moneys = -1 * $money_total['moneys'] * 2; //补 两倍 的 差值
+            //这里重新
+            $add_logic = new \app\common\logic\AgentPerformanceAddLogic();
+            $add_logic->add($user_id,$bu_moneys);
+           
+            //重新来
+            $money_total = $this->ddddd();
+        }
 
-        //加上 老系统的 最大用户业绩
-        $max_team_total = $max_team_total + session('user.team');
-
-        $money_total = array(
-            'money_total' => (float)$zong_yeji,
-            'max_moneys'  => (float)$max_team_total,
-            'moneys' => (float)$zong_yeji  - $max_team_total,
-        );
         $this->assign('money_total',$money_total);
-    
-
-
 
         //上级用户信息
         $leader_id = M('users')->where(['user_id'=> $user_id])->value('first_leader');
@@ -109,10 +97,7 @@ class User extends MobileBase
                 $this->assign('leader',$leader);
             }
         }
-        
-
-
-        $this->assign('user_id', $user_id);
+      
         $underling_number = M('users')->where(['user_id'=>$user_id])->value('underling_number');
         $underling_number == NULL ? $underling_number = '0' : $underling_number;
         $this->assign('underling_number', $underling_number);
@@ -123,6 +108,43 @@ class User extends MobileBase
     }
 
 
+    /**
+     * 抽离
+     */
+    private function ddddd(){
+        $user_id = session('user.user_id');
+        $openid = session('user.openid');
+       
+        $user_agent_money = $this->child_agent($user_id);
+        $tuandui_money =  (float)$user_agent_money['agent_per'];
+
+        $logic = new \app\common\logic\AgentPerformanceOldLogic();
+        $oldPerformance = $logic->getAllData($openid);
+        //这是老的历史业绩，加上新的
+        $this->assign('oldPerformance',$oldPerformance);
+
+        $add_logic = new \app\common\logic\AgentPerformanceAddLogic();
+        $xiubu_yeji = $add_logic->get_bu($user_id);
+
+        $zong_yeji = $tuandui_money + $oldPerformance + $xiubu_yeji;
+        //总业绩
+    
+        $per_logic = new \app\common\logic\PerformanceLogic();
+        $max_team_total  = $per_logic->tuandui_max_yeji($user_id);
+
+        //加上 老系统的 最大用户业绩
+        //$max_team_total = $max_team_total + session('user.team');
+
+        $money_total = array(
+            'money_total' => (float)$zong_yeji,
+            'max_moneys'  => (float)$max_team_total,
+            'moneys' => (float)bcsub((float)$zong_yeji,(float)$max_team_total),
+         
+        );
+
+        return $money_total;
+
+    }
 
 
 
