@@ -182,6 +182,7 @@ class BonusLogic extends Model
 		$pj_money = 0;
 		$userLevel = 0;
 		$sourceType = 4;
+		$is_top = false;
 		foreach($meetUser as $k => $user){
 			if($k<=0) continue;
 			if(!$user['agent_user'] || $user['is_lock'] == 1) continue;
@@ -196,6 +197,7 @@ class BonusLogic extends Model
 				$logName = '平级奖';
 				$sourceType = 5;
 				$money = ($pj_money*$jsRate/100) * $this->goodNum;
+				$is_top = true;
 			}
 			$useRate = $rateArr[$grade];
 			$userLevel = $grade;
@@ -208,6 +210,11 @@ class BonusLogic extends Model
 			if($res)
 			{
 				$this->writeLog($users['user_id'],$money,$logName,101);
+			}
+
+			//平级脱离
+			if($is_top){
+				break;
 			}
 		}
 	}
