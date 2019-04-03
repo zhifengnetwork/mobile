@@ -7,6 +7,7 @@ use app\common\logic\Message;
 use app\common\logic\UsersLogic;
 use app\common\logic\DistributLogic;
 use app\common\logic\OrderLogic;
+use app\common\logic\LevelLogic;
 use app\common\model\MenuCfg;
 use app\common\model\UserAddress;
 use app\common\model\Users as UserModel;
@@ -68,9 +69,64 @@ class User extends MobileBase
     }
 
 
+    public function distribut(){
+
+        $user_id = session('user.user_id');
+        $openid = session('user.openid');
+       
+        $user_agent_money = $this->child_agent($user_id);
+        $tuandui_money =  (float)$user_agent_money['agent_per'];
+
+        $logic = new \app\common\logic\AgentPerformanceOldLogic();
+        $oldPerformance = $logic->getAllData($openid);
+        //这是老的历史业绩，加上新的
+        $this->assign('oldPerformance',$oldPerformance);
+
+        $zong_yeji = $tuandui_money + $oldPerformance;
+        //总业绩
+       
+        $per_logic = new \app\common\logic\PerformanceLogic();
+        $max_team_total  = $per_logic->tuandui_max_yeji($user_id);
+
+        //加上 老系统的 最大用户业绩
+        $max_team_total = $max_team_total + session('user.team');
+
+        $money_total = array(
+            'money_total' => (float)$zong_yeji,
+            'max_moneys'  => (float)$max_team_total,
+            'moneys' => (float)$zong_yeji  - $max_team_total,
+        );
+        $this->assign('money_total',$money_total);
+    
 
 
-    public function distribut()
+
+        //上级用户信息
+        $leader_id = M('users')->where(['user_id'=> $user_id])->value('first_leader');
+        if($leader_id){
+            $leader = M('users')->where(['user_id'=>$leader_id])->field('user_id, nickname')->find();
+            if($leader){
+                $this->assign('leader',$leader);
+            }
+        }
+        
+
+
+        $this->assign('user_id', $user_id);
+        $underling_number = M('users')->where(['user_id'=>$user_id])->value('underling_number');
+        $underling_number == NULL ? $underling_number = '0' : $underling_number;
+        $this->assign('underling_number', $underling_number);
+ 
+        $this->assign('user_id',$user_id);
+
+        return $this->fetch();
+    }
+
+
+
+
+
+    public function distribut_42()
     {
         
         // $user = session('user');
@@ -209,7 +265,7 @@ class User extends MobileBase
 
         $this->assign('user_id',$user['user_id']);
 
-        return $this->fetch();
+        return $this->fetch('distribut');
     }
 
     private function child_agent($user_id)
@@ -243,6 +299,11 @@ class User extends MobileBase
         //更新团队总人数
         $url = "http://www.dchqzg1688.com/api/distribut/get_team_num?user_id=".$user_id;
         httpRequest($url);
+
+
+        // $top_level = new LevelLogic();
+        // $top_level->user_in($user_id);
+        
 
         return $this->fetch();
     }
