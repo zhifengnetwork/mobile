@@ -314,6 +314,7 @@ class Pay
      * @return $this
      */
     public function delivery($district_id){
+
         if (array_key_exists('is_virtual', $this->payList[0]) && $this->payList[0]['is_virtual'] == 0) {
             if (empty($this->shop) && empty($district_id['district'])) {
                 throw new TpshopException("计算订单价格", 0, ['status' => -1, 'msg' => '请填写收货信息', 'result' => ['']]);
@@ -343,6 +344,16 @@ class Pay
                     return $this;
                 }
             }
+        } else {
+            // 免费产品 偏远地区满4件运费收商品价格
+            if ($district_id['province'] == 4670 || $district_id['province'] == 41103 || $district_id['province'] == 46047) {
+                if ($this->totalNum >= 4 ) {
+                    $this->shippingPrice = $this->goodsPrice;
+                    $this->orderAmount = $this->orderAmount + $this->shippingPrice;
+                    $this->totalAmount = $this->totalAmount + $this->shippingPrice;
+                    return $this;
+                }
+            }
         }
 
         $freight_free = tpCache('shopping.freight_free'); // 全场满多少免运费
@@ -353,6 +364,8 @@ class Pay
         }else{
             $this->shippingPrice = 0;
         }
+
+
         return $this;
     }
 
