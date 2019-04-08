@@ -15,6 +15,7 @@ class User extends ApiBase
     */
     public function login()
     {
+        if (IS_POST) {
             $mobile = I('mobile');
             $password1 = I('password');
             $password = md5('TPSHOP'.$password1);
@@ -33,6 +34,9 @@ class User extends ApiBase
             //重写
             $data['token'] = $this->create_token($data['user_id']);
             $this->ajaxReturn(['status' => 0 , 'msg'=>'登录成功','data'=>$data]);
+        }else{
+            $this->ajaxReturn(['status' => '-1' , 'msg'=>'提交方式错误','data'=>'']);
+        }
     }
 
 
