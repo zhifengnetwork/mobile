@@ -695,7 +695,8 @@ class OrderLogic
 				}else{
 					return array('status'=>0,'msg'=>$result['msg']);
 				}
-			}
+            }
+            
 			$is_delivery = 0;
 			foreach ($orderGoods as $k=>$v){
 				if($v['is_send'] >= 1){
