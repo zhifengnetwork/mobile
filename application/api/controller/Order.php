@@ -114,10 +114,10 @@ class Order extends ApiBase
         $user_money = input("user_money/f", 0); //  使用余额
         $user_note = input("user_note/s", ''); // 用户留言
         $pay_pwd = input("pay_pwd/s", ''); // 支付密码
-        $goods_id = input("goods_id/d"); // 商品id
-        $goods_num = input("goods_num/d");// 商品数量
-        $item_id = input("item_id/d"); // 商品规格id
-        $action = input("action"); // 立即购买
+        $goods_id = input("goods_id/d",0); // 商品id
+        $goods_num = input("goods_num/d",0);// 商品数量
+        $item_id = input("item_id/d",0); // 商品规格id
+        $action = input("action/d",0); // 立即购买
         $shop_id = input('shop_id/d', 0);//自提点id
         $take_time = input('take_time/d');//自提时间
         $consignee = input('consignee/s');//自提点收货人
@@ -137,7 +137,7 @@ class Order extends ApiBase
         $pay = new Pay();
         try {
             $cartLogic->setUserId($user_id);
-            if ($action == 'buy_now') {
+            if ($action === 1) {
                 $cartLogic->setGoodsModel($goods_id);
                 $cartLogic->setSpecGoodsPriceById($item_id);
                 $cartLogic->setGoodsBuyNum($goods_num);
@@ -170,7 +170,7 @@ class Order extends ApiBase
 				->addNormalOrder();
 			$cartLogic->clear();
 			$order = $placeOrder->getOrder();
-			$this->ajaxReturn(['status' => 0, 'msg' => '提交订单成功', 'result' => $order['order_sn']]);
+			$this->ajaxReturn(['status' => 0, 'msg' => '提交订单成功', 'data' => ['order_sn' => $order['order_sn']] ]);
 
         } catch (TpshopException $t) {
             $error = $t->getErrorArr();
