@@ -5,8 +5,23 @@
 namespace app\api\controller;
 use app\common\model\Users;
 use app\common\logic\UsersLogic;
-use think\Db;
+use app\common\logic\Integral;
+use app\common\logic\Pay;
+use app\common\logic\PlaceOrder;
+use app\common\logic\PreSellLogic;
+use app\common\logic\UserAddressLogic;
+use app\common\logic\CouponLogic;
+use app\common\logic\CartLogic;
+use app\common\logic\OrderLogic;
+use app\common\model\Combination;
+use app\common\model\Order;
+use app\common\model\PreSell;
+use app\common\model\Shop;
+use app\common\model\SpecGoodsPrice;
+use app\common\model\Goods;
+use app\common\util\TpshopException;
 use think\Loader;
+use think\Db;
 
 class Order extends ApiBase
 {
@@ -106,7 +121,7 @@ class Order extends ApiBase
         }
 
         $address_id = input("address_id/d", 0); //  收货地址id
-        $invoice_title = input('invoice_title');  // 发票
+        $invoice_title = input('invoice_title');  // 发票  
         $taxpayer = input('taxpayer');       // 纳税人识别号
         $invoice_desc = input('invoice_desc');       // 发票内容
         $coupon_id = input("coupon_id/d"); //  优惠券id
@@ -176,7 +191,6 @@ class Order extends ApiBase
             $error = $t->getErrorArr();
             $this->ajaxReturn($error);
         }	
-	 }    
-
-    
+	 }
+	  
 }
