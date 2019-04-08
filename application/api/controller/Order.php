@@ -5,6 +5,21 @@
 namespace app\api\controller;
 use app\common\model\Users;
 use app\common\logic\UsersLogic;
+use app\common\logic\Integral;
+use app\common\logic\Pay;
+use app\common\logic\PlaceOrder;
+use app\common\logic\PreSellLogic;
+use app\common\logic\UserAddressLogic;
+use app\common\logic\CouponLogic;
+use app\common\logic\CartLogic;
+use app\common\logic\OrderLogic;
+use app\common\model\Combination;
+use app\common\model\PreSell;
+use app\common\model\Shop;
+use app\common\model\SpecGoodsPrice;
+use app\common\model\Goods;
+use app\common\util\TpshopException;
+use think\Loader;
 use think\Db;
 
 class Order extends ApiBase
@@ -95,7 +110,161 @@ class Order extends ApiBase
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
     }
 
-    
+    /**
+     * 提交订单
+     */
+	 public function post_order(){
+		$user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }
 
-    
+        $address_id = input("address_id/d", 0); //  收货地址id
+        $invoice_title = input('invoice_title');  // 发票  
+        $taxpayer = input('taxpayer');       // 纳税人识别号
+        $invoice_desc = input('invoice_desc');       // 发票内容
+        $coupon_id = input("coupon_id/d"); //  优惠券id
+        $pay_points = input("pay_points/d", 0); //  使用积分
+        $user_money = input("user_money/f", 0); //  使用余额
+        $user_note = input("user_note/s", ''); // 用户留言
+        $pay_pwd = input("pay_pwd/s", ''); // 支付密码
+        $goods_id = input("goods_id/d",0); // 商品id
+        $goods_num = input("goods_num/d",0);// 商品数量
+        $item_id = input("item_id/d",0); // 商品规格id
+        $action = input("action/d",0); // 立即购买
+        $shop_id = input('shop_id/d', 0);//自提点id
+        $take_time = input('take_time/d');//自提时间
+        $consignee = input('consignee/s');//自提点收货人
+        $mobile = input('mobile/s');//自提点联系方式
+        $is_virtual = input('is_virtual/d',0);
+        $data = input('request.');
+        $cart_validate = Loader::validate('Cart');
+        if($is_virtual === 1){
+            $cart_validate->scene('is_virtual');
+        }
+        if (!$cart_validate->check($data)) {
+            $error = $cart_validate->getError();
+            $this->ajaxReturn(['status' => -4, 'msg' => $error, 'result' => '']);  //留言长度不符或收货人错误
+        }
+        $address = Db::name('user_address')->where("address_id", $address_id)->find();
+        $cartLogic = new CartLogic();
+        $pay = new Pay();
+        try {
+            $cartLogic->setUserId($user_id);
+            if ($action === 1) {
+                $cartLogic->setGoodsModel($goods_id);
+                $cartLogic->setSpecGoodsPriceById($item_id);
+                $cartLogic->setGoodsBuyNum($goods_num);
+                $buyGoods = $cartLogic->buyNow();
+                $cartList[0] = $buyGoods;
+                $pay->payGoodsList($cartList);
+            } else {
+                $userCartList = $cartLogic->getCartList(1);
+                $cartLogic->checkStockCartList($userCartList);
+                $pay->payCart($userCartList);
+            }
+            $pay->setUserId($user_id)
+                ->setShopById($shop_id)
+                ->delivery($address['district'])
+                ->orderPromotion()
+                ->useCouponById($coupon_id)
+                ->useUserMoney($user_money)
+                ->usePayPoints($pay_points);
+            // 提交订单
+			$placeOrder = new PlaceOrder($pay);
+			$placeOrder->setUserAddress($address)
+				->setConsignee($consignee)
+				->setMobile($mobile)
+				->setInvoiceTitle($invoice_title)
+				->setUserNote($user_note)
+				->setTaxpayer($taxpayer)
+				->setInvoiceDesc($invoice_desc)
+				->setPayPsw($pay_pwd)
+				->setTakeTime($take_time)
+				->addNormalOrder();
+			$cartLogic->clear();
+			$order = $placeOrder->getOrder();
+			$this->ajaxReturn(['status' => 0, 'msg' => '提交订单成功', 'data' => ['order_sn' => $order['order_sn']] ]);
+
+        } catch (TpshopException $t) {
+            $error = $t->getErrorArr();
+            $this->ajaxReturn($error);
+        }	
+	 }
+
+    /**
+     * 订单支付页面
+     */
+    public function order_pay()
+    {
+		$user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }
+
+        $order_id = I('order_id/d');
+        $order_sn = I('order_sn/s', '');
+        $order_where['user_id'] = $user_id;
+        if ($order_sn) {
+            $order_where['order_sn'] = $order_sn;
+        } else {
+            $order_where['order_id'] = $order_id;
+        }
+        $Order = new Order();
+        $order = $Order->where($order_where)->find();
+        empty($order) && $this->error('订单不存在！');
+        if ($order['order_status'] == 3) {
+            $this->error('该订单已取消', U("Mobile/Order/order_detail", array('id' => $order['order_id'])));
+        }
+        if (empty($order) || empty($user_id)) {
+            $order_order_list = U("User/login");
+            header("Location: $order_order_list");
+            exit;
+        }
+        // 如果已经支付过的订单直接到订单详情页面. 不再进入支付页面
+        if ($order['pay_status'] == 1) {
+            $order_detail_url = U("Home/Order/order_detail", array('id' => $order['order_id']));
+            header("Location: $order_detail_url");
+            exit;
+        }
+        //如果是预售订单，支付尾款
+        if ($order['pay_status'] == 2 && $order['prom_type'] == 4) {
+            if ($order['pre_sell']['pay_start_time'] > time()) {
+                $this->error('还未到支付尾款时间' . date('Y-m-d H:i:s', $order['pre_sell']['pay_start_time']));
+            }
+            if ($order['pre_sell']['pay_end_time'] < time()) {
+                $this->error('对不起，该预售商品已过尾款支付时间' . date('Y-m-d H:i:s',$order['pre_sell']['pay_end_time'] ));
+            }
+        }
+        $payment_where = array(
+            'type' => 'payment',
+            'status' => 1,
+            'scene' => array('in', array(0, 2))
+        );
+        //预售和抢购暂不支持货到付款
+        $orderGoodsPromType = M('order_goods')->where(['order_id' => $order['order_id']])->getField('prom_type', true);
+        $no_cod_order_prom_type = [4,5];//预售订单，虚拟订单不支持货到付款
+        if (in_array($order['prom_type'], $no_cod_order_prom_type) || in_array(1, $orderGoodsPromType) || $order['shop_id'] > 0) {
+            $payment_where['code'] = array('neq', 'cod');
+        }
+        $paymentList = M('Plugin')->where($payment_where)->select();
+        $paymentList = convert_arr_key($paymentList, 'code');
+
+        foreach ($paymentList as $key => $val) {
+            $val['config_value'] = unserialize($val['config_value']);
+            if ($val['config_value']['is_bank'] == 2) {
+                $bankCodeList[$val['code']] = unserialize($val['bank_code']);
+            }
+        }
+
+        $bank_img = include APP_PATH . 'home/bank.php'; // 银行对应图片
+        $this->assign('paymentList', $paymentList);
+        $this->assign('bank_img', $bank_img);
+        $this->assign('order', $order);
+        $this->assign('bankCodeList', $bankCodeList);
+        $this->assign('pay_date', date('Y-m-d', strtotime("+1 day")));
+
+        return $this->fetch();
+    }
+	  
 }

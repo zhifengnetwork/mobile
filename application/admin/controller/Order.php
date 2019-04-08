@@ -281,10 +281,17 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
         $shipping_status = I('shipping_status');
         $condition['shipping_status'] = empty($shipping_status) ? array('neq',1) : $shipping_status;
         $condition['pay_status']      = 1;
+<<<<<<< HEAD
         $condition['order_status']    = array('in','0,1,2,4');
         $condition['prom_type'] = ['neq',5];
     	$count = M('order')->where($condition)->count();
     	$Page  = new AjaxPage($count,15);
+=======
+        $condition['order_status'] = array('in','0,1,2,4');
+        $condition['prom_type'] = ['neq',5];
+    	$count = M('order')->where($condition)->count();
+    	$Page  = new AjaxPage($count,20);
+>>>>>>> 00000a0ad479b368dff4343ab5c7d62d961d0b83
     	//搜索条件下 分页赋值
     	foreach($condition as $key=>$val) {
             if(!is_array($val)){
@@ -1057,6 +1064,7 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
         $this->assign('order_ids',$order_id);
         return $this->fetch();    
        
+<<<<<<< HEAD
     }
 
     /**
@@ -1064,6 +1072,8 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
     */
     public function delivery_order_handle(){
         return $this->fetch();    
+=======
+>>>>>>> 00000a0ad479b368dff4343ab5c7d62d961d0b83
     }
 
     

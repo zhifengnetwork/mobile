@@ -15,6 +15,7 @@ class User extends ApiBase
     */
     public function login()
     {
+        if (IS_POST) {
             $mobile = I('mobile');
             $password1 = I('password');
             $password = md5('TPSHOP'.$password1);
@@ -33,6 +34,9 @@ class User extends ApiBase
             //重写
             $data['token'] = $this->create_token($data['user_id']);
             $this->ajaxReturn(['status' => 0 , 'msg'=>'登录成功','data'=>$data]);
+        }else{
+            $this->ajaxReturn(['status' => '-1' , 'msg'=>'提交方式错误','data'=>'']);
+        }
     }
 
 
@@ -114,7 +118,12 @@ class User extends ApiBase
             $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
     }
 
-    public function address_list(){//地址管理列表
+    /**
+     * +---------------------------------
+     * 地址管理列表
+     * +---------------------------------
+    */
+    public function address_list(){
         $user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
@@ -128,6 +137,34 @@ class User extends ApiBase
             $v['twon']=$region_list[$v['twon']];
         }
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
+    }
+
+    /**
+     * +---------------------------------
+     * 添加地址
+     * +---------------------------------
+    */
+    public function add_address()
+    {
+        $user_id = $this->get_user_id();
+        if (IS_POST) {
+            $post_data = input('post.');
+            $logic = new UsersLogic();
+            $data = $logic->add_address($user_id, 0, $post_data);
+      
+            if ($data['status'] != 1){
+
+                $this->ajaxReturn(['status' => '-1' , 'msg'=>'添加失败','data'=>$data]);
+
+            } else {
+                // $p = M('region')->where(array('parent_id' => 0, 'level' => 1))->se   lect();
+                $post_data['address_id'] = $data['result'];
+                $this->ajaxReturn(['status' => 0 , 'msg'=>'添加成功','data'=>$post_data]);
+            }
+        }else{
+            $this->ajaxReturn(['status' => '-1' , 'msg'=>'提交方式错误','data'=>'']);
+        }
+       
     }
 
 

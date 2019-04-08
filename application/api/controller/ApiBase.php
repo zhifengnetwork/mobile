@@ -67,9 +67,8 @@ class ApiBase extends Controller
 
         $token = $headers['Token'];
         if(!$token){
-              $this->ajaxReturn(['status' => -1 , 'msg'=>'已过期','data'=>$headers]);
+              $this->ajaxReturn(['status' => -1 , 'msg'=>'token不存在','data'=>null]);
         }
-
 
         $res = $this->decode_token($token);
 
@@ -77,6 +76,11 @@ class ApiBase extends Controller
             $this->ajaxReturn(['status' => -1 , 'msg'=>'token已过期','data'=>null]);
 
         }
+
+        if(!isset($res['iat']) || !isset($res['exp']) || !isset($res['user_id']) ){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'token已过期：'.$res,'data'=>null]);
+        }
+
         if($res['iat']>$res['exp']){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'token已过期','data'=>null]);
         }

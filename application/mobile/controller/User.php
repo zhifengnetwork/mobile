@@ -1693,6 +1693,9 @@ class User extends MobileBase
             }
 
             if (M('withdrawals')->add($data)) {
+                
+                accountLog($this->user['user_id'], -$data['money'] , 0, '提现扣款',  0, 0, '');
+
                 // 发送公众号消息给用户
                 if(is_weixin()){
                     $user = Db::name('OauthUsers')->where(['user_id'=>$this->user['user_id'] , 'oauth'=>'weixin' , 'oauth_child'=>'mp'])->find();

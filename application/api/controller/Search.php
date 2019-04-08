@@ -29,7 +29,7 @@ class Search extends ApiBase
         $id = I('get.id/d', 0);    // 当前分类id
         $brand_id = I('brand_id/d', 0);
         $sort = I('sort', 'sort'); // 排序
-        $sort_asc = I('sort_asc', 'desc'); // 排序
+        $sort_asc = I('sort_asc', 'desc'); // 价格排序
         $price = I('price', '');   // 价钱
         $start_price = trim(I('start_price', '0')); // 输入框价钱
         $end_price = trim(I('end_price', '0'));     // 输入框价钱
@@ -81,9 +81,18 @@ class Search extends ApiBase
         }
         $goods_category = M('goods_category')->where('is_show=1')->cache(true)->getField('id,name,parent_id,level'); // 键值分类数组
         C('TOKEN_ON', false);
+        if($goods_list && $goods_images){
+            foreach($goods_list as $k=>$v){
+                foreach($goods_images as $k2=>$v2){
+                    if($v['goods_id']==$v2['goods_id']){
+                        $goods_list[$k]['goods_images'][] = $v2;
+                    }
+                }
+            }
+        }
         $data = [
             'goods_list'=> $goods_list,
-            'goods_images'=> $goods_images,
+            // 'goods_images'=> $goods_images,
             'filter_menu'=> $filter_menu,
             'filter_brand'=> $filter_brand,
             'filter_price'=> $filter_price,
@@ -91,12 +100,12 @@ class Search extends ApiBase
             'sort_asc' => $sort_asc == 'asc' ? 'desc' : 'asc',
             'page' =>  $page
         ];
-        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
-        // if (input('is_ajax'))
-            // return $this->fetch('ajaxSearchList');
-        // else
-            // return $this->fetch();
-        // $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
+        if($goods_list){
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
+        }else{
+            $this->ajaxReturn(['status' => '-1' , 'msg'=>'没有相关结果','data'=>'']);
+        }
+        
     }
 
 }
