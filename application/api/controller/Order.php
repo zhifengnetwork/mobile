@@ -14,7 +14,6 @@ use app\common\logic\CouponLogic;
 use app\common\logic\CartLogic;
 use app\common\logic\OrderLogic;
 use app\common\model\Combination;
-use app\common\model\Order;
 use app\common\model\PreSell;
 use app\common\model\Shop;
 use app\common\model\SpecGoodsPrice;
@@ -192,5 +191,80 @@ class Order extends ApiBase
             $this->ajaxReturn($error);
         }	
 	 }
+
+    /**
+     * 订单支付页面
+     */
+    public function order_pay()
+    {
+		$user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }
+
+        $order_id = I('order_id/d');
+        $order_sn = I('order_sn/s', '');
+        $order_where['user_id'] = $user_id;
+        if ($order_sn) {
+            $order_where['order_sn'] = $order_sn;
+        } else {
+            $order_where['order_id'] = $order_id;
+        }
+        $Order = new Order();
+        $order = $Order->where($order_where)->find();
+        empty($order) && $this->error('订单不存在！');
+        if ($order['order_status'] == 3) {
+            $this->error('该订单已取消', U("Mobile/Order/order_detail", array('id' => $order['order_id'])));
+        }
+        if (empty($order) || empty($user_id)) {
+            $order_order_list = U("User/login");
+            header("Location: $order_order_list");
+            exit;
+        }
+        // 如果已经支付过的订单直接到订单详情页面. 不再进入支付页面
+        if ($order['pay_status'] == 1) {
+            $order_detail_url = U("Home/Order/order_detail", array('id' => $order['order_id']));
+            header("Location: $order_detail_url");
+            exit;
+        }
+        //如果是预售订单，支付尾款
+        if ($order['pay_status'] == 2 && $order['prom_type'] == 4) {
+            if ($order['pre_sell']['pay_start_time'] > time()) {
+                $this->error('还未到支付尾款时间' . date('Y-m-d H:i:s', $order['pre_sell']['pay_start_time']));
+            }
+            if ($order['pre_sell']['pay_end_time'] < time()) {
+                $this->error('对不起，该预售商品已过尾款支付时间' . date('Y-m-d H:i:s',$order['pre_sell']['pay_end_time'] ));
+            }
+        }
+        $payment_where = array(
+            'type' => 'payment',
+            'status' => 1,
+            'scene' => array('in', array(0, 2))
+        );
+        //预售和抢购暂不支持货到付款
+        $orderGoodsPromType = M('order_goods')->where(['order_id' => $order['order_id']])->getField('prom_type', true);
+        $no_cod_order_prom_type = [4,5];//预售订单，虚拟订单不支持货到付款
+        if (in_array($order['prom_type'], $no_cod_order_prom_type) || in_array(1, $orderGoodsPromType) || $order['shop_id'] > 0) {
+            $payment_where['code'] = array('neq', 'cod');
+        }
+        $paymentList = M('Plugin')->where($payment_where)->select();
+        $paymentList = convert_arr_key($paymentList, 'code');
+
+        foreach ($paymentList as $key => $val) {
+            $val['config_value'] = unserialize($val['config_value']);
+            if ($val['config_value']['is_bank'] == 2) {
+                $bankCodeList[$val['code']] = unserialize($val['bank_code']);
+            }
+        }
+
+        $bank_img = include APP_PATH . 'home/bank.php'; // 银行对应图片
+        $this->assign('paymentList', $paymentList);
+        $this->assign('bank_img', $bank_img);
+        $this->assign('order', $order);
+        $this->assign('bankCodeList', $bankCodeList);
+        $this->assign('pay_date', date('Y-m-d', strtotime("+1 day")));
+
+        return $this->fetch();
+    }
 	  
 }
