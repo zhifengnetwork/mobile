@@ -81,9 +81,18 @@ class Search extends ApiBase
         }
         $goods_category = M('goods_category')->where('is_show=1')->cache(true)->getField('id,name,parent_id,level'); // 键值分类数组
         C('TOKEN_ON', false);
+        if($goods_list && $goods_images){
+            foreach($goods_list as $k=>$v){
+                foreach($goods_images as $k2=>$v2){
+                    if($v['goods_id']==$v2['goods_id']){
+                        $goods_list[$k]['goods_images'][] = $v2;
+                    }
+                }
+            }
+        }
         $data = [
             'goods_list'=> $goods_list,
-            'goods_images'=> $goods_images,
+            // 'goods_images'=> $goods_images,
             'filter_menu'=> $filter_menu,
             'filter_brand'=> $filter_brand,
             'filter_price'=> $filter_price,

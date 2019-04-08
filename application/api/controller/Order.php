@@ -5,6 +5,22 @@
 namespace app\api\controller;
 use app\common\model\Users;
 use app\common\logic\UsersLogic;
+use app\common\logic\Integral;
+use app\common\logic\Pay;
+use app\common\logic\PlaceOrder;
+use app\common\logic\PreSellLogic;
+use app\common\logic\UserAddressLogic;
+use app\common\logic\CouponLogic;
+use app\common\logic\CartLogic;
+use app\common\logic\OrderLogic;
+use app\common\model\Combination;
+use app\common\model\Order;
+use app\common\model\PreSell;
+use app\common\model\Shop;
+use app\common\model\SpecGoodsPrice;
+use app\common\model\Goods;
+use app\common\util\TpshopException;
+use think\Loader;
 use think\Db;
 
 class Order extends ApiBase
@@ -95,7 +111,86 @@ class Order extends ApiBase
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
     }
 
-    
+    /**
+     * 提交订单
+     */
+	 public function post_order(){
+		$user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }
 
-    
+        $address_id = input("address_id/d", 0); //  收货地址id
+        $invoice_title = input('invoice_title');  // 发票  
+        $taxpayer = input('taxpayer');       // 纳税人识别号
+        $invoice_desc = input('invoice_desc');       // 发票内容
+        $coupon_id = input("coupon_id/d"); //  优惠券id
+        $pay_points = input("pay_points/d", 0); //  使用积分
+        $user_money = input("user_money/f", 0); //  使用余额
+        $user_note = input("user_note/s", ''); // 用户留言
+        $pay_pwd = input("pay_pwd/s", ''); // 支付密码
+        $goods_id = input("goods_id/d",0); // 商品id
+        $goods_num = input("goods_num/d",0);// 商品数量
+        $item_id = input("item_id/d",0); // 商品规格id
+        $action = input("action/d",0); // 立即购买
+        $shop_id = input('shop_id/d', 0);//自提点id
+        $take_time = input('take_time/d');//自提时间
+        $consignee = input('consignee/s');//自提点收货人
+        $mobile = input('mobile/s');//自提点联系方式
+        $is_virtual = input('is_virtual/d',0);
+        $data = input('request.');
+        $cart_validate = Loader::validate('Cart');
+        if($is_virtual === 1){
+            $cart_validate->scene('is_virtual');
+        }
+        if (!$cart_validate->check($data)) {
+            $error = $cart_validate->getError();
+            $this->ajaxReturn(['status' => -4, 'msg' => $error, 'result' => '']);  //留言长度不符或收货人错误
+        }
+        $address = Db::name('user_address')->where("address_id", $address_id)->find();
+        $cartLogic = new CartLogic();
+        $pay = new Pay();
+        try {
+            $cartLogic->setUserId($user_id);
+            if ($action === 1) {
+                $cartLogic->setGoodsModel($goods_id);
+                $cartLogic->setSpecGoodsPriceById($item_id);
+                $cartLogic->setGoodsBuyNum($goods_num);
+                $buyGoods = $cartLogic->buyNow();
+                $cartList[0] = $buyGoods;
+                $pay->payGoodsList($cartList);
+            } else {
+                $userCartList = $cartLogic->getCartList(1);
+                $cartLogic->checkStockCartList($userCartList);
+                $pay->payCart($userCartList);
+            }
+            $pay->setUserId($user_id)
+                ->setShopById($shop_id)
+                ->delivery($address['district'])
+                ->orderPromotion()
+                ->useCouponById($coupon_id)
+                ->useUserMoney($user_money)
+                ->usePayPoints($pay_points);
+            // 提交订单
+			$placeOrder = new PlaceOrder($pay);
+			$placeOrder->setUserAddress($address)
+				->setConsignee($consignee)
+				->setMobile($mobile)
+				->setInvoiceTitle($invoice_title)
+				->setUserNote($user_note)
+				->setTaxpayer($taxpayer)
+				->setInvoiceDesc($invoice_desc)
+				->setPayPsw($pay_pwd)
+				->setTakeTime($take_time)
+				->addNormalOrder();
+			$cartLogic->clear();
+			$order = $placeOrder->getOrder();
+			$this->ajaxReturn(['status' => 0, 'msg' => '提交订单成功', 'data' => ['order_sn' => $order['order_sn']] ]);
+
+        } catch (TpshopException $t) {
+            $error = $t->getErrorArr();
+            $this->ajaxReturn($error);
+        }	
+	 }
+	  
 }
