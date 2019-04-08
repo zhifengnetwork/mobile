@@ -424,7 +424,7 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
                 $arr[$key]['shipping_name']    =  $val['K'];
                 $arr[$key]['invoice_no']       =  $val['M'];
                 $arr[$key]['mobile']           =  strval($val['G']);
-                $arr[$key]['address']          =  strval($val['I']);
+                $arr[$key]['address']          =  $val['I'];
                 $arr[$key]['goods']            =  $val['J'];
                 $arr[$key]['add_time']         =  time();
            }
@@ -441,7 +441,7 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
             $order     = Db::name('order')->where(['mobile'=>$arr[$k]['mobile']])->order('order_id DESC')->find();
             $order_id  = $order['order_id'];
             //改变order 发货时的状态和信息
-            //$update['shipping_code'] = $shipping_arr[$arr[$key]['shipping_name']];
+            $update['shipping_code'] = $shipping_arr[$arr[$key]['shipping_name']];
             $update['shipping_name'] = $arr[$key]['shipping_name'];
             $update['order_status']     = 1,//订单改变为已确认
             $update['shipping_status']  = 1,//订单改变为已发货
