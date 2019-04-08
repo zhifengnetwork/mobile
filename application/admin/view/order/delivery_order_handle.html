@@ -62,30 +62,28 @@
         <table cellspacing="0" cellpadding="0">
           <thead>
             <tr>
-                <th axis="col0">
-                  <div style="width: 55px;"><i class="ico-check"></i></div>
+                <!-- <th axis="col0">
+                  <div style="width: 20px;"><i class="ico-check"></i></div>
+                </th> -->
+                <th align="center" style="text-align: center; width: 180px;" >
+                  <div>收货人姓名</div>
                 </th>
-                <th align="left" abbr="consignee" axis="col4" class="">
-                  <div style="text-align: left; width: 120px;" class="">收货人姓名</div>
+                <th align="center" style="text-align: center; width: 120px;" >
+                  <div>收货人手机号</div>
                 </th>
-                <th align="center" abbr="mobile" axis="col5" class="">
-                  <div style="text-align: center; width: 120px;" class=""><a href="javascript:sort('mobile');">收货人手机号</a></div>
+                <th align="center" style="text-align: center; width: 120px;">
+                  <div class="">所选物流</div>
                 </th>
-                <th align="center" abbr="article_time" axis="col6" class="">
-                  <div style="text-align: center; width: 180px;" class="">所选物流</div>
-                </th>
-                <th align="center" abbr="article_time" axis="col6" class="">
-                    <div style="text-align: center; width: 120px;" class="">物流单号</div>
+                <th align="center" style="text-align: center; width: 200px;" >
+                    <div class="">物流单号</div>
                  </th>
-                <th align="center" abbr="article_time" axis="col6" class="">
-                    <div style="text-align: center; width: 200px;" class="">处理状态</div>
-                  </th>
-                  <th align="center" abbr="article_time" axis="col6" class="">
-                    <div style="text-align: center; width: 120px;" class="">处理时间</div>
-                  </th>
-                <th style="width:100%" axis="col7">
-                  <div></div>
+                <th align="center" style="text-align: center; width: 200px;" >
+                    <div class="">处理状态</div>
                 </th>
+                <th align="center" >
+                    <div class="">处理时间</div>
+                </th>
+               
               </tr>
             </thead>
         </table>
@@ -98,7 +96,7 @@
             <!-- <a href="javascript:void(0)" onclick="upload();"> -->
               <form action="{:U('Order/deliveryexceldr')}" method="post" enctype="multipart/form-data">
                 <input type="file" name="file" id="file" /> 
-                <input type="submit" name="submit" value="Execl文件上传" />
+                <input type="submit" name="submit" value="开始上传" />
                 <!-- <div class="add" title="选定行数据执行发货操作">
                   <span><i class="fa fa-plus"></i>Execl文件上传</span>
                 </div> -->

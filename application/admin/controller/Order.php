@@ -465,11 +465,15 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
 
        // 写入数据库操作
        foreach($arr as $k=> $v){
-           $res = Db::name('order')->where('mobile',$arr[$k]['mobile'])->update(['order_status' => 1]);
+           $res = Db::name('order')->where(['shipping_status'=>0,'mobile'=>$arr[$k]['mobile']])->update(['order_status' => 1,'shipping_status'=>1]);
            if($res == false){
               $arr[$k]['status'] = 0;
            }else{
-              $arr[$k]['status'] = 1;
+                // 发货成功
+                // 写 delivery_doc
+                
+
+                $arr[$k]['status'] = 1;
            }
            Db::name('delivery_order_handle')->insert($arr[$k]);
        }

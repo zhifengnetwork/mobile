@@ -9,29 +9,29 @@
     <else/>
     <volist name="orderList" id="list">
         <tr data-order-id="{$list.id}" id="{$list.id}">
-              <input type="hidden" class="deliver" value="{$list.id}">
-              <td class="sign" axis="col0">
-                <div style="width: 50px;"><i class="ico-check"></i></div>
-              </td>
-
-               <td align="left" abbr="order_sn" axis="co14" class="">
-                 <div style="text-align: left; width: 100px;" class="">{$list.consignee}</div>
+                <input type="hidden" class="deliver" value="{$list.id}">
+                <!-- <td class="sign">
+                  <div style="width: 20px;"><i class="ico-check"></i></div>
+                </td> -->
+               <td align="center" style="text-align: center; width: 180px;">
+                 <div>{$list.consignee}</div>
                </td>
-               <td align="left" abbr="add_time" axis="col5" class="">
-                 <div style="text-align: left; width: 100px;" class="">{$list.mobile}</div>
+               <td align="center" style="text-align: center; width: 120px;" >
+                 <div class="">{$list.mobile}</div>
                </td>
-               <td align="left" abbr="consignee" axis="col6" class="">
-                 <div style="text-align: left; width: 80px;" class="">{$list.shipping_name}</div>
+               <td align="center" style="text-align: center; width: 120px;" >
+                 <div class="">{$list.shipping_name}</div>
                </td>
-               <td align="center" abbr="mobile" axis="col6" class="">
-                 <div style="text-align: center; width: 100px;" class="">{$list.shipping_code}</div>
+               <td align="center" style="text-align: center; width: 200px;" >
+                 <div class="">{$list.shipping_code}</div>
                </td>
-               <td align="center" abbr="article_time" axis="col6" class="">
-                  <div style="text-align: center; width: 120px;" class="">  {$status[$list.status]}</div>
+               <td align="center" style="text-align: center; width: 200px;">
+                  <div class="">{$status[$list.status]}</div>
                </td>
-               <td align="center" abbr="article_time" axis="col6" class="">
-                <div style="text-align: center; width: 120px;" class=""> {$list.add_time|date='Y-m-d H:i',###}</div>
-              </td>
+               <td align="center" >
+                <div class="">{$list.add_time|date='Y-m-d H:i:s',###}</div>
+			  </td>
+			  
              </tr>
         </volist>
         </if>
