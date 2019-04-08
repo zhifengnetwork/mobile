@@ -341,11 +341,11 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
          if (!file_exists($paths)){
             mkdir ($paths,0777,true);
          }
-        $info = $file->validate(['size'=>204800,'ext'=>'xls,xlsx']);
-        $info = $file->rule('md5')->move($paths);//加
+        $info  = $file->validate(['size'=>204800,'ext'=>'xls,xlsx']);
+        $info  = $file->rule('md5')->move($paths);//加
         $datas = ROOT_PATH.DS.'public/upload/excel/'.$info->getSaveName();
        
-        $fields =Db::query("show fields from tp_delivery_order_handle");
+        $fields =  Db::query("show fields from tp_delivery_order_handle");
        
         $allfield=array();
         //获取数据表的所有信息 取出字段名装在一个数组
@@ -380,11 +380,6 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
         }
            
        
-
-        // $filename =  date('Ymd').'.xlsx';
-        // $path     =  ROOT_PATH . DS.'public/upload';
-        // $qwe = move_uploaded_file($_FILES['excel']['tmp_name'],$path.$filename);
-       
         //载入文件
        
         $PHPExcel = $PHPReader->load($datas);
@@ -416,45 +411,18 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
         }
         
         //$data为excel表里的所有数据
-        // $zi = 0;
 
         $arr=array();
-
-        // foreach($data as $key=>$val){
-        //     $zi += 1;
-        //     // //当数据表字段全为varchar类型时可以使用这个
-        //     //     $field=$allfield[$i];
-        //     //     $value=$column[$i]; 
-        //     //     $arr[$key]["{$field}"]   =  $val["{$value}"];
-             
-        //         //手动修改字段与值
-        //         $arr[$key]['id']     =  $zi;
-        //         $arr[$key]['name']   =  $val['A'];
-        //         $arr[$key]['tel']    =  $val['B'];
-        //         $arr[$key]['number'] =  strval($val['C']);
-        //         $arr[$key]['dorm']   =  strval($val['D']);
-        //         $arr[$key]['card']   =  $val['E'];
-        //         $arr[$key]['campus'] =  $val['F'];
-        //         $arr[$key]['addtime']=  $val['G'];
-        //    }
-    //    var_dump($arr);exit;
-      
        
-        $zi = 0;
        
         foreach($data as $key=>$val){
 
             for($i=0;$i<$fieldnum-1;$i++){
-                $zi ++;
-               //当数据表字段全为varchar类型时可以使用这个
-                // $field = $allfield[$i+1];
-                // $value=  $column[$i]; 
-                // $arr[$key]["{$field}"]   =  $val["{$value}"];
-       
+
                 //手动修改字段与值
                 $arr[$key]['consignee']        =  $val['F'];
                 $arr[$key]['shipping_name']    =  $val['K'];
-                $arr[$key]['shipping_code']    =  $val['M'];
+                $arr[$key]['invoice_no']       =  $val['M'];
                 $arr[$key]['mobile']           =  strval($val['G']);
                 $arr[$key]['address']          =  strval($val['I']);
                 $arr[$key]['goods']            =  $val['J'];
@@ -462,25 +430,48 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
            }
            
         }
+        //物流公司
+         $shipping_arr = Db::name('shipping')->column('shipping_name','shipping_code');
+
 
         // 写入数据库操作
         foreach($arr as $k=> $v){
             //先查找
 
-            $is_cunzai = Db::name('order')->where(['mobile'=>$arr[$k]['mobile']])->order('order_id DESC')->find();
-            $order_id = $is_cunzai['order_id'];
-            //查找
+            $order     = Db::name('order')->where(['mobile'=>$arr[$k]['mobile']])->order('order_id DESC')->find();
+            $order_id  = $order['order_id'];
+            //改变order 发货时的状态和信息
+            //$update['shipping_code'] = $shipping_arr[$arr[$key]['shipping_name']];
+            $update['shipping_name'] = $arr[$key]['shipping_name'];
+            $update['order_status']     = 1,//订单改变为已确认
+            $update['shipping_status']  = 1,//订单改变为已发货
 
             if($order_id){
                 $arr[$k]['status'] = 0;
             }else{
-                $res = Db::name('order')->where('order_id',$order_id)->update(['order_status' => 1,'shipping_status'=>1]);
+                $res = Db::name('order')->where('order_id',$order_id)->update($update);
                 if($res == 1){
                     // 发货成功
-                    // 写 delivery_doc
-                    //  TODO
-
-
+                    $doc = [
+                        'order_sn' => $order['order_sn'],
+                        'order_id' => $order['order_id'],
+                        'user_id'  => $order['user_id'],
+                        'admin_id' => $order['admin_id'],
+                        'consignee'=> $order['consignee'],
+                        'zipcode'  => $order['zipcode'],
+                        'mobile'   => $order['mobile'],
+                        'country'  => $order['country'],
+                        'city'     => $order['city'],
+                        'district' => $order['district'],
+                        'address'  => $order['address'],
+                        'shipping_code'  => $order['shipping_code'],
+                        'shipping_name'  => $order['shipping_name'],
+                        'shipping_price' => $order['shipping_price'],
+                        'invoice_no'     => $arr[$k]['invoice_no'],
+                        'create_time'    => time(),
+                        'send_type'      => 0,
+                    ]
+                    Db::name('delivery_doc')->add($doc);
                 }
                 $arr[$k]['status'] = 1;
             }
