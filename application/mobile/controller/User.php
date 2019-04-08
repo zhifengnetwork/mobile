@@ -1697,15 +1697,13 @@ class User extends MobileBase
                 accountLog($this->user['user_id'], -$data['money'] , 0, '提现扣款',  0, 0, '');
 
                 // 发送公众号消息给用户
-                if(is_weixin()){
-                    $user = Db::name('OauthUsers')->where(['user_id'=>$this->user['user_id'] , 'oauth'=>'weixin' , 'oauth_child'=>'mp'])->find();
-                    if ($user) {
-                        $wx_content = "您的提现申请已提交，正在处理...";
-                        $wechat = new \app\common\logic\wechat\WechatUtil();
-                        $wechat->sendMsg($user['openid'], 'text', $wx_content);
-
-                    }
+                $user = Db::name('OauthUsers')->where(['user_id'=>$this->user['user_id'] ])->find();
+                if ($user) {
+                    $wx_content = "您的提现申请已提交，正在处理...";
+                    $wechat = new \app\common\logic\wechat\WechatUtil();
+                    $wechat->sendMsg($user['openid'], 'text', $wx_content);
                 }
+                
                 $this->ajaxReturn(['status'=>1,'msg'=>"已提交申请",'url'=>U('User/account',['type'=>2])]);
             } else {
                 $this->ajaxReturn(['status'=>0,'msg'=>'提交失败,联系客服!']);
@@ -1717,7 +1715,7 @@ class User extends MobileBase
         $oauthUsers = M("OauthUsers")->where(['user_id'=>$this->user_id, 'oauth'=>'wx'])->find();
         $openid = $oauthUsers['openid'];
         if(empty($oauthUsers)){
-            $openid = Db::name('oauth_users')->where(['user_id'=>$this->user_id, 'oauth'=>'weixin'])->value('openid');
+            $openid = Db::name('oauth_users')->where(['user_id'=>$this->user_id])->value('openid');
         }
 
         $this->assign('user_extend',$user_extend);
@@ -1730,7 +1728,7 @@ class User extends MobileBase
     //手机端是通过扫码PC端来绑定微信,需要ajax获取一下openID
     public function get_openid(){
         //halt($this->user_id); 22
-        $oauthUsers = M("OauthUsers")->where(['user_id'=>$this->user_id, 'oauth'=>'weixin'])->find();
+        $oauthUsers = M("OauthUsers")->where(['user_id'=>$this->user_id])->find();
         $openid = $oauthUsers['openid'];
         if(empty($oauthUsers)){
             $openid = Db::name('users')->where(['user_id'=>$this->user_id])->value('openid');

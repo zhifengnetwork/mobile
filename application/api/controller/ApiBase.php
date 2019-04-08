@@ -89,4 +89,10 @@ class ApiBase extends Controller
        return $res['user_id'];
        
     }
+    /**
+     * 空
+     */
+    public function _empty(){
+        $this->ajaxReturn(['status' => -1 , 'msg'=>'接口不存在','data'=>null]);
+    }
 }
