@@ -147,18 +147,19 @@ class User extends ApiBase
     public function add_address()
     {
         $user_id = $this->get_user_id();
-        $source = input('source');
         if (IS_POST) {
             $post_data = input('post.');
             $logic = new UsersLogic();
             $data = $logic->add_address($user_id, 0, $post_data);
+      
             if ($data['status'] != 1){
 
                 $this->ajaxReturn(['status' => '-1' , 'msg'=>'添加失败','data'=>$data]);
 
             } else {
-                $p = M('region')->where(array('parent_id' => 0, 'level' => 1))->select();
-                $this->ajaxReturn(['status' => 0 , 'msg'=>'添加成功','data'=>$p]);
+                // $p = M('region')->where(array('parent_id' => 0, 'level' => 1))->se   lect();
+                $post_data['address_id'] = $data['result'];
+                $this->ajaxReturn(['status' => 0 , 'msg'=>'添加成功','data'=>$post_data]);
             }
         }else{
             $this->ajaxReturn(['status' => '-1' , 'msg'=>'提交方式错误','data'=>'']);

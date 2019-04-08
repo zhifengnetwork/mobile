@@ -29,7 +29,7 @@ class Search extends ApiBase
         $id = I('get.id/d', 0);    // 当前分类id
         $brand_id = I('brand_id/d', 0);
         $sort = I('sort', 'sort'); // 排序
-        $sort_asc = I('sort_asc', 'desc'); // 排序
+        $sort_asc = I('sort_asc', 'desc'); // 价格排序
         $price = I('price', '');   // 价钱
         $start_price = trim(I('start_price', '0')); // 输入框价钱
         $end_price = trim(I('end_price', '0'));     // 输入框价钱
@@ -100,12 +100,12 @@ class Search extends ApiBase
             'sort_asc' => $sort_asc == 'asc' ? 'desc' : 'asc',
             'page' =>  $page
         ];
-        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
-        // if (input('is_ajax'))
-            // return $this->fetch('ajaxSearchList');
-        // else
-            // return $this->fetch();
-        // $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
+        if($goods_list){
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
+        }else{
+            $this->ajaxReturn(['status' => '-1' , 'msg'=>'没有相关结果','data'=>'']);
+        }
+        
     }
 
 }
