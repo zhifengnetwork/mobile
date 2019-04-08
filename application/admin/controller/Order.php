@@ -278,8 +278,9 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
     	$condition = array();
     	I('consignee') ? $condition['consignee'] = trim(I('consignee')) : false;
     	I('order_sn') != '' ? $condition['order_sn'] = trim(I('order_sn')) : false;
-    	$shipping_status = I('shipping_status');
-    	$condition['shipping_status'] = empty($shipping_status) ? array('neq',1) : $shipping_status;
+        $shipping_status = I('shipping_status',0);
+        $condition['shipping_status'] = empty($shipping_status) ? array('neq',1) : $shipping_status;
+        $condition['pay_status']      = 1;
         $condition['order_status'] = array('in','1,2,4');
         $condition['prom_type'] = ['neq',5];
     	$count = M('order')->where($condition)->count();
@@ -847,6 +848,7 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
      * 发货单列表
      */
     public function delivery_list(){
+       
         return $this->fetch();
     }
 
