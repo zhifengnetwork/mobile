@@ -868,7 +868,7 @@ class User extends Base
             // 发送公众号消息给用户
             $wechat = new \app\common\logic\wechat\WechatUtil();
             $wechat->sendMsg($user_find['openid'], 'text', $wx_content);
-            dump($data);die;
+       
             Db::name('withdrawals')->whereIn('id', $ids)->update($data);
 
             $this->ajaxReturn(array('status' => 1, 'msg' => "操作成功"), 'JSON');
