@@ -114,7 +114,12 @@ class User extends ApiBase
             $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
     }
 
-    public function address_list(){//地址管理列表
+    /**
+     * +---------------------------------
+     * 地址管理列表
+     * +---------------------------------
+    */
+    public function address_list(){
         $user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
@@ -128,6 +133,33 @@ class User extends ApiBase
             $v['twon']=$region_list[$v['twon']];
         }
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
+    }
+
+    /**
+     * +---------------------------------
+     * 添加地址
+     * +---------------------------------
+    */
+    public function add_address()
+    {
+        $user_id = $this->get_user_id();
+        $source = input('source');
+        if (IS_POST) {
+            $post_data = input('post.');
+            $logic = new UsersLogic();
+            $data = $logic->add_address($user_id, 0, $post_data);
+            if ($data['status'] != 1){
+
+                $this->ajaxReturn(['status' => '-1' , 'msg'=>'添加失败','data'=>$data]);
+
+            } else {
+                $p = M('region')->where(array('parent_id' => 0, 'level' => 1))->select();
+                $this->ajaxReturn(['status' => 0 , 'msg'=>'添加成功','data'=>$p]);
+            }
+        }else{
+            $this->ajaxReturn(['status' => '-1' , 'msg'=>'提交方式错误','data'=>'']);
+        }
+       
     }
 
 
