@@ -278,13 +278,13 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
     	$condition = array();
     	I('consignee') ? $condition['consignee'] = trim(I('consignee')) : false;
     	I('order_sn') != '' ? $condition['order_sn'] = trim(I('order_sn')) : false;
-        $shipping_status = I('shipping_status',0);
+        $shipping_status = I('shipping_status');
         $condition['shipping_status'] = empty($shipping_status) ? array('neq',1) : $shipping_status;
         $condition['pay_status']      = 1;
-        $condition['order_status'] = array('in','1,2,4');
+        $condition['order_status'] = array('in','0,1,2,4');
         $condition['prom_type'] = ['neq',5];
     	$count = M('order')->where($condition)->count();
-    	$Page  = new AjaxPage($count,10);
+    	$Page  = new AjaxPage($count,20);
     	//搜索条件下 分页赋值
     	foreach($condition as $key=>$val) {
             if(!is_array($val)){
