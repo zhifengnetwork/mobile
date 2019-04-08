@@ -857,6 +857,7 @@ class User extends Base
         $ids = implode(',', $id_arr);
 
         $falg = M('withdrawals')->where(['id'=>$ids])->find();
+        $user_find = M('users')->where(['user_id'=>$falg['user_id']])->find();
 
         if ($status == 1){
             $data['check_time'] = time();
@@ -879,7 +880,7 @@ class User extends Base
         }
 
         // $falg = M('withdrawals')->where(['id'=>$ids])->find();
-        $user_find = M('users')->where(['user_id'=>$falg['user_id']])->find();
+        // $user_find = M('users')->where(['user_id'=>$falg['user_id']])->find();
         if($user_find['user_money'] < $falg['money'])
         {
             $this->ajaxReturn(array('status' => 0, 'msg' => "当前用户余额不足"), 'JSON');
