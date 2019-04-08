@@ -666,15 +666,19 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
     public function delivery_print(){
         $ids =input('print_ids');
         $order_ids=trim($ids,',');
+       
         $orderModel= new OrderModel();
         $orderObj = $orderModel->whereIn('order_id',$order_ids)->select();
         if ($orderObj){
             $order = collection($orderObj)->append(['orderGoods','full_address'])->toArray();
         }
+       
+        
         $shop = tpCache('shop_info');
         $this->assign('order',$order);
         $this->assign('shop',$shop);
         $template = I('template','print');
+       
         return $this->fetch($template);
     }
 
@@ -750,31 +754,65 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
      */
     public function deliveryHandle(){
         $orderLogic = new OrderLogic();
-		$data = I('post.');
-		$res = $orderLogic->deliveryHandle($data);
-		if($res['status'] == 1){
-			if($data['send_type'] == 2 && !empty($res['printhtml'])){
-				$this->assign('printhtml',$res['printhtml']);
-				return $this->fetch('print_online');
-			}
-			$this->success('操作成功',U('Admin/Order/delivery_info',array('order_id'=>$data['order_id'])));
-		}else{
-			$this->error($res['msg'],U('Admin/Order/delivery_info',array('order_id'=>$data['order_id'])));
-		}
+        $data  = I('post.');
+        $count = 0;
+        if(isset($data['pldelivery'])){
+            foreach($data['order_id'] as $k => $v){
+                $count++;
+                $datas['shipping']      = $data['shipping'][$v];
+                $datas['shipping_code'] = $data['shipping_code'][$v];
+                $datas['send_type']     = $data['send_type'][$v];
+                $datas['invoice_no']    = $data['invoice_no'][$v];
+                $datas['order_id']      = $v;
+                $datas['note']          = $data['note'][$v];
+                $datas['goods']         = $data['goods'][$v];
+                if(!empty($data['shipping_name'][$v])){
+                    $datas['shipping_name'] = $data['shipping_name'][$v];
+                }
+                if(!empty($data['shipping_code'][$v])){
+                    $datas['shipping_code'] = $data['shipping_code'][$v];
+                }
+                if(!empty($data['invoice_no'][$v])){
+                    $datas['invoice_no'] = $data['invoice_no'][$v];
+                }
+                $res = $orderLogic->deliveryHandle($datas);
+                if($count == count($data['order_id'])){
+                    break;
+                }
+             }
+             if($res['status'] == 1 && $count == count($data['order_id'])){
+                $this->success('操作成功',U('Admin/Order/delivery_list'));
+             }else{
+                $this->error($res['msg'],U('Admin/Order/delivery_list'));
+             }
+        }else{
+             $res = $orderLogic->deliveryHandle($data);
+             if($res['status'] == 1){
+                if($data['send_type'] == 2 && !empty($res['printhtml'])){
+                    $this->assign('printhtml',$res['printhtml']);
+                    return $this->fetch('print_online');
+                }
+                $this->success('操作成功',U('Admin/Order/delivery_info',array('order_id'=>$data['order_id'])));
+            }else{
+                
+            }
+        }
+		
     }
 
     public function delivery_info($id=''){
         if($id){
            $order_id=$id; 
         }else{
-           $order_id = I('order_id');
+            $ids        = input('order_id','');
+            $order_id   = trim($ids,',');
         }
-
     	$orderGoodsMdel = new OrderGoods();
-        $orderModel = new OrderModel();
-        $orderObj = $orderModel->where(['order_id'=>$order_id])->find();
-        $order =$orderObj->append(['full_address'])->toArray();
-    	$orderGoods = $orderGoodsMdel::all(['order_id'=>$order_id,'is_send'=>['lt',2]]);
+        $orderModel     = new OrderModel();
+        $orderObj       =  $orderModel->where(['order_id'=>$order_id])->find();
+        $order          =  $orderObj->append(['full_address'])->toArray();
+        $orderGoods     =  $orderGoodsMdel::all(['order_id'=>$order_id,'is_send'=>['lt',2]]);
+        
         if($id){
             if(!$orderGoods){
                 $this->error('所选订单有商品已完成退货或换货');//已经完成售后的不能再发货
@@ -816,8 +854,32 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
     *批量发货
     */
     public function delivery_batch(){
-		header("Content-type: text/html; charset=utf-8");
-exit("请联系DC环球直供网络客服购买高级版支持此功能");
+         $order_id  = I('ids','');
+         $order_id  = trim($order_id,',');
+       
+         $orderGoodsMdel = new OrderGoods();
+         $orderModel     = new OrderModel();
+         $orderObj       = $orderModel->whereIn('order_id',$order_id)->select();//订单
+         $orderGoods     = $orderGoodsMdel::all(['order_id'=>['in',$order_id],'is_send'=>['lt',2]]);
+         //订单商品
+         
+         if ($orderObj){
+             $order = collection($orderObj)->append(['orderGoods','full_address'])->toArray();
+         }
+       
+        if (!$orderGoods){
+            $this->error('此订单商品已完成退货或换货');//已经完成售后的不能再发货  
+        }
+        
+        $this->assign('order',$order);
+        $this->assign('orderGoods',$orderGoods);
+        $shipping_list = Db::name('shipping')->field('shipping_name,shipping_code')->where('')->select();
+        $this->assign('shipping_list',$shipping_list);
+        $express_switch = tpCache('express.express_switch');
+        $this->assign('express_switch',$express_switch);
+        $this->assign('order_ids',$order_id);
+        return $this->fetch();    
+       
     }
 
     /**
@@ -825,7 +887,7 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
     */
     public function delivery_batch_handle(){
 		header("Content-type: text/html; charset=utf-8");
-exit("请联系DC环球直供网络客服购买高级版支持此功能");
+        exit("请联系DC环球直供网络客服购买高级版支持此功能");
     }
 
     /**
