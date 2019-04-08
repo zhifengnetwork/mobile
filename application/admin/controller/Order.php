@@ -463,20 +463,29 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
            
         }
 
-       // 写入数据库操作
-       foreach($arr as $k=> $v){
-           $res = Db::name('order')->where(['shipping_status'=>0,'mobile'=>$arr[$k]['mobile']])->update(['order_status' => 1,'shipping_status'=>1]);
-           if($res == false){
-              $arr[$k]['status'] = 0;
-           }else{
-                // 发货成功
-                // 写 delivery_doc
-                
+        // 写入数据库操作
+        foreach($arr as $k=> $v){
+            //先查找
 
+            $is_cunzai = Db::name('order')->where(['mobile'=>$arr[$k]['mobile']])->order('order_id DESC')->find();
+            $order_id = $is_cunzai['order_id'];
+            //查找
+
+            if($order_id){
+                $arr[$k]['status'] = 0;
+            }else{
+                $res = Db::name('order')->where('order_id',$order_id)->update(['order_status' => 1,'shipping_status'=>1]);
+                if($res == 1){
+                    // 发货成功
+                    // 写 delivery_doc
+                    //  TODO
+
+
+                }
                 $arr[$k]['status'] = 1;
-           }
-           Db::name('delivery_order_handle')->insert($arr[$k]);
-       }
+            }
+            Db::name('delivery_order_handle')->insert($arr[$k]);
+        }
        sleep(1);
        $this->success('处理成功');
     }
