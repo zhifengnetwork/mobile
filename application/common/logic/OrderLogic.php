@@ -718,15 +718,11 @@ class OrderLogic
 			}else{
 				$update['shipping_status'] = 2;
             }
+            
             if($order['order_status'] == 0 && $order['shipping_status'] == 0){
-<<<<<<< HEAD
-               $update['order_status'] = 1;
-            }
-=======
                 $update['order_status'] = 1;
             }
             
->>>>>>> 00000a0ad479b368dff4343ab5c7d62d961d0b83
 			Db::name('order')->where("order_id=".$data['order_id'])->save($update);//改变订单状态
             $convert_action= C('CONVERT_ACTION')["delivery"];
 			$this->orderActionLog($order['order_id'],$data['note'],$convert_action,session('admin_id'));//操作日志
