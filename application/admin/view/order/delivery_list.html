@@ -21,7 +21,7 @@
     </div>
      <ul>
       <li>点击查看操作将显示订单（包括订单物品）的详细信息</li>
-      <li>已发货订单列表</li>
+      <li>处理订单列表</li>
     </ul>
   </div>
   <div class="flexigrid">
@@ -247,6 +247,7 @@
 
       //批量发货
       if(type==1){
+        
         $('#ids').val(ids);
         $('#delivery_batch').submit();
       }

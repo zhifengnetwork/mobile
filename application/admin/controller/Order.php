@@ -278,12 +278,13 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
     	$condition = array();
     	I('consignee') ? $condition['consignee'] = trim(I('consignee')) : false;
     	I('order_sn') != '' ? $condition['order_sn'] = trim(I('order_sn')) : false;
-    	$shipping_status = I('shipping_status');
-    	$condition['shipping_status'] = empty($shipping_status) ? array('neq',1) : $shipping_status;
-        $condition['order_status'] = array('in','1,2,4');
+        $shipping_status = I('shipping_status');
+        $condition['shipping_status'] = empty($shipping_status) ? array('neq',1) : $shipping_status;
+        $condition['pay_status']      = 1;
+        $condition['order_status']    = array('in','0,1,2,4');
         $condition['prom_type'] = ['neq',5];
     	$count = M('order')->where($condition)->count();
-    	$Page  = new AjaxPage($count,10);
+    	$Page  = new AjaxPage($count,15);
     	//搜索条件下 分页赋值
     	foreach($condition as $key=>$val) {
             if(!is_array($val)){
@@ -299,6 +300,181 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
     	$this->assign('page',$show);// 赋值分页输出
     	$this->assign('pager',$Page);
     	return $this->fetch();
+    }
+
+      /**
+     * ajax 发货处理订单列表
+    */
+    public function ajaxorderdelivery(){
+    	$condition = array();
+    	I('consignee')!='' ? $condition['consignee'] = trim(I('consignee')) : false;
+        I('mobile') != '' ?  $condition['mobile'] = trim(I('mobile')) : false;
+        I('status') != ''?   $condition['status'] = trim(I('status')): false;
+    	$count = M('delivery_order_handle')->where($condition)->count();
+    	$Page  = new AjaxPage($count,15);
+    	//搜索条件下 分页赋值
+    	foreach($condition as $key=>$val) {
+            if(!is_array($val)){
+                $Page->parameter[$key]   =   urlencode($val);
+            }
+    	}
+    	$show = $Page->show();
+    	$orderList = M('delivery_order_handle')->where($condition)->limit($Page->firstRow.','.$Page->listRows)->order('add_time DESC')->select();
+    	$this->assign('orderList',$orderList);
+    	$this->assign('page',$show);// 赋值分页输出
+        $this->assign('pager',$Page);
+        $this->assign('status',['成功','失败']);
+    	return $this->fetch();
+    }
+
+
+
+     //导入
+     public function deliveryexceldr(){
+
+        if(empty($_FILES['file']['tmp_name'])){
+            $this->error('请选择文件');
+        }
+        $file = request()->file('file');
+         // 移动到框架应用根目录/uploads/ 目录下
+         $paths = ROOT_PATH . 'public/upload/excel';
+         if (!file_exists($paths)){
+            mkdir ($paths,0777,true);
+         }
+        $info = $file->validate(['size'=>204800,'ext'=>'xls,xlsx']);
+        $info = $file->rule('md5')->move($paths);//加
+        $datas = ROOT_PATH.DS.'public/upload/excel/'.$info->getSaveName();
+       
+        $fields =Db::query("show fields from tp_delivery_order_handle");
+       
+        $allfield=array();
+        //获取数据表的所有信息 取出字段名装在一个数组
+        foreach($fields as $key => $val){
+            $allfield[$key]=$val['Field'];
+        }
+        $fieldnum=count($allfield);
+        //设置列
+        $column=array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+
+
+        //导入PHPExcel类库，因为PHPExcel没有用命名空间，只能inport导入
+        vendor('PHPExcel.PHPExcel');
+       
+        //导入Excel文件
+        $PHPExcel = new \PHPExcel();
+        $filename = $info->getSaveName();
+        //匹配‘.号’判断后缀名
+        $extend=strrchr ($filename,'.');
+        //转为小写
+        $exts = strtolower($extend);
+
+        /*判别是不是.xls和.xlsx文件，判别是不是excel文件*/
+        if ($exts == '.xls') {
+    
+            $PHPReader = \PHPExcel_IOFactory::createReader('Excel5');
+           
+        } else if($exts == '.xlsx') {
+
+            
+            $PHPReader = \PHPExcel_IOFactory::createReader('Excel2007');
+        }
+           
+       
+
+        // $filename =  date('Ymd').'.xlsx';
+        // $path     =  ROOT_PATH . DS.'public/upload';
+        // $qwe = move_uploaded_file($_FILES['excel']['tmp_name'],$path.$filename);
+       
+        //载入文件
+       
+        $PHPExcel = $PHPReader->load($datas);
+        
+
+        //获取表中的第一个工作表，如果要获取第二个，把0改为1，依次类推
+        $currentSheet = $PHPExcel->getSheet(0);
+        //获取总列数
+        $allColumn = $currentSheet->getHighestColumn();
+        //获取总行数
+        $allRow = $currentSheet->getHighestRow();
+    
+        //循环获取表中的数据，$currentRow表示当前行，从哪行开始读取数据，索引值从0开始
+        for ($currentRow = 2; $currentRow <= $allRow; $currentRow++) {
+            //从哪列开始，A表示第一列
+            for ($currentColumn = 'A'; $currentColumn <= $allColumn; $currentColumn++) {
+                //数据坐标
+                $address = $currentColumn . $currentRow;
+                //读取到的数据，保存到数组$data中
+                $cell = $currentSheet->getCell($address)->getValue();
+            
+                if ($cell instanceof PHPExcel_RichText) {
+                    $cell = $cell->__toString();
+                }
+                $data[$currentRow - 1][$currentColumn] = $cell;
+                
+            }
+           
+        }
+        
+        //$data为excel表里的所有数据
+        // $zi = 0;
+
+        $arr=array();
+
+        // foreach($data as $key=>$val){
+        //     $zi += 1;
+        //     // //当数据表字段全为varchar类型时可以使用这个
+        //     //     $field=$allfield[$i];
+        //     //     $value=$column[$i]; 
+        //     //     $arr[$key]["{$field}"]   =  $val["{$value}"];
+             
+        //         //手动修改字段与值
+        //         $arr[$key]['id']     =  $zi;
+        //         $arr[$key]['name']   =  $val['A'];
+        //         $arr[$key]['tel']    =  $val['B'];
+        //         $arr[$key]['number'] =  strval($val['C']);
+        //         $arr[$key]['dorm']   =  strval($val['D']);
+        //         $arr[$key]['card']   =  $val['E'];
+        //         $arr[$key]['campus'] =  $val['F'];
+        //         $arr[$key]['addtime']=  $val['G'];
+        //    }
+    //    var_dump($arr);exit;
+      
+       
+        $zi = 0;
+       
+        foreach($data as $key=>$val){
+
+            for($i=0;$i<$fieldnum-1;$i++){
+                $zi ++;
+               //当数据表字段全为varchar类型时可以使用这个
+                // $field = $allfield[$i+1];
+                // $value=  $column[$i]; 
+                // $arr[$key]["{$field}"]   =  $val["{$value}"];
+       
+                //手动修改字段与值
+                $arr[$key]['consignee']        =  $val['F'];
+                $arr[$key]['shipping_name']    =  $val['K'];
+                $arr[$key]['shipping_code']    =  $val['M'];
+                $arr[$key]['mobile']           =  strval($val['G']);
+                $arr[$key]['address']          =  strval($val['I']);
+                $arr[$key]['goods']            =  $val['J'];
+                $arr[$key]['add_time']         =  time();
+           }
+           
+        }
+
+       // 写入数据库操作
+       foreach($arr as $k=> $v){
+           $res = Db::name('order')->where('mobile',$arr[$k]['mobile'])->update(['order_status' => 1]);
+           if($res == false){
+              $arr[$k]['status'] = 0;
+           }else{
+              $arr[$k]['status'] = 1;
+           }
+           Db::name('delivery_order_handle')->insert($arr[$k]);
+       }
+       sleep(1);
+       $this->success('处理成功');
     }
     
     public function refund_order_list(){
@@ -666,15 +842,19 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
     public function delivery_print(){
         $ids =input('print_ids');
         $order_ids=trim($ids,',');
+       
         $orderModel= new OrderModel();
         $orderObj = $orderModel->whereIn('order_id',$order_ids)->select();
         if ($orderObj){
             $order = collection($orderObj)->append(['orderGoods','full_address'])->toArray();
         }
+       
+        
         $shop = tpCache('shop_info');
         $this->assign('order',$order);
         $this->assign('shop',$shop);
         $template = I('template','print');
+       
         return $this->fetch($template);
     }
 
@@ -750,31 +930,65 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
      */
     public function deliveryHandle(){
         $orderLogic = new OrderLogic();
-		$data = I('post.');
-		$res = $orderLogic->deliveryHandle($data);
-		if($res['status'] == 1){
-			if($data['send_type'] == 2 && !empty($res['printhtml'])){
-				$this->assign('printhtml',$res['printhtml']);
-				return $this->fetch('print_online');
-			}
-			$this->success('操作成功',U('Admin/Order/delivery_info',array('order_id'=>$data['order_id'])));
-		}else{
-			$this->error($res['msg'],U('Admin/Order/delivery_info',array('order_id'=>$data['order_id'])));
-		}
+        $data  = I('post.');
+        $count = 0;
+        if(isset($data['pldelivery'])){
+            foreach($data['order_id'] as $k => $v){
+                $count++;
+                $datas['shipping']      = $data['shipping'][$v];
+                $datas['shipping_code'] = $data['shipping_code'][$v];
+                $datas['send_type']     = $data['send_type'][$v];
+                $datas['invoice_no']    = $data['invoice_no'][$v];
+                $datas['order_id']      = $v;
+                $datas['note']          = $data['note'][$v];
+                $datas['goods']         = $data['goods'][$v];
+                if(!empty($data['shipping_name'][$v])){
+                    $datas['shipping_name'] = $data['shipping_name'][$v];
+                }
+                if(!empty($data['shipping_code'][$v])){
+                    $datas['shipping_code'] = $data['shipping_code'][$v];
+                }
+                if(!empty($data['invoice_no'][$v])){
+                    $datas['invoice_no'] = $data['invoice_no'][$v];
+                }
+                $res = $orderLogic->deliveryHandle($datas);
+                if($count == count($data['order_id'])){
+                    break;
+                }
+             }
+             if($res['status'] == 1 && $count == count($data['order_id'])){
+                $this->success('操作成功',U('Admin/Order/delivery_list'));
+             }else{
+                $this->error($res['msg'],U('Admin/Order/delivery_list'));
+             }
+        }else{
+             $res = $orderLogic->deliveryHandle($data);
+             if($res['status'] == 1){
+                if($data['send_type'] == 2 && !empty($res['printhtml'])){
+                    $this->assign('printhtml',$res['printhtml']);
+                    return $this->fetch('print_online');
+                }
+                $this->success('操作成功',U('Admin/Order/delivery_info',array('order_id'=>$data['order_id'])));
+            }else{
+                
+            }
+        }
+		
     }
 
     public function delivery_info($id=''){
         if($id){
            $order_id=$id; 
         }else{
-           $order_id = I('order_id');
+            $ids        = input('order_id','');
+            $order_id   = trim($ids,',');
         }
-
     	$orderGoodsMdel = new OrderGoods();
-        $orderModel = new OrderModel();
-        $orderObj = $orderModel->where(['order_id'=>$order_id])->find();
-        $order =$orderObj->append(['full_address'])->toArray();
-    	$orderGoods = $orderGoodsMdel::all(['order_id'=>$order_id,'is_send'=>['lt',2]]);
+        $orderModel     = new OrderModel();
+        $orderObj       =  $orderModel->where(['order_id'=>$order_id])->find();
+        $order          =  $orderObj->append(['full_address'])->toArray();
+        $orderGoods     =  $orderGoodsMdel::all(['order_id'=>$order_id,'is_send'=>['lt',2]]);
+        
         if($id){
             if(!$orderGoods){
                 $this->error('所选订单有商品已完成退货或换货');//已经完成售后的不能再发货
@@ -809,6 +1023,7 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
      * 发货单列表
      */
     public function delivery_list(){
+       
         return $this->fetch();
     }
 
@@ -816,16 +1031,49 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
     *批量发货
     */
     public function delivery_batch(){
-		header("Content-type: text/html; charset=utf-8");
-exit("请联系DC环球直供网络客服购买高级版支持此功能");
+         $order_id  = I('ids','');
+         $order_id  = trim($order_id,',');
+       
+         $orderGoodsMdel = new OrderGoods();
+         $orderModel     = new OrderModel();
+         $orderObj       = $orderModel->whereIn('order_id',$order_id)->select();//订单
+         $orderGoods     = $orderGoodsMdel::all(['order_id'=>['in',$order_id],'is_send'=>['lt',2]]);
+         //订单商品
+         
+         if ($orderObj){
+             $order = collection($orderObj)->append(['orderGoods','full_address'])->toArray();
+         }
+       
+        if (!$orderGoods){
+            $this->error('此订单商品已完成退货或换货');//已经完成售后的不能再发货  
+        }
+        
+        $this->assign('order',$order);
+        $this->assign('orderGoods',$orderGoods);
+        $shipping_list = Db::name('shipping')->field('shipping_name,shipping_code')->where('')->select();
+        $this->assign('shipping_list',$shipping_list);
+        $express_switch = tpCache('express.express_switch');
+        $this->assign('express_switch',$express_switch);
+        $this->assign('order_ids',$order_id);
+        return $this->fetch();    
+       
     }
+
+    /**
+    *发货单物流处理 
+    */
+    public function delivery_order_handle(){
+        return $this->fetch();    
+    }
+
+    
 
     /**
     *批量发货处理 
     */
     public function delivery_batch_handle(){
 		header("Content-type: text/html; charset=utf-8");
-exit("请联系DC环球直供网络客服购买高级版支持此功能");
+        exit("请联系DC环球直供网络客服购买高级版支持此功能");
     }
 
     /**
