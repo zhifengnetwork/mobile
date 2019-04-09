@@ -475,7 +475,10 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
                 }
                 $arr[$k]['status'] = 1;
             }
-            Db::name('delivery_order_handle')->insert($arr[$k]);
+            $handle = Db::name('delivery_order_handle')->where(['invoice_no' => $arr[$k]['invoice_no']])->find();
+            if(empty($handle)){
+                Db::name('delivery_order_handle')->insert($arr[$k]);
+            }
         }
        sleep(1);
        $this->success('处理成功');
