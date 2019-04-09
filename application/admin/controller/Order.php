@@ -50,54 +50,72 @@ class Order extends Base {
         $begin = $this->begin;
         $end = $this->end;
         // 搜索条件
-        $condition = array('shop_id'=>0);
+        $condition = array('order.shop_id'=>0);
         $keyType = I("key_type");
         $keywords = I('keywords','','trim');
         
         $consignee =  ($keyType && $keyType == 'consignee') ? $keywords : I('consignee','','trim');
-        $consignee ? $condition['consignee'] = trim($consignee) : false;
+        $consignee ? $condition['order.consignee'] = trim($consignee) : false;
 
         if($begin && $end){
-        	$condition['add_time'] = array('between',"$begin,$end");
+        	$condition['order.add_time'] = array('between',"$begin,$end");
         }
-        $condition['prom_type'] = array('lt',5);
+        $condition['order.prom_type'] = array('lt',5);
         $order_sn = ($keyType && $keyType == 'order_sn') ? $keywords : I('order_sn') ;
-        $order_sn ? $condition['order_sn'] = trim($order_sn) : false;
+        $order_sn ? $condition['order.order_sn'] = trim($order_sn) : false;
+
+        //搜索昵称,手机号码,快递单号
+        $nickname = ($keyType && $keyType == 'nickname') ? $keywords : I('nickname') ;
+        $mobile = ($keyType && $keyType == 'mobile') ? $keywords : I('mobile') ;
+        $invoice_no = ($keyType && $keyType == 'invoice_no') ? $keywords : I('invoice_no') ;
+        $nickname ? $condition['users.nickname'] = ['like', '%' . trim($nickname) . '%'] : false;
+        $mobile ? $condition['order.mobile'] = ['like', '%' . trim($mobile) . '%'] : false;
+        $invoice_no ? $condition['delivery.invoice_no'] = trim($invoice_no) : false;
         
-        I('order_status') != '' ? $condition['order_status'] = I('order_status') : false;
-        I('pay_status') != '' ? $condition['pay_status'] = I('pay_status') : false;
+        I('order_status') != '' ? $condition['order.order_status'] = I('order_status') : false;
+        I('pay_status') != '' ? $condition['order.pay_status'] = I('pay_status') : false;
         //I('pay_code') != '' ? $condition['pay_code'] = I('pay_code') : false;
         if(I('pay_code')){
             switch (I('pay_code')){
                 case '余额支付':
-                    $condition['pay_name'] = I('pay_code');
+                    $condition['order.pay_name'] = I('pay_code');
                     break;
                 case '积分兑换':
-                    $condition['pay_name'] = I('pay_code');
+                    $condition['order.pay_name'] = I('pay_code');
                     break;
                 case 'alipay':
-                    $condition['pay_code'] = ['in',['alipay','alipayMobile']];
+                    $condition['order.pay_code'] = ['in',['alipay','alipayMobile']];
                     break;
                 case 'weixin':
-                    $condition['pay_code'] = ['in',['weixin','weixinH5','miniAppPay']];
+                    $condition['order.pay_code'] = ['in',['weixin','weixinH5','miniAppPay']];
                     break;
                 case '其他方式':
-                    $condition['pay_name'] = '';
-                    $condition['pay_code'] = '';
+                    $condition['order.pay_name'] = '';
+                    $condition['order.pay_code'] = '';
                     break;
                 default:
-                    $condition['pay_code'] = I('pay_code');
+                    $condition['order.pay_code'] = I('pay_code');
                     break;
             }
         }
 
-        I('shipping_status') != '' ? $condition['shipping_status'] = I('shipping_status') : false;
-        I('user_id') ? $condition['user_id'] = trim(I('user_id')) : false;
+        I('shipping_status') != '' ? $condition['order.shipping_status'] = I('shipping_status') : false;
+        I('user_id') ? $condition['order.user_id'] = trim(I('user_id')) : false;
         $sort_order = I('order_by','DESC').' '.I('sort');
-        $count = Db::name('order')->where($condition)->count();
+        $sort_order = 'order.'.$sort_order;
+        $count = Db::name('order')->alias('order')
+                ->join('users', 'users.user_id = order.user_id', 'LEFT')
+                ->join('delivery_doc delivery', 'delivery.order_id = order.order_id', 'LEFT')
+                ->where($condition)->count();
         $Page  = new AjaxPage($count,20);
         $show = $Page->show();
-        $orderList = Db::name('order')->where($condition)->limit($Page->firstRow,$Page->listRows)->order($sort_order)->select();
+        $orderList = Db::name('order')->alias('order')
+                    ->join('users', 'users.user_id = order.user_id', 'LEFT')
+                    ->join('delivery_doc delivery', 'delivery.order_id = order.order_id', 'LEFT')
+                    ->where($condition)
+                    ->limit($Page->firstRow,$Page->listRows)
+                    ->field('order.*')
+                    ->order($sort_order)->select();
         $this->assign('orderList',$orderList);
         $this->assign('page',$show);// 赋值分页输出
         $this->assign('pager',$Page);
@@ -319,7 +337,7 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
             }
     	}
     	$show = $Page->show();
-    	$orderList = M('delivery_order_handle')->where($condition)->limit($Page->firstRow.','.$Page->listRows)->order('add_time DESC')->select();
+    	$orderList = M('delivery_order_handle')->where($condition)->limit($Page->firstRow.','.$Page->listRows)->order('id DESC')->select();
     	$this->assign('orderList',$orderList);
     	$this->assign('page',$show);// 赋值分页输出
         $this->assign('pager',$Page);

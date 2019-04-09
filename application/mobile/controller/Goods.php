@@ -144,7 +144,7 @@ class Goods extends MobileBase
         $end_price = trim(I('end_price', '0')); // 输入框价钱
         if ($start_price && $end_price) $price = $start_price . '-' . $end_price; // 如果输入框有价钱 则使用输入框的价钱
 
-       
+        $sign_free_receive = 0;
 
         //如果分类是数字
         if(is_numeric($id)){
@@ -153,10 +153,10 @@ class Goods extends MobileBase
            
             //如果不是字母
             if($id == 'DISTRIBUT'){
-                $con['sign_free_receive'] = 1;
+                $sign_free_receive = 1;
             }
             if($id == 'AGENT'){
-                $con['sign_free_receive'] = 2;
+                $sign_free_receive = 2;
             }
         }
            
@@ -173,7 +173,7 @@ class Goods extends MobileBase
 
         // 帅选 品牌 规格 属性 价格
         $cat_id_arr = getCatGrandson($id);
-        $goods_where = ['is_on_sale' => 1, 'exchange_integral' => 0, 'cat_id' => ['in', $cat_id_arr]];
+        $goods_where = ['is_on_sale' => 1, 'exchange_integral' => 0, 'cat_id' => ['in', $cat_id_arr], 'sign_free_receive' => $sign_free_receive];
         $filter_goods_id = Db::name('goods')->where($goods_where)->cache(true)->getField("goods_id", true);
 
         // 过滤帅选的结果集里面找商品
@@ -205,20 +205,20 @@ class Goods extends MobileBase
         $filter_brand = $goodsLogic->get_filter_brand($filter_goods_id, $filter_param, 'goodsList'); // 获取指定分类下的帅选品牌
         $filter_spec = $goodsLogic->get_filter_spec($filter_goods_id, $filter_param, 'goodsList', 1); // 获取指定分类下的帅选规格
         $filter_attr = $goodsLogic->get_filter_attr($filter_goods_id, $filter_param, 'goodsList', 1); // 获取指定分类下的帅选属性
-
         $count = count($filter_goods_id);
         $page = new Page($count, C('PAGESIZE'));
         if ($count > 0) {
             $sort_asc = $sort_asc == 'asc' ? 'desc' : 'asc'; // 防注入
             $sort_arr = ['sales_sum','shop_price','is_new','comment_count','sort'];
             if(!in_array($sort,$sort_arr)) $sort='sort'; // 防注入
+            $goods_list = M('goods')->where("goods_id", "in", implode(',', $filter_goods_id))->order([$sort => $sort_asc])->limit($page->firstRow . ',' . $page->listRows)->select();
 
-            $goods_list = M('goods')->where("goods_id", "in", implode(',', $filter_goods_id))->where($con)->order([$sort => $sort_asc])->limit($page->firstRow . ',' . $page->listRows)->select();
             $filter_goods_id2 = get_arr_column($goods_list, 'goods_id');
             if ($filter_goods_id2)
                 $goods_images = M('goods_images')->where("goods_id", "in", implode(',', $filter_goods_id2))->cache(true)->select();
         }
         $goods_category = M('goods_category')->where('is_show=1')->cache(true)->getField('id,name,parent_id,level'); // 键值分类数组
+
         $this->assign('goods_list', $goods_list);
         $this->assign('goods_category', $goods_category);
         $this->assign('goods_images', $goods_images);  // 相册图片
