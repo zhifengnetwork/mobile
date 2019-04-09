@@ -319,7 +319,7 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
             }
     	}
     	$show = $Page->show();
-    	$orderList = M('delivery_order_handle')->where($condition)->limit($Page->firstRow.','.$Page->listRows)->order('add_time DESC')->select();
+    	$orderList = M('delivery_order_handle')->where($condition)->limit($Page->firstRow.','.$Page->listRows)->order('id DESC')->select();
     	$this->assign('orderList',$orderList);
     	$this->assign('page',$show);// 赋值分页输出
         $this->assign('pager',$Page);
