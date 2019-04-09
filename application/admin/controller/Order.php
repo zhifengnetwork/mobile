@@ -444,56 +444,102 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
                 'order_status'   => ['in','0,1'],
                 'shipping_status'=> 0,
             ];
-            $order     = Db::name('order')->where($where)->order('order_id DESC')->find();
+            $order     = Db::name('order')->where($where)->order('order_id DESC')->select();
             $order_id  = $order['order_id'];
             //改变order 发货时的状态和信息
             $update['shipping_code']    = $shipping_arr[$arr[$key]['shipping_name']];
             $update['shipping_name']    = $arr[$key]['shipping_name'];
             $update['order_status']     = 1;//订单改变为已确认
             $update['shipping_status']  = 1;//订单改变为已发货
-           
-            if(empty($order_id)){
+            if(count($order) < 1){
                 $arr[$k]['status'] = 0;
             }else{
-                $res = Db::name('order')->where('order_id',$order_id)->update($update);
-                if($res == 1){
-                    // 发货成功
-                    $doc = [
-                        'order_sn' => $order['order_sn'],
-                        'order_id' => $order['order_id'],
-                        'user_id'  => $order['user_id'],
-                        'admin_id' => session('admin_id'),
-                        'consignee'=> $order['consignee'],
-                        'zipcode'  => $order['zipcode'],
-                        'mobile'   => $order['mobile'],
-                        'country'  => $order['country'],
-                        'city'     => $order['city'],
-                        'district' => $order['district'],
-                        'address'  => $order['address'],
-                        'shipping_code'  => $shipping_arr[$arr[$key]['shipping_name']],
-                        'shipping_name'  => $arr[$key]['shipping_name'],
-                        'shipping_price' => $order['shipping_price'],
-                        'invoice_no'     => $arr[$k]['invoice_no'],
-                        'create_time'    => time(),
-                        'send_type'      => 0,
-                    ];
-                    $doc_cunzai = Db::name('delivery_doc')->where(['order_id' => $order['order_id']])->find();
-                    if(empty($doc_cunzai)){
-                        $rest = Db::name('delivery_doc')->add($doc);
+                foreach($order as $val){
+                    $res = Db::name('order')->where('order_id',$val['order_id'])->update($update);
+                    if($res == 1){
+                        // 发货成功
+                        $doc = [
+                            'order_sn' => $val['order_sn'],
+                            'order_id' => $val['order_id'],
+                            'user_id'  => $val['user_id'],
+                            'admin_id' => session('admin_id'),
+                            'consignee'=> $val['consignee'],
+                            'zipcode'  => $val['zipcode'],
+                            'mobile'   => $val['mobile'],
+                            'country'  => $val['country'],
+                            'city'     => $val['city'],
+                            'district' => $val['district'],
+                            'address'  => $val['address'],
+                            'shipping_code'  => $shipping_arr[$arr[$key]['shipping_name']],
+                            'shipping_name'  => $arr[$key]['shipping_name'],
+                            'shipping_price' => $val['shipping_price'],
+                            'invoice_no'     => $arr[$k]['invoice_no'],
+                            'create_time'    => time(),
+                            'send_type'      => 0,
+                        ];
+                        $doc_cunzai = Db::name('delivery_doc')->where(['order_id' => $val['order_id']])->find();
+                        if(empty($doc_cunzai)){
+                            $rest = Db::name('delivery_doc')->add($doc);
+                        }
                     }
-                }
-                $arr[$k]['status']   = 1;
-                $arr[$k]['order_id'] = $order_id;
-                $arr[$k]['order_sn'] = $order['order_sn'];
-            }
-            $handle = Db::name('delivery_order_handle')->where(['invoice_no' => $arr[$k]['invoice_no']])->find();
-            if(empty($handle)){
-                Db::name('delivery_order_handle')->insert($arr[$k]);
+                    $arr[$k]['status']   = 1;
+                    $arr[$k]['order_id'] = $val['order_id'];
+                    $arr[$k]['order_sn'] = $val['order_sn'];
+                    $handle = Db::name('delivery_order_handle')->where(['order_id' => $val['order_id']])->find();
+                    if(empty($handle)){
+                        Db::name('delivery_order_handle')->insert($arr[$k]);
+                    }
+                    
+               }
+
             }
         }
        sleep(1);
        $this->success('处理成功');
     }
+
+    // public function ordersdelivery($update,$order){
+    //         $res = Db::name('order')->where('order_id',$order['order_id'])->update($update);
+    //             if($res == 1){
+    //                 // 发货成功
+    //                 $doc = [
+    //                     'order_sn' => $order['order_sn'],
+    //                     'order_id' => $order['order_id'],
+    //                     'user_id'  => $order['user_id'],
+    //                     'admin_id' => session('admin_id'),
+    //                     'consignee'=> $order['consignee'],
+    //                     'zipcode'  => $order['zipcode'],
+    //                     'mobile'   => $order['mobile'],
+    //                     'country'  => $order['country'],
+    //                     'city'     => $order['city'],
+    //                     'district' => $order['district'],
+    //                     'address'  => $order['address'],
+    //                     'shipping_code'  => $shipping_arr[$arr[$key]['shipping_name']],
+    //                     'shipping_name'  => $arr[$key]['shipping_name'],
+    //                     'shipping_price' => $order['shipping_price'],
+    //                     'invoice_no'     => $arr[$k]['invoice_no'],
+    //                     'create_time'    => time(),
+    //                     'send_type'      => 0,
+    //                 ];
+    //                 $doc_cunzai = Db::name('delivery_doc')->where(['order_id' => $order['order_id']])->find();
+    //                 if(empty($doc_cunzai)){
+    //                     $rest = Db::name('delivery_doc')->add($doc);
+    //                 }
+    //             }
+    //             $arr[$k]['status']   = 1;
+    //             $arr[$k]['order_id'] = $order_id;
+    //             $arr[$k]['order_sn'] = $order['order_sn'];
+    //             //操作处理记录表
+    //             $handle = Db::name('delivery_order_handle')->where(['invoice_no' => $arr[$k]['invoice_no']])->find();
+    //             if(empty($handle)){
+    //                 Db::name('delivery_order_handle')->insert($arr[$k]);
+    //             }
+    // }
+
+
+
+
+
     
     public function refund_order_list(){
     	I('consignee') ? $condition['consignee'] = trim(I('consignee')) : false;
