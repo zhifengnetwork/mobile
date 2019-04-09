@@ -41,7 +41,7 @@ class PerformanceLogic
         $money_total = array(
             'money_total' => (float)$zong_yeji,
             'max_moneys'  => (float)$max_team_total,
-            'moneys' => (float)bcsub((float)$zong_yeji,(float)$max_team_total),
+            'moneys' => (float)bcsub((float)$zong_yeji,(float)$max_team_total,2),
             'oldPerformance' => $oldPerformance
         );
 
@@ -79,6 +79,8 @@ class PerformanceLogic
         $add_logic = new \app\common\logic\AgentPerformanceAddLogic();
       
 
+        //所有下级业绩
+        $all_yeji = array();
         foreach($yeji as $k => $v){
             $openid = M('users')->where(['user_id'=>$v['user_id']])->value('openid');
 
@@ -86,11 +88,16 @@ class PerformanceLogic
 
             $xiubu_yeji = $add_logic->get_bu($v['user_id']);
             
-            $yeji[$k]['agent_per'] = $v['agent_per'] + $oldPerformance + $xiubu_yeji;
+            // $yeji[$k]['agent_per'] = $v['agent_per'] + $oldPerformance + $xiubu_yeji;
+            $all_yeji[] = $v['agent_per'] + $oldPerformance + $xiubu_yeji;
         }
-        
 
-        $res = $yeji[0]['agent_per'];
+        //排序取最大业绩
+        if($all_yeji){
+            rsort($all_yeji);
+        }
+        $res = $all_yeji[0];
+        // $res = $yeji[0]['agent_per'];
        
         if($res == 0){
             $res = M('users')->where(['user_id'=>$user_id])->value('team');
