@@ -126,10 +126,11 @@ class Payment extends ApiBase {
     	if($pay_code == 'weixin' && $_SESSION['openid'] && strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
     		$code_str = $this->payment->getJSAPI($order,$config_value);
     		exit($code_str);
-    	} else { 
-            $code_str = $this->payment->get_code($order,$config_value);
-        }
-    	return $code_str;
+    	} else {  
+            $code_str = $this->payment->get_code($order,$config_value); 
+        } 
+		$code_str['status'] = ($code_str['status'] === 1) ? 0 : $code_str['status'];
+		$this->ajaxReturn(['status' => $code_str['status'] , 'msg'=>$code_str['msg'],'data'=>'']);
     }
     
     // 服务器点对点 // http://www.dchqzg1688.com/index.php/Home/Payment/notifyUrl        
