@@ -15,28 +15,26 @@ class User extends ApiBase
     */
     public function login()
     {
-        if (IS_POST) {
-            $mobile = I('mobile');
-            $password1 = I('password');
-            $password = md5('TPSHOP'.$password1);
+     
+        $mobile = I('mobile');
+        $password1 = I('password');
+        $password = md5('TPSHOP'.$password1);
 
-            $data = Db::name("users")->where('mobile',$mobile)
-            ->field('password,user_id')
-            ->find();
+        $data = Db::name("users")->where('mobile',$mobile)
+        ->field('password,user_id')
+        ->find();
 
-            if(!$data){
-                $this->ajaxReturn(['status' => -1 , 'msg'=>'手机不存在或错误','data'=>null]);
-            }
-            if ($password != $data['password']) {
-                $this->ajaxReturn(['status' => -2 , 'msg'=>'登录密码错误','data'=>null]);
-            }
-            unset($data['password']);
-            //重写
-            $data['token'] = $this->create_token($data['user_id']);
-            $this->ajaxReturn(['status' => 0 , 'msg'=>'登录成功','data'=>$data]);
-        }else{
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>'']);
+        if(!$data){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'手机不存在或错误','data'=>null]);
         }
+        if ($password != $data['password']) {
+            $this->ajaxReturn(['status' => -2 , 'msg'=>'登录密码错误','data'=>null]);
+        }
+        unset($data['password']);
+        //重写
+        $data['token'] = $this->create_token($data['user_id']);
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'登录成功','data'=>$data]);
+       
     }
 
 
