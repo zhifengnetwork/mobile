@@ -49,12 +49,8 @@
                     </div>
                 </td>
                 <td align="left" class="">
-                    <div style="text-align: center; width: 60px;">
-                        <if condition="$list['underling_number'] eq NULL">
-                                0
-                            <else/>
-                            {$list.underling_number|default="0"}
-                        </if>
+                    <div style="text-align: center; width: 80px;">
+                        {$first_leader[$list[user_id]]['count']|default="0"}
                     </div>
                 </td>
                 <td align="left" class="">
