@@ -516,47 +516,6 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
        $this->success('处理成功');
     }
 
-    // public function ordersdelivery($update,$order){
-    //         $res = Db::name('order')->where('order_id',$order['order_id'])->update($update);
-    //             if($res == 1){
-    //                 // 发货成功
-    //                 $doc = [
-    //                     'order_sn' => $order['order_sn'],
-    //                     'order_id' => $order['order_id'],
-    //                     'user_id'  => $order['user_id'],
-    //                     'admin_id' => session('admin_id'),
-    //                     'consignee'=> $order['consignee'],
-    //                     'zipcode'  => $order['zipcode'],
-    //                     'mobile'   => $order['mobile'],
-    //                     'country'  => $order['country'],
-    //                     'city'     => $order['city'],
-    //                     'district' => $order['district'],
-    //                     'address'  => $order['address'],
-    //                     'shipping_code'  => $shipping_arr[$arr[$key]['shipping_name']],
-    //                     'shipping_name'  => $arr[$key]['shipping_name'],
-    //                     'shipping_price' => $order['shipping_price'],
-    //                     'invoice_no'     => $arr[$k]['invoice_no'],
-    //                     'create_time'    => time(),
-    //                     'send_type'      => 0,
-    //                 ];
-    //                 $doc_cunzai = Db::name('delivery_doc')->where(['order_id' => $order['order_id']])->find();
-    //                 if(empty($doc_cunzai)){
-    //                     $rest = Db::name('delivery_doc')->add($doc);
-    //                 }
-    //             }
-    //             $arr[$k]['status']   = 1;
-    //             $arr[$k]['order_id'] = $order_id;
-    //             $arr[$k]['order_sn'] = $order['order_sn'];
-    //             //操作处理记录表
-    //             $handle = Db::name('delivery_order_handle')->where(['invoice_no' => $arr[$k]['invoice_no']])->find();
-    //             if(empty($handle)){
-    //                 Db::name('delivery_order_handle')->insert($arr[$k]);
-    //             }
-    // }
-
-
-
-
 
     
     public function refund_order_list(){
