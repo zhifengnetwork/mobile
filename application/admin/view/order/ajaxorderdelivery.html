@@ -10,9 +10,9 @@
     <volist name="orderList" id="list">
         <tr data-order-id="{$list.id}" id="{$list.id}">
                 <input type="hidden" class="deliver" value="{$list.id}">
-                <!-- <td class="sign">
-                  <div style="width: 20px;"><i class="ico-check"></i></div>
-                </td> -->
+                <td align="center" style="text-align: center; width: 180px;">
+                  <div>{$list.order_sn}</div>
+                </td>
                <td align="center" style="text-align: center; width: 180px;">
                  <div>{$list.consignee}</div>
                </td>
