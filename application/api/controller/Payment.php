@@ -91,7 +91,7 @@ class Payment extends ApiBase {
            return $this->fetch('payment');  // 分跳转 和不 跳转 
     }
 
-    public function getPay(){		
+    public function pay_order(){		
 		//alipay,alipayMobile,cod【货到付款】，tenpay【PC端财付通】， weixin 【PC端+微信公众号支付】， weixinH5 【微信支付H5】
         //$user_id = $this->get_user_id();
 		$user_id = 12;
