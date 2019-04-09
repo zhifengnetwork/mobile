@@ -436,13 +436,17 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
 
         // 写入数据库操作
         foreach($arr as $k=> $v){
-            //先查找
-
-            $order     = Db::name('order')->where(['mobile'=>$arr[$k]['mobile']])->order('order_id DESC')->find();
+            //先查找符合条件的订单
+            $where = [
+                'mobile'         => $arr[$k]['mobile'],
+                'order_status'   => ['in','0,1'],
+                'shipping_status'=> 0,
+            ];
+            $order     = Db::name('order')->where($where)->order('order_id DESC')->find();
             $order_id  = $order['order_id'];
             //改变order 发货时的状态和信息
-            $update['shipping_code'] = $shipping_arr[$arr[$key]['shipping_name']];
-            $update['shipping_name'] = $arr[$key]['shipping_name'];
+            $update['shipping_code']    = $shipping_arr[$arr[$key]['shipping_name']];
+            $update['shipping_name']    = $arr[$key]['shipping_name'];
             $update['order_status']     = 1;//订单改变为已确认
             $update['shipping_status']  = 1;//订单改变为已发货
            
@@ -464,8 +468,8 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
                         'city'     => $order['city'],
                         'district' => $order['district'],
                         'address'  => $order['address'],
-                        'shipping_code'  => $order['shipping_code'],
-                        'shipping_name'  => $order['shipping_name'],
+                        'shipping_code'  => $shipping_arr[$arr[$key]['shipping_name']],
+                        'shipping_name'  => $arr[$key]['shipping_name'],
                         'shipping_price' => $order['shipping_price'],
                         'invoice_no'     => $arr[$k]['invoice_no'],
                         'create_time'    => time(),
