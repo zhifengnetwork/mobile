@@ -109,6 +109,45 @@ class Cart extends ApiBase
 
     }
 
+    /**
+     * +---------------------------------
+     * 更新购物车，并返回计算结果
+     * +---------------------------------
+    */
+    public function AsyncUpdateCart()
+    {
+        $user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }
+        $cart = input('cart/a', []);
+        $cartLogic = new CartLogic();
+        $cartLogic->setUserId($user_id);
+        $cartLogic->AsyncUpdateCart($cart);
+        $select_cart_list = $cartLogic->getCartList(1);//获取选中购物车
+        $cart_price_info = $cartLogic->getCartPriceInfo($select_cart_list);//计算选中购物车
+        $user_cart_list = $cartLogic->getCartList();//获取用户购物车
+        // $return['cart_list'] = $cartLogic->cartListToArray($user_cart_list);//拼接需要的数据
+        $return['cart_price_info'] = $cart_price_info;
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'计算成功','data'=>$return]);
+    }
+
+    
+    /* +---------------------------------
+     * 购物车加减
+     * +---------------------------------
+    */
+    public function changeNum(){
+        $cart = input('cart/a',[]);
+        if (empty($cart)) {
+            $this->ajaxReturn(['status' => 0, 'msg' => '请选择要更改的商品', 'result' => '']);
+        }
+        $cartLogic = new CartLogic();
+        $result = $cartLogic->changeNum($cart['id'], $cart['goods_num']);
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'修改成功','data'=>$result]);
+
+    }
+
 
     
     

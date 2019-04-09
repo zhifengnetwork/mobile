@@ -113,7 +113,7 @@ class User extends ApiBase
                 }
 
             }
-            $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'上传成功','data'=>$data]);
     }
 
     /**
@@ -222,6 +222,81 @@ class User extends ApiBase
                 ];
                 $this->ajaxReturn(['status' => 0 , 'msg'=>'修改地址成功','data'=>$data]);
             }
+        }else{
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>'']);
+        }
+    }
+
+    /**
+     * +---------------------------------
+     * 修改名称
+     * +---------------------------------
+    */
+    public function update_username()
+    {
+        $user_id = $this->get_user_id();
+        $userLogic = new UsersLogic();
+        $user_info = $userLogic->get_info($user_id); // 获取用户信息
+        if(!$user_info){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }
+        if (IS_POST) {
+        	if ($_FILES['head_pic']['tmp_name']) {
+        		$file = $this->request->file('head_pic');
+                $image_upload_limit_size = config('image_upload_limit_size');
+        		$validate = ['size'=>$image_upload_limit_size,'ext'=>'jpg,png,gif,jpeg'];
+                $dir = UPLOAD_PATH.'head_pic/';
+        		if (!($_exists = file_exists($dir))){
+        			$isMk = mkdir($dir);
+        		}
+        		$parentDir = date('Ymd');
+        		$info = $file->validate($validate)->move($dir, true);
+        		if($info){
+        			$post['head_pic'] = '/'.$dir.$parentDir.'/'.$info->getFilename();
+        		}else{
+                    // $this->error($file->getError());//上传错误提示错误信息
+                    $this->ajaxReturn(['status' => -1 , 'msg'=>'上传错误','data'=>'']);
+        		}
+        	}
+            I('post.nickname') ? $post['nickname'] = I('post.nickname') : false; //昵称
+            I('post.qq') ? $post['qq'] = I('post.qq') : false;  //QQ号码
+            I('post.head_pic') ? $post['head_pic'] = I('post.head_pic') : false; //头像地址
+            I('post.sex') ? $post['sex'] = I('post.sex') : $post['sex'] = 0;  // 性别
+            I('post.birthyear') ? $post['birthyear'] = I('post.birthyear') : false;  // 年
+            I('post.birthmonth') ? $post['birthmonth'] = I('post.birthmonth') : false;  // 月
+            I('post.birthday') ? $post['birthday'] =I('post.birthday') : false;  // 日
+            I('post.province') ? $post['province'] = I('post.province') : false;  //省份
+            I('post.city') ? $post['city'] = I('post.city') : false;  // 城市
+            I('post.district') ? $post['district'] = I('post.district') : false;  //地区
+            I('post.email') ? $post['email'] = I('post.email') : false; //邮箱
+            I('post.mobile') ? $post['mobile'] = I('post.mobile') : false; //手机
+
+            $email = I('post.email');
+            $mobile = I('post.mobile');
+            $code = I('post.mobile_code', '');
+            $scene = I('post.scene', 6);
+
+            if (!empty($email)) {
+                $c = M('users')->where(['email' => input('post.email'), 'user_id' => ['<>', $user_id]])->count();
+                $c && $this->ajaxReturn(['status' => -1 , 'msg'=>'邮箱已被使用','data'=>'']);
+                
+            }
+            if (!empty($mobile)) {
+                $c = M('users')->where(['mobile' => input('post.mobile'), 'user_id' => ['<>', $user_id]])->count();
+                $c && $this->ajaxReturn(['status' => -1 , 'msg'=>'手机已被使用','data'=>'']);
+                if (!$code)
+                    $this->ajaxReturn(['status' => -1 , 'msg'=>'请输入验证码','data'=>'']);
+                $check_code = $userLogic->check_validate_code($code, $mobile, 'phone', $this->session_id, $scene);
+                if ($check_code['status'] != 1)
+                    $this->ajaxReturn(['status' => -1 , 'msg'=>$check_code['msg'],'data'=>'']);
+            }
+            if (!$userLogic->update_info($user_id, $post))
+                $this->ajaxReturn(['status' => -1 , 'msg'=>'保存失败','data'=>'']);
+
+            setcookie('uname',urlencode($post['nickname']),null,'/');
+            $user_info = $userLogic->get_info($user_id); // 获取用户信息
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'保存成功','data'=>$user_info['result']]);
+
         }else{
             $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>'']);
         }
