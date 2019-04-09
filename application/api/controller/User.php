@@ -153,9 +153,7 @@ class User extends ApiBase
             $data = $logic->add_address($user_id, 0, $post_data);
       
             if ($data['status'] != 1){
-
                 $this->ajaxReturn(['status' => -1 , 'msg'=>'添加失败','data'=>$data]);
-
             } else {
                 // $p = M('region')->where(array('parent_id' => 0, 'level' => 1))->se   lect();
                 $post_data['address_id'] = $data['result'];
@@ -180,17 +178,55 @@ class User extends ApiBase
         if(!$address){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'地址id不存在！','data'=>'']);
         }
-        $row = M('user_address')->where(array('user_id' => $this->user_id, 'address_id' => $id))->delete();
+        $row = M('user_address')->where(array('user_id' => $user_id, 'address_id' => $id))->delete();
         // 如果删除的是默认收货地址 则要把第一个地址设置为默认收货地址
         if ($address['is_default'] == 1) {
-            $address2 = M('user_address')->where("user_id", $this->user_id)->find();
+            $address2 = M('user_address')->where("user_id", $user_id)->find();
             $address2 && M('user_address')->where("address_id", $address2['address_id'])->save(array('is_default' => 1));
         }
         if (!$row)
-            $this->ajaxReturn(['status' => 0 , 'msg'=>'删除成功','data'=>$row]);
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'删除地址成功','data'=>$row]);
         else
             $this->ajaxReturn(['status' => -1 , 'msg'=>'删除失败','data'=>'']);
     }
-
+    
+    /**
+     * +---------------------------------
+     * 地址编辑
+     * +---------------------------------
+    */
+    public function edit_address()
+    {
+        $user_id = $this->get_user_id();
+        $id = I('id/d');
+        $address = M('user_address')->where(array('address_id' => $id, 'user_id' => $user_id))->find();
+        if(!$address){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'地址id不存在！','data'=>'']);
+        }
+        if (IS_POST) {
+            $post_data = input('post.');
+            // $source = $post_data['source'];
+            $logic = new UsersLogic();
+            $data = $logic->add_address($user_id, $id, $post_data);
+            if ($data['status'] != 1){
+                $this->ajaxReturn(['status' => -1 , 'msg'=>'修改地址失败','data'=>$data]);
+            } else {
+                $address = M('user_address')->where(array('address_id' => $id, 'user_id' => $user_id))->find();
+                //获取省份
+                $p = M('region')->where(array('parent_id' => 0, 'level' => 1))->select();
+                $c = M('region')->where(array('parent_id' => $address['province'], 'level' => 2))->select();
+                $d = M('region')->where(array('parent_id' => $address['city'], 'level' => 3))->select();
+                $data = [
+                    'address' => $address,
+                    'province' => $p,
+                    'city' => $c,
+                    'district' => $d
+                ];
+                $this->ajaxReturn(['status' => 0 , 'msg'=>'修改地址成功','data'=>$data]);
+            }
+        }else{
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>'']);
+        }
+    }
 
 }
