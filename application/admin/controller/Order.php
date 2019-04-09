@@ -323,7 +323,7 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
     	$this->assign('orderList',$orderList);
     	$this->assign('page',$show);// 赋值分页输出
         $this->assign('pager',$Page);
-        $this->assign('status',['成功','失败']);
+        $this->assign('status',['失败','成功']);
     	return $this->fetch();
     }
 
@@ -445,8 +445,8 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
             $update['shipping_name'] = $arr[$key]['shipping_name'];
             $update['order_status']     = 1;//订单改变为已确认
             $update['shipping_status']  = 1;//订单改变为已发货
-
-            if($order_id){
+           
+            if(empty($order_id)){
                 $arr[$k]['status'] = 0;
             }else{
                 $res = Db::name('order')->where('order_id',$order_id)->update($update);
@@ -456,7 +456,7 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
                         'order_sn' => $order['order_sn'],
                         'order_id' => $order['order_id'],
                         'user_id'  => $order['user_id'],
-                        'admin_id' => $order['admin_id'],
+                        'admin_id' => session('admin_id'),
                         'consignee'=> $order['consignee'],
                         'zipcode'  => $order['zipcode'],
                         'mobile'   => $order['mobile'],
@@ -471,7 +471,7 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
                         'create_time'    => time(),
                         'send_type'      => 0,
                     ];
-                    Db::name('delivery_doc')->add($doc);
+                    $rest = Db::name('delivery_doc')->add($doc);
                 }
                 $arr[$k]['status'] = 1;
             }
