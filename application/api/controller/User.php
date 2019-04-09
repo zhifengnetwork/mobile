@@ -35,7 +35,7 @@ class User extends ApiBase
             $data['token'] = $this->create_token($data['user_id']);
             $this->ajaxReturn(['status' => 0 , 'msg'=>'登录成功','data'=>$data]);
         }else{
-            $this->ajaxReturn(['status' => '-1' , 'msg'=>'提交方式错误','data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>'']);
         }
     }
 
@@ -154,7 +154,7 @@ class User extends ApiBase
       
             if ($data['status'] != 1){
 
-                $this->ajaxReturn(['status' => '-1' , 'msg'=>'添加失败','data'=>$data]);
+                $this->ajaxReturn(['status' => -1 , 'msg'=>'添加失败','data'=>$data]);
 
             } else {
                 // $p = M('region')->where(array('parent_id' => 0, 'level' => 1))->se   lect();
@@ -162,9 +162,34 @@ class User extends ApiBase
                 $this->ajaxReturn(['status' => 0 , 'msg'=>'添加成功','data'=>$post_data]);
             }
         }else{
-            $this->ajaxReturn(['status' => '-1' , 'msg'=>'提交方式错误','data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>'']);
         }
        
+    }
+
+    /**
+     * +---------------------------------
+     * 删除地址
+     * +---------------------------------
+    */
+    public function del_address()
+    {
+        $user_id = $this->get_user_id();
+        $id = I('get.id/d');
+        $address = M('user_address')->where("address_id", $id)->find();
+        if(!$address){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'地址id不存在！','data'=>'']);
+        }
+        $row = M('user_address')->where(array('user_id' => $this->user_id, 'address_id' => $id))->delete();
+        // 如果删除的是默认收货地址 则要把第一个地址设置为默认收货地址
+        if ($address['is_default'] == 1) {
+            $address2 = M('user_address')->where("user_id", $this->user_id)->find();
+            $address2 && M('user_address')->where("address_id", $address2['address_id'])->save(array('is_default' => 1));
+        }
+        if (!$row)
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'删除成功','data'=>$row]);
+        else
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'删除失败','data'=>'']);
     }
 
 
