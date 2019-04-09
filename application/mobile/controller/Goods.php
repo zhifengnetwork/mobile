@@ -612,6 +612,8 @@ class Goods extends MobileBase
             if ($filter_goods_id2)
                 $goods_images = M('goods_images')->where("goods_id", "in", implode(',', $filter_goods_id2))->cache(true)->select();
         }
+        var_dump($goods_list);die;
+
         $goods_category = M('goods_category')->where('is_show=1')->cache(true)->getField('id,name,parent_id,level'); // 键值分类数组
         $this->assign('goods_list', $goods_list);
         $this->assign('goods_category', $goods_category);

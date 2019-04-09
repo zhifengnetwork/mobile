@@ -90,6 +90,7 @@ class Search extends ApiBase
                 }
             }
         }
+
         $data = [
             'goods_list'=> $goods_list,
             // 'goods_images'=> $goods_images,
@@ -100,11 +101,9 @@ class Search extends ApiBase
             'sort_asc' => $sort_asc == 'asc' ? 'desc' : 'asc',
             'page' =>  $page
         ];
-        if($goods_list){
-            $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
-        }else{
-            $this->ajaxReturn(['status' => '-1' , 'msg'=>'没有相关结果','data'=>'']);
-        }
+
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
+       
         
     }
 

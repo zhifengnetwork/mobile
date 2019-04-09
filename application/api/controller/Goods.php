@@ -127,7 +127,11 @@ class Goods extends ApiBase
             $sort_arr = ['sales_sum','shop_price','is_new','comment_count','sort'];
             if(!in_array($sort,$sort_arr)) $sort='sort';    // 防注入
 
-            $goods_list = M('goods')->where("goods_id", "in", implode(',', $filter_goods_id))->where($con)->order([$sort => $sort_asc])->limit($page->firstRow . ',' . $page->listRows)->select();
+            $goods_list = M('goods')->where("goods_id", "in", implode(',', $filter_goods_id))
+            ->field('goods_id,seller_id,cat_id,extend_cat_id,goods_sn,goods_name,store_count,comment_count,weight,shop_price,goods_remark,original_img')
+            ->where($con)
+            ->order([$sort => $sort_asc])->limit($page->firstRow . ',' . $page->listRows)
+            ->select();
             $filter_goods_id2 = get_arr_column($goods_list, 'goods_id');
             if ($filter_goods_id2)
                 $goods_images = M('goods_images')->where("goods_id", "in", implode(',', $filter_goods_id2))->cache(true)->select();
