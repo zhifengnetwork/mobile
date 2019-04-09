@@ -15,7 +15,7 @@ class User extends ApiBase
     */
     public function login()
     {
-        if (IS_POST) {
+        if ($this->request->method() == 'POST') {
             $mobile = I('mobile');
             $password1 = I('password');
             $password = md5('TPSHOP'.$password1);
