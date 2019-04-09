@@ -245,13 +245,19 @@
                         <span class="span_1">
                             <ul>
                                 <li>一级是分销商数量</li>
-                               
+                                <li>团队总人数</li>
                             </ul>
                         </span>
                         <span class="span_1">
                             <ul>
                                 <li><strong class="red">{$first_leader_distribut_num}</strong> </li>
-                              
+                                <li id="update" style="cursor:pointer">
+                                    <if condition='$user[underling_number] eq NULL'>
+                                        0
+                                    <else/>
+                                        {$user.underling_number}
+                                    </if>
+                                </li>
                             </ul>
                         </span>
 
@@ -265,6 +271,19 @@
     </form>
 </div>
 <script type="text/javascript">
+    $("#update").click(function () {
+        // $("#update_num").html('正在更新');
+        var url = "/api/distribut/get_team_num?user_id={$user.user_id}";
+        $.ajax({
+            url: url, success: function (result) {
+                // console.log(result);
+                $("#update").text(result);
+                // $("#update_num").html('已更新');
+            }
+        });
+        
+    });
+
     function checkUserUpdate(){
        // var email = $('input[name="email"]').val();
         var mobile = $('input[name="mobile"]').val();
