@@ -502,4 +502,113 @@ class Distribut extends Base {
         $this->assign('detail', $detail);
         return $this->fetch();
     }
+
+    /**
+     * 区域代理设置
+     */
+    public function agent_area()
+    {
+        $count = M('config_regional_agency')->count();
+        $agent_area = M('config_regional_agency')->select();
+        $this->assign('list', $agent_area);
+        $this->assign('count', $count);
+        return $this->fetch();
+    }
+
+    /**
+     * 区域代理添加、等级编辑
+     */
+    public function agent_area_level()
+    {
+        $id = I('get.id');
+        if($id){
+            $agent = M('config_regional_agency')->where('id', $id)->find();
+            if($agent){
+                $this->assign('agent', $agent);
+                $this->assign('act', 'edit');
+            }
+        }else{
+            $this->assign('act', 'add');
+        }
+        return $this->fetch();
+    }
+
+    /**
+     * 区域代理操作
+     */
+    public function agent_area_handle()
+    {
+        $data = I('post.');
+
+        //验证规则
+        $rules = [
+            'agency_level' => 'require|number|unique:config_regional_agency,agency_level^id',
+            'agency_name' => 'require|unique:config_regional_agency',
+            'team_sum' => 'number',
+            'other_sum' => 'number',
+            'rate' => 'require|between:0,100',
+        ];
+
+        //错误提示
+        $msg = [
+            'agency_level.require'          => '等级必填',
+            'agency_level.number'           => '等级必须是数字',
+            'agency_level.unique'           => '已存在相同的等级',
+            'agency_name.require'     => '名称必填',
+            'agency_name.unique'      => '已存在相同等级名称',
+            'team_sum.number'       => '最大代理佣金必须是数字',
+            'other_sum.number' => '代理拥金总和必须是数字',
+            'rate.require'           => '佣金占比必填',
+            'rate.between'           => '佣金占比在0-100之间',
+        ];
+
+        $validate = new Validate($rules,$msg);
+
+        $return = ['status' => 0, 'msg' => '参数错误', 'result' => ''];//初始化返回信息
+        if ($data['act'] == 'add') {
+            if (!$validate->batch()->check($data)) {
+                $return = ['status' => 0, 'msg' => '添加失败', 'result' => $validate->getError()];
+            } else {
+                $rateCount = M('config_regional_agency')->sum('rate');
+                if (($rateCount+$data['rate']) > 100) {
+                    $return = ['status' => 0, 'msg' => '编辑失败，所有等级佣金比率总和在100内', 'result' => ''];
+                } else {
+                    $r = D('config_regional_agency')->add($data);
+                    if ($r !== false) {
+                        $return = ['status' => 1, 'msg' => '添加成功', 'result' => $validate->getError()];
+                    } else {
+                        $return = ['status' => 0, 'msg' => '添加失败，数据库未响应', 'result' => ''];
+                    }
+                }
+            }
+        }
+        if ($data['act'] == 'edit') {
+            if (!$validate->batch()->check($data)) {
+                $return = ['status' => 0, 'msg' => '编辑失败', 'result' => $validate->getError()];
+            } else {
+                $rateCount = M('config_regional_agency')->where('id','neq',$data['id'])->sum('rate');
+                if (($rateCount+$data['rate']) > 100) {
+                    $return = ['status' => 0, 'msg' => '编辑失败，所有等级佣金比率总和在100内', 'result' => ''];
+                } else {
+                    $r = D('config_regional_agency')->where('id=' . $data['id'])->save($data);
+                    if ($r !== false) {
+                        // $data['rate'] = $data['rate'] / 100;
+                        // D('users')->where(['level' => $data['level_id']])->save($data);
+                        $return = ['status' => 1, 'msg' => '编辑成功', 'result' => $validate->getError()];
+                    } else {
+                        $return = ['status' => 0, 'msg' => '编辑失败，数据库未响应', 'result' => ''];
+                    }
+                }
+            }    
+        }
+        // if ($data['act'] == 'del') {
+        //     $r = D('user_level')->where('level_id=' . $data['level_id'])->delete();
+        //     if ($r !== false) {
+        //         $return = ['status' => 1, 'msg' => '删除成功', 'result' => ''];
+        //     } else {
+        //         $return = ['status' => 0, 'msg' => '删除失败，数据库未响应', 'result' => ''];
+        //     }
+        // }
+        $this->ajaxReturn($return);
+    }
 }

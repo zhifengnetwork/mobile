@@ -1,0 +1,101 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>区域代理等级管理 - 添加编辑区域代理等级</h3>
+                <h5>网站系统区域代理等级管理</h5>
+            </div>
+        </div>
+    </div>
+    
+    <form class="form-horizontal" id="handleposition" method="post">
+        <input type="hidden" name="act" value="{$act}">
+        <input type="hidden" name="id" value="{$agent.id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="agency_level"><em>*</em>等级</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="agency_level" value="{$agent.agency_level}" id="agency_level" class="input-txt" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                    <span class="err" id="err_agency_level"></span>
+                    <p class="notic">设置代理等级(整型)</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="agency_name"><em>*</em>等级名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="agency_name" value="{$agent.agency_name}" id="agency_name" class="input-txt">
+                    <span class="err" id="err_agency_name"></span>
+                    <p class="notic">设置代理等级名称</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="team_sum"><!-- <em>*</em> -->团队总佣金</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="team_sum" value="{$agent.team_sum}" id="team_sum" class="input-txt" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''">
+                    <span class="err" id="err_team_sum"></span>
+                    <p class="notic">达到该等级，团队总佣金 单位: 元</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="other_sum"><!-- <em>*</em> -->剩余代理拥金</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="other_sum" value="{$agent.other_sum}" id="other_sum" class="input-txt" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''">
+                    <span class="err" id="err_other_sum"></span>
+                    <p class="notic">达到该等级，剩余代理拥金 单位: 元</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="rate"><em>*</em>佣金占比</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="rate" value="{$agent.rate}" id="rate" class="input-txt" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                    <span class="err" id="err_rate"></span>
+                    <p class="notic">佣金占比单位为百分比，如输入10，表示该代理等级的用户可获得商品原价10%的佣金</p>
+                </dd>
+            </dl>
+            <div class="bot"><a href="JavaScript:void(0);" onclick="verifyForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    function verifyForm(){
+        $('span.err').show();
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/Distribut/agent_area_handle')}",
+            data: $('#handleposition').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {icon: 1});
+                    location.href = "{:U('Admin/Distribut/agent_area')}";
+                } else {
+                    layer.msg(data.msg, {icon: 2});
+                    $.each(data.result, function (index, item) {
+                        $('#err_' + index).text(item).show();
+                    });
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>
