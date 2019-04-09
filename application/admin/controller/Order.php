@@ -471,7 +471,10 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
                         'create_time'    => time(),
                         'send_type'      => 0,
                     ];
-                    $rest = Db::name('delivery_doc')->add($doc);
+                    $doc_cunzai = Db::name('delivery_doc')->where(['order_id' => $order['order_id']])->find();
+                    if(empty($doc_cunzai)){
+                        $rest = Db::name('delivery_doc')->add($doc);
+                    }
                 }
                 $arr[$k]['status'] = 1;
             }
