@@ -463,7 +463,6 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
                 'shipping_status'=> 0,
             ];
             $order     = Db::name('order')->where($where)->order('order_id DESC')->select();
-            $order_id  = $order['order_id'];
             //改变order 发货时的状态和信息
             $update['shipping_code']    = $shipping_arr[$arr[$key]['shipping_name']];
             $update['shipping_name']    = $arr[$key]['shipping_name'];
@@ -471,6 +470,7 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
             $update['shipping_status']  = 1;//订单改变为已发货
             if(count($order) < 1){
                 $arr[$k]['status'] = 0;
+                Db::name('delivery_order_handle')->insert($arr[$k]);
             }else{
                 foreach($order as $val){
                     $res = Db::name('order')->where('order_id',$val['order_id'])->update($update);
@@ -499,18 +499,24 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
                         if(empty($doc_cunzai)){
                             $rest = Db::name('delivery_doc')->add($doc);
                         }
+                        $arr[$k]['status']   = 1;
+                        $arr[$k]['order_id'] = $val['order_id'];
+                        $arr[$k]['order_sn'] = $val['order_sn'];
+                    }else{
+                        $arr[$k]['status']   = 0;
                     }
-                    $arr[$k]['status']   = 1;
-                    $arr[$k]['order_id'] = $val['order_id'];
-                    $arr[$k]['order_sn'] = $val['order_sn'];
                     $handle = Db::name('delivery_order_handle')->where(['order_id' => $val['order_id']])->find();
                     if(empty($handle)){
                         Db::name('delivery_order_handle')->insert($arr[$k]);
                     }
-                    
                }
 
             }
+
+           
+
+
+
         }
        sleep(1);
        $this->success('处理成功');
