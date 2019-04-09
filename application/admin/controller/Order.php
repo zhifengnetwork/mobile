@@ -342,7 +342,9 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
             mkdir ($paths,0777,true);
          }
         $info  = $file->validate(['size'=>204800,'ext'=>'xls,xlsx']);
+        
         $info  = $file->rule('md5')->move($paths);//加
+
         $datas = ROOT_PATH.DS.'public/upload/excel/'.$info->getSaveName();
        
         $fields =  Db::query("show fields from tp_delivery_order_handle");
@@ -487,8 +489,6 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
             $handle = Db::name('delivery_order_handle')->where(['invoice_no' => $arr[$k]['invoice_no']])->find();
             if(empty($handle)){
                 Db::name('delivery_order_handle')->insert($arr[$k]);
-            }else{
-                Db::name('delivery_order_handle')->where(['invoice_no' => $arr[$k]['invoice_no']])->update($arr[$k]);
             }
         }
        sleep(1);
