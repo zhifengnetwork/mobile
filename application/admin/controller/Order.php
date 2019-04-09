@@ -443,8 +443,8 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
             //改变order 发货时的状态和信息
             $update['shipping_code'] = $shipping_arr[$arr[$key]['shipping_name']];
             $update['shipping_name'] = $arr[$key]['shipping_name'];
-            $update['order_status']     = 1,//订单改变为已确认
-            $update['shipping_status']  = 1,//订单改变为已发货
+            $update['order_status']     = 1;//订单改变为已确认
+            $update['shipping_status']  = 1;//订单改变为已发货
 
             if($order_id){
                 $arr[$k]['status'] = 0;
@@ -470,7 +470,7 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
                         'invoice_no'     => $arr[$k]['invoice_no'],
                         'create_time'    => time(),
                         'send_type'      => 0,
-                    ]
+                    ];
                     Db::name('delivery_doc')->add($doc);
                 }
                 $arr[$k]['status'] = 1;
