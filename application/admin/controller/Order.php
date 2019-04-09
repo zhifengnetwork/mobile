@@ -431,7 +431,7 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
            
         }
         //物流公司
-         $shipping_arr = Db::name('shipping')->column('shipping_name','shipping_code');
+         $shipping_arr = Db::name('shipping')->column('shipping_code','shipping_name');
 
 
         // 写入数据库操作
