@@ -14,6 +14,7 @@ class Diqu extends Controller
 
         $logic = new RegionalAgencyLogic();
         $res = $logic->upgrade();
+
         // array(2) {
         //    ["status"] => int(1)
         //    ["msg"] => string(45) "升级到地级市代理级别，地区为空"

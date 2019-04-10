@@ -72,7 +72,7 @@ class Sign extends Controller
             if ($user['is_distribut'] == 1) {
                 //查询签到记录看已经连续签到是次数是否达到了设置的值
                 $distribut_continue_sign_num = $this->goods_continue_sign($user_id, 'sign_distribut');
-                //echo '|||||||||||||||||'.$distribut_continue_sign_num;die;
+               
                 if ($distribut_continue_sign_num >= $sign_distribut_days) {
                     //使得user表中代理领礼物次数+1
                     //M('user')->where(['user_id'=>$user_id])->save(['distribut_free_num'=>'distribut_free_num+1']);

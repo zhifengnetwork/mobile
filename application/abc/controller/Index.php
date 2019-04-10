@@ -67,7 +67,7 @@ class Index extends Controller
         // $con['user_id'] = array('gt',50000);
         // ->where($con)
         $res = M('oauth_users')->field('user_id,openid,count(*) as count')->group('openid')->having('count(*)>1')->limit(1)->order('user_id desc')->select();
-        // dump($res);die;
+      
         $liang_openid = M('oauth_users')->where(['openid'=>$res[0]['openid']])->field('user_id,openid')->select();
         dump($liang_openid);
 

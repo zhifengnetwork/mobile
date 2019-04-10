@@ -106,7 +106,7 @@ class RegionalAgencyLogic
         $now_level_id = $now['agency_level'];
         //如果存在
         
-        if($now_level_id < $can_level_id){
+        if($now_level_id < $can_level_id && $now_level_id != 0){
             //可以升级
             $update = [
                 'agency_level'=>$can_level_id

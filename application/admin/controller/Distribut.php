@@ -159,7 +159,7 @@ class Distribut extends Base {
     // {
     //     $UsersLogic = new UsersLogic();    
     //     $cat_list = $UsersLogic->relation();
-    //     // dump($cat_list);die;
+  
     //     if($cat_list){
     //         $level = array_column($cat_list, 'level');
     //         $heightLevel = max($level);
