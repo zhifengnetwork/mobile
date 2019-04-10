@@ -162,7 +162,7 @@ class Goods extends ApiBase
      */
     public function goodsAttr()
     {
-        $goods_id = I("get.goods_id/d", 0);
+        $goods_id = I("get.goods_id/d", 104);		//$goodsLogic = new GoodsLogic(); $res = $goodsLogic->get_spec($goods_id,'pc'); print_r($res); exit;
         $goods_attribute = M('GoodsAttribute')->getField('attr_id,attr_name'); // 查询属性
         $goods_attr_list = M('GoodsAttr')->where("goods_id", $goods_id)->select(); // 查询商品属性表
 
