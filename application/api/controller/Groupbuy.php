@@ -22,7 +22,7 @@ class Groupbuy extends ApiBase
      *  空操作：当访问拼团控制器不存在的方法时，重定向到拼团列表页
     */
     public function _empty(){
-        return $this->redirect('grouplist');
+		$this->ajaxReturn(['status' => -2, 'msg' => '请求错误', 'data' => '']);
     }
 
 
@@ -30,11 +30,11 @@ class Groupbuy extends ApiBase
      * 拼团列表
      */
     public function grouplist()
-    {	
+    {	/*
 		$user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
-        }	
+        }*/		$user_id = 12;	
         
 		$page = I('post.page/d',1);
 		$num = I('post.num/d',6);
