@@ -18,20 +18,19 @@ class PerformanceLogic
         $openid = session('user.openid');
        
         $user_agent_money = M('agent_performance')->where(['user_id'=>$user_id])->find();
-     
+   
         $tuandui_money =  (float)$user_agent_money['agent_per'];
 
         $logic = new \app\common\logic\AgentPerformanceOldLogic();
         $oldPerformance = $logic->getAllData($openid);
         //这是老的历史业绩，加上新的
        
-
         $add_logic = new \app\common\logic\AgentPerformanceAddLogic();
         $xiubu_yeji = $add_logic->get_bu($user_id);
 
         $zong_yeji = $tuandui_money + $oldPerformance + $xiubu_yeji;
         //总业绩
-    
+     
         $per_logic = new \app\common\logic\PerformanceLogic();
         $max_team_total  = $per_logic->tuandui_max_yeji($user_id);
 
@@ -71,14 +70,13 @@ class PerformanceLogic
     public function tuandui_max_yeji($user_id){
         
         $user = M('users')->where(['first_leader'=>$user_id])->column('user_id');
-       
+     
         $yeji = M('agent_performance')->where('user_id', ['in', $user])->field('agent_per,user_id')->select();
-        
+      
         $logic = new \app\common\logic\AgentPerformanceOldLogic();
        
         $add_logic = new \app\common\logic\AgentPerformanceAddLogic();
       
-
         //所有下级业绩
         $all_yeji = array();
         foreach($yeji as $k => $v){
@@ -99,9 +97,9 @@ class PerformanceLogic
         $res = $all_yeji[0];
         // $res = $yeji[0]['agent_per'];
        
-        if($res == 0){
-            $res = M('users')->where(['user_id'=>$user_id])->value('team');
-        }
+        //if($res == 0){
+           // $res = M('users')->where(['user_id'=>$user_id])->value('team');
+        //}
        
         $res = $res == 0 ? 0 : $res;
 
