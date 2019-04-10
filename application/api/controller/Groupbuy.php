@@ -110,7 +110,8 @@ class Groupbuy extends ApiBase
             # 正在开团的数量
             $team_found_num = Db::table('tp_team_found')
                 ->where('team_id',$info['team_id'])
-                ->where('found_end_time', '<', time())
+				->where('found_time', '<', time())
+                ->where('found_end_time', '>', time())
                 ->where('status', 1)
                 ->count();
 
@@ -121,7 +122,8 @@ class Groupbuy extends ApiBase
                     ->field('`found_id`,`found_time`,`found_end_time`,`user_id`,`nickname`,`head_pic`,`order_id`,`join`,`need`')
                     ->order('found_end_time asc')
                     ->where('team_id',$info['team_id'])
-                    ->where('found_end_time', '<', time())
+                    ->where('found_time', '<', time())
+                ->where('found_end_time', '>', time())
                     ->where('status', 1)
                     ->limit(2)
                     ->select();
@@ -146,6 +148,35 @@ class Groupbuy extends ApiBase
             $this->ajaxReturn(['status' => -6 , 'msg'=>'商品信息不存在','data'=>null]);
         }
     }
+
+    /**
+     * 获取正在开团的前5人//结束时间升序
+     */
+	 public function getTeamFive(){  
+		$user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }	
+
+        $team_id = I('post.team_id/d',0);
+        # 拼团ID
+        if(!$team_id){
+			$this->ajaxReturn(['status' => -2 , 'msg'=>'活动参数错误','data'=>null]);
+        } 
+
+		$team_found = Db::table('tp_team_found')
+			->field('`found_id`,`found_time`,`found_end_time`,`user_id`,`nickname`,`head_pic`,`order_id`,`join`,`need`')
+			->order('found_end_time asc')
+			->where('team_id',$team_id)
+			->where('found_time', '<', time())
+            ->where('found_end_time', '>', time())
+			->where('status', 1)
+			->order('found_end_time asc')
+			->limit(5)
+			->select();
+
+		$this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功','data'=>['team_found'=>$team_found]]);
+	 }
 
     /**
      * 检查开团数
