@@ -1,5 +1,5 @@
 <?php
-
+use app\common\logic\PerformanceLogic;
 
 
 /**
@@ -11,15 +11,9 @@ function get_nickname($user_id){
 
 function get_agent_log($user_id){
 
-	
-	$agent_money = M('agent_performance')->where(['user_id'=>$user_id])->find();
-	
-	if(empty($agent_money)){
-		$money = 0;
-	}else{
-		$money = $agent_money['ind_per']+$agent_money['agent_per'];
-	}
-
+	$logic = new PerformanceLogic();
+	$res = $logic->distribut_caculate_by_user_id($user_id);
+	$money = $res['money_total'];
 	return $money;
 }
 function get_agent_user($first_leader){
