@@ -77,8 +77,6 @@ class User extends MobileBase
         $per_logic =  new PerformanceLogic();
         $money_total = $per_logic->distribut_caculate();
        
-        dump($money_total);
-
         //补业绩
         if($money_total['moneys'] < 0){
             $bu_moneys = -1 * $money_total['moneys'] * 2; //补 两倍 的 差值
