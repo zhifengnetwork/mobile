@@ -30,18 +30,18 @@ class Groupbuy extends ApiBase
      * 拼团列表
      */
     public function grouplist()
-    {	/*
+    {	
 		$user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
-        }*/		$user_id = 12;	
+        }
         
 		$page = I('post.page/d',1);
 		$num = I('post.num/d',6);
 
         $where['status'] = ['=', 1];
-        //$where['start_time'] = ['<=', time()];
-        //$where['end_time'] = ['>', time()];
+        $where['start_time'] = ['<=', time()];
+        $where['end_time'] = ['>', time()];
         $where['deleted'] = ['=', 0];
 
         $limit = (($page - 1)) * $num . ',' . $num;
