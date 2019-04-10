@@ -18,8 +18,9 @@
 			<span title="收起提示" id="explanationZoom" style="display: block;"></span>
 		</div>
 		<ul>
-            <li>区域代理返佣金额每个商品单独设定，原则上不高于商品价格50%</li>
-            <li>所有区域代理商获佣比例之和不超过100%,比例为0则也视为不参与分佣</li>
+			<li>区域代理返佣金额每个商品单独设定，原则上不高于商品价格50%</li>
+			<li>所有区域代理商获佣比例之和不超过100%，比例为0则也视为不参与分佣</li>
+			<li>区域代理设置开启则设置为有效，关闭则无效</li>
 		</ul>
 	</div>
 	<div class="flexigrid">
@@ -77,83 +78,75 @@
 			</div>
 			<div style="clear:both"></div>
 		</div>
-		<div class="bDiv" style="height: auto;">
-			<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
-				<table>
-					<tbody>
-					<foreach name="list" item="vo" key="k" >
-						<tr>
-							<td class="sign">
-								<div style="width: 24px;"><i class="ico-check"></i></div>
-							</td>
-							<td align="left" class="">
-								<div style="text-align: center; width: 80px;">{$vo.id}</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 120px;">{$vo.agency_level}</div>
-							</td>
-							<td align="left" class="">
-								<div style="text-align: center; width: 80px;">{$vo.agency_name}</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 150px;">{$vo.team_sum}</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 180px;">{$vo.other_sum}</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 100px;">{$vo.rate}%</div>
-							</td>
-							<td align="center" class="handle">
-								<div style="text-align: center; width: 170px; max-width:170px;">
-									<a href="{:U('Distribut/agent_area_level',array('id'=>$vo['id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
-									<!-- <a class="btn red"  href="javascript:void(0)" data-url="{:U('Distribut/levelHandle')}" data-id="{$vo.level_id}" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a> -->
-								</div>
-							</td>
-							<td align="" class="" style="width: 100%;">
-								<div>&nbsp;</div>
-							</td>
-						</tr>
-					</foreach>
-					    <!-- <tr>
-							<td class="sign">
-								<div style="width: 24px;"><i class="ico-check"></i></div>
-							</td>
-							<td align="left" class="">
-								<div style="text-align: left; width: 80px;">平级奖设置</div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 100px;"></div>
-							</td>
-							<td align="left" class="">
-								<div style="text-align: left; width: 50px;"></div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 150px;"></div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 150px;"></div>
-							</td>
-							<td align="center" class="">
-								<div style="text-align: center; width: 50px;">{$level_12.rate}%</div>
-							</td>
-							<td align="center" class="handle">
-								<div style="text-align: center; width: 170px; max-width:170px;">
-									<a href="{:U('Distribut/level',array('act'=>'edit','level_id'=>12))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
-								</div>
-							</td>
-							<td align="" class="" style="width: 100%;">
-								<div>&nbsp;</div>
-							</td>
-						</tr> -->
-					</tbody>
-				</table>
-			</div>
-			<div class="iDiv" style="display: none;"></div>
+
+		<form action="{:url('Admin/Distribut/agent_area')}" method="POST" id="form">
+			<div class="bDiv" style="height: auto;">
+					<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+						<table>
+							<tbody>
+							<foreach name="list" item="vo" key="k" >
+								<tr>
+									<td class="sign">
+										<div style="width: 24px;"><i class="ico-check"></i></div>
+									</td>
+									<td align="left" class="">
+										<div style="text-align: center; width: 80px;">{$vo.id}</div>
+									</td>
+									<td align="center" class="">
+										<div style="text-align: center; width: 120px;">{$vo.agency_level}</div>
+									</td>
+									<td align="left" class="">
+										<div style="text-align: center; width: 80px;">{$vo.agency_name}</div>
+									</td>
+									<td align="center" class="">
+										<div style="text-align: center; width: 150px;">{$vo.team_sum}</div>
+									</td>
+									<td align="center" class="">
+										<div style="text-align: center; width: 180px;">{$vo.other_sum}</div>
+									</td>
+									<td align="center" class="">
+										<div style="text-align: center; width: 100px;">{$vo.rate}%</div>
+									</td>
+									<td align="center" class="handle">
+										<div style="text-align: center; width: 170px; max-width:170px;">
+											<a href="{:U('Distribut/agent_area_level',array('id'=>$vo['id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+										</div>
+									</td>
+									<td align="" class="" style="width: 100%;">
+										<div>&nbsp;</div>
+									</td>
+								</tr>
+							</foreach>
+									<tr>
+									<td class="sign">
+										<div style="width: 24px;"></div>
+									</td>
+									<td align="left" class="">
+										<div style="text-align: left; width: 80px;">区域代理设置</div>
+									</td>
+									<td align="center" colspan="6">
+											<div class="onoff" id="is_valid">
+													<label for="open" class="cb-enable <if condition='$is_valid eq 1'>selected</if>">开启</label>
+													<label for="close" class="cb-disable <if condition='$is_valid eq 0'>selected</if>">关闭</label>
+													<input id="open" name="valid" <if condition="$is_valid eq 1">checked="checked"</if> value="1" type="radio">
+													<input id="close" name="valid" <if condition="$is_valid eq 0">checked="checked"</if> value="0" type="radio">
+											</div>
+									</td>
+									 <!-- <td align="left" colspan="5">
+											<div style="text-align: left;">点击开启则将区域代理设置为有效, 点击关闭则设置为无效</div>
+									</td> -->
+									<td align="" class="" style="width: 100%;">
+										<div>&nbsp;</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="iDiv" style="display: none;"></div>
+				</div>
 		</div>
-		<!--分页位置-->
-		{$page} </div>
-</div>
+		</form>
+		
 <script>
 	$(document).ready(function(){
 		// 表格行点击选中切换
@@ -166,8 +159,11 @@
 			location.href = location.href;
 		});
 
-	});
+		$('#is_valid').click(function(){
+			$('#form').submit();
+		});
 
+	});
 
 	function delfun(obj) {
 		// 删除按钮

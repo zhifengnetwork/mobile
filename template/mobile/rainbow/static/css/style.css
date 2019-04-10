@@ -1192,7 +1192,7 @@ footer .flool3 p {
 }
 .logo-wrap-bg {
 	height:7.893333rem;
-	padding-top:2.56rem;
+	padding-top:0.8rem;
 	background:url(../images/pic-logo-bg.png) no-repeat 0 0;
 	background-size:cover;
 }
@@ -1202,7 +1202,7 @@ footer .flool3 p {
 .login-logo-wrap {
 	display:block;
 	width:5.802666rem;
-	height:2.346666rem;
+	
 	margin:auto;
 	overflow:hidden;
 }
@@ -12031,22 +12031,15 @@ pre {
 }
 
 .zjy_a{
-	display: block;
-    width: 1.8rem;
-    height: 1.8rem;
-    line-height: 1.8rem;
-	border: 1px solid #ccc;
-	border-radius: 50%;
-	background: #eee;
 	position: fixed;
-	bottom: 3.6rem;
-	right: 1.1rem;
-	text-align: center;
+	top: 65%;
+	right: 2%;
+	display: block;
+    width: 13%;
 }
 .zjy_a img{
-	width: 1.8rem !important;
-	height: 1.8rem !important;
-	display: inline-block;
+	display: block;
+	width: 100%;
 }
 
 

@@ -159,7 +159,7 @@ class Distribut extends Base {
     // {
     //     $UsersLogic = new UsersLogic();    
     //     $cat_list = $UsersLogic->relation();
-    //     // dump($cat_list);die;
+  
     //     if($cat_list){
     //         $level = array_column($cat_list, 'level');
     //         $heightLevel = max($level);
@@ -507,9 +507,17 @@ class Distribut extends Base {
      * 区域代理设置
      */
     public function agent_area()
-    {
+    {   
+        //开启或关闭区域代理
+        if(IS_POST){
+            $value = I('valid'); 
+            $result = M('config')->where('name', 'is_valid')->update(['value'=>$value]);
+        }
+        
         $count = M('config_regional_agency')->count();
         $agent_area = M('config_regional_agency')->select();
+        $is_valid = M('config')->where('name', 'is_valid')->value('value');
+        $this->assign('is_valid', $is_valid);
         $this->assign('list', $agent_area);
         $this->assign('count', $count);
         return $this->fetch();
@@ -564,7 +572,9 @@ class Distribut extends Base {
 
         $validate = new Validate($rules,$msg);
 
-        $return = ['status' => 0, 'msg' => '参数错误', 'result' => ''];//初始化返回信息
+        //初始化返回信息
+        $return = ['status' => 0, 'msg' => '参数错误', 'result' => ''];
+        //添加代理等级
         if ($data['act'] == 'add') {
             if (!$validate->batch()->check($data)) {
                 $return = ['status' => 0, 'msg' => '添加失败', 'result' => $validate->getError()];
@@ -582,6 +592,7 @@ class Distribut extends Base {
                 }
             }
         }
+        //修改代理等级
         if ($data['act'] == 'edit') {
             if (!$validate->batch()->check($data)) {
                 $return = ['status' => 0, 'msg' => '编辑失败', 'result' => $validate->getError()];

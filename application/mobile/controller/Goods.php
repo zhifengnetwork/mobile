@@ -51,7 +51,7 @@ class Goods extends MobileBase
 ////        var_dump(array_column($categorys[0],'id'));
 //        $this->assign('categoryList',$categoryList);
 //        $this->assign('categorys',$categorys);
-////        print_r($categorys[0]);die;
+
 //        return $this->fetch();
 //    }
 ////20190320 直接显示二级列表和三级分类及其图片名称
@@ -89,7 +89,7 @@ class Goods extends MobileBase
 //        $this->assign('secondCategoryList',$secondCategoryList);
 ////        $this->assign('threadCategoryList',$threadCategoryList);
 ////        $this->assign('goods',$goods);
-////        print_r($secondCategoryList);die;
+
 //        return $this->fetch();
 //    }
 
@@ -122,7 +122,7 @@ class Goods extends MobileBase
         $this->assign('secondCategoryList',$secondCategoryList);
 //        $this->assign('threadCategoryList',$threadCategoryList);
 //        $this->assign('goods',$goods);
-//        print_r($secondCategoryList);die;
+
         return $this->fetch();
     }
 
@@ -612,7 +612,6 @@ class Goods extends MobileBase
             if ($filter_goods_id2)
                 $goods_images = M('goods_images')->where("goods_id", "in", implode(',', $filter_goods_id2))->cache(true)->select();
         }
-        var_dump($goods_list);die;
 
         $goods_category = M('goods_category')->where('is_show=1')->cache(true)->getField('id,name,parent_id,level'); // 键值分类数组
         $this->assign('goods_list', $goods_list);

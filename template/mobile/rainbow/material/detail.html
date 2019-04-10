@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="__STATIC__/js/public/rem.js"></script>
 	<link rel="stylesheet" href="__STATIC__/css/public_lb/public.css" />
-	<link rel="stylesheet" href="__STATIC__/css/material/detail.css?v=1552362679" />
+	<link rel="stylesheet" href="__STATIC__/css/material/detail.css?v=1552362680" />
         
 </head>
 <body>
@@ -23,7 +23,7 @@
 		<div class="title-wrap">
 			<div class="title">{$atDetail['title']}</div>
 			<div class="date">
-				<span>作者：saaaaa</span>&nbsp;
+				<span>作者：{$atDetail['author']}</span>&nbsp;&nbsp;&nbsp;
 				<span>{$atDetail['add_time']|date="Y-m-d H:i:s",###}</span>
 			</div>
 			<div class="what">
@@ -32,7 +32,7 @@
 			
 			
 			<div class="date">
-					<span>阅读：<if condition="$vs['click'] gt 0 ">{$vs['click']}<else/>0</if></span>
+					<span>阅读：<if condition="$atDetail['click'] gt 0 ">{$atDetail['click']}<else/>0</if></span>
 					
 				</div>
 			
