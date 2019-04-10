@@ -600,7 +600,7 @@ function flash_sale_time_space()
 {
     $now_day = date('Y-m-d');
     $now_time = date('H');
-    if ($now_time % 2 == 0) {
+    if ($now_time % 2 == 1) {
         $flash_now_time = $now_time;
     } else {
         $flash_now_time = $now_time - 1;
