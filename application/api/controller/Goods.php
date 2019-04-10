@@ -156,4 +156,16 @@ class Goods extends ApiBase
         ];
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
     }
+
+    /*
+     * 获取商品规格
+     */
+    public function goodsAttr()
+    {
+        $goods_id = I("get.goods_id/d", 0);
+        $goods_attribute = M('GoodsAttribute')->getField('attr_id,attr_name'); // 查询属性
+        $goods_attr_list = M('GoodsAttr')->where("goods_id", $goods_id)->select(); // 查询商品属性表
+
+		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['goods_attr_list'=>$goods_attr_list,'goods_attribute'=>$goods_attribute]]);
+    }
 }
