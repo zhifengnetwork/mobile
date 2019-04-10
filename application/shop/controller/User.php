@@ -67,7 +67,7 @@ class User extends MobileBase
     }
 
     public function index()
-    {
+    
 
         $this->redirect('mobile/user/index');
         exit;

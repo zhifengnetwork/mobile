@@ -302,16 +302,31 @@ class User extends MobileBase
     public function fenxiang()
     {
         $user_id = session('user.user_id');
-
+        if(!$user_id){
+            $this->redirect('fenxiang_no');
+            exit;
+        }
         $userinfo = M('users')->where(['user_id'=>$user_id])->find();
+        if(!$userinfo){
+            $this->redirect('fenxiang_no');
+            exit;
+        }
         if($userinfo['is_distribut'] == 0 && $userinfo['is_agent'] == 0){
-            return $this->fetch('fenxiang_no');
+            $this->redirect('fenxiang_no');
+            exit;
         }
 
         $this->redirect('fenxiang1');
         //正在跳转
     }
     
+    /**
+     * 没权限
+     */
+    public function fenxiang_no(){
+
+        return $this->fetch();
+    }
 
     /**
      * 新的分享
@@ -320,6 +335,23 @@ class User extends MobileBase
     {
         
         $user_id = session('user.user_id');
+
+       
+        if(!$user_id){
+            $this->redirect('fenxiang_no');
+            exit;
+        }
+        $userinfo = M('users')->where(['user_id'=>$user_id])->find();
+        if(!$userinfo){
+            $this->redirect('fenxiang_no');
+            exit;
+        }
+        if($userinfo['is_distribut'] == 0 && $userinfo['is_agent'] == 0){
+            $this->redirect('fenxiang_no');
+            exit;
+        }
+
+     
         $head_pic_url = M('users')->where(['user_id'=>$user_id])->value('head_pic');
 
         $logic = new ShareLogic();
@@ -417,22 +449,22 @@ class User extends MobileBase
         return $this->fetch('fenxiang');
     }
 
-    public function fen()
-    {
-        $user_id = session('user.user_id');
-        $url = SITE_URL.'?first_leader='.$user_id;
-        $this->assign('url',$url);
-        $qr_back = M('config')->where(['name'=>'qr_back'])->value('value');
-        $this->assign('qr_back',$qr_back);
+    // public function fen()
+    // {
+    //     $user_id = session('user.user_id');
+    //     $url = SITE_URL.'?first_leader='.$user_id;
+    //     $this->assign('url',$url);
+    //     $qr_back = M('config')->where(['name'=>'qr_back'])->value('value');
+    //     $this->assign('qr_back',$qr_back);
 
-        $head_pic = session('user.head_pic');
-        $this->assign('head_pic',$head_pic);
+    //     $head_pic = session('user.head_pic');
+    //     $this->assign('head_pic',$head_pic);
 
-        $nickname = session('user.nickname');
-        $this->assign('nickname',$nickname);
+    //     $nickname = session('user.nickname');
+    //     $this->assign('nickname',$nickname);
 
-        return $this->fetch();
-    }
+    //     return $this->fetch();
+    // }
     
 
     public function logout()

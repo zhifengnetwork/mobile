@@ -16,6 +16,74 @@ function get_agent_log($user_id){
 	$money = $res['money_total'];
 	return $money;
 }
+
+/**
+ * 获取上级名称
+ */
+function get_first_leader_name($user_id){
+	
+	$first_leader = M('users')->where(['user_id'=>$user_id])->value('first_leader');
+
+	if($first_leader == 0){
+	
+		$openid = M('users')->where(['user_id'=>$user_id])->value('openid');
+
+		$access_token = access_token();
+		$url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
+	
+		$resp = httpRequest($url, "GET");
+		$res = json_decode($resp, true);
+
+		if($res['subscribe'] == 0){
+			return '<font color="red">没有关注公众号</font>';
+		}else{
+			//关注情况
+			if($res['subscribe_scene'] == 'ADD_SCENE_PROFILE_CARD'){
+				return '<font color="green">名片分享关注</font>';
+			}
+			if($res['subscribe_scene'] == 'ADD_SCENE_SEARCH'){
+				return '<font color="green">搜索公众号关注</font>';
+			}
+			if($res['subscribe_scene'] == 'ADD_SCENE_ACCOUNT_MIGRATION'){
+				return '<font color="green">公众号迁移关注</font>';
+			}
+			if($res['subscribe_scene'] == 'ADD_SCENEPROFILE_LINK'){
+				return '<font color="green">图文页内名称点击</font>';
+			}
+			if($res['subscribe_scene'] == 'ADD_SCENE_PROFILE_ITEM'){
+				return '<font color="green">图文页右上角菜单关注</font>';
+			}
+			if($res['subscribe_scene'] == 'ADD_SCENE_PAID'){
+				return '<font color="green">支付后关注</font>';
+			}
+			if($res['subscribe_scene'] == 'ADD_SCENE_OTHERS'){
+				return '<font color="green">其他渠道关注</font>';
+			}
+			if($res['subscribe_scene'] == 'ADD_SCENE_QR_CODE'){
+				if(is_numeric($res['qr_scene_str']) == false){
+					return '<font color="blue">扫描旧海报关注</font>';
+				}else{
+					return '<font color="blue">扫描（'.$res['qr_scene_str'].'）二维码</font>';
+				}
+			}
+			return '无';
+		}
+
+	}else{
+
+		$first_leader_user = M('users')->where(['user_id'=>$first_leader])->find();
+
+		if($first_leader_user['nickname'] == null)
+		{
+			$name = $first_leader_user['mobile'];
+		}else{
+			$name = $first_leader_user['nickname'];
+		}
+	}
+
+	return $name;
+}
+
 function get_agent_user($first_leader){
 
 	
