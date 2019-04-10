@@ -33,7 +33,7 @@ class Groupbuy extends ApiBase
     {	
 		$user_id = $this->get_user_id();
         if(!$user_id){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>new class{}]);
         }
         
 		$page = I('post.page/d',1);
@@ -52,7 +52,7 @@ class Groupbuy extends ApiBase
             ->field('t.team_id,t.act_name,t.goods_name,t.goods_id,t.group_price,t.start_time,t.end_time,t.group_number,t.purchase_qty,g.shop_price,g.market_price,g.original_img')
             ->select();  
         // dump(Db::table('tp_team_activity')->getLastSql());exit;
-        $this->ajaxReturn(['status' => 0, 'msg' => '请求成功！', 'data' => $list]);
+        $this->ajaxReturn(['status' => 0, 'msg' => '请求成功！', 'data' => new class{} ]);
     }
 
     /*
@@ -63,13 +63,13 @@ class Groupbuy extends ApiBase
     {
 		$user_id = $this->get_user_id();
         if(!$user_id){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>new class{}]);
         }
 
         $team_id = I('post.team_id/d',0);
         # 拼团ID
         if(!$team_id){
-			$this->ajaxReturn(['status' => -2 , 'msg'=>'活动参数错误','data'=>'']);
+			$this->ajaxReturn(['status' => -2 , 'msg'=>'活动参数错误','data'=>new class{}]);
         } 
         # 查看拼团信息
         $info = Db::table('tp_team_activity')
@@ -82,13 +82,13 @@ class Groupbuy extends ApiBase
         if($info){
             # 对拼团活动状态进行判断
             if($info['start_time'] > time()){
-                $this->ajaxReturn(['status' => -3 , 'msg'=>'活动未开启','data'=>'']);
+                $this->ajaxReturn(['status' => -3 , 'msg'=>'活动未开启','data'=>new class{}]);
             }
             if($info['end_time'] <= time()){
-                $this->ajaxReturn(['status' => -4 , 'msg'=>'活动已结束','data'=>'']);
+                $this->ajaxReturn(['status' => -4 , 'msg'=>'活动已结束','data'=>new class{}]);
             }
             if($info['deleted']){
-                $this->ajaxReturn(['status' => -5 , 'msg'=>'活动已关闭','data'=>'']);
+                $this->ajaxReturn(['status' => -5 , 'msg'=>'活动已关闭','data'=>new class{}]);
             }
 
 
@@ -143,7 +143,7 @@ class Groupbuy extends ApiBase
 			$this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功！','data'=>$data]);
 
         }else{
-            $this->ajaxReturn(['status' => -6 , 'msg'=>'商品信息不存在','data'=>'']);
+            $this->ajaxReturn(['status' => -6 , 'msg'=>'商品信息不存在','data'=>new class{}]);
         }
     }
 
@@ -261,7 +261,7 @@ class Groupbuy extends ApiBase
     public function falceOrder(){ 
 		$user_id = $this->get_user_id();
         if(!$user_id){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>new class{}]);
         }
 		$user = M('Users')->field('user_id,user_money,head_pic,nickname')->find($user_id);
 
@@ -279,11 +279,11 @@ class Groupbuy extends ApiBase
 		# 数据验证
 		if(!$buy_type || !$team_id || !$buy_num){
 			ajaxReturn(['status'=>0, 'msg'=>'订单提交失败，参数错误']);
-			$this->ajaxReturn(['status' => -2 , 'msg'=>'订单提交失败，参数错误','data'=>'']);
+			$this->ajaxReturn(['status' => -2 , 'msg'=>'订单提交失败，参数错误','data'=>new class{}]);
 		}
 
 		if(!$address_id){
-			$this->ajaxReturn(['status' => -3 , 'msg'=>'请选择配送地址','data'=>'']);
+			$this->ajaxReturn(['status' => -3 , 'msg'=>'请选择配送地址','data'=>new class{}]);
 		}
 
 		# 获取商品信息
@@ -294,26 +294,26 @@ class Groupbuy extends ApiBase
 			->field('t.team_id, t.act_name, t.time_limit, t.goods_id, t.goods_item_id, t.needer, t.goods_name, t.deleted, t.group_price, t.cluster_type, t.start_time, t.end_time, t.buy_limit, t.sales_sum, t.max_open_num, g.cat_id, g.goods_sn, g.seller_id, g.shop_price, g.market_price,g.cost_price')
 			->find();
 		if(!$info){
-			$this->ajaxReturn(['status'=>-4, 'msg'=>'订单提交失败,商品信息不存在','data'=>'']);
+			$this->ajaxReturn(['status'=>-4, 'msg'=>'订单提交失败,商品信息不存在','data'=>new class{}]);
 		}
 		# 对拼团活动状态进行判断
 		if($info['start_time'] > time()){
-			$this->ajaxReturn(['status'=>-5, 'msg'=>'订单提交失败,活动未开启','data'=>'']);
+			$this->ajaxReturn(['status'=>-5, 'msg'=>'订单提交失败,活动未开启','data'=>new class{}]);
 		}
 		if($info['end_time'] <= time()){
-			$this->ajaxReturn(['status'=>-6, 'msg'=>'订单提交失败,活动已结束','data'=>'']);
+			$this->ajaxReturn(['status'=>-6, 'msg'=>'订单提交失败,活动已结束','data'=>new class{}]);
 		}
 		if($info['deleted']){
-			$this->ajaxReturn(['status'=>-7, 'msg'=>'订单提交失败,活动已关闭','data'=>'']);
+			$this->ajaxReturn(['status'=>-7, 'msg'=>'订单提交失败,活动已关闭','data'=>new class{}]);
 		}
 		if($info['buy_limit'] > 0 && $buy_num > $info['buy_limit']){
-			$this->ajaxReturn(['status'=>-8, 'msg'=>'最大限购数量：'.$info['buy_limit'],'data'=>'']);
+			$this->ajaxReturn(['status'=>-8, 'msg'=>'最大限购数量：'.$info['buy_limit'],'data'=>new class{}]);
 		}
 		# 发起拼团，判断开团最大数
 		if($buy_type == 2 && $info['max_open_num']){
 			$open_team = Db::query("select count(*) from `tp_team_found` where `team_id` = '$info[team_id]' and `status` in ('1','2')");
 			if($open_team && $info['max_open_num'] <= $open_team[0]['count']){
-				$this->ajaxReturn(['status'=>-9, 'msg'=>'订单提交失败,已达到最大开团数','data'=>'']);
+				$this->ajaxReturn(['status'=>-9, 'msg'=>'订单提交失败,已达到最大开团数','data'=>new class{}]);
 			}
 		}
 
@@ -340,7 +340,7 @@ class Groupbuy extends ApiBase
 			if($info['goods_item_id']){
 				$spec = Db::query("select `price`,`cost_price`,`key`,`key_name` from `tp_spec_goods_price` where `item_id` = '$info[goods_item_id]' and `goods_id` = '$info[goods_id]'");
 				if(!$spec){
-					$this->ajaxReturn(['status'=>-10, 'msg'=>'订单提交失败,商品信息不存在','data'=>'']);
+					$this->ajaxReturn(['status'=>-10, 'msg'=>'订单提交失败,商品信息不存在','data'=>new class{}]);
 				}
 				
 				$final_price = $price = $spec[0]['price'];
@@ -438,7 +438,7 @@ class Groupbuy extends ApiBase
 			$ogins = Db::execute($ogsql);
 			if(!$ogins){
 				Db::execute("delete from `tp_order` where `order_id` = '$order_insid'");
-				$this->ajaxReturn(['status'=>-11, 'msg'=>'订单提交失败，订单商品写入失败','data'=>'']);
+				$this->ajaxReturn(['status'=>-11, 'msg'=>'订单提交失败，订单商品写入失败','data'=>new class{}]);
 			}
 
 			# 单独购买 || 拼团
@@ -472,7 +472,7 @@ class Groupbuy extends ApiBase
 					$this->ajaxReturn(['status'=>0, 'msg'=>'订单提交成功','data'=>['type'=>2]]);
 				}else{
 					Db::execute("delete from `tp_order` where `order_id` = '$order_insid'");
-					$this->ajaxReturn(['status'=>-13, 'msg'=>'订单提交失败，开团时不成功','data'=>'']);
+					$this->ajaxReturn(['status'=>-13, 'msg'=>'订单提交失败，开团时不成功','data'=>new class{}]);
 				}
 			}else{
 				# 更新用户余额
@@ -481,7 +481,7 @@ class Groupbuy extends ApiBase
 				$this->ajaxReturn(['status'=>0, 'msg'=>'订单提交成功','data'=>['type'=>1]]);
 			}
 		}else{
-			$this->ajaxReturn(['status'=>-14, 'msg'=>'订单提交失败,创建订单失败','data'=>'']);
+			$this->ajaxReturn(['status'=>-14, 'msg'=>'订单提交失败,创建订单失败','data'=>new class{}]);
 		}
 
     }
