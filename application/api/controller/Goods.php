@@ -198,8 +198,7 @@ class Goods extends ApiBase
 
 		$page = I('post.page/d',1);
 		$num = I('post.num/d',6);
-		$limit = (($page - 1)) * $num . ',' . $num;	    $where['comment_id'] = ['not in',[82,83,84,85,86,87,79,78,75]];
-
+		$limit = (($page - 1)) * $num . ',' . $num;	    
         $list = M('Comment')
             ->alias('c')
             ->join('__USERS__ u', 'u.user_id = c.user_id', 'LEFT')
