@@ -12031,22 +12031,15 @@ pre {
 }
 
 .zjy_a{
-	display: block;
-    width: 1.8rem;
-    height: 1.8rem;
-    line-height: 1.8rem;
-	border: 1px solid #ccc;
-	border-radius: 50%;
-	background: #eee;
 	position: fixed;
-	bottom: 3.6rem;
-	right: 1.1rem;
-	text-align: center;
+	top: 55%;
+	right: 2%;
+	display: block;
+    width: 13%;
 }
 .zjy_a img{
-	width: 1.8rem !important;
-	height: 1.8rem !important;
-	display: inline-block;
+	display: block;
+	width: 100%;
 }
 
 
