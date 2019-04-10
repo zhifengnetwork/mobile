@@ -34,7 +34,7 @@ class Groupbuy extends ApiBase
 		$user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
-        }	*/		$user_id = 12;
+        }	*/			$user_id = 12;
 
         $type =I('get.type');
         $order = 'gb.start_time desc';
