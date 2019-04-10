@@ -179,4 +179,43 @@ class Goods extends ApiBase
 
 		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['spec_goods_price'=>$spec_goods_price]]);
     }
+
+    /*
+     * 获取商品评论
+     */
+    public function getGoodsComment()
+    {
+        $goods_id = I("post.goods_id/d", 272);
+        $commentType = I('commentType', '1'); // 1 全部 2好评 3 中评 4差评
+        if ($commentType == 5) {
+            $where = array(
+                'goods_id' => $goods_id, 'parent_id' => 0, 'img' => ['<>', ''], 'is_show' => 1
+            );
+        } else {
+            $typeArr = array('1' => '0,1,2,3,4,5', '2' => '4,5', '3' => '3', '4' => '0,1,2');
+            $where = array('is_show' => 1, 'goods_id' => $goods_id, 'parent_id' => 0, 'ceil((deliver_rank + goods_rank + service_rank) / 3)' => ['in', $typeArr[$commentType]]);
+        }
+
+		$page = I('post.page/d',1);
+		$num = I('post.num/d',6);
+		$limit = (($page - 1)) * $num . ',' . $num;	    $where['comment_id'] = ['not in',[82,83,84,85,86,87,79,78,75]];
+
+        $list = M('Comment')
+            ->alias('c')
+            ->join('__USERS__ u', 'u.user_id = c.user_id', 'LEFT')
+            ->where($where)->field('c.*,ceil((deliver_rank + goods_rank + service_rank) / 3) as goods_rank ,u.head_pic')
+            ->order("add_time desc")
+            ->limit($limit)
+            ->select();
+	
+        foreach ($list as $k => $v) {		
+            $list[$k]['img'] = unserialize($v['img']); // 晒单图片
+            $reply = M('Comment')->where(['is_show' => 1, 'goods_id' => $goods_id, 'parent_id' => $v['comment_id']])->order("add_time desc")->select();	
+			$list[$k]['reply'] = $reply ? $reply : null;
+            //$list[$k]['reply_num'] = Db::name('reply')->where(['comment_id' => $v['comment_id'], 'parent_id' => 0])->count();
+        }
+
+		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['commentlist'=>$list]]);
+    }
+
 }
