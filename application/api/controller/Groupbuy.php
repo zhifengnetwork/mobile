@@ -30,11 +30,11 @@ class Groupbuy extends ApiBase
      * 拼团列表
      */
     public function grouplist()
-    {		
+    {		/*
 		$user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
-        }
+        }	*/		$user_id = 12;
 
         $type =I('get.type');
         $order = 'gb.start_time desc';
@@ -47,16 +47,15 @@ class Groupbuy extends ApiBase
 											
 		$page = I('post.page/d',1);
 		$num = I('post.num/d',6);
-		$limit = (($page - 1)) * $num . ',' . $num;
+		$limit = (($page - 1)) * $num . ',' . $num;  
         $list = M('Group_buy')
             ->alias('gb')
 			->field('gb.id,g.goods_id,g.goods_name,gb.price as group_price,gb.start_time,gb.end_time,gb.order_num,g.original_img')
             ->join('__GOODS__ g', 'gb.goods_id=g.goods_id AND g.prom_type=2')
             ->where($group_by_where)
-            ->page($page->firstRow, $page->listRows)
             ->order($order)
 			->limit($limit)
-            ->select();		 
+            ->select();		
 		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功！', 'data' => ($list ? $list : null) ]);
 
     }
