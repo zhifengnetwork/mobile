@@ -52,8 +52,11 @@ class Material extends MobileBase {
         if(!$atID){
             return json(['code'=>'-1', 'msg'=>'请传入ID']);
         }
+        //修改阅读量
+        M('material')->where('material_id', $atID)->setInc('click');
+
         // 根据id获取对应内容
-        $atDetail = M('material')->field('material_id, cat_id, title, keywords, add_time, describe, content, click, thumb')->where('material_id', $atID)->find();
+        $atDetail = M('material')->field('material_id, cat_id, title, keywords, author, add_time, describe, content, click, thumb')->where('material_id', $atID)->find();
         if(!$atDetail){
             return json(['code'=>'-1', 'msg'=>'获取的内容不存在']);
         }

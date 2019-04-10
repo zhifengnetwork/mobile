@@ -29,7 +29,7 @@ html, body {overflow: visible;}
         </dt>
         <dd class="opt">
           <input type="text" value="{$info.title}" name="title" class="input-txt">
-          <span class="err" id="err_title"></span>
+          <span class="err" id="err_title"></span> 
           <p class="notic"></p>
         </dd>
       </dl>
@@ -114,7 +114,17 @@ html, body {overflow: visible;}
           <span class="err" id="err_link"></span>
           <p class="notic">当填写"链接"后点击素材标题将直接跳转至链接地址，不显示素材内容。链接格式请以http://开头</p>
         </dd>
-      </dl> -->    
+      </dl> --> 
+      <dl class="row">
+        <dt class="tit">
+          <label>作者</label>
+        </dt>
+        <dd class="opt">
+          <input type="text" value="{$info.author}" name="author" class="input-txt" placeholder="管理员">
+          <span class="err" id="err_author"></span> 
+          <p class="notic">默认为管理员</p>
+        </dd>
+      </dl>   
       <dl class="row">
         <dt class="tit">
           <label>发布</label>
