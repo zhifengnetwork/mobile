@@ -56,6 +56,7 @@ class Goods extends ApiBase
         $sort = I('sort', 'sort');          // 排序
         $sort_asc = I('sort_asc', 'desc');  // 排序
         $price = I('price', '');            // 价钱
+        $goods_id = I('goods_id/d');            // 商品id
         $start_price = trim(I('start_price', '0'));         // 输入框价钱
         $end_price = trim(I('end_price', '0'));             // 输入框价钱
         if ($start_price && $end_price) $price = $start_price . '-' . $end_price; // 如果输入框有价钱 则使用输入框的价钱
@@ -120,6 +121,14 @@ class Goods extends ApiBase
         $filter_spec = $goodsLogic->get_filter_spec($filter_goods_id, $filter_param, 'goodsList', 1); // 获取指定分类下的筛选规格
         $filter_attr = $goodsLogic->get_filter_attr($filter_goods_id, $filter_param, 'goodsList', 1); // 获取指定分类下的筛选属性
 
+        $now_goods = '';
+        if($goods_id){
+            $now_goods = M('goods')
+            ->field('goods_id,seller_id,cat_id,goods_sn,goods_name,comment_count,shop_price,market_price,sku')
+            ->where(array('goods_id'=>$goods_id))
+            ->find(); // 获取当前点击的商品信息
+        }
+
         $count = count($filter_goods_id);
         $page = new Page($count, C('PAGESIZE'));
         if ($count > 0) {
@@ -136,11 +145,12 @@ class Goods extends ApiBase
             if ($filter_goods_id2)
                 $goods_images = M('goods_images')->where("goods_id", "in", implode(',', $filter_goods_id2))->cache(true)->select();
         }
-        $goods_category = M('goods_category')->where('is_show=1')->cache(true)->getField('id,name,parent_id,level'); // 键值分类数组
+        // $goods_category = M('goods_category')->where('is_show=1')->cache(true)->getField('id,name,parent_id,level'); // 键值分类数组
         C('TOKEN_ON', false);
         $data = [
+            'now_goods' => $now_goods,              //当前点击的商品
             'goods_list' => $goods_list,            // 商品列表
-            'goods_category' => $goods_category,    // 商品分类
+            // 'goods_category' => $goods_category,    // 商品分类
             'goods_images' => $goods_images,        // 相册图片
             'filter_menu' => $filter_menu,          // 筛选菜单
             'filter_spec' => $filter_spec,          // 筛选规格

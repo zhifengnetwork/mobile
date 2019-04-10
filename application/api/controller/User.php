@@ -42,7 +42,7 @@ class User extends ApiBase
         //解密token
         $user_id = $this->get_user_id();
         if($user_id!=""){
-            $data = Db::name("users")->where('user_id',$user_id)->field('user_id,nickname,user_money,head_pic,agent_user,first_leader,realname,mobile,is_distribut,is_agent')->find();
+            $data = Db::name("users")->where('user_id',$user_id)->field('user_id,nickname,user_money,head_pic,agent_user,first_leader,realname,mobile,is_distribut,is_agent,sex,birthyear,birthmonth,birthday')->find();
         }else{
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
@@ -229,7 +229,7 @@ class User extends ApiBase
 
     /**
      * +---------------------------------
-     * 修改名称
+     * 修改个人信息 名称、头像、生日
      * +---------------------------------
     */
     public function update_username()
@@ -302,4 +302,46 @@ class User extends ApiBase
         }
     }
 
+    /**
+     * +---------------------------------
+     * 修改个人信息 名称、头像、生日
+     * +---------------------------------
+    */
+    public function my_wallet(){
+        
+        $user_id = $this->get_user_id();
+        $userLogic = new UsersLogic();
+        $user_info = $userLogic->get_info($user_id);  // 获取用户信息
+        // 统计用户优惠券数量
+        $coupon_num = M('coupon_list')->where(array('uid'=>$user_id))->count('id');
+        // $couponList = M('coupon_list')->alias('cl')
+        //     // ->field('v.visit_id, v.goods_id, v.visittime, g.goods_name, g.shop_price, g.cat_id')
+        //     ->join('coupon c', 'cl.cid=c.id')
+        //     ->where('cl.uid', $user_id)
+        //     ->order('cl.send_time desc')
+        //     ->select();
+        $user_info = [
+            'user_money' => $user_info['user_money']?$user_info['user_money']:0, // 余额
+            'pay_points' => $user_info['pay_points']?$user_info['pay_points']:0, // 积分
+            'coupon_num' => $coupon_num, // 优惠券数量
+            'alipay' => $user_info['alipay'], // 支付宝
+            'bank_name' => $user_info['bank_name'], // 银行名称
+            'bank_card' => $user_info['bank_card'], // 银行卡号
+        ];
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$user_info]);
+        
+    }
+
+    /**
+     * +---------------------------------
+     * 用户关注收藏列表
+     * +---------------------------------
+    */
+    public function collect_list()
+    {
+        $user_id = $this->get_user_id();
+        $userLogic = new UsersLogic();
+        $data = $userLogic->get_goods_collect($user_id);
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data['result']]);
+    }
 }
