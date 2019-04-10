@@ -389,18 +389,18 @@ function delCookie(name){
 */
 function set_first_leader()
 { 
-	 //获取地址栏 分销推广链接id 将推荐人id 存入cookie
-	 var first_leader = GetUrlParams("first_leader");
-	 if(!(first_leader > 0)){
-		 first_leader = GetFirstLeaderByMode('first_leader/');
-    	 if(first_leader == -1){
-    		 first_leader = GetFirstLeaderByMode('first_leader=');
-    	 } 
-	 }
-	 // 将推荐人id 存入cookie	
-	 if(first_leader > 0){
-		 setCookies('first_leader', first_leader);
-	 }
+	//  //获取地址栏 分销推广链接id 将推荐人id 存入cookie
+	//  var first_leader = GetUrlParams("first_leader");
+	//  if(!(first_leader > 0)){
+	// 	 first_leader = GetFirstLeaderByMode('first_leader/');
+    // 	 if(first_leader == -1){
+    // 		 first_leader = GetFirstLeaderByMode('first_leader=');
+    // 	 } 
+	//  }
+	//  // 将推荐人id 存入cookie	
+	//  if(first_leader > 0){
+	// 	 setCookies('first_leader', first_leader);
+	//  }
 }
 
 function GetFirstLeaderByMode(mode){
