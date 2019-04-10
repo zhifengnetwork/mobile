@@ -30,32 +30,26 @@ class Groupbuy extends ApiBase
      * 拼团列表
      */
     public function grouplist()
-    {		/*
+    {	
 		$user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
-        }	*/			$user_id = 12;
-
-        $type =I('get.type');
-        $order = 'gb.start_time desc';
-        $group_by_where = array(
-            'gb.start_time'=>array('lt',time()),
-            'gb.end_time'=>array('gt',time()),
-            'g.is_on_sale'=>1,
-            'gb.is_end'            =>0,
-        );
+        }
 											
 		$page = I('post.page/d',1);
-		$num = I('post.num/d',6);
-		$limit = (($page - 1)) * $num . ',' . $num;  
-        $list = M('Group_buy')
-            ->alias('gb')
-			->field('gb.id,g.goods_id,g.goods_name,gb.price as group_price,gb.start_time,gb.end_time,gb.order_num,g.original_img')
-            ->join('__GOODS__ g', 'gb.goods_id=g.goods_id AND g.prom_type=2')
-            ->where($group_by_where)
-            ->order($order)
-			->limit($limit)
-            ->select();		
+		$num = I('post.num/d',2);
+		$limit = (($page - 1)) * $num . ',' . $num;	 
+
+        $where['status'] = ['=', 1];
+        $where['start_time'] = ['<=', time()];
+        $where['end_time'] = ['>', time()];
+        $where['deleted'] = ['=', 0];
+        $list = Db::table('tp_team_activity')->where($where)->order('end_time asc')
+            ->limit($limit)
+            ->alias('t')
+            ->Join('goods g',"g.goods_id=t.goods_id",'LEFT')
+            ->field('t.team_id,t.act_name,t.goods_name,t.goods_id,t.group_price,t.start_time,t.end_time,t.group_number,t.sales_sum,t.purchase_qty,g.shop_price,g.market_price,g.original_img')
+            ->select();
 		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功！', 'data' => ($list ? $list : null) ]);
 
     }
