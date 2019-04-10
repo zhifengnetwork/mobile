@@ -27,11 +27,14 @@ span {
 }
 
 .title-wrap .what p {
-	margin: 5% 0 0 2%;
+	margin: 5% 0 0 2.5%;
 	line-height: .46rem !important;
 	width: 95%;
 	font-size: .26rem !important;
 	text-indent: .25rem;
+}
+.title-wrap .what p img {
+	display: block;
 }
 
 .title-wrap .code {
