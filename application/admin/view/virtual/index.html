@@ -1,0 +1,211 @@
+<include file="public/layout" /> 
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+	<div class="fixed-bar">
+		<div class="item-title"> 	
+			<div class="subject">
+				<h3>首页滚动列表</h3>
+				<h5>首页滚动列表信息管理</h5>
+			</div>
+		</div>
+	</div>
+
+	<!-- 操作说明 -->
+	<div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+		<div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+		  <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+		  <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+		</div>
+		 <ul>
+			<li>首页滚动列表信息管理 , 点击添加首页滚动内容可添加新的展示内容</li>
+		</ul>
+	</div>
+	
+	<div class="flexigrid">
+		<div class="mDiv">
+			<div class="ftitle">
+				<h3>列表</h3>
+				<h5>(共{$pager->totalRows}条记录)</h5>
+			</div>
+			<div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+
+			<form class="navbar-form form-inline" id="search-form" method="POST" action="" onSubmit="return check_form();">
+				<input type="hidden" name="timegap" id="timegap" value="{$timegap}">
+				<div class="sDiv">
+					<div class="sDiv2" style="margin-right: 10px;">
+						<input type="text" size="30" id="start_time" value="{$begin}" placeholder="起始时间" class="qsbox">
+						<input type="button" class="btn" value="起始时间">
+					</div>
+					<div class="sDiv2" style="margin-right: 10px;">
+						<input type="text" size="30" id="end_time" value="{$end}" placeholder="截止时间" class="qsbox">
+						<input type="button" class="btn" value="截止时间">
+					</div>
+					<div class="sDiv2">
+						<input type="button" onclick="clickSearch(this,'search-form')"  class="btn" value="搜索">
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="hDiv">
+			<div class="hDivBox">
+				<table cellspacing="0" cellpadding="0">
+					<thead>
+					<tr>
+						<th class="sign" axis="col0">
+							<div style="width: 24px;"><i class="ico-check"></i></div>
+						</th>
+						<th align="center" axis="col3" class="">
+							<div style="text-align: center; width: 50px;" class="">ID</div>
+                        </th>
+                        <th align="center" axis="col3" class="">
+                            <div style="text-align: center; width: 100px;" class="">头像</div>
+                        </th>
+						<th align="center" axis="col3" class="">
+							<div style="text-align: center; width: 300px;" class="">展示内容</div>
+						</th>
+						<th align="center" axis="col4" class="">
+							<div style="text-align: center; width: 100px;" class="">是否展示</div>
+						</th>
+						<th align="center" axis="col4" class="">
+							<div style="text-align: center; width: 150px;" class="">添加时间</div>
+						</th>
+						<th align="center" class="handle">
+							<div style="text-align: center; width: 200px;">操作</div>
+						</th>
+						<th style="width:100%" axis="col7">
+							<div></div>
+						</th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+
+		<div class="tDiv">
+            <div class="tDiv2">
+                <div class="fbutton">
+                    <a href="{:url('Admin/Virtual/handle_virtual',array('act'=>'add'))}">
+                        <div class="add" title="添加首页滚动内容">
+                            <span><i class="fa fa-share"></i>添加首页滚动内容</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+		
+		<div class="bDiv" style="height: auto;">
+			<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+				<table>
+					<tbody>
+					<foreach name="list" item="vo" key="k" >
+						<tr>
+							<td class="sign">
+								<div style="width: 24px;"><i class="ico-check"></i></div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 50px;">{$vo.id}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                    <img src="{$vo.head_ico}" style="width:20px; height: 20px;"/>
+                                </div>
+                            </td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 300px;">{$vo.content}</div>
+							</td>
+							<td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                    <if condition='$vo[is_show] eq 1'>
+                                        <span class="yes" onClick="changeTableVal('virtual_order','id','{$vo.id}','is_show',this)"><i
+                                                class="fa fa-check-circle"></i>是</span>
+                                        <else/>
+                                        <span class="no"
+                                                onClick="changeTableVal('virtual_order','id','{$vo.id}','is_show',this)"><i
+                                                class="fa fa-ban"></i>否</span>
+                                    </if>
+                                </div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 150px;">{$vo.create_time|date="Y-m-d H:i:s", ###}</div>
+							</td>
+							<td align="center" class="handle">
+								<div style="text-align: center; width: 200px; max-width:200px;">
+                                    <a class="btn blue" href="{:U('Virtual/handle_virtual',array('id'=>$vo['id'], 'act'=>'edit'))}"><i class="fa fa-search"></i>编辑</a>
+                                    <!-- <a class="btn blue" href="{:U('Virtual/del_order',array('id'=>$vo['id']))}"><i class="fa fa-trash-o"></i>删除</a> -->
+								</div>
+							</td>
+							<td align="" class="" style="width: 100%;">
+								<div>&nbsp;</div>
+							</td>
+						</tr>
+					</foreach>
+					</tbody>
+				</table>
+			</div>
+			<div class="iDiv" style="display: none;"></div>
+		</div>
+		<!--分页位置-->
+			{$pager->show()}
+		 </div>
+</div>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<script>
+	$(document).ready(function(){
+		// 表格行点击选中切换
+		$('#flexigrid > table>tbody >tr').click(function(){
+			$(this).toggleClass('trSelected');
+		});
+
+		// 点击刷新数据
+		$('.fa-refresh').click(function(){
+			location.href = location.href;
+		});
+
+		//选中全部
+        $('.hDivBox .sign').click(function(){
+        var sign = $('#flexigrid > table>tbody>tr');
+        if($(this).parent().hasClass('trSelected')){
+            sign.each(function(){
+                $(this).removeClass('trSelected');
+            });
+            $(this).parent().removeClass('trSelected');
+        }else{
+            sign.each(function(){
+                $(this).addClass('trSelected');
+            });
+            $(this).parent().addClass('trSelected');
+        }
+        });
+
+        // 起始位置日历控件
+        $('#start_time').layDate();
+        $('#end_time').layDate();
+	});
+
+    function check_form(){
+		var start_time = $.trim($('#start_time').val());
+		var end_time =  $.trim($('#end_time').val());
+		if(start_time == '' ^ end_time == ''){
+			layer.alert('请选择完整的时间间隔', {icon: 2});
+			return false;
+		}	
+		if(start_time > end_time){
+			layer.alert('请选择正确的起始时间', {icon: 2});
+			return false;
+		}
+		if(start_time !== '' && end_time !== ''){
+				$('#timegap').val(start_time+","+end_time);
+		}
+		if(start_time == '' && end_time == ''){
+				$('#timegap').val('');
+		}		 
+		return true;
+	}
+</script>
+</body>
+</html>

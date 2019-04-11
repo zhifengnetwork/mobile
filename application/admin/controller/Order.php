@@ -65,9 +65,11 @@ class Order extends Base {
         $order_sn ? $condition['order.order_sn'] = trim($order_sn) : false;
 
         //搜索昵称,手机号码,快递单号
+        $users_id = ($keyType && $keyType == 'users_id') ? $keywords : I('users_id') ;
         $nickname = ($keyType && $keyType == 'nickname') ? $keywords : I('nickname') ;
         $mobile = ($keyType && $keyType == 'mobile') ? $keywords : I('mobile') ;
         $invoice_no = ($keyType && $keyType == 'invoice_no') ? $keywords : I('invoice_no') ;
+        $users_id ? $condition['users.user_id'] = trim($users_id) : false;
         $nickname ? $condition['users.nickname'] = ['like', '%' . trim($nickname) . '%'] : false;
         $mobile ? $condition['order.mobile'] = ['like', '%' . trim($mobile) . '%'] : false;
         $invoice_no ? $condition['delivery.invoice_no'] = trim($invoice_no) : false;
