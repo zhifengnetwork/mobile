@@ -109,7 +109,8 @@ class RegionalAgencyLogic
         if($now_level_id < $can_level_id && $now_level_id != 0){
             //可以升级
             $update = [
-                'agency_level'=>$can_level_id
+                'agency_level'=>$can_level_id,
+                'is_show'=>0
             ];
             M('user_regional_agency')->where(['user_id'=>$user_id])->update($update);
              //写log
