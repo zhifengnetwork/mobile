@@ -1,0 +1,118 @@
+<include file="public/layout" />
+<style>
+    td{height:40px;line-height:40px; padding-left:20px;}
+    .span_1{
+        float:left;
+        margin-left:0px;
+        height:130px;
+        line-height:130px;
+    }
+    .span_1 ul{list-style:none;padding:0px;}
+    .span_1 ul li{
+        border:1px solid #CCC;
+        height:40px;
+        padding:0px 10px;
+        margin-left:-1px;
+        margin-top:-1px;
+        line-height:40px;
+    }
+    #textarea{
+        height: 80px;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>首页滚动内容管理 - 添加编辑内容</h3>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="form" method="post">
+        <input type="hidden" name="act" value="{$act}"/>
+        <input type="hidden" name="id" value="{$info.id}"/>
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label>是否展示</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+
+                        <!-- 设置为代理时默认为分销商 -->
+                        <label for="is_show1" class="cb-enable <if condition='$info.is_show eq 1'>selected</if>"><span>是</span></label>
+                        <label for="is_show2" class="cb-disable <if condition='$info.is_show eq 0'>selected</if>"><span>否</span></label>
+                        <input id="is_show1" name="is_show" value="1" type="radio" <if condition="$info['is_show'] eq 1">checked</if>>
+                        <input id="is_show2" name="is_show" value="0" type="radio" <if condition="$info['is_show'] eq 0">checked</if>>
+                    </div>
+                    <p class="notic">如果开启，则在首页显示。</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="head_ico">上传头像</label>
+                </dt>
+                <dd class="opt">
+                    <div class="input-file-show">
+                        <span class="show">
+                            <a class="nyroModal" rel="gal" href="{$info.head_ico}"> 
+                                <i class="fa fa-picture-o" onMouseOver="layer.tips('<img src={$info.head_ico}>',this,{tips: [1, '#fff']})" onMouseOut="layer.closeAll()"></i>
+                            </a>
+                        </span>
+                        <span class="type-file-box">
+                                <input type="text" id="head_ico" name="head_ico" value="{$info.head_ico}" class="type-file-text">
+                                <input type="button" name="button" id="button_ico" value="选择上传..." class="type-file-button">
+                                <input class="type-file-file" onClick="GetUploadify(1,'head_ico','virtual_head','')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击按钮选择文件并提交表单后上传生效">
+                        </span>
+                    </div>
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>展示内容</label>
+                </dt>
+                <dd class="opt">
+                    <textarea rows="10" cols="60" id="textarea" name="content">{$info.content}</textarea>
+                    <p class="notic">请输入首页滚动展示内容</p>
+                </dd>
+            </dl>
+           
+            <!-- <dl class="row">
+                <dt class="tit">
+                    <label>会员等级</label>
+                </dt>
+                <dd class="opt">
+                	<select id="level" name="level">
+                        <option value="0" selected>---不选择等级---</option>
+                		<tpshop sql="select * from `__PREFIX__user_level` where level_id != 12" key="k" item='v'>
+                		<option value="{$v[level_id]}">{$v[level_name]}</option>
+                		</tpshop>
+                	</select>
+                </dd>
+            </dl> -->
+          
+            <div class="bot"><a href="JavaScript:void(0);" onclick="checkUpdate();" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function checkUpdate(){
+        var content = $('#textarea').val();
+
+        if(!content){
+            layer.alert('订单内容不能为空!', {icon: 2});
+            return false;
+        }
+
+        $('#form').submit();
+    }
+</script>
+</body>
+</html>

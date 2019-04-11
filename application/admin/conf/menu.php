@@ -86,6 +86,7 @@ return array(
             array('name' => '添加订单', 'act' => 'add_order', 'op' => 'Order'),
             array('name' => '订单日志', 'act' => 'order_log', 'op' => 'Order'),
             array('name' => '发货单处理', 'act' => 'delivery_order_handle', 'op' => 'Order'),
+            array('name' => '首页滚动', 'act' => 'index', 'op' => 'Virtual'),
             // array('name' => '发票管理','act'=>'index', 'op'=>'Invoice'),
             //     array('name' => '拼团列表','act'=>'team_list','op'=>'Team'),
             //     array('name' => '拼团订单','act'=>'order_list','op'=>'Team'),
