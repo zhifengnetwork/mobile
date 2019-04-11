@@ -153,22 +153,7 @@ class Activity extends ApiBase {
 		$list = M('Auction')->alias('A')->field($field)->join("$goods G" ,"A.goods_id=G.goods_id",'LEFT')->where(['A.is_end'=>0])->order("A.preview_time desc")->find();	
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$list]]);
     }
-
-    public function coupon_list()
-    {
-        $atype = I('atype', 1);
-        $user = session('user');
-        $p = I('p', '');
-
-        $activityLogic = new ActivityLogic();
-        $result = $activityLogic->getCouponList($atype, $user['user_id'], $p);
-        $this->assign('coupon_list', $result);
-        if (request()->isAjax()) {
-            return $this->fetch('ajax_coupon_list');
-        }
-        return $this->fetch();
-    }
-
+    
     /**
      * 领券
      */
@@ -211,6 +196,26 @@ class Activity extends ApiBase {
             return $this->fetch('ajax_pre_sell_list');
         }
         return $this->fetch();
+    }
+
+    /**
+     * +---------------------------------
+     * 优惠券列表中心
+     * +---------------------------------
+    */
+    public function coupon_list()
+    {
+        $user_id = $this->get_user_id();
+        $atype = I('atype', 1);
+        $p = I('p', '');
+        $activityLogic = new ActivityLogic();
+        $result = $activityLogic->getCouponList($atype, $user_id, $p);
+        // $this->assign('coupon_list', $result);
+        // if (request()->isAjax()) {
+        //     return $this->fetch('ajax_coupon_list');
+        // }
+        $result['coupon_list'] = $result;
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$result['coupon_list']]);
     }
 
 }
