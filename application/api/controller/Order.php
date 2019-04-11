@@ -188,7 +188,7 @@ class Order extends ApiBase
 
         } catch (TpshopException $t) {
             $error = $t->getErrorArr();
-            $this->ajaxReturn($error);
+            $this->ajaxReturn(['status' => -5, 'msg' => $error, 'data'=> null]);
         }	
 	 }
 	  

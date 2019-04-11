@@ -213,11 +213,12 @@
 	position: relative;
 	margin: 55% auto 0;
 	width: 70%;
-	height: 9rem;
+	height: 6.5rem;
 	background: #fff;
-	border-radius: 6px;
+	border-radius: 15px;
 }
 .popup h2 {
+	font-weight:normal;
 	line-height: 1.95rem;
 	text-align: center;
 	font-size: .86rem;
@@ -240,13 +241,13 @@
 	font-size: .56rem;
 	text-align: center;
 	line-height: 1rem;
-	border-radius: 6px;
+	border-radius: .95rem;
 }
 .popup .shut {
 	position: absolute;
-	top: 0;
-	right: 0;
-	width: 8%;
+	top: -15%;
+	right: -10%;
+	width: 9%;
 }
 .popup .shut img {
 	display: block;

@@ -72,7 +72,8 @@ class JWT
         $timestamp = is_null(static::$timestamp) ? time() : static::$timestamp;
 
         if (empty($key)) {
-            throw new InvalidArgumentException('Key may not be empty');
+            // throw new InvalidArgumentException('Key may not be empty');
+            return 'Key may not be empty';
         }
         $tks = explode('.', $jwt);
         if (count($tks) != 3) {
