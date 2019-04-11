@@ -293,6 +293,24 @@ class User extends MobileBase
         $up_url = "http://www.dchqzg1688.com/api/distribut/upgrade?user_id=".$user_id;
         httpRequest($up_url);
 
+
+        //省代：开关
+        $regional_agency_is_valid = (int)M('config')->where(['name'=>'is_valid'])->value('value');
+        if($regional_agency_is_valid == 1){
+            //省代、等等
+            $user_regional_agency = M('user_regional_agency')->where(['user_id'=>$user_id,'region_id'=>0])->find();
+            if($user_regional_agency){
+                //名字
+                $config_regional_agency = M('config_regional_agency')->where(['agency_level'=>$user_regional_agency['agency_level']])->find();
+                $user_regional_agency['agency_name'] = $config_regional_agency['agency_name'];
+                $user_regional_agency['rate'] = $config_regional_agency['rate'];
+            }
+            $this->assign('user_regional_agency', $user_regional_agency);
+        }
+        $this->assign('regional_agency_is_valid', $regional_agency_is_valid);
+
+        
+
         return $this->fetch();
     }
 
