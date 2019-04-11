@@ -2260,7 +2260,7 @@ class User extends MobileBase
                 $this->ajaxReturn(['status'=>0, 'msg'=>'地址不能为空']);
             }
             $result = M('user_regional_agency')->where('user_id', $data['user_id'])
-                    ->update(['region_id'=>$area]);
+                    ->update(['region_id'=>$area, 'is_show'=>1]);
             if($result){
                 $this->ajaxReturn(['status'=>1, 'msg'=>'保存成功']);
             }else{
@@ -2268,8 +2268,14 @@ class User extends MobileBase
             }
         }
         $user_id = session('user.user_id');
+        $desc = array(
+            '1' => '区县代理： (团队业绩达500万， 除开最大代理， 其他业绩大于200万)可以自选一个区县， 享受地区单5%分红， 先到先得, 领完为止。',
+            '2' => '地级市代理： (团队业绩达2000万， 除开最大代理， 其他业绩大于1000万)可以自选一个地级市， 享受地区单3%分红。',
+            '3' => '省代： (团队业绩达8000万， 除开最大代理， 其他业绩大于3000万)可以自选一个省， 享受地区单2%分红。',
+        );
         $result = M('user_regional_agency')->where('user_id', $user_id)->find();
         $this->assign('result', $result);
+        $this->assign('desc', $desc[$result['agency_level']]);
         return $this->fetch();
     }
 
