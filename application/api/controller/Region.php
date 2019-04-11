@@ -25,7 +25,7 @@ class Region extends ApiBase
         }else{
             $data = Db::name('region')->field('id,name')->where('level', 1)->select();
         }
-        $this->ajaxReturn(['status' => 1, 'msg' => '获取成功','data' => $data]);
+        $this->ajaxReturn(['status' => 0, 'msg' => '获取成功','data' => $data]);
     }
 
    

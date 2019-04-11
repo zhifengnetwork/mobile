@@ -153,7 +153,7 @@ class Activity extends ApiBase {
 		$list = M('Auction')->alias('A')->field($field)->join("$goods G" ,"A.goods_id=G.goods_id",'LEFT')->where(['A.is_end'=>0])->order("A.preview_time desc")->find();	
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$list]]);
     }
-    
+
     /**
      * 领券
      */
@@ -206,6 +206,9 @@ class Activity extends ApiBase {
     public function coupon_list()
     {
         $user_id = $this->get_user_id();
+        if (!IS_POST) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>'']);
+        }
         $atype = I('atype', 1);
         $p = I('p', '');
         $activityLogic = new ActivityLogic();
