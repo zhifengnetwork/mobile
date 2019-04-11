@@ -6,6 +6,7 @@ namespace app\api\controller;
 use app\common\model\Users;
 use app\common\logic\UsersLogic;
 use think\Db;
+use think\Page;
 
 class User extends ApiBase
 {
@@ -127,13 +128,13 @@ class User extends ApiBase
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
         $data =  db('user_address')->where('user_id', $user_id)->select();
-        $region_list = db('region')->cache(true)->getField('id,name');
-        foreach ($data as $k => $v) {
-            $v['province']=$region_list[$v['province']];
-            $v['city']=$region_list[$v['city']];
-            $v['district'] = $region_list[$v['district']];
-            $v['twon']=$region_list[$v['twon']];
-        }
+        // $region_list = db('region')->cache(true)->getField('id,name');
+        // foreach ($data as $k => $v) {
+        //     $v['province']=$region_list[$v['province']];
+        //     $v['city']=$region_list[$v['city']];
+        //     $v['district'] = $region_list[$v['district']];
+        //     $v['twon']=$region_list[$v['twon']];
+        // }
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
     }
 
@@ -344,4 +345,74 @@ class User extends ApiBase
         $data = $userLogic->get_goods_collect($user_id);
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data['result']]);
     }
+
+    /**
+     * +---------------------------------
+     * 用户浏览记录
+     * +---------------------------------
+    */
+    public function visit_log()
+    {
+        $user_id = $this->get_user_id();
+        $count = M('goods_visit')->where('user_id', $user_id)->count();
+        $Page = new Page($count, 20);
+        $visit = M('goods_visit')->alias('v')
+            ->field('v.visit_id, v.goods_id, v.visittime, g.goods_name, g.shop_price, g.cat_id, g.comment_count, g.sales_sum')
+            ->join('__GOODS__ g', 'v.goods_id=g.goods_id')
+            ->where('v.user_id', $user_id)
+            ->order('v.visittime desc')
+            ->limit($Page->firstRow, $Page->listRows)
+            ->select();
+
+        /* 浏览记录按日期分组 */
+        $curyear = date('Y');
+        $visit_list = [];
+        foreach ($visit as $v) {
+            if ($curyear == date('Y', $v['visittime'])) {
+                $date = date('m月d日', $v['visittime']);
+            } else {
+                $date = date('Y年m月d日', $v['visittime']);
+            }
+            $visit_list[$date][] = $v;
+        }
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$visit_list]);
+    }
+
+    /**
+     * +---------------------------------
+     * 用户删除浏览记录
+     * +---------------------------------
+    */
+    public function del_visit_log()
+    {
+        $user_id = $this->get_user_id();
+        $visit_ids = I('get.visit_ids', 0);
+        if(!$visit_ids){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'visit_ids不可为空','data'=>$row]);
+        }
+        $row = M('goods_visit')->where('visit_id','IN', $visit_ids)->delete();
+        if(!$row) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'操作失败','data'=>$row]);
+
+        } else {
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'操作成功','data'=>$row]);
+        }
+    }
+
+    /**
+     * +---------------------------------
+     * 用户清空浏览记录
+     * +---------------------------------
+    */
+    public function clear_visit_log()
+    {
+        $user_id = $this->get_user_id();
+        $row = M('goods_visit')->where('user_id', $user_id)->delete();
+        if(!$row) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'操作失败','data'=>$row]);
+        } else {
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'操作成功','data'=>$row]);
+        }
+    }
+
 }
