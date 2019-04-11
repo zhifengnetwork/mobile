@@ -2244,4 +2244,33 @@ class User extends MobileBase
         exit;
     }
 
+    //区域代理地区选择
+    public function regional_agency()
+    {
+        if(IS_POST){
+            $data = I('post.');
+            if(isset($data['province'])){
+                $area = $data['province'];
+            }else if(isset($data['city'])){
+                $area = $data['city'];
+            }else{
+                $area = $data['district'];
+            }
+            if($area == ''){
+                $this->ajaxReturn(['status'=>0, 'msg'=>'地址不能为空']);
+            }
+            $result = M('user_regional_agency')->where('user_id', $data['user_id'])
+                    ->update(['region_id'=>$area]);
+            if($result){
+                $this->ajaxReturn(['status'=>1, 'msg'=>'保存成功']);
+            }else{
+                $this->ajaxReturn(['status'=>0, 'msg'=>'保存失败']);
+            }
+        }
+        $user_id = session('user.user_id');
+        $result = M('user_regional_agency')->where('user_id', $user_id)->find();
+        $this->assign('result', $result);
+        return $this->fetch();
+    }
+
 }
