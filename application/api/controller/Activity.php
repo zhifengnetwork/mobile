@@ -200,7 +200,8 @@ class Activity extends ApiBase {
 
     /**
      * +---------------------------------
-     * 优惠券列表中心
+     * 用户优惠券中心列表
+     * 0 未使用 1已使用 2已过期
      * +---------------------------------
     */
     public function coupon_list()
@@ -209,16 +210,50 @@ class Activity extends ApiBase {
         if (!IS_POST) {
             $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>'']);
         }
-        $atype = I('atype', 1);
+        $status = I('status', 0);
         $p = I('p', '');
-        $activityLogic = new ActivityLogic();
-        $result = $activityLogic->getCouponList($atype, $user_id, $p);
-        // $this->assign('coupon_list', $result);
-        // if (request()->isAjax()) {
-        //     return $this->fetch('ajax_coupon_list');
-        // }
-        $result['coupon_list'] = $result;
-        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$result['coupon_list']]);
+        $result = $this->getCouponList($status, $user_id, $p);
+        
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$result]);
+    }
+
+    /**
+     * 获取优惠券信息
+     * @param type $status 状态 0未使用 1已使用 2已过期
+     * @param $user_id  用户ID
+     * @param int $p 第几页
+     * @return array
+     */
+    public function getCouponList($status, $user_id, $p = 1)
+    {
+        $time = time();
+        $where = array('status'=>1,'send_start_time'=>['elt',time()],'send_end_time'=>['egt',time()]);
+        $order = array('id' => 'desc');
+        if ($status == 1) {
+            //已使用
+            $order = ['spacing_time' => 'asc'];
+            // $where["send_end_time-'$time'"] = ['egt', 0];
+
+        } elseif ($status == 2) {
+            //已过期
+            $order = ['money' => 'desc'];
+        }
+        if ($user_id) {
+            $user_coupon = M('coupon_list')->where(['uid' => $user_id, 'status'=>$status])->getField('cid,use_time,code,send_time,status',true);
+        }
+
+        if (is_array($user_coupon) && count($user_coupon) > 0) {
+            $coupon_list = M('coupon')
+            ->field("id,name,type,money,condition,use_start_time,use_end_time,status,use_type,send_end_time-'$time' as spacing_time")
+            ->where($where)->page($p, 15)
+            ->order($order)->select();
+            if (!empty($user_coupon)) {
+                foreach ($coupon_list as $k => $val) {
+                    $coupon_list[$k]['use_scope'] = C('COUPON_USER_TYPE')[$coupon_list[$k]['use_type']];
+                }
+            }
+        }
+        return $coupon_list;
     }
 
 }
