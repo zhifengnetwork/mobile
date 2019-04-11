@@ -11,6 +11,12 @@ use think\Controller;
 class ApiBase extends Controller
 {
 
+    public function _initialize(){
+
+        $this->key = 'zhelishimiyao';
+        //秘钥
+    }
+
     public function ajaxReturn($data){
         header('Access-Control-Allow-Origin:*');
         header('Access-Control-Allow-Headers:*');
@@ -29,8 +35,7 @@ class ApiBase extends Controller
             "exp"=> $time + 36000 , 
             "user_id"=> $user_id
         );
-        $key = 'zhelishimiyao';
-        $token = JWT::encode($payload, $key, $alg = 'HS256', $keyId = null, $head = null);
+        $token = JWT::encode($payload, $this->key, $alg = 'HS256', $keyId = null, $head = null);
         return $token;
     }
 
@@ -38,8 +43,7 @@ class ApiBase extends Controller
      * 解密token
      */
     public function decode_token($token){
-        $key = 'zhelishimiyao';
-        $payload = json_decode(json_encode(JWT::decode($token, $key, ['HS256'])),true);
+        $payload = json_decode(json_encode(JWT::decode($token, $this->key, ['HS256'])),true);
         return $payload;
     }
 
