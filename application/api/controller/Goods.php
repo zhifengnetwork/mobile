@@ -196,6 +196,11 @@ class Goods extends ApiBase
      */
     public function getGoodsComment()
     {
+		$user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }	
+
         $goods_id = I("post.goods_id/d", 0);
         $commentType = I('commentType', '1'); // 1 全部 2好评 3 中评 4差评
         if ($commentType == 5) {
@@ -233,6 +238,11 @@ class Goods extends ApiBase
      */
     public function goodsInfo()
     {
+		$user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }	
+
         $goodsLogic = new GoodsLogic();
         $goods_id = I("post.goods_id/d", 0);
         $goodsModel = new \app\common\model\Goods();
@@ -266,6 +276,11 @@ class Goods extends ApiBase
      */
     public function dispatching()
     {
+		$user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }	
+
         $goods_id = I('post.goods_id/d',0);//143
         $region_id = I('post.region_id/d',0);//28242
 		$buy_num = I('post.buynum/d',1);
@@ -285,5 +300,9 @@ class Goods extends ApiBase
         }	
 		$this->ajaxReturn($dispatching_data);
     }
+
+	public function php_info(){
+		phpinfo();
+	}
 
 }
