@@ -21,6 +21,8 @@ use app\common\model\PreSell;
 use think\Db;
 use think\Page;
 use app\common\logic\ActivityLogic;
+use app\common\logic\FreightLogic;
+use app\common\logic\OrderLogic;
 
 class Activity extends ApiBase {
     /**
@@ -94,11 +96,11 @@ class Activity extends ApiBase {
 	 public function flash_sale_info(){	  
 		$user_id = $this->get_user_id();
         if(!$user_id){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
         }	
 		
 		$id = I('post.id/d',0);
-		if(!$id)$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误！','data'=>'']);
+		if(!$id)$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误！','data'=>null]);
 	
 		$field = 'fl.id,fl.title,fl.goods_id,fl.item_id,fl.price,fl.goods_num,fl.order_num,fl.start_time,fl.end_time,fl.goods_name,g.is_on_sale,fl.is_end,g.store_count,g.sales_sum,g.shop_price,g.original_img';
         $info = M('Flash_sale')->alias('fl')->join('__GOODS__ g', 'g.goods_id = fl.goods_id','left')
@@ -121,6 +123,99 @@ class Activity extends ApiBase {
 		$info['goods_images'] = M('Goods_images')->where(['goods_id'=>$info['goods_id']])->column('image_url');
 		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['info'=>$info]]);
 	 }
+
+    /**
+     * 提交抢购
+     */
+    public function post_flash_sale()
+    { 
+		$user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
+        }	
+		
+		$id = I('post.id/d',0);		
+		$address_id = input("post.address_id/d", 0); //  收货地址id
+		if(!$id || !$address_id)$this->ajaxReturn(['status' => -2 , 'msg'=>'参数错误！','data'=>null]);
+
+		$FlashSale = M('Flash_sale');
+		$info = $FlashSale->field('goods_id,price,goods_num,buy_limit,buy_num,order_num')->find($id);
+		if($info['order_num'] >= $info['goods_num'])$this->ajaxReturn(['status' => -3 , 'msg'=>'下单数已满！','data'=>null]);
+        
+		$address = Db::name('user_address')->field('consignee,email,country,province,city,district,twon,address,zipcode,mobile')->where("address_id", $address_id)->find();
+		if(!$address)$this->ajaxReturn(['status' => -4 , 'msg'=>'请先填写收货地址！','data'=>null]);
+
+		$Order = M('Order');
+		$num = $Order->where(['prom_id'=>$id,'user_id'=>$user_id])->count();
+		if($num >= $info['buy_limit'])$this->ajaxReturn(['status' => -6 , 'msg'=>'您已达到限购件数！','data'=>null]);
+
+		$OrderLogic = new OrderLogic();
+        $Goods = new \app\common\model\Goods();
+        $goods = $Goods::get($info['goods_id']);	
+        $freightLogic = new FreightLogic();
+        $freightLogic->setGoodsModel($goods);
+        $freightLogic->setRegionId($address['city']);
+        $freightLogic->setGoodsNum(1);
+        $isShipping = $freightLogic->checkShipping();		
+        if ($isShipping) {
+            $freightLogic->doCalculation();
+            $freight = $freightLogic->getFreight();
+        } else {
+            $dispatching_data = ['status' => -5, 'msg' => '该地区不支持配送', 'data' => null];
+        }	
+		// 启动事务
+        Db::startTrans();
+        try{		
+            $data=[
+                'user_id'			=> $user_id,
+                'seller_id'			=> M('goods')->where(['goods_id'=>$info['goods_id']])->getField('seller_id'),
+                'order_sn'			=> $OrderLogic->get_order_sn(),
+                'consignee'			=> $address['consignee'],
+				'country'			=> $address['country'],
+				'province'			=> $address['province'],
+				'city'				=> $address['city'],
+				'district'			=> $address['district'],
+				'twon'				=> $address['twon'],
+				'address'			=> $address['address'],
+				'zipcode'			=> $address['zipcode'],
+				'mobile'			=> $address['mobile'],
+				'email'				=> $address['email'],
+				'goods_price'		=> $info['price'],
+				'shipping_price'	=> $freight,
+				'order_amount'		=> ($info['price'] + $freight),
+				'total_amount'		=> ($info['price'] + $freight),
+				'add_time'			=> time(),
+				'prom_id'			=> $id,
+				'prom_type'			=> 1
+            ];
+            $res = $Order->lock(true)->add($data);
+			if($res){
+				$FlashSale->where(['id'=>$id])->setInc('buy_num',1);	
+				$FlashSale->where(['id'=>$id])->setInc('order_num',1);
+
+				$info = $FlashSale->field('goods_id,price,goods_num,buy_limit,buy_num,order_num')->find($id);
+				if($info['order_num'] > $info['goods_num']){
+					// 回滚事务
+					Db::rollback();
+					$this->ajaxReturn(['status' => -3 , 'msg'=>'下单数已满！','data'=>null]);
+				}  
+			}else{
+				// 回滚事务
+				Db::rollback();
+				$this->ajaxReturn(['status' => -4 , 'msg'=>'提交失败！','data'=>null]);
+			}
+
+            // 提交事务
+            Db::commit(); 
+			$this->ajaxReturn(['status' => 0 , 'msg'=>'提交成功！','data'=>['order_id'=>$res]]);
+        } catch (TpshopException $t) {
+            // 回滚事务
+            Db::rollback();
+            $error = $t->getErrorArr();
+            $this->ajaxReturn(['status' => -5 , 'msg'=>$error,'data'=>null]);
+        }
+
+    }
 
     /**
      * 竞拍列表
