@@ -1,5 +1,5 @@
 <include file="public/header" title="个人中心" body=""/>
-<link rel="stylesheet" type="text/css" href="__STATIC__/css/personal.css?v=1"/>
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/personal.css?v=1.1"/>
 <div class="z_user_vs">
     <div class="z_user_head">
         <div class="z_user_top">
@@ -119,6 +119,21 @@
         </volist>
     </div>
 </div>
+<!-- 弹框 -->
+<div class="popup-wrap" id="popup-wrap">
+    <div class="popup">
+
+        <h2>通知</h2>
+        <p>已达到省代的资格请选择一个地区已达到省代的资格请选择一个地区已达到省代的资格请选择一个地区</p>
+
+        <a href="#">去选择</a>
+        <!-- 关闭按钮 -->
+        <div class="shut" id="shut">
+            <img src="__PUBLIC__/static/images/close01.png"/>
+        </div>
+    </div>
+</div>
+
 <!--底部导航-start-->
 <include file="public/footer_nav"/>
 <!--底部导航-end-->
@@ -131,6 +146,14 @@
         }
     });
     $('.border10').css('border-color', '#f8f8f8');
+
+    // 关闭弹框按钮
+    var Shut = document.getElementById('shut');
+    var pop = document.getElementById('popup-wrap');
+
+    Shut.onclick = function() {
+        pop.style.display = 'none';
+    }
 </script>
 </body>
 </html>
