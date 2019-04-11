@@ -69,7 +69,7 @@ class Order extends Base {
         $nickname = ($keyType && $keyType == 'nickname') ? $keywords : I('nickname') ;
         $mobile = ($keyType && $keyType == 'mobile') ? $keywords : I('mobile') ;
         $invoice_no = ($keyType && $keyType == 'invoice_no') ? $keywords : I('invoice_no') ;
-        $users_id ? $condition['order.user_id'] = trim($users_id) : false;
+        $users_id ? $condition['users.user_id'] = trim($users_id) : false;
         $nickname ? $condition['users.nickname'] = ['like', '%' . trim($nickname) . '%'] : false;
         $mobile ? $condition['order.mobile'] = ['like', '%' . trim($mobile) . '%'] : false;
         $invoice_no ? $condition['delivery.invoice_no'] = trim($invoice_no) : false;
