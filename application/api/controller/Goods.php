@@ -8,6 +8,7 @@ use app\common\logic\UsersLogic;
 use app\common\logic\GoodsLogic;
 use app\common\logic\GoodsPromFactory;
 use app\common\model\GoodsCategory;
+use app\common\logic\FreightLogic;
 use think\AjaxPage;
 use think\Page;
 use think\Db;
@@ -195,7 +196,7 @@ class Goods extends ApiBase
      */
     public function getGoodsComment()
     {
-        $goods_id = I("post.goods_id/d", 272);
+        $goods_id = I("post.goods_id/d", 0);
         $commentType = I('commentType', '1'); // 1 全部 2好评 3 中评 4差评
         if ($commentType == 5) {
             $where = array(
@@ -225,6 +226,64 @@ class Goods extends ApiBase
         }
 
 		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['commentlist'=>$list]]);
+    }
+
+    /**
+     * 商品详情页
+     */
+    public function goodsInfo()
+    {
+        $goodsLogic = new GoodsLogic();
+        $goods_id = I("post.goods_id/d", 0);
+        $goodsModel = new \app\common\model\Goods();
+        $goods = $goodsModel::get($goods_id);
+        if (empty($goods) || ($goods['is_on_sale'] == 0)) {
+            $this->ajaxReturn(['status' => -2, 'msg' => '此商品不存在或者已下架', 'data' => NULL]);
+        }
+        if(($goods['is_virtual'] == 1 && $goods['virtual_indate'] <= time())){
+            $goods->save(['is_on_sale' => 0]);
+            $this->ajaxReturn(['status' => -2, 'msg' => '此商品不存在或者已下架', 'data' => NULL]);
+        }
+        $user_id = cookie('user_id');
+        if ($user_id) {
+            $goodsLogic->add_visit_log($user_id, $goods);
+            $collect = db('goods_collect')->where(array("goods_id" => $goods_id, "user_id" => $user_id))->count(); //当前用户收藏
+            $this->assign('collect', $collect);
+        }
+
+        //$recommend_goods = M('goods')->where("is_recommend=1 and is_on_sale=1 and cat_id = {$goods['cat_id']}")->cache(7200)->field("goods_id, goods_name, shop_price")->select();		
+        //$this->assign('recommend_goods', $recommend_goods);
+		unset($goods['template_id']);
+		unset($goods['sku']);
+		unset($goods['spu']);
+		unset($goods['cost_price']);
+		$goods['goods_images'] = M('Goods_images')->where(['goods_id'=>$goods_id])->column('image_url');
+        $this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['goods'=>$goods]]);
+    }
+
+    /**
+     * 获取商品物流配送和运费
+     */
+    public function dispatching()
+    {
+        $goods_id = I('post.goods_id/d',0);//143
+        $region_id = I('post.region_id/d',0);//28242
+		$buy_num = I('post.buynum/d',1);
+        $Goods = new \app\common\model\Goods();
+        $goods = $Goods->cache(true)->where('goods_id', $goods_id)->find();
+        $freightLogic = new FreightLogic();
+        $freightLogic->setGoodsModel($goods);
+        $freightLogic->setRegionId($region_id);
+        $freightLogic->setGoodsNum($buy_num);
+        $isShipping = $freightLogic->checkShipping();
+        if ($isShipping) {
+            $freightLogic->doCalculation();
+            $freight = $freightLogic->getFreight();
+            $dispatching_data = ['status' => 1, 'msg' => '可配送', 'data' => ['freight' => $freight]];
+        } else {
+            $dispatching_data = ['status' => 0, 'msg' => '该地区不支持配送', 'data' => null];
+        }	
+		$this->ajaxReturn($dispatching_data);
     }
 
 }

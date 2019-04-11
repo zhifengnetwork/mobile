@@ -23,108 +23,6 @@ use think\Page;
 use app\common\logic\ActivityLogic;
 
 class Activity extends ApiBase {
-    public function index(){      
-        return $this->fetch();
-    }
-
-    /**
-     * 团购活动列表
-     */
-    public function group_list()
-    {
-        $type =I('get.type');
-        //以最新新品排序
-        if ($type == 'new') {
-            $order = 'gb.start_time desc';
-        } elseif ($type == 'comment') {
-            $order = 'g.comment_count desc';
-        } else {
-            $order = '';
-        }
-        $group_by_where = array(
-            'gb.start_time'=>array('lt',time()),
-            'gb.end_time'=>array('gt',time()),
-            'g.is_on_sale'=>1,
-            'gb.is_end'            =>0,
-        );
-        $GroupBuy = new GroupBuy();
-    	$count =  $GroupBuy->alias('gb')->join('__GOODS__ g', 'g.goods_id = gb.goods_id')->where($group_by_where)->count();// 查询满足要求的总记录数
-        $pagesize = C('PAGESIZE');  //每页显示数
-    	$page = new Page($count,$pagesize); // 实例化分页类 传入总记录数和每页显示的记录数
-    	$show = $page->show();  // 分页显示输出
-    	$this->assign('page',$show);    // 赋值分页输出
-        $list = $GroupBuy
-            ->alias('gb')
-            ->join('__GOODS__ g', 'gb.goods_id=g.goods_id AND g.prom_type=2')
-            ->where($group_by_where)
-            ->page($page->firstRow, $page->listRows)
-            ->order($order)
-            ->select();
-        $this->assign('list', $list);
-        if(I('is_ajax')) {
-            return $this->fetch('ajax_group_list');      //输出分页
-        }
-        return $this->fetch();
-    }
-
-    /**
-     * 活动商品列表
-     */
-    public function discount_list(){
-        $prom_id = I('id/d');    //活动ID
-        $where = array(     //条件
-            'is_on_sale'=>1,
-            'prom_type'=>3,
-            'prom_id'=>$prom_id,
-        );
-        $count =  M('goods')->where($where)->count(); // 查询满足要求的总记录数
-         $pagesize = C('PAGESIZE');  //每页显示数
-        $Page = new Page($count,$pagesize); //分页类
-        $prom_list = Db::name('goods')->where($where)->limit($Page->firstRow.','.$Page->listRows)->select(); //活动对应的商品
-        $spec_goods_price = Db::name('specGoodsPrice')->where(['prom_type'=>3,'prom_id'=>$prom_id])->select(); //规格
-        foreach($prom_list as $gk =>$goods){  //将商品，规格组合
-            foreach($spec_goods_price as $spk =>$sgp){
-                if($goods['goods_id']==$sgp['goods_id']){
-                    $prom_list[$gk]['spec_goods_price']=$sgp;
-                }
-            }
-        }
-        foreach($prom_list as $gk =>$goods){  //计算优惠价格
-            $PromGoodsLogicuse = new \app\common\logic\PromGoodsLogic($goods,$goods['spec_goods_price']);
-            if(!empty($goods['spec_goods_price'])){
-                $prom_list[$gk]['prom_price']=$PromGoodsLogicuse->getPromotionPrice($goods['spec_goods_price']['price']);
-            }else{
-                $prom_list[$gk]['prom_price']=$PromGoodsLogicuse->getPromotionPrice($goods['shop_price']);
-            }
-
-        }
-        $this->assign('prom_list', $prom_list);
-        if(I('is_ajax')){
-            return $this->fetch('ajax_discount_list');
-        }
-        return $this->fetch();
-    }
-
-    /**
-     * 商品活动页面
-     * @author lxl
-     * @time2017-1
-     */
-    public function promote_goods(){
-        $now_time = time();
-        $where = " start_time <= $now_time and end_time >= $now_time and is_end = 0";
-        $count = M('prom_goods')->where($where)->count();  // 查询满足要求的总记录数
-        $pagesize = C('PAGESIZE');  //每页显示数
-        $Page  = new Page($count,$pagesize); //分页类
-        $promote = M('prom_goods')->field('id,title,start_time,end_time,prom_img')->where($where)->limit($Page->firstRow.','.$Page->listRows)->select();    //查询活动列表
-        $this->assign('promote',$promote);
-        if(I('is_ajax')){
-            return $this->fetch('ajax_promote_goods');
-        }
-        return $this->fetch();
-    }
-
-
     /**
      * 抢购活动列表
      */
@@ -138,12 +36,12 @@ class Activity extends ApiBase {
         $end_time = I('post.end_time/d',155489400);
 		if(!$start_time || !$end_time)$this->ajaxReturn(['status' => -2, 'msg' => '请传入开始时间和结束时间！', 'data' => null]);
         $where = array(
-            //'fl.start_time'=>array('egt',$start_time),
-            //'fl.end_time'=>array('elt',$end_time),
+            'fl.start_time'=>array('egt',$start_time),
+            'fl.end_time'=>array('elt',$end_time),
             'g.is_on_sale'=>1,
             'fl.is_end'=>0
         );
-        $FlashSale = new FlashSale();		
+		
 		$field = 'fl.id,fl.title,fl.goods_id,fl.item_id,fl.price,fl.goods_num,fl.order_num,fl.start_time,fl.end_time,fl.goods_name,g.shop_price,g.original_img';
         $flash_sale_goods = M('Flash_sale')->alias('fl')->join('__GOODS__ g', 'g.goods_id = fl.goods_id','left')
             ->field($field)
@@ -152,14 +50,15 @@ class Activity extends ApiBase {
             ->select();
 			
 		$SpecGoodsPrice = M('spec_goods_price');	
-		$info = $SpecGoodsPrice->field('price,spec_img')->find(13); 
 		foreach($flash_sale_goods as $k=>$v){
-			$info = $SpecGoodsPrice->field('price,spec_img')->find($v['item_id']);
-			if($info['price']){
-				$flash_sale_goods[$k]['shop_price'] = $info['price'];  //更新本店价
-				$flash_sale_goods[$k]['disc']  = 100 * number_format(($v['price']/$info['price']),1);  //折扣
+			if($v['item_id']){
+				$info = $SpecGoodsPrice->field('price,spec_img')->find($v['item_id']);
+				if($info['price']){
+					$flash_sale_goods[$k]['shop_price'] = $info['price'];  //更新本店价
+					$flash_sale_goods[$k]['disc']  = 100 * number_format(($v['price']/$info['price']),1);  //折扣
+				}
+				if($info['spec_img'])$flash_sale_goods[$k]['original_img'] = $info['spec_img'];
 			}
-			if($info['spec_img'])$flash_sale_goods[$k]['original_img'] = $info['spec_img'];
 		}
 
         $this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['flash_sale_goods'=>$flash_sale_goods]]);
@@ -187,6 +86,40 @@ class Activity extends ApiBase {
 				$time_space_future[] = ['font' => date("Y-m-d H:i", $flash_sale_time + (($i-1)*$space)), 'start_time' => $flash_sale_time + (($i-1)*$space), 'end_time' => $flash_sale_time + ($i*$space)];
 		}			
 		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['time_space_past'=>$time_space_past,'time_space_future'=>$time_space_future]]);
+	 }
+
+	/**
+     * 获取抢购活动详情
+     */
+	 public function flash_sale_info(){	  
+		$user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }	
+		
+		$id = I('post.id/d',0);
+		if(!$id)$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误！','data'=>'']);
+	
+		$field = 'fl.id,fl.title,fl.goods_id,fl.item_id,fl.price,fl.goods_num,fl.order_num,fl.start_time,fl.end_time,fl.goods_name,g.is_on_sale,fl.is_end,g.store_count,g.sales_sum,g.shop_price,g.original_img';
+        $info = M('Flash_sale')->alias('fl')->join('__GOODS__ g', 'g.goods_id = fl.goods_id','left')
+            ->field($field)
+            ->find($id);
+			
+		$SpecGoodsPrice = M('spec_goods_price');	
+	 
+		if($info['item_id']){
+			$spe_info = $SpecGoodsPrice->field('price,store_count,spec_img')->find($info['item_id']);
+			if($spe_info['price']){
+				$info['shop_price'] = $spe_info['price'];  //更新本店价
+				$info['disc']  = 100 * number_format(($info['price']/$spe_info['price']),1);  //折扣
+			}
+			if($spe_info['spec_img'])$info['original_img'] = $spe_info['spec_img'];
+			$info['store_count'] = $spe_info['store_count'];
+		}
+
+		//获取商品图片
+		$info['goods_images'] = M('Goods_images')->where(['goods_id'=>$info['goods_id']])->column('image_url');
+		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['info'=>$info]]);
 	 }
 
     /**
