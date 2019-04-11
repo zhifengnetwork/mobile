@@ -35,7 +35,7 @@ class Virtual extends Base
     /**
      * 首页展示内容操作
      */
-    public function handle_order()
+    public function handle_virtual()
     {
         $act = I('act');
         if(IS_POST){
@@ -48,10 +48,17 @@ class Virtual extends Base
             if($temp['act'] == 'add'){
                 //添加
                 $data['create_time'] = time();
-                M('virtual_order')->insert($data); 
+                $result = M('virtual_order')->insert($data); 
             }else if($temp['act'] == 'edit'){
                 //编辑修改
-                M('virtual_order')->where('id', $temp['id'])->update($data);
+                $result = M('virtual_order')->where('id', $temp['id'])->update($data);
+            }
+            if($result){
+                $data = array('status'=>1, 'msg'=>'提交成功');
+                return json($data);
+            }else{
+                $data = array('status'=>0, 'msg'=>'提交失败');
+                return json($data);
             }
         }
         if($act == 'edit'){

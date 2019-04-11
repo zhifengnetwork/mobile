@@ -82,20 +82,6 @@
                     <p class="notic">请输入首页滚动展示内容</p>
                 </dd>
             </dl>
-           
-            <!-- <dl class="row">
-                <dt class="tit">
-                    <label>会员等级</label>
-                </dt>
-                <dd class="opt">
-                	<select id="level" name="level">
-                        <option value="0" selected>---不选择等级---</option>
-                		<tpshop sql="select * from `__PREFIX__user_level` where level_id != 12" key="k" item='v'>
-                		<option value="{$v[level_id]}">{$v[level_name]}</option>
-                		</tpshop>
-                	</select>
-                </dd>
-            </dl> -->
           
             <div class="bot"><a href="JavaScript:void(0);" onclick="checkUpdate();" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
 
@@ -105,13 +91,28 @@
 <script type="text/javascript">
     function checkUpdate(){
         var content = $('#textarea').val();
-
+        var head_ico = $('#head_ico').val();
+        var ajaxUrl = "/index.php/Admin/Virtual/handle_virtual";
         if(!content){
-            layer.alert('订单内容不能为空!', {icon: 2});
+            layer.alert('内容不能为空!', {icon: 2});
             return false;
         }
-
-        $('#form').submit();
+        if(!head_ico){
+            layer.alert('头像不能为空!', {icon: 2});
+            return false;
+        }
+        $.ajax({
+            type: "POST",
+            url: ajaxUrl,
+            data: $('#form').serialize(),
+            success: function (data) {
+                if(data.status == 1){
+                    layer.alert(data.msg, {icon: 1});
+                }else{
+                    layer.alert(data.msg, {icon: 2});
+                }
+            }
+        });
     }
 </script>
 </body>
