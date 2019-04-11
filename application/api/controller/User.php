@@ -128,13 +128,13 @@ class User extends ApiBase
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
         $data =  db('user_address')->where('user_id', $user_id)->select();
-        // $region_list = db('region')->cache(true)->getField('id,name');
-        // foreach ($data as $k => $v) {
-        //     $v['province']=$region_list[$v['province']];
-        //     $v['city']=$region_list[$v['city']];
-        //     $v['district'] = $region_list[$v['district']];
-        //     $v['twon']=$region_list[$v['twon']];
-        // }
+        $region_list = db('region')->cache(true)->getField('id,name');
+        foreach ($data as $k => $v) {
+            $data[$k]['province_name']=$region_list[$v['province']];
+            $data[$k]['city_name']=$region_list[$v['city']];
+            $data[$k]['district_name'] = $region_list[$v['district']];
+            $data[$k]['twon_name']=$region_list[$v['twon']];
+        }
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
     }
 
