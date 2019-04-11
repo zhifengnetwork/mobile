@@ -294,9 +294,9 @@ class Goods extends ApiBase
         if ($isShipping) {
             $freightLogic->doCalculation();
             $freight = $freightLogic->getFreight();
-            $dispatching_data = ['status' => 1, 'msg' => '可配送', 'data' => ['freight' => $freight]];
+            $dispatching_data = ['status' => 0, 'msg' => '可配送', 'data' => ['freight' => $freight]];
         } else {
-            $dispatching_data = ['status' => 0, 'msg' => '该地区不支持配送', 'data' => null];
+            $dispatching_data = ['status' => -2, 'msg' => '该地区不支持配送', 'data' => null];
         }	
 		$this->ajaxReturn($dispatching_data);
     }
