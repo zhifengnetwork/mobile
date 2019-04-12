@@ -13,6 +13,7 @@ $(function () {
             if (data.status == 0) {
              
                 list = data.data;
+                
                 for (var i in list){ 
                     //完成后加到大数组 
                     arr.push(list[i]); 
@@ -42,15 +43,15 @@ $(function () {
 
 
     function s() {
-        if (num == arr.length - 1) {
+        if (num == arr.length) {
             num = 0;
         }
         else if (num >= 0) {
             html = `<div class="danmu" >
                         <img src="${arr[num].head_ico}">
                         <p>
-                            <span class="dan_mc">  </span>
-                            <span>${arr[num].content}</span>
+                            <span class="dan_mc">${arr[num].content}  </span>
+                            
                         </p>
                </div>`
             box.html(html);
@@ -58,7 +59,7 @@ $(function () {
         }
         $('.danmu').animate({
             opacity: '1',
-            top: '20%',
+            top: '5.8rem',
         },
             1000, function () {
                 setTimeout(

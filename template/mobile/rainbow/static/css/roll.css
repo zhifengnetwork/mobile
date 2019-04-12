@@ -14,15 +14,15 @@
 .danmu {
     z-index: 999999;
     position: fixed;
-    left: 32px;
+    left: 1rem;
     top: 10%;
     background-color: #322400;
     color: #FFF;
-    height: 50px;
-    line-height: 50px;
-    border-radius: 30px;
+    height: 1.3rem;
+    line-height: 1.3rem;
+    border-radius: .6rem;
     padding-right: 10px;
-    padding-left: 60px;
+    padding-left: 1.5rem;
     font-size: 18px;
     opacity: 0;
 }
@@ -31,8 +31,12 @@
 
 .danmu img {
     border-radius: 50%;
-    width: 50px;
+    width: 1.3rem;
     position: absolute;
     top: 0;
     left: 0;
+}
+
+.dan_mc{
+    font-size: .5rem;
 }

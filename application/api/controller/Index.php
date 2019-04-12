@@ -36,7 +36,7 @@ class Index extends ApiBase
     public function virtual_order()
     {
         if(IS_GET){
-            $virtual_list = M('virtual_order')->column('id, head_ico, content');
+            $virtual_list = M('virtual_order')->where('is_show', '1')->column('id, head_ico, content');
 
             if($virtual_list){
                 $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$virtual_list]);
