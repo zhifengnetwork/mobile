@@ -31,7 +31,7 @@ class PayNotifyCallBack extends WxPayNotify
 	
 	//重写回调处理函数
 	public function NotifyProcess($data, &$msg)
-	{
+	{													M('A')->add(['msg'=>'hhhaaa']);
         Log::DEBUG("call back:" . json_encode($data));
 
         if (!array_key_exists("transaction_id", $data)) {

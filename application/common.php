@@ -1075,7 +1075,7 @@ function rechargevip_rebate($order)
  * @return bool|void
  */
 function update_pay_status($order_sn, $ext = array())
-{			M('A')->add(['msg'=>$order_sn]);
+{			
     $time = time();
     if (stripos($order_sn, 'recharge') !== false) {
         //用户在线充值
