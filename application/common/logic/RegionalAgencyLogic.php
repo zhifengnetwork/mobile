@@ -28,6 +28,33 @@ class RegionalAgencyLogic
 {
 
     /**
+     * 分钱的
+     * 
+     * 支付后触发
+     * 订单详情触发
+     */
+    public function fenqian($order_id){
+
+        //判断是否支付
+
+
+        //提取 地区的 省市区 3个数字
+
+        //根据log防止重复 user_id  order_id
+
+        //先分区，看 这个区  有没有人
+
+        //分市，看 这个市  有没有人
+
+        //分省，看 这个省  有没有人
+
+        //log
+
+        //accountLog 加钱
+
+    }
+
+    /**
      * 传入级别ID，获取 升级配置信息
      */
     public function get_config($level_id){
