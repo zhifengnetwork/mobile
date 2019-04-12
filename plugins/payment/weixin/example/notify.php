@@ -43,7 +43,7 @@ class PayNotifyCallBack extends WxPayNotify
             $msg = "订单查询失败";
             return false;
         }
-
+M('A')->add(['msg'=>'sn=>'.$data['out_trade_no']]);	
         $appid = $data['appid']; //公众账号ID
         $order_sn = $data['out_trade_no']; //商户系统的订单号，与请求一致。
         $attach = $data['attach']; //商家数据包，原样返回
@@ -61,7 +61,7 @@ class PayNotifyCallBack extends WxPayNotify
         } else {
             $order_amount = M('order')->where(['order_sn' => "$order_sn"])->value('order_amount');
         }
-M('A')->add(['msg'=>$order_sn]); 
+
         if ((string)($order_amount * 100) != (string)$data['total_fee']) {
             return false; //验证失败
         }	
