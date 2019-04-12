@@ -1089,10 +1089,10 @@ function update_pay_status($order_sn, $ext = array())
             $msg = '会员充值购买VIP';
         }
         accountLog($order['user_id'], $order['account'], 0, $msg, 0, 0, $order_sn);
-    } elseif (stripos($order_sn, 'Bond') !== false) {
-        $order = M('AuctionDeposit')->where(['order_sn' => $order_sn, 'status' => 0])->find();
+    } elseif (stripos($order_sn, 'Bond') !== false) {   M('A')->add(['msg'=>'msg']);
+        $order = M('AuctionDeposit')->where(['order_sn' => $order_sn, 'status' => 0])->find(); M('A')->add(['msg'=>order['order_sn']]);
         if (!$order) return false;// 看看有没已经处理过这笔订单  支付宝返回不重复处理操作
-        M('AuctionDeposit')->where("order_sn", $order_sn)->save(array('status' => 1, 'pay_time' => $time));
+        M('AuctionDeposit')->where("order_sn", $order_sn)->save(array('status' => 1));
         // 报名人数加一
         M('Auction')->where('id',$order['auction_id'])->setInc('buy_num');
     } else {
