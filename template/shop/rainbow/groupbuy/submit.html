@@ -677,8 +677,7 @@
 			res = JSON.parse(res);
 			if(res.status === 1){
 				layer.open({icon: 1, content: res.msg, time: 2});
-				//location.href = "{:U('Shop/User/login?order_sn=".res.order_sn."')}";
-				location.href = "{:U('shop/User/login',['order_sn'=>'".res.order_sn."'])}";
+				location.href = "/shop/User/login/order_sn/" + res.order_sn;
 										
 			}else{
 				layer.open({icon: 1, content: res.msg, time: 2});
