@@ -21,6 +21,7 @@
 			<li>区域代理返佣金额每个商品单独设定，原则上不高于商品价格50%</li>
 			<li>所有区域代理商获佣比例之和不超过100%，比例为0则也视为不参与分佣</li>
 			<li>区域代理设置开启则设置为有效，关闭则无效</li>
+			<li>分红设置开启则进行区域代理分红，关闭则不分红</li>
 		</ul>
 	</div>
 	<div class="flexigrid">
@@ -71,7 +72,7 @@
 		<div class="tDiv">
 			<div class="tDiv2">
 				<div class="fbutton"> <a href="{:U('Distribut/agent_area_level')}">
-					<div class="add" title="新增会员等级">
+					<div class="add" title="新增代理等级">
 						<span><i class="fa fa-plus"></i>新增代理等级</span>
 					</div>
 				</a> </div>
@@ -117,7 +118,8 @@
 									</td>
 								</tr>
 							</foreach>
-									<tr>
+								<!-- 区域代理设置开关 -->
+								<tr>
 									<td class="sign">
 										<div style="width: 24px;"></div>
 									</td>
@@ -125,16 +127,37 @@
 										<div style="text-align: left; width: 80px;">区域代理设置</div>
 									</td>
 									<td align="center" colspan="6">
-											<div class="onoff" id="is_valid">
-													<label for="open" class="cb-enable <if condition='$is_valid eq 1'>selected</if>">开启</label>
-													<label for="close" class="cb-disable <if condition='$is_valid eq 0'>selected</if>">关闭</label>
-													<input id="open" name="valid" <if condition="$is_valid eq 1">checked="checked"</if> value="1" type="radio">
-													<input id="close" name="valid" <if condition="$is_valid eq 0">checked="checked"</if> value="0" type="radio">
-											</div>
+										<div class="onoff" id="is_valid">
+											<label for="is_open" class="cb-enable <if condition='$is_valid eq 1'>selected</if>">开启</label>
+											<label for="is_close" class="cb-disable <if condition='$is_valid eq 0'>selected</if>">关闭</label>
+											<input id="is_open" name="valid" <if condition="$is_valid eq 1">checked="checked"</if> value="1" type="radio">
+											<input id="is_close" name="valid" <if condition="$is_valid eq 0">checked="checked"</if> value="0" type="radio">
+										</div>
 									</td>
 									 <!-- <td align="left" colspan="5">
 											<div style="text-align: left;">点击开启则将区域代理设置为有效, 点击关闭则设置为无效</div>
 									</td> -->
+									<td align="" class="" style="width: 100%;">
+										<div>&nbsp;</div>
+									</td>
+								</tr>
+
+								<!-- 区域代理分红开关 -->
+								<tr>
+									<td class="sign">
+										<div style="width: 24px;"></div>
+									</td>
+									<td align="left" class="">
+										<div style="text-align: left; width: 80px;">分红设置</div>
+									</td>
+									<td align="center" colspan="6">
+										<div class="onoff" id="is_divide">
+											<label for="open" class="cb-enable <if condition='$is_divide eq 1'>selected</if>">开启</label>
+											<label for="close" class="cb-disable <if condition='$is_divide eq 0'>selected</if>">关闭</label>
+											<input id="open" name="divide" <if condition="$is_divide eq 1">checked="checked"</if> value="1" type="radio">
+											<input id="close" name="divide" <if condition="$is_divide eq 0">checked="checked"</if> value="0" type="radio">
+										</div>
+									</td>
 									<td align="" class="" style="width: 100%;">
 										<div>&nbsp;</div>
 									</td>
@@ -144,7 +167,7 @@
 					</div>
 					<div class="iDiv" style="display: none;"></div>
 				</div>
-		</div>
+			</div>
 		</form>
 		
 <script>
@@ -159,7 +182,13 @@
 			location.href = location.href;
 		});
 
+		// 代理设置
 		$('#is_valid').click(function(){
+			$('#form').submit();
+		});
+
+		// 分红设置
+		$('#is_divide').click(function(){
 			$('#form').submit();
 		});
 

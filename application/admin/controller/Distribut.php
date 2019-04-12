@@ -508,16 +508,20 @@ class Distribut extends Base {
      */
     public function agent_area()
     {   
-        //开启或关闭区域代理
+        $data = array('is_valid', 'is_divide');
+        //开启或关闭区域代理 
         if(IS_POST){
-            $value = I('valid'); 
-            $result = M('config')->where('name', 'is_valid')->update(['value'=>$value]);
+            $is_valid = I('valid');
+            $is_divide = I('divide');
+            M('config')->where('name', 'is_valid')->update(['value'=>$is_valid]);
+            M('config')->where('name', 'is_divide')->update(['value'=>$is_divide]);
         }
         
         $count = M('config_regional_agency')->count();
         $agent_area = M('config_regional_agency')->select();
-        $is_valid = M('config')->where('name', 'is_valid')->value('value');
-        $this->assign('is_valid', $is_valid);
+        $config = M('config')->where('name', ['in', $data])->column('name, value');
+        $this->assign('is_valid', $config['is_valid']);
+        $this->assign('is_divide', $config['is_divide']);
         $this->assign('list', $agent_area);
         $this->assign('count', $count);
         return $this->fetch();
