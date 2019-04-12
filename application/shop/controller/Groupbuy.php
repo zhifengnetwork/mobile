@@ -43,7 +43,7 @@ class Groupbuy extends MobileBase
             ->alias('t')
             ->Join('goods g',"g.goods_id=t.goods_id",'LEFT')
             ->field('t.team_id,t.act_name,t.goods_name,t.goods_id,t.group_price,t.start_time,t.end_time,t.group_number,t.purchase_qty,g.shop_price,g.market_price,g.original_img')
-            ->select();
+            ->select();		
         
         // dump(Db::table('tp_team_activity')->getLastSql());exit;
         $this->assign('list', $list);

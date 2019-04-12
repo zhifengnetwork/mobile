@@ -179,7 +179,7 @@ class Activity extends ApiBase {
 				'twon'				=> $address['twon'],
 				'address'			=> $address['address'],
 				'zipcode'			=> $address['zipcode'],
-				'mobile'			=> $address['mobile'],
+				'mobile'			=> $address['mobile'],		
 				'email'				=> $address['email'],
 				'goods_price'		=> $info['price'],
 				'shipping_price'	=> $freight,
