@@ -70,7 +70,7 @@ class Distribut extends Base {
     	$bufa = new \app\common\logic\DistributLogic();
       
         try{
-            $bufa->bufa($order_id);
+            $bufa->bufa($order_id,1);
 
             $this->ajaxReturn(['status' => 1, 'msg' => '操作成功，请刷新看结果']);
 

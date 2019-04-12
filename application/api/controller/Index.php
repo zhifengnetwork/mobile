@@ -30,6 +30,24 @@ class Index extends ApiBase
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
     }
 
+    /**
+     * 首页滚动订单
+     */
+    public function virtual_order()
+    {
+        if(IS_GET){
+            $virtual_list = M('virtual_order')->column('id, head_ico, content');
+
+            if($virtual_list){
+                $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$virtual_list]);
+                exit;
+            }else{
+                $this->ajaxReturn(['status' => -1, 'msg'=>'获取失败','data'=>'']);
+                exit;
+            }
+        }
+    }
+
     
 
     
