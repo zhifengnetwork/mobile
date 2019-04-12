@@ -359,6 +359,11 @@
 			layer.open({icon: 2, content: "购买数量超过此商品购买上限", time: 2});
 		}
 	})
+
+	//竞拍失败
+	$(document).on('click', '#tobuy', function () {
+		location.href = "{:U('Shop/Activity/auction_list')}";	
+	});
 </script>
 
 </body>
