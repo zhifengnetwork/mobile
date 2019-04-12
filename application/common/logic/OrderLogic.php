@@ -375,7 +375,7 @@ class OrderLogic
 	    // 保证不会有重复订单号存在
 	    while(true){
 	        $order_sn = 'B' . date('ymdHis').rand(10000,99999); // 订单编号	        
-	        $order_sn_count = M('auction_deposit')->where("order_sn = ".$order_sn)->count();
+	        $order_sn_count = M('auction_deposit')->where(["order_sn" => $order_sn])->count();
 	        if($order_sn_count == 0)
 	            break;
 	    }
