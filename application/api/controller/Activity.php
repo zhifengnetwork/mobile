@@ -128,11 +128,11 @@ class Activity extends ApiBase {
      * 提交抢购
      */
     public function post_flash_sale()
-    { 
+    {	
 		$user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
-        }	
+        }
 		
 		$id = I('post.id/d',0);		
 		$address_id = input("post.address_id/d", 0); //  收货地址id
@@ -148,6 +148,7 @@ class Activity extends ApiBase {
 		$Order = M('Order');
 		$num = $Order->where(['prom_id'=>$id,'user_id'=>$user_id])->count();
 		if($num >= $info['buy_limit'])$this->ajaxReturn(['status' => -6 , 'msg'=>'您已达到限购件数！','data'=>null]);
+		if($num >= $info['goods_num'])$this->ajaxReturn(['status' => -3 , 'msg'=>'下单数已满！','data'=>null]);
 
 		$OrderLogic = new OrderLogic();
         $Goods = new \app\common\model\Goods();
