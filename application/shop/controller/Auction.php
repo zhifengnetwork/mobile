@@ -308,7 +308,7 @@ class Auction extends MobileBase
             $map['auction_id']  = ['=', $auction_id];
             $map['id']  = ['<>', $id];
             $AuctionPrice->where($map)->save(['is_out'=>0]);
-			$AuctionPrice->where(['auction_id'=>$auction_id])->setInc('buy_num',1);
+			M('Auction')->where(['auction_id'=>$auction_id])->setInc('buy_num',1);
             // 提交事务
             Db::commit(); 
         } catch (TpshopException $t) {
