@@ -188,7 +188,7 @@ class Payment extends MobileBase
         $data['deposit'] = $money;
         $data['user_id'] = $user['user_id'];
         $data['auction_id'] = $goods_id;
-        $data['order_sn'] = 'Bo'.$OrderLogic->get_order_sn_auction_deposit();  
+        $data['order_sn'] = $OrderLogic->get_order_sn_auction_deposit();  
         $data['create_time'] = time();
         $order_id = M('auctionDeposit')->add($data);
 
