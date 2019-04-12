@@ -454,7 +454,7 @@ class Groupbuy extends MobileBase
                         # 更新用户余额
                         session('user.user_money',$ruser_money);
                         Db::execute("update `tp_users` set `user_money` = '$ruser_money' where `user_id` = '$user_id'");
-                        ajaxReturn(['status'=>1, 'msg'=>'订单提交成功', 'type' => 2]);
+                        ajaxReturn(['status'=>1, 'msg'=>'订单提交成功', 'type' => 2,'order_sn'=>$order_sn]);
                     }else{
                         Db::execute("delete from `tp_order` where `order_id` = '$order_insid'");
                         ajaxReturn(['status'=>1, 'msg'=>'订单提交失败，开团时不成功']);
@@ -463,7 +463,7 @@ class Groupbuy extends MobileBase
                     # 更新用户余额
                     session('user.user_money',$ruser_money);
                     Db::execute("update `tp_users` set `user_money` = '$ruser_money' where `user_id` = '$user_id'");
-                    ajaxReturn(['status'=>1, 'msg'=>'订单提交成功', 'type' => 1]);
+                    ajaxReturn(['status'=>1, 'msg'=>'订单提交成功', 'type' => 1,'order_sn'=>$order_sn]);
                 }
             }else{
                 ajaxReturn(['status'=>0, 'msg'=>'订单提交失败,创建订单失败']);
