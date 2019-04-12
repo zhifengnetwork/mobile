@@ -673,7 +673,8 @@
             user_money: user_money,
             user_note:  user_note
         };
-        $.post('falceOrder',{data:data},dataType: "json",function(res){
+        $.post('falceOrder',{data:data},function(res){
+			res = JSON.parse(res);
 			if(res.status === 1){
 				layer.open({icon: 1, content: res.msg, time: 2});
 				location.href = "{:U('Shop/User/login?order_sn=".res.order_sn."')}";
