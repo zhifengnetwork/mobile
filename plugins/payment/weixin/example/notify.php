@@ -43,7 +43,7 @@ class PayNotifyCallBack extends WxPayNotify
             $msg = "订单查询失败";
             return false;
         }
-M('A')->add(['msg'=>'123456']);
+
         $appid = $data['appid']; //公众账号ID
         $order_sn = $data['out_trade_no']; //商户系统的订单号，与请求一致。
         $attach = $data['attach']; //商家数据包，原样返回
@@ -61,10 +61,10 @@ M('A')->add(['msg'=>'123456']);
         } else {
             $order_amount = M('order')->where(['order_sn' => "$order_sn"])->value('order_amount');
         }
-
+M('A')->add(['msg'=>'AAAAAAA']);
         if ((string)($order_amount * 100) != (string)$data['total_fee']) {
             return false; //验证失败
-        }
+        }	M('A')->add(['msg'=>'bbbbbbbbbbbb']);
 
         update_pay_status($order_sn, array('transaction_id' => $data["transaction_id"])); // 修改订单支付状态
 		
