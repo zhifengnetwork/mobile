@@ -101,7 +101,7 @@
 			        <label><em>*</em>开始时间：</label>
 			    </dt>
 			    <dd class="opt">
-			        <input type="text" name="start_time" id="start_time" value="{$info.start_time}" class="input-txt">
+			        <input type="text" name="start_time" id="start_time" value="{:date('Y-m-d H:i',$info.start_time)}" class="input-txt">
 			        <span class="err" id="err_start_time"></span>
 			    </dd>
 			</dl>
@@ -111,7 +111,7 @@
 					<label><em>*</em>结束时间：</label>
 				</dt>
 				<dd class="opt">
-					<input type="text" name="end_time" id="end_time" value="{$info.end_time}" class="input-txt">
+					<input type="text" name="end_time" id="end_time" value="{:date('Y-m-d H:i',$info.end_time)}" class="input-txt">
 					<span class="err" id="err_end_time"></span>
 				</dd>
 			</dl>

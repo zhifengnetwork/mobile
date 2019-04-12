@@ -28,6 +28,33 @@ class RegionalAgencyLogic
 {
 
     /**
+     * 分钱的
+     * 
+     * 支付后触发
+     * 订单详情触发
+     */
+    public function fenqian($order_id){
+
+        //判断是否支付
+
+
+        //提取 地区的 省市区 3个数字
+
+        //根据log防止重复 user_id  order_id
+
+        //先分区，看 这个区  有没有人
+
+        //分市，看 这个市  有没有人
+
+        //分省，看 这个省  有没有人
+
+        //log
+
+        //accountLog 加钱
+
+    }
+
+    /**
      * 传入级别ID，获取 升级配置信息
      */
     public function get_config($level_id){
@@ -109,7 +136,8 @@ class RegionalAgencyLogic
         if($now_level_id < $can_level_id && $now_level_id != 0){
             //可以升级
             $update = [
-                'agency_level'=>$can_level_id
+                'agency_level'=>$can_level_id,
+                'is_show'=>0
             ];
             M('user_regional_agency')->where(['user_id'=>$user_id])->update($update);
              //写log

@@ -168,7 +168,7 @@ class Activity extends MobileBase {
      */
     public function auction_list()
     {
-        $commodity = M('Auction')->order('preview_time desc')->select();
+        $commodity = M('Auction')->order('preview_time desc')->select(); 
         $this->assign('commodity', $commodity);
         return $this->fetch();
     }

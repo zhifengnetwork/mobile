@@ -11,14 +11,14 @@
                     <div class="content30">
                         <div class="order">
                             <div class="fr">
-                                <span>{$desc}</span>
+                                <span style="line-height: 1rem;padding: 1.408rem 0 1.408rem 0;box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box">{$desc}</span>
                             </div>
                         </div>
                     </div> 
                 </div>
 
                 <div class="myorder p">
-                    <div class="content30" style="margin-top:60px;">
+                    <div class="content30">
                         <a href="javascript:void(0)" onclick="locationaddress(this);">
                             <div class="order">
                                 <div class="fl">
@@ -92,7 +92,7 @@
 </div>
 
 <div class="mask-filter-div" style="display: none;"></div>
-<script src="__STATIC__/js/mobile-location2.js"></script>
+<script src="__STATIC__/js/mobile-location2.js?v=1"></script>
 <script type="text/javascript">
     function checkForm(){
         $.ajax({
@@ -100,7 +100,7 @@
             url:"{:U('Mobile/User/regional_agency')}",
             dataType:'JSON',
             data :$('#addressForm').serialize(),
-            success: function(data)
+            success: function(data) 
             {
                 if(data.status == 1){
                     layer.open({content: data.msg,time:2,end:function () {

@@ -200,7 +200,6 @@ class Groupbuy extends ApiBase
 		
 		# 数据验证
 		if(!$buy_type || !$team_id || !$buy_num){
-			ajaxReturn(['status'=>0, 'msg'=>'订单提交失败，参数错误']);
 			$this->ajaxReturn(['status' => -2 , 'msg'=>'订单提交失败，参数错误','data'=>null]);
 		}
 

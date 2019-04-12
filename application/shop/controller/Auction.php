@@ -125,6 +125,11 @@ class Auction extends MobileBase
             $this->ajaxReturn(['status' => 0, 'msg' => '本轮活动已结束', 'result' => '']);
         }
 
+		// 是否小于起拍价
+        if ( $price < $auction['start_price'] ){
+			$this->ajaxReturn(['status' => 0, 'msg' => '必须不小于起拍价', 'result' => '']);
+        }
+
         if (empty($high)){
             $this->addAuctionOffer($this->user_id, $auction_id, $price);
         } else {
@@ -278,6 +283,7 @@ class Auction extends MobileBase
      */
     public function addAuctionOffer($uid,$auction_id,$money)
     {
+		$AuctionPrice = M('AuctionPrice');
         // 启动事务
         Db::startTrans();
         try{
@@ -288,11 +294,21 @@ class Auction extends MobileBase
                 'auction_id'  => $auction_id,
                 'is_out'  => 1,
             ];
-            $id = M('AuctionPrice')->lock(true)->add($data);
+            $id = $AuctionPrice->lock(true)->add($data);
+			$info = $AuctionPrice->field('user_id,offer_price,offer_time,is_out')->order('offer_price desc')->find($auction_id);
+			if($info['user_id'] && ($info['user_id'] !== $uid)){
+				Db::rollback();
+				$this->ajaxReturn(['status' => 0, 'msg' => '您的出价不是最高价', 'result' => '']);
+			}
+			if($AuctionPrice->where(['auction_id'=>$auction_id,'pay_status'=>1])->count()){
+				Db::rollback();
+				$this->ajaxReturn(['status' => 0, 'msg' => '您的出价无效，商品已完成竞拍！', 'result' => '']);
+			}
 
             $map['auction_id']  = ['=', $auction_id];
             $map['id']  = ['<>', $id];
-            M('AuctionPrice')->where($map)->save(['is_out'=>0]);
+            $AuctionPrice->where($map)->save(['is_out'=>0]);
+			//M('Auction')->where(['id'=>$auction_id])->setInc('buy_num',1);
             // 提交事务
             Db::commit(); 
         } catch (TpshopException $t) {

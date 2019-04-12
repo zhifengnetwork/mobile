@@ -14,7 +14,6 @@ $('body').on('click', '.province-list p', function () {
     delCookie('province_name');
     setCookies('province_id', province_id, 30 * 24 * 60 * 60 * 1000);
     setCookies('province_name', province_name, 30 * 24 * 60 * 60 * 1000);
-    $('.area-list').hide();
     $('.container').hide();
     $('body').css('overflow','inherit');
     if(typeof(select_area_callback)=='function'){
@@ -42,6 +41,7 @@ $('body').on('click', '.city-list p', function () {
     setCookies('province_name', province_name, 30 * 24 * 60 * 60 * 1000);
     setCookies('city_name', city_name, 30 * 24 * 60 * 60 * 1000);
     $('.city-list').hide();
+    $('.province-list').show();
     $('.container').hide();
     $('body').css('overflow','inherit');
     if(typeof(select_area_callback)=='function'){
@@ -110,7 +110,8 @@ function ajaxProvince(){
       $(".province-list").empty().append(province_html);
     }
   });
-}
+} 
+
 /**
  * ajax根据省id加载市
  */

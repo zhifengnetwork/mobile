@@ -16,6 +16,7 @@ use think\Request;
 use think\Db;
 use app\common\model\Users;
 use app\common\logic\UsersLogic;
+use app\common\model\Order;
 
 class Payment extends ApiBase {
     
@@ -51,6 +52,96 @@ class Payment extends ApiBase {
 		// D:\wamp\www\svn_tpshop\www\plugins\payment\alipay\alipayPayment.class.php                       
         $code = '\\'.$this->pay_code; // \alipay
         $this->payment = new $code();
+    }
+
+    /*
+     * 获取支付方式
+     */
+    public function get_pay_way(){  
+        $user_id = $this->get_user_id();
+        if(!$user_id)$this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);		
+        $order_id = I('post.order_id/d',0);
+        $order_sn= I('post.order_sn/s','');
+        $order_where = ['user_id'=>$user_id];
+        if($order_sn)
+        {
+            $order_where['order_sn'] = $order_sn;
+        }else{
+            $order_where['order_id'] = $order_id;
+        }
+        $Order = new Order();
+        $order = $Order->where($order_where)->find();		
+
+        if(!$order)$this->ajaxReturn(['status' => -2 , 'msg'=>'订单不存在！','data'=>null]);
+        if($order['order_status'] == 1){
+			$this->ajaxReturn(['status' => -3 , 'msg'=>'该订单已支付过','data'=>null]);
+        }
+        if($order['order_status'] == 3){
+			$this->ajaxReturn(['status' => -4 , 'msg'=>'该订单已取消','data'=>null]);
+        }
+        if(empty($order) || empty($user_id)){
+            $this->ajaxReturn(['status' => -5 , 'msg'=>'用户不存在','data'=>null]);
+        }
+        // 如果已经支付过的订单直接到订单详情页面. 不再进入支付页面
+        if($order['pay_status'] == 1){
+            $this->ajaxReturn(['status' => -3 , 'msg'=>'该订单已支付过','data'=>null]);
+        }
+        $orderGoodsPromType = M('order_goods')->where(['order_id'=>$order['order_id']])->getField('prom_type',true);
+        //如果是预售订单，支付尾款
+        if ($order['pay_status'] == 2 && $order['prom_type'] == 4) {
+            if ($order['pre_sell']['pay_start_time'] > time()) {
+				$this->ajaxReturn(['status' => -6 , 'msg'=>'还未到支付尾款时间','data'=>null]);  //date('Y-m-d H:i:s', $order['pre_sell']['pay_start_time'])
+            }
+            if ($order['pre_sell']['pay_end_time'] < time()) {
+				$this->ajaxReturn(['status' => -7 , 'msg'=>'对不起，该预售商品已过尾款支付时间','data'=>null]); //date('Y-m-d H:i:s',$order['pre_sell']['pay_end_time'] )
+            }
+        }
+        $payment_where['type'] = 'payment';
+        $no_cod_order_prom_type = [4,5];//预售订单，虚拟订单不支持货到付款
+ 
+		if(in_array($order['prom_type'],$no_cod_order_prom_type) || in_array(1,$orderGoodsPromType) || $order['shop_id'] > 0){
+			//预售订单和抢购不支持货到付款
+			$payment_where['code'] = array('neq','cod');
+		}
+		$payment_where['scene'] = array('in',array('0','1','2','3','4'));
+        
+        $payment_where['status'] = 1;
+        //预售和抢购暂不支持货到付款
+        $orderGoodsPromType = M('order_goods')->where(['order_id'=>$order['order_id']])->getField('prom_type',true);
+        if($order['prom_type'] == 4 || in_array(1,$orderGoodsPromType)){
+            $payment_where['code'] = array('neq','cod');
+        }	
+        $paymentList = M('Plugin')->where($payment_where)->select();   
+        $paymentList = convert_arr_key($paymentList, 'code');  
+
+        foreach($paymentList as $key => $val)
+        {
+            $val['config_value'] = unserialize($val['config_value']);
+            if($val['config_value']['is_bank'] == 2)
+            {
+                $bankCodeList[$val['code']] = unserialize($val['bank_code']);
+            }
+            if($key != 'cod' && (($key == 'weixin' && !is_weixin()) // 不是微信app,就不能微信付，只能weixinH5付,用于手机浏览器
+                || ($key != 'weixin' && is_weixin()) //微信app上浏览，只能微信
+                || ($key != 'alipayMobile' && is_alipay()))){ //在支付宝APP上浏览，只能用支付宝支付
+                unset($paymentList[$key]);
+            }
+			unset($paymentList[$key]['author']);
+			unset($paymentList[$key]['config']);
+			unset($paymentList[$key]['config_value']);
+			unset($paymentList[$key]['bank_code']);
+			unset($paymentList[$key]['scene']);
+        }
+
+        $bank_img = include APP_PATH.'home/bank.php'; // 银行对应图片
+		$data = [
+			'paymentList'	=> $paymentList,
+			'bank_img'		=> $bank_img,
+			'order'	     	=> ['order_amount'=>$order['order_amount'],'add_time'=>$order['add_time'],'prom_type'=>$order['prom_type']],
+			'bankCodeList'	=> $bankCodeList,
+			'pay_date'		=> date('Y-m-d', strtotime("+1 day"))
+		];					
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功！','data'=>$data]);
     }
    
     /**

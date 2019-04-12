@@ -37,7 +37,6 @@ class Team extends Base
             if($team_id){
                 $TeamActivity = new TeamActivity();
                 $team_info = $TeamActivity->with('goods')->find($team_id);
-                dump($team_info);   
                 // $list = Db::name('team_activity')->where('team_id',$team_id)->select();
                 $this->assign('list',$team_info);
                 // dump($list);

@@ -70,7 +70,7 @@ class Distribut extends Base {
     	$bufa = new \app\common\logic\DistributLogic();
       
         try{
-            $bufa->bufa($order_id);
+            $bufa->bufa($order_id,1);
 
             $this->ajaxReturn(['status' => 1, 'msg' => '操作成功，请刷新看结果']);
 
@@ -508,16 +508,20 @@ class Distribut extends Base {
      */
     public function agent_area()
     {   
-        //开启或关闭区域代理
+        $data = array('is_valid', 'is_divide');
+        //开启或关闭区域代理 
         if(IS_POST){
-            $value = I('valid'); 
-            $result = M('config')->where('name', 'is_valid')->update(['value'=>$value]);
+            $is_valid = I('valid');
+            $is_divide = I('divide');
+            M('config')->where('name', 'is_valid')->update(['value'=>$is_valid]);
+            M('config')->where('name', 'is_divide')->update(['value'=>$is_divide]);
         }
         
         $count = M('config_regional_agency')->count();
         $agent_area = M('config_regional_agency')->select();
-        $is_valid = M('config')->where('name', 'is_valid')->value('value');
-        $this->assign('is_valid', $is_valid);
+        $config = M('config')->where('name', ['in', $data])->column('name, value');
+        $this->assign('is_valid', $config['is_valid']);
+        $this->assign('is_divide', $config['is_divide']);
         $this->assign('list', $agent_area);
         $this->assign('count', $count);
         return $this->fetch();
@@ -551,23 +555,23 @@ class Distribut extends Base {
         //验证规则
         $rules = [
             'agency_level' => 'require|number|unique:config_regional_agency,agency_level^id',
-            'agency_name' => 'require|unique:config_regional_agency',
-            'team_sum' => 'number',
-            'other_sum' => 'number',
-            'rate' => 'require|between:0,100',
+            'agency_name'  => 'require|unique:config_regional_agency',
+            'team_sum'     => 'number',
+            'other_sum'    => 'number',
+            'rate'         => 'require|between:0,100',
         ];
 
         //错误提示
         $msg = [
-            'agency_level.require'          => '等级必填',
-            'agency_level.number'           => '等级必须是数字',
-            'agency_level.unique'           => '已存在相同的等级',
-            'agency_name.require'     => '名称必填',
-            'agency_name.unique'      => '已存在相同等级名称',
-            'team_sum.number'       => '最大代理佣金必须是数字',
-            'other_sum.number' => '代理拥金总和必须是数字',
-            'rate.require'           => '佣金占比必填',
-            'rate.between'           => '佣金占比在0-100之间',
+            'agency_level.require' => '等级必填',
+            'agency_level.number'  => '等级必须是数字',
+            'agency_level.unique'  => '已存在相同的等级',
+            'agency_name.require'  => '名称必填',
+            'agency_name.unique'   => '已存在相同等级名称',
+            'team_sum.number'      => '最大代理佣金必须是数字',
+            'other_sum.number'     => '代理拥金总和必须是数字',
+            'rate.require'         => '佣金占比必填',
+            'rate.between'         => '佣金占比在0-100之间',
         ];
 
         $validate = new Validate($rules,$msg);
@@ -612,14 +616,6 @@ class Distribut extends Base {
                 }
             }    
         }
-        // if ($data['act'] == 'del') {
-        //     $r = D('user_level')->where('level_id=' . $data['level_id'])->delete();
-        //     if ($r !== false) {
-        //         $return = ['status' => 1, 'msg' => '删除成功', 'result' => ''];
-        //     } else {
-        //         $return = ['status' => 0, 'msg' => '删除失败，数据库未响应', 'result' => ''];
-        //     }
-        // }
         $this->ajaxReturn($return);
     }
 }
