@@ -225,11 +225,13 @@ class Activity extends ApiBase {
     {	
 		$page = I('post.page/d',1);
 		$num = I('post.num/d',6);
-
+										
 		$goods = C('database.prefix') . 'goods';
 		$field = 'A.id,A.goods_id,A.activity_name,A.goods_name,A.start_price,A.start_time,G.original_img';
-		$limit = (($page - 1)) * $num . ',' . $num;
-		$list = M('Auction')->alias('A')->field($field)->join("$goods G" ,"A.goods_id=G.goods_id",'LEFT')->where(['A.auction_status'=>1,'A.is_end'=>0])->order("A.preview_time desc")->limit($limit)->select();	
+		$limit = (($page - 1)) * $num . ',' . $num;	
+		//先按小于当前时间升序，再按大于当前时间上升序
+		$sort = "A.start_time > UNIX_TIMESTAMP(NOW()),IF(A.start_time > UNIX_TIMESTAMP(NOW()), 0, A.start_time), A.start_time ASC";
+		$list = M('Auction')->alias('A')->field($field)->join("$goods G" ,"A.goods_id=G.goods_id",'LEFT')->where(['A.auction_status'=>1,'A.is_end'=>0])->order($sort)->limit($limit)->select();	
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$list]]);
     }
 
@@ -239,7 +241,7 @@ class Activity extends ApiBase {
     public function auction_info()
     {	
         $user_id = $this->get_user_id();
-        if(!$user_id)$this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
+        if(!$user_id)$this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);	
 
 		$auction_id = I('post.auction_id/d',0);
 		if(!$auction_id)$this->ajaxReturn(['status' => -2 , 'msg'=>'竞拍参数错误','data'=>null]);
