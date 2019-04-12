@@ -406,5 +406,9 @@ class Groupbuy extends ApiBase
 		}
 
     }
+
+	public function a(){	
+		$OrderLogic = new OrderLogic();  echo $OrderLogic->get_order_sn_auction_deposit();
+	}
     
 }

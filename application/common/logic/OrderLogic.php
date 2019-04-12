@@ -365,6 +365,24 @@ class OrderLogic
 	    return $order_sn;
 	}
 
+	/**
+	 * 获取订单 order_sn
+	 * @return string
+	 */
+	public function get_order_sn_auction_deposit()
+	{
+	    $order_sn = null;
+	    // 保证不会有重复订单号存在
+	    while(true){
+	        $order_sn = 'B' . date('ymdHis').rand(10000,99999); // 订单编号	        
+	        $order_sn_count = M('auction_deposit')->where(["order_sn" => $order_sn])->count();
+	        if($order_sn_count == 0)
+	            break;
+	    }
+	    
+	    return $order_sn;
+	}
+
     /**
      * 批量订单操作记录
      * @param $order_id

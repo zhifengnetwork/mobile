@@ -3,6 +3,7 @@
 namespace app\mobile\controller;
 
 use think\Db;
+use app\common\logic\OrderLogic;
 
 class Payment extends MobileBase
 {
@@ -13,7 +14,7 @@ class Payment extends MobileBase
      * 析构流函数
      */
     public function __construct()
-    {
+    {	
         parent::__construct();
         if(ACTION_NAME != 'pay_success') {
             // 获取支付类型
@@ -182,11 +183,12 @@ class Payment extends MobileBase
 
         $money = Db::name('Auction')->where('id',$goods_id)->value('deposit');
         
+		$OrderLogic = new OrderLogic();
         $user = session('user');
         $data['deposit'] = $money;
         $data['user_id'] = $user['user_id'];
         $data['auction_id'] = $goods_id;
-        $data['order_sn'] = 'Bond'.get_rand_str(10,0,1);
+        $data['order_sn'] = $OrderLogic->get_order_sn_auction_deposit();  
         $data['create_time'] = time();
         $order_id = M('auctionDeposit')->add($data);
 
