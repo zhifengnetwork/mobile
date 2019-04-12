@@ -335,20 +335,27 @@ class Activity extends ApiBase {
             $order = ['money' => 'desc'];
         }
         if ($user_id) {
-            $user_coupon = M('coupon_list')->where(['uid' => $user_id, 'status'=>$status])->getField('cid,use_time,code,send_time,status',true);
+            $user_coupon = M('coupon_list')->where(['uid' => $user_id, 'status'=>$status])->getField('id,cid,use_time,code,send_time,status',true);
         }
 
         if (is_array($user_coupon) && count($user_coupon) > 0) {
             $coupon_list = M('coupon')
-            ->field("id,name,type,money,condition,use_start_time,use_end_time,status,use_type,send_end_time-'$time' as spacing_time")
+            ->field("id cid,name,type,money,condition,use_start_time,use_end_time,status,use_type,send_end_time-'$time' as spacing_time")
             ->where($where)->page($p, 15)
             ->order($order)->select();
             if (!empty($user_coupon)) {
                 foreach ($coupon_list as $k => $val) {
                     $coupon_list[$k]['use_scope'] = C('COUPON_USER_TYPE')[$coupon_list[$k]['use_type']];
+                    foreach($user_coupon as $ks=>$vs){
+                        if($val['cid'] == $vs['cid']){
+                            $coupon_list[$k]['coupon_code'] =$vs['code'];
+                            $coupon_list[$k]['cid'] =$vs['id'];
+                        }
+                    }
                 }
             }
         }
+        
         return $coupon_list;
     }
 

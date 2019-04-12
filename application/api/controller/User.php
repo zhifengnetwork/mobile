@@ -415,4 +415,47 @@ class User extends ApiBase
         }
     }
 
+    /**
+     * +---------------------------------
+     * 分销会员主页
+     * +---------------------------------
+    */
+    public function distribut_index(){
+
+        $user_id = $this->get_user_id();
+        if (!IS_POST) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>'']);
+        }
+        $userLogic = new UsersLogic();
+        $user_info = $userLogic->get_info($user_id);  // 获取用户信息
+        if($user_info['result']['status'] == '-1'){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>$user_info['result']['msg'],'data'=>'']);
+        }
+        $user_info = [
+            'user_money' => $user_info['result']['user_money'],
+            'distribut_money' => $user_info['result']['distribut_money'],
+            'total_property' => $user_info['result']['user_money']+$user_info['distribut_money']
+        ];
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$user_info]);
+
+    }
+
+    
+    
+    /**
+     * +---------------------------------
+     * 我的会员
+     * +---------------------------------
+    */
+    public function team_list(){
+
+        $user_id = $this->get_user_id();
+        if (!IS_POST) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>'']);
+        }
+        // $user_info = $userLogic->get_info($user_id);  // 获取用户信息
+        //下级信息
+        $users = M('users')->field('user_id,nickname,mobile')->order('user_id DESC')->where(['first_leader'=>$user_id])->select();
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$users]);
+    }
 }

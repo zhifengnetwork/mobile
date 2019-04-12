@@ -74,7 +74,12 @@ class Search extends ApiBase
             $sort_asc = $sort_asc == 'asc' ? 'asc' : 'desc';
             $sort_arr = ['sales_sum','shop_price','is_new','comment_count','sort'];
             if(!in_array($sort,$sort_arr)) $sort='sort';
-            $goods_list = D('goods')->where("goods_id", "in", implode(',', $filter_goods_id))->order([$sort => $sort_asc])->limit($page->firstRow . ',' . $page->listRows)->field('goods_id,goods_name,comment_count,shop_price')->select();
+            $goods_list = D('goods')
+            ->where("goods_id", "in", implode(',', $filter_goods_id))
+            ->order([$sort => $sort_asc])
+            ->limit($page->firstRow . ',' . $page->listRows)
+            ->field('goods_id,goods_name,comment_count,shop_price,sales_sum')
+            ->select();
             $filter_goods_id2 = get_arr_column($goods_list, 'goods_id');
             if ($filter_goods_id2)
                 $goods_images = M('goods_images')->where("goods_id", "in", implode(',', $filter_goods_id2))->cache(true)->select();
