@@ -239,10 +239,10 @@ class Activity extends ApiBase {
     public function auction_info()
     {	
         $user_id = $this->get_user_id();
-        if(!$user_id)$this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        if(!$user_id)$this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
 
 		$auction_id = I('post.auction_id/d',0);
-		if(!$auction_id)$this->ajaxReturn(['status' => -2 , 'msg'=>'竞拍参数错误','data'=>'']);
+		if(!$auction_id)$this->ajaxReturn(['status' => -2 , 'msg'=>'竞拍参数错误','data'=>null]);
 
 		$goods = C('database.prefix') . 'goods';
 		$field = 'A.id,A.goods_id,A.activity_name,A.goods_name,A.start_price,A.start_time,A.end_time,A.increase_price,G.original_img';
