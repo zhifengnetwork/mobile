@@ -423,7 +423,7 @@ class Groupbuy extends MobileBase
                 $ogins = Db::execute($ogsql);
                 if(!$ogins){
                     Db::execute("delete from `tp_order` where `order_id` = '$order_insid'");
-                    ajaxReturn(['status'=>1, 'msg'=>'订单提交失败，订单商品写入失败']);
+                    ajaxReturn(['status'=>0, 'msg'=>'订单提交失败，订单商品写入失败']);
                 }
 
                 # 单独购买 || 拼团
@@ -457,7 +457,7 @@ class Groupbuy extends MobileBase
                         ajaxReturn(['status'=>1, 'msg'=>'订单提交成功', 'type' => 2,'order_sn'=>$order_sn]);
                     }else{
                         Db::execute("delete from `tp_order` where `order_id` = '$order_insid'");
-                        ajaxReturn(['status'=>1, 'msg'=>'订单提交失败，开团时不成功']);
+                        ajaxReturn(['status'=>0, 'msg'=>'订单提交失败，开团时不成功']);
                     }
                 }else{
                     # 更新用户余额

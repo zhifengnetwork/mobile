@@ -674,7 +674,13 @@
             user_note:  user_note
         };
         $.post('falceOrder',{data:data},function(res){
-            console.log(res);
+			if(res.status === 1){
+				layer.open({icon: 1, content: res.msg, time: 2});
+				location.href = "{:U('Shop/User/login?order_sn=".res.order_sn."')}";
+			}else{
+				layer.open({icon: 1, content: res.msg, time: 2});
+				
+			}
         });
         
     }
