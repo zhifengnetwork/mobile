@@ -675,7 +675,7 @@
         };
         $.post('falceOrder',{data:data},function(res){
 			res = JSON.parse(res);
-			if(res.status === 1){
+			if(res.status == 1){
 				layer.open({icon: 1, content: res.msg, time: 2});
 				location.href = "/shop/User/login/order_sn/" + res.order_sn;
 										
