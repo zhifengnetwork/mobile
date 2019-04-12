@@ -61,10 +61,10 @@ class PayNotifyCallBack extends WxPayNotify
         } else {
             $order_amount = M('order')->where(['order_sn' => "$order_sn"])->value('order_amount');
         }
-M('A')->add(['msg'=>'AAAAAAA']);
+M('A')->add(['msg'=>'B'.$data['total_fee']]);  M('A')->add(['msg'=>'A'.($order_amount * 100)]);
         if ((string)($order_amount * 100) != (string)$data['total_fee']) {
             return false; //验证失败
-        }	M('A')->add(['msg'=>'bbbbbbbbbbbb']);
+        }	
 
         update_pay_status($order_sn, array('transaction_id' => $data["transaction_id"])); // 修改订单支付状态
 		
