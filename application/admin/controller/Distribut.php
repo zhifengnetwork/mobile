@@ -555,23 +555,23 @@ class Distribut extends Base {
         //验证规则
         $rules = [
             'agency_level' => 'require|number|unique:config_regional_agency,agency_level^id',
-            'agency_name' => 'require|unique:config_regional_agency',
-            'team_sum' => 'number',
-            'other_sum' => 'number',
-            'rate' => 'require|between:0,100',
+            'agency_name'  => 'require|unique:config_regional_agency',
+            'team_sum'     => 'number',
+            'other_sum'    => 'number',
+            'rate'         => 'require|between:0,100',
         ];
 
         //错误提示
         $msg = [
-            'agency_level.require'          => '等级必填',
-            'agency_level.number'           => '等级必须是数字',
-            'agency_level.unique'           => '已存在相同的等级',
-            'agency_name.require'     => '名称必填',
-            'agency_name.unique'      => '已存在相同等级名称',
-            'team_sum.number'       => '最大代理佣金必须是数字',
-            'other_sum.number' => '代理拥金总和必须是数字',
-            'rate.require'           => '佣金占比必填',
-            'rate.between'           => '佣金占比在0-100之间',
+            'agency_level.require' => '等级必填',
+            'agency_level.number'  => '等级必须是数字',
+            'agency_level.unique'  => '已存在相同的等级',
+            'agency_name.require'  => '名称必填',
+            'agency_name.unique'   => '已存在相同等级名称',
+            'team_sum.number'      => '最大代理佣金必须是数字',
+            'other_sum.number'     => '代理拥金总和必须是数字',
+            'rate.require'         => '佣金占比必填',
+            'rate.between'         => '佣金占比在0-100之间',
         ];
 
         $validate = new Validate($rules,$msg);
@@ -616,14 +616,6 @@ class Distribut extends Base {
                 }
             }    
         }
-        // if ($data['act'] == 'del') {
-        //     $r = D('user_level')->where('level_id=' . $data['level_id'])->delete();
-        //     if ($r !== false) {
-        //         $return = ['status' => 1, 'msg' => '删除成功', 'result' => ''];
-        //     } else {
-        //         $return = ['status' => 0, 'msg' => '删除失败，数据库未响应', 'result' => ''];
-        //     }
-        // }
         $this->ajaxReturn($return);
     }
 }
