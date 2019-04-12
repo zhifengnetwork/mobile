@@ -31,7 +31,7 @@ class PayNotifyCallBack extends WxPayNotify
 	
 	//重写回调处理函数
 	public function NotifyProcess($data, &$msg)
-	{													M('A')->add(['msg'=>'hhhaaa']);
+	{													
         Log::DEBUG("call back:" . json_encode($data));
 
         if (!array_key_exists("transaction_id", $data)) {
@@ -43,7 +43,7 @@ class PayNotifyCallBack extends WxPayNotify
             $msg = "订单查询失败";
             return false;
         }
-
+M('A')->add(['msg'=>'123456']);
         $appid = $data['appid']; //公众账号ID
         $order_sn = $data['out_trade_no']; //商户系统的订单号，与请求一致。
         $attach = $data['attach']; //商家数据包，原样返回
