@@ -48,7 +48,7 @@ $(function () {
         }
         else if (num >= 0) {
             html = `<div class="danmu" >
-                        <img src="${arr[num].head_ico}">
+                        <img src="${arr[num].head_pic}">
                         <p>
                             <span class="dan_mc">${arr[num].content}  </span>
                             
