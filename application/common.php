@@ -1093,8 +1093,10 @@ function update_pay_status($order_sn, $ext = array())
         $order = M('AuctionDeposit')->where(['order_sn' => $order_sn, 'status' => 0])->find(); 
         if (!$order) return false;// 看看有没已经处理过这笔订单  支付宝返回不重复处理操作
         $update = ['status' => 1];
-        if (isset($ext['transaction_id'])) $update['transaction_id'] = $ext['transaction_id'];
-        M('AuctionDeposit')->where("order_sn", $order_sn)->save($update);
+        if (isset($ext['transaction_id'])){
+            $update['transaction_id'] = $ext['transaction_id'];
+        }
+        M('AuctionDeposit')->where("order_sn", $order_sn)->update($update);
         // 报名人数加一
         M('Auction')->where('id',$order['auction_id'])->setInc('buy_num');
     } else {
