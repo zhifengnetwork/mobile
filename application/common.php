@@ -1194,6 +1194,11 @@ function update_pay_status($order_sn, $ext = array())
         agent_performance($order['order_id']);
         //业绩（包含个人+团队）
 
+        $regional_agency = new \app\common\logic\RegionalAgencyLogic();
+        //区域地理分钱
+        $regional_agency->fenqian($order['order_id']);
+        //区域代理升级
+        $regional_agency->upgrade();
 
         //虚拟服务类商品支付
         if ($order['prom_type'] == 5) {
