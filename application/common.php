@@ -1181,7 +1181,7 @@ function update_pay_status($order_sn, $ext = array())
             //发给上级
             $first_leader_openid = Db::name('users')->where(['user_id' => $userinfo['first_leader']])->value('openid');
             if($first_leader_openid){
-                $wx_first_leader_content = "你的下级订单支付成功！\n\n订单：{$order_sn}\n支付时间：{$time}\n金额：{$order['total_amount']}\n\n支付成功可获得返利";
+                $wx_first_leader_content = "你的下级订单支付成功！\n\n订单：{$order_sn}\n支付时间：{$time}\n金额：{$order['total_amount']}";
                 $wechat = new \app\common\logic\wechat\WechatUtil();
                 $wechat->sendMsg($first_leader_openid, 'text', $wx_first_leader_content);
             }
