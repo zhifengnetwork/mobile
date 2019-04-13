@@ -87,7 +87,7 @@ class weixin
     	if(stripos($order['order_sn'],'recharge') !== false){
     		$go_url = U('Mobile/User/recharge_list',array('type'=>'recharge'));
     		$back_url = U('Mobile/User/recharge',array('order_id'=>$order['order_id']));
-    	} elseif (stripos($order['order_sn'],'Bo') !== false){
+    	} elseif (stripos($order['order_sn'],'B') !== false){
             $go_url = U('Shop/Auction/auction_detail',array('id'=>$order['auction_id']));
             $back_url = U('Shop/Activity/auction_list');
         } else {
