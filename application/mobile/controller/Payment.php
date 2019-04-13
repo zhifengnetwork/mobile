@@ -30,6 +30,10 @@ class Payment extends MobileBase
                 $this->pay_code = session('pay_pay_code');
             }
 
+            if (!session('user')) {
+                $this->error('请先登录', U('User/login'));
+            }
+
             // 获取通知的数据
             if (empty($this->pay_code)) {
 
@@ -175,9 +179,6 @@ class Payment extends MobileBase
     public function payBond(){
 
         header("Content-type:text/html;charset=utf-8");
-        if (!session('user')) {
-            $this->error('请先登录', U('User/login'));
-        }
 
         $goods_id = I("gid/d");
 

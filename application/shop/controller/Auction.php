@@ -188,6 +188,26 @@ class Auction extends MobileBase
         }
 
     }
+    
+    /*
+    * 前端每N秒获取一次竞拍结果,报名人数，出价条数，最高出价信息
+    */
+    public function AjaxGetAucMaxPrice(){
+        $id = I('post.aid/d',0);
+        if(!$id){
+            $this->ajaxReturn(['status'=>-1,'msg'=>'参数错误']);    
+        }
+        //报名人数
+        $buy_num = M('Auction')->where(['id'=>$id])->value('buy_num');
+        //出价条数
+        $price_num = M('Auction_price')->where(['auction_id'=>$id])->count();
+        //最高出价信息前3条
+        $max_price = M('Auction_price')->where(['auction_id'=>$id])->order('offer_price desc')->limit(0,3);
+        foreach($max_price as $k=>$v){
+            $max_price[$k]['offer_time'] = date('m.d H:i:s',$v['offer_time']);
+        }
+        $this->ajaxReturn(['status'=>1,'msg'=>'请求成功','data'=>['buy_num'=>$buy_num,'price_num'=>$price_num,'max_price'=>$max_price]]); 
+    }
 
     /**
      * 竞拍失败修改已读状态

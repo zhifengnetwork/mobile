@@ -161,26 +161,30 @@ class Auction extends ApiBase
     {
         $auction_id = input("aid/d", 0);
         try {
-            $auction = \app\common\model\Auction::get($auction_id);
-            $this->auction = $auction::get($auction_id);
+            $auction = \app\common\model\Auction::get($auction_id); 
+            $this->auction = $auction::get($auction_id);   
             $buyGoods = $this->winnersUser();
 
         } catch (TpshopException $t) {
             $error = $t->getErrorArr();
             $this->ajaxReturn($error);
-        }
+        } 
             return $this->ajaxReturn($buyGoods);
     }
 
     /**
-     * 竞拍结果弹框
+     * 获取竞拍结果
      */
     public function auctionResult()
-    {
-        $auction_id = input("aid/d", 0);
-        $victory = M('AuctionPrice')->where(['user_id' => $this->user_id, 'auction_id' => $auction_id, 'is_read' => 0])->order('offer_price desc')->find();
+    {   
+        $user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
+        } 
+        $auction_id = input("aid/d", 69);
+        $victory = M('AuctionPrice')->field('id,offer_price,is_out')->where(['user_id' => $user_id, 'auction_id' => $auction_id])->order('offer_price desc')->find();
         if(!empty($victory)){
-            $this->ajaxReturn(['status' => 1, 'msg'=>$victory['is_out']]);
+            $this->ajaxReturn(['status' => 0, 'msg' => '请求成功！', 'data' => ['']]);
         } else {
             $this->ajaxReturn(['status'=>0]);
         }
