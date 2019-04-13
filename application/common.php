@@ -53,8 +53,19 @@ function write_log($content)
 
 function share_deal_after($xiaji, $shangji)
 {
+
     write_log("xiaji:" . $xiaji);
     write_log("shangji:" . $shangji);
+
+    //看下级的注册时间
+    $reg_time = M('users')->where(['user_id' => $xiaji])->value('reg_time');
+    if ( (( time() - $reg_time ) > 86400 ) && $reg_time > 0) {
+        write_log("xiaji（after 24 hour）:" . $xiaji);
+        return false;
+    }
+    //超过24小时 不再绑定上下级
+
+  
     if ($xiaji == $shangji) {
         return false;
     }

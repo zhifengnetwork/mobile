@@ -20,10 +20,10 @@
             <li>{$user.nickname}[ID: {$user.user_id}]的下级</li>
         </ul>
         <ul class="re_tit">
-            <li style="width:33.3%"><span>用户ID</span></li>
-            <li style="width:33.3%"><span>名称</span></li>
-            <!-- <li style="width:25%"><span>电话</span></li> -->
-            <li style="width:33.3%"><span>订单</span></li>
+            <li style="width:25%"><span>用户ID</span></li>
+            <li style="width:25%"><span>名称</span></li>
+            <li style="width:25%"><span>总业绩</span></li>
+            <li style="width:25%"><span>订单</span></li>
         </ul>
             <empty name="lists">
                 <div class="juzhong">
@@ -34,14 +34,16 @@
                     <div onclick="team_list('{$v.user_id}');">
                         <ul class="series" >
                             <!-- <input type="hidden" name="series" value="{$i}"> -->
-                            <li style="width:33.3%"><span>{$v.user_id}</span></li>
-                            <li style="width:33.3%"><span>{$v.nickname}</span></li>
+                            <li style="width:25%"><span>{$v.user_id}</span></li>
+                            <li style="width:25%"><span>{$v.nickname}</span></li>
+                            <li style="width:25%"><span>{$v.user_id|get_zongyeji_bu_user_id}</span></li>
+
                             <!-- <if condition="$v.mobile">
                                 <li style="width:25%"><span>{$v.mobile}</span></li>
                             <else>
                                 <li style="width:25%"><span>还未绑定手机号</span></li>
                             </if> -->
-                            <li style="width:33.3%; margin:line-height;" >
+                            <li style="width:25%; margin:line-height;" >
                                 <a href="{:url('Mobile/User/order_list', array('user_id'=>$v.user_id))}">查看</a>
                             </li>
                         </ul>
