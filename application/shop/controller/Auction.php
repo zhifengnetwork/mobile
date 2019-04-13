@@ -206,7 +206,7 @@ class Auction extends MobileBase
         foreach($max_price as $k=>$v){
             $max_price[$k]['offer_time'] = date('m.d H:i:s',$v['offer_time']);
         }
-        $this->ajaxReturn(['status'=>1,'msg'=>'请求成功','data'=>['buy_num'=>$buy_num,'price_num'=>$price_num,'max_price'=>$max_price]]); 
+        $this->ajaxReturn(['status'=>1,'msg'=>'请求成功','buy_num'=>$buy_num,'price_num'=>$price_num,'max_price'=>$max_price]); 
     }
 
     /**
