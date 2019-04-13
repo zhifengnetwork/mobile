@@ -59,12 +59,12 @@
 				<if condition="$bondUser[0] eq ''">
 					<p class="price">￥{$auction['start_price']}</p><span>起拍价</span>
 				<else/>
-					<p class="price" id='max_price'>￥{$bondUser[0]['offer_price']}</p><span>当前价</span>
+					<p class="price">￥{$bondUser[0]['offer_price']}</p><span>当前价</span>
 				</if>
 			</if>
 		</div>
 		<div class="right">
-			<span>报名</span><span id='buy_num'>{$auction['buy_num']}</span>人
+			<span>报名</span><span>{$auction['buy_num']}</span>人
 		</div>
 
 	</div>
@@ -75,7 +75,7 @@
 	<div class="headpicear">
 
 		<a class="zongshu" href="{:U('shop/Auction/tiaoshu',array('id'=>$auction.id))}">
-			<span>拍卖纪录</span><span id='price_num'>{$bondCount}</span>条<span>></span>
+			<span>拍卖纪录</span><span>{$bondCount}</span>条<span>></span>
 		</a>
 		<ul class="tiaoshu">
 			<foreach name="bondUser" item="vo" length="3">
@@ -315,40 +315,6 @@
 
 	};
 
-		//每5秒获取一次最新竞价结果
-	var clock = window.setInterval(function(){
-		var goods_id = $('input[name="goods_id"]').val();
-		$.ajax({
-			type: "POST",
-			url: "/index.php?m=shop&c=Auction&a=AjaxGetAucMaxPrice",//+tab,
-			data: {aid:goods_id},
-			dataType: "json",
-			success: function (res) {
-				if(res.status == 1){ 
-					$('#buy_num').text(res.buy_num);
-					$('#price_num').text(res.price_num);
-					var str = '';
-					for(var i=0; i<3; i++){
-						str += '<li>';
-						str += '<span>' + res['max_price'][i]['user_name'] + '</span>';
-						str += '<span>';
-						if(res['max_price'][i]['is_out'] == 2)
-							str += '成交</span>';
-						elseif(res['max_price'][i]['is_out'] == 1)
-							str += '领先</span>';
-						else
-							str += '出局</span>';
-						str += '<span>'+res['max_price'][i]['offer_time']+'</span><span>￥'+res['max_price'][i]['offer_price']+'</span>';
-						str += '</li>';
-					}
-					$('.tiaoshu').empty();
-					$('.tiaoshu').append(str);
-					//max_price
-				}
-			}
-		});		
-	}, 5 * 1000);	
-
 	//活动结束判断弹框
 	function activityResult(){
 		var goods_id = $('input[name="goods_id"]').val();
@@ -363,12 +329,10 @@
 					location.href = "{:U('Shop/User/login')}";
 				}
 				if (data.status == 1 && data.msg == 2) {
-					clearInterval(clock);
 					$("#mask").show();
 					return false;
 				}
 				if (data.status == 1 && data.msg == 0) {
-					clearInterval(clock);
 					$("#mask3").show();
 				}
 
@@ -395,12 +359,6 @@
 			layer.open({icon: 2, content: "购买数量超过此商品购买上限", time: 2});
 		}
 	})
-
-	//竞拍失败
-	$(document).on('click', '#tobuy1', function () {
-		location.href = "{:U('Shop/Activity/auction_list')}";	
-	});
-
 </script>
 
 </body>
