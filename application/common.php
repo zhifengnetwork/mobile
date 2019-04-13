@@ -59,18 +59,34 @@ function share_deal_after($xiaji, $shangji)
 
     //看下级的注册时间
     $reg_time = M('users')->where(['user_id' => $xiaji])->value('reg_time');
-    if ( (( time() - $reg_time ) > 86400 ) && $reg_time > 0) {
+    if ( (( time() - $reg_time ) > 600 ) && $reg_time > 0) {
         write_log("xiaji（after 24 hour）:" . $xiaji);
+        $xiaji_openid = M('users')->where(['user_id' => $xiaji])->value('openid');
+        $wx_content = "此次扫码，不能绑定上下级关系。原因：新用户扫码时才能绑定关系！你的ID:".$xiaji;
+        $wechat = new \app\common\logic\wechat\WechatUtil();
+        $wechat->sendMsg($xiaji_openid, 'text', $wx_content);
         return false;
     }
-    //超过24小时 不再绑定上下级
+    //超过10分钟 不再绑定上下级
 
   
     if ($xiaji == $shangji) {
+        $xiaji_openid = M('users')->where(['user_id' => $xiaji])->value('openid');
+        $wx_content = "此次扫码，不能绑定上下级关系。原因：请不要扫自己的二维码！你的ID:".$xiaji;
+        $wechat = new \app\common\logic\wechat\WechatUtil();
+        $wechat->sendMsg($xiaji_openid, 'text', $wx_content);
         return false;
     }
+    
+
     $is_shangji = M('users')->where(['user_id' => $xiaji])->value('first_leader');
     if ($is_shangji && (int)$is_shangji > 0) {
+
+        $xiaji_openid = M('users')->where(['user_id' => $xiaji])->value('openid');
+        $wx_content = "此次扫码，不能绑定上下级关系。原因：已经存在上级！你的ID:".$xiaji;
+        $wechat = new \app\common\logic\wechat\WechatUtil();
+        $wechat->sendMsg($xiaji_openid, 'text', $wx_content);
+
         return false;
     }
 
