@@ -2,14 +2,14 @@
 /**
  * 竞拍 的 PHP 后端
  */
-namespace app\shop\controller;
+namespace app\api\controller;
 
 use app\common\logic\AuctionLogic;
 use app\common\model\Goods;
 use think\Db;
 use app\common\model\WxNews;
 
-class Auction extends MobileBase
+class Auction extends ApiBase
 {
 
     public $user_id = 0;
@@ -72,12 +72,15 @@ class Auction extends MobileBase
      */
     public function auction_detail()
     {
+		$user_id = $this->get_user_id();
+        if(!$user_id)$this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);		
         
-        $auction_id = I("get.id/d");
-        $goodsModel = new \app\common\model\Auction();
-        $auction = $goodsModel::get($auction_id);
+        $auction_id = I("post.id/d",0);
+		$goods = C('database.prefix') . 'goods';
+		$field = 'A.id,A.goods_id,A.activity_name,A.goods_name,A.start_price,A.start_time,A.end_time,A.increase_price,A.auction_status,A.delay_time,A.delay_num,G.original_img';
+		$auction = M('Auction')->alias('A')->field($field)->join("$goods G" ,"A.goods_id=G.goods_id",'LEFT')->where(['A.is_end'=>0])->order("A.preview_time desc")->find();	
 
-        $this->setGoodsModel($auction['goods_id']);
+        //$this->setGoodsModel($auction['goods_id']);
 
         if (empty($auction) || ($auction['auction_status'] == 0)) {
             $this->error('此商品不存在或者已下架');
@@ -93,11 +96,7 @@ class Auction extends MobileBase
             $auction['isBond'] = 1;
         }
 
-        $this->assign('bondUser', $bondUser);
-        $this->assign('bondCount', count($bondUser));
-        $this->assign('auction', $auction);
-        $this->assign('goods', $this->goods);
-        return $this->fetch();
+		$this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['auction'=>$auction,'bondUser'=>$bondUser,'bondCount'=>count($bondUser)]]);
     }
 
     /*
@@ -105,54 +104,53 @@ class Auction extends MobileBase
      */
     public function offerPrice()
     {
-        $auction_id = input("goods_id/d"); // 竞拍商品id
-        $price = input("price/f");// 竞拍价格
-        if ($this->user_id == 0){
-           $this->ajaxReturn(['status' => -100, 'msg' => '请先登录', 'result' => '']);
-        }
+        $auction_id = I("post.auction_id/d",0); // 竞拍商品id
+        $price = I("post.price/f",0.00);// 竞拍价格
+		
+		$user_id = $this->get_user_id();
+        if(!$user_id)$this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
+
         $auction = \app\common\model\Auction::get($auction_id);
-        $isBond = $this->getUserIsBond($this->user_id, $auction_id);
-        if(empty($isBond)){
-            $this->ajaxReturn(['status' => 0, 'msg' => '未交保证金', 'jump' => U('Mobile/Payment/payBond',array('goods_id'=>$auction_id))]);
+        $isBond = $this->getUserIsBond($user_id, $auction_id);
+        if(empty($isBond)){										
+            $this->ajaxReturn(['status' => -2, 'msg' => '您还未交保证金', 'data' => null]);
         }
         $high = $this->getHighPrice($auction_id);
         // 活动是否已开始
         if ( time() < $auction['start_time']){
-            $this->ajaxReturn(['status' => 0, 'msg' => '本轮活动还没开始', 'result' => '']);
+            $this->ajaxReturn(['status' => -3, 'msg' => '本轮活动还没开始', 'data' => null]);
         }
         // 当前时间是否已结束
         if ( time() > $auction['end_time']+($auction['delay_num']*$auction['delay_time'])){
-            $this->ajaxReturn(['status' => 0, 'msg' => '本轮活动已结束', 'result' => '']);
+            $this->ajaxReturn(['status' => -4, 'msg' => '本轮活动已结束', 'data' => null]);
         }
 
 		// 是否小于起拍价
         if ( $price < $auction['start_price'] ){
-			$this->ajaxReturn(['status' => 0, 'msg' => '必须不小于起拍价', 'result' => '']);
+            $this->ajaxReturn(['status' => -9, 'msg' => '必须不小于起拍价', 'data' => null]);
         }
 
         if (empty($high)){
-            $this->addAuctionOffer($this->user_id, $auction_id, $price);
+            $this->addAuctionOffer($user_id, $auction_id, $price);
         } else {
-            if($this->user_id == $high[0]['user_id']){
-                $this->ajaxReturn(['status' => 0, 'msg' => '您已经是目前最高出价者了', 'result' => '']);
+            if($user_id == $high[0]['user_id']){
+                $this->ajaxReturn(['status' => -5, 'msg' => '您已经是目前最高出价者了', 'data' => nill]);
             }
             if($price <= $high[0]['offer_price']){
-                $this->ajaxReturn(['status' => 0, 'msg' => '您的出价低于别人', 'result' => '']);
+                $this->ajaxReturn(['status' => -6, 'msg' => '您的出价不是最高价', 'data' => null]);
             }
             if ($price < ($high[0]['offer_price']+$auction['increase_price'])){
-                $this->ajaxReturn(['status' => 0, 'msg' => '加价幅度'.$auction['increase_price'], 'result' => '']);
+                $this->ajaxReturn(['status' => -7, 'msg' => '加价幅度'.$auction['increase_price'], 'data' => null]);
             }
             // 结束时间小于延时时间的话就添加延时次数
             if($auction['end_time']-time() <= $auction['delay_time']*60){
                 $this->addDelayTime($auction_id, $auction['delay_time']);
             }
 
-            $this->addAuctionOffer($this->user_id, $auction_id, $price);
+            $this->addAuctionOffer($user_id, $auction_id, $price);
         }
 
-        return $this->ajaxReturn(['status' => 1, 'msg' => '出价成功', 'result' => '']);
-//        return $this->fetch('auction_detail', ['id'=>$auction_id,'item_id'=>$item]);
-//        return $this->success('出价成功',U('auction_detail',array('id'=>$auction_id, 'item_id'=>$item))); //分跳转 和不 跳转
+        return $this->ajaxReturn(['status' => 0, 'msg' => '出价成功', 'data' => null]);
 
     }
 
@@ -163,50 +161,34 @@ class Auction extends MobileBase
     {
         $auction_id = input("aid/d", 0);
         try {
-            $auction = \app\common\model\Auction::get($auction_id);
-            $this->auction = $auction::get($auction_id);
+            $auction = \app\common\model\Auction::get($auction_id); 
+            $this->auction = $auction::get($auction_id);   
             $buyGoods = $this->winnersUser();
 
         } catch (TpshopException $t) {
             $error = $t->getErrorArr();
             $this->ajaxReturn($error);
-        }
+        } 
             return $this->ajaxReturn($buyGoods);
     }
 
     /**
-     * 竞拍结果弹框
+     * 获取竞拍结果
      */
     public function auctionResult()
-    {
-        $auction_id = input("aid/d", 0);
-        $victory = M('AuctionPrice')->where(['user_id' => $this->user_id, 'auction_id' => $auction_id, 'is_read' => 0])->order('offer_price desc')->find();
+    {   
+        $user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
+        } 
+        $auction_id = input("aid/d", 69);
+        $victory = M('AuctionPrice')->field('id,offer_price,is_out')->where(['user_id' => $user_id, 'auction_id' => $auction_id])->order('offer_price desc')->find();
         if(!empty($victory)){
-            $this->ajaxReturn(['status' => 1, 'msg'=>$victory['is_out']]);
+            $this->ajaxReturn(['status' => 0, 'msg' => '请求成功！', 'data' => ['']]);
         } else {
             $this->ajaxReturn(['status'=>0]);
         }
 
-    }
-    
-    /*
-    * 前端每N秒获取一次竞拍结果,报名人数，出价条数，最高出价信息
-    */
-    public function AjaxGetAucMaxPrice(){
-        $id = I('post.aid/d',0);
-        if(!$id){
-            $this->ajaxReturn(['status'=>-1,'msg'=>'参数错误']);    
-        }
-        //报名人数
-        $buy_num = M('Auction')->where(['id'=>$id])->value('buy_num');
-        //出价条数
-        $price_num = M('Auction_price')->where(['auction_id'=>$id])->count();
-        //最高出价信息前3条
-        $max_price = M('Auction_price')->where(['auction_id'=>$id])->order('offer_price desc')->limit(0,3);
-        foreach($max_price as $k=>$v){
-            $max_price[$k]['offer_time'] = date('m.d H:i:s',$v['offer_time']);
-        }
-        $this->ajaxReturn(['status'=>1,'msg'=>'请求成功','data'=>['buy_num'=>$buy_num,'price_num'=>$price_num,'max_price'=>$max_price]]); 
     }
 
     /**
@@ -287,8 +269,11 @@ class Auction extends MobileBase
     {
         $where['auction_id'] = $auction_id;
         $query = M('AuctionPrice')
+			->alias('A')
+			->field('A.*,U.head_pic')
+			->join('tp_users U','A.user_id=U.user_id','left')	
             ->where($where)
-            ->order('offer_price desc')
+            ->order('A.offer_price desc')
             ->limit($limit)
             ->select();
 
@@ -318,11 +303,11 @@ class Auction extends MobileBase
 			$info = $AuctionPrice->field('user_id,offer_price,offer_time,is_out')->order('offer_price desc')->find($auction_id);
 			if($info['user_id'] && ($info['user_id'] !== $uid)){
 				Db::rollback();
-				$this->ajaxReturn(['status' => 0, 'msg' => '您的出价不是最高价', 'result' => '']);
+				$this->ajaxReturn(['status' => -6, 'msg' => '您的出价不是最高价', 'data' => null]);
 			}
 			if($AuctionPrice->where(['auction_id'=>$auction_id,'pay_status'=>1])->count()){
 				Db::rollback();
-				$this->ajaxReturn(['status' => 0, 'msg' => '您的出价无效，商品已完成竞拍！', 'result' => '']);
+				$this->ajaxReturn(['status' => -8, 'msg' => '您的出价无效，商品已完成竞拍！', 'data' => null]);
 			}
 
             $map['auction_id']  = ['=', $auction_id];
@@ -335,7 +320,7 @@ class Auction extends MobileBase
             // 回滚事务
             Db::rollback();
             $error = $t->getErrorArr();
-            $this->ajaxReturn($error);
+            $this->ajaxReturn(['status' => -99, 'msg' => $error, 'data' => null]);
         }
 
     }

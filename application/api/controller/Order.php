@@ -70,7 +70,7 @@ class Order extends ApiBase
     {
         $user_id = $this->get_user_id();
         if(!$user_id){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
         }
         $order_id = I('id');
         //验证是否本人的
@@ -116,7 +116,7 @@ class Order extends ApiBase
 	 public function post_order(){   
 		$user_id = $this->get_user_id();
         if(!$user_id){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
         }	
 
         $address_id = input("address_id/d", 0); //  收货地址id
@@ -144,7 +144,7 @@ class Order extends ApiBase
         }
         if (!$cart_validate->check($data)) {
             $error = $cart_validate->getError();
-            $this->ajaxReturn(['status' => -4, 'msg' => $error, 'data' => '']);  //留言长度不符或收货人错误
+            $this->ajaxReturn(['status' => -4, 'msg' => $error, 'data' => null]);  //留言长度不符或收货人错误
         }
         $address = Db::name('user_address')->where("address_id", $address_id)->find();
         $cartLogic = new CartLogic();
