@@ -1238,7 +1238,7 @@
         //活动时间到了就刷新页面重新载入
         if(now > end_time){
             layer.open({content:'该商品活动已结束',time: 2});
-            location.reload();
+            window.history.go(-1);
         }
         $("#overTime").text(text);
     }
