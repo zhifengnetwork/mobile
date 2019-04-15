@@ -354,6 +354,20 @@ class Groupbuy extends MobileBase
                     $ruser_money = $user_money - $total;
                     # 已使用余额
                     $auser_money = $total;
+     
+                    if ($user['is_lock'] == 1) {
+                        ajaxReturn(['status'=>0, 'msg'=>'账号异常已被锁定，不能使用余额支付！']);
+                    }
+                    if (empty($user['paypwd'])) {
+                        ajaxReturn(['status'=>0, 'msg'=>'请先设置支付密码']);
+                    }
+                    if (empty($data['pay_pwd'])) {
+                        ajaxReturn(['status'=>0, 'msg'=>'请输入支付密码']);
+                    }
+                    if ($data['pay_pwd'] !== $user['paypwd'] && encrypt($data['pay_pwd']) !== $user['paypwd']) {
+                        ajaxReturn(['status'=>0, 'msg'=>'支付密码错误']);
+                    }
+               
                     # 订单支付状态
                     $pay_status = 1;
                     $pay_name = '余额支付';
