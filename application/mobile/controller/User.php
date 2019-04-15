@@ -271,6 +271,10 @@ class User extends MobileBase
         
         $user_id = session('user.user_id');
 
+        //区域代理升级
+        $regional_agency = new \app\common\logic\RegionalAgencyLogic();
+        $regional_agency->upgrade();
+
         //当前登录用户信息
         $logic = new UsersLogic();
         $user_info = $logic->get_info($user_id); 

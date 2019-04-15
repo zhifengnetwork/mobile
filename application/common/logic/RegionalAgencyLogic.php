@@ -213,6 +213,11 @@ class RegionalAgencyLogic
             return ['status'=>0,'msg'=>'user_id不能为空'];
         }
 
+        $config = M('config')->where('name', 'is_valid')->value('value');
+        if(!$config){
+            return ['status'=>0,'msg'=>'代理区域设置没有开启'];
+        }
+
         //统计业绩
         $per_logic =  new PerformanceLogic();
 		$money_total = $per_logic->distribut_caculate();
