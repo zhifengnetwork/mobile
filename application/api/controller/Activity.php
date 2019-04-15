@@ -95,13 +95,13 @@ class Activity extends ApiBase {
 	/**
      * 获取抢购活动详情
      */
-	 public function flash_sale_info(){	    
+	 public function flash_sale_info(){	    /*
 		$user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
-        }	
+        }	*/  $user_id =12;
 		
-		$id = I('post.id/d',0);
+		$id = I('post.id/d',106);
 		if(!$id)$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误！','data'=>null]);
 	
 		$field = 'fl.id,fl.title,fl.goods_id,fl.item_id,fl.price,fl.goods_num,fl.order_num,fl.start_time,fl.end_time,fl.goods_name,g.is_on_sale,fl.is_end,g.store_count,g.sales_sum,g.shop_price,g.goods_content,g.original_img';
@@ -111,7 +111,7 @@ class Activity extends ApiBase {
 			
 		$SpecGoodsPrice = M('spec_goods_price');	
 
-        $info['goods_content'] = $info['goods_content'] ? stripslashes($info['goods_content']) : '';
+        //$info['goods_content'] = $info['goods_content'] ? stripslashes($info['goods_content']) : '';
         $info['goods_content'] = str_replace('/public/upload/goods/',C('www')."/public/upload/goods/",$info['goods_content']); 
 
 		if($info['item_id']){
@@ -126,7 +126,8 @@ class Activity extends ApiBase {
 
 		//获取商品图片
 		$info['goods_images'] = M('Goods_images')->where(['goods_id'=>$info['goods_id']])->column('image_url');
-		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['info'=>$info]]);
+        echo json_encode(['status' => 0, 'msg' => '请求成功', 'data' => ['info'=>$info]]);
+		//$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['info'=>$info]]);
 	 }
 
     /**
