@@ -61,6 +61,7 @@ class Activity extends ApiBase {
 				}
 				if($info['spec_img'])$flash_sale_goods[$k]['original_img'] = $info['spec_img'];
 			}
+            $flash_sale_goods[$k]['disc']  = 100 * number_format(($v['price']/$v['shop_price']),1);  //折扣
 		}
 
         $this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['flash_sale_goods'=>$flash_sale_goods]]);
