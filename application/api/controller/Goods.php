@@ -267,7 +267,7 @@ class Goods extends ApiBase
 		unset($goods['sku']);
 		unset($goods['spu']);
 		unset($goods['cost_price']);
-        $goods['goods_content'] = str_replace('/public/upload/goods/',C('www')."/public/upload/goods/",$goods['goods_content']); 
+        $goods['goods_content'] = str_replace('/public/upload/goods/',SITE_URL."/public/upload/goods/",$goods['goods_content']); 
 		$goods['goods_images'] = M('Goods_images')->where(['goods_id'=>$goods_id])->column('image_url');
         echo json_encode(['status' => 0, 'msg' => '请求成功', 'data' => ['goods'=>$goods]]);
         //$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['goods'=>$goods]]);
