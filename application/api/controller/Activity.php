@@ -34,8 +34,8 @@ class Activity extends ApiBase {
 		$num = I('post.num/d',6);
 		$limit = (($page - 1)) * $num . ',' . $num;	    
 
-        $start_time = I('post.start_time/d',155489400);
-        $end_time = I('post.end_time/d',155489400);
+        $start_time = I('post.start_time/d',0);
+        $end_time = I('post.end_time/d',0);
 		if(!$start_time || !$end_time)$this->ajaxReturn(['status' => -2, 'msg' => '请传入开始时间和结束时间！', 'data' => null]);
         $where = array(
             'fl.start_time'=>array('egt',$start_time),
