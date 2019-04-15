@@ -76,7 +76,7 @@ class Activity extends ApiBase {
 			$flash_now_time = $now_time;
 		} else {
 			$flash_now_time = $now_time - 1;
-		}
+		} 
 		$flash_sale_time = strtotime($now_day . " " . $flash_now_time . ":00:00");
 		$space = 7200;
 
@@ -84,8 +84,9 @@ class Activity extends ApiBase {
 		for($i=1; $i<=22; $i++){
 			if($i <= 11){
 				$time_space_past[] = ['font' => date("Y-m-d H:i", $flash_sale_time - ($i*$space)), 'start_time' => $flash_sale_time - ($i*$space), 'end_time' => $flash_sale_time - (($i-1)*$space)];
-			}else
-				$time_space_future[] = ['font' => date("Y-m-d H:i", $flash_sale_time + (($i-1)*$space)), 'start_time' => $flash_sale_time + (($i-1)*$space), 'end_time' => $flash_sale_time + ($i*$space)];
+			}else{
+				$time_space_future[] = ['font' => date("Y-m-d H:i", $flash_sale_time + (($i-11-1)*$space)), 'start_time' => $flash_sale_time + (($i-11-1)*$space), 'end_time' => $flash_sale_time + (($i-11)*$space)];
+            }
 		}			
 		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['time_space_past'=>$time_space_past,'time_space_future'=>$time_space_future]]);
 	 }
