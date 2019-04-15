@@ -111,7 +111,7 @@ class Activity extends ApiBase {
 			
 		$SpecGoodsPrice = M('spec_goods_price');	
 
-        //$info['goods_content'] = $info['goods_content'] ? stripslashes($info['goods_content']) : '';
+        $info['goods_content'] = $info['goods_content'] ? stripslashes($info['goods_content']) : '';
         $info['goods_content'] = str_replace('/public/upload/goods/',C('www')."/public/upload/goods/",$info['goods_content']); 
 
 		if($info['item_id']){
