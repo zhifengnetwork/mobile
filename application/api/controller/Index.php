@@ -36,7 +36,7 @@ class Index extends ApiBase
     public function virtual_order()
     {
         $result = M('order')->alias('order')->join('users user', 'user.user_id = order.user_id', 'LEFT')
-                ->where('order.pay_status', 1)->order('order_id DESC')->limit(60)->cache(true)
+                ->where('order.pay_status', 1)->order('order_id DESC')->limit(60)
                 ->field('order.pay_time, user.nickname, user.head_pic')->select();
         
         foreach($result as $k => $v){
