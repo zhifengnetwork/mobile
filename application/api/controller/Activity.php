@@ -248,8 +248,14 @@ class Activity extends ApiBase {
 
 		$goods = C('database.prefix') . 'goods';
 		$field = 'A.id,A.goods_id,A.activity_name,A.goods_name,A.start_price,A.start_time,A.end_time,A.increase_price,G.original_img';
-		$list = M('Auction')->alias('A')->field($field)->join("$goods G" ,"A.goods_id=G.goods_id",'LEFT')->where(['A.is_end'=>0])->order("A.preview_time desc")->find();	
-        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$list]]);
+		$info = M('Auction')->alias('A')->field($field)->join("$goods G" ,"A.goods_id=G.goods_id",'LEFT')->where(['A.is_end'=>0])->order("A.preview_time desc")->find();	
+       
+       //如果已结束，则返回竞拍成功的用户竞价信息
+       if($info['is_end'] == 1){
+           $price_info = M('auction_price')->where(['is_out'=>2])->find();
+       }
+
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$info,'price_info'=>$price_info]]);
     }
 
     /**
