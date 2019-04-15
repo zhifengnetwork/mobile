@@ -227,7 +227,7 @@ class Activity extends ApiBase {
 		$num = I('post.num/d',6);
 										
 		$goods = C('database.prefix') . 'goods';
-		$field = 'A.id,A.goods_id,A.activity_name,A.goods_name,A.start_price,A.start_time,G.original_img';
+		$field = 'A.id,A.goods_id,A.activity_name,A.goods_name,A.start_price,A.start_time,A.end_time,G.original_img';
 		$limit = (($page - 1)) * $num . ',' . $num;	
 		//先按小于当前时间升序，再按大于当前时间上升序
 		$sort = "A.start_time > UNIX_TIMESTAMP(NOW()),IF(A.start_time > UNIX_TIMESTAMP(NOW()), 0, A.start_time), A.start_time ASC";
