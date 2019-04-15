@@ -104,7 +104,7 @@ class Activity extends ApiBase {
 		$id = I('post.id/d',0);
 		if(!$id)$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误！','data'=>null]);
 	
-		$field = 'fl.id,fl.title,fl.goods_id,fl.item_id,fl.price,fl.goods_num,fl.order_num,fl.start_time,fl.end_time,fl.goods_name,g.is_on_sale,fl.is_end,g.store_count,g.sales_sum,g.shop_price,g.original_img';
+		$field = 'fl.id,fl.title,fl.goods_id,fl.item_id,fl.price,fl.goods_num,fl.order_num,fl.start_time,fl.end_time,fl.goods_name,g.is_on_sale,fl.is_end,g.store_count,g.sales_sum,g.shop_price,g.goods_content,g.original_img';
         $info = M('Flash_sale')->alias('fl')->join('__GOODS__ g', 'g.goods_id = fl.goods_id','left')
             ->field($field)
             ->find($id);
