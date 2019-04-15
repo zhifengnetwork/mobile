@@ -237,7 +237,7 @@ class Goods extends ApiBase
      * 商品详情页
      */
     public function goodsInfo()
-    {
+    { 
 		$user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
@@ -254,7 +254,7 @@ class Goods extends ApiBase
             $goods->save(['is_on_sale' => 0]);
             $this->ajaxReturn(['status' => -2, 'msg' => '此商品不存在或者已下架', 'data' => NULL]);
         }
-        $user_id = cookie('user_id');
+
         if ($user_id) {
             $goodsLogic->add_visit_log($user_id, $goods);
             $collect = db('goods_collect')->where(array("goods_id" => $goods_id, "user_id" => $user_id))->count(); //当前用户收藏
@@ -267,6 +267,7 @@ class Goods extends ApiBase
 		unset($goods['sku']);
 		unset($goods['spu']);
 		unset($goods['cost_price']);
+        $goods['goods_content'] = str_replace('/public/upload/goods/',C('www')."/public/upload/goods/",$goods['goods_content']); 
 		$goods['goods_images'] = M('Goods_images')->where(['goods_id'=>$goods_id])->column('image_url');
         $this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['goods'=>$goods]]);
     }
