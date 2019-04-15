@@ -577,6 +577,7 @@ class Order extends MobileBase
         if ($result['status'] == 0) {
             $result['result'] = $result['result']['list'];
         }
+        $this->assign('invoice_no', $invoice_no);
         $this->assign('result', $result);
         return $this->fetch();
     }
