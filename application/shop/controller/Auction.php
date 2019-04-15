@@ -202,7 +202,7 @@ class Auction extends MobileBase
         //出价条数
         $price_num = M('Auction_price')->where(['auction_id'=>$id])->count();
         //最高出价信息前3条
-        $max_price = M('Auction_price')->where(['auction_id'=>$id])->order('offer_price desc')->limit(0,3)->select();
+        $max_price = M('Auction_price')->where(['auction_id'=>$id])->order('offer_price desc')->limit(0,3);
         foreach($max_price as $k=>$v){
             $max_price[$k]['offer_time'] = date('m.d H:i:s',$v['offer_time']);
         }
