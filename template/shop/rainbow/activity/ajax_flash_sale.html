@@ -13,7 +13,7 @@
                 <span class="stock">仅剩{$vo['goods_num']}件</span>
             </p>
             <div class="rush-buy">
-                <a href="{:U('Goods/goodsInfo',array('id'=>$vo[goods_id],'item_id'=>$vo[spec_goods_price][item_id]))}" class="buy-btn">马上抢</a>
+                <a <if condition="$vo.start_time elt  time()">href="{:U('Goods/goodsInfo',array('id'=>$vo[goods_id],'item_id'=>$vo[spec_goods_price][item_id]))}"<else />href="javascript:;" style="background:#9C9C9C;"</if> class="buy-btn" >马上抢</a>
                 <p class="progress-bar"><span class="progress" style="width:{$vo['percent']>100 ? 100 : $vo['percent']}%"></span></p>
             </div>
         </div>
