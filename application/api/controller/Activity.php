@@ -141,8 +141,10 @@ class Activity extends ApiBase {
 		if(!$id || !$address_id)$this->ajaxReturn(['status' => -2 , 'msg'=>'参数错误！','data'=>null]);
 
 		$FlashSale = M('Flash_sale');
-		$info = $FlashSale->field('goods_id,price,goods_num,buy_limit,buy_num,order_num')->find($id);
+		$info = $FlashSale->field('goods_id,price,goods_num,buy_limit,buy_num,order_num,start_time,is_end')->find($id);
 		if($info['order_num'] >= $info['goods_num'])$this->ajaxReturn(['status' => -3 , 'msg'=>'下单数已满！','data'=>null]);
+        if($info['start_time'] > time())$this->ajaxReturn(['status' => -9 , 'msg'=>'活动还未开始！','data'=>null]);
+        if($info['is_end'])$this->ajaxReturn(['status' => -10 , 'msg'=>'活动已经结束！','data'=>null]);
         
 		$address = Db::name('user_address')->field('consignee,email,country,province,city,district,twon,address,zipcode,mobile')->where("address_id", $address_id)->find();
 		if(!$address)$this->ajaxReturn(['status' => -4 , 'msg'=>'请先填写收货地址！','data'=>null]);
