@@ -18,16 +18,7 @@ class Auction extends ApiBase
      * 析构流函数
      */
     public function  __construct() {
-        parent::__construct();
-        if (session('?user')) {
-            $user = session('user');
-            $user = M('users')->where("user_id", $user['user_id'])->find();
-            session('user', $user);  //覆盖session 中的 user
-            $this->user = $user;
-            $this->user_id = $user['user_id'];
-            $this->assign('user', $user); //存储用户信息
-
-        }
+        parent::__construct(); 
     }
 
     /**
@@ -296,6 +287,7 @@ class Auction extends ApiBase
                 'user_id'      => $uid,
                 'offer_price'  => $money,
                 'offer_time'   => time(),
+                'user_name'    => M('users')->where(['user_id'=>$uid])->value('nickname'),
                 'auction_id'  => $auction_id,
                 'is_out'  => 1,
             ];

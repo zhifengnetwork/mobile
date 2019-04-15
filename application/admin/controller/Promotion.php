@@ -393,7 +393,7 @@ class Promotion extends Base
         $data['groupbuy_intro'] = htmlspecialchars(stripslashes($this->request->param('groupbuy_intro')));
         $data['start_time'] = strtotime($data['start_time']);
         $data['end_time'] = strtotime($data['end_time']);
-        dump($data);
+
         if ($data['act'] == 'del') {
 
             $spec_goods = Db::name('spec_goods_price')->where(['prom_type' => 2, 'prom_id' => $data['id']])->find();
@@ -420,7 +420,7 @@ class Promotion extends Base
 
 
             if ($r) exit(json_encode(1));
-        }
+        }     
         $groupBuyValidate = Loader::validate('GroupBuy');
         if($data['item_id'] > 0){
             $spec_goods_price = Db::name("spec_goods_price")->where(['item_id'=>$data['item_id']])->find();
@@ -444,7 +444,7 @@ class Promotion extends Base
                 Db::name('goods')->where("goods_id", $data['goods_id'])->save(array('prom_id' => 0, 'prom_type' => 2));
             }else{
                 Db::name('goods')->where("goods_id", $data['goods_id'])->save(array('prom_id' => $r, 'prom_type' => 2));
-            }
+            }   
             if ($r) {
 
                 if($data['mmt_message_switch'] == 1) {

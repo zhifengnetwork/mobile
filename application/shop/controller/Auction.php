@@ -311,6 +311,7 @@ class Auction extends MobileBase
                 'user_id'      => $uid,
                 'offer_price'  => $money,
                 'offer_time'   => time(),
+                'user_name'    => $this->user['nickname'],
                 'auction_id'  => $auction_id,
                 'is_out'  => 1,
             ];

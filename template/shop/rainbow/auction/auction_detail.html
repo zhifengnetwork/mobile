@@ -59,12 +59,12 @@
 				<if condition="$bondUser[0] eq ''">
 					<p class="price">￥{$auction['start_price']}</p><span>起拍价</span>
 				<else/>
-					<p class="price">￥{$bondUser[0]['offer_price']}</p><span>当前价</span>
+					<p class="price" id='max_price'>￥{$bondUser[0]['offer_price']}</p><span>当前价</span>
 				</if>
 			</if>
 		</div>
 		<div class="right">
-			<span>报名</span><span>{$auction['buy_num']}</span>人
+			<span>报名</span><span id='buy_num'>{$auction['buy_num']}</span>人
 		</div>
 
 	</div>
@@ -75,7 +75,7 @@
 	<div class="headpicear">
 
 		<a class="zongshu" href="{:U('shop/Auction/tiaoshu',array('id'=>$auction.id))}">
-			<span>拍卖纪录</span><span>{$bondCount}</span>条<span>></span>
+			<span>拍卖纪录</span><span id='price_num'>{$bondCount}</span>条<span>></span>
 		</a>
 		<ul class="tiaoshu">
 			<foreach name="bondUser" item="vo" length="3">
@@ -240,6 +240,42 @@
 		<if condition="$auction.start_time lt time()">
 			//定义参数 显示出GetRTime()方法 1000毫秒以后启动
 			var timer_rt = window.setInterval("GetRTime({$auction.delay_end_time})", 100);
+			//每5秒请求一次是否有新出价
+			var clock = window.setInterval(function(){
+				var goods_id = $('input[name="goods_id"]').val();
+				$.ajax({
+					type: "POST",
+					url: "{:U('Shop/Auction/AjaxGetAucMaxPrice')}",
+					data: {aid:goods_id},
+					dataType: "json",
+					success: function (data) { 
+						if (data.status == 1) {
+							$("#buy_num").text(data.buy_num);
+							$("#price_num").text(data.price_num);	
+							var str = ''; 
+							for(var i=0; i<data.max_price.length; i++){ 
+								if(i === 0)
+									$("#max_price").text(data.max_price[i].offer_price);	
+									str += '<li>';
+									str += '<span>' + data.max_price[i].user_name + '</span>';
+									str += '<span>';
+									if(data.max_price[i].is_out == 2)
+										str += '成交</span>';
+									else if(data.max_price[i].is_out == 1)
+										str += '领先</span>';
+									else
+										str += '出局</span>';  
+									str += '<span>' + data.max_price[i].offer_time + '</span>';
+									str += '<span>￥' + data.max_price[i].offer_price + '</span>';
+									str += '</li>';
+
+									$('.tiaoshu').empty();		
+									$('.tiaoshu').append(str);		
+							}  
+						}
+					}
+				});			
+			}, 5000);
 		<else/>
 			$('#dao').html('活动未开始');
 		</if>

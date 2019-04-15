@@ -356,6 +356,7 @@ class Groupbuy extends MobileBase
                     $auser_money = $total;
                     # 订单支付状态
                     $pay_status = 1;
+                    $pay_name = '余额支付';
                 }else{
                     # 用户余额大于 0
                     if($user_money > 0){
@@ -388,6 +389,7 @@ class Groupbuy extends MobileBase
                 $auser_money = 0;
                 # 订单支付状态
                 $pay_status = 0;
+                $pay_name = '在线支付';
             }
 
             # 发票信息拼装
@@ -410,7 +412,7 @@ class Groupbuy extends MobileBase
             $add_time = time();
 
             # 订单数据拼装
-            $order_sql = "insert into `tp_order` (`seller_id`,`order_sn`,`user_id`,`pay_status`,`consignee`,`province`,`city`,`district`,`address`,`mobile`,`invoice_title`,`taxpayer`,`invoice_desc`,`goods_price`,`user_money`,`order_amount`,`total_amount`,`add_time`,`prom_type`,`user_note`) values ('$info[seller_id]','$order_sn','$user_id','$pay_status','$addressInfo[consignee]','$addressInfo[province]','$addressInfo[city]','$addressInfo[district]','$addressInfo[address]','$addressInfo[mobile]','$invoice_title','$invoice_code','$invoice_desc','$total','$auser_money','$rpay','$total','$add_time','$prom_type','$data[user_note]')";
+            $order_sql = "insert into `tp_order` (`seller_id`,`order_sn`,`user_id`,`pay_status`,`consignee`,`province`,`city`,`district`,`address`,`mobile`,`pay_name`,`invoice_title`,`taxpayer`,`invoice_desc`,`goods_price`,`user_money`,`order_amount`,`total_amount`,`add_time`,`prom_type`,`user_note`) values ('$info[seller_id]','$order_sn','$user_id','$pay_status','$addressInfo[consignee]','$addressInfo[province]','$addressInfo[city]','$addressInfo[district]','$addressInfo[address]','$addressInfo[mobile]','$pay_name','$invoice_title','$invoice_code','$invoice_desc','$total','$auser_money','$rpay','$total','$add_time','$prom_type','$data[user_note]')";
            
             # 运行sql语句，插入订单
             $order_ins = Db::execute($order_sql);

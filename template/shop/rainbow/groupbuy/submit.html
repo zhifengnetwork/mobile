@@ -514,7 +514,7 @@
        
         // 使用余额
         $('#user_money').on('change',function(){
-            var prop = $('#user_money').prop('checked');
+            var prop = $('#user_money').prop('checked');    
             var user_money = parseFloat($('#user_money').val());
             if(prop){
                 var total = parseFloat($('#total_fee').html());
@@ -530,10 +530,12 @@
                     $('#payables').html(total - user_money);
                     $('#balance').html(user_money);
                 }
+                $('#paypwd_view').show();
             }else{
                 var price = $('#hidden-payables').val();
                 $('#payables').html(price);
                 $('#balance').html('0');
+                $('#paypwd_view').hide();
             }
         });
 
@@ -659,6 +661,7 @@
         var invoice_code = $('#hidden-invoice-code').val();
         var address_id = $('.input_default_address_id').val();
         var user_money = $('#user_money').prop('checked') ? 1 : 0;
+        var pay_pwd = $('#pay_pwd').val();
         var user_note = $('#user_note').val();
 
         var data = {
@@ -671,9 +674,10 @@
             invoice_code:   invoice_code,
             address_id: address_id,
             user_money: user_money,
+            pay_pwd: pay_pwd,
             user_note:  user_note
         };
-        $.post('falceOrder',{data:data},function(res){
+        $.post('falceOrder',{data:data},function(res){  
 			res = JSON.parse(res);
 			if(res.status == 1){
 				layer.open({icon: 1, content: res.msg, time: 2});
