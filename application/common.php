@@ -53,15 +53,44 @@ function write_log($content)
 
 function share_deal_after($xiaji, $shangji)
 {
+
     write_log("xiaji:" . $xiaji);
     write_log("shangji:" . $shangji);
+
     if ($xiaji == $shangji) {
+        $xiaji_openid = M('users')->where(['user_id' => $xiaji])->value('openid');
+        $wx_content = "此次扫码，不能绑定上下级关系。原因：请不要扫自己的二维码！你的ID:".$xiaji;
+        $wechat = new \app\common\logic\wechat\WechatUtil();
+        $wechat->sendMsg($xiaji_openid, 'text', $wx_content);
         return false;
     }
+
+
     $is_shangji = M('users')->where(['user_id' => $xiaji])->value('first_leader');
     if ($is_shangji && (int)$is_shangji > 0) {
+
+        $xiaji_openid = M('users')->where(['user_id' => $xiaji])->value('openid');
+        $wx_content = "此次扫码，不能绑定上下级关系。原因：已经存在上级！你的ID:".$xiaji;
+        $wechat = new \app\common\logic\wechat\WechatUtil();
+        $wechat->sendMsg($xiaji_openid, 'text', $wx_content);
+
         return false;
     }
+
+
+    //看下级的注册时间
+    $reg_time = M('users')->where(['user_id' => $xiaji])->value('reg_time');
+    if ( (( time() - $reg_time ) > 600 ) && $reg_time > 0) {
+        write_log("xiaji（after 24 hour）:" . $xiaji);
+        $xiaji_openid = M('users')->where(['user_id' => $xiaji])->value('openid');
+        $wx_content = "此次扫码，不能绑定上下级关系。原因：新用户扫码时才能绑定关系！你的ID:".$xiaji;
+        $wechat = new \app\common\logic\wechat\WechatUtil();
+        $wechat->sendMsg($xiaji_openid, 'text', $wx_content);
+        return false;
+    }
+    //超过10分钟 不再绑定上下级
+
+
 
     $res = M('users')->where(['user_id' => $xiaji])->update(['first_leader' => $shangji]);
     if ($res) {
@@ -1165,6 +1194,9 @@ function update_pay_status($order_sn, $ext = array())
         agent_performance($order['order_id']);
         //业绩（包含个人+团队）
 
+        //区域地理分钱
+        $regional_agency = new \app\common\logic\RegionalAgencyLogic();
+        $regional_agency->fenqian($order['order_id']);
 
         //虚拟服务类商品支付
         if ($order['prom_type'] == 5) {
@@ -1185,7 +1217,7 @@ function update_pay_status($order_sn, $ext = array())
             //发给上级
             $first_leader_openid = Db::name('users')->where(['user_id' => $userinfo['first_leader']])->value('openid');
             if($first_leader_openid){
-                $wx_first_leader_content = "你的下级订单支付成功！\n\n订单：{$order_sn}\n支付时间：{$time}\n金额：{$order['total_amount']}\n\n支付成功可获得返利";
+                $wx_first_leader_content = "你的下级订单支付成功！\n\n订单：{$order_sn}\n支付时间：{$time}\n金额：{$order['total_amount']}";
                 $wechat = new \app\common\logic\wechat\WechatUtil();
                 $wechat->sendMsg($first_leader_openid, 'text', $wx_first_leader_content);
             }
