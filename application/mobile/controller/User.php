@@ -271,10 +271,6 @@ class User extends MobileBase
         
         $user_id = session('user.user_id');
 
-        //区域代理升级
-        $regional_agency = new \app\common\logic\RegionalAgencyLogic();
-        $regional_agency->upgrade();
-
         //当前登录用户信息
         $logic = new UsersLogic();
         $user_info = $logic->get_info($user_id); 
@@ -301,14 +297,19 @@ class User extends MobileBase
         //省代：开关
         $regional_agency_is_valid = (int)M('config')->where(['name'=>'is_valid'])->value('value');
         if($regional_agency_is_valid == 1){
+            //区域代理升级
+            $regional_agency = new \app\common\logic\RegionalAgencyLogic();
+            $regional_agency->upgrade();
+
             //省代、等等
-            $user_regional_agency = M('user_regional_agency')->where(['user_id'=>$user_id,'region_id'=>0])->find();
+            $user_regional_agency = M('user_regional_agency')->where(['user_id'=>$user_id,'is_show'=>0])->find();
             if($user_regional_agency){
                 //名字
                 $config_regional_agency = M('config_regional_agency')->where(['agency_level'=>$user_regional_agency['agency_level']])->find();
                 $user_regional_agency['agency_name'] = $config_regional_agency['agency_name'];
                 $user_regional_agency['rate'] = $config_regional_agency['rate'];
             }
+            
             $this->assign('user_regional_agency', $user_regional_agency);
         }
         $this->assign('regional_agency_is_valid', $regional_agency_is_valid);
@@ -2266,6 +2267,13 @@ class User extends MobileBase
             $result = M('user_regional_agency')->where('user_id', $data['user_id'])
                     ->update(['region_id'=>$area, 'is_show'=>1]);
             if($result){
+                $agent = M('user_regional_agency')->where('user_id', $data['user_id'])->find();
+                $temp = array(
+                    'user_id' => $data['user_id'],
+                    'agency_level' => $agent['agency_level'], 
+                    'region_id' => 0,
+                );
+                M('user_regional_agency_log')->where($temp)->update(['region_id'=>$area]);
                 $this->ajaxReturn(['status'=>1, 'msg'=>'保存成功']);
             }else{
                 $this->ajaxReturn(['status'=>0, 'msg'=>'保存失败']);

@@ -213,10 +213,10 @@ class RegionalAgencyLogic
             return ['status'=>0,'msg'=>'user_id不能为空'];
         }
 
-        $config = M('config')->where('name', 'is_valid')->value('value');
-        if(!$config){
-            return ['status'=>0,'msg'=>'代理区域设置没有开启'];
-        }
+        // $config = M('config')->where('name', 'is_valid')->value('value');
+        // if(!$config){
+        //     return ['status'=>0,'msg'=>'代理区域设置没有开启'];
+        // }
 
         //统计业绩
         $per_logic =  new PerformanceLogic();
@@ -236,6 +236,7 @@ class RegionalAgencyLogic
         foreach($level as $k => $v){
             if( $money_total['money_total'] >= $v['team_sum'] && $money_total['moneys'] >= $v['other_sum'] ){
                 $can_level_id = $v['agency_level'];
+                break;
             }
         }
         //能升级的id
@@ -287,7 +288,7 @@ class RegionalAgencyLogic
              $logdata = [
                 'user_id'=>$user_id,
                 'agency_level'=>$can_level_id,
-                'region_id'=>$now['region_id'],
+                'region_id'=>0,//$now['region_id'],
                 'des'=>'升级'.$can_level_name.'级代理'
             ];
             M('user_regional_agency_log')->add($logdata);

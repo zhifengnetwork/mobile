@@ -120,7 +120,7 @@
     </div>
 </div>
 
-<if condition="$user_regional_agency && $regional_agency_is_valid == 1">
+<if condition="$user_regional_agency && ($regional_agency_is_valid == 1) && ($user_regional_agency['is_show'] == 0)">
     <!-- 弹框 -->
     <div class="popup-wrap" id="popup-wrap">
         <div class="popup">
