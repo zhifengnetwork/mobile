@@ -69,7 +69,7 @@ class Auction extends ApiBase
         $auction_id = I("post.id/d",0);
 		$goods = C('database.prefix') . 'goods';
 		$field = 'A.id,A.goods_id,A.activity_name,A.goods_name,A.start_price,A.start_time,A.end_time,A.increase_price,A.auction_status,A.delay_time,A.delay_num,G.original_img';
-		$auction = M('Auction')->alias('A')->field($field)->join("$goods G" ,"A.goods_id=G.goods_id",'LEFT')->where(['A.is_end'=>0])->order("A.preview_time desc")->find();	
+		$auction = M('Auction')->alias('A')->field($field)->join("$goods G" ,"A.goods_id=G.goods_id",'LEFT')->where(['A.is_end'=>0,'id'=>$auction_id])->order("A.preview_time desc")->find();	
 
         //$this->setGoodsModel($auction['goods_id']);
 
