@@ -453,7 +453,6 @@ class User extends ApiBase
         if (!IS_POST) {
             $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>'']);
         }
-        // $user_info = $userLogic->get_info($user_id);  // 获取用户信息
         //下级信息
         $users = M('users')->field('user_id,nickname,mobile')->order('user_id DESC')->where(['first_leader'=>$user_id])->select();
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$users]);
