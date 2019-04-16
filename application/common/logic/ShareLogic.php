@@ -45,7 +45,7 @@ class ShareLogic
             curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $out=curl_exec($ch);
-            curl_close($ch);
+            curl_close($ch);    M('A')->add(['msg'=>$out]);
             $out = json_decode($out);
             $newticket = $out->{'ticket'};
             $url = $out->{'url'};
