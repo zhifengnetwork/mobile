@@ -293,7 +293,7 @@ class WechatLogic
         }
 
         //创建分销二维码图片
-        empty($headPic) && $headPic = '/public/images/icon_goods_thumb_empty_300.png'; //没有头像用默认图片
+        empty($headPic) && $headPic = '/public/images/icon_goods_thumb_empty_300.png?v=1'; //没有头像用默认图片
         $shareImg = $this->createShareQrCode('.'.$qrBackImg, $qrCode['url'], $headPic);
         if (!$shareImg) {
             $this->replyError($msg, '生成图片失败');
