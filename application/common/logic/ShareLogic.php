@@ -21,12 +21,12 @@ class ShareLogic
     public function get_ticket($user_id){
        
         $ticket = M('ticket')->where(array('user_id'=>$user_id))->find();
-        if(!empty($ticket)){M('A')->add(['msg'=>'A']);
+        if(!empty($ticket)){
             
             return  $ticket['ticket'];
             
-        }else{  M('A')->add(['msg'=>'B']);
-            $access_token = access_token(); M('A')->add(['msg'=>$access_token]);
+        }else{
+            $access_token = access_token();
             $url="https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=".$access_token;
             $json = array(
                 'action_name'=>"QR_LIMIT_STR_SCENE",
