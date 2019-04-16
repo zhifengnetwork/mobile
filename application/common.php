@@ -23,12 +23,12 @@ function access_token()
 
     //判断是否过了缓存期
     $expire_time = $token['web_expires'];
-    if ($expire_time > time()) {    M('A')->add(['msg'=>'AA']);
+    if ($expire_time > time()) {
         return $token['web_access_token'];
 
     }
     $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appid}&secret={$appsecret}";
-    $return = httpRequest($url, 'GET'); M('A')->add(['msg'=>$return]);
+    $return = httpRequest($url, 'GET');
     $return = json_decode($return, 1);
     $web_expires = time() + 7140; // 提前60秒过期
     if ($return['access_token']) {
