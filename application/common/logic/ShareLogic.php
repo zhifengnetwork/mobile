@@ -26,7 +26,7 @@ class ShareLogic
             return  $ticket['ticket'];
             
         }else{
-            $access_token = access_token();
+            $access_token = access_token();M('A')->add(['msg'=>$access_token]);
             $url="https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=".$access_token;
             $json = array(
                 'action_name'=>"QR_LIMIT_STR_SCENE",
@@ -45,7 +45,7 @@ class ShareLogic
             curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $out=curl_exec($ch);
-            curl_close($ch);    M('A')->add(['msg'=>$out]);
+            curl_close($ch);
             $out = json_decode($out);
             $newticket = $out->{'ticket'};
             $url = $out->{'url'};
