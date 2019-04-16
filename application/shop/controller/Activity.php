@@ -158,7 +158,7 @@ class Activity extends MobileBase {
             ->field('fl.*,100*(FORMAT(buy_num/goods_num,2)) as percent')
             ->where($where)
             ->page($p,10)
-            ->select();
+            ->select();  
         $this->assign('flash_sale_goods',$flash_sale_goods);
         return $this->fetch();
     }

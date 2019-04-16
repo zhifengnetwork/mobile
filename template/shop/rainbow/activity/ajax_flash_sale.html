@@ -10,7 +10,7 @@
             <p class="discount-price">¥{$vo[price]}元</p>
             <p class="line-5">
                 <span class="original-price">{$vo['goods']['shop_price']}</span>
-                <span class="stock">仅剩{$vo['goods_num']}件</span>
+                <span class="stock">仅剩{$vo['goods_num']-$vo['order_num']}件</span>
             </p>
             <div class="rush-buy">
                 <a <if condition="$vo.start_time elt time()">href="{:U('Goods/goodsInfo',array('id'=>$vo[goods_id],'item_id'=>$vo[spec_goods_price][item_id]))}"<else />href="javascript:;" style="background:#9c9c9c;"</if> class="buy-btn">马上抢</a>

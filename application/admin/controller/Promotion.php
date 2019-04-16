@@ -522,7 +522,7 @@ class Promotion extends Base
         $keywords = input('keywords');
         $prom_id = input('prom_id');
         $tpl = input('tpl', 'search_goods');
-        $where = ['is_on_sale' => 1, 'store_count' => ['gt', 0],'exchange_integral'=>0,'prom_type'=>0];
+        $where = ['is_on_sale' => 1, 'store_count' => ['gt', 0],'exchange_integral'=>0];
         $prom_type = input('prom_type/d',0);
         if ($prom_type != 0) {//指定商品优惠券 可以看到虚拟商品
             $where = ['is_on_sale' => 1, 'store_count' => ['gt', 0],'is_virtual'=>0,'exchange_integral'=>0];
