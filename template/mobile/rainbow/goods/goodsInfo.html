@@ -1513,7 +1513,7 @@
         $.each(result, function (i, o) {
             var price = (o.combination_goods[0]["original_price"] - o.combination_goods[0]["price"]).toFixed(2);
             var count_price = (o.count_price).toFixed(2);
-            var img = o.combination_goods[0]["original_img"] ? o.combination_goods[0]["original_img"] : "/public/images/icon_goods_thumb_empty_300.png";
+            var img = o.combination_goods[0]["original_img"] ? o.combination_goods[0]["original_img"] : "/public/images/icon_goods_thumb_empty_300.png?v=1";
             var url = '?id=' + o.combination_goods[0]["goods_id"] + '&item=' + o.combination_goods[0]["item_id"] + '&combination=' + o.combination_id;
             // var goods_id= o.combination_goods[0]["goods_id"];
             // var item_id= o.combination_goods[0]["item_id"];

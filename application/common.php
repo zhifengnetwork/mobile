@@ -425,7 +425,7 @@ function goods_thum_images($goods_id, $width, $height, $item_id = 0)
         $original_img = Db::name('goods')->where("goods_id", $goods_id)->cache(true, 30, 'original_img_cache')->value('original_img');
     }
     if (empty($original_img)) {
-        return '/public/images/icon_goods_thumb_empty_300.png';
+        return '/public/images/icon_goods_thumb_empty_300.png?v=1';
     }
     if (tpCache('oss.oss_switch')) {
         $ossClient = new \app\common\logic\OssLogic;
@@ -435,7 +435,7 @@ function goods_thum_images($goods_id, $width, $height, $item_id = 0)
     }
     $original_img = '.' . $original_img; // 相对路径
     if (!is_file($original_img)) {
-        return '/public/images/icon_goods_thumb_empty_300.png';
+        return '/public/images/icon_goods_thumb_empty_300.png?v=1';
     }
     try {
         require_once 'vendor/topthink/think-image/src/Image.php';
@@ -482,7 +482,7 @@ function get_sub_images($sub_img, $goods_id, $width, $height)
 
     $original_img = '.' . $sub_img['image_url']; //相对路径
     if (!is_file($original_img)) {
-        return '/public/images/icon_goods_thumb_empty_300.png';
+        return '/public/images/icon_goods_thumb_empty_300.png?v=1';
     }
 
     try {
