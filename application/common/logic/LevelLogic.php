@@ -10,27 +10,27 @@ use think\Db;
  */
 class LevelLogic extends Model
 {
+
 	/**
 	 * 判断一个人是否可以升级
+	 *  下级
 	 */
 	public function user_in($user_id)
 	{
-		
-		$user = M('users')->where('user_id',$user_id)->field('is_agent,user_id,first_leader')->find();
+		$user = M('users')->where('user_id',$user_id)->field('is_agent,agent_user,user_id,first_leader')->find();
 
-		//判断是否购买指定产品
-		$con['user_id'] = $user_id;
-		$con['pay_status'] = 1;
-		$con['total_amount'] = array('egt',399);
-		$is_399 = M('order')->where($con)->field('user_id,pay_status,total_amount')->select();
-		$num = count($is_399);
-		if($num == 0){
-			return false;
-		}
-		
-		//如果不是 代理，则返回
-		if($user['is_agent'] != 1){
-			return false;
+		//如果不是 代理，要买399
+		if($user['is_agent'] != 1 && $user['agent_user'] == 0){
+			//如果不是代理，要买399
+			//判断是否购买指定产品
+			$con['user_id'] = $user_id;
+			$con['pay_status'] = 1;
+			$con['total_amount'] = array('egt',399);
+			$is_399 = M('order')->where($con)->field('user_id,pay_status,total_amount')->select();
+			$num = count($is_399);
+			if($num == 0){
+				return false;
+			}
 		}
 		
 		//判断是否为代理

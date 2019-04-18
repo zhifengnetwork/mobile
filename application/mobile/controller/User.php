@@ -286,13 +286,11 @@ class User extends MobileBase
         $this->assign('menu_list', $menu_list);
 
         //更新团队总人数
-        $url = "http://www.dchqzg1688.com/api/distribut/get_team_num?user_id=".$user_id;
+        $url = SITE_URL."/api/distribut/get_team_num?user_id=".$user_id;
         httpRequest($url);
 
-
-        $up_url = "http://www.dchqzg1688.com/api/distribut/upgrade?user_id=".$user_id;
+        $up_url = SITE_URL."/api/distribut/upgrade?user_id=".$user_id;
         httpRequest($up_url);
-
 
         //省代：开关
         $regional_agency_is_valid = (int)M('config')->where(['name'=>'is_valid'])->value('value');
