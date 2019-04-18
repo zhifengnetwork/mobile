@@ -33,10 +33,10 @@ class Distribut extends Base {
                 ->field('log.*, users.agent_user')->where('log.states', ['in', ['101', '102']])
                 ->where(['order_sn'=>$order['order_sn']])->select();
 
-        $chinese = ['无', '一', '二', '三', '四', '五'];
-        foreach($log as $k => $v){
-            $log[$k]['agent_user'] = $chinese[$v['agent_user']];
-        }
+        // $chinese = ['无', '一', '二', '三', '四', '五'];
+        // foreach($log as $k => $v){
+        //     $log[$k]['agent_user'] = $chinese[$v['agent_user']];
+        // }
 
         $this->assign('log', $log);
 
