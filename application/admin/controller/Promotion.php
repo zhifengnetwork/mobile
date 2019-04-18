@@ -799,8 +799,10 @@ class Promotion extends Base
             $auction_now_time = $now_time - 1;
         }
         $auction_now_time = strtotime(date('Y-m-d') . " " . $auction_now_time . ":00:00");
-        $info['start_time'] = date("Y-m-d H:i", $auction_now_time);
-        $info['end_time'] = date("Y-m-d H:i", $auction_now_time);
+        $info['start_time'] = $auction_now_time;
+        $info['end_time'] = $auction_now_time;
+        //$info['start_time'] = date("Y-m-d H:i", $auction_now_time);
+        //$info['end_time'] = date("Y-m-d H:i", $auction_now_time);
         $info['is_edit'] = 1;
 
         if ($id > 0) {
