@@ -62,6 +62,7 @@ $(document).ready(function(){
 		}else{
 			var price = $('#hidden_groupbuy_price').val();
 		}
+		$('#found_id').val(0);
 		$('#buy_type').val(item);
 		$('.hidden_price').html(price);
 		$('.choiceStyleWrap').show();
@@ -70,6 +71,7 @@ $(document).ready(function(){
 
 	/*关闭-拼单-弹框*/
 	$('.asHeadCIconBox').on('click',function(){
+		$('#found_id').val(0);
 		$('.assembleAlertWrap').hide();
 		$('.wrapL').eq(0).css({'overflow':''})
 	})
@@ -87,6 +89,7 @@ $(document).ready(function(){
 	})
 	/*点击拼单（弹框里的） */
 	$('.spellListAlertBut').on('click',function(){
+		$('#found_id').val($(this).attr('found_id'));
 		$('.assembleAlertWrap').hide();
 		$('.choiceStyleWrap').show();
 		$('.wrapL').eq(0).css({'overflow':'hidden'})
@@ -97,10 +100,12 @@ $(document).ready(function(){
 		var buy_type = $('#buy_type').val();
 		var buy_num = Number($('#commNumber_lb').html());
 		var team_id = $('#team_id').val();
+		var found_id = $('#found_id').val();
 		var url = "/shop/groupbuy/submit?"+
 			"buy_type="+buy_type+
 			"&team_id="+team_id+
-			"&buy_num="+buy_num
+			"&buy_num="+buy_num+
+			"&found_id="+found_id
 		window.location.href = url;
 		return false;
 		// $('.choiceStyleWrap').hide();

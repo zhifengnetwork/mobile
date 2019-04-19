@@ -27,6 +27,7 @@
         <input type="hidden" class="hidden-buy-type" id="hidden-buy-type" value="{$info['buy_type']}" />
         <input type="hidden" class="hidden-buy-num" id="hidden-buy-num" value="{$info['buy_num']}" />
         <input type="hidden" class="hidden-team-id" id="hidden-team-id" value="{$info['team_id']}" />
+		<input type="hidden" class="hidden-found-id" id="hidden-found-id" value="{$info['found_id']}" />
         <if condition="$address">
         <div class="namephone fl" id="address_selected" item="{$address[0]['address_id']}">
             <div class="top">
@@ -655,6 +656,7 @@
         var buy_type = $('#hidden-buy-type').val();
         var buy_num = $('#hidden-buy-num').val();
         var team_id = $('#hidden-team-id').val();
+		var found_id = $('#hidden-found-id').val();
         var invoice_type = $('#hidden-invoice-type').val();
         var invoice_identity = $('#hidden-invoice-identity').val();
         var invoice_title = $('#hidden-invoice-title').val();
@@ -668,6 +670,7 @@
             buy_type:   buy_type,
             buy_num:    buy_num,
             team_id:    team_id,
+			found_id:   found_id,
             invoice_type:   invoice_type,
             invoice_identity:   invoice_identity,
             invoice_title:  invoice_title,

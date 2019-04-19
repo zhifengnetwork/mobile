@@ -26,6 +26,7 @@
 		<div class="wrapL">
 			<input type="hidden" id="goods_id" value="{$info['goods_id']}"/>
 			<input type="hidden" id="team_id" value="{$info['team_id']}"/>
+			<input type="hidden" id="found_id" value=0 />
 			<!--返回，分享-->
 			<div class="returnshareWrapL">
 				<!--返回,data-num="1" 或  不写; => 返回上一页。data-num="跳转路径"; => 返回上一页。-->
@@ -131,7 +132,7 @@
 							<div class="spellLWHeadL">
 									<span>{$team_found_num}人在拼单，可直接参与</span>
 									<p class="spellLWHeadMore">
-										<span>查看更多</span>
+										<span class="pellListTermBut" style='background:none;color:#7c7c79;'>查看更多</span>
 										<img class="publicGetIntoIcon_lb" src="__STATIC__/images/public_lb/getIntoImg_lb.png"/>
 									</p>
 								</div>
@@ -213,7 +214,7 @@
 						</p>
 					</div>
 					<!--（循环）项-->
-					<volist name="$team_found" id="vo" offset="0" length='3'>
+					<volist name="$team_found" id="vo">
 					<div class="assembleAlertTermL">
 						<div class="assembleAlertTermLeftL publicEllipsis">
 							<!--绝对定位-->
@@ -223,7 +224,7 @@
 						<div class="assembleAlertTermRightL">
 							还差{$vo.need}人拼成<br />剩余<span class='found_end_time' item={$vo.found_end_time}>00:00:00</span>
 							<!--拼单按钮 - 绝对定位-->
-							<p class="pellListTermBut spellListAlertBut">去拼单</p>
+							<p class="pellListTermBut spellListAlertBut" found_id={$vo.found_id}>去拼单</p>
 						</div>
 					</div>					
 					</volist>
