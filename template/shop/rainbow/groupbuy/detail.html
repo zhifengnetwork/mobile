@@ -138,7 +138,7 @@
 								<!--拼单 box-->
 								<div class="spellListBoxL">
 									<!--（循环）项-->
-									<volist name="$team_found" id="vo">
+									<volist name="$team_found" id="vo" offset="0" length='3'>
 											<div class="spellListTermL">
 													<div class="spellListTermLeftL">
 														<!--绝对定位-->
@@ -146,7 +146,7 @@
 														<span>{$vo.nickname}</span>
 													</div>
 													<div class="spellListTermRightL">
-														还差{$vo.need}人拼成<br />剩余00:00:00
+														还差{$vo.need}人拼成<br />剩余<span class='found_end_time' item={$vo.found_end_time}>00:00:00</span>
 														<!--拼单按钮 - 绝对定位-->
 														<p class="pellListTermBut">去拼单</p>
 													</div>
@@ -213,80 +213,20 @@
 						</p>
 					</div>
 					<!--（循环）项-->
+					<volist name="$team_found" id="vo" offset="0" length='3'>
 					<div class="assembleAlertTermL">
 						<div class="assembleAlertTermLeftL publicEllipsis">
 							<!--绝对定位-->
-							<img class="assembleAlertTermIconL" src="__STATIC__/images/public_lb/00004.png"/>
-							<span>握不住的他和沙</span>
+							<img class="assembleAlertTermIconL" src="{$vo.head_pic}"/>
+							<span>{$vo.nickname}</span>
 						</div>
 						<div class="assembleAlertTermRightL">
-							还差99人拼成<br />剩余00:05:30
+							还差{$vo.need}人拼成<br />剩余<span class='found_end_time' item={$vo.found_end_time}>00:00:00</span>
 							<!--拼单按钮 - 绝对定位-->
 							<p class="pellListTermBut spellListAlertBut">去拼单</p>
 						</div>
-					</div>
-					<!--删-->
-					<div class="assembleAlertTermL">
-						<div class="assembleAlertTermLeftL publicEllipsis">
-							<!--绝对定位-->
-							<img class="assembleAlertTermIconL" src="__STATIC__/images/public_lb/00004.png"/>
-							<span>握不住的他和沙</span>
-						</div>
-						<div class="assembleAlertTermRightL">
-							还差99人拼成<br />剩余00:05:30
-							<!--拼单按钮 - 绝对定位-->
-							<p class="pellListTermBut spellListAlertBut">去拼单</p>
-						</div>
-					</div>
-					<div class="assembleAlertTermL">
-						<div class="assembleAlertTermLeftL publicEllipsis">
-							<!--绝对定位-->
-							<img class="assembleAlertTermIconL" src="__STATIC__/images/public_lb/00004.png"/>
-							<span>握不住的他和沙</span>
-						</div>
-						<div class="assembleAlertTermRightL">
-							还差99人拼成<br />剩余00:05:30
-							<!--拼单按钮 - 绝对定位-->
-							<p class="pellListTermBut spellListAlertBut">去拼单</p>
-						</div>
-					</div>
-					<div class="assembleAlertTermL">
-						<div class="assembleAlertTermLeftL publicEllipsis">
-							<!--绝对定位-->
-							<img class="assembleAlertTermIconL" src="__STATIC__/images/public_lb/00004.png"/>
-							<span>握不住的他和沙</span>
-						</div>
-						<div class="assembleAlertTermRightL">
-							还差99人拼成<br />剩余00:05:30
-							<!--拼单按钮 - 绝对定位-->
-							<p class="pellListTermBut spellListAlertBut">去拼单</p>
-						</div>
-					</div>
-					<div class="assembleAlertTermL">
-						<div class="assembleAlertTermLeftL publicEllipsis">
-							<!--绝对定位-->
-							<img class="assembleAlertTermIconL" src="__STATIC__/images/public_lb/00004.png"/>
-							<span>握不住的他和沙</span>
-						</div>
-						<div class="assembleAlertTermRightL">
-							还差99人拼成<br />剩余00:05:30
-							<!--拼单按钮 - 绝对定位-->
-							<p class="pellListTermBut spellListAlertBut">去拼单</p>
-						</div>
-					</div>
-					<div class="assembleAlertTermL">
-						<div class="assembleAlertTermLeftL publicEllipsis">
-							<!--绝对定位-->
-							<img class="assembleAlertTermIconL" src="__STATIC__/images/public_lb/00004.png"/>
-							<span>握不住的他和沙</span>
-						</div>
-						<div class="assembleAlertTermRightL">
-							还差99人拼成<br />剩余00:05:30
-							<!--拼单按钮 - 绝对定位-->
-							<p class="pellListTermBut spellListAlertBut">去拼单</p>
-						</div>
-					</div>
-					<!--删-->
+					</div>					
+					</volist>
 				
 				<!--提示-->
 				<div class="tipsBoxL">
@@ -358,6 +298,10 @@
 					
 					TimeFormatHIS('timeBox-Decrement',$('.timeBox-Decrement').attr('item'));
 
+					$(".found_end_time").each(function(){
+						TimeFormatHIS($(this),$(this).attr('item'));
+					});
+
 				/**
 				 * 时间递减 倒计时 格式化 hh:ii:ss
 				 */
@@ -388,7 +332,11 @@
 							var rtime = ' '+hour+':'+minute+':'+second;
 						}
 						
-						$('.'+obj).html(rtime);
+						if((typeof obj) == 'string') 
+							$('.'+obj).html(rtime);
+						else
+							obj.html(rtime);
+
 						times--;
 					},1000);
 					if(times <= 0){

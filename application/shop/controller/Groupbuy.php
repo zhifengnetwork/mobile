@@ -102,7 +102,8 @@ class Groupbuy extends MobileBase
             # 正在开团的数量
             $team_found_num = Db::table('tp_team_found')
                 ->where('team_id',$info['team_id'])
-                ->where('found_end_time', '<', time())
+                ->where('found_time', '<', time())
+                ->where('found_end_time', '>', time())
                 ->where('status', 1)
                 ->count();
 
@@ -112,10 +113,15 @@ class Groupbuy extends MobileBase
                     ->field('`found_id`,`found_time`,`found_end_time`,`user_id`,`nickname`,`head_pic`,`order_id`,`join`,`need`')
                     ->order('found_end_time asc')
                     ->where('team_id',$info['team_id'])
-                    ->where('found_end_time', '<', time())
+                    ->where('found_time', '<', time())
+					->where('found_end_time', '>', time())
                     ->where('status', 1)
-                    ->limit(3)
+                    ->limit(6)
                     ->select();
+
+				foreach($team_found as $k=>$v){
+					$team_found[$k]['found_end_time'] = (($v['found_end_time'] > time()) ? ($v['found_end_time'] - time()) : 0);
+				}
 
                 $this->assign('team_found_num', $team_found_num);
                 $this->assign('team_found', $team_found);
