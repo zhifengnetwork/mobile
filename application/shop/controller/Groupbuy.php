@@ -224,7 +224,7 @@ class Groupbuy extends MobileBase
 				$this->error('不能参加自己开的团');
 			elseif($found_info['need'] == 0)
 				$this->error('此团已满');
-			elseif($found_info['status'] != 0)
+			elseif($found_info['status'] != 1)
 				$this->error('此团已不能加入');
 		}
 
@@ -328,7 +328,7 @@ class Groupbuy extends MobileBase
 				$this->error('不能参加自己开的团');
 			elseif($found_info['need'] == 0)
 				$this->error('此团已满');
-			elseif($found_info['status'] != 0)
+			elseif($found_info['status'] != 1)
 				$this->error('此团已不能加入');
 		}
 
@@ -456,7 +456,7 @@ class Groupbuy extends MobileBase
             $add_time = time();
 
             # 订单数据拼装
-            $order_sql = "insert into `tp_order` (`seller_id`,`order_sn`,`user_id`,`pay_status`,`consignee`,`province`,`city`,`district`,`address`,`mobile`,`pay_name`,`invoice_title`,`taxpayer`,`invoice_desc`,`goods_price`,`user_money`,`order_amount`,`total_amount`,`add_time`,`prom_type`,`user_note`) values ('$info[seller_id]','$order_sn','$user_id','$pay_status','$addressInfo[consignee]','$addressInfo[province]','$addressInfo[city]','$addressInfo[district]','$addressInfo[address]','$addressInfo[mobile]','$pay_name','$invoice_title','$invoice_code','$invoice_desc','$total','$auser_money','$rpay','$total','$add_time','$prom_type','$data[user_note]')";
+            $order_sql = "insert into `tp_order` (`seller_id`,`order_sn`,`user_id`,`pay_status`,`consignee`,`province`,`city`,`district`,`address`,`mobile`,`pay_name`,`invoice_title`,`taxpayer`,`invoice_desc`,`goods_price`,`user_money`,`order_amount`,`total_amount`,`add_time`,`prom_id`,`prom_type`,`order_prom_id`,`user_note`) values ('$info[seller_id]','$order_sn','$user_id','$pay_status','$addressInfo[consignee]','$addressInfo[province]','$addressInfo[city]','$addressInfo[district]','$addressInfo[address]','$addressInfo[mobile]','$pay_name','$invoice_title','$invoice_code','$invoice_desc','$total','$auser_money','$rpay','$total','$add_time','$data[team_id]','$prom_type','$data[found_id]','$data[user_note]')";
            
             # 运行sql语句，插入订单
             $order_ins = Db::execute($order_sql);
@@ -465,7 +465,7 @@ class Groupbuy extends MobileBase
                 # 订单ID
                 $order_insid = Db::table('tp_order')->getLastInsID();
                 # 订单商品表sql拼装
-                $ogsql = "insert into `tp_order_goods` (`order_id`,`goods_id`,`cat_id`,`seller_id`,`order_sn`,`consignee`,`mobile`,`goods_name`,`goods_sn`,`goods_num`,`final_price`,`goods_price`,`cost_price`,`item_id`,`spec_key`,`spec_key_name`,`prom_id`,`prom_type`,`order_prom_id`) values ('$order_insid','$info[goods_id]','$info[cat_id]','$info[seller_id]','$order_sn','$addressInfo[consignee]','$addressInfo[mobile]','$info[goods_name]','$info[goods_sn]','$data[buy_num]','$final_price','$price','$cost_price','$info[goods_item_id]','$spec[key]','$spec[key_name]','$data[team_id]','$prom_type','$data[found_id]')";
+                $ogsql = "insert into `tp_order_goods` (`order_id`,`goods_id`,`cat_id`,`seller_id`,`order_sn`,`consignee`,`mobile`,`goods_name`,`goods_sn`,`goods_num`,`final_price`,`goods_price`,`cost_price`,`item_id`,`spec_key`,`spec_key_name`,`prom_type`) values ('$order_insid','$info[goods_id]','$info[cat_id]','$info[seller_id]','$order_sn','$addressInfo[consignee]','$addressInfo[mobile]','$info[goods_name]','$info[goods_sn]','$data[buy_num]','$final_price','$price','$cost_price','$info[goods_item_id]','$spec[key]','$spec[key_name]','$prom_type')";
                 $ogins = Db::execute($ogsql);
                 if(!$ogins){
                     Db::execute("delete from `tp_order` where `order_id` = '$order_insid'");
@@ -496,7 +496,7 @@ class Groupbuy extends MobileBase
 						$found_sql = "insert into `tp_team_found` (`found_time`,`found_end_time`,`user_id`,`team_id`,`nickname`,`head_pic`,`order_id`,`join`,`need`,`price`,`goods_price`,`status`) values ('$found_time','$found_end_time','$user_id','$info[team_id]','$user[nickname]','$head_pic','$order_insid','1','$needer','$final_price','$price','$status')";
 						
 						$found_ins = Db::execute($found_sql);
-						// dump($found_ins);exit;
+						if($needer == 0)M('team_found')->update(['found_id'=>Db::name('team_follow')->getLastInsID(),'status'=>2]);
 						
 					}else{
 						$found_ins = M('team_follow')->add([
@@ -509,6 +509,9 @@ class Groupbuy extends MobileBase
 							'found_user_id'			=> $found_info['user_id'],
 							'team_id'				=> $info['team_id']
 						]);
+						M('team_found')->setInc('join');
+						M('team_found')->setDec('need');
+						if($needer == 0)M('team_found')->update(['found_id'=>$data['found_id'],'status'=>2]);
 					}
 					if($found_ins){
 						# 更新用户余额

@@ -197,6 +197,7 @@ class Groupbuy extends ApiBase
         $invoice_title = input('invoice_title/s','');  // 发票抬头  
         $invoice_code = input('invoice_code/s','');       // 纳税人识别号
 		$user_note = input("user_note/s", ''); // 用户留言
+		$found_id = input("found_id/s", ''); // 团ID
 		
 		# 数据验证
 		if(!$buy_type || !$team_id || !$buy_num){
@@ -231,11 +232,23 @@ class Groupbuy extends ApiBase
 			$this->ajaxReturn(['status'=>-8, 'msg'=>'最大限购数量：'.$info['buy_limit'],'data'=>null]);
 		}
 		# 发起拼团，判断开团最大数
-		if($buy_type == 2 && $info['max_open_num']){
+		if(!$found_id && $buy_type == 2 && $info['max_open_num']){
 			$open_team = Db::query("select count(*) from `tp_team_found` where `team_id` = '$info[team_id]' and `status` in ('1','2')");
 			if($open_team && $info['max_open_num'] <= $open_team[0]['count']){
 				$this->ajaxReturn(['status'=>-9, 'msg'=>'订单提交失败,已达到最大开团数','data'=>null]);
 			}
+		}
+
+		if($found_id){
+			$found_info = M('team_found')->field('found_end_time,user_id,need,status')->find($found_id);
+			if($found_info['found_end_time'] < time())
+				$this->error('此团已结束');
+			if($found_info['user_id'] == $user_id)
+				$this->error('不能参加自己开的团');
+			elseif($found_info['need'] == 0)
+				$this->error('此团已满');
+			elseif($found_info['status'] != 1)
+				$this->error('此团已不能加入');
 		}
 
 		### 配送地址信息
@@ -346,7 +359,7 @@ class Groupbuy extends ApiBase
 		$add_time = time();
 
 		# 订单数据拼装
-		$order_sql = "insert into `tp_order` (`seller_id`,`order_sn`,`user_id`,`pay_status`,`consignee`,`province`,`city`,`district`,`address`,`mobile`,`invoice_title`,`taxpayer`,`invoice_desc`,`goods_price`,`user_money`,`order_amount`,`total_amount`,`add_time`,`prom_type`,`user_note`) values ('$info[seller_id]','$order_sn','$user_id','$pay_status','$addressInfo[consignee]','$addressInfo[province]','$addressInfo[city]','$addressInfo[district]','$addressInfo[address]','$addressInfo[mobile]','$invoice_title','$invoice_code','$invoice_desc','$total','$auser_money','$rpay','$total','$add_time','$prom_type','$user_note')";   
+		$order_sql = "insert into `tp_order` (`seller_id`,`order_sn`,`user_id`,`pay_status`,`consignee`,`province`,`city`,`district`,`address`,`mobile`,`invoice_title`,`taxpayer`,`invoice_desc`,`goods_price`,`user_money`,`order_amount`,`total_amount`,`add_time`,`prom_id`,`prom_type`,`order_prom_id`,`user_note`) values ('$info[seller_id]','$order_sn','$user_id','$pay_status','$addressInfo[consignee]','$addressInfo[province]','$addressInfo[city]','$addressInfo[district]','$addressInfo[address]','$addressInfo[mobile]','$invoice_title','$invoice_code','$invoice_desc','$total','$auser_money','$rpay','$total','$add_time','$team_id','$prom_type','$found_id','$user_note')";   
 	    
 		# 运行sql语句，插入订单
 		$order_ins = Db::execute($order_sql);
@@ -381,10 +394,29 @@ class Groupbuy extends ApiBase
 				$needer = $info['needer'] - 1;
 				# 用户头像
 				$head_pic = addslashes($user[head_pic]);
-				# 组装sql语句
-				$found_sql = "insert into `tp_team_found` (`found_time`,`found_end_time`,`user_id`,`team_id`,`nickname`,`head_pic`,`order_id`,`join`,`need`,`price`,`goods_price`,`status`) values ('$found_time','$found_end_time','$user_id','$info[team_id]','$user[nickname]','$head_pic','$order_insid','1','$needer','$final_price','$price','$status')";
+				if(!$data['found_id']){
+					# 组装sql语句
+					$found_sql = "insert into `tp_team_found` (`found_time`,`found_end_time`,`user_id`,`team_id`,`nickname`,`head_pic`,`order_id`,`join`,`need`,`price`,`goods_price`,`status`) values ('$found_time','$found_end_time','$user_id','$info[team_id]','$user[nickname]','$head_pic','$order_insid','1','$needer','$final_price','$price','$status')";
 				
-				$found_ins = Db::execute($found_sql);
+					$found_ins = Db::execute($found_sql);
+					if($needer == 0)M('team_found')->update(['found_id'=>Db::name('team_follow')->getLastInsID(),'status'=>2]);
+				}else{
+					$found_ins = M('team_follow')->add([
+						'follow_user_id'		=> $user_id,
+						'follow_user_nickname'	=> $user['nickname'],
+						'follow_user_head_pic'	=> $user['head_pic'],
+						'follow_time'			=> time(),
+						'order_id'				=> $order_insid,
+						'found_id'				=> $data['found_id'],
+						'found_user_id'			=> $found_info['user_id'],
+						'team_id'				=> $info['team_id']
+					]);
+					M('team_found')->setInc('join');
+					M('team_found')->setDec('need');
+					if($needer == 0)M('team_found')->update(['found_id'=>$data['found_id'],'status'=>2]);
+				}
+				# 组装sql语句
+				
 				// dump($found_ins);exit;
 				if($found_ins){
 					# 更新用户余额
