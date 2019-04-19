@@ -240,6 +240,7 @@ class Groupbuy extends ApiBase
 		}
 
 		if($found_id){
+			$buy_type = 2;
 			$found_info = M('team_found')->field('found_end_time,user_id,need,status')->find($found_id);
 			if($found_info['found_end_time'] < time())
 				$this->error('此团已结束');

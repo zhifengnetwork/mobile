@@ -86,7 +86,6 @@ class Groupbuy extends MobileBase
                 $this->error('活动已关闭');
             }
 
-
             # 对拼团信息进行组装
             $goodsModel = new \app\common\model\Goods();
             $info['cluster_type'] = [0 => '', 1 => '小团', 2 => '打团', 3 => '阶梯团'][$info['cluster_type']];
@@ -321,6 +320,7 @@ class Groupbuy extends MobileBase
             }
 
 		if($data['found_id']){
+			$data['buy_type'] = 2;
 			$found_info = M('team_found')->field('found_end_time,user_id,need,status')->find($data['found_id']);
 			if($found_info['found_end_time'] < time())
 				$this->error('此团已结束');
