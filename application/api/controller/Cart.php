@@ -120,7 +120,7 @@ class Cart extends ApiBase
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
-        $cart = input('cart/a', []);
+        $cart = input();
         $cartLogic = new CartLogic();
         $cartLogic->setUserId($user_id);
         $cartLogic->AsyncUpdateCart($cart);
