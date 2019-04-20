@@ -276,6 +276,8 @@ class User extends MobileBase
         $user_info = $logic->get_info($user_id); 
 
         $order_info['waitPay'] = $user_info['result']['waitPay'];
+        $order_info['waitSend'] = $user_info['result']['waitSend'];
+        
         $order_info['waitReceive'] = $user_info['result']['waitReceive'];
         $order_info['uncomment_count'] = $user_info['result']['uncomment_count'];
         $order_info['return_count'] = Db::name('return_goods')->where("user_id", $user_id)->count();
