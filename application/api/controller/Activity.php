@@ -239,7 +239,7 @@ class Activity extends ApiBase {
 		$limit = (($page - 1)) * $num . ',' . $num;	
 		//先按小于当前时间升序，再按大于当前时间上升序
 		$sort = "A.start_time > UNIX_TIMESTAMP(NOW()),IF(A.start_time > UNIX_TIMESTAMP(NOW()), 0, A.start_time), A.start_time ASC";
-		$list = M('Auction')->alias('A')->field($field)->join("$goods G" ,"A.goods_id=G.goods_id",'LEFT')->where(['A.auction_status'=>1,'A.is_end'=>0])->order($sort)->limit($limit)->select();	
+		$list = M('Auction')->alias('A')->field($field)->join("$goods G" ,"A.goods_id=G.goods_id",'LEFT')->where(['A.auction_status'=>1,'A.is_end'=>0,'G.is_on_sale'=>1])->order($sort)->limit($limit)->select();	
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$list]]);
     }
 
