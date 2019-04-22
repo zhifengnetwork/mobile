@@ -392,10 +392,10 @@ class User extends ApiBase
         }
         $row = M('goods_visit')->where('visit_id','IN', $visit_ids)->delete();
         if(!$row) {
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'操作失败','data'=>$row]);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'操作失败','data'=>'']);
 
         } else {
-            $this->ajaxReturn(['status' => 0 , 'msg'=>'操作成功','data'=>$row]);
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'操作成功','data'=>'']);
         }
     }
 
@@ -409,9 +409,9 @@ class User extends ApiBase
         $user_id = $this->get_user_id();
         $row = M('goods_visit')->where('user_id', $user_id)->delete();
         if(!$row) {
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'操作失败','data'=>$row]);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'操作失败','data'=>'']);
         } else {
-            $this->ajaxReturn(['status' => 0 , 'msg'=>'操作成功','data'=>$row]);
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'操作成功','data'=>'']);
         }
     }
 
