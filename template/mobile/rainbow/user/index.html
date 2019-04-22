@@ -13,7 +13,11 @@
                 <br>
                 <!-- 代理 -->
                 <if condition="($user.is_agent == 1)">
-                    {$user.agent_user|agent_level}
+                    <empty name="agency_name">
+                        {$user.agent_user|agent_level}
+                    <else/>
+                        {$user.agent_user|agent_level} [ {$agency_name} ]
+                    </empty>
                 <else/>
                     <!-- 分销 -->
                     <if condition="($user.is_distribut == 1)">

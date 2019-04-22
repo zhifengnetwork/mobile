@@ -168,6 +168,7 @@ class Groupbuy extends MobileBase
         $buy_num = intval(input('get.buy_num'));
         $buy_type = intval(input('get.buy_type'));
         $found_id = intval(input('get.found_id'));
+		$buy_type = $found_id ? 2 : $buy_type; 
         
 
         # 数据验证
