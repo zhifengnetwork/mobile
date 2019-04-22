@@ -75,9 +75,8 @@ class Cart extends ApiBase
             'seller_name'=>'ZF智丰自营',
             'data'=>$data,
         );
+        $res['cart_price_info'] = $this->_getTotal($user_id);
 
-   
-        
         $this->ajaxReturn(['status' => 0 , 'msg'=>'购物车列表成功','data'=>$res]);
     }
 
@@ -96,9 +95,10 @@ class Cart extends ApiBase
         $cartLogic->setUserId($user_id);
         $data = $cartLogic->delete($id);
         if($data){
-            $this->ajaxReturn(['status' => 0 , 'msg'=>'删除成功','data'=>$data]);
+            $res['cart_price_info'] = $this->_getTotal($user_id);
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'删除成功','data'=>$res]);
         }else{
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'删除失败','data'=>$data]);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'删除失败','data'=>'']);
         }
         
     }
@@ -141,21 +141,28 @@ class Cart extends ApiBase
      * +---------------------------------
     */
     public function changeNum(){
+        $user_id = $this->get_user_id();
         $cart = input('cart/a',[]);
         if (empty($cart)) {
             $this->ajaxReturn(['status' => 0, 'msg' => '请选择要更改的商品', 'result' => '']);
         }
         $cartLogic = new CartLogic();
         $result = $cartLogic->changeNum($cart['id'], $cart['goods_num']);
+        $result['cart_price_info'] = $this->_getTotal($user_id);
+
         $this->ajaxReturn(['status' => 0 , 'msg'=>'修改成功','data'=>$result]);
 
     }
 
     // 计算购物车合计
-    public function getTotal($user_id){
+    public function _getTotal($user_id){
         $cartLogic = new CartLogic();
+        $cartLogic->setUserId($user_id);
+        $cartLogic->AsyncUpdateCart($cart);
         $select_cart_list = $cartLogic->getCartList(1);//获取选中购物车
         $cart_price_info = $cartLogic->getCartPriceInfo($select_cart_list);//计算选中购物车
+        // $user_cart_list = $cartLogic->getCartList();//获取用户购物车
+        return $cart_price_info;
     }
 
 
