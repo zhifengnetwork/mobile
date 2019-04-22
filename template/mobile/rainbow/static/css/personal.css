@@ -198,6 +198,9 @@
     right: 1.2rem;
 	font-size:.4rem;
 	padding-top: 5px;
+	line-height: .3rem;
+	text-align: center;
+
 }
 /* 弹框 */
 .popup-wrap {

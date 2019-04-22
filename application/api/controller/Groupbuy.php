@@ -414,7 +414,10 @@ class Groupbuy extends ApiBase
 					]);
 					M('team_found')->setInc('join');
 					M('team_found')->setDec('need');
-					if($needer == 0)M('team_found')->update(['found_id'=>$data['found_id'],'status'=>2]);
+					if($needer == 0){
+						M('team_found')->update(['found_id'=>$data['found_id'],'status'=>2]);
+						M('team_follow')->update(['found_id'=>$data['found_id'],'status'=>2]);
+					
 				}
 				# 组装sql语句
 				

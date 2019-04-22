@@ -425,6 +425,120 @@ class User extends Base
         return $this->fetch();
     }
 
+    /**
+     * 批量充值会员
+     */
+    public function recharge_batch()
+    {
+        if(IS_POST){
+            $data = I('post.');
+            //检查表单是否全部为空
+            $flag = $this->check_null($data['data']);
+            if($flag){
+                $this->ajaxReturn(['status'=>0, 'msg'=>'数据不能为空，请填写数据！']);
+                exit;
+            }
+            foreach($data['data'] as $k => $v){
+                if($v[0] || $v[1] || $v[2]){
+                    if(!$v[0]){
+                        $this->ajaxReturn(['status'=>0, 'msg'=>'用户ID不能为空']);
+                        exit;
+                    }
+                    if(!$v[1]){
+                        $this->ajaxReturn(['status'=>0, 'msg'=>'ID' . $v[0] . '用户金额不能为空']);
+                        exit;
+                    }
+                    if(!$v[2]){
+                        $this->ajaxReturn(['status'=>0, 'msg'=>'ID' . $v[0] . '用户描述不能为空']);
+                        exit;
+                    }
+                    $nickname = M('users')->where('user_id', $v[0])->value('nickname');
+                    $result = accountLog($v[0], $v[1] , 0, $v[2],  0, 0, '');
+                    if($result){
+                        $log = array(
+                            'user_id' => $v[0],
+                            'nickname' => $nickname,
+                            'account' => $v[1],
+                            'ctime' => time(),
+                            'pay_status' => 1,
+                            'desc' => $v[2], 
+                        );
+                        M('recharge_log')->insert($log);
+                    }
+                }
+            }
+            $this->ajaxReturn(['status'=>1, 'msg'=>'充值成功']);
+            exit;
+        }
+        
+        return $this->fetch();
+    }
+
+    /**
+     * 检查表单是否全部为空
+     */
+    public function check_null($data)
+    {
+        foreach ($data as $key => $value) {
+            if($value[0] || $value[1] || $value[2]){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 获取用户昵称
+     */
+    public function get_user()
+    {
+        $id = I('id');
+        $nickname = M('users')->where('user_id', $id)->value('nickname');
+        if($nickname){
+            $this->ajaxReturn(['status'=>1, 'msg'=>'获取成功', 'result'=>$nickname]);
+            exit;
+        }else{
+            $this->ajaxReturn(['status'=>0, 'msg'=>'获取失败', 'result'=>'']);
+            exit;
+        }
+    }
+
+    
+    /**
+     * 批量充值列表
+     */
+    public function recharge_log()
+    {
+        $timegap = urldecode(I('timegap'));
+        $search_type  = I('search_type');
+        $search_value = I('search_value');
+        $map = array();
+        if ($timegap) {
+            $gap = explode(',', $timegap);
+            $begin = $gap[0];
+            $end = $gap[1];
+            $map['ctime'] = array('between', array(strtotime($begin), strtotime($end)));
+            $this->assign('begin', $begin);
+            $this->assign('end', $end);
+        }  
+        if ($search_value) {
+            if($search_type == 'user_id'){
+                $map['user_id'] = $search_value;
+            }else{
+                $map['nickname'] = array('like', "%$search_value%");
+            }
+            $this->assign('search_value', $search_value);
+        }
+        $count = M('recharge_log')->where($map)->count();
+        $Page = new Page($count, 20);
+        $list = M('recharge_log')->where($map)->limit($Page->firstRow, $Page->listRows)
+                ->order('id DESC')->select();
+        $this->assign('search_type', $search_type);
+        $this->assign('list', $list);
+        $this->assign('pager', $Page);
+        return $this->fetch();
+    }
+
     public function level()
     {
         $act = I('get.act', 'add');

@@ -2,7 +2,7 @@
 <include file="public/header_nav" title="我的订单" href="{:U('/Mobile/User/index')}"/>
 <div class="tit-flash-sale p mytit_flash">
     <div class="maleri30">
-        <ul class="">
+        <ul class="" >
             <li <if condition="$Request.param.type eq ''">class="red"</if>>
                 <a href="{:U('/Mobile/Order/order_list')}" class="tab_head">全部订单</a>
             </li>
@@ -12,7 +12,9 @@
             <li id="WAITSEND" <if condition="$Request.param.type eq 'WAITSEND'">class="red"</if>>
                 <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITSEND'))}"  class="tab_head">待发货</a>
             </li>
-            <!--<li id="WAITRECEIVE"><a href="{:U('/Mobile/User/order_list',array('type'=>'WAITRECEIVE'))}"  class="tab_head <if condition="$Request.param.type eq 'WAITRECEIVE'">on</if>">待收货</a></li>-->
+            <li id="WAITRECEIVE" <if condition="$Request.param.type eq 'WAITRECEIVE'">class="red"</if>>
+                <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITRECEIVE'))}" class="tab_head">待收货</a>
+            </li>
             <li id="WAITCCOMMENT"  <if condition="$Request.param.type eq 'FINISH'">class="red"</if>>
                 <a href="{:U('/Mobile/Order/order_list',array('type'=>'FINISH'))}" class="tab_head">已完成</a>
             </li>
@@ -74,13 +76,13 @@
                                        
                                     </div>
                                     <div class="buttondde">
-                                        <notempty name="goods['return_goods']">
+                                        <!-- <notempty name="goods['return_goods']">
                                             <a class="applyafts">已申请售后</a>
                                             <else />
                                             <if condition="($order.return_btn eq 1)">
                                                 <a href="{:U('Mobile/Order/return_goods',['rec_id'=>$goods['rec_id']])}">申请售后</a>
                                             </if>
-                                        </notempty>
+                                        </notempty> -->
                                     </div>
                                 </div>
                                 </a>
@@ -93,8 +95,8 @@
                 <span class="price-alln">
                     <!--<span class="red">￥{$list['order_amount']}</span><span class="threel">共{$list.goods_list|count}件</span>-->
                     <span class="red">￥{$order['total_amount']}</span><span class="threel" id="goodsnum">共{$order.count_goods_num}件</span>
-                    <!--if condition="$list['pay_code'] eq 'cod'"><i class="tits-ions qxatten-ions">货到付款</i></if -->
-                </span>
+                        <!--if condition="$list['pay_code'] eq 'cod'"><i class="tits-ions qxatten-ions">货到付款</i></if -->
+                    </span>
                         <if condition="$order.pay_btn eq 1">
                             <a class="shop-rebuy paysoon" href="{:U('Mobile/Cart/cart4',array('order_id'=>$order['order_id']))}">立即付款</a>
                         </if>
@@ -106,15 +108,15 @@
                                 <a class="shop-rebuy" href="{:U('Order/refund_order', ['order_id'=>$order['order_id']])}">取消订单</a>
                             </if> -->
                         </if>
-                        <if condition="$order.receive_btn eq 1 && order.pay_status eq 1">
-                            <a class="shop-rebuy paysoon" onclick="orderConfirm({$order.order_id})">确认收货</a>
-                        </if>
+                     
                         <if condition="$order.comment_btn eq 1">
                             <a class="shop-rebuy" href="{:U('/Mobile/Order/comment')}">评价</a>
                         </if>
-                        <if condition="$order.shipping_btn eq 1 && $order.shipping_name neq '' ">
+
+                        <if condition="$order.shipping_status == 1 && $order.shipping_name neq '' && $order.pay_status eq 1 ">
                             <!-- <a class="shop-rebuy" href="{:U('Mobile/Order/express',array('order_id'=>$order['order_id']))}">查看物流</a> -->
                             <a class="shop-rebuy" href="{:U('Mobile/Order/express_detail',array('id'=>$order.order_id))}">查看物流</a>
+                            <a class="shop-rebuy paysoon" onclick="orderConfirm({$order.order_id})">确认收货</a>
                         </if>
                     </div>
                 </div>

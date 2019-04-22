@@ -1,0 +1,206 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>会员批量充值</h3>
+                <h5>网站系统会员批量充值</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <li><a href="{:U('admin/user/recharge_batch')}" data-state="" class="current"><span>批量充值</span></a></li>
+                <li><a href="{:U('admin/user/recharge_log')}" data-state="0"><span>批量充值记录</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+        	<li>点击添加可以添加填写充值会员，每次最多可以一键充值12个会员</li>
+        </ul>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>会员批量充值列表</h3>
+            </div>
+            <div title="刷新数据" class="pReload"><a href=""><i class="fa fa-refresh"></i></a></div>
+            
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 150px;" class="">用户id</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 150px;" class="">用户昵称</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 150px;" class="">金额</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 150px;" class="">描述</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="tDiv">
+            <div class="tDiv2">
+                <div class="fbutton">                   
+                    <a  id="addTable">
+                        <div class="add" title="继续添加">
+                            <span><i class="fa fa-plus"></i>继续添加</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="bDiv" style="height: auto; min-height:auto">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <form action="{:url('admin/user/recharge_batch')}" method="POST" id="form">
+                    <table id="table1">
+                          
+                                <tr>
+                                    <td align="center" class="">
+                                        <div style="text-align: center; width: 150px;">
+                                            <input type="text" name="data[0][]" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''" onblur="get_user(this);"/>
+                                        </div>
+                                    </td>
+                                    <td align="center" class="">
+                                        <div style="text-align: center; width: 150px;">
+                                            空
+                                        </div>
+                                    </td>
+                                    <td align="center" class="">
+                                        <div style="text-align: center; width: 150px;">
+                                            <input type="text" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''" name="data[0][]"/>
+                                        </div>
+                                    </td>
+                                    <td align="center" class="">
+                                        <div style="text-align: center; width: 150px;">
+                                            <input type="text" name="data[0][]"/>
+                                        </div>
+                                    </td>
+                                    <td align="" class="" style="width: 100%;">
+                                        <div>&nbsp;</div>
+                                    </td>
+                                </tr>
+                 
+                    </table>
+                </form>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <div class="bot" style="margin-top:20px; margin-left:30px;">
+            <a href="JavaScript:void(0);" onclick="to_submit();" class="ncap-btn-big ncap-btn-green">一键充值</a>
+        </div>
+
+        <div>
+        <!--分页位置-->  
+        </div>
+</div>
+<script>
+    var num = 1;
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+        $("#addTable").click(function(){
+            if(num >=12){
+                layer.alert('每一次最多只能充值12个会员!', {icon: 2});
+                return false;
+            }
+            var tr="<tr><td><input type=\"checkbox\" name=\"check\"/>"+
+                "</td><td>111</td><td>222</td><td>333</td></tr>";
+            var tr="<tr><td align='center' class=''><div style='text-align: center; width: 150px;'>"+
+                        "<input type='text' name='data[" + num + "][]' onkeyup='check_number(this);' onblur='get_user(this);'/></div></td>"+
+                    " <td align='center' class=''><div style='text-align: center; width: 150px;'>空</div></td>"+"<td align='center' class=''>"+
+                        "<div style='text-align: center; width: 150px;'><input type='text' onkeyup='check_number(this);' name='data[" + num + "][]'/></div></td>"+
+                    " <td align='center' class=''><div style='text-align: center; width: 150px;'><input type='text' name='data[" + num + "][]'/></div></td>"+
+                    " <td align='' class='' style='width: 100%;'><div>&nbsp;</div></td>" 
+                    "</tr>"
+            
+    　  　  $("#table1").append(tr);　　
+            num = num + 1;
+        });
+
+
+
+
+    });
+    
+    function check_number(obj){
+        var value = obj.value=/^\d+\.?\d{0,2}$/.test(obj.value) ? obj.value : '';
+        obj.value = value;
+    }
+
+    function get_user(obj){
+        var id = obj.value;
+        if(id != ''){
+            $.ajax({
+                type: "POST",
+                url: "/index.php?m=Admin&c=User&a=get_user",
+                data: {'id':id},
+                dataType: 'json',
+                success: function (data) {
+                    if(data.status == 1){
+                        obj.parentNode.parentNode.nextElementSibling.firstElementChild.innerText=data.result;
+                    }else{
+                        layer.alert("用户ID" + id + "不存在", {icon: 2, time: 3000});
+                    }
+                },
+                error:function(){
+                    layer.alert('网络异常', {icon: 2,time: 3000});
+                }
+            });
+        }
+    }
+
+    function to_submit(){
+        $.ajax({
+            type: "POST",
+            url: "/index.php?m=Admin&c=User&a=recharge_batch",
+            data: $('#form').serialize(),
+            dataType: 'json',
+            success: function (data) {
+                if(data.status == 1){
+                    layer.alert(data.msg, {icon: 1}, function (){
+                        window.location.href = "/index.php?m=Admin&c=User&a=recharge_log";
+                    });
+                }else{
+                    layer.alert(data.msg, {icon: 2, time: 3000});
+                }
+            },
+            error:function(){
+                layer.alert('网络异常', {icon: 2,time: 3000});
+            }
+        });
+    }
+</script>
+</body>
+</html>
