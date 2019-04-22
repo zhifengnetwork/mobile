@@ -70,7 +70,7 @@ class Cart extends ApiBase
         unset($v["combination_group_id"]);
         }
         
-        $res[0] = array(
+        $res['list'] = array(
             'seller_id'=> 0,
             'seller_name'=>'ZF智丰自营',
             'data'=>$data,
