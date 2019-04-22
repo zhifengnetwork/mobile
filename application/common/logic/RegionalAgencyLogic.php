@@ -150,6 +150,7 @@ class RegionalAgencyLogic
             'order_id'   => $order['order_id'], 
             'user_money' => $money,
             'add_time'   => time(),
+            'desc'       => $desc,
         );
         if($result){
             $flag = M('user_regional_divide_log')->insert($data_log);
