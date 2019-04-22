@@ -75,9 +75,8 @@ class Cart extends ApiBase
             'seller_name'=>'ZF智丰自营',
             'data'=>$data,
         );
-        $cartLogic = new CartLogic();
-        $cart_price_info = $cartLogic->getCartPriceInfo();//计算选中购物车
-        var_dump($cart_price_info);die;
+
+   
         
         $this->ajaxReturn(['status' => 0 , 'msg'=>'购物车列表成功','data'=>$res]);
     }
@@ -150,6 +149,13 @@ class Cart extends ApiBase
         $result = $cartLogic->changeNum($cart['id'], $cart['goods_num']);
         $this->ajaxReturn(['status' => 0 , 'msg'=>'修改成功','data'=>$result]);
 
+    }
+
+    // 计算购物车合计
+    public function getTotal($user_id){
+        $cartLogic = new CartLogic();
+        $select_cart_list = $cartLogic->getCartList(1);//获取选中购物车
+        $cart_price_info = $cartLogic->getCartPriceInfo($select_cart_list);//计算选中购物车
     }
 
 
