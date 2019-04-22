@@ -35,7 +35,7 @@ class Team extends Controller{
             foreach($oflist as $v1){
                 if($v1['total_amount']){
                     $Users->where(['user_id'=>$v1['user_id']])->setInc('credit2',$v1['total_amount']);     
-                    $AccountLog->add(['user_id'=>$v1['user_id'],'user_money'=>$v1['total_amount'],'pay_points'=>$v1['integral_money'],'change_time'=>time(),'desc'=>'拼团失败返回','order_sn'=>$v1['order_sn'],'order_id'=>$v1['order_id']]);
+                    $AccountLog->add(['user_id'=>$v1['user_id'],'user_money'=>$v1['total_amount'],'pay_points'=>$v1['integral_money'],'change_time'=>time(),'desc'=>'拼团失败返回','order_sn'=>$v1['order_sn'],'order_id'=>$v1['order_id'],'states'=>103]);
                 }
                 if($v1['integral_money'])
                     $Users->where(['user_id'=>$v1['user_id']])->setInc('pay_points',$v1['integral_money']);      
@@ -55,7 +55,7 @@ class Team extends Controller{
                 if(!$order_sn)continue;
                 $AuctionDeposit->where(['user_id'=>$v3['user_id'],'auction_id'=>$v2['id']])->update(['is_back'=>1]);    
                 $Users->where(['user_id'=>$v3['user_id']])->setInc('pay_points',$v2['deposit']);  
-                $AccountLog->add(['user_id'=>$v3['user_id'],'user_money'=>$v2['deposit'],'change_time'=>time(),'desc'=>'竞拍失败保证金返回']);  
+                $AccountLog->add(['user_id'=>$v3['user_id'],'user_money'=>$v2['deposit'],'change_time'=>time(),'desc'=>'竞拍失败保证金返回','states'=>104]);  
             }
             //$apinfo = $AuctionPprice->field('user_id')->where(['is_out'=>2,'auction_id'=>$v2['id'],'pay_status'=>['neq',1]])->find(); 
             //if($apinfo && (time() > ($v2['end_time']+($v2['payment_time']*60))))
