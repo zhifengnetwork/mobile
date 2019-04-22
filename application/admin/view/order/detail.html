@@ -210,7 +210,7 @@ a.green:hover { color: #FFF; background-color: #1BBC9D; border-color: #16A086; }
         <div class="total-amount contact-info">
           <h3>订单总额：￥{$order.goods_price}</h3>
         </div>
-        <if condition="$order['shipping_status'] eq 1">
+        <!-- <if condition="$order['shipping_status'] eq 1">
             <div class="goods-info">
                 <h4>物流信息</h4>
                 <span>物流单号: {$invoice_no}</span>
@@ -235,7 +235,7 @@ a.green:hover { color: #FFF; background-color: #1BBC9D; border-color: #16A086; }
                     </tbody>
                 </table>
             </div>
-        </if>
+        </if> -->
          <!-- <if condition="$order['shipping_status'] eq 1">
             <foreach name="$order['delivery_doc']" item="v">
                 <div class="goods-info">
