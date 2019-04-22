@@ -37,7 +37,11 @@
 </style>
 <div style="overflow: scroll;">
     <if condition="$result.status eq 0">
+
+        <div style="padding: 0 .6rem;line-height: 1rem;font-size: 0.6rem;font-weight: bold;"><span>物流公司: {$shipping_name}</span></div>
+
         <div style="padding: 0 .6rem;line-height: 1rem;font-size: 0.6rem;font-weight: bold;"><span>物流单号: {$invoice_no}</span></div>
+        
         <volist name="result.result" id="list">
         <div class="jd_listaddless p" style="padding:0;line-height: 2rem;position: relative;border: 0;">
                 <div class="maleri30">

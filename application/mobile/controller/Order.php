@@ -567,7 +567,9 @@ class Order extends MobileBase
     public function express_detail()
     {
         $order_id = I('id');
-        if(!$order_id) return false;
+        if(!$order_id){
+            $this->error('订单ID不存在');
+        }
 
         $Api = new Api;
         $data = M('delivery_doc')->where('order_id', $order_id)->find();
@@ -578,6 +580,7 @@ class Order extends MobileBase
             $result['result'] = $result['result']['list'];
         }
         $this->assign('invoice_no', $invoice_no);
+        $this->assign('shipping_name', $data['shipping_name']);
         $this->assign('result', $result);
         return $this->fetch();
     }
