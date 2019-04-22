@@ -367,13 +367,14 @@ class User extends ApiBase
         /* 浏览记录按日期分组 */
         $curyear = date('Y');
         $visit_list = [];
-        foreach ($visit as $v) {
+        foreach ($visit as $k=>$v) {
             if ($curyear == date('Y', $v['visittime'])) {
                 $date = date('m月d日', $v['visittime']);
             } else {
                 $date = date('Y年m月d日', $v['visittime']);
             }
-            $visit_list[$date][] = $v;
+            $visit_list[$k]['date'] = $date;
+            $visit_list[$k]['list'] = $v;
         }
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$visit_list]);
     }
@@ -392,10 +393,10 @@ class User extends ApiBase
         }
         $row = M('goods_visit')->where('visit_id','IN', $visit_ids)->delete();
         if(!$row) {
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'操作失败','data'=>$row]);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'操作失败','data'=>'']);
 
         } else {
-            $this->ajaxReturn(['status' => 0 , 'msg'=>'操作成功','data'=>$row]);
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'操作成功','data'=>'']);
         }
     }
 
@@ -409,9 +410,9 @@ class User extends ApiBase
         $user_id = $this->get_user_id();
         $row = M('goods_visit')->where('user_id', $user_id)->delete();
         if(!$row) {
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'操作失败','data'=>$row]);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'操作失败','data'=>'']);
         } else {
-            $this->ajaxReturn(['status' => 0 , 'msg'=>'操作成功','data'=>$row]);
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'操作成功','data'=>'']);
         }
     }
 
