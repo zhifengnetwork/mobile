@@ -20,7 +20,7 @@ class Team extends Controller{
     {
         //对过期的拼团订单进行取消,在服务器上由定时器任务执行
         $Tf = M('team_found');
-        $time = time() - 3600 * 99948; 
+        $time = time() - 3600 * 48; //只取两天以内的
         $list = $Tf->field('f.found_id')->alias('f')->join('tp_team_activity t','f.team_id=t.team_id','left')->where('f.found_time between ' . $time . " and (unix_timestamp(now())-t.time_limit*3600) and f.need>0")->select();
         $Tf->alias('f')->join('tp_team_activity t','f.team_id=t.team_id','left')->where('f.found_time between ' . $time . " and (unix_timestamp(now())-t.time_limit*3600) and f.need>0")->update(['f.status'=>3]);
 
