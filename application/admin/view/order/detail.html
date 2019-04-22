@@ -210,7 +210,14 @@ a.green:hover { color: #FFF; background-color: #1BBC9D; border-color: #16A086; }
         <div class="total-amount contact-info">
           <h3>订单总额：￥{$order.goods_price}</h3>
         </div>
-    
+
+        <if condition="$order['shipping_status'] eq 1">
+            <div class="contact-info">
+                <h4>物流信息</h4>
+                <a class="ncap-btn-big ncap-btn-green" onclick="express_detail('{$order.order_id}');" >查看物流</a>
+            </div>
+        </if>
+         
         <div class="contact-info">
           <h3>费用信息 </h3>
             <if condition="$order.pay_status eq 0">
@@ -387,6 +394,11 @@ a.green:hover { color: #FFF; background-color: #1BBC9D; border-color: #16A086; }
             }
         });
         before_request = 0; // 标识ajax 请求已经发出
+    }
+
+    function express_detail(order_id){
+        var url = "/index.php?m=Admin&c=Order&a=express_detail&order_id=" + order_id;
+        window.location.href = url;
     }
 
     function getOrderAction(){
