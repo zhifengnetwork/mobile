@@ -367,13 +367,13 @@ class User extends ApiBase
         /* 浏览记录按日期分组 */
         $curyear = date('Y');
         $visit_list = [];
-        foreach ($visit as $v) {
+        foreach ($visit as $k=>$v) {
             if ($curyear == date('Y', $v['visittime'])) {
                 $date = date('m月d日', $v['visittime']);
             } else {
                 $date = date('Y年m月d日', $v['visittime']);
             }
-            $visit_list[$date][] = $v;
+            $visit_list[$date] = $v;
         }
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$visit_list]);
     }
