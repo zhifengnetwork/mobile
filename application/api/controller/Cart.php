@@ -45,36 +45,46 @@ class Cart extends ApiBase
         $cartLogic = new CartLogic();
         $cartLogic->setUserId($user_id);
         $data = $cartLogic->getCartList();//用户购物车
-        $seller = Db::name('seller')->select();
-        /*foreach ($data as $k=>$v) {
-            if($v['goods']['seller_id']==$seller[0]['seller_id']){
-                $v['seller_name']=$seller[0]['seller_name'];
-            }else{
-                $v['seller_name']="";
-            }
-        }*/
+        $seller_arr = Db::name('seller')->field('seller_id,seller_name')->select();
         foreach($data as $k=>$v){
-        unset($v['user_id']);
-        unset($v["session_id"]);
-        unset($v["goods_id"]);
-        unset($v["goods_name"]);
-        unset($v["market_price"]);
-        unset($v["member_goods_price"]);
-        unset($v["item_id"]);
-        unset($v["spec_key"]);
-        unset($v["bar_code"]);
-        unset($v["add_time"]);
-        unset($v["prom_type"]);
-        unset($v["prom_id"]);
-        unset($v["sku"]);
-        unset($v["combination_group_id"]);
+            unset($v['user_id']);
+            unset($v["session_id"]);
+            // unset($v["goods_id"]);
+            unset($v["goods_name"]);
+            unset($v["market_price"]);
+            unset($v["member_goods_price"]);
+            unset($v["item_id"]);
+            unset($v["spec_key"]);
+            unset($v["bar_code"]);
+            unset($v["add_time"]);
+            unset($v["prom_type"]);
+            unset($v["prom_id"]);
+            unset($v["sku"]);
+            unset($v["combination_group_id"]);
         }
-        
-        $res['list'] = array(
-            'seller_id'=> 0,
-            'seller_name'=>'ZF智丰自营',
-            'data'=>$data,
-        );
+
+        foreach($data as $k=>$v){
+            $goods_seller_id = Db::name('goods')->field('goods_id,seller_id')->where(['goods_id'=>$v['goods_id']])->find();
+            if($goods_seller_id){
+                $data[$k]['seller_id'] = $goods_seller_id['seller_id'];
+            }
+
+        }
+        // $res['list'] = array(
+        //     'seller_id'=> 0,
+        //     'seller_name'=>'ZF智丰自营',
+        //     'data'=>$data,
+        // );
+        $seller = [];
+        foreach($data as $k=>$v){
+            foreach($seller_arr as $ks=>$vs){
+                if($v['seller_id'] == $vs['seller_id']){
+                    //$data[$k]['list']['seller_id'] = $vs['seller_id'];
+                    $data[$k]['seller_name'] = $vs['seller_name'];
+                }
+            }
+        }
+        $res['list'] =  $data;
         $res['cart_price_info'] = $this->_getTotal($user_id);
 
         $this->ajaxReturn(['status' => 0 , 'msg'=>'购物车列表成功','data'=>$res]);
