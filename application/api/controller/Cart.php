@@ -75,6 +75,10 @@ class Cart extends ApiBase
             'seller_name'=>'ZF智丰自营',
             'data'=>$data,
         );
+        $cartLogic = new CartLogic();
+        $cart_price_info = $cartLogic->getCartPriceInfo();//计算选中购物车
+        var_dump($cart_price_info);die;
+        
         $this->ajaxReturn(['status' => 0 , 'msg'=>'购物车列表成功','data'=>$res]);
     }
 
