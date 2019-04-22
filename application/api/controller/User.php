@@ -365,19 +365,39 @@ class User extends ApiBase
             ->select();
 
         /* 浏览记录按日期分组 */
-        $curyear = date('Y');
+        $curyear = date('YMD');
         $visit_list = [];
         foreach ($visit as $k=>$v) {
-            if ($curyear == date('Y', $v['visittime'])) {
-                $date = date('m月d日', $v['visittime']);
+            if ($curyear == date('YMD', $v['visittime'])) {
+                $date = date('Y年m月d日', $v['visittime']);
+               
             } else {
                 $date = date('Y年m月d日', $v['visittime']);
             }
+
+            $visit_list[] = $v;
             $visit_list[$k]['date'] = $date;
-            $visit_list[$k]['list'] = $v;
+
+           
         }
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$visit_list]);
     }
+
+    /* 浏览记录按日期分组 */
+// function groupVisit($visit)
+// {
+//  $curyear = date('Y');
+//  $visit_list = [];
+//  foreach ($visit as $v) {
+//   if ($curyear == date('Y', $v['visittime'])) {
+//    $date = date('m月d日', $v['visittime']);
+//   } else {
+//    $date = date('Y年m月d日', $v['visittime']);
+//   }
+//   $visit_list[$date][] = $v;
+//  }
+//  return $visit_list;
+// }
 
     /**
      * +---------------------------------
