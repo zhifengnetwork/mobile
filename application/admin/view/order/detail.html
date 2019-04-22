@@ -210,75 +210,7 @@ a.green:hover { color: #FFF; background-color: #1BBC9D; border-color: #16A086; }
         <div class="total-amount contact-info">
           <h3>订单总额：￥{$order.goods_price}</h3>
         </div>
-        <!-- <if condition="$order['shipping_status'] eq 1">
-            <div class="goods-info">
-                <h4>物流信息</h4>
-                <span>物流单号: {$invoice_no}</span>
-                <table id="express_info">
-                    <thead>
-                    <tr>
-                        <th>操作时间</th>
-                        <th>状态</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <if condition="$result['status'] eq 0">
-                            <foreach name="result.result" item="item">
-                                <tr>
-                                    <td class="text-center">{$item.time}</td>
-                                    <td class="text-center">{$item.status}</td>
-                                </tr>
-                            </foreach>
-                        <else/>
-                            <tr><td class='text-center' colspan="2">{$result.msg}</td></tr>
-                        </if>
-                    </tbody>
-                </table>
-            </div>
-        </if> -->
-         <!-- <if condition="$order['shipping_status'] eq 1">
-            <foreach name="$order['delivery_doc']" item="v">
-                <div class="goods-info">
-                    <h4>物流信息</h4>
-                    <table id="express_info">
-                        <thead>
-                        <tr>
-                            <th>操作时间</th>
-                            <th>状态</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                    </table>
-                </div>
-                <script>
-                    $(function(){
-                        var shipping_code = "{$v['shipping_code']}";
-                        var invoice_no = "{$v['invoice_no']}";
-                        $.ajax({
-                            type : "GET",
-                            dataType: "json",
-                            url:"/index.php?m=Home&c=Api&a=queryExpress&shipping_code="+shipping_code+"&invoice_no="+invoice_no,//+tab,
-                            success: function(data){
-                                var html = '';
-                                if(data.status == 200){
-                                    $.each(data.data, function(i,n){
-                                        if(i == 0){
-                                            html += '<tr><td class="text-center">'+n.time+'</td><td class="text-center">'+n.context+'</td></tr>'
-                                        }else{
-                                            html += '<tr><td class="text-center">'+n.time+'</td><td class="text-center">'+n.context+'</td></tr>'
-                                        }
-                                    });
-                                }else{
-                                    html += "<tr><td class='text-center'>"+data.message+"</td></tr>"
-                                }
-                                $("#express_info").append(html);
-                            }
-                        });
-                    })
-                </script>
-            </foreach>
-        </if> -->
+    
         <div class="contact-info">
           <h3>费用信息 </h3>
             <if condition="$order.pay_status eq 0">
