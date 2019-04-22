@@ -114,7 +114,7 @@ class Groupbuy extends ApiBase
                 ->where('status', 1)
                 ->count();
 
-			$team_found = '';
+			$team_found = [];
             if( $team_found_num){
                 # 正在开团的拼团信息
                 $team_found = Db::table('tp_team_found')
@@ -418,6 +418,7 @@ class Groupbuy extends ApiBase
 						M('team_found')->update(['found_id'=>$data['found_id'],'status'=>2]);
 						M('team_follow')->update(['found_id'=>$data['found_id'],'status'=>2]);
 					
+					}
 				}
 				# 组装sql语句
 				
