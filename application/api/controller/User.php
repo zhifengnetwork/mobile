@@ -373,7 +373,8 @@ class User extends ApiBase
             } else {
                 $date = date('Y年m月d日', $v['visittime']);
             }
-            $visit_list[$date] = $v;
+            $visit_list[$k]['date'] = $date;
+            $visit_list[$k]['list'] = $v;
         }
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$visit_list]);
     }
