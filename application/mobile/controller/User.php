@@ -294,6 +294,13 @@ class User extends MobileBase
         $up_url = SITE_URL."/api/distribut/upgrade?user_id=".$user_id;
         httpRequest($up_url);
 
+        //区域代理
+        $area_agent = M('user_regional_agency')->where('user_id', $user_id)->find();
+        if($area_agent){
+            $agency_name = M('config_regional_agency')->where('agency_level', $area_agent['agency_level'])->value('agency_name');
+            $this->assign('agency_name', $agency_name);
+        }
+
         //省代：开关
         $regional_agency_is_valid = (int)M('config')->where(['name'=>'is_valid'])->value('value');
         if($regional_agency_is_valid == 1){
@@ -1504,7 +1511,7 @@ class User extends MobileBase
     
     public function recharge_list(){
     	$usersLogic = new UsersLogic;
-    	$result= $usersLogic->get_recharge_log($this->user_id);  //充值记录
+        $result= $usersLogic->get_recharge_log($this->user_id);  //充值记录
     	$this->assign('page', $result['show']);
     	$this->assign('lists', $result['result']);
     	if (I('is_ajax')) {

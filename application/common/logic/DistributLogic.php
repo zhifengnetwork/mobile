@@ -49,7 +49,7 @@ class DistributLogic
         if($pay_status){
             $pay_status['status']=$pay_status;
         }
-        if($table='agent_performance_log'){
+        if($table=='agent_performance_log'){
             $count = M('agent_performance_log')->where($recharge_log_where)->count();
             //$Page = new Page($count, 15);
             $recharge_log = M('agent_performance_log')->where($recharge_log_where)
