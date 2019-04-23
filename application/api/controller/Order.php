@@ -21,6 +21,7 @@ use app\common\model\Goods;
 use app\common\util\TpshopException;
 use think\Loader;
 use think\Db;
+use app\common\logic\FreightLogic;
 
 class Order extends ApiBase
 {
@@ -136,6 +137,7 @@ class Order extends ApiBase
         $take_time = input('take_time/d');//自提时间
         $consignee = input('consignee/s');//自提点收货人
         $mobile = input('mobile/s');//自提点联系方式
+		$act = input('act/d',1);
         $is_virtual = input('is_virtual/d',0);
         $data = input('request.');
         $cart_validate = Loader::validate('Cart');
@@ -163,29 +165,20 @@ class Order extends ApiBase
                 $cartLogic->checkStockCartList($userCartList);
                 $pay->payCart($userCartList);
             }
-            $pay->setUserId($user_id)
-                ->setShopById($shop_id)
-                ->delivery($address['district'])
-                ->orderPromotion()
-                ->useCouponById($coupon_id)
-                ->useUserMoney($user_money)
-                ->usePayPoints($pay_points);
-            // 提交订单
-			$placeOrder = new PlaceOrder($pay);
-			$placeOrder->setUserAddress($address)
-				->setConsignee($consignee)
-				->setMobile($mobile)
-				->setInvoiceTitle($invoice_title)
-				->setUserNote($user_note)
-				->setTaxpayer($taxpayer)
-				->setInvoiceDesc($invoice_desc)
-				->setPayPsw($pay_pwd)
-				->setTakeTime($take_time)
-				->addNormalOrder();
-			$cartLogic->clear();
-			$order = $placeOrder->getOrder();
-			$this->ajaxReturn(['status' => 0, 'msg' => '提交订单成功', 'data' => ['order_sn' => $order['order_sn']] ]);
 
+			$pay->setUserId($user_id)->setShopById($shop_id)->delivery($address)->orderPromotion()
+                ->useCouponById($coupon_id)->getAuction()->getUserSign()->useUserMoney($user_money)
+                ->usePayPoints($pay_points,false,'mobile');
+            // 提交订单
+            if ($act == 1) {
+                $placeOrder = new PlaceOrder($pay);
+                $placeOrder->setMobile($mobile)->setUserAddress($address)->setConsignee($consignee)->setInvoiceTitle($invoice_title)
+                    ->setUserNote($user_note)->setTaxpayer($taxpayer)->setInvoiceDesc($invoice_desc)->setPayPsw($pay_pwd)->setTakeTime($take_time)->addNormalOrder();
+                $cartLogic->clear();
+                $order = $placeOrder->getOrder();
+                $this->ajaxReturn(['status' => 0, 'msg' => '提交订单成功', 'data' => ['order_sn' => $order['order_sn']] ]);
+            }
+			$this->ajaxReturn(['status' => 0, 'msg' => '计算成功', 'result' => $pay->toArray()]);
         } catch (TpshopException $t) {
             $error = $t->getErrorArr();
             $this->ajaxReturn(['status' => -5, 'msg' => $error, 'data'=> null]);
