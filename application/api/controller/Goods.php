@@ -263,9 +263,10 @@ class Goods extends ApiBase
 		if($goods['seller_id']){
 			$seller_info = M('seller_store')->field('store_id,store_name,avatar')->where(['seller_id'=>$goods['seller_id'],'auditing'=>10,'is_delete'=>10])->find();
 			if($seller_info)$seller_info['num'] = M('goods')->where(['seller_id'=>$goods['seller_id'],'is_on_sale'=>1])->count();
-		
 		}
-		$goods['seller_info'] = $seller_info ? $seller_info : '';
+		$seller_info = ['store_id'=>'','store_name'=>'','avatar'=>0,'num'=>0];
+		$seller_info['num'] = M('goods')->where(['seller_id'=>$goods['seller_id'],'is_on_sale'=>1])->count();
+		$goods['seller_info'] = $seller_info;
 
 		unset($goods['template_id']);
 		unset($goods['sku']);
