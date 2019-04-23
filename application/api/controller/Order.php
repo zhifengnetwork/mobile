@@ -21,6 +21,7 @@ use app\common\model\Goods;
 use app\common\util\TpshopException;
 use think\Loader;
 use think\Db;
+use app\common\logic\FreightLogic;
 
 class Order extends ApiBase
 {
@@ -113,7 +114,7 @@ class Order extends ApiBase
     /**
      * 提交订单
      */
-	 public function post_order(){   
+	 public function post_order(){   /*
 		$user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
@@ -136,6 +137,7 @@ class Order extends ApiBase
         $take_time = input('take_time/d');//自提时间
         $consignee = input('consignee/s');//自提点收货人
         $mobile = input('mobile/s');//自提点联系方式
+		$act = input('act/d',1);
         $is_virtual = input('is_virtual/d',0);
         $data = input('request.');
         $cart_validate = Loader::validate('Cart');
@@ -145,10 +147,11 @@ class Order extends ApiBase
         if (!$cart_validate->check($data)) {
             $error = $cart_validate->getError();
             $this->ajaxReturn(['status' => -4, 'msg' => $error, 'data' => null]);  //留言长度不符或收货人错误
-        }
+        }*/ $user_id=1;$act=2;
         $address = Db::name('user_address')->where("address_id", $address_id)->find();
         $cartLogic = new CartLogic();
         $pay = new Pay();
+		$goodsinfo = [];
         try {
             $cartLogic->setUserId($user_id);
             if ($action === 1) {
@@ -158,34 +161,56 @@ class Order extends ApiBase
                 $buyGoods = $cartLogic->buyNow();
                 $cartList[0] = $buyGoods;
                 $pay->payGoodsList($cartList);
+				$arr = M('Goods')->field('goods_id,goods_name,shop_price,original_img')->find($goods_id);
+				if($item_id){
+					$arr['item'] = M('spec_item')->where(['id'=>$item_id])->value('item');
+					$price = M('spec_goods_price')->field('price,spec_img')->find($item_id);
+					$arr['shop_price'] = $price['price'] ? $price['price'] : $arr['shop_price'];
+					$arr['original_img'] = $price['spec_img'] ? $price['spec_img'] : $arr['original_img'];
+				}
+				$arr['goods_num'] = $goods_num;
+				$goodsinfo[] = $arr;
             } else {
                 $userCartList = $cartLogic->getCartList(1);
                 $cartLogic->checkStockCartList($userCartList);
                 $pay->payCart($userCartList);
-            }
-            $pay->setUserId($user_id)
-                ->setShopById($shop_id)
-                ->delivery($address['district'])
-                ->orderPromotion()
-                ->useCouponById($coupon_id)
-                ->useUserMoney($user_money)
-                ->usePayPoints($pay_points);
-            // 提交订单
-			$placeOrder = new PlaceOrder($pay);
-			$placeOrder->setUserAddress($address)
-				->setConsignee($consignee)
-				->setMobile($mobile)
-				->setInvoiceTitle($invoice_title)
-				->setUserNote($user_note)
-				->setTaxpayer($taxpayer)
-				->setInvoiceDesc($invoice_desc)
-				->setPayPsw($pay_pwd)
-				->setTakeTime($take_time)
-				->addNormalOrder();
-			$cartLogic->clear();
-			$order = $placeOrder->getOrder();
-			$this->ajaxReturn(['status' => 0, 'msg' => '提交订单成功', 'data' => ['order_sn' => $order['order_sn']] ]);
+				$goodsinfo = [];
+				foreach($userCartList as $v){
+					$arr = [];
+					$arr = M('Goods')->field('goods_id,goods_name,shop_price,original_img')->find($v['goods_id']);	
+					$arr['item'] = '';
+					if($v['item_id']){
+						$arr['item'] = M('spec_item')->where(['id'=>$v['item_id']])->value('item');
+						$price = M('spec_goods_price')->field('price,spec_img')->find($v['item_id']);
+						$arr['shop_price'] = $price['price'] ? $price['price'] : $arr['shop_price'];
+						$arr['original_img'] = $price['spec_img'] ? $price['spec_img'] : $arr['original_img'];
+					}
+					$arr['goods_num'] = $v['goods_num'];
+					$goodsinfo[] = $arr;
+				}
+            } 
 
+
+			$pay->setUserId($user_id)->setShopById($shop_id)->delivery($address)->orderPromotion()
+                ->useCouponById($coupon_id)->getAuction()->getUserSign()->useUserMoney($user_money)
+                ->usePayPoints($pay_points,false,'mobile');
+            // 提交订单
+            if ($act == 1) {
+                $placeOrder = new PlaceOrder($pay);
+                $placeOrder->setMobile($mobile)->setUserAddress($address)->setConsignee($consignee)->setInvoiceTitle($invoice_title)
+                    ->setUserNote($user_note)->setTaxpayer($taxpayer)->setInvoiceDesc($invoice_desc)->setPayPsw($pay_pwd)->setTakeTime($take_time)->addNormalOrder();
+                $cartLogic->clear();
+                $order = $placeOrder->getOrder();
+                $this->ajaxReturn(['status' => 0, 'msg' => '提交订单成功', 'data' => ['order_sn' => $order['order_sn']] ]);
+            }
+			$address = M('user_address')->where(['user_id'=>$user_id])->order('is_default desc')->find();
+			if($address){
+				$address['province_name'] = $address['province'] ? M('region')->where(['id'=>$address['province']])->value('name') : '';
+				$address['city_name'] = $address['city'] ? M('region')->where(['id'=>$address['city']])->value('name') : '';
+				$address['district_name'] = $address['district'] ? M('region')->where(['id'=>$address['district']])->value('name') : '';
+				$address['twon_name'] = $address['twon'] ? M('region')->where(['id'=>$address['twon']])->value('name') : '';
+			} 
+			$this->ajaxReturn(['status' => 0, 'msg' => '计算成功', 'data' => ['price'=>$pay->toArray(),'address'=>$address,'goodsinfo'=>$goodsinfo]]);
         } catch (TpshopException $t) {
             $error = $t->getErrorArr();
             $this->ajaxReturn(['status' => -5, 'msg' => $error, 'data'=> null]);

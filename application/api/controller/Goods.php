@@ -224,7 +224,7 @@ class Goods extends ApiBase
             ->select();
 	
         foreach ($list as $k => $v) {		
-            $list[$k]['img'] = unserialize($v['img']); // 晒单图片
+            $list[$k]['img'] = $v['img'] ? unserialize($v['img']) : ''; // 晒单图片
             $reply = M('Comment')->where(['is_show' => 1, 'goods_id' => $goods_id, 'parent_id' => $v['comment_id']])->order("add_time desc")->select();	
 			$list[$k]['reply'] = $reply ? $reply : null;
             //$list[$k]['reply_num'] = Db::name('reply')->where(['comment_id' => $v['comment_id'], 'parent_id' => 0])->count();
@@ -237,14 +237,14 @@ class Goods extends ApiBase
      * 商品详情页
      */
     public function goodsInfo()
-    { 
+    { /*
 		$user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
-        }	
+        }	*/
 
         $goodsLogic = new GoodsLogic();
-        $goods_id = I("post.goods_id/d", 0);
+        $goods_id = I("post.goods_id/d", 274);
         $goodsModel = new \app\common\model\Goods();
         $goods = $goodsModel::get($goods_id);
         if (empty($goods) || ($goods['is_on_sale'] == 0)) {
@@ -261,8 +261,8 @@ class Goods extends ApiBase
             $this->assign('collect', $collect);
         }
 
-        //$recommend_goods = M('goods')->where("is_recommend=1 and is_on_sale=1 and cat_id = {$goods['cat_id']}")->cache(7200)->field("goods_id, goods_name, shop_price")->select();		
-        //$this->assign('recommend_goods', $recommend_goods);
+		$goods['seller_name'] = $goods['seller_id'] ? M('seller')->where(['seller_id'=>$goods['seller_id']])->value('seller_name') : '';
+
 		unset($goods['template_id']);
 		unset($goods['sku']);
 		unset($goods['spu']);
@@ -270,7 +270,7 @@ class Goods extends ApiBase
         $goods['goods_content'] = str_replace('/public/upload/goods/',SITE_URL."/public/upload/goods/",$goods['goods_content']); 
 		$goods['goods_images'] = M('Goods_images')->where(['goods_id'=>$goods_id])->column('image_url');
         echo json_encode(['status' => 0, 'msg' => '请求成功', 'data' => ['goods'=>$goods]]);
-        //$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['goods'=>$goods]]);
+
     }
 
     /**
