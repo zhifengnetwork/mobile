@@ -98,7 +98,7 @@ class Cart extends ApiBase
     {
         $user_id = $this->get_user_id();
         if(!$user_id){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>(object)null]);
         }
         $id = I('id/a');
         $cartLogic = new CartLogic();
@@ -108,7 +108,7 @@ class Cart extends ApiBase
             $res['cart_price_info'] = $this->_getTotal($user_id);
             $this->ajaxReturn(['status' => 0 , 'msg'=>'删除成功','data'=>$res]);
         }else{
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'删除失败','data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'删除失败','data'=>(object)null]);
         }
         
     }
@@ -131,7 +131,7 @@ class Cart extends ApiBase
     {
         $user_id = $this->get_user_id();
         if(!$user_id){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>(object)null]);
         }
         $cart = input();
         $cartLogic = new CartLogic();
@@ -154,7 +154,7 @@ class Cart extends ApiBase
         $user_id = $this->get_user_id();
         $cart = input('cart/a',[]);
         if (empty($cart)) {
-            $this->ajaxReturn(['status' => 0, 'msg' => '请选择要更改的商品', 'result' => '']);
+            $this->ajaxReturn(['status' => 0, 'msg' => '请选择要更改的商品', 'result' => (object)null]);
         }
         $cartLogic = new CartLogic();
         $result = $cartLogic->changeNum($cart['id'], $cart['goods_num']);

@@ -357,7 +357,7 @@ class User extends ApiBase
         $count = M('goods_visit')->where('user_id', $user_id)->count();
         $Page = new Page($count, 20);
         $visit = M('goods_visit')->alias('v')
-            ->field('v.visit_id, v.goods_id, v.visittime, g.goods_name, g.shop_price, g.cat_id, g.comment_count, g.sales_sum')
+            ->field('v.visit_id, v.goods_id, v.visittime, g.goods_name, g.shop_price, g.cat_id, g.comment_count, g.sales_sum, g.original_img')
             ->join('__GOODS__ g', 'v.goods_id=g.goods_id')
             ->where('v.user_id', $user_id)
             ->order('v.visittime desc')
@@ -409,14 +409,14 @@ class User extends ApiBase
         $user_id = $this->get_user_id();
         $visit_ids = I('get.visit_ids', 0);
         if(!$visit_ids){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'visit_ids不可为空','data'=>$row]);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'visit_ids不可为空','data'=>(object)null]);
         }
         $row = M('goods_visit')->where('visit_id','IN', $visit_ids)->delete();
         if(!$row) {
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'操作失败','data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'操作失败','data'=>(object)null]);
 
         } else {
-            $this->ajaxReturn(['status' => 0 , 'msg'=>'操作成功','data'=>'']);
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'操作成功','data'=>(object)null]);
         }
     }
 
@@ -430,9 +430,9 @@ class User extends ApiBase
         $user_id = $this->get_user_id();
         $row = M('goods_visit')->where('user_id', $user_id)->delete();
         if(!$row) {
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'操作失败','data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'操作失败','data'=>(object)null]);
         } else {
-            $this->ajaxReturn(['status' => 0 , 'msg'=>'操作成功','data'=>'']);
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'操作成功','data'=>(object)null]);
         }
     }
 
@@ -450,7 +450,7 @@ class User extends ApiBase
         $userLogic = new UsersLogic();
         $user_info = $userLogic->get_info($user_id);  // 获取用户信息
         if($user_info['result']['status'] == '-1'){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>$user_info['result']['msg'],'data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>$user_info['result']['msg'],'data'=>(object)null]);
         }
         $user_info = [
             'user_money' => $user_info['result']['user_money'],
@@ -472,7 +472,7 @@ class User extends ApiBase
 
         $user_id = $this->get_user_id();
         if (!IS_POST) {
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>(object)null]);
         }
         // $user_info = $userLogic->get_info($user_id);  // 获取用户信息
         //下级信息
