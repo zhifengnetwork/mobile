@@ -300,9 +300,9 @@ class Cart extends MobileBase {
             //微信浏览器
             if(in_array($order['prom_type'],$no_cod_order_prom_type) || in_array(1,$orderGoodsPromType) || $order['shop_id'] > 0){
                 //预售订单和抢购不支持货到付款
-                $payment_where['code'] = 'weixin';
+                //$payment_where['code'] = 'weixin';
             }else{
-                $payment_where['code'] = array('in',array('weixin','cod'));
+                //$payment_where['code'] = array('in',array('weixin','cod'));
             }
         }else{
             if(in_array($order['prom_type'],$no_cod_order_prom_type) || in_array(1,$orderGoodsPromType) || $order['shop_id'] > 0){

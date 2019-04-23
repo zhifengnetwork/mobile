@@ -30,9 +30,6 @@ class Payment extends MobileBase
                 $this->pay_code = session('pay_pay_code');
             }
 
-            if (!session('user')) {
-                $this->error('请先登录', U('User/login'));
-            }
 
             // 获取通知的数据
             if (empty($this->pay_code)) {
@@ -84,10 +81,8 @@ class Payment extends MobileBase
         if ($this->pay_code == 'weixin' && session('openid') && strstr($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')) {
             //微信JS支付
             $code_str = $this->payment->getJSAPI($order);
-
             exit($code_str);
-
-        } elseif ($this->pay_code == 'weixinH5') {
+        }elseif ($this->pay_code == 'weixinH5') {
             //微信H5支付
             $return = $this->payment->get_code($order, $config);
             if ($return['status'] != 1) {

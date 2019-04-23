@@ -57,7 +57,7 @@ class alipayMobile extends Model
     {         
             $shop_info = tpCache('shop_info');
             $shop_info && $store_name = $shop_info['store_name'];
-            empty($store_name) ? $store_name = "TPshop订单" : $store_name =$store_name.'订单';
+            empty($store_name) ? $store_name = "订单" : $store_name =$store_name.'订单';
         
              // 接口类型
             $service = array(             
@@ -117,6 +117,9 @@ class alipayMobile extends Model
                     $trade_no = $_POST['trade_no']; //支付宝交易号                   
                     $trade_status = $_POST['trade_status']; //交易状态
 
+                    //写日志
+                    write_log("alipay-----------" . json_encode($_POST));
+                 
 					//用户在线充值
 					if (stripos($order_sn, 'recharge') !== false)
 						$order_amount = M('recharge')->where(['order_sn' => $order_sn, 'pay_status' => 0])->value('account');
@@ -129,11 +132,13 @@ class alipayMobile extends Model
                     if($_POST['trade_status'] == 'TRADE_FINISHED') 
                     {                         
                           update_pay_status($order_sn,array('transaction_id'=>$trade_no)); // 修改订单支付状态
+                          write_log("alipay--TRADE_FINISHED---order_sn------" . $order_sn);
                     }
                     //支付宝解释: 交易成功，且可对该交易做操作，如：多级分润、退款等。
                     elseif ($_POST['trade_status'] == 'TRADE_SUCCESS') 
                     { 
                             update_pay_status($order_sn,array('transaction_id'=>$trade_no)); // 修改订单支付状态
+                            write_log("alipay--TRADE_SUCCESS---order_sn------" . $order_sn);
                     }
                     echo "success"; // 告诉支付宝处理成功
             }
