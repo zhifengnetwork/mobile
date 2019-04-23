@@ -272,6 +272,9 @@ class Goods extends ApiBase
 		unset($goods['spu']);
 		unset($goods['cost_price']);	
 
+		$goodsModel = new \app\common\model\Goods();
+		$goods['comment_count'] = M('comment')->where(['goods_id'=>$goods_id,'is_show'=>1])->count();
+		$goods['comment_fr'] = $goodsModel->getCommentStatisticsAttr('', ['goods_id', $goods_id]);
 		$goods['goods_images'] = M('Goods_images')->where(['goods_id'=>$goods_id])->column('image_url');	
         echo json_encode(['status' => 0, 'msg' => '请求成功', 'data' => ['goods'=>$goods]],JSON_UNESCAPED_UNICODE );
 
