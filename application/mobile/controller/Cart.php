@@ -56,7 +56,6 @@ class Cart extends MobileBase {
         if(is_weixin() == true){
             $this->assign('code_str', '');
         }else{
-
             $this->assign('code_str', $code_str['text']);
         }
         return $this->fetch();
