@@ -237,14 +237,14 @@ class Goods extends ApiBase
      * 商品详情页
      */
     public function goodsInfo()
-    { /*
+    { 
 		$user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
-        }	*/
+        }	
 
         $goodsLogic = new GoodsLogic();
-        $goods_id = I("post.goods_id/d", 274);
+        $goods_id = I("post.goods_id/d", 0);
         $goods = M('Goods')->field('template_id,sku,spu,cost_price',true)->find($goods_id);
         if (empty($goods) || ($goods['is_on_sale'] == 0)) {
             $this->ajaxReturn(['status' => -2, 'msg' => '此商品不存在或者已下架', 'data' => NULL]);
