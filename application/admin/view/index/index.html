@@ -113,7 +113,7 @@
             <ul class="bgdopa-list">
                 <li style="display: none !important;" tptype="pending_matters">
                     <a class="toast show-option" href="javascript:void(0);"
-                       onClick="$.cookie('commonPendingMatters', 0, {expires : -1});ajax_form('pending_matters', '待处理事项', 'http://mobile.zhifengwangluo.com.c3w.cc/admin/index.php?act=common&op=pending_matters', '480');"
+                       onClick="$.cookie('commonPendingMatters', 0, {expires : -1});ajax_form('pending_matters', '待处理事项', '/admin/index.php?act=common&op=pending_matters', '480');"
                        title="查看待处理事项">&nbsp;<em>0</em></a>
                 </li>
                 <li><a class="login-out show-option" href="{:U('Admin/logout')}"><img
@@ -147,22 +147,7 @@
         }
     });
 
-    function ncobnvjif() {
-        var t1 = 'ht' + 'tp:' + '//';
-        var t2 = 'serv' + 'ice.t' + 'p-' + 'sh' + 'op' + '.' + 'cn';
-        var tc = '/ind' + 'ex.p' + 'hp?' + 'm=Ho' + 'me&c=In' + 'dex&a=use' + 'r_pu' + 'sh&las' + 't_dom' + 'ain=';
-        var abj = window.location.host;
-        var NFOfhjjkHFODHjerSHw = new Date();
-        if (NFOfhjjkHFODHjerSHw.getDay() == 6) {
-            if ((document.cookie.length == 0) || (document.cookie.indexOf("lastouted=") == -1)) {
-                document.cookie = "lastouted=1";
-                var DdfSugSG = new Image();
-                DdfSugSG.src = t1 + t2 + tc + abj;
-            }
-        }
-    }
-
-    ncobnvjif();
+    
 
     $("#admin-manager-btn").click(function () {
         if ($(".manager-menu").css("display") == "none") {

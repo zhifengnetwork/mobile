@@ -1,6 +1,5 @@
 <?php
 
-// namespace app\mobile\controller;
 namespace app\shop\controller;
 
 use think\Db;
@@ -14,7 +13,7 @@ class Pickup extends MobileBase
     public function qrcode()
     {
       
-        $url = 'http://shop.zhifengwangluo.com.c3w.cc/mobile';
+        $url = '';
         $this->assign('url',$url);
         return $this->fetch();
     }
