@@ -58,9 +58,9 @@
                     <if condition="$order.pay_status eq 0">
                         <a class="shop-rebuy " onClick="cancel_order({$order.order_id})">取消订单</a>
                     </if>
-                    <if condition="$order.pay_status eq 1">
+                    <!-- <if condition="$order.pay_status eq 1">
                         <a class="shop-rebuy" href="{:U('Order/refund_order', ['order_id'=>$order['order_id']])}">取消订单</a>
-                    </if>
+                    </if> -->
                 </if>
                 <if condition="$order.receive_btn eq 1">
                     <a class="shop-rebuy paysoon" onclick="orderConfirm({$order.order_id})">确认收货</a>
@@ -68,11 +68,15 @@
                 <if condition="$order.comment_btn eq 1">
                     <a class="shop-rebuy" href="{:U('/Mobile/Order/comment')}">评价</a>
                 </if>
-                <if condition="$order.shipping_btn eq 1">
+                <if condition="$order.shipping_status == 1 && $order.shipping_name neq '' && $order.pay_status eq 1 ">
                     <!-- <a class="shop-rebuy" href="{:U('Mobile/Order/express',array('order_id'=>$order['order_id']))}">查看物流</a> -->
-                    <a class="shop-rebuy" href="{:U('Mobile/Order/express_detail',array('id'=>$order.order_id))}">查看物流</a>
+                    <a class="shop-rebuy"
+                        href="{:U('Mobile/Order/express_detail',array('id'=>$order.order_id))}">查看物流</a>
+                    <a class="shop-rebuy paysoon" onclick="orderConfirm({$order.order_id})">确认收货</a>
                 </if>
             </div>
         </div>
     </div>
 </volist>
+
+<!-- 改这个文件，记得去改  ajax_order_list  文件 -->
