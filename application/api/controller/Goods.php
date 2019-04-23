@@ -245,8 +245,7 @@ class Goods extends ApiBase
 
         $goodsLogic = new GoodsLogic();
         $goods_id = I("post.goods_id/d", 274);
-        $goodsModel = new \app\common\model\Goods();
-        $goods = $goodsModel::get($goods_id);
+        $goods = M('Goods')->field('template_id,sku,spu,cost_price',true)->find($goods_id);
         if (empty($goods) || ($goods['is_on_sale'] == 0)) {
             $this->ajaxReturn(['status' => -2, 'msg' => '此商品不存在或者已下架', 'data' => NULL]);
         }
@@ -261,15 +260,20 @@ class Goods extends ApiBase
             $this->assign('collect', $collect);
         }
 
-		$goods['seller_name'] = $goods['seller_id'] ? M('seller')->where(['seller_id'=>$goods['seller_id']])->value('seller_name') : '';
+		if($goods['seller_id']){
+			$seller_info = M('seller_store')->field('store_id,store_name,avatar')->where(['seller_id'=>$goods['seller_id'],'auditing'=>10,'is_delete'=>10])->find();
+			if($seller_info)$seller_info['num'] = M('goods')->where(['seller_id'=>$goods['seller_id'],'is_on_sale'=>1])->count();
+		
+		}
+		$goods['seller_info'] = $seller_info ? $seller_info : '';
 
 		unset($goods['template_id']);
 		unset($goods['sku']);
 		unset($goods['spu']);
-		unset($goods['cost_price']);
-        $goods['goods_content'] = str_replace('/public/upload/goods/',SITE_URL."/public/upload/goods/",$goods['goods_content']); 
-		$goods['goods_images'] = M('Goods_images')->where(['goods_id'=>$goods_id])->column('image_url');
-        echo json_encode(['status' => 0, 'msg' => '请求成功', 'data' => ['goods'=>$goods]]);
+		unset($goods['cost_price']);	
+
+		$goods['goods_images'] = M('Goods_images')->where(['goods_id'=>$goods_id])->column('image_url');	
+        echo json_encode(['status' => 0, 'msg' => '请求成功', 'data' => ['goods'=>$goods]],JSON_UNESCAPED_UNICODE );
 
     }
 
