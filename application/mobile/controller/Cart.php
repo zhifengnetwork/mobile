@@ -338,7 +338,7 @@ class Cart extends MobileBase {
                 $bankCodeList[$val['code']] = unserialize($val['bank_code']);
             }
             if($key != 'cod' && (($key == 'weixin' && !is_weixin()) // 不是微信app,就不能微信付，只能weixinH5付,用于手机浏览器
-                || ($key != 'weixin' && is_weixin()) //微信app上浏览，只能微信
+                || (  ($key != 'weixin' && $key != 'alipayMobile') && is_weixin()) //微信app上浏览，只能微信(也可以支付宝)
                 || ($key != 'alipayMobile' && is_alipay()))){ //在支付宝APP上浏览，只能用支付宝支付
                 unset($paymentList[$key]);
             }
