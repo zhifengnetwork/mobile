@@ -55,21 +55,6 @@ class Cart extends ApiBase
 
         }
 
-        // foreach($seller_arr as $ks=>$vs){
-        //     $seller_name = $vs['seller_name'];
-        //     foreach($data as $k=>$v){
-
-        //         if($v['seller_id'] == $vs['seller_id'] ){
-        //             //$data[$k]['list']['seller_id'] = $vs['seller_id'];
-        //             // $data[$seller_name][] = $v;
-        //             $data[$k]['seller_name'] = $vs['seller_name'];
-        //             $res[$k]['list']['seller']['seller_id'] = $vs['seller_id'];
-        //             $res[$ks]['list']['seller']['seller_name'] = $vs['seller_name'];
-        //             $res[$ks]['list']['data'][] = $v;
-        //         }
-        //     }
-        // }
-
         foreach($seller_arr as $ks=>$vs){
             $seller_name = $vs['seller_name'];
             foreach($data as $k=>$v){
@@ -77,9 +62,6 @@ class Cart extends ApiBase
                 if($v['seller_id'] == $vs['seller_id'] ){
                    
                     $data[$k]['seller_name'] = $vs['seller_name'];
-                    // $res['list']['seller']['seller_id'] = $vs['seller_id'];
-                    // $res['list']['seller']['seller_name'] = $vs['seller_name'];
-                    $res['data'][] = $v;
                 }
             }
         }
@@ -105,9 +87,10 @@ class Cart extends ApiBase
         //     'seller_name'=>'ZF智丰自营',
         //     'data'=>$data,
         // );
+        $res['list'] = $data;
         $res['cart_price_info'] = array($this->_getTotal($user_id));
         
-        $this->ajaxReturn(['status' => 0 , 'msg'=>'购物车列表成功','data'=>['list'=>array($res)]]);
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'购物车列表成功','data'=>$res]);
     }
 
 
@@ -123,6 +106,7 @@ class Cart extends ApiBase
         $id = I('id/a');
         $cartLogic = new CartLogic();
         $cartLogic->setUserId($user_id);
+        //
         $data = $cartLogic->delete($id);
         if($data){
             $res['cart_price_info'] = $this->_getTotal($user_id);
