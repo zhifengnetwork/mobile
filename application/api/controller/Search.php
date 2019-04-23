@@ -102,6 +102,8 @@ class Search extends ApiBase
                     if($v['seller_id'] == $vs['seller_id'] ){
                    
                         $goods_list[$k]['seller_name'] = $vs['seller_name'];
+                        $goods_list[$k]['sale_total'] = intval($v['shop_price']*$v['sales_sum']); 
+
                     }
                 }  
             }
