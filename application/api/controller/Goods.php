@@ -224,7 +224,7 @@ class Goods extends ApiBase
             ->select();
 	
         foreach ($list as $k => $v) {		
-            $list[$k]['img'] = unserialize($v['img']); // 晒单图片
+            $list[$k]['img'] = $v['img'] ? unserialize($v['img']) : ''; // 晒单图片
             $reply = M('Comment')->where(['is_show' => 1, 'goods_id' => $goods_id, 'parent_id' => $v['comment_id']])->order("add_time desc")->select();	
 			$list[$k]['reply'] = $reply ? $reply : null;
             //$list[$k]['reply_num'] = Db::name('reply')->where(['comment_id' => $v['comment_id'], 'parent_id' => 0])->count();
