@@ -194,11 +194,11 @@ class Cart extends ApiBase
             if($flag[0]<=2){
                 $flag = $flag[0]==1?1:0;
                 $res = Db::name('cart')->where(['user_id'=>$user_id])->update(['selected'=>$flag]);
-                $this->ajaxReturn(['status' => 0 , 'msg'=>'成功','data'=>'']);
+                $data['cart_price_info'] = $this->_getTotal($user_id);
             }else{
                 $this->ajaxReturn(['status' => -1 , 'msg'=>'失败','data'=>'']);
             }
-
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'成功','data'=>$data]);
         }else{
             $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>'']);
         }
