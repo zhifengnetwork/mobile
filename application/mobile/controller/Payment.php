@@ -84,24 +84,29 @@ class Payment extends MobileBase
         if ($this->pay_code == 'weixin' && session('openid') && strstr($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')) {
             //微信JS支付
             $code_str = $this->payment->getJSAPI($order);
+
             exit($code_str);
-        } else{
-            exit("<h1>支付错误，请联系客服</h1>");
-        }    
-        
-        // elseif ($this->pay_code == 'weixinH5') {
-        //     //微信H5支付
-        //     $return = $this->payment->get_code($order, $config);
-        //     if ($return['status'] != 1) {
-        //         $this->error($return['msg']);
-        //     }
-        //     $this->assign('deeplink', $return['result']);
-        //     if(!isset($deeplink_flag)) $deeplink_flag = 1;
-        //     $this->assign('deeplink_flag', $deeplink_flag);
-        // } else {
-        //     //其他支付（支付宝、银联...）
-        //     $code_str = $this->payment->get_code($order, $config);
-        // }
+
+        } elseif ($this->pay_code == 'weixinH5') {
+            //微信H5支付
+            $return = $this->payment->get_code($order, $config);
+            if ($return['status'] != 1) {
+                $this->error($return['msg']);
+            }
+            $this->assign('deeplink', $return['result']);
+            if(!isset($deeplink_flag)) $deeplink_flag = 1;
+            $this->assign('deeplink_flag', $deeplink_flag);
+        } else {
+            //其他支付（支付宝、银联...）
+            $code_str = $this->payment->get_code($order, $config);
+            if($code_str){
+                $id = M('alipay')->add(['text'=>$code_str]);
+                //存好
+                $this->redirect('/mobile/cart/alipay?id='.$id);
+            }else{
+                $this->error('支付错误');
+            }
+        }
 
         $this->assign('code_str', $code_str);
         $this->assign('order_id', $order_id);

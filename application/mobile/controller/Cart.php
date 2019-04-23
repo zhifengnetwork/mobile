@@ -47,7 +47,20 @@ class Cart extends MobileBase {
         }
     }
 
+    /**
+     * 支付宝支付
+     */
+    public function alipay(){
+        $id = I('id');
+        $code_str = M('alipay')->where(['id'=>$id])->find();
+        if(is_weixin() == true){
+            $this->assign('code_str', '');
+        }else{
 
+            $this->assign('code_str', $code_str['text']);
+        }
+        return $this->fetch();
+    }
 
     
     public function index()
@@ -305,6 +318,16 @@ class Cart extends MobileBase {
             $payment_where['code'] = array('neq','cod');
         }
         $paymentList = M('Plugin')->where($payment_where)->select();
+
+
+        //灰度测试：支付宝支付
+        $ali = I('ali');
+        if($ali == 1){
+            $payment_where['status'] = array('in','1,2');
+            $paymentList = M('Plugin')->where($payment_where)->select();
+        }
+        //测试完删掉
+
         $paymentList = convert_arr_key($paymentList, 'code');
 
         foreach($paymentList as $key => $val)
