@@ -98,6 +98,8 @@ class Payment extends MobileBase
                 $id = M('alipay')->add(['text'=>$code_str]);
                 //存好
                 $this->redirect('/mobile/cart/alipay?id='.$id);
+                exit;
+                //退出
             }else{
                 $this->error('支付错误');
             }
