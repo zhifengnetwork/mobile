@@ -173,7 +173,7 @@ class Goods extends ApiBase
      */
     public function goodsAttr()
     {
-        $goods_id = I("get.goods_id/d", 0);		
+        $goods_id = I("get.goods_id/d", '274');		
         $goods_attribute = M('GoodsAttribute')->getField('attr_id,attr_name'); // 查询属性
         $goods_attr_list = M('GoodsAttr')->where("goods_id", $goods_id)->select(); // 查询商品属性表
 
@@ -186,7 +186,7 @@ class Goods extends ApiBase
     public function goodsSpec()
     {
         $goods_id = I("get.goods_id/d", 0);		
-		$spec_goods_price  = M('spec_goods_price')->where("goods_id", $goods_id)->getField("key,price,store_count,item_id,spec_img");
+		$spec_goods_price  = M('spec_goods_price')->alias('SGP')->join('tp_spec_item ST','SGP.item_id=ST.id','left')->where("SGP.goods_id", $goods_id)->getField("SGP.key,SGP.price,SGP.store_count,SGP.item_id,SGP.spec_img,ST.item");
 
 		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['spec_goods_price'=>$spec_goods_price]]);
     }
