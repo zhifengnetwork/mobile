@@ -116,6 +116,9 @@ class User extends ApiBase
                     $data = SITE_URL.'/public/upload/'.$info->getSaveName(); //输出路径
                     // ROOT_PATH . DS.
                     
+                    // 存着 地址
+                    M('users')->where(['user_id'=>$user_id])->update(['head_pic'=>$data]);
+
                 }else{
                     $this->ajaxReturn(['status' => -2 , 'msg'=>'上传失败','data'=>$file->getError()]);
                 }
