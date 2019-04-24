@@ -78,7 +78,7 @@ class Search extends ApiBase
             ->where("goods_id", "in", implode(',', $filter_goods_id))
             ->order([$sort => $sort_asc])
             ->limit($page->firstRow . ',' . $page->listRows)
-            ->field('goods_id,goods_name,comment_count,shop_price,sales_sum')
+            ->field('goods_id,goods_name,comment_count,shop_price,sales_sum,seller_id')
             ->select();
             $filter_goods_id2 = get_arr_column($goods_list, 'goods_id');
             if ($filter_goods_id2)
@@ -95,7 +95,20 @@ class Search extends ApiBase
                 }
             }
         }
+        if($goods_list){
+            $seller_arr = Db::name('seller')->field('seller_id,seller_name')->select();
+            foreach($goods_list as $k=>$v){
+                foreach($seller_arr as $ks=>$vs){
+                    if($v['seller_id'] == $vs['seller_id'] ){
+                   
+                        $goods_list[$k]['seller_name'] = $vs['seller_name'];
+                        $goods_list[$k]['sale_total'] = intval($v['shop_price']*$v['sales_sum']); 
 
+                    }
+                }  
+            }
+        }
+        
         $data = [
             'goods_list'=> $goods_list,
             // 'goods_images'=> $goods_images,

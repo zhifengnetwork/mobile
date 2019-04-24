@@ -12,6 +12,8 @@ use app\common\model\Users;
 use app\common\util\TpshopException;
 use think\Model;
 use think\Db;
+use think\Page;
+
 
 /**
  * 购物车 逻辑定义
@@ -636,8 +638,36 @@ class CartLogic extends Model
         if ($selected != 0) {
             $cartWhere['selected'] = 1;
         }
+       
         $cartWhere['combination_group_id'] = 0;
         $cartList = $cart->with('goods')->where($cartWhere)->select();  // 获取购物车商品
+        $cartCheckAfterList = $this->checkCartList($cartList);
+        return $cartCheckAfterList;
+    }
+
+    /**
+     * @param int $selected |是否被用户勾选中的 0 为全部 1为选中  一般没有查询不选中的商品情况
+     * 获取用户的购物车列表 分页
+     * @return false|\PDOStatement|string|\think\Collection
+     */
+    public function getCartList2($selected = 0, $limit = 0)
+    {
+        $cart = new Cart();
+        // 如果用户已经登录则按照用户id查询
+        if ($this->user_id) {
+            $cartWhere['user_id'] = $this->user_id;
+        } else {
+            $cartWhere['session_id'] = $this->session_id;
+        }
+        if ($selected != 0) {
+            $cartWhere['selected'] = 1;
+        }
+        // 加入分页
+        // $count = M('cart')->where($cartWhere)->count();
+        // $Page = new Page($count, 10);
+       
+        $cartWhere['combination_group_id'] = 0;
+        $cartList = $cart->with('goods')->where($cartWhere)->limit($limit)->select();  // 获取购物车商品
         $cartCheckAfterList = $this->checkCartList($cartList);
         return $cartCheckAfterList;
     }
