@@ -175,9 +175,11 @@ class Goods extends ApiBase
     {
         $goods_id = I("get.goods_id/d", 0);		
         $goods_attribute = M('GoodsAttribute')->field('attr_id,attr_name')->select(); // 查询属性
-        $goods_attr_list = M('GoodsAttr')->where("goods_id", $goods_id)->select(); // 查询商品属性表
+		foreach($goods_attribute as $k=>$v){
+			$goods_attribute[$k]['attr'] = M('GoodsAttr')->where(["goods_id"=>$goods_id,'attr_id'=>$v['attr_id']])->select();
+		}
 
-		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['goods_attr_list'=>$goods_attr_list,'goods_attribute'=>$goods_attribute]]);
+		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['goods_attribute'=>$goods_attribute]]);
     }
 
     /*
@@ -237,7 +239,7 @@ class Goods extends ApiBase
      * 商品详情页
      */
     public function goodsInfo()
-    { 
+    {	
 		$user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
@@ -260,24 +262,29 @@ class Goods extends ApiBase
             $this->assign('collect', $collect);
         }
 
+		$seller_info = ['store_id'=>'','store_name'=>'','avatar'=>0,'num'=>0];
 		if($goods['seller_id']){
 			$seller_info = M('seller_store')->field('store_id,store_name,avatar')->where(['seller_id'=>$goods['seller_id'],'auditing'=>10,'is_delete'=>10])->find();
-			if($seller_info)$seller_info['num'] = M('goods')->where(['seller_id'=>$goods['seller_id'],'is_on_sale'=>1])->count();
 		}
-		$seller_info = ['store_id'=>'','store_name'=>'','avatar'=>0,'num'=>0];
+		$seller_info['store_name'] = $seller_info['store_name'] ? $seller_info['store_name'] : '智丰自营';
 		$seller_info['num'] = M('goods')->where(['seller_id'=>$goods['seller_id'],'is_on_sale'=>1])->count();
 		$goods['seller_info'] = $seller_info;
 
 		unset($goods['template_id']);
 		unset($goods['sku']);
 		unset($goods['spu']);
-		unset($goods['cost_price']);	
-
+		unset($goods['cost_price']);
+		
+		$goods['goods_content'] = htmlspecialchars_decode($goods['goods_content']); 
+		$goods_content = preg_replace('/src="(.*?)"/', 'src="'.SITE_URL.'$1"', $goods['goods_content']);
+		unset($goods['goods_content']);
 		$goodsModel = new \app\common\model\Goods();
+		$goods['is_collect'] = M('goods_collect')->where(['goods_id'=>$goods_id,'user_id'=>$user_id])->count();
+		$goods['is_cart'] = M('cart')->where(['goods_id'=>$goods_id,'user_id'=>$user_id])->count();
 		$goods['comment_count'] = M('comment')->where(['goods_id'=>$goods_id,'is_show'=>1])->count();
 		$goods['comment_fr'] = $goodsModel->getCommentStatisticsAttr('', ['goods_id', $goods_id]);
 		$goods['goods_images'] = M('Goods_images')->where(['goods_id'=>$goods_id])->column('image_url');	
-        echo json_encode(['status' => 0, 'msg' => '请求成功', 'data' => ['goods'=>$goods]],JSON_UNESCAPED_UNICODE );
+        echo json_encode(['status' => 0, 'msg' => '请求成功', 'data' => ['goods'=>$goods,'goods_content'=>$goods_content]],JSON_UNESCAPED_UNICODE );
 
     }
 
