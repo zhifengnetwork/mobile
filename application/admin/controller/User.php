@@ -907,7 +907,7 @@ class User extends Base
         }
         $count = Db::name('withdrawals')->alias('w')->join('__USERS__ u', 'u.user_id = w.user_id', 'INNER')->where($where)->count();
         $Page = new Page($count, 10);
-        $list = Db::name('withdrawals')->alias('w')->field('w.*,u.nickname')->join('__USERS__ u', 'u.user_id = w.user_id', 'INNER')->where($where)->order("w.id desc")->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $list = Db::name('withdrawals')->alias('w')->field('w.*,u.nickname')->join('__USERS__ u', 'u.user_id = w.user_id', 'INNER')->where($where)->order("w.status,w.id desc")->limit($Page->firstRow . ',' . $Page->listRows)->select();
         //$this->assign('create_time',$create_time2);
     
         $show = $Page->show();
