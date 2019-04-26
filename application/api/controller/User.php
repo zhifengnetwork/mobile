@@ -43,7 +43,14 @@ class User extends ApiBase
         //解密token
         $user_id = $this->get_user_id();
         if($user_id!=""){
-            $data = Db::name("users")->where('user_id',$user_id)->field('user_id,nickname,user_money,head_pic,agent_user,first_leader,realname,mobile,is_distribut,is_agent,sex,birthyear,birthmonth,birthday')->find();
+            $data = Db::name("users")
+            ->where('user_id',$user_id)
+            ->field('user_id,nickname,user_money,head_pic,agent_user,first_leader,realname,mobile,is_distribut,is_agent,sex,birthyear,birthmonth,birthday')
+            ->find();
+            $data['date_birth'] = $data['birthyear'].'-'.$data['birthmonth'].'-'.$data['birthday'];
+            unset($data['birthyear']);
+            unset($data['birthmonth']);
+            unset($data['birthday']);
         }else{
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
@@ -265,7 +272,11 @@ class User extends ApiBase
             I('post.nickname') ? $post['nickname'] = I('post.nickname') : false; //昵称
             I('post.qq') ? $post['qq'] = I('post.qq') : false;  //QQ号码
             I('post.head_pic') ? $post['head_pic'] = I('post.head_pic') : false; //头像地址
-            I('post.sex') ? $post['sex'] = I('post.sex') : $post['sex'] = 0;  // 性别
+        
+            if($user_info['sex'] != I('post.sex')){
+                $post['sex'] = I('post.sex');
+            }
+            
             I('post.birthyear') ? $post['birthyear'] = I('post.birthyear') : false;  // 年
             I('post.birthmonth') ? $post['birthmonth'] = I('post.birthmonth') : false;  // 月
             I('post.birthday') ? $post['birthday'] =I('post.birthday') : false;  // 日
@@ -299,7 +310,20 @@ class User extends ApiBase
 
             setcookie('uname',urlencode($post['nickname']),null,'/');
             $user_info = $userLogic->get_info($user_id); // 获取用户信息
-            $this->ajaxReturn(['status' => 0 , 'msg'=>'保存成功','data'=>$user_info['result']]);
+
+            $result['user_id'] = $user_info['result']['user_id'];
+            $result['head_pic'] = $user_info['result']['head_pic'];
+            $result['nickname'] = $user_info['result']['nickname'];
+            $result['mobile'] = $user_info['result']['mobile'];
+            $result['sex'] = $user_info['result']['sex'];
+            $result['birthyear'] = $user_info['result']['birthyear'];
+            $result['birthmonth'] = $user_info['result']['birthmonth'];
+            $result['birthmonth'] = $user_info['result']['birthmonth'];
+            $result['birthday'] = $user_info['result']['birthday'];
+            $result['province'] = $user_info['result']['province'];
+            $result['city'] = $user_info['result']['city'];
+            $result['district'] = $user_info['result']['district'];
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'保存成功','data'=>$result]);
 
         }else{
             $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>'']);
@@ -481,5 +505,58 @@ class User extends ApiBase
         //下级信息
         $users = M('users')->field('user_id,nickname,mobile')->order('user_id DESC')->where(['first_leader'=>$user_id])->select();
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$users]);
+    }
+
+    /**
+     * +---------------------------------
+     * 我的主页
+     * +---------------------------------
+    */
+    public function myIndex()
+    {
+        $user_id = $this->get_user_id();
+        if (!IS_POST) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>(object)null]);
+        }
+
+        //当前登录用户信息
+        $logic = new UsersLogic();
+        $user_info = $logic->get_info($user_id); 
+        // $order_info['uncomment_count'] = $user_info['result']['uncomment_count'];
+        // 用户名称头像
+        $user = Db::name("users")
+        ->where('user_id',$user_id)
+        ->field('nickname,head_pic,pay_points')
+        ->find();
+
+        // 统计优惠券
+        $coupon_num = Db::name("coupon_list")->where('uid',$user_id)->count();
+        // 个人信息
+        $order_info['nickname'] = $user['nickname'];
+        $order_info['head_pic'] = $user['head_pic'];
+      
+
+        // 收藏 足迹 店铺关注 
+        $goods_collect_num = M('goods_collect')->where('user_id', $user_id)->count();
+        $goods_visit_num = M('goods_visit')->where('user_id', $user_id)->count();
+        $seller_goods_num = M('seller_collect')->where('user_id', $user_id)->count();
+
+        $order_info['goods_collect_num'] = $goods_collect_num;
+        $order_info['goods_visit_num'] = $goods_visit_num;
+        $order_info['seller_goods_num'] = $seller_goods_num;
+
+        // 我的订单状态
+        $order_info['waitPay'] = $user_info['result']['waitPay'];
+        $order_info['waitSend'] = $user_info['result']['waitSend'];
+        $order_info['waitReceive'] = $user_info['result']['waitReceive'];
+
+        // 积分优惠券
+        $order_info['pay_points'] =$user['pay_points'];
+        $order_info['coupon_num'] = $coupon_num;
+
+        // 公益基金
+        //todo
+        
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$order_info]);
     }
 }
