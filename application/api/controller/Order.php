@@ -143,7 +143,7 @@ class Order extends ApiBase
         if($is_virtual === 1){
             $cart_validate->scene('is_virtual');
         } 
-        if (($act != 1) && !$cart_validate->check($data)) {
+        if (($act == 1) && !$cart_validate->check($data)) {
             $error = $cart_validate->getError();
             $this->ajaxReturn(['status' => -4, 'msg' => $error, 'data' => null]);  //留言长度不符或收货人错误
         }
