@@ -102,11 +102,28 @@ class PerformanceLogic
         return $total;
     }
 
-      /**
+
+     /**
      * 一个人旗下  团队的  最大  的  那个业绩
      */
-
     public function tuandui_max_yeji($user_id){
+        $tuandui_max_yeji_agent_per = $this->tuandui_max_yeji_agent_per($user_id);
+        $tuandui_max_yeji_ind = $this->tuandui_max_yeji_ind($user_id);
+        if((float)$tuandui_max_yeji_agent_per > (float)$tuandui_max_yeji_ind){
+            return $tuandui_max_yeji_agent_per;
+        }else{
+            return $tuandui_max_yeji_ind;
+        }
+    }
+
+      /**
+     * 一个人旗下  团队的  最大  的  那个业绩
+     *  
+     *  ( agent_per )
+     * 
+     */
+
+    public function tuandui_max_yeji_agent_per($user_id){
         
         $user = M('users')->where(['first_leader'=>$user_id])->column('user_id');
         
@@ -161,6 +178,72 @@ class PerformanceLogic
 
         return $res;
     }
+
+
+     /**
+     * 一个人旗下  团队的  最大  的  那个业绩
+     *  
+     *  ( agent_per )
+     * 
+     */
+
+    public function tuandui_max_yeji_ind($user_id){
+        
+        $user = M('users')->where(['first_leader'=>$user_id])->column('user_id');
+        
+        $agent_per = M('agent_performance')->where('user_id',['in', $user])->column('user_id, ind_per');
+        
+        $openid = M('users')->where('user_id',['in', $user])->column('user_id, openid');
+    
+        // $yeji = M('agent_performance')->where('user_id', ['in', $user])->field('agent_per,user_id')->select();
+
+        $logic = new \app\common\logic\AgentPerformanceOldLogic();
+       
+        $add_logic = new \app\common\logic\AgentPerformanceAddLogic();
+      
+        //所有下级业绩
+        $all_yeji = array();
+        foreach($user as $k => $v){
+            // $openid = M('users')->where(['user_id'=>$v])->value('openid');
+
+            $oldPerformance = $logic->getAllData($openid[$v]);
+
+            $xiubu_yeji = $add_logic->get_bu($v);
+            // // $yeji[$k]['agent_per'] = $v['agent_per'] + $oldPerformance + $xiubu_yeji;
+            // $agent_per = M('agent_performance')->where('user_id', $v)->value('agent_per');
+        
+            // if($agent_per){
+            //     $all_yeji[] = $agent_per + $oldPerformance + $xiubu_yeji;
+            // }else{
+            //     $all_yeji[] = $oldPerformance + $xiubu_yeji;
+            // }
+
+            if(isset($agent_per[$v])){
+              
+                $all_yeji[] = $agent_per[$v] + $oldPerformance + $xiubu_yeji;
+            }else{
+                $all_yeji[] = $oldPerformance + $xiubu_yeji;
+            }
+        }
+
+        //排序取最大业绩
+        if($all_yeji){
+            rsort($all_yeji);
+        }
+
+        $res = $all_yeji[0];
+        // $res = $yeji[0]['agent_per'];
+       
+        //if($res == 0){
+           // $res = M('users')->where(['user_id'=>$user_id])->value('team');
+        //}
+       
+        $res = $res == 0 ? 0 : $res;
+
+        return $res;
+    }
+
+
 
     /**
      * 一个人旗下  团队的  最大  的  那个业绩
