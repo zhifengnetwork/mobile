@@ -204,6 +204,52 @@ class Cart extends ApiBase
         }
     }
 
+    /* +---------------------------------
+     * 购物车修改商品规格
+     * +---------------------------------
+     */
+    public function update_cart_spec(){
+        $user_id = $this->get_user_id();
+        if (!IS_POST) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>(object)null]);
+        }
+        $cart_info = input();
+        $cart_id = intval($cart_info['cart_id']);
+        $item_id = intval($cart_info['item_id']);
+        if(!$cart_id || !$item_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'缺少参数','data'=>(object)null]);
+        }
+        // 获取当前购物车id和规格id是否存在
+        $cart_one = Db::name('cart')->field('id,goods_id')->where(['user_id'=>$user_id, 'id'=>$cart_id])->find();
+        if(!$cart_one){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'购物车记录不存在','data'=>(object)null]);
+        }
+        $spec_one = Db::name('spec_goods_price')
+        ->field('item_id,goods_id,key,key_name,price,store_count')
+        ->where(['item_id'=>$item_id,'goods_id'=>$cart_one['goods_id']])
+        ->find();
+        if(!$spec_one){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'产品规格不存在','data'=>(object)null]);
+        }
+
+        // 根据item_id修改购物车规格
+        $update_data = array(
+            'item_id'=>$spec_one['item_id'],
+            'spec_key'=>$spec_one['key'],
+            'spec_key_name'=>$spec_one['key_name'],
+            'goods_price'=>$spec_one['price'],
+            'member_goods_price'=>$spec_one['price']
+        );
+        $res = Db::name('cart')->where(['user_id'=>$user_id, 'id'=>$cart_id])->update($update_data);
+        if(!$res){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'规格修改失败','data'=>(object)null]);
+        }
+        $data['cart_price_info'] = $this->_getTotal($user_id);
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'规格修改成功','data'=>$data]);
+
+    }
+
+
     // 计算购物车合计
     public function _getTotal($user_id){
         $cartLogic = new CartLogic();

@@ -195,7 +195,7 @@ class Goods extends ApiBase
         ->field("SGP.key,SGP.price,SGP.store_count,SGP.item_id,SGP.spec_img,ST.item")
         ->select();
 
-		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['list'=>$spec_goods_price]]);
+		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['spec_goods_price'=>$spec_goods_price]]);
     }
 
     /*
@@ -325,6 +325,59 @@ class Goods extends ApiBase
 
 	public function php_info(){
 		phpinfo();
-	}
+    }
+    
+    /**
+     * +---------------------------------
+     * 用户收藏某一件商品
+     * +---------------------------------
+     */
+    public function collect_goods()
+    {
+        $user_id = $this->get_user_id();
+        if (!IS_POST) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>(object)null]);
+        }
+        $goods_id = I('goods_id/d');
+        $goods_one = Db::name('goods')->where("goods_id", $goods_id)->find();
+        if(!$goods_one){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'商品不存在','data'=>(object)null]);
 
+        }
+        $count = Db::name('goods_collect')->where("user_id", $user_id)->where("goods_id", $goods_id)->count();
+        if($count > 0){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'商品已收藏','data'=>(object)null]);
+
+        }
+        Db::name('goods')->where('goods_id', $goods_id)->setInc('collect_sum');
+        Db::name('goods_collect')->add(array('goods_id'=>$goods_id,'user_id'=>$user_id, 'add_time'=>time()));
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'收藏成功','data'=>(object)null]);
+    }
+
+    
+    /**
+     * +---------------------------------
+     * 删除收藏某一件商品
+     * +---------------------------------
+     */
+    public function del_collect_goods()
+    {
+        $user_id = $this->get_user_id();
+        if (!IS_POST) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>(object)null]);
+        }
+        $collect_id = I('collect_id/d');
+        $count = Db::name('goods_collect')->where("user_id", $user_id)->where("collect_id", $collect_id)->count();
+        $collect_arr = Db::name('goods_collect')->where("user_id", $user_id)->where("collect_id", $collect_id)->find();
+        if(!$count){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'收藏产品不存在','data'=>(object)null]);
+
+        }
+        Db::name('goods')->where('goods_id', $collect_arr['goods_id'])->setDec('collect_sum');
+        $res = Db::name('goods_collect')->where("user_id", $user_id)->where("collect_id", $collect_id)->delete();
+        if(!$res){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'删除收藏失败','data'=>(object)null]);
+        }
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'删除收藏成功','data'=>(object)null]);
+    }
 }
