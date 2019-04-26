@@ -193,9 +193,11 @@ class Goods extends ApiBase
         ->join('tp_spec_item b','a.key=b.id','left')
         ->join('tp_spec c', 'c.id=b.spec_id','left')
         ->where("a.goods_id", $goods_id)
-        ->field("a.key,a.price,a.store_count,a.item_id,a.spec_img,b.item")
+        ->field("c.name spec_name,a.key,a.price,a.store_count,a.item_id,a.spec_img,b.item")
         ->select();
-        $this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['spec_goods_price'=>$spec_goods_price]]);
+        
+        $data['spec_goods_price'] =$spec_goods_price;
+        $this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => $data]);
         
 
     }
