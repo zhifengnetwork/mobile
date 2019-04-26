@@ -189,13 +189,15 @@ class Goods extends ApiBase
     {
         $goods_id = I("get.goods_id/d", 0);		
         $spec_goods_price  = M('spec_goods_price')
-        ->alias('SGP')
-        ->join('tp_spec_item ST','SGP.item_id=ST.id','left')
-        ->where("SGP.goods_id", $goods_id)
-        ->field("SGP.key,SGP.price,SGP.store_count,SGP.item_id,SGP.spec_img,ST.item")
+        ->alias('a')
+        ->join('tp_spec_item b','a.key=b.id','left')
+        ->join('tp_spec c', 'c.id=b.spec_id','left')
+        ->where("a.goods_id", $goods_id)
+        ->field("a.key,a.price,a.store_count,a.item_id,a.spec_img,b.item")
         ->select();
+        $this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['spec_goods_price'=>$spec_goods_price]]);
+        
 
-		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['spec_goods_price'=>$spec_goods_price]]);
     }
 
     /*

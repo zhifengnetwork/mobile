@@ -556,7 +556,28 @@ class User extends ApiBase
 
         // 公益基金
         //todo
-        
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$order_info]);
+    }
+
+    /**
+     * +---------------------------------
+     * 店铺关注列表
+     * +---------------------------------
+     */
+    public function getSellerCollect(){
+        $user_id = $this->get_user_id();
+        if (!IS_POST) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>(object)null]);
+        }
+        // 获取所有店铺
+        $seller_arr = Db::name('seller_collect')
+        ->alias('a')
+        ->join('tp_seller b', 'a.seller_id=b.seller_id','left')
+        ->join('tp_seller_store c', 'b.seller_id=c.seller_id', 'left')
+        ->where('user_id',$user_id)
+        ->field('a.collect_id,a.seller_id,b.seller_name,c.avatar')
+        ->select();
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$seller_arr]]);
+
     }
 }
