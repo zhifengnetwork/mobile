@@ -269,22 +269,6 @@ class Order extends ApiBase
 
 	 }
 
-	//确认收货
-    public function order_confirm()
-    {	
-		$user_id = $this->get_user_id();
-        if(!$user_id){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
-        }
-        $id = I('id/d', 0);
-        $data = confirm_order($id, $user_id);
-        if ($data['status'] != 1) {
-			$this->ajaxReturn(['status' => -2 , 'msg'=>$data['msg'],'data'=>null]);
-        } else {
-            $this->ajaxReturn(['status' => 0 , 'msg'=>$data['msg'],'data'=>null]);
-        }
-    }
-
 	//获取物流
 	public function express_detail(){ 
         $user_id = $this->get_user_id();
@@ -311,5 +295,32 @@ class Order extends ApiBase
         }else
 			$this->ajaxReturn(['status' => 0 , 'msg'=>'未获取到信息！','data'=>null]);
 	}
+
+    /**
+     * 确认收货
+     */
+    public function order_confirm()
+    {	
+        $user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
+        }
+        $order_id = I('post.order_id/d',0);
+        //验证是否本人的
+        $order = Db::name('order')->where('order_id',$order_id)->select();
+        if(!$order){
+            $this->ajaxReturn(['status' => -3 , 'msg'=>'订单不存在','data'=>null]);
+        }
+        if($order['0']['user_id']!=$user_id){
+            $this->ajaxReturn(['status' => -2 , 'msg'=>'非本人订单','data'=>null]);
+        }
+
+        $data = confirm_order($order_id, $user_id);
+        if ($data['status'] != 1) {
+			$this->ajaxReturn(['status' => -4 , 'msg'=>$data['msg'],'data'=>null]);
+        } else {
+            $this->ajaxReturn(['status' => 0 , 'msg'=>$data['msg'],'data'=>null]);
+        }
+    }
 	  
 }
