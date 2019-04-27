@@ -7,6 +7,7 @@ use app\common\model\Users;
 use app\common\logic\UsersLogic;
 use app\common\logic\CartLogic;
 use think\Db;
+use app\common\util\TpshopException;
 
 class Cart extends ApiBase
 {
@@ -261,7 +262,37 @@ class Cart extends ApiBase
         return $cart_price_info;
     }
 
-
+    /**
+     * ajax 将商品加入购物车
+     */
+    function add_cart()
+    { 
+        $user_id = $this->get_user_id();
+        if (!$user_id) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
+        }
+        $goods_id = I("goods_id/d",0); // 商品id
+        $goods_num = I("goods_num/d",1);// 商品数量
+        $item_id = I("item_id/d",0); // 商品规格id
+        if(empty($goods_id)){
+            $this->ajaxReturn(['status'=>-2,'msg'=>'请选择要购买的商品','data'=>null]);
+        }
+        if(empty($goods_num)){
+            $this->ajaxReturn(['status'=>-3,'msg'=>'购买商品数量不能为0','data'=>null]);
+        }
+        $cartLogic = new CartLogic();
+        $cartLogic->setUserId($user_id);
+        $cartLogic->setGoodsModel($goods_id);
+        $cartLogic->setSpecGoodsPriceById($item_id);
+        $cartLogic->setGoodsBuyNum($goods_num);
+        try {
+            $res = $cartLogic->addGoodsToCart();	//Db::name('cart')->getLastInsID()
+            $this->ajaxReturn(['status' => 0, 'msg' => '加入购物车成功','data'=>null]);
+        } catch (TpshopException $t) {
+            $error = $t->getErrorArr();
+			$this->ajaxReturn(['status' => -4, 'msg' => $error['msg'],'data'=>null]);
+        }
+    }
     
     
 }
