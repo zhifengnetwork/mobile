@@ -847,10 +847,12 @@ class User extends Base
         $where['w.create_time'] = array(array('gt', strtotime($create_time3[0])), array('lt', strtotime($create_time3[1])));
 
         $status = empty($status) ? I('status') : $status;
+       
         if ($status !== '') {
             $where['w.status'] = $status;
         } else {
-            $where['w.status'] = ['lt', 2];
+            //默认只显示 成功，待审核
+            $where['w.status'] = ['in', '0,1'];
         }
         if ($id) {
             $where['w.id'] = ['in', $id];
@@ -907,7 +909,8 @@ class User extends Base
         }
         $count = Db::name('withdrawals')->alias('w')->join('__USERS__ u', 'u.user_id = w.user_id', 'INNER')->where($where)->count();
         $Page = new Page($count, 10);
-        $list = Db::name('withdrawals')->alias('w')->field('w.*,u.nickname')->join('__USERS__ u', 'u.user_id = w.user_id', 'INNER')->where($where)->order("w.status,w.id desc")->limit($Page->firstRow . ',' . $Page->listRows)->select();
+
+        $list = Db::name('withdrawals')->alias('w')->field('w.*,u.nickname')->join('__USERS__ u', 'u.user_id = w.user_id', 'INNER')->where($where)->order("w.status,w.check_time desc,w.id desc")->limit($Page->firstRow . ',' . $Page->listRows)->select();
         //$this->assign('create_time',$create_time2);
     
         $show = $Page->show();
