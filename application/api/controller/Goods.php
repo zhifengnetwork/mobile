@@ -365,20 +365,19 @@ class Goods extends ApiBase
      * +---------------------------------
      */
     public function del_collect_goods()
-    {
+    {	
         $user_id = $this->get_user_id();
         if (!IS_POST) {
             $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>(object)null]);
         }
-        $collect_id = I('collect_id/d');
-        $count = Db::name('goods_collect')->where("user_id", $user_id)->where("collect_id", $collect_id)->count();
-        $collect_arr = Db::name('goods_collect')->where("user_id", $user_id)->where("collect_id", $collect_id)->find();
+        $goods_id = I('goods_id/d',0);
+        $count = Db::name('goods_collect')->where(["user_id"=>$user_id,'goods_id'=>$goods_id])->count();
+        $collect_arr = Db::name('goods_collect')->where(["user_id"=>$user_id,'goods_id'=>$goods_id])->find();
         if(!$count){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'收藏产品不存在','data'=>(object)null]);
-
         }
         Db::name('goods')->where('goods_id', $collect_arr['goods_id'])->setDec('collect_sum');
-        $res = Db::name('goods_collect')->where("user_id", $user_id)->where("collect_id", $collect_id)->delete();
+        $res = Db::name('goods_collect')->where(["user_id"=>$user_id,'goods_id'=>$goods_id])->delete();
         if(!$res){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'删除收藏失败','data'=>(object)null]);
         }
