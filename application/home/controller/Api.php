@@ -238,7 +238,19 @@ class Api extends Base
             case 'shunfeng':
             $shipping_code = 'SFEXPRESS';
                 break;
-        
+			
+			case 'YZPY':
+            $shipping_code = 'CHINAPOST';
+                break;
+			
+			case 'YTO':
+            $shipping_code = 'YTO';
+                break;
+
+			case 'ZTO':
+            $shipping_code = 'ZTO';
+                break;
+
             default:
             $shipping_code = '';
                 break;
