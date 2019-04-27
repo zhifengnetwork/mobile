@@ -32,6 +32,7 @@ class Order extends ApiBase
     public function order_list()
     {   
         $type = I('post.type/d',0);
+		$keyword = I('post.keyword/s','');	
         $user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
@@ -55,14 +56,24 @@ class Order extends ApiBase
             'seller_name',//商家名称
             'tp_goods.original_img',//商品上传原始图
         );*/
+		$SellerStore = M('seller_store');
+		$OrderGoods = M('order_goods');
+		$Goods = M('goods');
+
+		if($keyword){
+			$order_id = M('order')->alias('O')->join('tp_order_goods OG','O.order_id=OG.order_id','left')->where(['O.user_id'=>$user_id,'OG.goods_name'=>['like','%'.$keyword.'%']])->group('O.order_id')->order('O.add_time desc')->column('O.order_id'); 
+			if($order_id)
+				$data['order_id'] = ['in',$order_id];
+			else
+				$this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>null]);
+		}
+
+
 		$page = I('post.page/d',1);
 		$num = I('post.num/d',6);
 		$limit = (($page - 1) * $num) . ',' . $num;
 		$field = 'order_id,seller_id,order_sn,user_id,order_status,shipping_status,pay_status,shipping_price,user_money,order_amount,total_amount,add_time,prom_id,prom_type,order_prom_id';
         $order = Db::name('order')->field($field)->where($data)->order('add_time desc')->limit($limit)->select();
-		$SellerStore = M('seller_store');
-		$OrderGoods = M('order_goods');
-		$Goods = M('goods');
         foreach($order as $k=>$v){
 			if(!$v['seller_id']){
 				$order[$k]['store_name'] = '平台自营';
@@ -233,6 +244,38 @@ class Order extends ApiBase
             $error = $t->getErrorArr();
             $this->ajaxReturn(['status' => -5, 'msg' => $error, 'data'=> null]);
         }	
+	 }
+
+	 //取消订单
+	 public function CancelOrder(){ 
+		$user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
+        }
+		$order_id = I('post.order_id/d',0);
+		if(!$order_id){
+            $this->ajaxReturn(['status' => -2 , 'msg'=>'订单不存在','data'=>null]);
+        }
+
+		$Order = M('Order');
+		$orderinfo = $Order->field('order_status,shipping_status,pay_status')->where(['user_id'=>$user_id,'order_id'=>$order_id])->find();
+		if(!$orderinfo){
+            $this->ajaxReturn(['status' => -2 , 'msg'=>'订单不存在','data'=>null]);
+        }
+		if($orderinfo['shipping_status'] != 0){
+            $this->ajaxReturn(['status' => -3 , 'msg'=>'已发货订单不可以取消！','data'=>null]);
+        }
+		if($orderinfo['pay_status'] != 0){
+            $this->ajaxReturn(['status' => -4 , 'msg'=>'只能取消未支付的订单','data'=>null]);
+        }
+		if($orderinfo['order_status'] == 3){
+            $this->ajaxReturn(['status' => -5 , 'msg'=>'已取消过的订单不可以再次取消！','data'=>null]);
+        }
+		$res = $Order->update(['order_id'=>$order_id,'order_status'=>3]);
+		if($res !== false)
+			$this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功！','data'=>null]);
+		else
+			$this->ajaxReturn(['status' => -6 , 'msg'=>'请求失败！','data'=>null]);
 	 }
 	  
 }

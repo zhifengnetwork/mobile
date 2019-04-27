@@ -180,7 +180,7 @@ if(!$.cookie('tpshopActionParam') && $.cookie('admin_type') != 1){
                                 password=false;
                                 return false;
                             }else{
-                                top.location.href = res.url;
+                                window.location.href = res.url;
                             }
                         },
                         error : function(XMLHttpRequest, textStatus, errorThrown) {
