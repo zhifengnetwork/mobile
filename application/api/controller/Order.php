@@ -31,18 +31,17 @@ class Order extends ApiBase
     */
     public function order_list()
     {   
-        // $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$type]);
-        $type = I('type');
+        $type = I('post.type/d',0);
         $user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
-        }
+        } 
         /*if ($type=='WAITSEND')$data = array('order_status' => [0,1],'shipping_status' =>1,'pay_code'=>'cod'); //'待发货',货到付款
         if ($type=='WAITSEND')$data = array('pay_status'=>1,'order_status'=>[0,1],'shipping_status'=>0,'pay_code'=>['not in','cod']);//'待发货',非货到付款*/
-        if ($type=='WAITSEND')$data = array('tp_order.order_status' => ['in','0,1'],);//'待发货'
-        if ($type=='WAITPAY')$data = array('tp_order.pay_status'=>0,'tp_order.order_status'=>0,'tp_order.pay_code'=>['not in','cod'],); //'待支付',
-        if ($type=='WAITRECEIVE')$data = array('tp_order.shipping_status'=>1,'order_status'=>1,);//'待收货',
-        if ($type=='WAITCCOMMENT')$data = array('tp_order.order_status'=>2,);//'待评价',
+        if ($type == 1)$data = array('tp_order.order_status' => ['in','0,1'],);//'待发货'
+        if ($type == 2)$data = array('tp_order.pay_status'=>0,'tp_order.order_status'=>0); //'待支付',
+        if ($type == 3)$data = array('tp_order.shipping_status'=>1,'order_status'=>1,);//'待收货',
+        if ($type == 4)$data = array('tp_order.order_status'=>2,);//'待评价',  
         // $data = '订单列表数据';
         $data['tp_order.user_id'] = $user_id;
         /*$name = array(
@@ -56,9 +55,25 @@ class Order extends ApiBase
             'seller_name',//商家名称
             'tp_goods.original_img',//商品上传原始图
         );*/
-        $order = Db::name('order')->join('tp_order_goods','tp_order.order_id=tp_order_goods.order_id','right')->join('tp_seller','tp_order_goods.seller_id = tp_seller.seller_id','left')->join('tp_goods','tp_goods.goods_id = tp_order_goods.goods_id')->where($data)->select();
-        foreach($order as &$k){
-            $k['original_img']=SITE_URL.$k['original_img'];
+		$page = I('post.page/d',1);
+		$num = I('post.num/d',6);
+		$limit = (($page - 1) * $num) . ',' . $num;
+		$field = 'order_id,seller_id,order_sn,user_id,order_status,shipping_status,pay_status,shipping_price,user_money,order_amount,total_amount,add_time,prom_id,prom_type,order_prom_id';
+        $order = Db::name('order')->field($field)->where($data)->order('add_time desc')->limit($limit)->select();
+		$SellerStore = M('seller_store');
+		$OrderGoods = M('order_goods');
+		$Goods = M('goods');
+        foreach($order as $k=>$v){
+			if(!$v['seller_id']){
+				$order[$k]['store_name'] = '平台自营';
+				$order[$k]['avatar'] = '';
+			}else{
+				$ssinfo = $SellerStore->field('store_name,avatar')->where(['seller_id'=>$seller_id])->find();
+				$order[$k]['store_name'] = $ssinfo['store_name'];
+				$order[$k]['avatar'] = $ssinfo['avatar'];
+			}
+			$order[$k]['goods'] = $OrderGoods->alias('OG')->field('OG.goods_id,OG.goods_name,OG.goods_num,OG.final_price,OG.item_id,OG.spec_key,OG.spec_key_name,G.original_img')->join('tp_goods G','OG.goods_id=G.goods_id','left')->where(['OG.order_id'=>$v['order_id']])->select();
+			$order[$k]['num'] = $OrderGoods->where(['order_id'=>$v['order_id']])->sum('goods_num');
         }
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$order]);
     }
