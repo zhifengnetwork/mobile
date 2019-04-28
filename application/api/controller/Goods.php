@@ -190,20 +190,46 @@ class Goods extends ApiBase
      */
     public function goodsSpec()
     {
-        $goods_id = I("get.goods_id/d", 0);		
-        $spec_goods_price  = M('spec_goods_price')
-        ->alias('a')
-        ->join('tp_spec_item b','a.key=b.id','left')
-        ->join('tp_spec c', 'c.id=b.spec_id','left')
-        ->where("a.goods_id", $goods_id)
-        ->field("c.name spec_name,a.key,a.price,a.store_count,a.item_id,a.spec_img,b.item")
-        ->select();
-        
-        $data['spec_goods_price'] =$spec_goods_price;
-        $this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => $data]);
-        
+        $goods_id = I("get.goods_id/d", 0);	
+		$keys = M('spec_goods_price')->where(['goods_id'=>$goods_id])->column('key');
+		$arr = [];
+		$num = count(explode('_',$keys[0]));  
+		$n = 0;
+		for($j=0; $j<$num; $j++){
+			$arr2 = [];
+			foreach($keys as $v){		
+				$arr1 = explode('_',$v);
+				
+				for($i=0; $i<count($arr1); $i++){
+					if(($i == $n) && !(in_array($arr1[$n],$arr2)))$arr2[] = $arr1[$n]; 		
+				}	
+			}
+			$arr[] = $arr2;
+			$n++;
+		}
 
+		$data = [];
+		$SpecItem = M('spec_item');
+		$Spec = M('spec');
+		foreach($arr as $v){
+			$data[] = $SpecItem->alias('ST')->field('S.name,ST.id,ST.item')->JOIN('tp_spec S','ST.spec_id=S.id','LEFT')->where(['st.id'=>['in',$v]])->order('st.order_index asc')->select();	
+
+		}
+
+        $this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => $data]);     
     }
+
+	//根据规格获取图片，价格
+	public function getPricePic(){
+		$key = I('post.key/s','');
+		$goods_id = I('post.goods_id/d',0);
+		if(!$goods_id || !$key){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'规格不存在','data'=>null]);
+        }
+		
+		$info = M('spec_goods_price')->field('price,store_count,spec_img')->where(['goods_id'=>$goods_id,'key'=>$key])->find();
+		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['info'=>$info]]);
+	}
 
     /*
      * 获取商品评论
@@ -212,7 +238,7 @@ class Goods extends ApiBase
     {
 		$user_id = $this->get_user_id();
         if(!$user_id){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
         }	
 
         $goods_id = I("post.goods_id/d", 0);
