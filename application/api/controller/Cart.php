@@ -37,7 +37,7 @@ class Cart extends ApiBase
      * 请求获取购物车列表
      */
     public function cartlist()
-    {
+    {	
         $page = I('post.page/d',1);
 		$num = I('post.num/d',10);
         $limit = (($page - 1)) * $num . ',' . $num;	
@@ -86,7 +86,7 @@ class Cart extends ApiBase
             unset($v["market_price"]);
             unset($v["member_goods_price"]);
             unset($v["item_id"]);
-            unset($v["spec_key"]);
+           //unset($v["spec_key"]);
             unset($v["bar_code"]);
             unset($v["add_time"]);
             unset($v["prom_type"]);
@@ -216,7 +216,7 @@ class Cart extends ApiBase
         }
         $cart_info = input();
         $cart_id = intval($cart_info['cart_id']);
-        $item_id = intval($cart_info['item_id']);
+        $item_id = intval($cart_info['item_id']);//2019/4/28 星期日 item_id接收值修改为tp_spec_goods_price的key
         if(!$cart_id || !$item_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'缺少参数','data'=>(object)null]);
         }
@@ -227,7 +227,7 @@ class Cart extends ApiBase
         }
         $spec_one = Db::name('spec_goods_price')
         ->field('item_id,goods_id,key,key_name,price,store_count')
-        ->where(['item_id'=>$item_id,'goods_id'=>$cart_one['goods_id']])
+        ->where(['key'=>$item_id,'goods_id'=>$cart_one['goods_id']])
         ->find();
         if(!$spec_one){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'产品规格不存在','data'=>(object)null]);
