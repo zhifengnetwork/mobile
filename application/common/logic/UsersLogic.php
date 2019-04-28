@@ -1258,18 +1258,19 @@ class UsersLogic extends Model
     /**
      * 账户明细
      */
-    public function account($user_id, $type='all'){
+    public function account($user_id, $type='all', $limit){
     	if($type == 'all'){
     		$count = M('account_log')->where("user_money!=0 and user_id=" . $user_id)->count();
     		$page = new Page($count, 16);
+			$limit = ($limit ? $limit : ($page->firstRow . ',' . $page->listRows));
     		$account_log = M('account_log')->field("*,from_unixtime(change_time,'%Y-%m-%d %H:%i:%s') AS change_data")->where("user_money!=0 and user_id=" . $user_id)
-                ->order('log_id desc')->limit($page->firstRow . ',' . $page->listRows)->select();
+                ->order('log_id desc')->limit($limit)->select();
     	}else{
     		$where = $type=='plus' ? " and user_money>0 " : " and user_money<0 ";
     		$count = M('account_log')->where("user_id=" . $user_id.$where)->count();
     		$page = new Page($count, 16);
     		$account_log = Db::name('account_log')->field("*,from_unixtime(change_time,'%Y-%m-%d %H:%i:%s') AS change_data")->where("user_id=" . $user_id.$where)
-                ->order('log_id desc')->limit($page->firstRow . ',' . $page->listRows)->select();
+                ->order('log_id desc')->limit($limit)->select();
     	}
     	$result['account_log'] = $account_log;
     	$result['page'] = $page;

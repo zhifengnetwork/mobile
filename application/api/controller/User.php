@@ -636,8 +636,7 @@ class User extends ApiBase
 		$rec_id = I('post.rec_id/d',0);
         if (!$user_id || !$rec_id) {
             $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>(object)null]);
-        }
-		
+        }	
 
 		$UserMessage = M('user_message');
 		$minfo = $UserMessage->find($rec_id);
@@ -656,5 +655,23 @@ class User extends ApiBase
 		$minfo['message_content'] = htmlspecialchars_decode($info['message_content']);
 
 		$this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['info'=>$minfo]]);
+    }
+
+	//余额明细
+	public function account_list()
+    { 
+        $user_id = $this->get_user_id();
+        if (!$user_id) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>(object)null]);
+        }
+
+		$page = I('post.page/d',1);
+		$num = I('post.num/d',6);
+		$limit = (($page-1)*$num) . ',' . $num;
+
+    	$type = I('type','all');  //全部all，赚取plus，消费minus
+    	$usersLogic = new UsersLogic;
+    	$result = $usersLogic->account($user_id, $type, $limit);		
+		$this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$result['account_log']]]);
     }
 }
