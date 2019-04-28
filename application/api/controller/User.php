@@ -7,6 +7,8 @@ use app\common\model\Users;
 use app\common\logic\UsersLogic;
 use think\Db;
 use think\Page;
+use app\common\logic\Message;
+use app\common\model\UserMessage;
 
 class User extends ApiBase
 {
@@ -579,5 +581,80 @@ class User extends ApiBase
         ->select();
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$seller_arr]]);
 
+    }
+
+    /**
+     *  用户消息通知
+     * @author yhj
+     * @time 2018/07/10
+     */
+    public function message_notice()
+    {	
+        $user_id = $this->get_user_id();
+        if (!IS_POST) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>(object)null]);
+        }
+
+		$page = I('post.page/d',1);
+		$num = I('post.num/d',6);
+		$type = I('post.type/d',1); //1：消息，2：公告
+        $message_logic = new Message($user_id);
+        $message_logic->checkPublicMessage();
+        $where = array(
+            'user_id' => $user_id,
+            'deleted' => 0,
+        );
+		$where['category'] = (($type == 1) ? ['neq',4] : 4);
+		$limit = (($page - 1) * $num) . ',' . $num;
+        $list = M('user_message')->where($where)->LIMIT($limit)->order('rec_id desc')->select();
+
+		$MessageActivity = M('message_activity');
+		$MessageLogistics = M('message_logistics');
+		$MessageNotice = M('message_notice');
+		$MessagePrivate = M('message_private');
+		foreach($list as $k=>$v){
+			if($v['category'] == 0)
+				$info = $MessageNotice->field('message_title,send_time')->where(['message_id'=>$v['message_id']])->find();
+			if($v['category'] == 1)
+				$info = $MessageActivity->field('message_title,send_time')->where(['message_id'=>$v['message_id']])->find();
+			if($v['category'] == 2)
+				$info = $MessageLogistics->field('message_title,send_time')->where(['message_id'=>$v['message_id']])->find();
+			if($v['category'] == 4)
+				$info = $MessageNotice->field('message_title,send_time')->where(['message_id'=>$v['message_id']])->find();
+			$list[$k]['message_title'] = $info['message_title'];
+			$list[$k]['send_time'] = $info['send_time'];
+		}
+
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$list]]);
+    }
+
+    /**
+     * 通知消息详情
+     */
+    public function message_notice_info(){
+        $user_id = $this->get_user_id();
+		$rec_id = I('post.rec_id/d',0);
+        if (!$user_id || !$rec_id) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>(object)null]);
+        }
+		
+
+		$UserMessage = M('user_message');
+		$minfo = $UserMessage->find($rec_id);
+		$UserMessage->update(['rec_id'=>$rec_id,'is_see'=>1]);
+		if($minfo['category'] == 0)
+			$info = M('Message_notice')->field('message_title,message_content,send_time')->where(['message_id'=>$minfo['message_id']])->find();
+		if($minfo['category'] == 1)
+			$info = M('Message_activity')->field('message_title,message_content,send_time')->where(['message_id'=>$minfo['message_id']])->find();
+		if($minfo['category'] == 2)
+			$info = M('Message_logistics')->field('message_title,message_content,send_time')->where(['message_id'=>$minfo['message_id']])->find();
+		if($minfo['category'] == 4)
+			$info = M('Message_notice')->field('message_title,message_content,send_time')->where(['message_id'=>$minfo['message_id']])->find();
+        
+		$minfo['message_title'] = $info['message_title'];
+		$minfo['send_time'] = $info['send_time'];
+		$minfo['message_content'] = htmlspecialchars_decode($info['message_content']);
+
+		$this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['info'=>$minfo]]);
     }
 }

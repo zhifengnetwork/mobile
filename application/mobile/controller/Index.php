@@ -42,12 +42,15 @@ class Index extends MobileBase {
 
 
         //秒杀商品
-        $now_time = time();  //当前时间
-        if(is_int($now_time/7200)){      //双整点时间，如：10:00, 12:00
-            $start_time = $now_time;
-        }else{
-            $start_time = floor($now_time/7200)*7200; //取得前一个双整点时间
-        }
+		$now_day = date('Y-m-d');
+		$now_time = date('H'); 
+		if ($now_time % 2 == 1) {
+			$flash_now_time = $now_time;
+		} else {
+			$flash_now_time = $now_time - 1;
+		} 
+		$start_time = strtotime($now_day . " " . $flash_now_time . ":00:00");
+
         $end_time = $start_time+7200;   //结束时间
         $flash_sale_list = Db::name('goods')->alias('g')
             ->field('g.goods_id,f.price,s.item_id')

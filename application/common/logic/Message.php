@@ -113,7 +113,7 @@ class Message
     public function getMessageDetails($rec_id, $type){
         $where = ['rec_id'=>$rec_id];
         $userMessage = new UserMessage();
-        $data = $userMessage->where($where)->find();
+        $data = $userMessage->where($where)->find();	
         if ($data && $data['is_see'] == 0) {
             $this->setMessageForRead($data['rec_id']);
         }
@@ -129,6 +129,10 @@ class Message
             case 2:
                 $name = 'MessageLogistics';
                 $category_name = '物流消息';
+                break;
+			case 4:
+                $name = 'MessageNotice';
+                $category_name = '公告消息';
                 break;
             default :
                 $name = 'MessageLogistics';
@@ -148,8 +152,8 @@ class Message
      */
     public function checkPublicMessage()
     {
-        $user_info = session('user');
-        $this->checkUserMessage($user_info['user_id']);
+        //$user_info = session('user');
+        $this->checkUserMessage($this->userId);
     }
 
 
@@ -165,18 +169,19 @@ class Message
         $user_info = Db::name('users')->where('user_id', $user_id)->find();
         if ($user_info) {
             // 通知
-            $user_message = Db::name('user_message')->where(array('user_id' => $user_info['user_id'], 'category' => 0))->select();
+            //$user_message = Db::name('user_message')->where(array('user_id' => $user_info['user_id'], 'category' => 0))->select();
             $message_where = array(
                 'message_type' => 1,
                 'send_time' => array('gt', $user_info['reg_time']),
             );
+			/*
             if (!empty($user_message)) {
                 $user_id_array = get_arr_column($user_message, 'message_id');
                 $message_where['message_id'] = array('NOT IN', $user_id_array);
-            }
+            }*/
             $message_notice_no_read = Db::name('message_notice')->field('message_id')->order('send_time ASC')->where($message_where)->select();
             foreach ($message_notice_no_read as $key) {
-                DB::name('user_message')->insert(['user_id' => $user_info['user_id'], 'message_id' => $key['message_id'], 'category' => 0]);
+                DB::name('user_message')->insert(['user_id' => $user_info['user_id'], 'message_id' => $key['message_id'], 'category' => 4]);
             }
 
             // 活动
