@@ -63,6 +63,10 @@ class Goods extends ApiBase
         if ($start_price && $end_price) $price = $start_price . '-' . $end_price; // 如果输入框有价钱 则使用输入框的价钱
 		$type = I('post.type/s', '');  //类型，推荐is_recommend，新品is_new，热卖is_hot
 
+		$page = I('post.page/d',1);
+		$num = I('post.num/d',6);
+		$limit = (($page-1)*$num) . ',' . $num;
+
         //如果分类是数字
         if(is_numeric($id)){
             $filter_param['id'] = $id; //加入筛选条件中
@@ -134,7 +138,6 @@ class Goods extends ApiBase
         }
 
         $count = count($filter_goods_id);
-        $page = new Page($count, C('PAGESIZE'));
         if ($count > 0) {
             $sort_asc = $sort_asc == 'asc' ? 'desc' : 'asc'; // 防注入
             $sort_arr = ['sales_sum','shop_price','is_new','comment_count','sort'];
@@ -143,7 +146,7 @@ class Goods extends ApiBase
             $goods_list = M('goods')->where("goods_id", "in", implode(',', $filter_goods_id))
             ->field('goods_id,seller_id,cat_id,extend_cat_id,goods_sn,goods_name,store_count,comment_count,weight,shop_price,goods_remark,original_img')
             ->where($con)
-            ->order([$sort => $sort_asc])->limit($page->firstRow . ',' . $page->listRows)
+            ->order([$sort => $sort_asc])->limit($limit)
             ->select();
             $filter_goods_id2 = get_arr_column($goods_list, 'goods_id');
             if ($filter_goods_id2)
@@ -155,7 +158,7 @@ class Goods extends ApiBase
             'now_goods' => $now_goods,              //当前点击的商品
             'goods_list' => $goods_list,            // 商品列表
             // 'goods_category' => $goods_category,    // 商品分类
-            'goods_images' => $goods_images,        // 相册图片
+            //'goods_images' => $goods_images,        // 相册图片
             'filter_menu' => $filter_menu,          // 筛选菜单
             'filter_spec' => $filter_spec,          // 筛选规格
             'filter_attr' => $filter_attr,          // 筛选属性
@@ -165,7 +168,6 @@ class Goods extends ApiBase
             'cateArr' => $cateArr,                  // 分类菜单显示
             'filter_param' => $filter_param,        // 筛选参数
             'cat_id' => $cat_id,                    // 筛选分类id
-            'page' => $page,                        // 分页
             'sort_asc' => $sort_asc == 'asc' ? 'desc' : 'asc'
         ];
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
@@ -212,7 +214,8 @@ class Goods extends ApiBase
 		$SpecItem = M('spec_item');
 		$Spec = M('spec');
 		foreach($arr as $v){
-			$data[] = $SpecItem->alias('ST')->field('S.name,ST.id,ST.item')->JOIN('tp_spec S','ST.spec_id=S.id','LEFT')->where(['st.id'=>['in',$v]])->order('st.order_index asc')->select();	
+			$data1 = $SpecItem->alias('ST')->field('S.name,ST.id,ST.item')->JOIN('tp_spec S','ST.spec_id=S.id','LEFT')->where(['st.id'=>['in',$v]])->order('st.order_index asc')->select();	
+			if($data1)$data[] = $data1;
 
 		}
 

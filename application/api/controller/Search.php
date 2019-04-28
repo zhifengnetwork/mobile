@@ -39,12 +39,12 @@ class Search extends ApiBase
         $price && ($filter_param['price'] = $price); //加入筛选条件中
         $q = urldecode(trim(I('q', ''))); // 关键字搜索
         $q && ($_GET['q'] = $filter_param['q'] = $q); //加入筛选条件中
-        $qtype = I('qtype', '');
+
+		$page = I('post.page/d',1);
+		$num = I('post.num/d',6);
+		$limit = (($page-1)*$num) . ',' . $num;
         $where = array('is_on_sale' => 1);
-        if ($qtype) {
-            $filter_param['qtype'] = $qtype;
-            $where[$qtype] = 1;
-        }
+
         if ($q) $where['goods_name'] = array('like', '%' . $q . '%');
 
         $goodsLogic = new GoodsLogic();
@@ -64,12 +64,12 @@ class Search extends ApiBase
             $filter_goods_id = array_intersect($filter_goods_id, $goods_id_4);
         }
 
+		if($type)$filter_param[$type] = 1;
         $filter_menu = $goodsLogic->get_filter_menu($filter_param, 'search'); // 获取显示的筛选菜单
         $filter_price = $goodsLogic->get_filter_price($filter_goods_id, $filter_param, 'search'); // 筛选的价格期间
         $filter_brand = $goodsLogic->get_filter_brand($filter_goods_id, $filter_param, 'search'); // 获取指定分类下的筛选品牌
 
         $count = count($filter_goods_id);
-        $page = new Page($count, 12);
         if ($count > 0) {
             $sort_asc = $sort_asc == 'asc' ? 'asc' : 'desc';
             $sort_arr = ['sales_sum','shop_price','is_new','comment_count','sort'];
@@ -77,7 +77,7 @@ class Search extends ApiBase
             $goods_list = D('goods')
             ->where("goods_id", "in", implode(',', $filter_goods_id))
             ->order([$sort => $sort_asc])
-            ->limit($page->firstRow . ',' . $page->listRows)
+            ->limit($limit)
             ->field('goods_id,goods_name,comment_count,shop_price,sales_sum,seller_id')
             ->select();
             $filter_goods_id2 = get_arr_column($goods_list, 'goods_id');
@@ -117,12 +117,17 @@ class Search extends ApiBase
             'filter_price'=> $filter_price,
             'filter_param'=> $filter_param,
             'sort_asc' => $sort_asc == 'asc' ? 'desc' : 'asc',
-            'page' =>  $page
         ];
 
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
        
         
     }
+
+	//获取热门搜索词汇
+	public function getHotKeywords(){
+		$hot_keywords = M('config')->where(['name'=>'hot_keywords','inc_type'=>'basic'])->value('value');
+		$this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$hot_keywords]);
+	}
 
 }
