@@ -61,6 +61,7 @@ class Goods extends ApiBase
         $start_price = trim(I('start_price', '0'));         // 输入框价钱
         $end_price = trim(I('end_price', '0'));             // 输入框价钱
         if ($start_price && $end_price) $price = $start_price . '-' . $end_price; // 如果输入框有价钱 则使用输入框的价钱
+		$type = I('post.type/s', '');  //类型，推荐is_recommend，新品is_new，热卖is_hot
 
         //如果分类是数字
         if(is_numeric($id)){
@@ -75,6 +76,8 @@ class Goods extends ApiBase
                 $con['sign_free_receive'] = 2;
             }
         }
+
+		if($type)$filter_param[$type] = 1;
            
         $brand_id && ($filter_param['brand_id'] = $brand_id); //加入筛选条件中
         $spec && ($filter_param['spec'] = $spec);             //加入筛选条件中
@@ -235,7 +238,7 @@ class Goods extends ApiBase
             ->select();
 	
         foreach ($list as $k => $v) {		
-            $list[$k]['img'] = $v['img'] ? unserialize($v['img']) : ''; // 晒单图片
+            $list[$k]['img'] = $v['img'] ? unserialize($v['img']) : []; // 晒单图片
             $reply = M('Comment')->where(['is_show' => 1, 'goods_id' => $goods_id, 'parent_id' => $v['comment_id']])->order("add_time desc")->select();	
 			$list[$k]['reply'] = $reply ? $reply : null;
             //$list[$k]['reply_num'] = Db::name('reply')->where(['comment_id' => $v['comment_id'], 'parent_id' => 0])->count();
