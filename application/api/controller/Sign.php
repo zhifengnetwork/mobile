@@ -34,10 +34,20 @@ class Sign extends ApiBase
 		$user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
-        }	 
+        }
+
+        //当前积分
+        $points = M('users')->where(['user_id' => $user_id])->value('pay_points');
+        //连续签到几天
+        $continue_sign = continue_sign($user_id);
+
+        //签到积分
+        $add_point = (int) M('config')->where(['name' => 'sign_integral'])->value('value');
 
 		$data = $this->sign_in($user_id);
 		$data['status'] = ($data['status'] == 1) ? 0 : $data['status'];
+		$data['data'] = ['time'=>$data['date'],'points'=>$points,'continue_sign'=>$continue_sign,'add_point'=>$add_point];
+		unset($data['date']);
 		return $this->ajaxReturn($data);
 
     }

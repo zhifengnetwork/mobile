@@ -163,9 +163,10 @@ class Activity extends MobileBase {
     {
         $p = I('p',1);
         $where = [
+			'fl.auction_status'=>1,
             'g.is_on_sale'=>1,
             'fl.is_end'=>0
-        ];
+        ];	
 
         $Auction = new Auction();
         $auction_goods = $Auction->alias('fl')->join('__GOODS__ g', 'g.goods_id = fl.goods_id')->with(['specGoodsPrice','goods'])

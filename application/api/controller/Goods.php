@@ -315,6 +315,27 @@ class Goods extends ApiBase
 		unset($goods['sku']);
 		unset($goods['spu']);
 		unset($goods['cost_price']);
+
+		if($goods['prom_type'] == 1){ //秒杀
+			$pinfo = M('flash_sale')->field('end_time')->find($goods['prom_id']);
+			if($pinfo['end_time'] < time()){
+				M('flash_sale')->update(['id'=>$goods['prom_id'],'is_end'=>1]);
+				M('goods')->update(['goods_id'=>$goods['goods_id'],'prom_type'=>0,'prom_id'=>0]);
+			}
+		}
+		if($goods['prom_type'] == 2){ //团购
+			$pinfo = M('group_buy')->field('end_time')->find($goods['prom_id']);
+			if($pinfo['end_time'] < time()){
+				M('group_buy')->update(['id'=>$goods['prom_id'],'is_end'=>1]);
+				M('goods')->update(['goods_id'=>$goods['goods_id'],'prom_type'=>0,'prom_id'=>0]);
+			}
+		}
+		if($goods['prom_type'] == 8){ //竞拍
+			$pinfo = M('auction')->field('end_time')->find($goods['prom_id']);
+			if($pinfo['end_time'] < time()){
+				M('goods')->update(['goods_id'=>$goods['goods_id'],'prom_type'=>0,'prom_id'=>0]);
+			}
+		}
 		
 		$goods['goods_content'] = htmlspecialchars_decode($goods['goods_content']); 
 		$goods_content = preg_replace('/src="(.*?)"/', 'src="'.SITE_URL.'$1"', $goods['goods_content']);

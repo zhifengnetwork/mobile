@@ -180,6 +180,7 @@ class Activity extends MobileBase {
     {
         $p = I('p',1);
         $where = [
+			'fl.auction_status'=>1,
             'g.is_on_sale'=>1,
             'fl.is_end'=>0
         ];

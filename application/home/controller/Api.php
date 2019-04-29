@@ -115,7 +115,7 @@ class Api extends Base
      */
     public function send_validate_code()
     {
-		$res = this->private_send_validate_code();
+		$res = $this->private_send_validate_code();
 		ajaxReturn($res);
     }
 
@@ -124,7 +124,7 @@ class Api extends Base
      */
     public function app_send_validate_code()
     {
-		$res = this->private_send_validate_code('app');
+		$res = $this->private_send_validate_code('app');
 		if($res['status'] == 1){
 			$this->ajaxReturn(['status' => 0 , 'msg'=>$res['msg'],'data'=>null]);
 		}else
