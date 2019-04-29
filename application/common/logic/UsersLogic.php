@@ -1258,7 +1258,7 @@ class UsersLogic extends Model
     /**
      * 账户明细
      */
-    public function account($user_id, $type='all', $limit){
+    public function account($user_id, $type='all', $limit=false){
     	if($type == 'all'){
     		$count = M('account_log')->where("user_money!=0 and user_id=" . $user_id)->count();
     		$page = new Page($count, 16);

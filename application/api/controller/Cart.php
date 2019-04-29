@@ -216,7 +216,7 @@ class Cart extends ApiBase
         }
         $cart_info = input();
         $cart_id = intval($cart_info['cart_id']);
-        $item_id = intval($cart_info['item_id']);//2019/4/28 星期日 item_id接收值修改为tp_spec_goods_price的key
+        $item_id = $cart_info['item_id'];//2019/4/28 星期日 item_id接收值修改为tp_spec_goods_price的key
         if(!$cart_id || !$item_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'缺少参数','data'=>(object)null]);
         }
