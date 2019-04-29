@@ -58,23 +58,28 @@ class Sign extends ApiBase
     public function get_sign_day()
     {
         $user_id = I('user_id',0);
-        return $this->ajaxReturn($this->get_sign_days($user_id));
+		$data = $this->get_sign_days($user_id);
+        return $this->ajaxReturn($data);
     }
 
     /**
-     * APP签到.
+     * APP获取签到的日期列表.
      */
     public function AppGetSignDay()
     {	
-		$user_id = $this->get_user_id();
-        if(!$user_id){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
-        }
-
-		$data = $this->get_sign_dayS($user_id);
-		$data['status'] = ($data['status'] == 1) ? 0 : $data['status'];
-		return $this->ajaxReturn($data);
-
+        $user_id = I('user_id',0);
+		$data = $this->get_sign_days($user_id);
+		$data = [
+			'date'	=> $data['data'],
+			'today_sign'	=> $data['today_sign'],
+			'points'	=> $data['points'],
+			'add_point'	=> $data['add_point'],
+			'continue_sign'	=> $data['continue_sign'],
+			'accumulate_day'	=> $data['accumulate_day'],
+			'note'	=> $data['note'],
+			'auth'	=> $data['auth'],
+		];
+        return $this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功','data'=>$data]);
     }
 
     /**

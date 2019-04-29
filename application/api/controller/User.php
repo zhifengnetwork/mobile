@@ -731,7 +731,7 @@ class User extends ApiBase
             $password2 = I('post.password2', '');  
             $is_bind_account = tpCache('basic.is_bind_account');
             //是否开启注册验证码机制
-            $code = I('post.mobile_code', '');
+            $code = I('post.code', '');
             $scene = I('post.scene', 1);
             //$session_id = session_id();
 
@@ -828,6 +828,43 @@ class User extends ApiBase
 
 		$this->ajaxReturn($data);
 	}
+
+	//找回密码短信对比
+	public function FindPwdCheckSms(){
+		$mobile = I('post.mobile/s','');
+		$code = I('post.code/s','');
+
+		if($mobile || $code)$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误', 'data'=>null]);
+
+		$info = M('sms_log')->where(['mobile'=>$mobile,'scene'=>2])->find();
+		if(!$info)$this->ajaxReturn(['status' => -1 , 'msg'=>'请先获取验证码', 'data'=>null]);
+		if(($info['add_time']+180) < time())$this->ajaxReturn(['status' => -1 , 'msg'=>'验证码已失效', 'data'=>null]);
+		if($code != $info['code'])
+			$this->ajaxReturn(['status' => -1 , 'msg'=>'验证码错误', 'data'=>null]);
+		else
+			$this->ajaxReturn(['status' => 0 , 'msg'=>'验证码正确', 'data'=>null]);
+	}
+
+	//找回密码
+	public function FindPwd(){
+		$mobile = I('post.mobile/s','');
+		$password = I('post.password/s','');
+		$password2 = I('post.password2/s','');
+
+		if($mobile || $password || $password2)$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误', 'data'=>null]);
+		if(strlen($password) < 6)$this->ajaxReturn(['status' => -1 , 'msg'=>'密码至少6位', 'data'=>null]);
+		if($password != $password2)$this->ajaxReturn(['status' => -1 , 'msg'=>'两次密码不一致', 'data'=>null]);
+
+		$user_id = M('Users')->where(['mobile'=>$mobile])->value('user_id');
+		$res = M('Users')->update(['user_id'=>$user_id,'password'=>encrypt($password)]);
+
+		if(false !== $res)
+			$this->ajaxReturn(['status' => 0 , 'msg'=>'找回密码成功', 'data'=>null]);
+		else
+			$this->ajaxReturn(['status' => -2 , 'msg'=>'找回密码失败', 'data'=>null]);
+	}
+
+//----------------------------------------------------------------------------------------------------------
 
     private function GetOpenidFromMp($code)
     {

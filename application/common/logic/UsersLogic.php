@@ -429,7 +429,7 @@ class UsersLogic extends Model
         if(!$UserRegValidate->scene('reg')->check($data)){
             return array('status'=>-1,'msg'=>$UserRegValidate->getError(),'result'=>'');
         }
-        $map['password'] = $password;
+        $map['password'] = encrypt($password);
         $map['reg_time'] = time();
         $map['first_leader'] = cookie('first_leader');  //推荐人id
         // 如果找到他老爸还要找他爷爷他祖父等

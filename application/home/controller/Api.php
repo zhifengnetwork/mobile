@@ -577,6 +577,11 @@ class Api extends Base
         $session_id = I('unique_id', session_id());
         if($bool)session("scene", $scene);
 
+		if($scene == 1){
+			$userinfo = M('users')->where(['mobile'=>$mobile])->count();
+			if($userinfo)return array('status' => -1, 'msg' => '该手机号码已存在');
+		}
+
         //注册
         if ($scene == 1 && !empty($verify_code)) {
             $verify = new Verify();
