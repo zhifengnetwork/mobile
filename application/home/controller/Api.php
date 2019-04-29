@@ -111,65 +111,24 @@ class Api extends Base
 
 
     /**
-     * 前端发送短信方法: APP/WAP/PC 共用发送方法
+     * 前端发送短信方法: /WAP/PC 共用发送方法
      */
     public function send_validate_code()
     {
-        $this->send_scene = C('SEND_SCENE');
+		$res = this->private_send_validate_code();
+		ajaxReturn($res);
+    }
 
-        $type = I('type');
-        $scene = I('scene');    //发送短信验证码使用场景
-        $mobile = I('mobile');
-        $sender = I('send');
-        $verify_code = I('verify_code');
-        $mobile = !empty($mobile) ? $mobile : $sender;
-        $session_id = I('unique_id', session_id());
-        session("scene", $scene);
-
-        //注册
-        if ($scene == 1 && !empty($verify_code)) {
-            $verify = new Verify();
-            if (!$verify->check($verify_code, 'user_reg')) {
-                ajaxReturn(array('status' => -1, 'msg' => '图像验证码错误'));
-            }
-        }
-        if ($type == 'email') {
-            //发送邮件验证码
-            $logic = new UsersLogic();
-            $res = $logic->send_email_code($sender);
-            ajaxReturn($res);
-        } else {
-            //发送短信验证码
-            $res = checkEnableSendSms($scene);
-            if ($res['status'] != 1) {
-                ajaxReturn($res);
-            }
-            //判断是否存在验证码
-            $data = M('sms_log')->where(array('mobile' => $mobile, 'session_id' => $session_id, 'status' => 1))->order('id DESC')->find();
-            //获取时间配置
-            $sms_time_out = tpCache('sms.sms_time_out');
-            $sms_time_out = $sms_time_out ? $sms_time_out : 120;
-            //120秒以内不可重复发送
-            if ($data && (time() - $data['add_time']) < $sms_time_out) {
-                $return_arr = array('status' => -1, 'msg' => $sms_time_out . '秒内不允许重复发送');
-                ajaxReturn($return_arr);
-            }
-            //随机一个验证码
-            $code = rand(1000, 9999);
-            $params['code'] = $code;
-
-            //发送短信
-            $resp = sendSms($scene, $mobile, $params, $session_id);
-
-            if ($resp['status'] == 1) {
-                //发送成功, 修改发送状态位成功
-                M('sms_log')->where(array('mobile' => $mobile, 'code' => $code, 'session_id' => $session_id, 'status' => 0))->save(array('status' => 1));
-                $return_arr = array('status' => 1, 'msg' => '发送成功,请注意查收');
-            } else {
-                $return_arr = array('status' => -1, 'msg' => '发送失败' . $resp['msg']);
-            }
-            ajaxReturn($return_arr);
-        }
+    /**
+     * 前端发送短信方法: APP/WAP/PC 共用发送方法
+     */
+    public function app_send_validate_code()
+    {
+		$res = this->private_send_validate_code('app');
+		if($res['status'] == 1){
+			$this->ajaxReturn(['status' => 0 , 'msg'=>$res['msg'],'data'=>null]);
+		}else
+			$this->ajaxReturn(['status' => $res['status'] , 'msg'=>$res['msg'],'data'=>null]);
     }
 
     /**
@@ -602,5 +561,65 @@ class Api extends Base
             $this->ajaxReturn(['status' => 0, 'msg' => '该手机号已被注册', 'result' => '']);
         }
         $this->ajaxReturn(['status' => 1, 'msg' => '该手机可注册', 'result' => '']);
+    }
+
+	//------------------------------------------------------------------------------------------
+    private function private_send_validate_code($bool=false)
+    {
+        $this->send_scene = C('SEND_SCENE');
+
+        $type = I('type');   //email|其他
+        $scene = I('scene',0);    //发送短信验证码使用场景，1：注册，2：找回密码，3：客户下单，4：客户支付，5：商家发货，6：身份验证，7：购买虚拟商品通知
+        $mobile = I('mobile');  //手机号码
+        $sender = I('send');
+        $verify_code = I('verify_code'); //图像验证码
+        $mobile = !empty($mobile) ? $mobile : $sender;
+        $session_id = I('unique_id', session_id());
+        if($bool)session("scene", $scene);
+
+        //注册
+        if ($scene == 1 && !empty($verify_code)) {
+            $verify = new Verify();
+            if (!$verify->check($verify_code, 'user_reg')) {
+                return array('status' => -1, 'msg' => '图像验证码错误');
+            }
+        }
+        if ($type == 'email') {
+            //发送邮件验证码
+            $logic = new UsersLogic();
+            $res = $logic->send_email_code($sender);
+            return $res;
+        } else {
+            //发送短信验证码
+            $res = checkEnableSendSms($scene);
+            if ($res['status'] != 1) {
+                return $res;
+            }
+            //判断是否存在验证码
+            $data = M('sms_log')->where(array('mobile' => $mobile, 'session_id' => $session_id, 'status' => 1))->order('id DESC')->find();
+            //获取时间配置
+            $sms_time_out = tpCache('sms.sms_time_out');
+            $sms_time_out = $sms_time_out ? $sms_time_out : 120;
+            //120秒以内不可重复发送
+            if ($data && (time() - $data['add_time']) < $sms_time_out) {
+                $return_arr = array('status' => -1, 'msg' => $sms_time_out . '秒内不允许重复发送');
+                return $return_arr;
+            }
+            //随机一个验证码
+            $code = rand(1000, 9999);
+            $params['code'] = $code;
+
+            //发送短信
+            $resp = sendSms($scene, $mobile, $params, $session_id);
+
+            if ($resp['status'] == 1) {
+                //发送成功, 修改发送状态位成功
+                M('sms_log')->where(array('mobile' => $mobile, 'code' => $code, 'session_id' => $session_id, 'status' => 0))->save(array('status' => 1));
+                $return_arr = array('status' => 1, 'msg' => '发送成功,请注意查收');
+            } else {
+                $return_arr = array('status' => -1, 'msg' => '发送失败' . $resp['msg']);
+            }
+            return $return_arr;
+        }
     }
 }

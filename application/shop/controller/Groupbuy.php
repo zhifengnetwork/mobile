@@ -189,7 +189,7 @@ class Groupbuy extends MobileBase
             ->where("team_id", $team_id)
             ->alias('t')
             ->join('goods g','g.goods_id = t.goods_id','left')
-            ->field('t.team_id, t.act_name, t.goods_id, t.goods_item_id, t.needer, t.goods_name, t.deleted, t.group_price, t.cluster_type, t.start_time, t.end_time, t.buy_limit, t.sales_sum, t.max_open_num, g.original_img, g.shop_price, g.market_price')
+            ->field('t.team_id, t.act_name, t.goods_id, t.goods_item_id, t.needer, t.goods_name, t.deleted, t.group_price, t.cluster_type, t.start_time, t.end_time, t.buy_limit, t.sales_sum, t.max_open_num, t.goods_item_id, g.original_img, g.shop_price, g.market_price')
             ->find();
 
         if(!$info){
@@ -252,6 +252,7 @@ class Groupbuy extends MobileBase
             $this->assign('region', $region);
         }
         
+		if($info['goods_item_id'])$info['shop_price'] = M('spec_goods_price')->where(['item_id'=>$info['goods_item_id']])->value('price');
         # 组装数据
         $info['price'] = $buy_type == 1 ? $info['shop_price'] : $info['group_price'];
         $info['buy_type'] = $buy_type;

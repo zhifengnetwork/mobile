@@ -398,7 +398,7 @@ class UsersLogic extends Model
      * @return array
      */
     public function reg($username,$password,$password2,$push_id = 0,$invite=array(),$nickname="",$head_pic=""){
-    	$is_validated = 0 ;
+    	$is_validated = 0 ;	
         if(check_email($username)){
             $is_validated = 1;
             $map['email_validated'] = 1;
@@ -413,7 +413,7 @@ class UsersLogic extends Model
         if($is_validated != 1)
             return array('status'=>-1,'msg'=>'请用手机号或邮箱注册','result'=>'');
         $map['nickname'] = $nickname ? $nickname : $username;
-        
+       
         if(!empty($head_pic)){
             $map['head_pic'] = $head_pic;
         }else{
@@ -470,7 +470,8 @@ class UsersLogic extends Model
         $map['last_login'] = time();
         $user_level =Db::name('user_level')->where('amount = 0')->find(); //折扣
         $map['discount'] = !empty($user_level) ? $user_level['discount']/100 : 1;  //新注册的会员都不打折
-        $user_id = Db::name('users')->insertGetId($map);
+		$map['openid'] = $map['openid'] ? $map['openid'] : $map['mobile'];
+		$user_id = Db::name('users')->insertGetId($map);
         if($user_id === false)
             return array('status'=>-1,'msg'=>'注册失败');
         // 会员注册赠送积分
@@ -1116,7 +1117,7 @@ class UsersLogic extends Model
             }            
             if(!$code)return array('status'=>-1,'msg'=>'请输入邮件验证码');                
             //邮件
-            $data = session('validate_code');
+            $data = session('validate_code'); 
             $timeOut = $data['time'];
             if($data['code'] != $code || $data['sender']!=$sender){
             	$inValid = false;
@@ -1135,7 +1136,7 @@ class UsersLogic extends Model
             //短信
             $sms_time_out = tpCache('sms.sms_time_out');
             $sms_time_out = $sms_time_out ? $sms_time_out : 180;
-            $data = M('sms_log')->where(array('mobile'=>$sender,'session_id'=>$session_id , 'status'=>1))->order('id DESC')->find();
+            $data = M('sms_log')->where(array('mobile'=>$sender, 'status'=>1))->order('id DESC')->find();
             //file_put_contents('./test.log', json_encode(['mobile'=>$sender,'session_id'=>$session_id, 'data' => $data]));
             if(is_array($data) && $data['code'] == $code){
             	$data['sender'] = $sender;

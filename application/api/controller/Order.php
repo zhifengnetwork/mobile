@@ -90,7 +90,6 @@ class Order extends ApiBase
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$order]);
     }
 
-
     /**
     * 订单
     */
@@ -248,7 +247,7 @@ class Order extends ApiBase
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
         }
-		$order_id = I('post.order_id/d',1384);
+		$order_id = I('post.order_id/d',0);
 		if(!$order_id){
             $this->ajaxReturn(['status' => -2 , 'msg'=>'订单不存在','data'=>null]);
         }

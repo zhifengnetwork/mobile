@@ -709,5 +709,88 @@ class User extends ApiBase
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$list]]);
     }
 
+    /**
+     *  注册
+     */
+    public function reg()
+    {
+        $reg_sms_enable = tpCache('sms.regis_sms_enable');
+        $reg_smtp_enable = tpCache('sms.regis_smtp_enable');
+
+        if (IS_POST) {
+            $logic = new UsersLogic();
+            //验证码检验
+            //$this->verifyHandle('user_reg');
+            $nickname = I('post.nickname', '');
+            $username = I('post.username', '');
+            if(!$username){
+                $username = I('post.useriphone');
+            }
+            $password = I('post.password', '');
+            $password2 = I('post.password2', '');  
+            $is_bind_account = tpCache('basic.is_bind_account');
+            //是否开启注册验证码机制
+            $code = I('post.mobile_code', '');
+            $scene = I('post.scene', 1);
+            //$session_id = session_id();
+
+            //是否开启注册验证码机制
+            if(check_mobile($username)){
+                if($reg_sms_enable){
+                    //手机功能没关闭
+                    $check_code = $logic->check_validate_code($code, $username, 'phone', $session_id, $scene);
+                    if($check_code['status'] != 1){
+                        $this->ajaxReturn($check_code);
+                    }
+                }
+            }
+            //是否开启注册邮箱验证码机制
+            if(check_email($username)){
+                if($reg_smtp_enable){
+                    //邮件功能未关闭
+                    $check_code = $logic->check_validate_code($code, $username);
+                    if($check_code['status'] != 1){
+                        $this->ajaxReturn($check_code);
+                    }
+                }
+            }
+            
+            $invite = I('invite');
+            if(!empty($invite)){
+                $invite = get_user_info($invite,2);//根据手机号查找邀请人
+                if(empty($invite)){
+                    $this->ajaxReturn(['status'=>-1,'msg'=>'推荐人不存在','result'=>'']);
+                }
+            }else{
+                $invite = array();
+            }
+            if($is_bind_account && session("third_oauth")){ //绑定第三方账号
+                $thirdUser = session("third_oauth");
+                $head_pic = $thirdUser['head_pic'];
+                $data = $logic->reg($username, $password, $password2, 0, $invite ,$nickname , $head_pic);
+                //用户注册成功后, 绑定第三方账号
+                $userLogic = new UsersLogic();
+                $data = $userLogic->oauth_bind_new($data['result']);
+            }else{
+                $data = $logic->reg($username, $password, $password2,0,$invite,$nickname);
+            }
+             
+            
+            if ($data['status'] != 1) $this->ajaxReturn($data);
+            
+            //获取公众号openid,并保持到session的user中
+            //$oauth_users = M('OauthUsers')->where(['user_id'=>$data['result']['user_id'] , 'oauth'=>'weixin' , 'oauth_child'=>'mp'])->find();
+            //$oauth_users && $data['result']['open_id'] = $oauth_users['open_id'];
+            
+            //setcookie('user_id', $data['result']['user_id'], null, '/');
+            //('is_distribut', $data['result']['is_distribut'], null, '/');
+			if($data['status'] == 1)
+				$this->ajaxReturn(['status' => 0 , 'msg'=>'注册成功','data'=>['user_id'=>$data['user_id'],'token'=>$data['token'],'head_pic'=>$data['head_pic']]]);
+			else
+				$this->ajaxReturn(['status' => -1 , 'msg'=>$data['msg'], 'data'=>null]);
+        }
+        
+    }
+
 
 }

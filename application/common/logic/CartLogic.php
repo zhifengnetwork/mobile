@@ -115,7 +115,7 @@ class CartLogic extends Model
      * @return mixed
      * @throws TpshopException
      */
-    public function buyNow($prom_type=0,$prom_id=0)
+    public function buyNow($ptype=0,$prom_id=0)
     {
         if (empty($this->goods)) {
             throw new TpshopException('立即购买', 0, ['status' => 0, 'msg' => '购买商品不存在1', 'result' => '']);
@@ -148,19 +148,6 @@ class CartLogic extends Model
                 throw new TpshopException('立即购买',0,['status' => 0, 'msg' => '您已超过该商品的限制购买数', 'result' => '']);
             }
         }
-
-		if($prom_type == 1){ //秒杀
-			$this->goods['shop_price'] = M('flash_sale')->where(['id'=>$prom_id])->value('price');
-		} 
-		if($prom_type == 2){ //团购
-			$this->goods['shop_price'] = M('group_buy')->where(['id'=>$prom_id])->value('price');
-		}
-		if($prom_type == 6){ //拼团
-			$this->goods['shop_price'] = M('team_activity')->where(['team_id'=>$prom_id])->value('group_price');
-		}
-		if($prom_type == 8){ //竞拍
-			$this->goods['shop_price'] = M('auction')->where(['id'=>$prom_id])->value('transaction_price');
-		}
 
         $buyGoods = [
             'user_id' => $this->user_id,
@@ -197,6 +184,7 @@ class CartLogic extends Model
             $prom_type = $this->specGoodsPrice['prom_type'];
             $store_count = $this->specGoodsPrice['store_count'];
         }
+
         if ($this->goodsBuyNum > $store_count) {
             throw new TpshopException('立即购买', 0, ['status' => 0, 'msg' => '商品库存不足，剩余' . $this->goods['store_count'], 'result' => '']);
         }
@@ -220,11 +208,26 @@ class CartLogic extends Model
                 }
             }
         }
+
+		if($ptype == 1){ //秒杀
+			$buyGoods['goods_price'] = $buyGoods['member_goods_price'] = M('flash_sale')->where(['id'=>$prom_id])->value('price');
+		} 
+		if($ptype == 2){ //团购
+			$buyGoods['goods_price'] = $buyGoods['member_goods_price'] = M('group_buy')->where(['id'=>$prom_id])->value('price');
+		}
+		if($ptype == 6){ //拼团
+			$buyGoods['goods_price'] = $buyGoods['member_goods_price'] = M('team_activity')->where(['team_id'=>$prom_id])->value('group_price');
+		}
+		if($ptype == 8){ //竞拍
+			$buyGoods['goods_price'] = $buyGoods['member_goods_price'] = M('auction')->where(['id'=>$prom_id])->value('transaction_price');
+		}
+
         $cart = new Cart();
         $buyGoods['member_goods_price']?$buyGoods['member_goods_price']=round($buyGoods['member_goods_price'],2):'';
         $buyGoods['cut_fee'] = $cart->getCutFeeAttr(0, $buyGoods);
         $buyGoods['goods_fee'] = $cart->getGoodsFeeAttr(0, $buyGoods);
         $buyGoods['total_fee'] = $cart->getTotalFeeAttr(0, $buyGoods);
+
         return $buyGoods;
     }
 
