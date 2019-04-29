@@ -652,23 +652,24 @@ class UsersLogic extends Model
      *  @param $table 指定查询那张表
      * @return mixed
      */
-    public function get_recharge_log($user_id,$pay_status=0,$table='recharge'){
+    public function get_recharge_log($user_id,$pay_status=0,$table='recharge',$limit=false){
         $recharge_log_where = ['user_id'=>$user_id];
         if($pay_status){
             $pay_status['status']=$pay_status;
         }
+		$limit = $limit ? $limit : ($Page->firstRow . ',' . $Page->listRows);
         if($table=='agent_performance_log'){
             $count = M('agent_performance_log')->where($recharge_log_where)->count();
             $Page = new Page($count, 15);
             $recharge_log = M('agent_performance_log')->where($recharge_log_where)
-                ->limit($Page->firstRow . ',' . $Page->listRows)
+                ->limit($limit)
                 ->select(); 
         }else{
             $count = M('recharge')->where($recharge_log_where)->count();
             $Page = new Page($count, 15);
             $recharge_log = M('recharge')->where($recharge_log_where)
                 ->order('order_id desc')
-                ->limit($Page->firstRow . ',' . $Page->listRows)
+                ->limit($limit)
                 ->select(); 
         }
 

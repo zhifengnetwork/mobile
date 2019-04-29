@@ -230,7 +230,7 @@ class Goods extends ApiBase
             $this->ajaxReturn(['status' => -1 , 'msg'=>'规格不存在','data'=>null]);
         }
 		
-		$info = M('spec_goods_price')->field('price,store_count,spec_img')->where(['goods_id'=>$goods_id,'key'=>$key])->find();
+		$info = M('spec_goods_price')->field('key_name,price,store_count,spec_img')->where(['goods_id'=>$goods_id,'key'=>$key])->find();
 		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['info'=>$info]]);
 	}
 

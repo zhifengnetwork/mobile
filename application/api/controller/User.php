@@ -674,4 +674,40 @@ class User extends ApiBase
     	$result = $usersLogic->account($user_id, $type, $limit);		
 		$this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$result['account_log']]]);
     }
+
+	//充值记录
+    public function recharge_list(){ 
+        $user_id = $this->get_user_id();
+        if (!$user_id) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>(object)null]);
+        }
+
+		$page = I('post.page/d',1);
+		$num = I('post.num/d',6);
+		$limit = (($page-1)*$num) . ',' . $num;
+
+    	$usersLogic = new UsersLogic;
+        $result= $usersLogic->get_recharge_log($user_id,0,'recharge',$limit);  //充值记录
+    	$this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$result['result']]]);
+    }
+
+    //提现记录
+    public function withdrawals_list()
+    {	
+        $user_id = $this->get_user_id();
+        if (!$user_id) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>(object)null]);
+        }
+
+		$page = I('post.page/d',1);
+		$num = I('post.num/d',6);
+		$limit = (($page-1)*$num) . ',' . $num;
+
+        $withdrawals_where['user_id'] = $user_id;
+        $list = M('withdrawals')->field('id,money,create_time,check_time,pay_time,refuse_time,bank_name,bank_card,realname,remark,taxfee,status,pay_code,error_code')->where($withdrawals_where)->order("id desc")->limit($limit)->select();
+
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$list]]);
+    }
+
+
 }
