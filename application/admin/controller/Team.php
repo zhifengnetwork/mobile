@@ -78,6 +78,7 @@ class Team extends Base
         {
                 $team_id = Db::name('team_activity')->insertGetId($data);
                 if($team_id){
+					//M('goods')->update(['goods_id'=>$data['goods_id'],'prom_type'=>6,'prom_id'=>$team_id]);
                     $this->ajaxReturn(['status' => 1,'msg' =>'操作成功','result' => '']);
                 }else{
                     $this->ajaxReturn(['status' => 0,'msg' =>'操作失败','result' => '']);

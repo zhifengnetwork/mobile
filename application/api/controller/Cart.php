@@ -242,7 +242,7 @@ class Cart extends ApiBase
             'member_goods_price'=>$spec_one['price']
         );
         $res = Db::name('cart')->where(['user_id'=>$user_id, 'id'=>$cart_id])->update($update_data);
-        if(!$res){
+        if(false === $res){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'规格修改失败','data'=>(object)null]);
         }
         $data['cart_price_info'] = $this->_getTotal($user_id);

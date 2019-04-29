@@ -157,6 +157,8 @@ class Order extends ApiBase
         $consignee = input('consignee/s');//自提点收货人
         $mobile = input('mobile/s');//自提点联系方式
 		$act = input('act/d',1);
+		$prom_type = input('prom_type/d',0); //0默认1秒杀2团购3优惠促销4预售5虚拟(5其实没用)6拼团7搭配购8竞拍
+		$prom_id = input('prom_id/d',0);
         $is_virtual = input('is_virtual/d',0);
         $data = input('request.');
         $cart_validate = Loader::validate('Cart');
@@ -181,8 +183,8 @@ class Order extends ApiBase
                 $cartLogic->setGoodsModel($goods_id);
                 $cartLogic->setSpecGoodsPriceById($item_id);
                 $cartLogic->setGoodsBuyNum($goods_num);
-                $buyGoods = $cartLogic->buyNow();
-                $cartList[0] = $buyGoods;
+                $buyGoods = $cartLogic->buyNow($prom_type,$prom_id);
+                $cartList[0] = $buyGoods;	
                 $pay->payGoodsList($cartList);
 				$arr = M('Goods')->field('goods_id,goods_name,shop_price,original_img')->find($goods_id);
 				if($item_id){
