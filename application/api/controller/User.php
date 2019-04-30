@@ -370,10 +370,14 @@ class User extends ApiBase
     */
     public function collect_list()
     {
-        $user_id = $this->get_user_id();
+        //$user_id = $this->get_user_id();  
+		$user_id = 3;
+		$page = I('post.page/d',1);
+		$num = I('post.num/d',6);
+		$limit = (($page - 1) * $num) . ',' . $num;
         $userLogic = new UsersLogic();
-        $data = $userLogic->get_goods_collect($user_id);
-        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data['result']]);
+        $data = $userLogic->get_goods_collect($user_id,$limit);
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$data['result'],'count'=>$data['count']]]);
     }
 
     /**
@@ -572,6 +576,11 @@ class User extends ApiBase
         if (!IS_POST) {
             $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>(object)null]);
         }
+
+		$page = I('post.page/d',1);
+		$num = I('post.num/d',6);
+		$limit = (($page - 1) * $num) . ',' . $num;
+
         // 获取所有店铺
         $seller_arr = Db::name('seller_collect')
         ->alias('a')
@@ -579,10 +588,42 @@ class User extends ApiBase
         ->join('tp_seller_store c', 'b.seller_id=c.seller_id', 'left')
         ->where('user_id',$user_id)
         ->field('a.collect_id,a.seller_id,b.seller_name,c.avatar')
+		->limit($limit)
         ->select();
-        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$seller_arr]]);
+
+		$count = Db::name('seller_collect')
+        ->alias('a')
+        ->join('tp_seller b', 'a.seller_id=b.seller_id','left')
+        ->join('tp_seller_store c', 'b.seller_id=c.seller_id', 'left')
+        ->where('user_id',$user_id)
+        ->field('a.collect_id,a.seller_id,b.seller_name,c.avatar')
+        ->count();
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$seller_arr,'count'=>$count]]);
 
     }
+
+	//添加/删除店铺关注
+	public function add_seller_collect(){ 
+        $user_id = $this->get_user_id();	
+		$seller_id = I('post.seller_id/d',0);
+		$type = I('post.type/d',1);
+		$collect_id = I('post.collect_id/d',1);
+        if (!$user_id || !$seller_id) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>null]);
+        }
+
+		if($type == 1){
+			$res = M('seller_collect')->where(['user_id'=>$user_id,'seller_id'=>$seller_id])->find();
+			if($res)$this->ajaxReturn(['status' => 0 , 'msg'=>'您已经关注过此店铺啦','data'=>null]);
+			M('seller_collect')->add(['user_id'=>$user_id,'seller_id'=>$seller_id,'add_time'=>time()]);
+		}else{
+			if(!$collect_id)$this->ajaxReturn(['status' => -1 , 'msg'=>'关注ID必须','data'=>null]);
+			 $res = M('seller_collect')->where(['user_id'=>$user_id,'collect_id'=>$collect_id])->find();
+			 if(!$res)$this->ajaxReturn(['status' => -1 , 'msg'=>'您没有关注过此店铺','data'=>null]);
+			M('seller_collect')->delete($collect_id);
+		}
+		$this->ajaxReturn(['status' => 0 , 'msg'=>'操作成功','data'=>null]);
+	}
 
     /**
      *  用户消息通知
