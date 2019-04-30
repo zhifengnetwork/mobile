@@ -370,8 +370,7 @@ class User extends ApiBase
     */
     public function collect_list()
     {
-        //$user_id = $this->get_user_id();  
-		$user_id = 3;
+        $user_id = $this->get_user_id();  
 		$page = I('post.page/d',1);
 		$num = I('post.num/d',6);
 		$limit = (($page - 1) * $num) . ',' . $num;

@@ -24,6 +24,7 @@ use think\Db;
 use app\common\logic\FreightLogic;
 use app\home\controller\Api;
 
+
 class Order extends ApiBase
 {
 
@@ -323,5 +324,38 @@ class Order extends ApiBase
             $this->ajaxReturn(['status' => 0 , 'msg'=>$data['msg'],'data'=>null]);
         }
     }
+
+	//评论图片上传
+	public function common_upload_pic(){ 
+        $user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
+        }
+        if (IS_POST) {
+            // 晒图片
+            $files = request()->file('pic');
+            $save_url = UPLOAD_PATH . 'comment/' . date('Y', time()) . '/' . date('m-d', time());
+            if($files) {	
+				// 移动到框架应用根目录/public/uploads/ 目录下
+				$image_upload_limit_size = config('image_upload_limit_size');
+				$info = $files->validate(['size' => $image_upload_limit_size, 'ext' => 'jpg,png,gif,jpeg'])->move($save_url);
+
+				if ($info) {
+					// 成功上传后 获取上传信息
+					// 输出 jpg
+					$comment_img = '/' . $save_url . '/' . $info->getFilename();
+				} else {
+					// 上传失败获取错误信息
+					$this->ajaxReturn(['status' =>-1,'msg' =>$files->getError()]);
+				}
+            }
+			$this->ajaxReturn(['status' => 0 , 'msg'=>'上传成功','data'=>['dir'=>$comment_img]]);
+		}
+	}
+
+	//订单评论
+	public function order_common(){
+	
+	}
 	  
 }
