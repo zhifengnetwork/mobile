@@ -67,7 +67,10 @@ class Sign extends ApiBase
      */
     public function AppGetSignDay()
     {	
-        $user_id = I('user_id',0);
+		$user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
+        }
 		$data = $this->get_sign_days($user_id);
 		$data = [
 			'date'	=> $data['data'],
