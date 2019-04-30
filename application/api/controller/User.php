@@ -503,15 +503,57 @@ class User extends ApiBase
      * +---------------------------------
     */
     public function team_list(){
-
         $user_id = $this->get_user_id();
         if (!IS_POST) {
             $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>(object)null]);
         }
         // $user_info = $userLogic->get_info($user_id);  // 获取用户信息
         //下级信息
-        $users = M('users')->field('user_id,nickname,mobile')->order('user_id DESC')->where(['first_leader'=>$user_id])->select();
-        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$users]);
+
+		$page = I('post.page/d',1);
+		$num = I('post.num/d',6);
+		$limit = ($page-1)*$num . ',' . $num;
+
+		$Users = M('users');
+        $list = $Users->field('user_id,nickname,mobile')->order('user_id DESC')->where(['first_leader'=>$user_id])->limit($limit)->select();
+		$UserLevel = M('User_level');
+		$per_logic =  new \app\common\logic\PerformanceLogic();
+		$add_logic = new \app\common\logic\AgentPerformanceAddLogic();
+		foreach($list as $k=>$v){
+			$openid = $Users->where(['user_id'=>$v['user_id']])->value('openid');
+			$list[$k]['levle_name'] = $v['level']? $UserLevel->where(['levle_id'=>$v['level']])->value('levle_name') : '';
+			
+			$money_total = $per_logic->distribut_caculate($v['user_id'],$openid);
+			//补业绩
+			if($money_total['moneys'] < 0){
+				$bu_moneys = -1 * $money_total['moneys'] * 2; //补 两倍 的 差值
+				//这里重新
+				$add_logic->add($user_id,$bu_moneys);
+			   
+				//重新来
+				$per_logic =  new PerformanceLogic();
+				$money_total = $per_logic->distribut_caculate();
+			}
+			$list[$k]['money_total'] = $money_total['money_total'];
+
+		}
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$list]);
+    }
+
+    //团队订单列表
+    public function order_list(){  
+        $user_id = $this->get_user_id();
+        if (!$user_id) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>null]);
+        }
+
+		$page = I('post.page/d',1);
+		$num = I('post.num/d',6);
+		$limit = ($page-1)*$num . ',' . $num;
+        $order = M('order')->field('order_id,order_sn, consignee, add_time,total_amount')->where(['user_id'=>$user_id,'pay_status'=>1])->limit($limit)->order('add_time DESC')->select();
+        
+        $user = M('users')->field('user_id,nickname,mobile')->where(['user_id'=>$user_id])->find();
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$order,'user'=>$user]]);
     }
 
     /**

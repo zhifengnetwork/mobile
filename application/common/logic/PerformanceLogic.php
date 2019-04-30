@@ -51,9 +51,9 @@ class PerformanceLogic
      /**
      * 抽离
      */
-    public function distribut_caculate(){
-        $user_id = session('user.user_id');
-        $openid = session('user.openid');
+    public function distribut_caculate($user_id=false,$openid=false){
+        $user_id = !$user_id ? session('user.user_id') : $user_id;
+        $openid = !$openid ? session('user.openid') : $openid;
        
         $user_agent_money = M('agent_performance')->where(['user_id'=>$user_id])->find();
    
