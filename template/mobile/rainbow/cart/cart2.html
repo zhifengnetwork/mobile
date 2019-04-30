@@ -1268,7 +1268,7 @@
         $.ajax({
             type: "POST",
             url: "{:U('Mobile/Cart/cart3')}",//+tab,
-            data: cart2_form.serialize() + "&act=submit_order",// 你的formid
+            data: cart2_form.serialize() + "&act=submit_order&pay_pwd="+paypwd,// 你的formid
             dataType: "json",
             success: function (data) {
                 layer.closeAll();

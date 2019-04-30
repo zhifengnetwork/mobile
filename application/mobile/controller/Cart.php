@@ -177,7 +177,7 @@ class Cart extends MobileBase {
      * ajax 获取订单商品价格 或者提交 订单
      */
     public function cart3(){
-        if ($this->user_id == 0) {
+        if (!$this->user_id) {
             exit(json_encode(array('status' => -100, 'msg' => "登录超时请重新登录!", 'result' => null))); // 返回结果状态
         }
         $address_id = input("address_id/d", 0); //  收货地址id
