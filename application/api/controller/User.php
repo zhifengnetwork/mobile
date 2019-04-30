@@ -826,6 +826,7 @@ class User extends ApiBase
 		}else
 			$data = ['status' => 0 , 'msg'=>'请求成功', 'data'=>$userinfo];
 
+		$data['data']['token'] = $this->create_token($data['data']['user_id']);
 		$this->ajaxReturn($data);
 	}
 
