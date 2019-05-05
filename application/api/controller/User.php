@@ -597,6 +597,7 @@ class User extends ApiBase
         $order_info['waitPay'] = $user_info['result']['waitPay'];
         $order_info['waitSend'] = $user_info['result']['waitSend'];
         $order_info['waitReceive'] = $user_info['result']['waitReceive'];
+		$order_info['uncomment_count'] = $user_info['result']['uncomment_count'];
 
         // 积分优惠券
         $order_info['pay_points'] =$user['pay_points'];
