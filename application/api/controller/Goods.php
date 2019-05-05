@@ -284,7 +284,10 @@ class Goods extends ApiBase
             //$list[$k]['reply_num'] = Db::name('reply')->where(['comment_id' => $v['comment_id'], 'parent_id' => 0])->count();
         }
 
-		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['commentlist'=>$list]]);
+		$goodsModel = new \app\common\model\Goods();
+		$comment_fr = $goodsModel->getCommentStatisticsAttr('', ['goods_id', $goods_id]);
+
+		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['commentlist'=>$list,'comment_fr'=>$comment_fr]]);
     }
 
     /**
