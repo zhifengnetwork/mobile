@@ -561,8 +561,8 @@ class User extends ApiBase
      * +---------------------------------
     */
     public function myIndex()
-    {
-        $user_id = $this->get_user_id();
+    {	
+        $user_id = $this->get_user_id();	
 
 		if(!$user_id)
 			$this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>(object)null]);
@@ -598,7 +598,7 @@ class User extends ApiBase
         $order_info['waitPay'] = $user_info['result']['waitPay'];
         $order_info['waitSend'] = $user_info['result']['waitSend'];
         $order_info['waitReceive'] = $user_info['result']['waitReceive'];
-		$order_info['uncomment_count'] = $user_info['result']['uncomment_count'];
+		$order_info['uncomment_count'] = M('Order')->where(['user_id'=>$user_id,'order_status'=>2])->count();
 
         // 积分优惠券
         $order_info['pay_points'] =$user['pay_points'];
