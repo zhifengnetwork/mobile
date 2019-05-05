@@ -355,31 +355,30 @@ class Order extends ApiBase
 	}
 
 	//订单评论
-	public function order_common(){
+	public function order_common(){ 
         $user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
         }
-		$user_info = M('Users')->field('username,email')->find($user_id);
+		$user_info = M('Users')->field('nickname,email')->find($user_id);
+		$order_id = I('post.order_id/d',1);
+		$info = json_decode(htmlspecialchars_decode(I('post.info/s',''))); //共提交几个商品评论
 		
-		$order_id = I('post.order_id/d',0);
-		$info = json_decode(I('post.info/s','')); //共提交几个商品评论
-		
-		$Order = M('Order');
+		$Comment = M('comment');
 		$OrderGoods = M('Order_goods');
 		foreach($info as $v){
-			$Order->add([
+			$Comment->add([
 				'goods_id'	=> $v->goods_id,
 				'email'		=> $user_info['email'],
-				'username'	=> $user_info['username'],
+				'username'	=> $user_info['nickname'],
 				'content'	=> $v->content,
 				'add_time'	=> time(),
 				'user_id'	=> $user_id ,
 				'img'		=> $user_info['img'] ? serialize($user_info['img']) : '',
 				'order_id'	=> $order_id,
-				'deliver_rank'	=> $v['deliver_rank'],
-				'goods_rank'	=> $v['goods_rank'],
-				'service_rank'	=> $v['service_rank'],
+				'deliver_rank'	=> $v->deliver_rank,
+				'goods_rank'	=> $v->goods_rank,
+				'service_rank'	=> $v->service_rank,
 				'is_anonymous'	=> $v->is_anonymous,
 				'rec_id'	=> $OrderGoods->where(['order_id'=>$order_id,'goods_id'=>$v->goods_id])->value('rec_id'),
 			]);
