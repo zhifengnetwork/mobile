@@ -355,17 +355,25 @@ class Order extends ApiBase
 	}
 
 	//订单评论
-	public function order_common(){  
+	public function order_common(){ 
         $user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
         }
 		$user_info = M('Users')->field('nickname,email')->find($user_id);
-		$order_id = I('post.order_id/d',0);
+		$order_id = I('post.order_id/d',0); 
 		if(!$order_id){
             $this->ajaxReturn(['status' => -2 , 'msg'=>'订单不存在','data'=>null]);
         }
 		$info = json_decode(htmlspecialchars_decode(I('post.info/s',''))); //共提交几个商品评论
+
+		$orderinfo = M('Order')->field('order_status')->where(['user_id'=>$user_id])->find($order_id);
+		if(!$orderinfo){
+            $this->ajaxReturn(['status' => -2 , 'msg'=>'订单不存在','data'=>null]);
+        }
+		if($orderinfo['order_status'] != 2){
+            $this->ajaxReturn(['status' => -3 , 'msg'=>'该订单不能评价','data'=>null]);
+        }
 		
 		$Comment = M('comment');
 		$OrderGoods = M('Order_goods');

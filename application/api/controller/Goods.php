@@ -60,6 +60,8 @@ class Goods extends ApiBase
         $goods_id = I('goods_id/d');            // 商品id
         $start_price = trim(I('start_price', '0'));         // 输入框价钱
         $end_price = trim(I('end_price', '0'));             // 输入框价钱
+		$is_distribut = I('is_distribut/d');            // 商品id
+		$is_agent = I('is_agent/d');            // 商品id
         if ($start_price && $end_price) $price = $start_price . '-' . $end_price; // 如果输入框有价钱 则使用输入框的价钱
 		$type = I('post.type/s', '');  //类型，推荐is_recommend，新品is_new，热卖is_hot
 
@@ -87,6 +89,8 @@ class Goods extends ApiBase
         $spec && ($filter_param['spec'] = $spec);             //加入筛选条件中
         $attr && ($filter_param['attr'] = $attr);             //加入筛选条件中
         $price && ($filter_param['price'] = $price);          //加入筛选条件中
+		$is_distribut && ($filter_param['is_distribut'] = $is_distribut);
+		$is_agent && ($filter_param['is_agent'] = $is_agent);
 
         $goodsLogic = new GoodsLogic(); // 前台商品操作逻辑类
         // 分类菜单显示
@@ -144,7 +148,7 @@ class Goods extends ApiBase
             if(!in_array($sort,$sort_arr)) $sort='sort';    // 防注入
 
             $goods_list = M('goods')->where("goods_id", "in", implode(',', $filter_goods_id))
-            ->field('goods_id,seller_id,cat_id,extend_cat_id,goods_sn,goods_name,store_count,comment_count,weight,shop_price,goods_remark,original_img')
+            ->field('goods_id,seller_id,cat_id,extend_cat_id,goods_sn,goods_name,store_count,comment_count,weight,shop_price,goods_remark,original_img,is_distribut,is_agent')
             ->where($con)
             ->order([$sort => $sort_asc])->limit($limit)
             ->select();
@@ -152,6 +156,13 @@ class Goods extends ApiBase
             if ($filter_goods_id2)
                 $goods_images = M('goods_images')->where("goods_id", "in", implode(',', $filter_goods_id2))->cache(true)->select();
         }
+
+		$GoodsCategory = M('goods_category');
+		foreach($goods_list as $k=>$v){
+			$commission_rate = $v['is_distribut'] ? $GoodsCategory->where(['id'=>$v['cat_id']])->value('commission_rate') : 0;
+			$goods_list[$k]['commission_num'] = (intval($v['shop_price'] * $commission_rate) / 100);
+		}
+
         // $goods_category = M('goods_category')->where('is_show=1')->cache(true)->getField('id,name,parent_id,level'); // 键值分类数组
         C('TOKEN_ON', false);
         $data = [
