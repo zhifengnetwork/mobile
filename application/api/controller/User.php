@@ -564,7 +564,8 @@ class User extends ApiBase
     {
         $user_id = $this->get_user_id();
 
-        $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>(object)null]);
+		if($user_id)
+			$this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>(object)null]);
 
 
         //当前登录用户信息
