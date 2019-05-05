@@ -1,0 +1,271 @@
+<include file="public/header" title="充值" body="g4"/>
+<include file="public/header_nav" title="充值" href="javascript:history.back(-1)"/>
+<form method="post"  id="recharge_form" action="{:U('Mobile/Push/recharge')}" enctype="multipart/form-data">
+    <div class="loginsingup-input mobil_topup" style="padding:0 0.64rem;">
+        <!-- 当前地推积分 -->
+        <div class="recharge-curent">
+            <span>当前积分<span class="cash">{$integral_push|default=0}</span></span>
+        </div>
+
+        <!-- 充值凭证 -->
+        <div class="customer-messa">
+            <div class="maleri30">
+                <p>请上传充值凭证:</p>
+                <div class="borderline"> 
+                    <!-- <div class="hendicon" style="margin-top: 20px;">
+                        <span></span>
+                        <label class="file" style="cursor:pointer;">
+                            <div class="around" id="fileList">
+                                <img class="picture" src="__PUBLIC__/images/add-button.jpg"/>
+                                <input  id="picture" type="file" accept="image/*" name="head_pic"  onchange="handleFiles(this)" style="display:none">
+                            </div>
+                        </label>
+                    </div> -->
+                    <label>
+                        <div class="file upload">
+                            <div class="shcph" id="fileList0">
+                                <img class="picture" src="__PUBLIC__/images/add-button.jpg">
+                            </div>
+                            <input  type="file" accept="image/*" name="recharge_input" id="picture" onchange="handleFiles(this,0)" style="display:none">
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 充值金额 -->
+        <div class="recharge-cash">
+        	<div class="lsu-recharge">
+            	<span style="float:none;">充值金额：<em>￥</em></span>
+            	<input type="number" name="account" id="add_money" value=""  placeholder="请输入充值金额">
+                <i></i>
+        	</div>
+            <div class="lsu-recharge-choose">
+            	<a href="javascript:void(0)" rel="50" class="">￥50</a>
+                <a href="javascript:void(0)" rel="100">￥100</a>
+                <a href="javascript:void(0)" rel="500">￥500</a>
+            </div>
+        </div>
+        <div class="lsu-submit usedeb">
+            <input type="button" value="提交">
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $(function(){
+        // 提交
+        $('.usedeb').click(function(){
+            var add_money = $('#add_money').val();
+            var fileInput = $('#picture').get(0).files[0];
+            if(!fileInput){
+                layer.open({content: '请上传充值凭证',time:2});
+                return false;
+            }
+
+            if ( add_money == ''){
+                layer.open({content: '充值金额不能为空',time:2});
+                return false;
+            }
+
+            if (isNaN(add_money) || Number(add_money) <= 0){
+
+                layer.open({content: '请输入正确的充值金额ne'+add_money,time:2});
+                return false;
+            }
+
+            $('#recharge_form').submit();
+        })
+    })
+    
+    // window.URL = window.URL || window.webkitURL;
+    // console.log(window.URL);
+    // function handleFiles(obj) {
+    //     fileList = document.getElementById("fileList");
+    //     var files = obj.files;
+    //     img = new Image();
+    //     if(window.URL){
+    //         //创建一个object URL，并不是你的本地路径
+    //         img.src = window.URL.createObjectURL(files[0]); 
+    //         img.width = 60;
+    //         img.height = 60;
+    //         img.onload = function(e) {
+    //             //图片加载后，释放object URL
+    //             window.URL.revokeObjectURL(this.src); 
+    //         }
+    //         if(fileList.firstElementChild){
+    //             fileList.removeChild(fileList.firstElementChild);
+    //         }
+    //         $('#fileList').find('img').remove();
+    //         fileList.appendChild(img);
+    //     }else if(window.FileReader){
+    //         //opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+    //         var reader = new FileReader();
+    //         reader.readAsDataURL(files[0]);
+    //         reader.onload = function(e){
+    //             img.src = this.result;
+    //             img.width = 60;
+    //             img.height = 60;
+    //             $('#fileList').find('img').remove();
+    //             fileList.appendChild(img);
+    //         }
+    //     }else{
+    //         //ie
+    //         obj.select();
+    //         obj.blur();
+    //         var nfile = document.selection.createRange().text;
+    //         document.selection.empty();
+    //         img.src = nfile;
+    //         img.width = 60;
+    //         img.height = 60;
+    //         img.onload=function(){
+
+    //         }
+    //         $('#fileList').find('img').remove();
+    //         fileList.appendChild(img);
+    //     }
+    //     $('#asubmit').show();
+    //     $('#logout').hide();
+    // }
+
+    //显示上传照片
+    window.URL = window.URL || window.webkitURL;
+    function handleFiles(obj,id) {
+        fileList = document.getElementById("fileList"+id);
+        var files = obj.files;
+        img = new Image();
+        if(window.URL){
+
+            img.src = window.URL.createObjectURL(files[0]); //创建一个object URL，并不是你的本地路径
+            img.width = 200;
+            img.height = 200;
+            img.onload = function(e) {
+                window.URL.revokeObjectURL(this.src); //图片加载后，释放object URL
+            }
+            if(fileList.firstElementChild){
+                fileList.removeChild(fileList.firstElementChild);
+            }
+            fileList.appendChild(img);
+        }else if(window.FileReader){
+            //opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+            var reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            reader.onload = function(e){
+                img.src = this.result;
+                img.width = 200;
+                img.height = 200;
+                fileList.appendChild(img);
+            }
+        }else
+        {
+            //ie
+            obj.select();
+            obj.blur();
+            var nfile = document.selection.createRange().text;
+            document.selection.empty();
+            img.src = nfile;
+            img.width = 200;
+            img.height = 200;
+            img.onload=function(){
+
+            }
+            fileList.appendChild(img);
+        }
+    }
+
+	//清除输入金额
+	$(".lsu-recharge i").click(function(){
+        $('#add_money').val("").focus();
+        $(".lsu-recharge-choose a").removeClass("cash-choosed");
+        $(".lsu-recharge i").hide();
+    })
+
+    // 选金额
+	$(".lsu-recharge-choose a").click(function(){
+		$('#add_money').val($(this).attr('rel'));
+		$(this).addClass("cash-choosed").siblings().removeClass("cash-choosed");
+        show_delete_btn();
+
+    })
+
+    // 输入金额时：显示（￥ + 输入的金额 + 光标 + 清除）
+    $("#add_money").keydown(function(){
+        show_delete_btn();
+        $(".lsu-recharge-choose a").removeClass("cash-choosed");
+    });
+    $("#add_money").keyup(function(){
+        if ($('#add_money').val()=="") {
+            $(".lsu-recharge i").hide();
+        }else{
+            show_delete_btn();
+        }
+    });
+
+    function show_delete_btn(){
+        $(".lsu-recharge i").show().unbind('click');
+        $(".lsu-recharge i").click(function(){
+            $('#add_money').val("").focus();
+            $(".lsu-recharge-choose a").removeClass("cash-choosed");
+            $(".lsu-recharge i").hide();
+        })
+
+    }
+
+
+</script>
+
+<style type="text/css">
+    .card{
+        width: 33%;
+		float:left;
+		padding:0.128rem 0 0.128rem 0.384rem;
+    }
+	.checkbord{ 
+        border:1px solid #0171d9; 
+        border-radius:0.128rem;
+    }
+	.choose-titr em{ 
+        display:block; 
+        font-size:.68267rem; 
+        margin-top:0.64rem;
+    }
+	.choose-titr em i{ 
+        font-size:1.024rem;
+    }
+	.teuse .xyz{ 
+        width:12.8rem; 
+        height:1.92rem; 
+        border:none; 
+        background-color:#ff594a; 
+        border-radius:6px; 
+        color:#fff; 
+        margin:0 auto; 
+        margin-top:0.64rem
+    }
+    .borderline {
+        margin-top: 20px;
+        height: 220px;
+        width: 200px;
+    }
+    .upload {
+        text-align:center;
+        height: 200px;
+        width: 200px;
+        border: 1px dashed #ccc;
+        position: absolute;
+        top: 50%; 
+        left: 50%;
+        transform:translate(-50%,-50%);
+    }
+    .picture{
+        width:50px; 
+        height:50px;
+        position: absolute;
+        top: 50%; 
+        left: 50%;
+        transform:translate(-50%,-50%);
+    }
+</style>
+
+</body>
+</html>
