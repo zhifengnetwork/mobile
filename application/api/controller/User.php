@@ -563,9 +563,9 @@ class User extends ApiBase
     public function myIndex()
     {
         $user_id = $this->get_user_id();
-        if (!IS_POST) {
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>(object)null]);
-        }
+
+        $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>(object)null]);
+
 
         //当前登录用户信息
         $logic = new UsersLogic();
