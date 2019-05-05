@@ -1292,12 +1292,16 @@ function change_role($order_id)
     $goods_list = M('order_goods')->where(['order_id' => $order_id])->select();
     foreach ($goods_list as $k => $v) {
         $goods_attr = M('goods')->where(['goods_id' => $v['goods_id']])->field('goods_id,is_distribut,is_agent')->find();
-        if ($goods_attr['is_distribut'] == 1) {
-            M('users')->where("user_id", $user_id)->save(array('is_distribut' => 1));
+        if($goods_attr['goods_price'] > 390){
+            $arr = array('is_agent' => 1, 'is_distribut' => 1);
+            M('users')->where("user_id", $user_id)->save($arr);
         }
-        if ($goods_attr['is_agent'] == 1) {
-            M('users')->where("user_id", $user_id)->save(array('is_agent' => 1));
-        }
+        // if ($goods_attr['is_distribut'] == 1) {
+        //     M('users')->where("user_id", $user_id)->save(array('is_distribut' => 1));
+        // }
+        // if ($goods_attr['is_agent'] == 1) {
+        //     M('users')->where("user_id", $user_id)->save(array('is_agent' => 1));
+        // }
     }
 
    
