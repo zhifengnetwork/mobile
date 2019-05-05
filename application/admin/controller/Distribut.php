@@ -32,13 +32,24 @@ class Distribut extends Base {
         $log = M('account_log')->alias('log')->join('users', 'users.user_id = log.user_id')
                 ->field('log.*, users.agent_user')->where('log.states', ['in', ['101', '102']])
                 ->where(['order_sn'=>$order['order_sn']])->select();
-
         // $chinese = ['无', '一', '二', '三', '四', '五'];
         // foreach($log as $k => $v){
         //     $log[$k]['agent_user'] = $chinese[$v['agent_user']];
         // }
-
         $this->assign('log', $log);
+
+        $arr = array(
+            'l.user_id'  => $order['user_id'],
+            'l.order_id' => $order_id,
+        );
+        $area_log = M('user_regional_divide_log')->alias('l')
+                ->join('users u', 'u.user_id = l.user_id')
+                ->join('order o', 'o.order_id = l.order_id')
+                ->join('region r', 'r.id = l.region_id')
+                ->field('l.*, u.nickname, o.order_sn, r.name')
+                ->where($arr)
+                ->select();
+        $this->assign('area_log', $area_log);
 
         $orderModel = new OrderModel();
         $order = $orderModel::get(['order_id'=>$order_id]);
