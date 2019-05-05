@@ -10,7 +10,7 @@ class Shop extends Base
   
     public function index()
     {
-      $this->redirect('index/index');
+      $this->redirect('index/welcome');
     }
 
    

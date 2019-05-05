@@ -708,7 +708,6 @@ class UsersLogic extends Model
      */
     public function get_goods_collect($user_id,$limit=false){
         $count = M('goods_collect')->alias('c')
-            ->field('c.collect_id,c.add_time,g.goods_id,g.goods_name,g.shop_price,g.is_on_sale,g.store_count,g.cat_id,g.is_virtual,g.original_img')
             ->join('goods g','g.goods_id = c.goods_id','INNER')
             ->where("c.user_id = $user_id")
             ->count();
@@ -717,7 +716,7 @@ class UsersLogic extends Model
         //获取我的收藏列表
 		$limit = $limit ? $limit : ($page->firstRow.','.$page->listRows);
             $result = M('goods_collect')->alias('c')
-            ->field('c.collect_id,c.add_time,g.goods_id,g.goods_name,g.shop_price,g.is_on_sale,g.store_count,g.cat_id,g.is_virtual,g.original_img')
+            ->field('c.collect_id,c.add_time,g.goods_id,g.goods_name,g.cat_id,g.market_price,g.shop_price,g.is_on_sale,g.store_count,g.cat_id,g.is_virtual,g.original_img')
             ->join('goods g','g.goods_id = c.goods_id','INNER')
             ->where("c.user_id = $user_id")
             ->limit($limit)
