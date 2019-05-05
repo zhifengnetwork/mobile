@@ -28,13 +28,29 @@ class DistributLogic
             $data = array(
                 'order_id'=>$order_id
             );
-            M('bufa_log')->add($data);
+            M('bufa_log')->add($data); 
         }
     }
 
+    /**
+     * 手动补发
+     * log == 1 或者不传 : 记录
+     * log == 0 不记录
+     */
+    public function bufa_hand($order_id,$log=1){
 
+        //补发业绩
+        agent_performance($order_id);
+        //补发返利
+        replacement($order_id);
 
-
+        if($log == 1){ 
+            $data = array(
+                'order_id'=>$order_id 
+            );
+            M('bufa_log')->add($data);
+        }
+    }
 
     /**
      * 用户充值记录

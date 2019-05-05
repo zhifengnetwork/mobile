@@ -75,13 +75,30 @@ class Distribut extends Base {
     /**
      * 补发
      */
+    // public function bufa(){
+    
+    //     $order_id = I('post.order_id/d',0);
+    // 	$bufa = new \app\common\logic\DistributLogic();
+      
+    //     try{
+    //         $bufa->bufa($order_id,1);
+
+    //         $this->ajaxReturn(['status' => 1, 'msg' => '操作成功，请刷新看结果']);
+
+    //     }catch (TpshopException $t){
+    //         $error = $t->getErrorArr();
+    //         $this->ajaxReturn($error);
+    //     }
+
+    // }
+
     public function bufa(){
     
         $order_id = I('post.order_id/d',0);
     	$bufa = new \app\common\logic\DistributLogic();
       
         try{
-            $bufa->bufa($order_id,1);
+            $bufa->bufa_hand($order_id,1);
 
             $this->ajaxReturn(['status' => 1, 'msg' => '操作成功，请刷新看结果']);
 

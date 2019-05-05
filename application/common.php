@@ -4,6 +4,7 @@ use think\Log;
 use think\Db;
 
 use app\common\logic\BonusLogic;
+use app\common\logic\ReplacementLogic;
 
 define('EXTEND_MODULE', 1);
 define('EXTEND_ANDROID', 2);
@@ -202,6 +203,42 @@ function jichadaili($order_id)
         $model = new BonusLogic($userId, $goodId, $goodNum, $orderSn, $order_id);
         $res = $model->bonusModel();
     }
+}
+
+
+/**
+ * 级差代理
+ * 手动补发 分钱
+ */
+function replacement($order_id)
+{
+    $order = M('order')->where(['order_id' => $order_id])
+            ->field('user_id,order_sn')->find();
+
+    $userId = $order['user_id'];
+    $orderSn = $order['order_sn'];
+
+    $goods_list = M('order_goods')->alias('og')
+        ->join('tp_goods g ',' g.goods_id = og.goods_id')
+        ->field(" g.goods_id, og.goods_num, g.shop_price,g.is_distribut,is_agent")
+        ->where(['og.order_id' => $order_id])
+        ->select();
+    
+    if(!empty($goods_list)){
+        foreach ($goods_list as $k => $v) {
+            if($v['shop_price'] <= 9.9){
+                continue;
+            }
+            if(($v['is_distribut'] == 0) && ($v['is_agent'] == 0)){
+                continue;
+            }
+            $goodId = $v['goods_id'];
+            $goodNum = $v['goods_num'];
+            $model = new ReplacementLogic($userId, $goodId, $goodNum, $orderSn, $order_id);
+            $res = $model->bonusModel();
+        }
+    }
+   
 }
 
 
