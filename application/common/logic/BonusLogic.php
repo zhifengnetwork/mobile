@@ -41,17 +41,17 @@ class BonusLogic extends Model
 				->field('is_distribut,is_agent,shop_price')
                 ->find();
 		if(($good['is_distribut'] == 1) && ($good['is_agent'] == 1)){
-			$this->change_role(1,1);
+			// $this->change_role(1,1);
 			$dist = $this->distribution();
 			$agent = $this->theAgent($this->userId);
 			$this->sel($this->userId,$good['shop_price']);
 			return true;
 		}else if($good['is_distribut'] == 1){
-			$this->change_role(1,0);
+			//$this->change_role(1,0);
 			$dist = $this->distribution();
 			return true;
 		}else if($good['is_agent'] == 1){
-			$this->change_role(1,1);
+			// $this->change_role(1,1);
 			$agent = $this->theAgent($this->userId);
 			$this->sel($this->userId,$good['shop_price']);
 			return true;
@@ -66,7 +66,7 @@ class BonusLogic extends Model
 	public function change_role($distributor,$agent)
 	{
 	    $data = [];
-	    if($distributor){
+	    if($distributor){ 
 	        $data['is_distribut'] = $distributor;
         }
         if($agent){

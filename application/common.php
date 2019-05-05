@@ -1279,7 +1279,7 @@ function can_super_nsign($order_id, $user_id)
  */
 function change_role($order_id)
 {
-    $order = M('order')->where(['order_id' => $order_id])->find();
+    $order = M('order')->where(['order_id' => $order_id])->field('pay_status,user_id,order_id')->find();
     if (!$order) {
         return false;
     }
@@ -1289,15 +1289,25 @@ function change_role($order_id)
 
     $user_id = $order['user_id'];
 
-    $goods_list = M('order_goods')->where(['order_id' => $order_id])->select();
+    $goods_list = M('order_goods')->where(['order_id' => $order_id])->field('order_id,goods_id')->select();
     foreach ($goods_list as $k => $v) {
-        $goods_attr = M('goods')->where(['goods_id' => $v['goods_id']])->field('goods_id,is_distribut,is_agent')->find();
-        if ($goods_attr['is_distribut'] == 1) {
-            M('users')->where("user_id", $user_id)->save(array('is_distribut' => 1));
+       
+        $goods_attr = M('goods')->where(['goods_id' => $v['goods_id']])->field('goods_id,is_distribut,is_agent,shop_price')->find();
+        
+        if($goods_attr['shop_price'] > 390){
+           
+            $arr = array('is_agent' => 1, 'is_distribut' => 1);
+            M('users')->where("user_id", $user_id)->save($arr);
+
+            //写日志
+            M('change_role_log')->add(['user_id'=>$order['user_id'],'order_id'=>$order_id]);
         }
-        if ($goods_attr['is_agent'] == 1) {
-            M('users')->where("user_id", $user_id)->save(array('is_agent' => 1));
-        }
+        // if ($goods_attr['is_distribut'] == 1) {
+        //     M('users')->where("user_id", $user_id)->save(array('is_distribut' => 1));
+        // }
+        // if ($goods_attr['is_agent'] == 1) {
+        //     M('users')->where("user_id", $user_id)->save(array('is_agent' => 1));
+        // }
     }
 
    

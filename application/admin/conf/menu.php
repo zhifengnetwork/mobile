@@ -159,6 +159,8 @@ return array(
             // array('name'=>'会员等级','act'=>'levelList','op'=>'User'),
         )),
         array('name' => '充值提现', 'child' => array(
+            // array('name' => '地推充值设置', 'act' => 'set_recharge', 'op' => 'Push'),
+            // array('name' => '地推充值申请', 'act' => 'apply_recharge', 'op' => 'Push'),
             array('name' => '充值记录', 'act' => 'recharge', 'op' => 'User'),
             array('name' => '提现申请', 'act' => 'withdrawals', 'op' => 'User'),
             array('name' => '提现设置', 'act' => 'cash', 'op' => 'System'),
