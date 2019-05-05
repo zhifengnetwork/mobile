@@ -334,7 +334,7 @@ class Order extends ApiBase
         if (IS_POST) {
             // 晒图片
             $files = request()->file('pic');
-            $save_url = UPLOAD_PATH . 'comment/' . date('Y', time()) . '/' . date('m-d', time());
+            $save_url = UPLOAD_PATH . 'comment/' . date('Y', time());
             if($files) {	
 				// 移动到框架应用根目录/public/uploads/ 目录下
 				$image_upload_limit_size = config('image_upload_limit_size');
@@ -343,7 +343,7 @@ class Order extends ApiBase
 				if ($info) {
 					// 成功上传后 获取上传信息
 					// 输出 jpg
-					$comment_img = '/' . $save_url . '/' . $info->getFilename();
+					$comment_img = '/' . $save_url . '/' . date('Ymd', time()) . '/' . $info->getFilename();
 				} else {
 					// 上传失败获取错误信息
 					$this->ajaxReturn(['status' =>-1,'msg' =>$files->getError()]);
