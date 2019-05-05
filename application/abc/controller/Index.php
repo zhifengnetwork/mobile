@@ -12,6 +12,13 @@ use think\Controller;
 class Index extends Controller
 {
 
+    public function index(){
+
+        $order_id = 4060;
+        change_role($order_id);
+    }
+
+
     /**
      * 买399加一次机会
      */
@@ -27,7 +34,7 @@ class Index extends Controller
         dump($order);
     }
 
-    public function index(){
+    public function head(){
         $url = "http://thirdwx.qlogo.cn/mmopen/vi_32/1ZeNR1gSiczejQL7picQwpFHxQJbmqQPuyvnMBmEphISvBlPmHeC1wsEPuy9KRMtiacbrje3kH9ic1Cvib0hkFpp4vw/132";
 
         $end = substr($url,-3);
