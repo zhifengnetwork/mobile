@@ -385,7 +385,7 @@ class Order extends ApiBase
 				'content'	=> $v->content ? $v->content : '',
 				'add_time'	=> time(),
 				'user_id'	=> $user_id ,
-				'img'		=> $user_info['img'] ? serialize($v->img) : '',
+				'img'		=> $v->img ? serialize($v->img) : '',
 				'order_id'	=> $order_id,
 				'deliver_rank'	=> $v->deliver_rank ? $v->deliver_rank : '',
 				'goods_rank'	=> $v->goods_rank ? $v->goods_rank : '',
