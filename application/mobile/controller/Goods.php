@@ -174,8 +174,8 @@ class Goods extends MobileBase
         // 帅选 品牌 规格 属性 价格
         $cat_id_arr = getCatGrandson($id);
         $goods_where = ['is_on_sale' => 1, 'exchange_integral' => 0, 'cat_id' => ['in', $cat_id_arr], 'sign_free_receive' => $sign_free_receive];
-        $filter_goods_id = Db::name('goods')->where($goods_where)->cache(true)->getField("goods_id", true);
-
+        $filter_goods_id = Db::name('goods')->where($goods_where)->getField("goods_id", true);
+        // ->cache(true)
         // 过滤帅选的结果集里面找商品
         if ($brand_id || $price)// 品牌或者价格
         {
@@ -215,10 +215,11 @@ class Goods extends MobileBase
 
             $filter_goods_id2 = get_arr_column($goods_list, 'goods_id');
             if ($filter_goods_id2)
-                $goods_images = M('goods_images')->where("goods_id", "in", implode(',', $filter_goods_id2))->cache(true)->select();
+                $goods_images = M('goods_images')->where("goods_id", "in", implode(',', $filter_goods_id2))->select();
         }
-        $goods_category = M('goods_category')->where('is_show=1')->cache(true)->getField('id,name,parent_id,level'); // 键值分类数组
-
+        // ->cache(true)
+        $goods_category = M('goods_category')->where('is_show=1')->getField('id,name,parent_id,level'); // 键值分类数组
+        // ->cache(true)
         $this->assign('goods_list', $goods_list);
         $this->assign('goods_category', $goods_category);
         $this->assign('goods_images', $goods_images);  // 相册图片

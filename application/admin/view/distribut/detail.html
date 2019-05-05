@@ -199,6 +199,37 @@
             </tbody>
           </table>
 
+          <notempty name="area_log">
+            <h4>区域代理返利记录</h4>
+            <table>
+              <thead>
+                <tr>
+                  <th class="w50">记录ID</th>
+                  <th class="w50">用户ID</th>
+                  <th class="w50">用户昵称</th>
+                  <th class="w50">所选地区</th>
+                  <th class="w50">变动金额</th>
+                  <th>返利时间</th>
+                  <th>订单编号</th>
+                  <th>描述</th>
+                </tr>
+              </thead>
+              <tbody>
+                <foreach name="area_log" item="v">
+                  <tr>
+                    <td class="text-center">{$v.id}</td>
+                    <td class="text-center">{$v.user_id}</td>
+                    <td class="text-center">{$v.nickname}</td>
+                    <td class="text-center">{$v.name}</td>
+                    <td class="text-center">{$v.user_money}</td>
+                    <td class="text-center">{$v.add_time|date='Y-m-d H:i:s',###}</td>
+                    <td class="text-center">{$v.order_sn}</td>
+                    <td class="text-center">{$v.desc}</td>
+                  </tr>
+                </foreach>
+              </tbody>
+            </table>
+          </notempty>
           <div onclick="javascript:bufa();" style="text-align:center;font-size: 1.2rem;width: 10rem;height: 2rem;line-height: 2rem;background:#1AAD19;border-radius: .25rem;margin: .5rem auto;color: #fff;">
             返利补发
           </div>

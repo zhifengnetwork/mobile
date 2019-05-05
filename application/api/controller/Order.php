@@ -30,6 +30,7 @@ class Order extends ApiBase
 
    /**
     * 订单列表
+    *  20190505 conflict
     */
     public function order_list()
     {   
@@ -38,7 +39,7 @@ class Order extends ApiBase
         $user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
-        }
+        } 
         /*if ($type=='WAITSEND')$data = array('order_status' => [0,1],'shipping_status' =>1,'pay_code'=>'cod'); //'待发货',货到付款
         if ($type=='WAITSEND')$data = array('pay_status'=>1,'order_status'=>[0,1],'shipping_status'=>0,'pay_code'=>['not in','cod']);//'待发货',非货到付款*/
         if ($type == 1)$data = array('tp_order.pay_status'=>1,'tp_order.shipping_status'=>['neq',1],'tp_order.order_status' => ['in','0,1'],);//'待发货'	
