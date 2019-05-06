@@ -240,7 +240,7 @@ class Order extends ApiBase
 			$this->ajaxReturn(['status' => 0, 'msg' => '计算成功', 'data' => ['user_money'=>$usermoney,'price'=>$pay->toArray(),'address'=>$address,'goodsinfo'=>$goodsinfo]]);
         } catch (TpshopException $t) {
             $error = $t->getErrorArr();
-            $this->ajaxReturn(['status' => -5, 'msg' => $error, 'data'=> null]);
+            $this->ajaxReturn(['status' => -5, 'msg' => $error['msg'], 'data'=> null]);
         }	
 	 }
 
