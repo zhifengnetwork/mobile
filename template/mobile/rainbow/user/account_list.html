@@ -17,22 +17,23 @@
         </div>
 
         <div class="allpion">
-            <div class="fll_acc fll_acc-h">
+            <!-- <div class="fll_acc fll_acc-h">
               <ul><li class="orderid-h">订单</li><li class="price-h">金额</li><li class="time-h">时间</li></ul>
-            </div>  	
+            </div>-->
+
               <foreach name="account_log" item="v">
+
                   <div class="fll_acc" onclick="ajax_account_detail(this)" data-url="{:U('Mobile/User/account_detail',['log_id'=>$v['log_id']])}">
-                      <ul>
-                          <li class="orderid-h">{$v[order_sn]|default='无'}</li>
-                          <li class="price-h">{$v[user_money]}</li>
-                          <li class="time-h">{:date('Y-m-d H:i:s',$v[change_time])}</li>
-                      </ul>
-                      <div class="des-h">描述:{$v[desc]}</div>
+                        <div class="fll">订单编号：{$v[order_sn]|default='无'}</div>
+                        <div class="fll">变动金额：<span style="color:#e01222;">{$v[user_money]}</span></div>
+                        <div class="fll" style="color:#999;">变动时间：{:date('Y-m-d H:i:s',$v[change_time])}</div>
+                        <div class="fll">描述：{$v[desc]}</div>
                   </div>
               </foreach>
+
         </div>
 
-        <div id="getmore"  style="font-size:.32rem;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both;display: none">
+        <div id="getmore"  style="font-size:.512rem;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both;display: none">
             <a >已显示完所有记录</a>
         </div>
     </div>
