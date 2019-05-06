@@ -236,7 +236,8 @@ class Order extends ApiBase
 				$address['district_name'] = $address['district'] ? M('region')->where(['id'=>$address['district']])->value('name') : '';
 				$address['twon_name'] = $address['twon'] ? M('region')->where(['id'=>$address['twon']])->value('name') : '';
 			} 
-			$this->ajaxReturn(['status' => 0, 'msg' => '计算成功', 'data' => ['price'=>$pay->toArray(),'address'=>$address,'goodsinfo'=>$goodsinfo]]);
+			$usermoney = M('Users')->where(['user_id'=>$user_id])->value('user_money');
+			$this->ajaxReturn(['status' => 0, 'msg' => '计算成功', 'data' => ['user_money'=>$usermoney,'price'=>$pay->toArray(),'address'=>$address,'goodsinfo'=>$goodsinfo]]);
         } catch (TpshopException $t) {
             $error = $t->getErrorArr();
             $this->ajaxReturn(['status' => -5, 'msg' => $error, 'data'=> null]);
