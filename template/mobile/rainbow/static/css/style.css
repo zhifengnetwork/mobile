@@ -5798,8 +5798,14 @@ span.mp_mp {
 	background-color:#e23435;
 }
 .fll_acc {
+	padding: .3rem 0;
 	border-bottom:1px solid #ddd;
 	overflow:hidden;
+}
+.fll_acc .fll {
+	color: #666;
+	font-size: .512rem;
+	line-height: .85rem;
 }
 .fll_acc li {
 	float:left;
