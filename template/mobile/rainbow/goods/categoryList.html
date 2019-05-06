@@ -20,7 +20,7 @@
 				<div class="search">
 					<form action="/mobile/Goods/search.html" method="get">
 						<input type="submit" class="search-btn" value="" />
-						<input type="text" class="search-text" placeholder="SK ll" name="q" />
+						<input type="text" class="search-text" placeholder="防晒喷雾" name="q" />
 						<i class="scan"></i>
 					</form>
 				</div>
@@ -62,7 +62,7 @@
 									<foreach name="category.child" item="child">
 										<li class="item">
 											<a href="/Mobile/Goods/goodsInfo/id/{$child[goods_id]}.html">
-												<img src="{$child[original_img]}" />
+												<img src="{$child[goods_id]|goods_thum_images=100,100}" />
 												<p>{$child[goods_name]}</p>
 											</a>
 										</li>
