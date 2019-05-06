@@ -227,7 +227,7 @@ class Order extends ApiBase
                     ->setUserNote($user_note)->setTaxpayer($taxpayer)->setInvoiceDesc($invoice_desc)->setPayPsw($pay_pwd)->setTakeTime($take_time)->addNormalOrder();
                 $cartLogic->clear();
                 $order = $placeOrder->getOrder();
-                $this->ajaxReturn(['status' => 0, 'msg' => '提交订单成功', 'data' => ['order_sn' => $order['order_sn']] ]);
+                $this->ajaxReturn(['status' => ($user_money ? 1 : 0), 'msg' => '提交订单成功', 'data' => ['order_sn' => $order['order_sn']] ]);
             }
 			$address = M('user_address')->where(['user_id'=>$user_id])->order('is_default desc')->find();
 			if($address){
@@ -237,7 +237,7 @@ class Order extends ApiBase
 				$address['twon_name'] = $address['twon'] ? M('region')->where(['id'=>$address['twon']])->value('name') : '';
 			} 
 			$usermoney = M('Users')->where(['user_id'=>$user_id])->value('user_money');
-			$this->ajaxReturn(['status' => ($user_money ? 1 : 0), 'msg' => '计算成功', 'data' => ['user_money'=>$usermoney,'price'=>$pay->toArray(),'address'=>$address,'goodsinfo'=>$goodsinfo]]);
+			$this->ajaxReturn(['status' => 0, 'msg' => '计算成功', 'data' => ['user_money'=>$usermoney,'price'=>$pay->toArray(),'address'=>$address,'goodsinfo'=>$goodsinfo]]);
         } catch (TpshopException $t) {
             $error = $t->getErrorArr();
             $this->ajaxReturn(['status' => -5, 'msg' => $error, 'data'=> null]);
