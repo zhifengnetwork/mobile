@@ -75,7 +75,7 @@ class Push extends Base
         $count = M('recharge_points')->alias('recharge')->where($where)
                 ->join('users', 'users.user_id = recharge.user_id')
                 ->count();
-        $Page = new Page($count, 20);
+        $Page = new Page($count, 10);
         $recharge = M('recharge_points')->alias('recharge')->where($where)
                 ->join('users', 'users.user_id = recharge.user_id')
                 ->field('recharge.*, users.nickname')

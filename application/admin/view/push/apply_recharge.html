@@ -195,7 +195,7 @@
                                         <!-- <a id="admin_login_logo_a" class="nyroModal" rel="gal" href="{$v.recharge_pic}">
                                             <i id="admin_login_logo_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$v.recharge_pic} style=\'width:500px;height:500px;\>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
                                         </a> -->
-                                        <img src="{$v.recharge_pic}"/>
+                                        <img src="{$v.recharge_pic}" style="width: 100px; height: 150px" onclick="check_picture('{$v.recharge_pic}');"/>
                                     </span>
                                 </div>
                             </td>
@@ -257,6 +257,23 @@
             elem: "#end_time"
         })
     });
+
+    //查看充值凭证
+    function check_picture(img){
+        img = "<img src='" + img + "' />";
+        layer.open({  
+            type: 1,  
+            shade: false,  
+            title: false, //不显示标题  
+            area:['auto','auto'],  
+            area: [img.width + 'px', img.height+'px'],  
+            //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响  
+            content: img, 
+            cancel: function () {  
+                
+            }  
+        });  
+    }
     
     function check_form(){
         var start_time = $.trim($('#start_time').val());
