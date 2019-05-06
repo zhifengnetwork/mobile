@@ -633,7 +633,7 @@ class User extends ApiBase
         ->join('tp_seller b', 'a.seller_id=b.seller_id','left')
         ->join('tp_seller_store c', 'b.seller_id=c.seller_id', 'left')
         ->where('user_id',$user_id)
-        ->field('a.collect_id,a.seller_id,b.seller_name,c.avatar')
+        ->field('a.collect_id,a.seller_id,c.store_name as seller_name,c.avatar')
 		->limit($limit)
         ->select();
 

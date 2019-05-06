@@ -24,8 +24,11 @@ class Seller extends ApiBase
 		$list = M('seller_store')->field('store_id,store_name,avatar,businesshours,email,seller_id')->where(['auditing'=>10,'is_delete'=>10])->order('add_time asc')->limit($limit)->select();
 
 		$Goods = M('goods');
+		$SellerCollect = M('seller_collect');
 		foreach($list as $k=>$v){
 			$list[$k]['goods'] = $Goods->field('goods_id,goods_name,shop_price,original_img')->where(['seller_id'=>$v['seller_id'],'is_on_sale'=>1])->limit('0,'.$goodsnum)->select();
+			$list[$k]['collect_num'] = $SellerCollect->where(['seller_id'=>$v['seller_id']])->count();
+			$list[$k]['is_collect'] = $SellerCollect->where(['user_id'=>$user_id,'seller_id'=>$v['seller_id']])->count();
 		}
 
 		$this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功','data'=>['list'=>$list]]);
