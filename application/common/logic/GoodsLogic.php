@@ -206,7 +206,10 @@ class GoodsLogic extends Model
 
         $goods_id_str = implode(',', $goods_id_arr);
         $goods_id_str = $goods_id_str ? $goods_id_str : '0';
-        $priceList = M('goods')->where("goods_id", "in", $goods_id_str)->getField('shop_price', true);  //where("goods_id in($goods_id_str)")->select();
+		if($client === 'mobile')
+			$priceList = M('goods')->where("goods_id", "in", $goods_id_str)->getField('shop_price', true);  //where("goods_id in($goods_id_str)")->select();
+		else
+			$priceList = M('goods')->getField('shop_price', true);
         rsort($priceList);
         $max_price = (int)$priceList[0];
 
