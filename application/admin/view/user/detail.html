@@ -68,7 +68,7 @@
                     <label for="email">电子邮箱</label>
                 </dt>
                 <dd class="opt">
-                    <input id="email"  name="email" value="{$user.email}" class="input-txt" type="text">
+                    <input id="email"  name="email" value="{$user.email}" class="input-txt" readonly onfocus="this.removeAttribute('readonly')" autocomplete="off" type="text">
                     <span class="err"></span>
                     <p class="notic">请输入常用的邮箱，将用来找回密码、接受订单通知等。</p>
                 </dd>
