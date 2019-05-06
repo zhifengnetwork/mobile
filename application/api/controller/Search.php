@@ -108,6 +108,10 @@ class Search extends ApiBase
                 }  
             }
         }
+
+		foreach($filter_price as $k=>$v){
+			$filter_price[$k]['href'] = substr($v['href'],strrpos($v['href'],'/')+1);
+		}
         
         $data = [
             'goods_list'=> $goods_list,
