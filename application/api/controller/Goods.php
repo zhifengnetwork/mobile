@@ -302,6 +302,7 @@ class Goods extends ApiBase
 
         $goodsLogic = new GoodsLogic();
         $goods_id = I("post.goods_id/d", 0);
+		$goodsnum = I("post.goodsnum/d", 6);
         $goods = M('Goods')->field('template_id,sku,spu,cost_price',true)->find($goods_id);
         if (empty($goods) || ($goods['is_on_sale'] == 0)) {
             $this->ajaxReturn(['status' => -2, 'msg' => '此商品不存在或者已下架', 'data' => NULL]);
@@ -323,6 +324,7 @@ class Goods extends ApiBase
 		}
 		$seller_info['store_name'] = $seller_info['store_name'] ? $seller_info['store_name'] : '平台自营';
 		$seller_info['num'] = M('goods')->where(['seller_id'=>$goods['seller_id'],'is_on_sale'=>1])->count();
+		$seller_info['goods'] = M('Goods')->field('goods_id,goods_name,shop_price,original_img')->where(['seller_id'=>$goods['seller_id'],'is_on_sale'=>1])->limit('0,'.$goodsnum)->select(); 
 		$goods['seller_info'] = $seller_info;
 
 		unset($goods['template_id']);
