@@ -198,10 +198,10 @@ class GoodsLogic extends Model
      * @param int $c 分几段 默认分5 段
      * @return array
      */
-    function get_filter_price($goods_id_arr, $filter_param, $action, $c = 5)
+    function get_filter_price($goods_id_arr, $filter_param, $action, $c = 5, $client='mobile')
     {
 
-        if (!empty($filter_param['price']))
+        if (!empty($filter_param['price']) && ($client === 'mobile'))
             return array();
 
         $goods_id_str = implode(',', $goods_id_arr);
