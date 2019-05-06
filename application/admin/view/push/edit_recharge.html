@@ -35,7 +35,7 @@
             </dl>
             <dl class="row">
                 <dt class="tit">
-                    <label>申请充值金额</label>
+                    <label>充值金额</label>
                 </dt>
                 <dd class="opt"><strong class="red">{$recharge.user_money}</strong></dd>
             </dl>
@@ -47,15 +47,9 @@
             </dl>
             <dl class="row">
                 <dt class="tit">
-                    <label>平台积分</label>
+                    <label>目前积分</label>
                 </dt>
                 <dd class="opt"><strong class="red">{$recharge.integral_push}</strong></dd>
-            </dl>
-            <dl class="row">
-                <dt class="tit">
-                    <label>申请充值凭证</label>
-                </dt>
-                <dd class="opt"><img src="{$recharge.recharge_pic}" style="width:14rem;height: 14rem;"></dd>
             </dl>
             <dl class="row">
                 <dt class="tit">
@@ -80,6 +74,12 @@
                     <if condition="$recharge[status] eq 1">审核通过</if>
                     <if condition="$recharge[status] eq 2">充值完成</if>
                 </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>申请凭证</label>
+                </dt>
+                <dd class="opt"><img src="{$recharge.recharge_pic}" style="width:14rem;height: 14rem;"></dd>
             </dl>
             <dl class="row">
                 <dt class="tit">备注</dt>
