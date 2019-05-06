@@ -424,6 +424,21 @@
             </dl>
             <dl class="row">
                 <dt class="tit">
+                    <label>是否为地推商品</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label id="is_push_label_1" for="is_push1" class="cb-enable <if condition='$goods.is_ground_push eq 1'>selected</if>">是</label>
+                        <label id="is_push_label_0" for="is_push0" class="cb-disable <if condition='$goods.is_ground_push eq 0'>selected</if>">否</label>
+                        <input id="is_push1" autocomplete="off" class="is_agent" name="is_ground_push" value="1" type="radio" <if condition="$goods[is_ground_push] eq 1"> checked="checked"</if>>
+                        <input id="is_push0" autocomplete="off" class="is_agent" name="is_ground_push" value="0" type="radio" <if condition="$goods[is_ground_push] eq 0"> checked="checked"</if>>
+                    </div>
+                    <span class="err" id="err_is_ground_push"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
                     <label>是否为虚拟商品</label>
                 </dt>
                 <dd class="opt">
