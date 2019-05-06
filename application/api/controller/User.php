@@ -627,8 +627,6 @@ class User extends ApiBase
 		$num = I('post.num/d',6);
 		$limit = (($page - 1) * $num) . ',' . $num;
 
-		$goodsnum = I('post.goodsnum/d',6);
-
         // 获取所有店铺
         $seller_arr = Db::name('seller_collect')
         ->alias('a')
@@ -638,11 +636,6 @@ class User extends ApiBase
         ->field('a.collect_id,a.seller_id,b.seller_name,c.avatar')
 		->limit($limit)
         ->select();
-
-		$Goods = M('goods');
-		foreach($seller_arr as $k=>$v){
-			$seller_arr[$k]['goods'] = $Goods->field('goods_id,goods_name,shop_price,original_img')->where(['seller_id'=>$v['seller_id'],'is_on_sale'=>1])->limit('0,'.$goodsnum)->select();
-		}
 
 		$count = Db::name('seller_collect')
         ->alias('a')
