@@ -617,7 +617,7 @@ class User extends ApiBase
      * 店铺关注列表
      * +---------------------------------
      */
-    public function getSellerCollect(){
+    public function getSellerCollect(){ 
         $user_id = $this->get_user_id();
         if (!IS_POST) {
             $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>(object)null]);
@@ -626,6 +626,8 @@ class User extends ApiBase
 		$page = I('post.page/d',1);
 		$num = I('post.num/d',6);
 		$limit = (($page - 1) * $num) . ',' . $num;
+
+		$goodsnum = I('post.goodsnum/d',6);
 
         // 获取所有店铺
         $seller_arr = Db::name('seller_collect')
@@ -636,6 +638,11 @@ class User extends ApiBase
         ->field('a.collect_id,a.seller_id,b.seller_name,c.avatar')
 		->limit($limit)
         ->select();
+
+		$Goods = M('goods');
+		foreach($seller_arr as $k=>$v){
+			$seller_arr[$k]['goods'] = $Goods->field('goods_id,goods_name,shop_price,original_img')->where(['seller_id'=>$v['seller_id'],'is_on_sale'=>1])->limit('0,'.$goodsnum)->select();
+		}
 
 		$count = Db::name('seller_collect')
         ->alias('a')
