@@ -40,7 +40,7 @@ class Cart extends ApiBase
     {	
         $page = I('post.page/d',1);
 		$num = I('post.num/d',10);
-        $limit = (($page - 1)) * $num . ',' . $num;	
+        $limit = (($page - 1)) * $num . ',' . $num;	  
         $user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
@@ -50,11 +50,19 @@ class Cart extends ApiBase
         $cartLogic->setUserId($user_id);
         $data = $cartLogic->getCartList2(0,$limit);//用户购物车
         $seller_arr = Db::name('seller')->field('seller_id,seller_name')->select();
+		$SpecGoodsPrice = M('spec_goods_price');
         foreach($data as $k=>$v){
-            $goods_seller_id = Db::name('goods')->field('goods_id,seller_id')->where(['goods_id'=>$v['goods_id']])->find();
+            $goods_seller_id = Db::name('goods')->field('goods_id,seller_id,original_img')->where(['goods_id'=>$v['goods_id']])->find();
             if($goods_seller_id){
                 $data[$k]['seller_id'] = $goods_seller_id['seller_id'];
+				$data[$k]['original_img'] = $goods_seller_id['original_img'];
+				$data[$k]['prom_id'] = $goods_seller_id['prom_id'];
+				$data[$k]['prom_type'] = $goods_seller_id['prom_type'];
             }
+			$sgpinfo = $SpecGoodsPrice->field('price,store_count,spec_img')->where(['item_id'=>$v['item_id']])->find();
+			$data[$k]['goods_price'] = $sgpinfo['price'] ? $sgpinfo['price'] : $data[$k]['goods_price'];
+			$data[$k]['original_img'] = $sgpinfo['spec_img'] ? $sgpinfo['spec_img'] : $data[$k]['original_img'];
+			$data[$k]['store_count'] = $sgpinfo['store_count'] ? $sgpinfo['store_count'] : $data[$k]['store_count'];
 
         }
        
@@ -82,15 +90,15 @@ class Cart extends ApiBase
             unset($v['user_id']);
             unset($v["session_id"]);
             unset($v["goods_id"]);
-            unset($v["goods_name"]);
+            //unset($v["goods_name"]);
             unset($v["market_price"]);
             unset($v["member_goods_price"]);
             unset($v["item_id"]);
            //unset($v["spec_key"]);
             unset($v["bar_code"]);
             unset($v["add_time"]);
-            unset($v["prom_type"]);
-            unset($v["prom_id"]);
+            //unset($v["prom_type"]);
+            //unset($v["prom_id"]);
             unset($v["sku"]);
             unset($v["combination_group_id"]);
         }
