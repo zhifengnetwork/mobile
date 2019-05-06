@@ -515,8 +515,8 @@ class UsersLogic extends Model
         $user['return_count'] = Db::name('return_goods')->where(['user_id'=>$user_id,'status'=>['in', '0,1,2,3']])->count();   //退换货数量
         //不统计虚拟的
         $user['waitPay'] = Db::name('order')->where("prom_type < 5 and user_id = $user_id " . C('WAITPAY'))->count(); //待付款数量
-        $user['waitSend'] = Db::name('order')->where("prom_type < 5 and user_id = $user_id " . C('WAITSEND'))->count(); //待发货数量
-        $user['waitReceive'] = Db::name('order')->where("prom_type < 5 and user_id = $user_id " . C('WAITRECEIVE'))->count(); //待收货数量
+        $user['waitSend'] = Db::name('order')->where("pay_status = 1 and prom_type < 5 and user_id = $user_id " . C('WAITSEND'))->count(); //待发货数量
+        $user['waitReceive'] = Db::name('order')->where("pay_status = 1 and prom_type < 5 and user_id = $user_id " . C('WAITRECEIVE'))->count(); //待收货数量
         $user['order_count'] = $user['waitPay'] + $user['waitSend'] + $user['waitReceive'];
 
         $commentLogic = new CommentLogic;
