@@ -543,7 +543,7 @@ class Order extends MobileBase
      */
     public function wait_receive()
     {
-        $where = ' user_id=' . $this->user_id;
+        $where = 'pay_status = 1 and user_id=' . $this->user_id;
         //条件搜索
         if (I('type') == 'WAITRECEIVE') {
             $where .= C(strtoupper(I('type')));
