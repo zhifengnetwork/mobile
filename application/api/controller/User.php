@@ -387,14 +387,17 @@ class User extends ApiBase
     public function visit_log()
     {
         $user_id = $this->get_user_id();
-        $count = M('goods_visit')->where('user_id', $user_id)->count();
-        $Page = new Page($count, 20);
+
+		$page = I('post.page/d',1);
+		$num = I('post.num/d',6);
+		$limit = (($page - 1) * $num) . ',' . $num;
+
         $visit = M('goods_visit')->alias('v')
             ->field('v.visit_id, v.goods_id, v.visittime, g.goods_name, g.shop_price, g.cat_id, g.comment_count, g.sales_sum, g.original_img')
             ->join('__GOODS__ g', 'v.goods_id=g.goods_id')
             ->where('v.user_id', $user_id)
             ->order('v.visittime desc')
-            ->limit($Page->firstRow, $Page->listRows)
+            ->limit($limit)
             ->select();
 
         /* 浏览记录按日期分组 */
