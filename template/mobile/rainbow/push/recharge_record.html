@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<title></title>
+		<script src="__STATIC__/js/push/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/push/public.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/css/push/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/push/recharge_record.css" />
+	</head>
+	<body>
+		
+		<!--最大边框-->
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/images/push/back@2x.png"/>
+				</p>
+				<span>充值记录</span>
+			</div>
+			<!--内容-->
+			<div class="content_wrap">
+				<!--循环-项-->
+				<volist name="record" id="record">
+					<p class="trem_box">
+						<span class="trem_box_span trem_box_time">{$record.create_time|date="Y-m-d H:i:s", ###}</span>
+						<span class="trem_box_span trem_box_num">+{$record.user_money}</span>
+					</p>
+				</volist>
+			</div>
+		</div>
+		
+		<script src="__STATIC__/js/push/jquery-1.8.3.js"></script>
+		<script src="__STATIC__/js/push/public.js"></script>
+	</body>
+</html>
