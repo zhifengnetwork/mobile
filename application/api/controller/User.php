@@ -515,6 +515,8 @@ class User extends ApiBase
 		$page = I('post.page/d',1);
 		$num = I('post.num/d',6);
 		$limit = ($page-1)*$num . ',' . $num;
+		$next_user_id = I('post.next_user_id/d',0);
+		$user_id = $next_user_id ? $next_user_id : $user_id;
 
 		$Users = M('users');
         $list = $Users->field('user_id,nickname,mobile')->order('user_id DESC')->where(['first_leader'=>$user_id])->limit($limit)->select();

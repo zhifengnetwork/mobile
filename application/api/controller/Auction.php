@@ -154,6 +154,10 @@ class Auction extends ApiBase
         if(!$id){
             return $this->ajaxReturn(['status' => -2, 'msg' => '参数错误', 'data' => null]);  
         }
+
+		$user_id = $this->get_user_id();
+        if(!$user_id)$this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
+
         //报名人数
         $buy_num = M('Auction')->where(['id'=>$id])->value('buy_num');
         //出价条数
@@ -162,6 +166,7 @@ class Auction extends ApiBase
         $max_price = M('Auction_price')->alias('A')->field('A.*,U.head_pic')->join('tp_users U','A.user_id=U.user_id','left')->where(['A.auction_id'=>$id])->order('A.offer_price desc')->limit(0,$num)->select();
         foreach($max_price as $k=>$v){
             $max_price[$k]['offer_time'] = date('m.d H:i:s',$v['offer_time']);
+			$max_price[$k]['isnowuser'] = ($user_id == $v['user_id']) ? 1 : 0;
         }
         return $this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['buy_num'=>$buy_num,'price_num'=>$price_num,'max_price'=>$max_price]]); 
     }   
