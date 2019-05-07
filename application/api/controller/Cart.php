@@ -281,14 +281,18 @@ class Cart extends ApiBase
         }
         $goods_id = I("goods_id/d",0); // 商品id
         $goods_num = I("goods_num/d",1);// 商品数量
-        $item_id = I("item_id/d",0); // 商品规格id
+        $key = I("item_id/s",''); // 商品规格id
         if(empty($goods_id)){
             $this->ajaxReturn(['status'=>-2,'msg'=>'请选择要购买的商品','data'=>null]);
         }
         if(empty($goods_num)){
             $this->ajaxReturn(['status'=>-3,'msg'=>'购买商品数量不能为0','data'=>null]);
         }
-        $cartLogic = new CartLogic();
+		$item_id = $key ? M('spec_goods_price')->where(['goods_id'=>$goods_id,'key'=>$key])->value('item_id') : 0; 
+		
+		if($key && !$item_id)$this->ajaxReturn(['status'=>-3,'msg'=>'未查询到此商品规格','data'=>null]); //可能为key顺序拼接错误
+        
+		$cartLogic = new CartLogic();
         $cartLogic->setUserId($user_id);
         $cartLogic->setGoodsModel($goods_id);
         $cartLogic->setSpecGoodsPriceById($item_id);
