@@ -125,7 +125,7 @@ class Auction extends ApiBase
             $this->addAuctionOffer($user_id, $auction_id, $price);
         } else {
             if($user_id == $high[0]['user_id']){
-                $this->ajaxReturn(['status' => -5, 'msg' => '您已经是目前最高出价者了', 'data' => nill]);
+                $this->ajaxReturn(['status' => -5, 'msg' => '您已经是目前最高出价者了', 'data' => null]);
             }
             if($price <= $high[0]['offer_price']){
                 $this->ajaxReturn(['status' => -6, 'msg' => '您的出价不是最高价', 'data' => null]);

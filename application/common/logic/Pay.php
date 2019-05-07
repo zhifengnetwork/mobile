@@ -463,7 +463,7 @@ class Pay
             if(!empty($EarnestMoney)){
                 $this->deposit = $EarnestMoney;
 
-                $this->orderAmount = $EarnestMoney > $query['offer_price'] ? 0 : $query['offer_price'] - $EarnestMoney;
+                $this->orderAmount = $EarnestMoney > ($query['offer_price']+$this->shippingPrice) ? 0 : $query['offer_price'] - $EarnestMoney + $this->shippingPrice;
             }
 
         }
