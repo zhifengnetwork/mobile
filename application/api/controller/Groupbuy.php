@@ -185,7 +185,7 @@ class Groupbuy extends ApiBase
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
         }
-		$user = M('Users')->field('user_id,user_money,head_pic,nickname')->find($user_id);
+		$user = M('Users')->field('user_id,user_money,head_pic,nickname,paypwd')->find($user_id);
 
 		$buy_type = input("buy_type/d", 1); //  //1：单独购买，2：拼团
 		$team_id = input("team_id/d", 0); //  拼团活动id
