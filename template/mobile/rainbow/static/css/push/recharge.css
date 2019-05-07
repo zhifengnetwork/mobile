@@ -1,0 +1,149 @@
+@charset "utf-8";
+.content_wrap {
+	width: 100%;
+	height: auto;
+}
+/*充值方式*/
+.mode_wrap {
+	padding-top: .24rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+	
+}
+.mode_trem {
+	position: relative;
+	margin: 0 auto;
+	padding: 0 .24rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 93%;
+	height: .9rem;
+	color: #1a1a1a;
+	font-size: .26rem;
+	line-height: .9rem;
+	background-color: #fff;
+}
+/*已-勾选图标*/
+.mode_trem_state_yes:after {
+	content: " ";
+	display: block;
+	width: .44rem;
+	height: .44rem;
+	position: absolute;
+	top: 0;
+	right: .24rem;
+	bottom: 0;
+	z-index: 1;
+	margin: auto 0;
+	background: url(../../images/push/radio-b@2x.png) no-repeat 0 0;
+	background-size: 100% 100%;
+}
+/*未-勾选图标*/
+.mode_trem_state_no:after {
+	content: " ";
+	display: block;
+	width: .44rem;
+	height: .44rem;
+	position: absolute;
+	top: 0;
+	right: .24rem;
+	bottom: 0;
+	z-index: 1;
+	margin: auto 0;
+	background: url(../../images/push/radio-a@2x.png) no-repeat 0 0;
+	background-size: 100% 100%;
+}
+/*充值金额*/
+.recharge_wrap {
+	padding-top: .28rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+}
+.recharge_wrap_inp {
+	display: block;
+	margin: 0 auto;
+	width: 93%;
+	height: .8rem;
+	outline: none;
+	border: none;
+	color: #1a1a1a;
+	font-size: .26rem;
+	text-align: .08rem;
+	letter-spacing: .02rem;
+	background-color: #fff;
+}
+/*上传凭证*/
+.credentials_wrap {
+	padding-top: .5rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: 4.7rem;
+}
+.credentials_upload { 
+	position: relative;
+	margin: 0 auto;
+	width: 3.4rem;
+	height: 3.4rem;
+	border: .02rem dashed #676767;
+	background-color: #fff;
+}
+.credentials_tips {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	z-index: 1;
+	margin: auto;
+	display: table;
+	width: 100%;
+	height: 1.2rem;
+	text-align: center;
+	color: #8f8f8f;
+	letter-spacing: .02rem;
+	font-size: .3rem;
+	line-height: .3rem;
+}
+.credentials_tips_icon {
+	display: block;
+	margin: 0 auto .42rem;
+	width: .45rem;
+	height: .45rem;
+}
+/*回显图片*/
+.echo_display_img {
+	display: none;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 9;
+	margin: auto;
+	max-width: 100%;
+	max-height: 100%;
+}
+/*充值 按钮*/
+.recharge_button {
+	width: 100%;
+	height: auto;
+}
+.recharge_but {
+	margin: 0 auto;
+	width: 50%;
+	height: .8rem;
+	font-size: .3rem;
+	line-height: .8rem;
+	color: #fff;
+	text-align: center;
+	letter-spacing: .04rem;
+	border-radius: .06rem;
+	background-color: #5acf54;
+}

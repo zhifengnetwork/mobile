@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<title></title>
+		<script src="__STATIC__/js/push/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/push/public.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/css/push/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/push/geography.css" />
+	</head>
+	<body>
+		<!--最大边框-->
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/images/push/back@2x.png"/>
+				</p>
+				<span>地理管理</span>
+			</div>
+			<!--内容-->
+			<div class="content_wrap">
+				<!--top-->
+				<div class="content_wrap_top">
+					<p class="content_wrap_icon_box">
+						<img class="content_wrap_icon" src="__STATIC__/images/push/integral@2x.png"/>
+					</p>
+					<p class="content_wrap_top_number">积分: <span>{$integral}</span></p>
+					<!--绝对定位-->
+					<p class="content_wrap_top_text" onclick="pageJump('/index.php?m=Mobile&c=Push&a=recharge_record')">充值记录</p>
+				</div>
+				<!--项 wrap-->
+				<div class="term_wrap">
+					<p class="trem_box" onclick="pageJump('/index.php?m=Mobile&c=Push&a=recharge')">立即充值</p>
+					<p class="trem_box" onclick="pageJump('')">立即订货</p>
+					<p class="trem_box" onclick="pageJump('')">我的库存</p>
+					
+				</div>
+			</div>
+		</div>
+		
+		<script src="__STATIC__/js/push/jquery-1.8.3.js"></script>
+		<script src="__STATIC__/js/push/public.js"></script>
+	</body>
+</html>

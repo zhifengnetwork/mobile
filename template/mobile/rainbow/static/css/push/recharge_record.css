@@ -1,0 +1,41 @@
+@charset "utf-8";
+
+.content_wrap {
+	padding-top: .28rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+}
+/*项*/
+.trem_box {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-justify-content: space-between;
+	justify-content: space-between;
+	-moz-box-pack: space-between;
+	-webkit-box-pack: space-between;
+	box-pack: space-between;
+	margin: 0 auto .28rem;
+	padding: 0 .24rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 93%;
+	height: .9rem;
+	background-color: #fff;
+}
+.trem_box_span {
+	height: 100%;
+	font-size: .24rem;
+	line-height: .9rem;
+	color: #060606;
+	letter-spacing: .01rem;
+}
+.trem_box_num {
+	text-align: right;
+}
