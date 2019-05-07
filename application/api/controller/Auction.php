@@ -78,7 +78,7 @@ class Auction extends ApiBase
         }
         $auction['delay_end_time'] = $auction['end_time']+($auction['delay_num']*$auction['delay_time']*60); //延时结束时间
 
-        $isBond = $this->getUserIsBond($this->user_id, $auction_id);
+        $isBond = $this->getUserIsBond($user_id, $auction_id);
         $bondUser = $this->getHighPrice($auction_id);
         //是否有交保证金
         if (empty($isBond)){

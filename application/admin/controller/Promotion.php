@@ -757,6 +757,11 @@ class Promotion extends Base
                 $this->ajaxReturn($return);
             }
 
+			if($data['deposit'] <= 0)
+				$this->ajaxReturn(['status' => 0, 'msg' => '保证金必须大于0', 'result' => '']);
+			if($data['start_price'] <= 0)
+				$this->ajaxReturn(['status' => 0, 'msg' => '起拍必须大于0', 'result' => '']);
+
             if (empty($data['id'])) {
                 $auctionInsertId = Db::name('auction')->insertGetId($data);
                 if($data['item_id'] > 0){
