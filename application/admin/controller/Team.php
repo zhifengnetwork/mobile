@@ -75,7 +75,7 @@ class Team extends Base
         $data_ladder = [];
 
         if ($data['act'] == 'add')
-        {
+        {		$data['needer'] = $data['group_number'];
                 $team_id = Db::name('team_activity')->insertGetId($data);
                 if($team_id){
 					//M('goods')->update(['goods_id'=>$data['goods_id'],'prom_type'=>6,'prom_id'=>$team_id]);
