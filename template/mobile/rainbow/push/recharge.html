@@ -99,7 +99,7 @@
 				$(_this).find('.mode_trem_state').removeClass('mode_trem_state_no').addClass('mode_trem_state_yes');
 				data_obj['choice_id'] = _id;
 				data_obj['choice_accountd'] = $(_this).find('.mode_trem_value').html();
-				console.log('id：',data_obj['choice_id'],'对应账号:',data_obj['choice_accountd']);
+				// console.log('id：',data_obj['choice_id'],'对应账号:',data_obj['choice_accountd']);
 			}
 			/*上传图片 按钮  */
 			function upload_img(){
@@ -136,7 +136,7 @@
 				                    /*根据点击的下标 =>显示 '回显图片'*/
 				                    $(".echo_display_img").show();
 				                    data_obj['voucher_img'] = newImageData;
-				                    console.log( data_obj['voucher_img']);
+				                    // console.log( data_obj['voucher_img']);
 				                }  
 				            }else{  
 				            	//创建一个image对象，给canvas绘制使用 
@@ -147,7 +147,7 @@
 					                /*根据点击的下标 =>显示 '回显图片'*/
 					                $(".echo_display_img").show();
 					                data_obj['voucher_img'] = result;
-					                console.log(data_obj['voucher_img']);
+					                // console.log(data_obj['voucher_img']);
 				            	}  
 				            }  
 				        }  
@@ -164,7 +164,7 @@
 				/*充值金额*/
 				$('#input_number').live('input propertychange', function(){
 				  data_obj['choice_number'] = Number($(this).val());
-				  console.log(data_obj['choice_number']);
+				//   console.log(data_obj['choice_number']);
 				})
 				/*充值*/
 				$('.recharge_but').on('click',function(){
