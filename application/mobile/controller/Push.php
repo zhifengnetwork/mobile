@@ -30,6 +30,7 @@ class Push extends MobileBase
         $record = M('recharge_points')
                 ->where($condiction)
                 ->field('create_time, user_money')
+                ->order('id DESC')
                 ->select();
         $this->assign('record', $record);
         return $this->fetch();
@@ -86,6 +87,22 @@ class Push extends MobileBase
         // }
         // $integral_push = M('users')->where('user_id', $user_id)->value('integral_push');
         // $this->assign('integral_push', $integral_push);
+
+        if(IS_POST){
+            $data = I('post.');
+            $arr = array('recharge_open', 'points_rate');
+            $config = M('config')
+                    ->where('name', ['in', $arr])
+                    ->where('inc_type', 'recharge')
+                    ->column('name, value');
+
+            //判断地推积分充值功能是否开启
+            if(!$config['recharge_open']){
+                $this->ajaxReturn(['status'=>0, 'msg'=>'积分充值功能已关闭']);
+                exit;
+            }
+            
+        }
         return $this->fetch();
     }
 }
