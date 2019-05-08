@@ -2,6 +2,7 @@
 
 namespace app\mobile\controller;
 
+use think\Exception;
 use think\Page;
 use think\db;
 
@@ -87,8 +88,7 @@ class Push extends MobileBase
     }
 
     /*
-	 * 处理base64编码的图片上传
-	 * 例如：涂鸦图片上传
+	 * 处理base64图片
 	*/
 	private function upBase64($max_size, $base64_data, $dirname){
         $img = base64_decode($base64_data);
@@ -124,6 +124,110 @@ class Push extends MobileBase
             $data = ['status'=>1, 'msg'=>'上传成功', 'data'=>substr($file['fullName'],1)];
             return $data;
 	    }
+    }
+    
+    // /**
+    //  * 地推商品购物车
+    //  */
+    // public function push_cart($action = '', $data)
+    // {
+    //     $user_id = session('user.user_id');
 
-	}
+    //     foreach ($data as $key => $value) {
+    //         $data[$key]['user_id'] = $user_id;
+            
+    //     }
+
+    //     switch ($action) {
+    //         case 'insert':
+    //             $result = $this->insert_cart($user_id, $data);
+    //             $this->ajaxReturn($result);   
+    //             break;
+            
+    //         case 'delete':
+    //             $result = $this->delete_cart($user_id, $data);
+    //             $this->ajaxReturn($result);   
+    //             break;
+
+    //         default:
+    //             $result = $this->update_cart($user_id, $data);
+    //             $this->ajaxReturn($result);  
+    //             break;
+    //     }
+    // }
+
+    // /**
+    //  * 添加购买地推商品
+    //  */
+    // public function insert_cart($user_id, $data)
+    // {
+    //     foreach ($data as $key => $value) {
+    //         $data[$key]['user_id'] = $user_id;
+    //         $data[$key]['create_time'] = time();
+    //     }
+    //     $result = M('push_cart')->insert($data);
+    //     if($result){
+    //         $result = ['status'=>1, 'msg'=>'操作成功!'];
+    //     }else{
+    //         $result = ['status'=>0, 'msg'=>'操作失败!'];
+    //     }
+    //     return $result;
+    // }
+
+    // /**
+    //  * 删除购买地推商品
+    //  */
+    // public function delete_cart($user_id, $data)
+    // {
+    //     foreach ($data as $key => $value) {
+    //         $ids[] = $value['goods_id'];
+    //     }
+    //     $retult = M('push_cart')->delete($ids);
+    //     if($result){
+    //         $result = ['status'=>1, 'msg'=>'操作成功!'];
+    //     }else{
+    //         $result = ['status'=>0, 'msg'=>'操作失败!'];
+    //     }
+    //     return $result;
+    // }
+
+    // /**
+    //  * 修改购买地推商品
+    //  */
+    // public function update_cart($user_id, $data)
+    // {
+    //     foreach ($data as $key => $value) {
+    //         $condition = array(
+    //             'user_id'  => $user_id,
+    //             'goods_id' => $value['goods_id'],
+    //         );
+    //         $is_exisit = M('push_cart')->where($condiction)->find();
+    //         if($is_exisit){
+    //             $result = M('push_cart')->where('item_id', $is_exisit['id'])->update($value);
+    //             if($result){
+    //                 $result = ['status'=>1, 'msg'=>'操作成功!'];
+    //             }else{
+    //                 $result = ['status'=>0, 'msg'=>'操作失败!'];
+    //             }
+    //             return $result;
+    //         }
+    //     }
+    // }
+
+    /**
+     * 我的库存
+     */
+    public function my_stock()
+    {
+        $user_id = session('user.user_id');
+        $fir = 'g.goods_name, g.original_img, g.goods_sn, s.goods_num, i.item';
+        $stock = M('push_stock')->alias('s')
+                ->join('goods g', 'g.goods_id = s.goods_id')
+                ->join('spec_item i', 'i.id = s.item_id', 'LEFT')
+                ->where('user_id', $user_id)
+                ->field($fir)
+                ->select();
+        $this->assign('stock', $stock);
+        return $this->fetch();
+    }
 }
