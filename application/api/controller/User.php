@@ -183,7 +183,7 @@ class User extends ApiBase
      * +---------------------------------
     */
     public function del_address()
-    {
+    {   
         $user_id = $this->get_user_id();
         $id = I('get.id/d');
         $address = M('user_address')->where("address_id", $id)->find();
@@ -191,12 +191,13 @@ class User extends ApiBase
             $this->ajaxReturn(['status' => -1 , 'msg'=>'地址id不存在！','data'=>'']);
         }
         $row = M('user_address')->where(array('user_id' => $user_id, 'address_id' => $id))->delete();
+        var_dump($row); exit;
         // 如果删除的是默认收货地址 则要把第一个地址设置为默认收货地址
         if ($address['is_default'] == 1) {
             $address2 = M('user_address')->where("user_id", $user_id)->find();
             $address2 && M('user_address')->where("address_id", $address2['address_id'])->save(array('is_default' => 1));
         }
-        if (!$row)
+        if ($row)
             $this->ajaxReturn(['status' => 0 , 'msg'=>'删除地址成功','data'=>$row]);
         else
             $this->ajaxReturn(['status' => -1 , 'msg'=>'删除失败','data'=>'']);
@@ -356,8 +357,13 @@ class User extends ApiBase
             'pay_points' => $user_info['pay_points']?$user_info['pay_points']:0, // 积分
             'coupon_num' => $coupon_num, // 优惠券数量
             'alipay' => $user_info['alipay'], // 支付宝
+            'realname' => $user_info['realname'], //真实姓名
             'bank_name' => $user_info['bank_name'], // 银行名称
             'bank_card' => $user_info['bank_card'], // 银行卡号
+            'openid'    => 'openid:'.$user_info['openid'],
+            'service_ratio'    => tpCache('cash.service_ratio'),
+            'min_service_money'    => tpCache('cash.min_service_money'),
+            'max_service_money'    => tpCache('cash.max_service_money'),
         ];
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$user_info]);
         
@@ -975,7 +981,131 @@ class User extends ApiBase
     	$DistributLogic = new \app\common\logic\DistributLogic;
         $result= $DistributLogic->get_recharge_log($user_id,'','agent_performance_log');  //业务记录
         $this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功','data'=>['list'=>$result['result']]]); 
-    }    
+    }   
+    
+    //绑定支付宝
+    public function BindZfb(){ 
+        $user_id = $this->get_user_id();
+        if (!$user_id) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>(object)null]);
+        }
+
+        $zfb_account = I('post.zfb_account/s','');
+        $realname = I('post.realname/s','');
+        if (!$zfb_account || !$realname) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'请输入支付宝账号或真实姓名','data'=>(object)null]);
+        }
+
+        $res = M('Users')->update(['user_id'=>$user_id,'realname'=>$realname,'alipay'=>$zfb_account]);
+        if (false !== $zfb_account)   
+           $this->ajaxReturn(['status' => 0 , 'msg'=>'绑定成功','data'=>null]);
+        else
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'绑定失败','data'=>null]);
+    }
+
+    /**
+     * 申请提现
+     */
+    public function withdrawals()
+    {   
+        $user_id = $this->get_user_id();
+        if (!$user_id) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>(object)null]);
+        }
+        //paypwd money
+        $cash_open=tpCache('cash.cash_open');
+        if($cash_open!=1){
+            $this->ajaxReturn(['status' => -2 , 'msg'=>'提现功能已关闭,请联系商家','data'=>(object)null]);
+        }
+
+        $data = I('post.'); 
+        $data['user_id'] = $user_id;
+        $data['create_time'] = time();
+        $cash = tpCache('cash');
+
+        $userinfo = M('Users')->field('user_money,paypwd')->find($user_id);
+        $user_money = $userinfo['user_money'];
+        if(encrypt($data['paypwd']) != $userinfo['paypwd']){
+            $this->ajaxReturn(['status' => -3 , 'msg'=>'支付密码错误','data'=>(object)null]);
+        }
+        if ($data['money'] > $user_money) {
+            $this->ajaxReturn(['status' => -4 , 'msg'=>'本次提现余额不足','data'=>(object)null]);
+        } 
+        if ($data['money'] <= 0) {
+            $this->ajaxReturn(['status' => -5 , 'msg'=>'提现额度必须大于0','data'=>(object)null]);
+        }
+
+        // 统计所有0，1的金额
+        //$status = ['in','0,1'];   
+        // $status
+        $total_money = Db::name('withdrawals')->where(array('user_id' => $user_id, 'status' => 0))->sum('money');
+        if ($total_money + $data['money'] > $user_money) {
+            $this->ajaxReturn(['status' => -6 , 'msg'=>'您有提现申请待处理，本次提现余额不足','data'=>(object)null]);
+        }
+        if ($cash['cash_open'] == 1) {
+            $taxfee =  round($data['money'] * $cash['service_ratio'] / 100, 2);
+            // 限手续费
+            if ($cash['max_service_money'] > 0 && $taxfee > $cash['max_service_money']) {
+                $taxfee = $cash['max_service_money'];
+            }
+            if ($cash['min_service_money'] > 0 && $taxfee < $cash['min_service_money']) {
+                $taxfee = $cash['min_service_money'];
+            }
+            if ($taxfee >= $data['money']) {
+                $this->ajaxReturn(['status' => -7 , 'msg'=>'提现额度必须大于手续费！','data'=>(object)null]);
+            }
+            $data['taxfee'] = $taxfee;
+
+            // 每次限最多提现额度
+            if ($cash['min_cash'] > 0 && $data['money'] < $cash['min_cash']) {
+                $this->ajaxReturn(['status' => -8 , 'msg'=>'每次最少提现额度','data'=>(object)null]);
+            }
+            if ($cash['max_cash'] > 0 && $data['money'] > $cash['max_cash']) {
+                $this->ajaxReturn(['status' => -9 , 'msg'=>'每次最多提现额度','data'=>(object)null]);
+            }
+
+            $status = ['in','0,1,2,3'];
+            $create_time = ['gt',strtotime(date("Y-m-d"))];
+            // 今天限总额度
+            if ($cash['count_cash'] > 0) {
+                $total_money2 = Db::name('withdrawals')->where(array('user_id' => $user_id, 'status' => $status, 'create_time' => $create_time))->sum('money');
+                if (($total_money2 + $data['money'] > $cash['count_cash'])) {
+                    $total_money = $cash['count_cash'] - $total_money2;
+                    if ($total_money <= 0) {
+                        $this->ajaxReturn(['status' => -10 , 'msg'=>"您今天累计提现额为{$total_money2},金额已超过可提现金额.",'data'=>(object)null]);
+                    } else {
+                        $this->ajaxReturn(['status' => -10 , 'msg'=>"您今天累计提现额为{$total_money2}，最多可提现{$total_money}账户余额.",'data'=>(object)null]);
+                    }
+                }
+            }
+            // 今天限申请次数
+            if ($cash['cash_times'] > 0) {
+                $total_times = Db::name('withdrawals')->where(array('user_id' => $user_id, 'status' => $status, 'create_time' => $create_time))->count();
+                if ($total_times >= $cash['cash_times']) {
+                    $this->ajaxReturn(['status' => -10 , 'msg'=>"今天申请提现的次数已用完",'data'=>(object)null]);
+                }
+            }
+        }else{
+            $data['taxfee'] = 0;
+        }
+
+        if (M('withdrawals')->add($data)) {
+            
+            accountLog($user_id, -$data['money'] , 0, '提现扣款',  0, 0, '');
+
+            // 发送公众号消息给用户
+            $user = Db::name('OauthUsers')->where(['user_id'=>$user_id ])->find();
+            if ($user) {
+                $wx_content = "您的提现申请已提交，正在处理...";
+                $wechat = new \app\common\logic\wechat\WechatUtil();
+                $wechat->sendMsg($user['openid'], 'text', $wx_content);
+            }
+            
+            $this->ajaxReturn(['status'=>0,'msg'=>"已提交申请",'data'=>null]);
+        } else {
+            $this->ajaxReturn(['status'=>-11,'msg'=>'提交失败,联系客服!','data'=>null]);
+        }
+    }   
 
 //----------------------------------------------------------------------------------------------------------
 
