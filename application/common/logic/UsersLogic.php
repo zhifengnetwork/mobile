@@ -1573,23 +1573,16 @@ class UsersLogic extends Model
         return $leader;
     }
 
-    public function getArrayValue($arr){
-        $data = [];
-        foreach($arr as $v)
-            $data[] = $v['user_id'];
-        return $data;
-    }    
-
     //获取用户下级
     public function getUserLevBot($uid){
-        //$arr1 = M('Users_mem')->where(['first_leader'=>['in',$uid]])->column('user_id');
+        //$arr1 = M('Users')->where(['first_leader'=>['in',$uid]])->column('user_id');
         if(is_array($uid)){
             $sql = "select user_id from tp_users where first_leader in (".implode(',',$uid).")";
         }else
             $sql = "select user_id from tp_users where first_leader = $uid";
             
-        $res = M('Users_mem')->query($sql);
-        $arr1 = $this->getArrayValue($res);          
+        $res = M('Users')->query($sql);
+        $arr1 = get_arr_column($res,'user_id');          
         return $arr1;
     }
 
@@ -1600,9 +1593,7 @@ class UsersLogic extends Model
         if($arr1)$arr = array_merge($arr,$arr1);
 
         if($arr1){
-            //foreach($arr1 as $v){
-                $this->getUserLevBotAll($arr1,$arr);
-            //}
+            $this->getUserLevBotAll($arr1,$arr);
         }
         return $arr;
     }

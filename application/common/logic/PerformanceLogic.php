@@ -68,9 +68,9 @@ class PerformanceLogic
 
         $zong_yeji = $tuandui_money + $oldPerformance + $xiubu_yeji;
         //总业绩
- 
-        $per_logic = new \app\common\logic\PerformanceLogic();
-        $max_team_total  = $per_logic->tuandui_max_yeji($user_id);
+        
+        //$per_logic = new \app\common\logic\PerformanceLogic();
+        $max_team_total  = $this->tuandui_max_yeji($user_id);
 
         //加上 老系统的 最大用户业绩
         //$max_team_total = $max_team_total + session('user.team');
@@ -169,7 +169,7 @@ class PerformanceLogic
 
         $res = $all_yeji[0];
         // $res = $yeji[0]['agent_per'];
-       
+        
         //if($res == 0){
            // $res = M('users')->where(['user_id'=>$user_id])->value('team');
         //}
