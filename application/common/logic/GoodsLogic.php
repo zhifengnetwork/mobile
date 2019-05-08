@@ -198,15 +198,18 @@ class GoodsLogic extends Model
      * @param int $c 分几段 默认分5 段
      * @return array
      */
-    function get_filter_price($goods_id_arr, $filter_param, $action, $c = 5)
+    function get_filter_price($goods_id_arr, $filter_param, $action, $c = 5, $client='mobile')
     {
 
-        if (!empty($filter_param['price']))
+        if (!empty($filter_param['price']) && ($client === 'mobile'))
             return array();
 
         $goods_id_str = implode(',', $goods_id_arr);
         $goods_id_str = $goods_id_str ? $goods_id_str : '0';
-        $priceList = M('goods')->where("goods_id", "in", $goods_id_str)->getField('shop_price', true);  //where("goods_id in($goods_id_str)")->select();
+		if($client === 'mobile')
+			$priceList = M('goods')->where("goods_id", "in", $goods_id_str)->getField('shop_price', true);  //where("goods_id in($goods_id_str)")->select();
+		else
+			$priceList = M('goods')->getField('shop_price', true);
         rsort($priceList);
         $max_price = (int)$priceList[0];
 

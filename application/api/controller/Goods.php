@@ -249,11 +249,11 @@ class Goods extends ApiBase
      * 获取商品评论
      */
     public function getGoodsComment()
-    {
+    {	
 		$user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
-        }	
+        }
 
         $goods_id = I("post.goods_id/d", 0);
         $commentType = I('commentType', '1'); // 1 全部 2好评 3 中评 4差评
@@ -284,7 +284,10 @@ class Goods extends ApiBase
             //$list[$k]['reply_num'] = Db::name('reply')->where(['comment_id' => $v['comment_id'], 'parent_id' => 0])->count();
         }
 
-		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['commentlist'=>$list]]);
+		$goodsModel = new \app\common\model\Goods();
+		$comment_fr = $goodsModel->getCommentStatisticsAttr('', ['goods_id'=>$goods_id]);
+
+		$this->ajaxReturn(['status' => 0, 'msg' => '请求成功', 'data' => ['commentlist'=>$list,'comment_fr'=>$comment_fr]]);
     }
 
     /**
@@ -355,7 +358,7 @@ class Goods extends ApiBase
 		$goods['is_collect'] = M('goods_collect')->where(['goods_id'=>$goods_id,'user_id'=>$user_id])->count();
 		$goods['is_cart'] = M('cart')->where(['goods_id'=>$goods_id,'user_id'=>$user_id])->count();
 		$goods['comment_count'] = M('comment')->where(['goods_id'=>$goods_id,'is_show'=>1])->count();
-		$goods['comment_fr'] = $goodsModel->getCommentStatisticsAttr('', ['goods_id', $goods_id]);
+		$goods['comment_fr'] = $goodsModel->getCommentStatisticsAttr('', ['goods_id' => $goods_id]);
 		$goods['goods_images'] = M('Goods_images')->where(['goods_id'=>$goods_id])->column('image_url');	
         echo json_encode(['status' => 0, 'msg' => '请求成功', 'data' => ['goods'=>$goods,'goods_content'=>$goods_content]],JSON_UNESCAPED_UNICODE );
 

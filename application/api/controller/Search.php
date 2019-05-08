@@ -66,7 +66,7 @@ class Search extends ApiBase
 
 		if($type)$filter_param[$type] = 1;
         $filter_menu = $goodsLogic->get_filter_menu($filter_param, 'search'); // 获取显示的筛选菜单
-        $filter_price = $goodsLogic->get_filter_price($filter_goods_id, $filter_param, 'search'); // 筛选的价格期间
+        $filter_price = $goodsLogic->get_filter_price($filter_goods_id, $filter_param, 'search',5, 'app'); // 筛选的价格期间
         $filter_brand = $goodsLogic->get_filter_brand($filter_goods_id, $filter_param, 'search'); // 获取指定分类下的筛选品牌
 
         $count = count($filter_goods_id);
@@ -108,6 +108,10 @@ class Search extends ApiBase
                 }  
             }
         }
+
+		foreach($filter_price as $k=>$v){
+			$filter_price[$k]['href'] = substr($v['href'],strrpos($v['href'],'/')+1);
+		}
         
         $data = [
             'goods_list'=> $goods_list,
