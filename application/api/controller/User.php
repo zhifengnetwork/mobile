@@ -571,14 +571,6 @@ class User extends ApiBase
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$order,'user'=>$user]]);
     }
 
-	public function a(){
-		$Users = M('Users');
-		$UsersMem = M('Users_mem');
-
-		$arr = $Users->field('user_id,first_leader')->select();
-		$UsersMem->insertAll($arr);
-	}
-
     /**
      * +---------------------------------
      * 我的主页
@@ -971,7 +963,19 @@ class User extends ApiBase
 			$this->ajaxReturn(['status' => 0 , 'msg'=>'找回密码成功', 'data'=>null]);
 		else
 			$this->ajaxReturn(['status' => -2 , 'msg'=>'找回密码失败', 'data'=>null]);
-	}
+    }
+    
+    //业绩明细
+    public function performance_log(){
+        $user_id = $this->get_user_id();
+        if (!$user_id) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>(object)null]);
+        }
+
+    	$DistributLogic = new \app\common\logic\DistributLogic;
+        $result= $DistributLogic->get_recharge_log($user_id,'','agent_performance_log');  //业务记录
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功','data'=>['list'=>$result['result']]]); 
+    }    
 
 //----------------------------------------------------------------------------------------------------------
 
