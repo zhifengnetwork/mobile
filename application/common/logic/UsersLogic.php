@@ -1566,4 +1566,55 @@ class UsersLogic extends Model
         $info = M('user_extend')->field($field)->where($map)->find();
         return !empty($info) ? $info : '';
     }
+
+    //获取用户上级
+    public function getUserLevTop($uid){
+        $leader = M('Users')->where(['user_id'=>$uid])->column('first_leader'); 
+        return $leader;
+    }
+
+    public function getArrayValue($arr){
+        $data = [];
+        foreach($arr as $v)
+            $data[] = $v['user_id'];
+        return $data;
+    }    
+
+    //获取用户下级
+    public function getUserLevBot($uid){
+        //$arr1 = M('Users_mem')->where(['first_leader'=>['in',$uid]])->column('user_id');
+        if(is_array($uid)){
+            $sql = "select user_id from tp_users where first_leader in (".implode(',',$uid).")";
+        }else
+            $sql = "select user_id from tp_users where first_leader = $uid";
+            
+        $res = M('Users_mem')->query($sql);
+        $arr1 = $this->getArrayValue($res);          
+        return $arr1;
+    }
+
+    //获取用户下级链
+    public function getUserLevBotAll($uid,&$arr){
+        if(!$arr)$arr = [];
+        $arr1 = $this->getUserLevBot($uid); 
+        if($arr1)$arr = array_merge($arr,$arr1);
+
+        if($arr1){
+            //foreach($arr1 as $v){
+                $this->getUserLevBotAll($arr1,$arr);
+            //}
+        }
+        return $arr;
+    }
+
+    //获取用户上级链
+    public function getUserLevTopAll($uid,&$arr){
+        $pid = $this->getUserLevTop($uid);
+
+        if($pid){
+            $arr[] = $pid;
+            $this->getUserLevTopAll($pid,$arr);
+        }
+        return $arr;
+    }  
 }

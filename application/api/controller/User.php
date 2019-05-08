@@ -535,7 +535,6 @@ class User extends ApiBase
 				$add_logic->add($user_id,$bu_moneys);
 			   
 				//重新来
-				$per_logic =  new PerformanceLogic();
 				$money_total = $per_logic->distribut_caculate();
 			}
 			$list[$k]['money_total'] = $money_total['money_total'];
@@ -551,14 +550,34 @@ class User extends ApiBase
             $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>null]);
         }
 
+		$next_user_id = I('post.next_user_id/d',0);
+		$user_id = $next_user_id ? $next_user_id : $user_id;
+		$type = I('post.type/s','');
+
 		$page = I('post.page/d',1);
 		$num = I('post.num/d',6);
 		$limit = ($page-1)*$num . ',' . $num;
+		if($type == 'all'){ //取所有团队成员的订单
+			$UsersLogic = new UsersLogic();
+			$bot_arr = [];
+			$bot_arr = $UsersLogic->getUserLevBotAll($user_id,$bot_arr);
+			$bot_arr[] = $user_id;
+			$order = M('order')->alias('O')->join('tp_users U','O.user_id=U.user_id','left')->field('O.order_id,O.order_sn, O.consignee, O.add_time,O.total_amount,U.nickname')->where(['O.user_id'=>['in',$bot_arr],'O.pay_status'=>1])->limit($limit)->order('O.add_time DESC')->select();	
+			$this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$order,'user'=>$user]]);
+		}
         $order = M('order')->field('order_id,order_sn, consignee, add_time,total_amount')->where(['user_id'=>$user_id,'pay_status'=>1])->limit($limit)->order('add_time DESC')->select();
         
         $user = M('users')->field('user_id,nickname,mobile')->where(['user_id'=>$user_id])->find();
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$order,'user'=>$user]]);
     }
+
+	public function a(){
+		$Users = M('Users');
+		$UsersMem = M('Users_mem');
+
+		$arr = $Users->field('user_id,first_leader')->select();
+		$UsersMem->insertAll($arr);
+	}
 
     /**
      * +---------------------------------
