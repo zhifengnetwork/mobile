@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<title></title>
+		<script src="__STATIC__/js/push/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/push/public.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/css/push/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/push/my_stock.css" />
+	</head>
+	<body>
+		
+		<!--最大边框-->
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/images/push/back@2x.png"/>
+				</p>
+				<span>我的库存</span>
+			</div>
+			<!--内容-->
+			<empty name="stock">
+				<!-- <span>你还没有购买商品</span> -->
+			<else/>
+				<volist name="stock" id="item">
+					<div class="content_wrap">
+						<!--循环-项-->
+						<div class="trem_box">
+							<!--top-->
+							<p class="trem_box_top publicEllipsis">商品编号: <span>{$item.goods_sn}</span></p>
+							<!--bottom-->
+							<div class="trem_box_bottom clearfloat">
+								<p class="trem_box_bottom_img_box">
+									<!--图片w:130px;h:130px-->
+									<img class="trem_box_bottom_img" src="{$item.original_img|goods_thum_images=400,400}" alt="" />
+								</p>
+								<div class="trem_box_bottom_data">
+									<p class="trem_box_bottom_data_name publicEllipsis">{$item.goods_name}</p>
+									<p class="trem_box_bottom_data_num publicEllipsis">剩余库存: <span>{$item.goods_num}</span></p>
+									<p class="trem_box_bottom_data_gauge publicEllipsis">{$item.item}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</volist>
+			</empty>
+		</div>
+		
+		<script src="__STATIC__/js/push/jquery-1.8.3.js"></script>
+		<script src="__STATIC__/js/push/public.js"></script>
+	</body>
+</html>
