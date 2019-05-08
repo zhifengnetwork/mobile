@@ -230,4 +230,47 @@ class Push extends MobileBase
         $this->assign('stock', $stock);
         return $this->fetch();
     }
+
+    /**
+     * 立即订货
+     */
+    public function order_goods()
+    {
+        $condiction = array(
+            'prom_type'  => 0,
+            'is_virtual' => 0,
+            'is_on_sale' => 1,
+            'is_ground_push' => 1,
+            'sign_free_receive' => ['neq', 1],
+        );
+        $data = session('payBatchPriorData_' . $user_id);dump($data);
+        $goods_id = M('goods')->where($condiction)->column('goods_id');
+        $goodsModel = new \app\common\model\Goods();
+        $goods = $goodsModel::all($goods_id);
+        $this->assign('goods', $goods);
+        return $this->fetch();
+    }
+
+    //获取商品规格
+    public function getSpec($goods_id)
+    {
+        $spec_goods_price_key = db('spec_goods_price')->where("goods_id", $goods_id)->column('key');
+        if($spec_goods_price_key){
+            $spec_goods_price_key_str = implode('_', $spec_goods_price_key);
+            $spec_goods_price_key_arr = explode('_', $spec_goods_price_key_str);
+            $spec_goods_price_key_arr = array_unique($spec_goods_price_key_arr);
+            $spec_item_list = db('spec_item')->where('id', 'IN', $spec_goods_price_key_arr)->order('order_index asc')->select();
+            $spec_ids = get_arr_column($spec_item_list, 'spec_id');
+            $spec_list = db('spec')->where('id', 'IN', $spec_ids)->order('`order` desc, id asc')->select();
+            foreach($spec_list as $spec_key=>$spec_val){
+                foreach($spec_item_list as $spec_item_key=>$spec_item_val){
+                    if($spec_val['id'] == $spec_item_val['spec_id']){
+                        $spec_list[$spec_key]['spec_item'][] = $spec_item_val;
+                    }
+                }
+            }
+            $this->ajaxReturn(['status'=>1, 'msg'=>'获取成功', 'result'=>$spec_list]);
+        }
+        $this->ajaxReturn(['status'=>0, 'msg'=>'获取失败', 'result'=>'']);
+    }
 }
