@@ -283,12 +283,20 @@ class Payment extends ApiBase {
         }   
         $arr = $this->GetPay(['ordernum'=>$order_sn,'price'=>$info['order_amount']]);
         $this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功','data'=>$arr]); 
-	}
+    }
+    
+    public function WxAppNotifyUrl(){       
+        include_once "plugins/payment/appWeixinPay/WxPay.Api.php";   
+        include_once "plugins/payment/appWeixinPay/WxPay.Notify.php";  
+        $input = new \WxAppPayUnifiedOrder();   
+        $WxAppPayNotify = new \WxAppPayNotify();
+        $WxAppPayNotify->Handle(false);            
+    }    
 
 //=======================================================================
     private function GetPay($data){       
         if($data['price'] <= 0){
-            echo json_encode(array('result'=>0,'errmsg'=>'价格异常'));  exit;
+            $this->ajaxReturn(['status' => -2 , 'msg'=>'价格异常','data'=>null]); 
         }
 
 		include_once "plugins/payment/appWeixinPay/WxPay.Api.php";
@@ -298,7 +306,7 @@ class Payment extends ApiBase {
         $input->SetOut_trade_no($data['ordernum']);     //订单号
         //$input->SetTime_expire(date('yyyyMMddHHmmss',time()+20));     //订单号
         $input->SetTotal_fee($data['price']*100);
-        $input->SetNotify_url(SITE_URL.'/index.php/Home/Payment/notifyUrl/pay_code/weixin');
+        $input->SetNotify_url(SITE_URL.'/index.php/api/Payment/WxAppNotifyUrl');
         $input->SetTrade_type("APP");
         $result = \WxAppPayApi :: unifiedOrder($input,15);   
 
@@ -337,7 +345,7 @@ class Payment extends ApiBase {
 		ksort($arr);
 		$string = $this->ToUrlParams($arr);        
 		//签名步骤二：在string后加入KEY
-		$string = $string . "&key=DFHFTGJ54DFHfgjffggh342nerge4334";
+		$string = $string . "&key=6tRuI1ryP9PgvNnacP8YNBDnnnJxdZvy";
 		//签名步骤三：MD5加密
 		$string = md5($string);
 		//签名步骤四：所有字符转为大写

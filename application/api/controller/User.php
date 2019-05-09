@@ -337,7 +337,7 @@ class User extends ApiBase
 
     /**
      * +---------------------------------
-     * 修改个人信息 名称、头像、生日
+     * 我的钱包
      * +---------------------------------
     */
     public function my_wallet(){
@@ -362,7 +362,7 @@ class User extends ApiBase
             'realname' => $user_info['realname'], //真实姓名
             'bank_name' => $user_info['bank_name'], // 银行名称
             'bank_card' => $user_info['bank_card'], // 银行卡号
-            'openid'    => 'openid:'.$user_info['openid'],
+            'openid'    => $user_info['openid'] ? ('openid:'.$user_info['openid']) : '',
             'service_ratio'    => tpCache('cash.service_ratio'),
             'min_service_money'    => tpCache('cash.min_service_money'),
             'max_service_money'    => tpCache('cash.max_service_money'),
@@ -508,7 +508,7 @@ class User extends ApiBase
             'realname' => $user_info['result']['realname'], //真实姓名
             'bank_name' => $user_info['result']['bank_name'], // 银行名称
             'bank_card' => $user_info['result']['bank_card'], // 银行卡号
-            'openid'    => 'openid:'.$user_info['result']['openid'],
+            'openid'    => $user_info['result']['openid'] ? ('openid:'.$user_info['result']['openid']) : '',
             'service_ratio'    => tpCache('cash.service_ratio'),
             'min_service_money'    => tpCache('cash.min_service_money'),
             'max_service_money'    => tpCache('cash.max_service_money'),
