@@ -957,11 +957,12 @@ class User extends ApiBase
 	//找回密码短信对比
 	public function FindPwdCheckSms(){
 		$mobile = I('post.mobile/s','');
-		$code = I('post.code/s','');
+        $code = I('post.code/s','');
+        $scene = I('post.scene/d',2);
 
 		if($mobile || $code)$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误', 'data'=>null]);
 
-		$info = M('sms_log')->where(['mobile'=>$mobile,'scene'=>2])->find();
+		$info = M('sms_log')->where(['mobile'=>$mobile,'scene'=>$scene])->find();
 		if(!$info)$this->ajaxReturn(['status' => -1 , 'msg'=>'请先获取验证码', 'data'=>null]);
 		if(($info['add_time']+180) < time())$this->ajaxReturn(['status' => -1 , 'msg'=>'验证码已失效', 'data'=>null]);
 		if($code != $info['code'])
@@ -974,14 +975,20 @@ class User extends ApiBase
 	public function FindPwd(){
 		$mobile = I('post.mobile/s','');
 		$password = I('post.password/s','');
-		$password2 = I('post.password2/s','');
+        $password2 = I('post.password2/s','');
+        $scene = I('post.scene/d',2);
 
 		if($mobile || $password || $password2)$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误', 'data'=>null]);
 		if(strlen($password) < 6)$this->ajaxReturn(['status' => -1 , 'msg'=>'密码至少6位', 'data'=>null]);
 		if($password != $password2)$this->ajaxReturn(['status' => -1 , 'msg'=>'两次密码不一致', 'data'=>null]);
 
-		$user_id = M('Users')->where(['mobile'=>$mobile])->value('user_id');
-		$res = M('Users')->update(['user_id'=>$user_id,'password'=>encrypt($password)]);
+        $user_id = M('Users')->where(['mobile'=>$mobile])->value('user_id');
+        if($scene == 2)
+            $res = M('Users')->update(['user_id'=>$user_id,'password'=>encrypt($password)]);
+        elseif($scene == 6)
+            $res = M('Users')->update(['user_id'=>$user_id,'paypwd'=>encrypt($password)]);
+        else
+            $this->ajaxReturn(['status' => -3 , 'msg'=>'参数错误', 'data'=>null]);
 
 		if(false !== $res)
 			$this->ajaxReturn(['status' => 0 , 'msg'=>'找回密码成功', 'data'=>null]);
