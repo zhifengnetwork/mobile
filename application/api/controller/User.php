@@ -185,13 +185,13 @@ class User extends ApiBase
     public function del_address()
     {   
         $user_id = $this->get_user_id();
-        $id = I('get.id/d');
+        $id = I('get.id/d',0);
         $address = M('user_address')->where("address_id", $id)->find();
         if(!$address){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'地址id不存在！','data'=>'']);
         }
         $row = M('user_address')->where(array('user_id' => $user_id, 'address_id' => $id))->delete();
-        var_dump($row); exit;
+
         // 如果删除的是默认收货地址 则要把第一个地址设置为默认收货地址
         if ($address['is_default'] == 1) {
             $address2 = M('user_address')->where("user_id", $user_id)->find();
@@ -252,6 +252,7 @@ class User extends ApiBase
         $user_id = $this->get_user_id();
         $userLogic = new UsersLogic();
         $user_info = $userLogic->get_info($user_id); // 获取用户信息
+        $user_info = $user_info['result'];
         if(!$user_info){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
@@ -313,20 +314,20 @@ class User extends ApiBase
                 $this->ajaxReturn(['status' => -1 , 'msg'=>'保存失败','data'=>'']);
 
             setcookie('uname',urlencode($post['nickname']),null,'/');
-            $user_info = $userLogic->get_info($user_id); // 获取用户信息
+            //$user_info = $userLogic->get_info($user_id); // 获取用户信息
 
-            $result['user_id'] = $user_info['result']['user_id'];
-            $result['head_pic'] = $user_info['result']['head_pic'];
-            $result['nickname'] = $user_info['result']['nickname'];
-            $result['mobile'] = $user_info['result']['mobile'];
-            $result['sex'] = $user_info['result']['sex'];
-            $result['birthyear'] = $user_info['result']['birthyear'];
-            $result['birthmonth'] = $user_info['result']['birthmonth'];
-            $result['birthmonth'] = $user_info['result']['birthmonth'];
-            $result['birthday'] = $user_info['result']['birthday'];
-            $result['province'] = $user_info['result']['province'];
-            $result['city'] = $user_info['result']['city'];
-            $result['district'] = $user_info['result']['district'];
+            $result['user_id'] = $user_info['user_id'];
+            $result['head_pic'] = $user_info['head_pic'];
+            $result['nickname'] = $user_info['nickname'];
+            $result['mobile'] = $user_info['mobile'];
+            $result['sex'] = $user_info['sex'];
+            $result['birthyear'] = $user_info['birthyear'];
+            $result['birthmonth'] = $user_info['birthmonth'];
+            $result['birthmonth'] = $user_info['birthmonth'];
+            $result['birthday'] = $user_info['birthday'];
+            $result['province'] = $user_info['province'];
+            $result['city'] = $user_info['city'];
+            $result['district'] = $user_info['district'];
             $this->ajaxReturn(['status' => 0 , 'msg'=>'保存成功','data'=>$result]);
 
         }else{
@@ -344,6 +345,7 @@ class User extends ApiBase
         $user_id = $this->get_user_id();   
         $userLogic = new UsersLogic();
         $user_info = $userLogic->get_info($user_id);  // 获取用户信息
+        $user_info = $user_info['result'];
         // 统计用户优惠券数量
         $coupon_num = M('coupon_list')->where(array('uid'=>$user_id))->count('id');
         // $couponList = M('coupon_list')->alias('cl')
@@ -488,7 +490,7 @@ class User extends ApiBase
      * +---------------------------------
     */
     public function distribut_index(){
-
+        
         $user_id = $this->get_user_id();
         if (!IS_POST) {
             $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>'']);
@@ -501,7 +503,19 @@ class User extends ApiBase
         $user_info = [
             'user_money' => $user_info['result']['user_money'],
             'distribut_money' => $user_info['result']['distribut_money'],
-            'total_property' => $user_info['result']['user_money']+$user_info['distribut_money']
+            'total_property' => $user_info['result']['user_money']+$user_info['distribut_money'],
+            'alipay' => $user_info['result']['alipay'], // 支付宝
+            'realname' => $user_info['result']['realname'], //真实姓名
+            'bank_name' => $user_info['result']['bank_name'], // 银行名称
+            'bank_card' => $user_info['result']['bank_card'], // 银行卡号
+            'openid'    => 'openid:'.$user_info['result']['openid'],
+            'service_ratio'    => tpCache('cash.service_ratio'),
+            'min_service_money'    => tpCache('cash.min_service_money'),
+            'max_service_money'    => tpCache('cash.max_service_money'),
+            'min_cash'    => tpCache('cash.min_cash'),
+            'max_cash'    => tpCache('cash.max_cash'),
+            'count_cash'    => tpCache('cash.count_cash'),
+            'cash_times'    => tpCache('cash.cash_times'),
         ];
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$user_info]);
 
