@@ -401,8 +401,11 @@ class User extends MobileBase
             exit;
         }
 
-     
+        //没头像 默认头像
         $head_pic_url = M('users')->where(['user_id'=>$user_id])->value('head_pic');
+        if(!$head_pic_url || $head_pic_url == ''){
+            $head_pic_url = '/public/images/default.jpg';
+        }
 
         $logic = new ShareLogic();
         $ticket = $logic->get_ticket($user_id);
