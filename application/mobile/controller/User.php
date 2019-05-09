@@ -67,6 +67,26 @@ class User extends MobileBase
             'WAITCCOMMENT' => '待评价', //订单查询状态 待评价
         );
         $this->assign('order_status_coment', $order_status_coment);
+
+       
+        //判断头像是否为空，空就补头像
+        if( $this->user['head_pic'] == null || $this->user['head_pic'] == ''){
+           
+            $openid = $this->user['openid']; 
+            $access_token = access_token();
+            $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
+            $resp = httpRequest($url, "GET");
+            $res = json_decode($resp, true);
+           
+            $head_pic = $res['headimgurl'];
+            if($head_pic){
+                //得到头像
+                M('users')->where(['openid'=>$this->user['openid']])->update(['head_pic'=>$head_pic]);
+                $this->user['head_pic'] = $head_pic;
+            }
+           
+        }
+
     }
 
 
