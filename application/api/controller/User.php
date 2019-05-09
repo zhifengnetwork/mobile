@@ -341,7 +341,7 @@ class User extends ApiBase
     */
     public function my_wallet(){
         
-        $user_id = $this->get_user_id();
+        $user_id = $this->get_user_id();   
         $userLogic = new UsersLogic();
         $user_info = $userLogic->get_info($user_id);  // 获取用户信息
         // 统计用户优惠券数量
@@ -364,6 +364,10 @@ class User extends ApiBase
             'service_ratio'    => tpCache('cash.service_ratio'),
             'min_service_money'    => tpCache('cash.min_service_money'),
             'max_service_money'    => tpCache('cash.max_service_money'),
+            'min_cash'    => tpCache('cash.min_cash'),
+            'max_cash'    => tpCache('cash.max_cash'),
+            'count_cash'    => tpCache('cash.count_cash'),
+            'cash_times'    => tpCache('cash.cash_times'),
         ];
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$user_info]);
         
