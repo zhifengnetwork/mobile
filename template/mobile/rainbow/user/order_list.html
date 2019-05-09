@@ -14,7 +14,6 @@
         text-align: center;
         margin-top: 0.9rem;
         margin-bottom: 0.9rem;
-
     }
 </style>
 
@@ -23,23 +22,24 @@
         <ul class="re_tit">
             <li>{$user.nickname}[ID: {$user.user_id}]的订单</li>
         </ul>
-        <ul class="re_tit">
-            <li style="width:50%"><span>订单编号</span></li>
-            <li style="width:25%"><span>收货人</span></li>
-            <li style="width:25%"><span>下单时间</span></li>
+        <!-- <ul class="re_tit">
+            <li style="width:35%"><span>订单编号</span></li>
+            <li style="width:25%"><span>订单金额</span></li>
+            <li style="width:20%"><span>收货人</span></li>
+            <li style="width:20%"><span>下单时间</span></li> -->
             <!-- <li style="width:25%"><span>订单类型</span></li> -->
-        </ul>
+        <!-- </ul> -->
         <empty name="order">
             <div class="juzhong">
                 该用户没有订单
             </div>
             <else />
-            <foreach name="order" item="v">
+            <!-- <foreach name="order" item="v">
                 <ul class="series">
-
-                    <li style="width:50%"><span>{$v.order_sn}</span></li>
-                    <li style="width:25%"><span>{$v.consignee}</span></li>
-                    <li style="width:25%"><span>{$v.add_time|date='Y-m-d',###}</span></li>
+                    <li style="width:35%"><span>{$v.order_sn}<span>{$v.order_sn}</span></li>
+                    <li style="width:25%"><span>{$v.total_amount}</span></li>
+                    <li style="width:20%"><span>{$v.consignee}</span></li>
+                    <li style="width:20%"><span>{$v.add_time|date='Y-m-d',###}</span></li> -->
                     <!-- <if condition="$v.states eq 101">
                         <li style="width:25%"><span>代理</span></li>
                     <elseif condition="$v.states eq 102"/>
@@ -48,7 +48,15 @@
                         <li style="width:25%"><span>分销&代理</span></li>
                     </if> -->
 
-                </ul>
+                <!-- </ul>
+            </foreach> -->
+            <foreach name="order" item="v">
+                <div class="fll_acc">
+                      <div class="fll">订单编号：{$v.order_sn}</div>
+                      <div class="fll">订单金额：<span style="color:#e01222;">{$v.total_amount}</span></div>
+                      <div class="fll">收货人：{$v.consignee}</div>
+                      <div class="fll" style="color:#999;">下单时间：{$v.add_time|date='Y-m-d H:i:s',###}</div>
+                </div>
             </foreach>
             <div class="foot">
                 只显示最近20个订单
@@ -56,7 +64,5 @@
         </empty>
     </div>
 </div>
-
 </body>
-
 </html>

@@ -1590,9 +1590,9 @@ class User extends MobileBase
         $user_id = I('user_id');
 
         // $states['log.states'] = array('in', '101, 102');
-        $order = M('order')->field('order_sn, consignee, add_time')->where(['user_id'=>$user_id,'pay_status'=>1])
+        $order = M('order')->field('order_sn, consignee, add_time, total_amount')->where(['user_id'=>$user_id,'pay_status'=>1])
                             ->limit(20)->order('order_id DESC')->select();
-        
+
         $user = M('users')->field('user_id,nickname,mobile')->where(['user_id'=>$user_id])->find();
         $this->assign('user', $user);
         $this->assign('order', $order);
