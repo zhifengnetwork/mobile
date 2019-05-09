@@ -117,4 +117,19 @@ class Index extends ApiBase
 
 	}
 
+	//获取广告列表
+	public function GetAdList(){
+		$pid = I('post.pid/d',9);
+		$time = time();
+		$adlist = M('Ad')->field('ad_id,ad_link,ad_code,bgcolor')->where(['pid'=>$pid,'start_time'=>['elt',$time],'end_time'=>['egt',$time],'enabled'=>1])->order('orderby asc')->select();
+		foreach($adlist as $k=>$v){
+			if(false !== strpos($v['ad_link'],'Mobile/Goods/goodsInfo/id')){ 
+				$urlarr = pathinfo($v['ad_link']);
+				$adlist[$k]['goods_id'] = $urlarr['filename'];
+			}else
+				$adlist[$k]['goods_id'] = 0;
+		}	
+		$this->ajaxReturn(['status' => 0, 'msg'=>'请求成功','data'=>['list'=>$adlist]]);
+	}
+
 }

@@ -48,7 +48,7 @@ class Search extends ApiBase
         if ($q) $where['goods_name'] = array('like', '%' . $q . '%');
 
         $goodsLogic = new GoodsLogic();
-        $filter_goods_id = M('goods')->where($where)->cache(true)->getField("goods_id", true);
+        $filter_goods_id = M('goods')->where($where)->getField("goods_id", true);
 
         // 过滤筛选的结果集里面找商品
         if ($brand_id || $price)// 品牌或者价格
@@ -82,9 +82,9 @@ class Search extends ApiBase
             ->select();
             $filter_goods_id2 = get_arr_column($goods_list, 'goods_id');
             if ($filter_goods_id2)
-                $goods_images = M('goods_images')->where("goods_id", "in", implode(',', $filter_goods_id2))->cache(true)->select();
+                $goods_images = M('goods_images')->where("goods_id", "in", implode(',', $filter_goods_id2))->select();
         }
-        $goods_category = M('goods_category')->where('is_show=1')->cache(true)->getField('id,name,parent_id,level'); // 键值分类数组
+        $goods_category = M('goods_category')->where('is_show=1')->getField('id,name,parent_id,level'); // 键值分类数组
         C('TOKEN_ON', false);
         if($goods_list && $goods_images){
             foreach($goods_list as $k=>$v){

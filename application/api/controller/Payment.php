@@ -269,8 +269,20 @@ class Payment extends ApiBase {
     	exit();
     }
 
-	public function a(){
-		$res = $this->GetPay(['price'=>'1','ordernum'=>'20190409123456']); print_r($res); exit;
+    //微信支付
+	public function GetWxAppPaySign(){
+        $order_sn = I('post.ordernum/s','');
+        $user_id = $this->get_user_id();
+
+        if(!$order_sn || !$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>null]); 
+        }
+        $info = M('Order')->field('order_amount')->where(['order_sn'=>$order_sn,'user_id'=>$user_id])->find();
+        if(!$info){
+            $this->ajaxReturn(['status' => -2 , 'msg'=>'订单不存在','data'=>null]); 
+        }   
+        $arr = $this->GetPay(['ordernum'=>$order_sn,'price'=>$info['order_amount']]);
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功','data'=>$arr]); 
 	}
 
 //=======================================================================
@@ -281,14 +293,14 @@ class Payment extends ApiBase {
 
 		include_once "plugins/payment/appWeixinPay/WxPay.Api.php";
 
-        $input = new \plugins\payment\appWeixinPay\WxPayUnifiedOrder(); 
-        $input->SetBody('DC商城支付测试');
+        $input = new \WxAppPayUnifiedOrder(); 
+        $input->SetBody('DC商城订单支付');
         $input->SetOut_trade_no($data['ordernum']);     //订单号
         //$input->SetTime_expire(date('yyyyMMddHHmmss',time()+20));     //订单号
-        $input->SetTotal_fee($data['price']);
-        $input->SetNotify_url('http://'.$_SERVER['HTTP_HOST'].'/mobile/api/payment/AddYearCostCallBack');
+        $input->SetTotal_fee($data['price']*100);
+        $input->SetNotify_url(SITE_URL.'/index.php/Home/Payment/notifyUrl/pay_code/weixin');
         $input->SetTrade_type("APP");
-        $result = \plugins\payment\appWeixinPay\WxPayApi :: unifiedOrder($input,15);   
+        $result = \WxAppPayApi :: unifiedOrder($input,15);   
 
         $arr = array( 
             'appid'         => $result['appid'],
