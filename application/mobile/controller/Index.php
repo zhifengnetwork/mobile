@@ -43,14 +43,20 @@ class Index extends MobileBase {
 
         //秒杀商品
 		$now_day = date('Y-m-d');
-		$now_time = date('H'); 
+        $now_time = date('H'); 
+     
 		if ($now_time % 2 == 1) {
 			$flash_now_time = $now_time;
 		} else {
-			$flash_now_time = $now_time - 1;
-		} 
-		$start_time = strtotime($now_day . " " . $flash_now_time . ":00:00");
+            $flash_now_time = $now_time - 1;
+            
+            //不能负
+            if( $flash_now_time < 0){
+                $flash_now_time = 0;
+            }
+        } 
 
+		$start_time = strtotime($now_day . " " . $flash_now_time . ":00:00");
         $end_time = $start_time+7200;   //结束时间
         $flash_sale_list = Db::name('goods')->alias('g')
             ->field('g.goods_id,f.price,s.item_id')
@@ -58,7 +64,9 @@ class Index extends MobileBase {
             ->join('__SPEC_GOODS_PRICE__ s','s.prom_id = f.id AND g.goods_id = s.goods_id','LEFT')
             ->where("start_time >= $start_time and end_time <= $end_time and f.is_end=0")
             ->limit(3)->select();
+
         $this->assign('flash_sale_list',$flash_sale_list);
+
         $this->assign('start_time',$start_time);
         $this->assign('end_time',$end_time);
         $this->assign('favourite_goods',$favourite_goods);
