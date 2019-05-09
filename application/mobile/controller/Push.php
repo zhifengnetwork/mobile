@@ -243,7 +243,7 @@ class Push extends MobileBase
             'is_ground_push' => 1,
             'sign_free_receive' => ['neq', 1],
         );
-        $data = session('payBatchPriorData_' . $user_id);dump($data);
+        $data = session('payBatchPriorData_' . $user_id);
         $goods_id = M('goods')->where($condiction)->column('goods_id');
         $goodsModel = new \app\common\model\Goods();
         $goods = $goodsModel::all($goods_id);
