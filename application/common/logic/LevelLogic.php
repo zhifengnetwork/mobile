@@ -93,7 +93,7 @@ class LevelLogic extends Model
 		$grade_condition = M('user_level')->where(['level'=>$grade])->find();
 	
 		$per_logic =  new PerformanceLogic();
-		$money_total = $per_logic->distribut_caculate();
+		$money_total = $per_logic->distribut_caculate_by_user_id($user['user_id']);
 
 		//比较条件
 		if($money_total['money_total'] >= $grade_condition['max_money'] && $money_total['moneys'] >= $grade_condition['remaining_money']){
