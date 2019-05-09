@@ -67,6 +67,26 @@ class User extends MobileBase
             'WAITCCOMMENT' => '待评价', //订单查询状态 待评价
         );
         $this->assign('order_status_coment', $order_status_coment);
+
+       
+        //判断头像是否为空，空就补头像
+        if( $this->user['head_pic'] == null || $this->user['head_pic'] == ''){
+           
+            $openid = $this->user['openid']; 
+            $access_token = access_token();
+            $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
+            $resp = httpRequest($url, "GET");
+            $res = json_decode($resp, true);
+           
+            $head_pic = $res['headimgurl'];
+            if($head_pic){
+                //得到头像
+                M('users')->where(['openid'=>$this->user['openid']])->update(['head_pic'=>$head_pic]);
+                $this->user['head_pic'] = $head_pic;
+            }
+           
+        }
+
     }
 
 
@@ -381,8 +401,11 @@ class User extends MobileBase
             exit;
         }
 
-     
+        //没头像 默认头像
         $head_pic_url = M('users')->where(['user_id'=>$user_id])->value('head_pic');
+        if(!$head_pic_url || $head_pic_url == ''){
+            $head_pic_url = '/public/images/default.jpg';
+        }
 
         $logic = new ShareLogic();
         $ticket = $logic->get_ticket($user_id);
