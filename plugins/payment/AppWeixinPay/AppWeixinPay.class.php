@@ -448,7 +448,7 @@ class AppWeixinPay
 	{
 		echo $xml;
 	}
-
+ 
     public function response()
     {            
 		include_once "WxPay.Notify.php";  
