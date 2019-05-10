@@ -411,7 +411,6 @@ class Pay
      */
     public function getUserSign()
     {
-
        if ($this->payList[0]['goods']->sign_free_receive != 0 ) {
             if ( $this->user['super_nsign'] != 0 || $this->user['is_distribut'] != 0 || $this->user['is_agent'] != 0 ) {
                 $isReceive = provingReceive($this->user, $this->payList[0]['goods']->sign_free_receive, $this->totalNum);
@@ -428,6 +427,7 @@ class Pay
                     }
                 }
                 if($isReceive['status'] == 2){
+                    $this->payList[0]['goods']->shop_price = $this->payList[0]['goods_price'];
                     if ($this->payList[0]['goods']->sign_free_receive == 1) {
                         // 免费领取的不限制数量
                         $this->orderAmount = $this->orderAmount - $this->payList[0]['goods']->shop_price * $this->totalNum; // 应付金额

@@ -136,10 +136,6 @@ class Order extends ApiBase
      * 提交订单
      */
 	 public function post_order(){
-        $user_id = $this->get_user_id();
-        if(!$user_id){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
-        }
         $address_id = input("address_id/d", 0); //  收货地址id
         $invoice_title = input('invoice_title');  // 发票  
         $taxpayer = input('taxpayer');       // 纳税人识别号
@@ -240,7 +236,7 @@ class Order extends ApiBase
 			$this->ajaxReturn(['status' => 0, 'msg' => '计算成功', 'data' => ['user_money'=>$usermoney,'price'=>$pay->toArray(),'address'=>$address,'goodsinfo'=>$goodsinfo]]);
         } catch (TpshopException $t) {
             $error = $t->getErrorArr();
-            $this->ajaxReturn(['status' => -5, 'msg' => $error['msg'], 'data'=> null]);
+            $this->ajaxReturn(['status' => $error['status'], 'msg' => $error['msg'], 'data'=> null]);
         }	
 	 }
 
