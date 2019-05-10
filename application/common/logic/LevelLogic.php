@@ -20,18 +20,19 @@ class LevelLogic extends Model
 		$user = M('users')->where('user_id',$user_id)->field('is_agent,agent_user,user_id,first_leader')->find();
 
 		//如果不是 代理，要买399
-		if($user['is_agent'] != 1 && $user['agent_user'] == 0){
-			//如果不是代理，要买399
-			//判断是否购买指定产品
-			$con['user_id'] = $user_id;
-			$con['pay_status'] = 1;
-			$con['total_amount'] = array('egt',399);
-			$is_399 = M('order')->where($con)->field('user_id,pay_status,total_amount')->select();
-			$num = count($is_399);
-			if($num == 0){
-				return false;
-			}
-		}
+		// if($user['is_agent'] != 1 && $user['agent_user'] == 0){
+		// 	//如果不是代理，要买399
+		// 	//判断是否购买指定产品
+		// 	$con['user_id'] = $user_id;
+		// 	$con['pay_status'] = 1;
+		// 	$con['total_amount'] = array('egt',399);
+		// 	$is_399 = M('order')->where($con)->field('user_id,pay_status,total_amount')->select();
+		// 	$num = count($is_399);
+		// 	if($num == 0){
+		// 		return false;
+		// 	}
+		// }
+		// 去掉  399 条件
 		
 		//判断是否为代理
 		$agentGrade = M('agent_info')->where(['uid'=>$user['user_id']])->find();

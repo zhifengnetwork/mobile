@@ -155,11 +155,15 @@ class PerformanceLogic
             // }
 
             if(isset($agent_per[$v])){
-              
-                $all_yeji[] = $agent_per[$v] + $oldPerformance + $xiubu_yeji;
+                $single_yeji = $agent_per[$v] + $oldPerformance + $xiubu_yeji;
             }else{
-                $all_yeji[] = $oldPerformance + $xiubu_yeji;
+                $single_yeji = $oldPerformance + $xiubu_yeji;
             }
+            //等于0的就不要了
+            if($single_yeji > 0){
+                $all_yeji[] = $single_yeji;
+            }
+
         }
 
         //排序取最大业绩
@@ -219,10 +223,13 @@ class PerformanceLogic
             // }
 
             if(isset($agent_per[$v])){
-              
-                $all_yeji[] = $agent_per[$v] + $oldPerformance + $xiubu_yeji;
+                $single_yeji = $agent_per[$v] + $oldPerformance + $xiubu_yeji;
             }else{
-                $all_yeji[] = $oldPerformance + $xiubu_yeji;
+                $single_yeji = $oldPerformance + $xiubu_yeji;
+            }
+            //等于0的就不要了
+            if($single_yeji > 0){
+                $all_yeji[] = $single_yeji;
             }
         }
 
