@@ -17,6 +17,7 @@ use think\Db;
 use app\common\model\Users;
 use app\common\logic\UsersLogic;
 use app\common\model\Order;
+use app\common\logic\OrderLogic;
 
 class Payment extends ApiBase {
     
@@ -275,6 +276,38 @@ class Payment extends ApiBase {
         unset($arr['package']);
         $this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功','data'=>$arr]); 
     }   
+
+    //竞拍保证金支付
+    public function payBond(){
+        $user_id = $this->get_user_id();  
+        $id = I("post.id/d",0);
+        if(!$id || !$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>null]); 
+        }
+
+        $money = Db::name('Auction')->where('id',$id)->value('deposit');
+		$OrderLogic = new OrderLogic();
+        $data['deposit'] = $money;
+        $data['user_id'] = $user_id;
+        $data['auction_id'] = $id;
+        $data['order_sn'] = $OrderLogic->get_order_sn_auction_deposit();  
+        $data['create_time'] = time(); 
+        $order_id = M('auctionDeposit')->add($data);
+
+        if($order_id){
+            $order = M('auctionDeposit')->where("id", $order_id)->find();
+            if(is_array($order) && $order['status']==0){
+                $arr = $this->GetPay(['ordernum'=>$order['order_sn'],'price'=>$order['deposit']]);
+                $arr['packageValue'] = $arr['package'];
+                unset($arr['package']);
+                $this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功','data'=>$arr]); 
+            }else{
+                $this->ajaxReturn(['status' => -2 , 'msg'=>'您已交过保证金','data'=>$arr]); 
+            }
+        }else{
+            $this->ajaxReturn(['status' => -3 , 'msg'=>'提交失败,参数有误!','data'=>$arr]); 
+        }
+    }    
 
 //=======================================================================
     private function GetPay($data){       

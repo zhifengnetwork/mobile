@@ -148,7 +148,7 @@ class Goods extends ApiBase
             if(!in_array($sort,$sort_arr)) $sort='sort';    // 防注入
 
             $goods_list = M('goods')->where("goods_id", "in", implode(',', $filter_goods_id))
-            ->field('goods_id,seller_id,cat_id,extend_cat_id,goods_sn,goods_name,store_count,comment_count,weight,shop_price,goods_remark,original_img,is_distribut,is_agent')
+            ->field('goods_id,seller_id,cat_id,extend_cat_id,goods_sn,goods_name,store_count,sales_sum,comment_count,weight,shop_price,goods_remark,original_img,is_distribut,is_agent')
             ->where($con)
             ->order([$sort => $sort_asc])->limit($limit)
             ->select();
@@ -161,7 +161,21 @@ class Goods extends ApiBase
 		foreach($goods_list as $k=>$v){
 			$commission_rate = $v['is_distribut'] ? $GoodsCategory->where(['id'=>$v['cat_id']])->value('commission_rate') : 0;
 			$goods_list[$k]['commission_num'] = (intval($v['shop_price'] * $commission_rate) / 100);
-		}
+        }
+        
+        if($goods_list){
+            $seller_arr = Db::name('seller')->field('seller_id,seller_name')->select();
+            foreach($goods_list as $k=>$v){
+                foreach($seller_arr as $ks=>$vs){
+                    if($v['seller_id'] == $vs['seller_id'] ){
+                   
+                        $goods_list[$k]['seller_name'] = $vs['seller_name'];
+                        $goods_list[$k]['sale_total'] = intval($v['shop_price']*$v['sales_sum']); 
+
+                    }
+                }  
+            }
+        }        
 
         // $goods_category = M('goods_category')->where('is_show=1')->cache(true)->getField('id,name,parent_id,level'); // 键值分类数组
         C('TOKEN_ON', false);
