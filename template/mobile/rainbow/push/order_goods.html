@@ -46,7 +46,7 @@
 									<p class="goods_term_bottom_data_price publicEllipsis">￥<span class="price_num">{$goods.shop_price}</span></p>
 									<p class="goods_term_bottom_data_stock publicEllipsis">库存: <span class="stock_num">{$goods.store_count}</span></p>
 									<notempty name="goods.spec">
-										<p class="goods_term_bottom_data_gauge" onclick="template_but('{$goods.goods_id}','{$k}')">
+										<p class="goods_term_bottom_data_gauge" onclick="template_but('{$goods.goods_id}','{$k}',this)">
 											<volist name="goods.spec" id="spec" key="g">
 												<volist name="spec.spec_item" id="spec_item" key="s">
 													<if condition="$s == 1">
@@ -60,10 +60,10 @@
 									</notempty>
 									<!--加、减 wrap-->
 									<div class="add_reduce_wrap">
-										<span class="reduce_box" onclick="reduce_fun(this,0)"><i class="reduce_icon"></i></span>
+										<span class="reduce_box" onclick="reduce_fun(this,'{$k}')"><i class="reduce_icon"></i></span>
 										<!--绑定:data-index="对应下标"=>更改'传后台的数据'-->
 										<input class="number_box" type="number" value="0" data-index="0"/>
-										<span class="add_box" onclick="add_fun(this,0)"><i class="add_icon"></i></span>
+										<span class="add_box" onclick="add_fun(this,'{$k}')"><i class="add_icon"></i></span>
 									</div>
 								</div>
 							</div>
@@ -142,6 +142,8 @@
 			var data_arr = [];
 			/*存储-当前滚动条的位置*/
 			var thisScrollNum = null;
+			/*追加-元素,$()获取不到元素,保存点击时的元素*/
+			var data_ele = null;
 			/*对应的商品结构，push()=>(后台)商品-data*/
 			var com_obj = {
 				/*id*/
@@ -239,16 +241,18 @@
 			all_kind();
 			/*（单选）=>已||未 =>选择*/
 			function choice_butOr(_this,_index){
-				_index = _index - 1;
 				console.log('单选-下标:',_index);
+				action = '';
 				if($(_this).hasClass('selection_no')){
 					$(_this).removeClass('selection_no').addClass('selection_yes');
 					data_arr[_index]['checklist'] = true;
 					all_num += 1;
+					action = 'insert';
 				}else {
 					$(_this).removeClass('selection_yes').addClass('selection_no');
 					all_num -= 1;
 					data_arr[_index]['checklist'] = false;
+					action = 'delete';
 				}
 				/*单选=>判断是否全选*/
 				all_kind();
@@ -257,10 +261,11 @@
 				/*传给后台，数组格式*/
 				console.log('现在-单选:',[data_arr[_index]]);
 				
-				
+				post_data(action, _index);  
 			}
 			/*（全选）=>已||未 =>选择*/
 			function all_choice_butOr(_this){
+				var action = '';
 				/*全选*/
 				if($(_this).find('.all_election').hasClass('all_selection_no')){
 					/*已-全选*/
@@ -275,7 +280,7 @@
 					/*全选的number-状态*/
 					all_num = $('.content_wrap .goods_term').length;
 					total_number();
-					
+					action = 'insert';
 				}else {
 					$(_this).find('.all_election').removeClass('all_selection_yes').addClass('all_selection_no');
 					/*遍历*/
@@ -286,9 +291,10 @@
 					all_num = 0;
 					/*渲染-总计*/
 					$('.total_num').html(0);
+					action = 'delete';
 				}
 				console.log('全选:',all_num);
-				
+				post_data(action);
 			}
 			/**获取焦点=> 隐藏'结算'元素**/
 			$('.number_box').focus(function(){
@@ -311,6 +317,7 @@
 				}*/
 				/*当前输入的value*/
 				var inp_val = Number($(this).val());
+				var action = 'update';
 				/*是否超过库存量*/
 				if(inp_val >= data_arr[speci_index]['com_stock']){
 					inp_val = data_arr[speci_index]['com_stock'];
@@ -320,10 +327,31 @@
 				 data_arr[speci_index]['com_num'] = inp_val;
 				/*更新页面-data*/
 				$('.number_box').eq(speci_index).val(inp_val);
+				total_number();
 				console.log(inp_val);
+				post_data(action, speci_index);
 			})
+			//对表请求操作
+			function post_data(action, index = 'all'){
+				var data = [];
+				if(index == 'all'){
+					data = data_arr;
+				}else{
+					data[0] = data_arr[index];
+				}
+				console.log(index);
+				$.ajax({
+					type: "post",
+					url : "{:url('Mobile/Push/push_cart')}",
+					data: {data : data, action : action},
+					dataType: 'json',
+					success: function (data) {},
+				});
+			}
 			/*加（数量）*/
 			function add_fun(_this,_index){
+				var action = 'update';
+				_index = _index - 1;
 				console.log('加-下标：',_index);
 				/*当前，库存*/
 				var this_count = Number($(_this).parents('.add_reduce_wrap').siblings('.goods_term_bottom_data_stock').find('.stock_num').html());
@@ -339,9 +367,12 @@
 				$(_this).siblings('.number_box').val(thisNum);
 				/*总计*/
 				total_number();
+				post_data(action, _index);
 			}
 			/*减(数量)*/
 			function reduce_fun(_this,_index){
+				var action = 'update';
+				_index = _index - 1;
 				console.log("减-下标:",_index);
 				var thisNum = Number($(_this).siblings('.number_box').val());
 				thisNum -= 1;
@@ -351,6 +382,7 @@
 				data_arr[_index]['com_num'] = thisNum;
 				$(_this).siblings('.number_box').val(thisNum);
 				total_number();
+				post_data(action, _index);
 			}
 			/*总计*/
 			function total_number(){
@@ -399,7 +431,8 @@
 				
 			})
 			/*点击出现-规格(遮罩层)*/
-			function template_but(goods_id,_index){
+			function template_but(goods_id,_index,_this){
+
 				_index = _index - 1;
 				/*蒙版(出现)*/
 				$('.bottomAlertWrap').show();
@@ -418,6 +451,8 @@
 				});
 				speci_obj['ind'] = _index;
 				console.log('对应的规格id:','对应的规格-data: index',speci_obj['ind']);
+				/*保存当前点击元素*/
+				data_ele = _this;
 				/*ajax*/
 				$.ajax({
 					type: 'post',
@@ -496,6 +531,7 @@
 				/*请求成功后台=>更改对应规格状态*/
 				/*渲染页面数据string*/
 				var page_speci = '';
+				var action = 'update';
 				/*当前对应data*/
 				var data_sp = data_arr[speci_obj['ind']]['com_speci'];
 				for(var i=0;i<data_sp.length;i++){
@@ -508,11 +544,11 @@
 					page_speci += '<span speci-id="'+ data_sp[i]['speci_id'] +'">'+ data_sp[i]['value'] +'</span>，';
 				}
 				/*页面-规格*/
-				$('.goods_term_bottom_data_gauge').eq(speci_obj['ind']).html(page_speci);
+				$(data_ele).html(page_speci);
 				total_number();
 				/*关闭-遮罩层*/
 				close_alert();
-				console.log('确定(规格)确定(规格)');
+				post_data(action, speci_obj['ind']);
 			})
 			
 		</script>
