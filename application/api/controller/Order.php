@@ -170,9 +170,12 @@ class Order extends ApiBase
             $error = $cart_validate->getError();
             $this->ajaxReturn(['status' => -4, 'msg' => $error, 'data' => null]);  //留言长度不符或收货人错误
         }
-		if($act != 1)
-			$address = Db::name('user_address')->where("user_id", $user_id)->order('is_default desc')->find();
-		else
+		if($act != 1){
+            if($address_id)
+                $address = Db::name('user_address')->where("address_id", $address_id)->find();
+            else
+                $address = Db::name('user_address')->where("user_id", $user_id)->order('is_default desc')->find();
+        }else
 			$address = Db::name('user_address')->where("address_id", $address_id)->find();
 
         $cartLogic = new CartLogic();
