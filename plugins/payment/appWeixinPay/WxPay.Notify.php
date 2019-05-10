@@ -17,7 +17,7 @@ class WxAppPayNotify extends WxAppPayNotifyReply
 	{
 		$msg = "OK";
 		//当返回false的时候，表示notify中调用NotifyCallBack回调失败获取签名校验失败，此时直接回复失败
-		$result = WxAppPayApi::notify(array($this, 'NotifyCallBack'), $msg);
+		$result = AppWeixinPay::notify(array($this, 'NotifyCallBack'), $msg);
 		if($result == false){
 			$this->SetReturn_code("FAIL");
 			$this->SetReturn_msg($msg);
@@ -36,7 +36,7 @@ class WxAppPayNotify extends WxAppPayNotifyReply
 	{
 		$input = new WxAppPayOrderQuery();
 		$input->SetTransaction_id($transaction_id);
-		$result = WxAppPayApi::orderQuery($input);
+		$result = AppWeixinPay::orderQuery($input);
 		//Log::DEBUG("query:" . json_encode($result));
 		if(array_key_exists("return_code", $result)
 			&& array_key_exists("result_code", $result)
@@ -134,6 +134,6 @@ class WxAppPayNotify extends WxAppPayNotifyReply
 		{
 			$this->SetSign();
 		}
-		WxAppPayApi::replyNotify($this->ToXml());
+		AppWeixinPay::replyNotify($this->ToXml());
 	}
 }

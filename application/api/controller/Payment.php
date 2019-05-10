@@ -274,15 +274,7 @@ class Payment extends ApiBase {
         $arr['packageValue'] = $arr['package'];
         unset($arr['package']);
         $this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功','data'=>$arr]); 
-    }
-    
-    public function WxAppNotifyUrl(){       
-        include_once "plugins/payment/appWeixinPay/WxPay.Api.php";   
-        include_once "plugins/payment/appWeixinPay/WxPay.Notify.php";  
-        $input = new \WxAppPayUnifiedOrder();   
-        $WxAppPayNotify = new \WxAppPayNotify();
-        $WxAppPayNotify->Handle(false);            
-    }    
+    }   
 
 //=======================================================================
     private function GetPay($data){       
@@ -296,8 +288,9 @@ class Payment extends ApiBase {
         $input->SetBody('DC商城订单支付');
         $input->SetOut_trade_no($data['ordernum'].time());     //订单号
         //$input->SetTime_expire(date('yyyyMMddHHmmss',time()+20));     //订单号
-        $input->SetTotal_fee($data['price']*100);
-        $input->SetNotify_url(SITE_URL.'/index.php/api/Payment/WxAppNotifyUrl');
+        $input->SetTotal_fee($data['price']*100);   
+        $input->SetNotify_url(SITE_URL.'/index.php/Home/Payment/notifyUrl/pay_code/AppWeixinPay');
+        //$input->SetNotify_url(SITE_URL.'/index.php/api/Payment/WxAppNotifyUrl');
         $input->SetTrade_type("APP");
         $result = \AppWeixinPay :: unifiedOrder($input,15);   
    

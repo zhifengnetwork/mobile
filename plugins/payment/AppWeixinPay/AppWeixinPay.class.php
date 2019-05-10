@@ -448,6 +448,13 @@ class AppWeixinPay
 	{
 		echo $xml;
 	}
+
+    public function response()
+    {            
+		include_once "WxPay.Notify.php";  
+		$WxAppPayNotify = new \WxAppPayNotify();
+        $WxAppPayNotify->Handle(false);       
+    }
 	
 	/**
 	 * 

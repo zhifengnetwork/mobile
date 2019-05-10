@@ -136,6 +136,10 @@ class Order extends ApiBase
      * 提交订单
      */
 	 public function post_order(){
+        $user_id = $this->get_user_id();
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
+        }
         $address_id = input("address_id/d", 0); //  收货地址id
         $invoice_title = input('invoice_title');  // 发票  
         $taxpayer = input('taxpayer');       // 纳税人识别号
