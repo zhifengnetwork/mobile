@@ -4,7 +4,7 @@
  */
 namespace app\abc\controller;
 
-
+use app\common\logic\PerformanceLogic;
 use think\Db;
 use think\Controller;
 
@@ -12,10 +12,20 @@ use think\Controller;
 class Index extends Controller
 {
 
+    /**
+     * 查询业绩
+     */
     public function index(){
 
-        $order_id = 4060;
-        change_role($order_id);
+        $user_id = I('user_id');
+        if(!$user_id){
+            exit('ID不存在');
+        }
+
+        $per_logic =  new PerformanceLogic();
+        $money_total = $per_logic->distribut_caculate_by_user_id($user_id);
+        
+        dump($money_total);
     }
 
 
