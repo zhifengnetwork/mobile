@@ -126,93 +126,127 @@ class Push extends MobileBase
 	    }
     }
     
-    // /**
-    //  * 地推商品购物车
-    //  */
-    // public function push_cart($action = '', $data)
-    // {
-    //     $user_id = session('user.user_id');
+    /**
+     * 地推商品购物车
+     */
+    public function push_cart()
+    {
+        $action = I('action');
+        $data   = I('data/a');
+        $user_id = session('user.user_id');
 
-    //     foreach ($data as $key => $value) {
-    //         $data[$key]['user_id'] = $user_id;
+        switch ($action) {
+            case 'insert':
+                $data   = $this->handle_data($user_id, $data);
+                $result = $this->insert_cart($data);
+                $this->ajaxReturn($result);   
+                break;
             
-    //     }
+            case 'delete':
+                $data   = $this->handle_data($user_id, $data);
+                $result = $this->delete_cart($user_id, $data);
+                $this->ajaxReturn($result);   
+                break;
 
-    //     switch ($action) {
-    //         case 'insert':
-    //             $result = $this->insert_cart($user_id, $data);
-    //             $this->ajaxReturn($result);   
-    //             break;
-            
-    //         case 'delete':
-    //             $result = $this->delete_cart($user_id, $data);
-    //             $this->ajaxReturn($result);   
-    //             break;
+            default:
+                $data   = $this->handle_data($user_id, $data);
+                $result = $this->update_cart($user_id, $data);
+                $this->ajaxReturn($result);  
+                break;
+        }
+    }
 
-    //         default:
-    //             $result = $this->update_cart($user_id, $data);
-    //             $this->ajaxReturn($result);  
-    //             break;
-    //     }
-    // }
+    /**
+     * 处理数据
+     */
+    public function handle_data($user_id, $data)
+    {   
+        $all_data = array();
+        $pre_time = time();
+        foreach ($data as $good_key => $good) {
+            if(isset($good['com_speci'])){
+                $key = '';
+                foreach ($good['com_speci'] as $spec_key => $spec) {
+                    if($spec_key == 0){
+                        $key = $spec['speci_id'];
+                    }else{
+                        $key = $key . '_' . $spec['speci_id'];
+                    }
+                }
+                $arr = array('goods_id'=>$good['comm_id'], 'key'=>$key);
+                $item_id = M('spec_goods_price')->where($arr)->value('item_id');
+                $all_data[$good_key]['item_id'] = $item_id;
+            }else{
+                $all_data[$good_key]['item_id'] = 0;
+            }
 
-    // /**
-    //  * 添加购买地推商品
-    //  */
-    // public function insert_cart($user_id, $data)
-    // {
-    //     foreach ($data as $key => $value) {
-    //         $data[$key]['user_id'] = $user_id;
-    //         $data[$key]['create_time'] = time();
-    //     }
-    //     $result = M('push_cart')->insert($data);
-    //     if($result){
-    //         $result = ['status'=>1, 'msg'=>'操作成功!'];
-    //     }else{
-    //         $result = ['status'=>0, 'msg'=>'操作失败!'];
-    //     }
-    //     return $result;
-    // }
+            $all_data[$good_key]['goods_id'] = $good['comm_id'];
+            $all_data[$good_key]['total'] = $good['com_num'];
+            $all_data[$good_key]['create_time'] = $pre_time;
+            $all_data[$good_key]['user_id'] = $user_id; 
+        }
+        return $all_data;
+    }
 
-    // /**
-    //  * 删除购买地推商品
-    //  */
-    // public function delete_cart($user_id, $data)
-    // {
-    //     foreach ($data as $key => $value) {
-    //         $ids[] = $value['goods_id'];
-    //     }
-    //     $retult = M('push_cart')->delete($ids);
-    //     if($result){
-    //         $result = ['status'=>1, 'msg'=>'操作成功!'];
-    //     }else{
-    //         $result = ['status'=>0, 'msg'=>'操作失败!'];
-    //     }
-    //     return $result;
-    // }
+    /**
+     * 添加购买地推商品
+     */
+    public function insert_cart($data)
+    {
+        $result = M('push_cart')->insertAll($data);
+        if($result){
+            $result = ['status'=>1, 'msg'=>'操作成功!'];
+        }else{
+            $result = ['status'=>0, 'msg'=>'操作失败!'];
+        }
+        return $result;
+    }
 
-    // /**
-    //  * 修改购买地推商品
-    //  */
-    // public function update_cart($user_id, $data)
-    // {
-    //     foreach ($data as $key => $value) {
-    //         $condition = array(
-    //             'user_id'  => $user_id,
-    //             'goods_id' => $value['goods_id'],
-    //         );
-    //         $is_exisit = M('push_cart')->where($condiction)->find();
-    //         if($is_exisit){
-    //             $result = M('push_cart')->where('item_id', $is_exisit['id'])->update($value);
-    //             if($result){
-    //                 $result = ['status'=>1, 'msg'=>'操作成功!'];
-    //             }else{
-    //                 $result = ['status'=>0, 'msg'=>'操作失败!'];
-    //             }
-    //             return $result;
-    //         }
-    //     }
-    // }
+    /**
+     * 删除购买地推商品
+     */
+    public function delete_cart($user_id, $data)
+    {
+        foreach ($data as $key => $value) {
+            $goods_id[] = $value['goods_id'];
+            $item_id[]  = $value['item_id'];
+        }
+        $arr = array(
+            'user_id' => $user_id, 
+            'goods_id'=> ['in', $goods_id],
+            'item_id' => ['in', $item_id],
+        );
+        $retult = M('push_cart')->where($arr)->delete();
+        if($result){
+            $result = ['status'=>1, 'msg'=>'操作成功!'];
+        }else{
+            $result = ['status'=>0, 'msg'=>'操作失败!'];
+        }
+        return $result;
+    }
+
+    /**
+     * 修改购买地推商品
+     */
+    public function update_cart($user_id, $data)
+    {
+        foreach ($data as $key => $value) {
+            $condition = array(
+                'user_id'  => $user_id,
+                'goods_id' => $value['goods_id'],
+            );
+            $is_exisit = M('push_cart')->where($condition)->find();
+            if($is_exisit){
+                $result = M('push_cart')->where('id', $is_exisit['id'])->update($value);
+                if($result){
+                    $result = ['status'=>1, 'msg'=>'操作成功!'];
+                }else{
+                    $result = ['status'=>0, 'msg'=>'操作失败!'];
+                }
+                return $result;
+            }
+        }
+    }
 
     /**
      * 我的库存
@@ -243,7 +277,7 @@ class Push extends MobileBase
             'is_ground_push' => 1,
             'sign_free_receive' => ['neq', 1],
         );
-        $data = session('payBatchPriorData_' . $user_id);
+        $user_id  = session('user.user_id');
         $goods_id = M('goods')->where($condiction)->column('goods_id');
         $goodsModel = new \app\common\model\Goods();
         $goods = $goodsModel::all($goods_id);
@@ -254,6 +288,10 @@ class Push extends MobileBase
         //         dump($spec_item[0]['id']);
         //     }
         // }dump($goods);die;
+        
+        //删除地推购物车的数据,避免重复
+        M('push_cart')->where('user_id', $user_id)->delete();
+
         $this->assign('goods', $goods);
         return $this->fetch();
     }
