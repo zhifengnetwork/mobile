@@ -247,6 +247,13 @@ class Push extends MobileBase
         $goods_id = M('goods')->where($condiction)->column('goods_id');
         $goodsModel = new \app\common\model\Goods();
         $goods = $goodsModel::all($goods_id);
+        //循环取第一种规格作为默认规格
+        // foreach($goods as $good_key => $good){
+        //     foreach ($good['spec'] as $spec_key => $spec) {
+        //         $spec_item = $spec['spec_item'];
+        //         dump($spec_item[0]['id']);
+        //     }
+        // }dump($goods);die;
         $this->assign('goods', $goods);
         return $this->fetch();
     }

@@ -29,7 +29,7 @@
 				<empty name="goods">
 					<span>你的库存空空如也</span>
 				<else/>
-					<volist name="goods" id="goods">
+					<volist name="goods" id="goods" key="k">
 						<div class="goods_term clearfloat">
 							<!--class="goods_term_icon";=>没style
 								已-勾选图标clas="selection_yes";
@@ -37,7 +37,7 @@
 							-->
 							<p class="goods_term_icon selection_no" onclick="choice_butOr(this,'{$key}')" id="{$goods.goods_id}"><!--勾选图标--></p>
 							<div class="goods_term_data">
-								<p class="goods_term_data_img_box">
+								<p class="goods_term_data_img_box"> 
 									<!--图片w:130px;h:130px-->
 									<img class="goods_term_data_img" src="{$goods.original_img|goods_thum_images=400,400}" alt="" />
 								</p>
@@ -45,9 +45,19 @@
 									<p class="goods_term_bottom_data_name publicEllipsis">{$goods.goods_name}</p>
 									<p class="goods_term_bottom_data_price publicEllipsis">￥<span class="price_num">{$goods.shop_price}</span></p>
 									<p class="goods_term_bottom_data_stock publicEllipsis">库存: <span class="stock_num">{$goods.store_count}</span></p>
-									<p class="goods_term_bottom_data_gauge" onclick="template_but('id',0)">
-										<span speci-id="中国红id">中国红</span>，<span speci-id="套餐2id">套餐2</span>
-									</p>
+									<notempty name="goods.spec">
+										<p class="goods_term_bottom_data_gauge" onclick="template_but('{$goods.goods_id}','{$k}')">
+											<volist name="goods.spec" id="spec" key="g">
+												<volist name="spec.spec_item" id="spec_item" key="s">
+													<if condition="$s == 1">
+														<span speci-id="{$spec_item.id}" id="{$spec_item.id}">{$spec_item.item}</span>
+														<if condition="$g != count($goods.spec)">,</if>
+													</if>
+												</volist>
+											</volist>	
+											<!-- <span speci-id="套餐2id">套餐2</span> -->
+										</p>
+									</notempty>
 									<!--加、减 wrap-->
 									<div class="add_reduce_wrap">
 										<span class="reduce_box" onclick="reduce_fun(this,0)"><i class="reduce_icon"></i></span>
@@ -81,31 +91,34 @@
 				<!--底部弹窗（框）-->
 				<div class="bottomAlertBox">
 					<!--标题-->
-					<p class="bottomAlertTitle">选择规格 <span class="bottomAlertclose"><img class="bottomAlertclose_icon" onclick="close_alert()" src="img/public/close_image.png"/></span></p>
+					<p class="bottomAlertTitle">选择规格 <span class="bottomAlertclose"><img class="bottomAlertclose_icon" onclick="close_alert()" src="__STATIC__/images/push/close_image.png"/></span></p>
 					<!--内容-->
-					<div class="bo_aler_content clearfloat">
+					<div class="bo_aler_content clearfloat" id="spec_content">
 						<!--循环=>规格wrap-->
-						<div class="bo_gauge_box clearfloat">
-							<p class="bo_gauge_box_title">颜色</p>
+						<!-- <div class="bo_gauge_box clearfloat">
+							<p class="bo_gauge_box_title">颜色</p> -->
 							<!--（在循环）规格box-->
-							<p class="bo_aler_box bo_aler_box_active" speci-id="中国红id">中国红</p>
+							<!-- <p class="bo_aler_box bo_aler_box_active" speci-id="中国红id">中国红</p> -->
 							<!--删-->
-							<p class="bo_aler_box" speci-id="油红id">油红</p>
-							<p class="bo_aler_box" speci-id="煤炭黑id">煤炭黑</p>
+							<!-- <p class="bo_aler_box" speci-id="油红id">油红</p> -->
+							<!-- <p class="bo_aler_box" speci-id="煤炭黑id">煤炭黑</p> -->
 							<!--删-->
-						</div>
+						<!-- </div> -->
 						<!--<< 删666-->
+
+
+
 						<!--循环=>规格wrap-->
-						<div class="bo_gauge_box clearfloat">
-							<p class="bo_gauge_box_title">套餐</p>
+						<!-- <div class="bo_gauge_box clearfloat">
+							<p class="bo_gauge_box_title">套餐</p> -->
 							<!--（在循环）规格box-->
-							<p class="bo_aler_box bo_aler_box_active" speci-id="套餐1id">狼性套餐1</p>
+							<!-- <p class="bo_aler_box bo_aler_box_active" speci-id="套餐1id">狼性套餐1</p> -->
 							<!--删-->
-							<p class="bo_aler_box" speci-id="套餐2id">猫性套餐2</p>
+							<!-- <p class="bo_aler_box" speci-id="套餐2id">猫性套餐2</p>
 							<p class="bo_aler_box" speci-id="套餐3id">树形套餐3</p>
-							<p class="bo_aler_box" speci-id="套餐4id">科技套餐4</p>
+							<p class="bo_aler_box" speci-id="套餐4id">科技套餐4</p> -->
 							<!--删-->
-						</div>
+						<!-- </div> -->
 						<!--删666 >>-->
 						
 					</div>
@@ -120,6 +133,7 @@
 		
 		<script src="__STATIC__/js/push/jquery-1.8.3.js"></script>
 		<script src="__STATIC__/js/push/public.js"></script>
+		<script src="__PUBLIC__/js/layer/layer.js"></script>
 		
 		<script>
 			/*(全选)共有多少件商品*/
@@ -225,6 +239,7 @@
 			all_kind();
 			/*（单选）=>已||未 =>选择*/
 			function choice_butOr(_this,_index){
+				_index = _index - 1;
 				console.log('单选-下标:',_index);
 				if($(_this).hasClass('selection_no')){
 					$(_this).removeClass('selection_no').addClass('selection_yes');
@@ -384,7 +399,8 @@
 				
 			})
 			/*点击出现-规格(遮罩层)*/
-			function template_but(_id,_index){
+			function template_but(goods_id,_index){
+				_index = _index - 1;
 				/*蒙版(出现)*/
 				$('.bottomAlertWrap').show();
 				/*底部弹窗(出现)*/
@@ -401,9 +417,36 @@
 					'left': 0,
 				});
 				speci_obj['ind'] = _index;
-				console.log('对应的规格id:',_id,'对应的规格-data: index',speci_obj['ind']);
+				console.log('对应的规格id:','对应的规格-data: index',speci_obj['ind']);
 				/*ajax*/
-				
+				$.ajax({
+					type: 'post',
+					url: "{:url('Mobile/Push/getSpec')}",
+					data: {goods_id : goods_id},
+					dataType: 'json',
+					success: function(data){
+						if(data.status == 1){
+							var spec = '';
+							var pre_spec = data_arr[_index]['com_speci'];
+							$('.bo_gauge_box').remove();
+							for (var i = 0; i < data.result.length; i++) {
+								var div = "<div class=\"bo_gauge_box clearfloat\" id=\"spec_box_"+ i +"\"><p class=\"bo_gauge_box_title\">" + data.result[i]['name'] + "</p>";
+								$('#spec_content').append(div);
+								sepc = data.result[i]['spec_item'];
+								for (var j = 0; j < sepc.length; j++) {
+									if(sepc[j]['id'] == pre_spec[i]['speci_id']){
+										var p = "<p class=\"bo_aler_box bo_aler_box_active\" speci-id=\""+ sepc[j]['id'] +"\">"+ sepc[j]['item'] +"</p>";
+									}else{
+										var p = "<p class=\"bo_aler_box\" speci-id=\""+ sepc[j]['id'] +"\">"+ sepc[j]['item'] +"</p>";
+									}
+									$('#spec_box_' + i).append(p);
+								}
+							}
+						}else{
+							layer.msg(data.msg, {icon:2});
+						}
+					},
+				});
 				
 				return false;
 			}
@@ -424,7 +467,8 @@
 				return false;
 			}
 			/*选取规格-全部遍历下*/
-			$('.bo_aler_content .bo_aler_box').on('click',function(){
+			// $('.bo_aler_content .bo_aler_box').on('click',function(){
+			$(document).on('click','.bo_aler_content .bo_aler_box',function(){
 				/*更改-当前项-active*/
 				$(this).addClass('bo_aler_box_active').siblings().removeClass('bo_aler_box_active');
 				/*初始化-当前的商品规格*/
