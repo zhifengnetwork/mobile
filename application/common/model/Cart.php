@@ -18,7 +18,7 @@ class Cart extends Model {
 
     public function goods()
     {
-        return $this->hasOne('Goods', 'goods_id', 'goods_id')->cache(true,10)->field('goods_id,cat_id,store_count,is_on_sale,prom_type,prom_id,weight')->bind([
+        return $this->hasOne('Goods', 'goods_id', 'goods_id')->cache(true,10)->field('goods_id,cat_id,store_count,shop_price,is_on_sale,prom_type,prom_id,weight')->bind([
             'cat_id'	=> 'cat_id','store_count'=>'store_count','is_on_sale'=>'is_on_sale','weight'=>'weight'
         ]);
     }

@@ -29,24 +29,13 @@ class Payment extends ApiBase {
     public function  __construct() {   
         parent::__construct();           
         
-        // tpshop 订单支付提交
-        $pay_radio = $_REQUEST['pay_radio'];
-        if(!empty($pay_radio)) 
-        {                         
-            $pay_radio = parse_url_param($pay_radio);
-            $this->pay_code = $pay_radio['pay_code']; // 支付 code
-        }
-        else // 第三方 支付商返回
-        {            
-            //file_put_contents('./a.html',$_GET,FILE_APPEND);    
-            $this->pay_code = I('get.pay_code');
-            unset($_GET['pay_code']); // 用完之后删除, 以免进入签名判断里面去 导致错误
-        }																					$this->pay_code = 'weixinH5';                     
+        $this->pay_code = I('post.pay_code/s','AppWeixinPay');
+        //unset(I('post.pay_code/s','')); // 用完之后删除, 以免进入签名判断里面去 导致错误
+																	                   
         //获取通知的数据
         $xml = $GLOBALS['HTTP_RAW_POST_DATA'];      
         $xml = file_get_contents('php://input');
-        if(empty($this->pay_code))
-            exit('pay_code 不能为空');
+        if(empty($this->pay_code))$this->ajaxReturn(['status' => -9 , 'msg'=>'pay_code 不能为空','data'=>null]);	
         // 导入具体的支付类文件                
         include_once  "plugins/payment/{$this->pay_code}/{$this->pay_code}.class.php"; 
 		// D:\wamp\www\svn_tpshop\www\plugins\payment\alipay\alipayPayment.class.php                       
@@ -271,8 +260,8 @@ class Payment extends ApiBase {
 
     //微信支付
 	public function GetWxAppPaySign(){
-        $order_sn = I('post.ordernum/s','');
-        $user_id = $this->get_user_id();
+        $order_sn = I('post.order_sn/s','');
+        $user_id = $this->get_user_id();    
 
         if(!$order_sn || !$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>null]); 
@@ -282,6 +271,8 @@ class Payment extends ApiBase {
             $this->ajaxReturn(['status' => -2 , 'msg'=>'订单不存在','data'=>null]); 
         }   
         $arr = $this->GetPay(['ordernum'=>$order_sn,'price'=>$info['order_amount']]);
+        $arr['packageValue'] = $arr['package'];
+        unset($arr['package']);
         $this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功','data'=>$arr]); 
     }
     
@@ -299,17 +290,17 @@ class Payment extends ApiBase {
             $this->ajaxReturn(['status' => -2 , 'msg'=>'价格异常','data'=>null]); 
         }
 
-		include_once "plugins/payment/appWeixinPay/WxPay.Api.php";
+		//include_once "plugins/payment/appWeixinPay/WxPay.Api.php";
 
         $input = new \WxAppPayUnifiedOrder(); 
         $input->SetBody('DC商城订单支付');
-        $input->SetOut_trade_no($data['ordernum']);     //订单号
+        $input->SetOut_trade_no($data['ordernum'].time());     //订单号
         //$input->SetTime_expire(date('yyyyMMddHHmmss',time()+20));     //订单号
         $input->SetTotal_fee($data['price']*100);
         $input->SetNotify_url(SITE_URL.'/index.php/api/Payment/WxAppNotifyUrl');
         $input->SetTrade_type("APP");
-        $result = \WxAppPayApi :: unifiedOrder($input,15);   
-
+        $result = \AppWeixinPay :: unifiedOrder($input,15);   
+   
         $arr = array( 
             'appid'         => $result['appid'],
             'partnerid'     => $result['mch_id'],
