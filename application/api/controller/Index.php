@@ -101,7 +101,7 @@ class Index extends ApiBase
 
 		$re_left = $this->get_one_ad(305);
 		$re_right = $this->get_one_ad(306);
-		$re_button = $this->get_list_ad(307,4);
+		$re_bottom = $this->get_list_ad(307,4);
 
 
 		$data = [
@@ -110,13 +110,13 @@ class Index extends ApiBase
 			'ad_left1' => $ad_left1, //单个大图
 			'ad_left2' => $ad_left2, //单个大图
 			'ad_right' => $ad_right, //单个大图
-			
+
 			'new_left' => $new_left, 
 			'new_right' => $new_right, 
 
 			're_left' => $re_left,
 			're_right '=> $re_right,
-			're_button' => $re_button,
+			're_bottom' => $re_bottom,
 
 			'articlelist'		=>  $articlelist,	//头条
 			'flash_sale_goods'	=>  $flash_sale_goods,  //当前时段秒杀商品，只取6条
