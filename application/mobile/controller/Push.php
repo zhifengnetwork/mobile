@@ -318,4 +318,22 @@ class Push extends MobileBase
         }
         $this->ajaxReturn(['status'=>0, 'msg'=>'获取失败', 'result'=>'']);
     }
+
+
+    /**
+     * 结算
+     */
+    public function cart2(){
+        $user_id  = session('user.user_id');
+
+
+
+
+
+
+        return $this->fetch();
+    }
+
+
+    
 }
