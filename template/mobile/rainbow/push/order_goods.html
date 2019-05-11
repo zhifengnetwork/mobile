@@ -413,7 +413,7 @@
 					 * 查找=>勾选-状态 &&当前-都选的商品-数量为空
 					 * **/
 					if(data_arr[j]['checklist'] == true && data_arr[j]['com_num'] == 0){
-						alert('亲，您购买的商品数量为0件');
+						layer.msg('亲，您购买的商品数量为0件', {icon:2});
 						return false;
 					}
 					if(data_arr[j]['checklist'] == true && data_arr[j]['com_num'] != 0){
@@ -423,7 +423,7 @@
 					}
 				}
 				if(!count){
-					alert('亲，您没有结算的商品!');
+					layer.msg('亲，您没有结算的商品!', {icon:2});
 					return false;
 				}
 				
