@@ -661,9 +661,24 @@ class Distribut extends Base {
                     ->field('a.*, u.nickname, c.agency_name, r.name')
                     ->limit($page->firstRow, $page->listRows)
                     ->select();
-    
+        
         $this->assign('pager', $page);
         $this->assign('agent_list',$agent_list);
+        return $this->fetch();
+    }
+
+    /**
+     * 添加编辑区域代理
+     */
+    public function agent_area_operate()
+    {
+        $action = I('action/s');
+        if($action == 'edit'){
+            
+        }
+
+        $province = M('region')->where('level', 1)->select();
+        $this->assign('province', $province);
         return $this->fetch();
     }
 }

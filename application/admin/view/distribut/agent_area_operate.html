@@ -1,0 +1,195 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>区域代理 - 添加编辑区域代理</h3>
+                <h5>网站系统区域代理管理</h5>
+            </div>
+        </div>
+    </div>
+    
+    <form class="form-horizontal" id="handleposition" method="post">
+        <input type="hidden" name="act" value="{$act}">
+        <input type="hidden" name="id" value="{$agent.id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="user_id"><em>*</em>用户ID</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="user_id" value="" id="user_id" class="input-txt" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                    <span class="err" id="erruser_id"></span>
+                    <p class="notic">填写需要设置为区域代理的用户ID</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="agency_level"><em>*</em>区域代理等级</label>
+                </dt>
+                <dd class="opt">
+                    <select name="agency_level" id="agency_level" onchange="init_area();">
+                        <option value="1">区县代理</option>
+                        <option value="2">地级市代理</option>
+                        <option value="3">省代</option>
+                    </select>
+                    <span class="err" id="err_agency_level"></span>
+                    <p class="notic">设置代理等级名称</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="team_sum"><em>*</em><span>选择地区</span></label>
+                </dt>
+                <dd class="opt" id="area">
+                    <select name="province" id="province" onchange="change_area('city', this.value);">
+                        <foreach name="province" item="item">
+                            <option value="{$item.id}">{$item.name}</option>
+                        </foreach>
+                    </select>
+
+                    <!-- <select name="agency_level_2" id="agency_level_2">
+                        <foreach name="city" item="item">
+                            <option value="{$item.id}">{$item.name}</option>
+                        </foreach>
+                    </select>
+
+                    <select name="agency_level_1" id="agency_level_1">
+                            <foreach name="district" item="item">
+                                <option value="{$item.id}">{$item.name}</option>
+                            </foreach>
+                        </select> -->
+                </dd>
+            </dl>
+            <div class="bot"><a href="JavaScript:void(0);" onclick="verifyForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    var city = 0;
+    var province = 0;
+    init_area();
+
+    function init_area(){
+        var agency_level = $('#agency_level').val();
+        $('#city').remove();
+        $('#district').remove();
+        if(agency_level == '2'){
+            province = $('#province').val();
+            show_city(province);
+        }else if(agency_level == '1'){
+            province = $('#province').val();
+            show_city(province);
+            show_district(city);
+        }
+    }
+
+    function show_city(province){
+        $.ajax({
+            type: "post",
+            url : "{:url('api/region/get_region')}",
+            data: {id : province},
+            async: false,
+            dataType: 'json',
+            success: function(data){
+                if(data.status == 0){
+                    var result = data.data;
+                    if($('#city').length > 0){
+                        $('#city').empty();
+                    }else{
+                        var select = "<select name=\"city\" id=\"city\" onchange=\"change_area('district', this.value);\"></select>";
+                        $('#area').append(select);
+                    }
+                    for(var i=0; i<result.length; i++){
+                        if(i == 0){
+                            city = result[i]['id'];
+                            var option = "<option value=\"" + result[i]['id'] + "\" selected>" + result[i]['name'] + "</option>"
+                        }else{
+                            var option = "<option value=\"" + result[i]['id'] + "\">" + result[i]['name'] + "</option>"
+                        }
+                        $('#city').append(option);
+                    }                   
+                }else{
+                    console.log(data);
+                }
+            },
+            error: function(data) {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            }
+        });
+    }
+
+    function show_district(city){
+        $.ajax({
+            type: "post",
+            url : "{:url('api/region/get_region')}",
+            data: {id : city},
+            async: false,
+            dataType: 'json',
+            success: function(data){
+                if(data.status == 0){
+                    var result = data.data;
+                    if($('#district').length > 0){
+                        $('#district').empty();
+                    }else{
+                        var select = "<select name=\"district\" id=\"district\"></select>";
+                        $('#area').append(select);
+                    }
+                    for(var i=0; i<result.length; i++){
+                        var option = "<option value=\"" + result[i]['id'] + "\">" + result[i]['name'] + "</option>"
+                        $('#district').append(option);
+                    }                   
+                }else{
+                    console.log(data);
+                }
+            },
+            error: function(data) {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            }
+        });
+    }
+
+    // function select_area(agency_level){
+        
+    // }
+
+    function change_area(area, area_id){
+        if(area == 'city'){
+            show_city(area_id);
+            show_district(city);
+        }else{
+            show_district(area_id);
+        }
+    }
+
+    function verifyForm(){
+        $('span.err').show();
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/Distribut/agent_area_handle')}",
+            data: $('#handleposition').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {icon: 1});
+                    location.href = "{:U('Admin/Distribut/agent_area')}";
+                } else {
+                    layer.msg(data.msg, {icon: 2});
+                    $.each(data.result, function (index, item) {
+                        $('#err_' + index).text(item).show();
+                    });
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>
