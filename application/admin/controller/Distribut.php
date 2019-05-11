@@ -653,16 +653,19 @@ class Distribut extends Base {
     public function agent_area_list()
     {
         $count = M('user_regional_agency')->count();
-        $page  = new Page($count, 20);
+        $page  = new Page($count, 12);
         $agent_list = M('user_regional_agency')->alias('a')
-                    ->join('config_regional_agency c', 'c.agency_level = a.agency_level')
-                    ->join('users u', 'u.user_id = a.user_id')
-                    ->join('region2 r', 'r.id = a.region_id')
+                    ->join('config_regional_agency c', 'c.agency_level = a.agency_level','left')
+                    ->join('users u', 'u.user_id = a.user_id','left')
+                    ->join('region r', 'r.id = a.region_id','left')
                     ->field('a.*, u.nickname, c.agency_name, r.name')
                     ->limit($page->firstRow, $page->listRows)
                     ->select();
-    
-        $this->assign('pager', $page);
+
+        $this->assign('count', $count);
+
+        $this->assign('page', $page);
+   
         $this->assign('agent_list',$agent_list);
         return $this->fetch();
     }

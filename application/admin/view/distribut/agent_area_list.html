@@ -26,7 +26,7 @@
 		<div class="mDiv">
 			<div class="ftitle">
 				<h3>区域代理列表</h3>
-				<h5>(共{$page->total}条记录)</h5>
+				<h5>(共{$count}条记录)</h5>
 			</div>
 			<div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
 		</div>
@@ -113,7 +113,8 @@
                     </table>
                 </div>
                 <div class="iDiv" style="display: none;"></div>
-            </div>
+			</div>
+			{$page->show()}
         </div>
 <script>
 	$(document).ready(function(){
