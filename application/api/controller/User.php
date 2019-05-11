@@ -615,7 +615,7 @@ class User extends ApiBase
         // 用户名称头像
         $user = Db::name("users")
         ->where('user_id',$user_id)
-        ->field('nickname,head_pic,pay_points')
+        ->field('nickname,head_pic,pay_points,user_money')
         ->find();
 
         // 统计优惠券
@@ -623,7 +623,7 @@ class User extends ApiBase
         // 个人信息
         $order_info['nickname'] = $user['nickname'];
         $order_info['head_pic'] = $user['head_pic'];
-      
+        $order_info['user_money'] = $user['user_money'];
 
         // 收藏 足迹 店铺关注 
         $goods_collect_num = M('goods_collect')->where('user_id', $user_id)->count();

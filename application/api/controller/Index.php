@@ -89,14 +89,82 @@ class Index extends ApiBase
             $flash_sale_goods[$k]['disc']  = 100 * number_format(($v['price']/$v['shop_price']),1);  //折扣
 		}
 
+
+		//广告
+		$ad_top =   $this->get_one_ad(400);
+		$ad_left1 = $this->get_one_ad(301);
+		$ad_left2 = $this->get_one_ad(302);
+		$ad_right = $this->get_one_ad(300);
+
+		$new_left = $this->get_one_ad(303);
+		$new_right = $this->get_list_ad(304,2);
+
+		$re_left = $this->get_one_ad(305);
+		$re_right = $this->get_one_ad(306);
+		$re_button = $this->get_list_ad(307,4);
+
+
 		$data = [
 			'adlist'			=> 	$adlist,		//banner轮播
+			'ad_top' => $ad_top, //单个大图
+			'ad_left1' => $ad_left1, //单个大图
+			'ad_left2' => $ad_left2, //单个大图
+			'ad_right' => $ad_right, //单个大图
+			
+			'new_left' => $new_left, 
+			'new_right' => $new_right, 
+
+			're_left' => $re_left,
+			're_right '=> $re_right,
+			're_button' => $re_button,
+
 			'articlelist'		=>  $articlelist,	//头条
 			'flash_sale_goods'	=>  $flash_sale_goods,  //当前时段秒杀商品，只取6条
 			'end_time'			=>	($end_time -time())	//剩余秒数
 		];
 		$this->ajaxReturn(['status' => 0, 'msg'=>'请求成功','data'=>$data]);
 	}
+
+
+	/**
+	 * 获取
+	 * 单个
+	 * ad
+	 */
+	private function get_one_ad($pid){
+		$data = M('ad')->where(['pid'=>$pid,'enabled'=>1])->field('ad_link,ad_code')->find();
+		if(false !== strpos($data['ad_link'],'Mobile/Goods/goodsInfo/id')){ 
+			$urlarr = pathinfo($data['ad_link']);
+			$data['goods_id'] = $urlarr['filename'];
+		}else{
+			$data['goods_id'] = 0;
+		}
+		$data['ad_code'] = SITE_URL.$data['ad_code'];
+		unset($data['ad_link']);
+		return $data;
+	}
+
+	/**
+	 * 获取
+	 * 多个
+	 * ad
+	 */
+	private function get_list_ad($pid,$limit){
+		$adlist = M('ad')->where(['pid'=>$pid,'enabled'=>1])->field('ad_link,ad_code')->limit($limit)->select();
+		foreach($adlist as $k=>$v){
+			if(false !== strpos($v['ad_link'],'Mobile/Goods/goodsInfo/id')){ 
+				$urlarr = pathinfo($v['ad_link']);
+				$adlist[$k]['goods_id'] = $urlarr['filename'];
+			}else{
+				$adlist[$k]['goods_id'] = 0;
+			}
+			$adlist[$k]['ad_code'] = SITE_URL.$v['ad_code'];
+			unset($adlist[$k]['ad_link']);
+		}
+
+		return $adlist;
+	}
+
 
 	//获取文章详情
 	public function getArticleInfo(){
