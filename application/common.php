@@ -68,16 +68,7 @@ function share_deal_after($xiaji, $shangji)
 
 
     $is_shangji = M('users')->where(['user_id' => $xiaji])->value('first_leader');
-    if ($is_shangji && (int)$is_shangji > 0 && $shangji != $is_shangji['first_leader']) {
-
-        $xiaji_openid = M('users')->where(['user_id' => $xiaji])->value('openid');
-        $wx_content = "已经存在上级！你的ID:".$xiaji;
-        $wechat = new \app\common\logic\wechat\WechatUtil();
-        $wechat->sendMsg($xiaji_openid, 'text', $wx_content);
-
-        return false;
-    }
-    if ($is_shangji && (int)$is_shangji > 0 && $shangji == $is_shangji['first_leader']) {
+    if ($is_shangji && (int)$is_shangji > 0 && $shangji == $is_shangji) {
 
         $xiaji_openid = M('users')->where(['user_id' => $xiaji])->value('openid');
         $wx_content = "TA已经是你的上级了！你的ID:".$xiaji;
@@ -86,6 +77,16 @@ function share_deal_after($xiaji, $shangji)
 
         return false;
     }
+    if ($is_shangji && (int)$is_shangji > 0 && $shangji != $is_shangji) {
+
+        $xiaji_openid = M('users')->where(['user_id' => $xiaji])->value('openid');
+        $wx_content = "已经存在上级！你的ID:".$xiaji;
+        $wechat = new \app\common\logic\wechat\WechatUtil();
+        $wechat->sendMsg($xiaji_openid, 'text', $wx_content);
+
+        return false;
+    }
+   
 
 
     //看下级的注册时间
