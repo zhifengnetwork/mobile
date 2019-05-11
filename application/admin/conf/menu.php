@@ -210,6 +210,7 @@ return array(
 				array('name' => '分成日志列表', 'act' => 'rebate_log', 'op' => 'Distribut'),
                 array('name' => '消费日志列表', 'act' => 'consume_log', 'op' => 'Distribut'),
                 array('name' => '区域代理设置', 'act' => 'agent_area', 'op' => 'Distribut'),
+                array('name' => '区域代理列表', 'act' => 'agent_area_list', 'op' => 'Distribut'),
 			)),
 	     
     	    array('name' => '微信接入','child' => array(

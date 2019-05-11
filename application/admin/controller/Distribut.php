@@ -646,4 +646,24 @@ class Distribut extends Base {
         }
         $this->ajaxReturn($return);
     }
+
+    /**
+    * 区域代理列表
+    */
+    public function agent_area_list()
+    {
+        $count = M('user_regional_agency')->count();
+        $page  = new Page($count, 20);
+        $agent_list = M('user_regional_agency')->alias('a')
+                    ->join('config_regional_agency c', 'c.agency_level = a.agency_level')
+                    ->join('users u', 'u.user_id = a.user_id')
+                    ->join('region2 r', 'r.id = a.region_id')
+                    ->field('a.*, u.nickname, c.agency_name, r.name')
+                    ->limit($page->firstRow, $page->listRows)
+                    ->select();
+    
+        $this->assign('pager', $page);
+        $this->assign('agent_list',$agent_list);
+        return $this->fetch();
+    }
 }
