@@ -70,7 +70,7 @@
             <div class="maleri30">
                 <volist name="cartList" id="cart">
                     <div class="shopprice">
-                        <div class="img_or fl"><img src="{$cart[goods_id]|goods_thum_images=100,100,$cart[item_id]}"/></div>
+                        <div class="img_or fl"><img src="{$cart['goods']['original_img']|goods_thum_images=100,100}"/></div>
                         <div class="fon_or fl">
                             <h2 class="similar-product-text">{$cart[goods_name]}</h2>
 
@@ -78,7 +78,6 @@
                         </div>
                         <div class="price_or fr">
                             <p class="red"><span>￥</span><span>{$cart[member_goods_price]}</span></p>
-
                             <p class="ligfill">x{$cart[goods_num]}</p>
                         </div>
                     </div>
@@ -112,7 +111,7 @@
                             商品金额
                         </div>
                         <div class="fr">
-                            <a> ￥<span id="total_fee">{$cartPriceInfo['total_fee']}</span>元</a>
+                            <a> ￥<span id="total_fee">{$total_price}</span>元</a>
                         </div>
                     </div>
                     <div class="p z-monry-cont shipping_div">
@@ -295,18 +294,51 @@
         }
         pay_pwd_view();
         get_address_list();
+        ajax_order_price();
     });
+
+    
+    // 获取订单价格
+    function ajax_order_price() {
+        couponListHide();
+        var address_id = cart2_form.find("input[name='address_id']").val();
+        console.log(address_id);
+        if(address_id == ''){
+            get_address_list();
+        }
+        $.ajax({
+            type: "POST",
+            url: '/index.php?m=Mobile&c=Push&a=cart3',
+            data: {address_id:address_id},
+            dataType: "json",
+            success: function (data) {
+                is_shipping_able = true;
+                if(data.hasOwnProperty('code') && data.code == 301){
+                    is_shipping_able = false;
+                    door_to_door_hide_or_show();
+                }
+                if (data.status != 1) {
+                    layer.open({icon: 2, content: data.msg, time: 1, end:function(){
+                        // 登录超时
+                        if (data.status == -100) {
+                            location.href = "{:U('Mobile/User/login')}";
+                        }
+                        $('.submit_price a').addClass("disable");
+                    }});
+                    return false;
+                }else{
+                    $('.submit_price a').removeClass("disable");
+                    refresh_price(data);
+                }
+            }
+        });
+    }
+
     //各种弹窗返回上一步
     $(function () {
         //主页面返回上一步
         $(document).on('click', '#back', function () {
-            var action = cart2_form.find("input[name='action']");
-            var url = "/index.php?m=Mobile&c=Cart&a=index";
-            if (action.val() == 'buy_now') {
-                var goods_id = cart2_form.find("input[name='goods_id']");
-                var item_id = cart2_form.find("input[name='item_id']");
-                url = "/index.php?m=Mobile&c=Goods&a=goodsInfo&id="+goods_id.val()+'&item_id='+item_id.val();
-            }
+            var url = "/index.php?m=Mobile&c=Push&a=order_goods";
             window.location.href = url;
         });
         //地址弹窗返回上一步

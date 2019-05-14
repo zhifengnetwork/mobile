@@ -2,6 +2,10 @@
 
 namespace app\mobile\controller;
 
+use app\common\util\TpshopException;
+use app\common\logic\PushCartLogic;
+use app\common\logic\GoodsLogic;
+use app\common\logic\Pay;   
 use think\Exception;
 use think\Page;
 use think\db;
@@ -325,15 +329,69 @@ class Push extends MobileBase
      */
     public function cart2(){
         $user_id  = session('user.user_id');
+        // $cartList = M('push_cart')->alias('cart')
+        //         ->join('spec_goods_price spec', 'spec.item_id = cart.item_id', 'LEFT')
+        //         ->join('goods', 'goods.goods_id = cart.goods_id')
+        //         ->where('cart.user_id', $user_id)
+        //         ->field('cart.*, spec.price, spec.key_name, goods.goods_name, goods.original_img, goods.shop_price')
+        //         ->select();
+        // $total_price = 0;
+        // foreach ($cartList as $key => $value) {
+        //     if($value['price'] == 0){
+        //         $total_price = $total_price + round($value['shop_price'] * $value['total'], 2); 
+        //     }else{
+        //         $total_price = $total_price + round($value['price'] * $value['total'], 2); 
+        //     }
+        //     $goods_id[] = $value['goods_id'];
+
+        //     $GoodsLogic = new GoodsLogic();
+        //     $checkGoodsShipping = $GoodsLogic->checkGoodsListShipping($this->payList, $district_id['district']);
+        //     foreach($checkGoodsShipping as $shippingKey => $shippingVal){
+        //         if($shippingVal['shipping_able'] != true){
+        //             throw new TpshopException("计算订单价格",0,['status'=>-1, 'code' => 301,
+        //                 'msg'=>'订单中部分商品【 '.$shippingVal['goods_name'].' 】不支持对当前地址的配送请返回购物车修改',
+        //                 'result'=>['goods_shipping'=>$checkGoodsShipping]]);
+        //         }
+        //     }
+        // }
+
+        // $this->assign('total_price', $total_price);
+        // $this->assign('cartList', $cartList);
 
 
+        $cartLogic = new PushCartLogic();
+        $cartLogic->setUserId($user_id);
 
-
-
-
+        $goods = M('push_cart')->where('user_id', $user_id)->select();
+        foreach ($goods as $key => $value) {
+            $cartLogic->setGoodsModel($value['goods_id']);
+            $cartLogic->setSpecGoodsPriceById($value['item_id']);
+            $cartLogic->setGoodsBuyNum($value['total']);
+         
+            $buyGoods = [];
+            try{
+                $buyGoods = $cartLogic->buyNow();
+            }catch (TpshopException $t){
+                $error = $t->getErrorArr();
+                $this->error($error['msg']);
+            }
+            $cartList[] = $buyGoods;
+        }
+        
+        $this->assign('cartList', $cartList);
         return $this->fetch();
     }
 
-
+    public function cart3()
+    {
+        $user_id  = session('user.user_id');
+        $address_id = input("address_id/d", 0); //  收货地址id
+        dump($address_id);die;
+        $address = Db::name('user_address')->where("address_id", $address_id)->find();
+        $pay = new Pay();   
+        $pay->setUserId($user_id)->delivery($address);
+        dump($pay->toArray());die;
+        $this->ajaxReturn(['status' => 1, 'msg' => '计算成功', 'result' => $pay->toArray()]);
+    }
     
 }
