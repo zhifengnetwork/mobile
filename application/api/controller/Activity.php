@@ -375,4 +375,50 @@ class Activity extends ApiBase {
         return $coupon_list;
     }
 
+    public function group_list()
+    {
+        $type =I('post.type/s','');
+        $page =I('post.page/d',1);
+        $num =I('post.num/d',6);
+        $sort =I('post.sort/s','desc');
+        //以最新新品排序
+        if ($type == 'new') {
+            $order = 'gb.start_time ';
+        } elseif ($type == 'comment') {
+            $order = 'g.comment_count ';
+        } else {
+            $order = '';
+        }
+
+        if($order)$order .= $sort;
+
+        $limit = ($page-1) * $num . ',' . $num;
+        $group_by_where = array(
+            'gb.start_time'=>array('lt',time()),
+            'gb.end_time'=>array('gt',time()),
+            'g.is_on_sale'=>1,
+            'gb.is_end'            =>0,
+        );
+        $GroupBuy = new GroupBuy();
+
+        $list = $GroupBuy
+            ->alias('gb')
+            ->field('g.goods_id,g.goods_name,g.original_img,gb.id,gb.title,gb.start_time,gb.end_time,gb.item_id,gb.price,gb.goods_num,gb.buy_num,gb.order_num,gb.virtual_num,gb.rebate,gb.goods_price')
+            ->join('__GOODS__ g', 'gb.goods_id=g.goods_id AND g.prom_type=2')
+            ->where($group_by_where)
+            ->page($limit)
+            ->order($order)
+            ->select();
+
+            $SpecGoodsPrice = M('spec_goods_price');
+            foreach($list as $k=>$v){
+                $info = $SpecGoodsPrice->field('key,key_name,price,spec_img')->find($v['item_id']);
+                $info['price'] && $list[$k]['price'] = $info['price'];
+                $info['spec_img'] && $list[$k]['original_img'] = $info['spec_img'];
+            }
+
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$list]]);
+
+    }    
+
 }
