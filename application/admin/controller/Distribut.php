@@ -5,6 +5,7 @@ namespace app\admin\controller;
 use think\Page;
 use think\Db;
 use think\Loader;
+use think\Exception;
 use app\admin\logic\UsersLogic;
 use app\common\model\Order as OrderModel;
 
@@ -668,5 +669,145 @@ class Distribut extends Base {
    
         $this->assign('agent_list',$agent_list);
         return $this->fetch();
+    }
+
+    /**
+     * 添加区域代理
+     */
+    public function agent_area_add()
+    {
+        if(IS_POST){
+            $data = $this->get_post_agent('insert');
+            Db::startTrans();
+            try{
+                Db::name('user_regional_agency_log')->insert($data);
+                $data['is_show'] = 1;
+                unset($data['des']);
+                Db::name('user_regional_agency')->insert($data);
+                Db::commit();
+                $this->ajaxReturn(['status'=>1, 'msg'=>'添加成功！']);
+                exit;
+            }catch(\Exception $e){
+                Db::rollback();
+                $this->ajaxReturn(['status'=>0, 'msg'=>'添加失败！']);
+                exit;
+            }
+        }
+        $this->assign('action', 'agent_area_add');
+        $province = M('region')->where('level', 1)->select();
+        $this->assign('province', $province);
+        return $this->fetch('agent_area_operate');
+    }
+
+    /**
+     * 添加区域代理
+     */
+    public function agent_area_edit()
+    {
+        if(IS_POST){
+            $data = $this->get_post_agent('update');
+            Db::startTrans();
+            try{
+                Db::name('user_regional_agency_log')->insert($data);
+                unset($data['des']);
+                Db::name('user_regional_agency')->update($data);
+                Db::commit();
+                $this->ajaxReturn(['status'=>1, 'msg'=>'修改成功！']);
+                exit;
+            }catch(\Exception $e){
+                Db::rollback();
+                $this->ajaxReturn(['status'=>0, 'msg'=>'修改失败！']);
+                exit;
+            }
+        }
+
+        $user_id = I('user_id/s');
+        $agent = M('user_regional_agency')->where('user_id', $user_id)->find();
+        switch ($agent['agency_level']) {
+            case '1':
+                $pre_city = M('region')->where('id', $agent['region_id'])->value('parent_id');
+                $pre_province = M('region')->where('id', $pre_city)->value('parent_id');
+                $this->assign('pre_district', $agent['region_id']);
+                $this->assign('pre_province', $pre_province);
+                $this->assign('pre_city', $pre_city);
+                break;
+
+            case '2':
+                $pre_province = M('region')->where('id', $agent['region_id'])->value('parent_id');
+                $this->assign('pre_city', $agent['region_id']);
+                $this->assign('pre_province', $pre_province);
+                break;
+
+            default:
+                $this->assign('pre_province', $agent['region_id']);
+                break;
+        }
+        $province = M('region')->where('level', 1)->select();
+        $this->assign('action', 'agent_area_edit');
+        $this->assign('province', $province);
+        $this->assign('agent', $agent);
+        return $this->fetch('agent_area_operate');
+    }
+
+    public function get_post_agent($action)
+    {
+        $data['user_id'] = I('user_id/s');
+        $data['agency_level'] = I('agency_level/s');
+        $area_ids[] = I('province/s');
+        $area_ids[] = I('city/s');
+        $area_ids[] = I('district/s');
+
+        foreach ($area_ids as $key => $value) {
+            if($value){
+                $data['region_id'] = $value;
+            }
+        }
+        switch ($data['agency_level']) {
+            case '1':
+                if($action == 'insert'){
+                    $data['des'] = '成为区县代理级代理';
+                }else{
+                    $data['des'] = '修改代理信息';
+                }
+                break;
+            
+            case '2':
+                if($action == 'insert'){
+                    $data['des'] = '成为地级市代理级代理';
+                }else{
+                    $data['des'] = '修改代理信息';
+                }
+                break;
+
+            default:
+                if($action == 'insert'){
+                    $data['des'] = '成为省代理级代理';
+                }else{
+                    $data['des'] = '修改代理信息';
+                }
+                break;
+        }
+        return $data;
+    }
+
+    /*
+    * 删除区域代理
+    */
+    public function agent_area_delete()
+    {
+        $user_id = I('user_id/s');
+        $is_exisit = M('user_regional_agency')->where('user_id', $user_id)->find();
+        if($is_exisit){
+            $result = M('user_regional_agency')->where('user_id', $user_id)->delete();
+            if($result){
+                $this->ajaxReturn(['status'=>1,'msg'=>'删除成功！']);
+                exit;
+            }else{
+                $this->ajaxReturn(['status'=>0,'msg'=>'删除失败！']);
+                exit;
+            }
+        }else{
+            $this->ajaxReturn(['status'=>0,'msg'=>'删除失败！']);
+        }
     }
 }
