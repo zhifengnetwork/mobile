@@ -26,7 +26,7 @@
 		<div class="mDiv">
 			<div class="ftitle">
 				<h3>区域代理列表</h3>
-				<h5>(共{$page->total}条记录)</h5>
+				<h5>(共{$count}条记录)</h5>
 			</div>
 			<div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
 		</div>
@@ -64,11 +64,12 @@
 				</table>
 			</div>
 		</div>
+		
 		<!-- <div class="tDiv">
 			<div class="tDiv2">
-				<div class="fbutton"> <a href="{:U('Distribut/agent_area_level')}">
-					<div class="add" title="新增代理等级">
-						<span><i class="fa fa-plus"></i>新增代理等级</span>
+				<div class="fbutton"> <a href="{:U('Distribut/agent_area_add')}">
+					<div class="add" title="添加区域代理">
+						<span><i class="fa fa-plus"></i>添加区域代理</span>
 					</div>
 				</a> </div>
 			</div>
@@ -101,7 +102,8 @@
                                     </td>
                                     <!-- <td align="center" class="handle">
                                         <div style="text-align: center; width: 170px; max-width:170px;">
-                                            <a href="{:U('Distribut/agent_area_level',array('id'=>$vo['id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+                                            <a href="{:U('Distribut/agent_area_edit',array('user_id'=>$vo['user_id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+                                            <a class="btn red"  href="javascript:void(0)" data-url="{:U('Distribut/agent_area_delete')}" data-id="{$vo['user_id']}" onclick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
                                         </div>
                                     </td> -->
                                     <td align="" class="" style="width: 100%;">
@@ -113,7 +115,8 @@
                     </table>
                 </div>
                 <div class="iDiv" style="display: none;"></div>
-            </div>
+			</div>
+			{$page->show()}
         </div>
 <script>
 	$(document).ready(function(){
@@ -126,17 +129,6 @@
 		$('.fa-refresh').click(function(){
 			location.href = location.href;
 		});
-
-		// 代理设置
-		$('#is_valid').click(function(){
-			$('#form').submit();
-		});
-
-		// 分红设置
-		$('#is_divide').click(function(){
-			$('#form').submit();
-		});
-
 	});
 
 	function delfun(obj) {
@@ -147,7 +139,7 @@
 			$.ajax({
 				type: 'post',
 				url: $(obj).attr('data-url'),
-				data : {act:'del',level_id:$(obj).attr('data-id')},
+				data : {user_id:$(obj).attr('data-id')},
 				dataType: 'json',
 				success: function (data) {
 					layer.closeAll();

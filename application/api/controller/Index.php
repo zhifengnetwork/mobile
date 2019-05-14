@@ -115,7 +115,7 @@ class Index extends ApiBase
 			'new_right' => $new_right, 
 
 			're_left' => $re_left,
-			're_right '=> $re_right,
+			're_right' => $re_right,
 			're_bottom' => $re_bottom,
 
 			'articlelist'		=>  $articlelist,	//头条
