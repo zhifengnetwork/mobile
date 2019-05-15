@@ -22,7 +22,7 @@ class Goods extends ApiBase
     public function categoryList()
     {
         
-        $data = Db::name('goods_category')->order('id')->select();
+        $data = Db::name('goods_category')->where('is_show=1')->order('id')->select();
         // dump($data);
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
     }

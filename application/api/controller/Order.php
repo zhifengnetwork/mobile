@@ -380,7 +380,8 @@ class Order extends ApiBase
         }
 		
 		$Comment = M('comment');
-		$OrderGoods = M('Order_goods');
+        $OrderGoods = M('Order_goods');
+        $Goods = M('Goods');
 		foreach($info as $v){
 			$Comment->add([
 				'goods_id'	=> $v->goods_id,
@@ -396,7 +397,9 @@ class Order extends ApiBase
 				'service_rank'	=> $v->service_rank ? $v->service_rank : '',
 				'is_anonymous'	=> $v->is_anonymous ? $v->is_anonymous : '',
 				'rec_id'	=> $OrderGoods->where(['order_id'=>$order_id,'goods_id'=>$v->goods_id])->value('rec_id'),
-			]);
+            ]);
+            $Goods->where(['goods_id'=>$v->goods_id])->setInc('comment_count',1);
+            
 		}
 
 		M('Order')->update(['order_id'=>$order_id,'order_status'=>4]);

@@ -403,7 +403,7 @@ class Activity extends ApiBase {
 
         $list = $GroupBuy
             ->alias('gb')
-            ->field('g.goods_id,g.goods_name,g.original_img,gb.id,gb.title,gb.start_time,gb.end_time,gb.item_id,gb.price,gb.goods_num,gb.buy_num,gb.order_num,gb.virtual_num,gb.rebate,gb.goods_price')
+            ->field('g.goods_id,g.goods_name,g.original_img,g.comment_count,gb.id,gb.title,gb.start_time,gb.end_time,gb.item_id,gb.price,gb.goods_num,gb.buy_num,gb.order_num,gb.virtual_num,gb.rebate,gb.goods_price')
             ->join('__GOODS__ g', 'gb.goods_id=g.goods_id AND g.prom_type=2')
             ->where($group_by_where)
             ->page($limit)
@@ -415,6 +415,7 @@ class Activity extends ApiBase {
                 $info = $SpecGoodsPrice->field('key,key_name,price,spec_img')->find($v['item_id']);
                 $info['price'] && $list[$k]['price'] = $info['price'];
                 $info['spec_img'] && $list[$k]['original_img'] = $info['spec_img'];
+                if(($v['buy_num'] < 10) && ($v['buy_num'] < $v['virtual_num']))$list[$k]['num'] = $v['virtual_num'];
             }
 
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$list]]);
