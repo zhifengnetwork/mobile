@@ -132,6 +132,29 @@ a.green:hover { color: #FFF; background-color: #1BBC9D; border-color: #16A086; }
                     <dt>业务单号：</dt>
                     <dd>{$order.transaction_id|default='N'}</dd>
                 </dl>
+
+                <dl>
+                    <dt>发货时间：</dt>
+                    <dd>
+                        <if condition="$order.shipping_time neq 0">
+                            {$order.shipping_time|date='Y-m-d H:i:s',###}
+                            <else />
+                            无
+                        </if>
+                    </dd>
+                    <dt>收货时间：</dt>
+                    <dd>
+                        <if condition="$order.confirm_time neq 0">
+                            {$order.confirm_time|date='Y-m-d H:i:s',###}
+                            <else />
+                            无
+                        </if>
+                    </dd>
+                    <dt></dt>
+                    <dd></dd>
+                </dl>
+
+
             </div>
             <div class="addr-note">
                 <h4>收货信息</h4>
