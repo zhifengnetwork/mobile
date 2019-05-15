@@ -334,11 +334,19 @@ class Goods extends ApiBase
 
 		$seller_info = ['store_id'=>'','store_name'=>'','avatar'=>0,'num'=>0];
 		if($goods['seller_id']){
-			$seller_info = M('seller_store')->field('store_id,store_name,avatar')->where(['seller_id'=>$goods['seller_id'],'auditing'=>10,'is_delete'=>10])->find();
+			$seller_info = M('seller_store')->field('store_id,store_name,avatar,province,city')->where(['seller_id'=>$goods['seller_id'],'auditing'=>10,'is_delete'=>10])->find();
+		}else{
+			$seller_info['province'] = M('Config')->where(['name'=>'province','inc_type'=>'shop_info'])->value('value');
+			$seller_info['city'] = M('Config')->where(['name'=>'city','inc_type'=>'shop_info'])->value('value');
 		}
 		$seller_info['store_name'] = $seller_info['store_name'] ? $seller_info['store_name'] : '平台自营';
 		$seller_info['num'] = M('goods')->where(['seller_id'=>$goods['seller_id'],'is_on_sale'=>1])->count();
 		$seller_info['goods'] = M('Goods')->field('goods_id,goods_name,shop_price,original_img')->where(['seller_id'=>$goods['seller_id'],'is_on_sale'=>1])->limit('0,'.$goodsnum)->select(); 
+
+		$Region = M('region');
+		$seller_info['province_name'] = $seller_info['province'] ? $Region->where(['id'=>$seller_info['province']])->value('name') : '';
+		$seller_info['city_name'] = $seller_info['city'] ? $Region->where(['id'=>$seller_info['city']])->value('name') : '';
+
 		$goods['seller_info'] = $seller_info;
 
 		unset($goods['template_id']);

@@ -494,7 +494,7 @@ class User extends ApiBase
         
         $user_id = $this->get_user_id();
         if (!IS_POST) {
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>'']);
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'提交方式错误','data'=>null]);
         }
         $userLogic = new UsersLogic();
         $user_info = $userLogic->get_info($user_id);  // 获取用户信息
@@ -522,6 +522,45 @@ class User extends ApiBase
 
     }
 
+
+    public function distribut(){
+        $user_id = $this->get_user_id();
+        if (!$user_id) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>null]);
+        }
+       
+        $per_logic =  new \app\common\logic\PerformanceLogic();
+        $money_total = $per_logic->distribut_caculate();
+       
+        //补业绩
+        if($money_total['moneys'] < 0){
+            $bu_moneys = -1 * $money_total['moneys'] * 2; //补 两倍 的 差值
+            //这里重新
+            $add_logic = new \app\common\logic\AgentPerformanceAddLogic();
+            $add_logic->add($user_id,$bu_moneys);
+           
+            //重新来
+            $per_logic =  new \app\common\logic\PerformanceLogic();
+            $money_total = $per_logic->distribut_caculate();
+        }
+
+        $this->assign('money_total',$money_total);
+
+        //上级用户信息
+        $leader_id = M('users')->where(['user_id'=> $user_id])->value('first_leader');
+        if($leader_id){
+            $leader = M('users')->where(['user_id'=>$leader_id])->field('user_id, nickname')->find();
+            if($leader){
+                $this->assign('leader',$leader);
+            }
+        }
+      
+        $underling_number = M('users')->where(['user_id'=>$user_id])->value('underling_number');
+        $underling_number == NULL ? $underling_number = '0' : $underling_number;
+        $this->assign('underling_number', $underling_number);
+
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['money_total'=>$money_total,'leader'=>$leader,'underling_number'=>$underling_number]]);
+    }
     
     
     /**
@@ -1007,7 +1046,22 @@ class User extends ApiBase
     	$DistributLogic = new \app\common\logic\DistributLogic;
         $result= $DistributLogic->get_recharge_log($user_id,'','agent_performance_log');  //业务记录
         $this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功','data'=>['list'=>$result['result']]]); 
-    }   
+    }
+	
+	//明细记录
+    public function commision(){ 
+        $user_id = $this->get_user_id();
+        if (!$user_id) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>(object)null]);
+        }
+
+		$page = I('post.page/d',1);
+		$num = I('post.num/d',6);
+		$limit = ($page - 1) * $num . ',' . $num;
+    	$DistributLogic = new \app\common\logic\DistributLogic;
+        $result= $DistributLogic->get_commision_log($user_id,0,$limit);  //佣金明细
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功','data'=>['list'=>$result['result']]]); 
+    }
     
     //绑定支付宝
     public function BindZfb(){ 

@@ -94,7 +94,7 @@ class DistributLogic
      /*
      * 获取佣金明细
      */
-    public function get_commision_log($user_id,$pay_status=0){
+    public function get_commision_log($user_id,$pay_status=0,$limit=false){
         // $recharge_log_where ="user_id='".$user_id."' and states =101 or states =102";
         //改写搜索条件
         $recharge_log_where ="user_id='".$user_id."' and states =101";
@@ -104,9 +104,11 @@ class DistributLogic
         }
         $count = M('account_log')->where($recharge_log_where)->whereOr($whereor)->count();
         $Page = new Page($count, 15);
+		$limit = $limit ? $limit : ($Page->firstRow . ',' . $Page->listRows);
         $recharge_log = M('account_log')->where($recharge_log_where)
             ->whereOr($whereor)
-            ->limit($Page->firstRow . ',' . $Page->listRows)
+			->order('change_time desc')
+            ->limit($limit)
             ->select(); 
             // dump($recharge_log);
         $return = [
