@@ -47,8 +47,8 @@ class User extends ApiBase
         $user_id = $this->get_user_id();
         if($user_id!=""){
             $data = Db::name("users")
-            ->where('user_id',$user_id)
-            ->field('user_id,nickname,user_money,head_pic,agent_user,first_leader,realname,mobile,is_distribut,is_agent,sex,birthyear,birthmonth,birthday')
+            ->where(['user_id'=>$user_id])
+            ->field('user_id,level,nickname,user_money,head_pic,agent_user,first_leader,realname,mobile,is_distribut,is_agent,sex,birthyear,birthmonth,birthday')
             ->find();
             $data['date_birth'] = $data['birthyear'].'-'.$data['birthmonth'].'-'.$data['birthday'];
             unset($data['birthyear']);
@@ -57,6 +57,7 @@ class User extends ApiBase
         }else{
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
+		$data['level_name'] = $data['level'] ? M('user_level')->where(['level_id'=>$data['level']])->value('level_name') : '普通用户';
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
 
     }
