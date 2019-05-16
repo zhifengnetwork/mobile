@@ -279,7 +279,7 @@ class User extends ApiBase
             I('post.qq') ? $post['qq'] = I('post.qq') : false;  //QQ号码
             I('post.head_pic') ? $post['head_pic'] = I('post.head_pic') : false; //头像地址
         
-            if($user_info['sex'] != I('post.sex')){
+            if(empty(I('post.sex')) && ($user_info['sex'] != I('post.sex'))){
                 $post['sex'] = I('post.sex');
             }
             
@@ -559,7 +559,7 @@ class User extends ApiBase
         $underling_number == NULL ? $underling_number = '0' : $underling_number;
         $this->assign('underling_number', $underling_number);
 
-        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['money_total'=>$money_total,'leader'=>$leader,'underling_number'=>$underling_number]]);
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['user_id'=>$user_id,'money_total'=>$money_total,'leader'=>$leader,'underling_number'=>$underling_number]]);
     }
     
     
