@@ -40,7 +40,6 @@ class Distribut extends Base {
         $this->assign('log', $log);
 
         $arr = array(
-            'l.user_id'  => $order['user_id'],
             'l.order_id' => $order_id,
         );
         $area_log = M('user_regional_divide_log')->alias('l')
