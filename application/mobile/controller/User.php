@@ -383,14 +383,37 @@ class User extends MobileBase
      */
     public function fenxiang1()
     {
-        
         $user_id = session('user.user_id');
 
-       
         if(!$user_id){
             $this->redirect('fenxiang_no');
             exit;
         }
+
+        define('IMGROOT_PATH', str_replace("\\","/",realpath(dirname(dirname(__FILE__)).'/../../'))); //图片根目录（绝对路径）
+       
+        //加上 refresh == 1 , 强制重新获取海报
+        if(I('refresh') == '1'){
+            //删掉文件
+            @unlink(IMGROOT_PATH.'/public/share/head/'.$user_id.'.jpg');//删除头像
+            @unlink(IMGROOT_PATH."/public/share/picture_ok44/'.$user_id.'.jpg");//删除 44
+            @unlink(IMGROOT_PATH."/public/share/picture_888/".$user_id.".jpg");
+
+            //强制获取头像
+            $openid = session('user.openid');
+            $access_token = access_token();
+            $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
+            $resp = httpRequest($url, "GET");
+            $res = json_decode($resp, true);
+           
+            $head_pic = $res['headimgurl'];
+            if($head_pic){
+                //得到头像
+                M('users')->where(['openid'=>$openid])->update(['head_pic'=>$head_pic]);
+            }
+        }
+        
+
         $userinfo = M('users')->where(['user_id'=>$user_id])->find();
         if(!$userinfo){
             $this->redirect('fenxiang_no');
@@ -416,14 +439,14 @@ class User extends MobileBase
         }
         $url= "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=".$ticket;
 
-        $url222 = '/www/wwwroot/www.dchqzg1688.com/public/share/code/'.$user_id.'.jpg';
+        $url222 = IMGROOT_PATH.'/public/share/code/'.$user_id.'.jpg';
         if( @fopen( $url222, 'r' ) )
         {
             //已经有二维码了
-        	$url_code = '/www/wwwroot/www.dchqzg1688.com/public/share/code/'.$user_id.'.jpg';
+        	$url_code = IMGROOT_PATH.'/public/share/code/'.$user_id.'.jpg';
         }else{
             //还没有二维码
-            $re = $logic->getImage($url,'/www/wwwroot/www.dchqzg1688.com/public/share/code', $user_id.'.jpg');
+            $re = $logic->getImage($url,IMGROOT_PATH.'/public/share/code', $user_id.'.jpg');
             $url_code = $re['save_path'];
         }
         
@@ -434,23 +457,21 @@ class User extends MobileBase
 
         if($logo_url_logo_height > 420 || $logo_url_logo_width > 420){
             //压缩图片
-            $url_code = '/www/wwwroot/www.dchqzg1688.com/public/share/code/'.$user_id.'.jpg';
+            $url_code = IMGROOT_PATH.'/public/share/code/'.$user_id.'.jpg';
             $logo_url->thumb(410, 410)->save($url_code , null, 100);
         }
 
-          
-        $head_url = '/www/wwwroot/www.dchqzg1688.com/public/share/head/'.$user_id.'.jpg';
+        $head_url = IMGROOT_PATH.'/public/share/head/'.$user_id.'.jpg';
         if( @fopen( $head_url, 'r' ) )
         {
             //已经有二维码了
-        	$url_head_pp = '/www/wwwroot/www.dchqzg1688.com/public/share/head/'.$user_id.'.jpg';
+        	$url_head_pp = IMGROOT_PATH.'/public/share/head/'.$user_id.'.jpg';
         }else{
             //还没有二维码
-            $re = $logic->getImage($head_pic_url,'/www/wwwroot/www.dchqzg1688.com/public/share/head', $user_id.'.jpg');
+            $re = $logic->getImage($head_pic_url,IMGROOT_PATH.'/public/share/head', $user_id.'.jpg');
             $url_head_pp = $re['save_path'];
         }
         
-
         //判断图片大小
         $logo = \think\Image::open($url_head_pp);
         $logo_width = $logo->height();
@@ -459,39 +480,38 @@ class User extends MobileBase
         //头像变成200
         if($logo_height > 260 || $logo_width > 260){
             //压缩图片
-             $url_head_file = '/www/wwwroot/www.dchqzg1688.com/public/share/head/'.$user_id.'.jpg';
+             $url_head_file = IMGROOT_PATH.'/public/share/head/'.$user_id.'.jpg';
              $logo->thumb(240, 240)->save($url_head_file , null, 100);
         }
         
         //得到二维码的绝对路径
 
-        $pic = "/www/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg";
+        $pic = IMGROOT_PATH."/public/share/picture_ok44/'.$user_id.'.jpg";
         if( @fopen( $pic, 'r' ) )
         {
         	$pic = "/share/picture_ok44/".$user_id.".jpg";
         }
         else
         {
-        	$image = \think\Image::open('/www/wwwroot/www.dchqzg1688.com/public/share/bg1.jpg');
+        	$image = \think\Image::open(IMGROOT_PATH.'/public/share/bg1.jpg');
         	// 给原图左上角添加水印并保存water_image.png
-        	$image->water($url_code,\think\Image::DCHQZG)->save('/www/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg');
+        	$image->water($url_code,\think\Image::DCHQZG)->save(IMGROOT_PATH.'/public/share/picture_ok44/'.$user_id.'.jpg');
         	
         	$pic = "/public/share/picture_ok44/".$user_id.".jpg";
         }
     
         //再次叠加
 
-        $pic111 = "/www/wwwroot/www.dchqzg1688.com/public/share/picture_888/".$user_id.".jpg";
+        $pic111 = IMGROOT_PATH."/public/share/picture_888/".$user_id.".jpg";
         if( @fopen( $pic111, 'r' ) )
         {
         	$picture = "/public/share/picture_888/".$user_id.".jpg";
         }
         else
         {
-           
-        	$image = \think\Image::open('/www/wwwroot/www.dchqzg1688.com/public/share/picture_ok44/'.$user_id.'.jpg');
+        	$image = \think\Image::open(IMGROOT_PATH.'/public/share/picture_ok44/'.$user_id.'.jpg');
         	// 给原图左上角添加水印并保存water_image.png
-        	$image->water($url_head_pp,\think\Image::TOUXIANG)->save('/www/wwwroot/www.dchqzg1688.com/public/share/picture_888/'.$user_id.'.jpg');
+        	$image->water($url_head_pp,\think\Image::TOUXIANG)->save(IMGROOT_PATH.'/public/share/picture_888/'.$user_id.'.jpg');
           
         	$picture = "/public/share/picture_888/".$user_id.".jpg";
         }
@@ -502,23 +522,9 @@ class User extends MobileBase
         return $this->fetch('fenxiang');
     }
 
-    // public function fen()
-    // {
-    //     $user_id = session('user.user_id');
-    //     $url = SITE_URL.'?first_leader='.$user_id;
-    //     $this->assign('url',$url);
-    //     $qr_back = M('config')->where(['name'=>'qr_back'])->value('value');
-    //     $this->assign('qr_back',$qr_back);
-
-    //     $head_pic = session('user.head_pic');
-    //     $this->assign('head_pic',$head_pic);
-
-    //     $nickname = session('user.nickname');
-    //     $this->assign('nickname',$nickname);
-
-    //     return $this->fetch();
-    // }
     
+
+   
 
     public function logout()
     {
@@ -1609,6 +1615,7 @@ class User extends MobileBase
         $data = array(
             'user_id' => $user_id,
             'states' => 102,
+            'deleted_at' => 0,
         );
 
         $divide_order = M('order_divide')->where($data)->group('order_id')

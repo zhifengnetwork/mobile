@@ -167,13 +167,16 @@ class Order extends MobileBase
     public function order_detail()
     {
         $id = input('id/d', 0); 
-        change_role($id);//修改分销、代理
-        //检漏补发返利
-        $bufa = new \app\common\logic\DistributLogic();
-        $bufa->bufa($id,0);
 
         $Order = new OrderModel();
         $order = $Order::get(['order_id' => $id, 'user_id' => $this->user_id]);
+        if($order['pay_status'] == 1){
+            change_role($id);//修改分销、代理
+            //检漏补发返利
+            $bufa = new \app\common\logic\DistributLogic();
+            $bufa->bufa($id,0);
+        }
+
         if (!$order) {
             $this->error('没有获取到订单信息');
         }
