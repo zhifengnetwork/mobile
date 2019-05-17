@@ -13,6 +13,13 @@ require_once "WxPay.Data.php";
  */
 class AppWeixinPay
 {
+	public function __construct($data=false){
+		$data && (WxAppPayConfig::$APPID = $data['APPID']);
+		$data && (WxAppPayConfig::$MCHID = $data['MCHID']);
+		$data && (WxAppPayConfig::$KEY = $data['KEY']);
+		$data && (WxAppPayConfig::$APPSECRET = $data['APPSECRET']);
+	}
+
 	/**
 	 * 
 	 * 统一下单，WxAppPayUnifiedOrder中out_trade_no、body、total_fee、trade_type必填
@@ -450,7 +457,7 @@ class AppWeixinPay
 	}
  
     public function response()
-    {            
+    {          
 		include_once "WxPay.Notify.php";  
 		$WxAppPayNotify = new \WxAppPayNotify();
         $WxAppPayNotify->Handle(false);       

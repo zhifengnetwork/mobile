@@ -47,7 +47,10 @@ class Payment extends Base {
         // 导入具体的支付类文件                
         include_once  "plugins/payment/{$this->pay_code}/{$this->pay_code}.class.php"; // D:\wamp\www\svn_tpshop\www\plugins\payment\alipay\alipayPayment.class.php                       
         $code = '\\'.$this->pay_code; // \alipay
-        $this->payment = new $code();
+		if($this->pay_code == 'AppWeixinPay'){
+			$this->payment = new $code(['APPID'=>C('customize.WX_APP_LOGIN_APPID'),'APPSECRET'=>C('customize.WX_APP_LOGIN_SECRET'),'KEY'=>C('customize.KEY'),'MCHID'=>C('customize.MCHID')]);
+		}else
+			$this->payment = new $code();
     }
    
     /**
@@ -120,7 +123,7 @@ class Payment extends Base {
     }
     
     // 服务器点对点 // http://www.dchqzg1688.com/index.php/Home/Payment/notifyUrl        
-    public function notifyUrl(){            
+    public function notifyUrl(){  		     
         $this->payment->response();            
         exit();
     }
