@@ -64,7 +64,7 @@ class MobileBase extends Controller {
                     session('user', null);
                 }
             } 
-            if (empty(session('openid'))){
+            if (empty(session('openid'))){ 
               
                 // && $this->weixin_config['wait_access'] == 1
                 if(is_array($this->weixin_config) ){
@@ -86,7 +86,7 @@ class MobileBase extends Controller {
                                  $this->redirect(U('Mobile/User/bind_guide',['first_leader'=>$first_leader]));
                            }
                          }
-                    } else { 
+                    } else {
                         $data = $logic->thirdLogin($wxuser);
                         
                     }

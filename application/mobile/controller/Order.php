@@ -506,7 +506,7 @@ class Order extends MobileBase
             $logic = new UsersLogic();
             $add['rec_id'] = I('rec_id/d');
             $add['goods_id'] = I('goods_id/d');
-            $add['email'] = $user_info['email'];
+            $add['email'] = $user_info['email'] ? $user_info['email'] : '';
             $hide_username = I('hide_username');
             $add['username'] = $user_info['nickname'];
             $add['is_anonymous'] = $hide_username;  //是否匿名评价:0不是\1是

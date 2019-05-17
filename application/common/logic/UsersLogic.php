@@ -304,7 +304,9 @@ class UsersLogic extends Model
             //     $map['is_distribut']  = 1;
             // } 
 
-            $is_cunzai = Db::name('users')->where(array('openid'=>$map['openid']))->find();
+			$data['unionid'] && $map['unionid'] = $data['unionid'];
+			$is_cunzai = Db::name('users')->where(array('unionid'=>$map['unionid']))->find();
+            !$is_cunzai && $is_cunzai = Db::name('users')->where(array('openid'=>$map['openid']))->find();
             if(!$is_cunzai){
                 $row_id = Db::name('users')->add($map);
             }else{
@@ -348,6 +350,7 @@ class UsersLogic extends Model
                 $map['openid'] = $data['openid'];
                 $user['openid'] = $data['openid'];
             }
+			$data['unionid'] && $map['unionid'] = $data['unionid'];
             Db::name('users')->where('user_id', $user['user_id'])->save($map);
             $user['token'] = $map['token'];
             $user['last_login'] = $map['last_login'];
@@ -378,6 +381,7 @@ class UsersLogic extends Model
         $data['push_id'] && $map['push_id'] = $data['push_id'];
         $map['token'] = md5(time() . mt_rand(1, 999999999));
         $map['last_login'] = time();
+		$data['unionid'] && $map['unionid'] = $data['unionid'];
 
         Db::name('users')->where(array('user_id' => $user['user_id']))->save($map);
         //重新加载一次用户信息

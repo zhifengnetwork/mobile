@@ -362,11 +362,14 @@ class Goods extends ApiBase
 			}
 		}
 		if($goods['prom_type'] == 2){ //团购
-			$pinfo = M('group_buy')->field('end_time')->find($goods['prom_id']);
+			$pinfo = M('group_buy')->field('start_time,end_time,price')->find($goods['prom_id']);
 			if($pinfo['end_time'] < time()){
 				M('group_buy')->update(['id'=>$goods['prom_id'],'is_end'=>1]);
 				M('goods')->update(['goods_id'=>$goods['goods_id'],'prom_type'=>0,'prom_id'=>0]);
 			}
+			$goods['prom_price'] = $pinfo['price'];
+			$goods['start_time'] = $pinfo['start_time'];
+			$goods['end_time'] = $pinfo['end_time'];
 		}
 		if($goods['prom_type'] == 8){ //竞拍
 			$pinfo = M('auction')->field('end_time')->find($goods['prom_id']);

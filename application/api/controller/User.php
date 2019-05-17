@@ -779,15 +779,16 @@ class User extends ApiBase
 		$MessagePrivate = M('message_private');
 		foreach($list as $k=>$v){
 			if($v['category'] == 0)
-				$info = $MessageNotice->field('message_title,send_time')->where(['message_id'=>$v['message_id']])->find();
+				$info = $MessageNotice->field('message_title,message_content,send_time')->where(['message_id'=>$v['message_id']])->find();
 			if($v['category'] == 1)
-				$info = $MessageActivity->field('message_title,send_time')->where(['message_id'=>$v['message_id']])->find();
+				$info = $MessageActivity->field('message_title,message_content,send_time')->where(['message_id'=>$v['message_id']])->find();
 			if($v['category'] == 2)
-				$info = $MessageLogistics->field('message_title,send_time')->where(['message_id'=>$v['message_id']])->find();
+				$info = $MessageLogistics->field('message_title,message_content,send_time')->where(['message_id'=>$v['message_id']])->find();
 			if($v['category'] == 4)
-				$info = $MessageNotice->field('message_title,send_time')->where(['message_id'=>$v['message_id']])->find();
+				$info = $MessageNotice->field('message_title,message_content,send_time')->where(['message_id'=>$v['message_id']])->find();
 			$list[$k]['message_title'] = $info['message_title'];
 			$list[$k]['send_time'] = $info['send_time'];
+			$list[$k]['message_content'] = $info['message_content'];
 		}
 
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['list'=>$list]]);
@@ -962,7 +963,9 @@ class User extends ApiBase
 		//上面获取到code后这里跳转回来
 		$code =I('post.code/s','');
 		$data = $this->getOpenidFromMp($code);//获取网页授权access_token和用户openid
-		$first_leader = $this->user_openid($data['openid']);
+
+		$first_leader = $this->user_unionid($data['unionid']);
+		!$first_leader && $first_leader = $this->user_openid($data['openid']);
 		$this->write_log('first_leader:'.$first_leader);
 		$this->write_log("openid:".$data['openid']);
 		$data2 = $this->GetUserInfo($data['access_token'],$data['openid']);//获取微信用户信息
@@ -1061,6 +1064,40 @@ class User extends ApiBase
     	$DistributLogic = new \app\common\logic\DistributLogic;
         $result= $DistributLogic->get_commision_log($user_id,0,$limit);  //佣金明细
         $this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功','data'=>['list'=>$result['result']]]); 
+    }
+
+    //下级分销订单
+    public function distribut_order()
+    {	
+        $user_id = $this->get_user_id();
+        if (!$user_id) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>(object)null]);
+        }
+
+		$page = I('post.page/d',1);
+		$num = I('post.num/d',6);
+		$limit = ($page - 1) * $num . ',' . $num;
+        $data = array(
+            'user_id' => $user_id,
+            'states' => 102,
+        );
+
+        $divide_order = M('order_divide')->where($data)->group('order_id')
+                   ->limit($limit)->column('order_id');
+
+        $orders = M('order')->where('order_id', ['in', $divide_order])->order('order_id DESC')
+                ->field('user_id, order_id, pay_time')->select();
+        $user_ids = array_column($orders, 'user_id');
+        $lower = M('users')->where('user_id', ['in', $user_ids])->column('user_id, nickname');
+
+        //添加下级昵称
+		$OrderGoods = M('Order_goods');
+        foreach($orders as $key => $value){
+            $orders[$key]['nickname'] = $lower[$value['user_id']];
+			$orders[$key]['goods'] = $OrderGoods->field('goods_name,goods_num,final_price')->where(['order_id'=>$value['order_id']])->select();
+        }
+    
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功','data'=>['list'=>$orders]]); 
     }
     
     //绑定支付宝
@@ -1221,6 +1258,7 @@ class User extends ApiBase
         $urlObj["secret"] = C('customize.WX_APP_LOGIN_SECRET');
         $urlObj["code"] = $code;
         $urlObj["grant_type"] = "authorization_code";
+		$urlObj["connect_redirect"] = 1;
         $bizString = $this->ToUrlParams($urlObj);
         return "https://api.weixin.qq.com/sns/oauth2/access_token?".$bizString;
     }
@@ -1261,6 +1299,16 @@ class User extends ApiBase
     }
     private function user_openid($openid){
         $user = M('users')->where(['openid'=>$openid])->find();
+        if($user){
+            return $user['first_leader'];
+        }else{
+            $user['first_leader']=0;
+            return $user['first_leader'];
+        }
+    }
+
+    private function user_unionid($unionid){
+        $user = M('users')->where(['unionid'=>$unionid])->find();
         if($user){
             return $user['first_leader'];
         }else{

@@ -95,6 +95,9 @@ class Groupbuy extends ApiBase
             $goodsModel = new \app\common\model\Goods();
             $info['cluster_type'] = [0 => '', 1 => '小团', 2 => '打团', 3 => '阶梯团'][$info['cluster_type']];
 			$info['commentinfo'] = M('Comment')->field('comment_id,username,content,add_time,img,deliver_rank,goods_rank,service_rank')->where(["goods_id" => $info['goods_id'], 'is_show' => 1, 'parent_id' => 0])->order('add_time desc')->find(); //最新一条评论 
+			if($info['commentinfo']){
+				$info['commentinfo']['img'] = $info['commentinfo']['img'] ? unserialize($info['commentinfo']['img']) : [];
+			}
             $info['comment'] = Db::table('tp_comment')->where(['goods_id'=>$info['goods_id'],'is_show'=>1])->count();
             $info['comment_fr'] = $goodsModel->getCommentStatisticsAttr('', ['goods_id', $info['goods_id']]);
             $info['end_time'] = $info['end_time'] > time() ? $info['end_time'] - time() : 0;

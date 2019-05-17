@@ -115,7 +115,7 @@ class WxAppPayDataBase
 		ksort($this->values);
 		$string = $this->ToUrlParams();
 		//签名步骤二：在string后加入KEY
-		$string = $string . "&key=".WxAppPayConfig::KEY;
+		$string = $string . "&key=".WxAppPayConfig::$KEY;
 		//签名步骤三：MD5加密
 		$string = md5($string);
 		//签名步骤四：所有字符转为大写
@@ -281,6 +281,13 @@ class WxAppPayNotifyReply extends  WxAppPayDataBase
  */
 class WxAppPayUnifiedOrder extends WxAppPayDataBase
 {	
+	public function __construct($data=false){
+		$data && (WxAppPayConfig::$APPID = $data['APPID']);
+		$data && (WxAppPayConfig::$MCHID = $data['MCHID']);
+		$data && (WxAppPayConfig::$KEY = $data['KEY']);
+		$data && (WxAppPayConfig::$APPSECRET = $data['APPSECRET']);
+	}
+
 	/**
 	* 设置微信分配的公众账号ID
 	* @param string $value 
