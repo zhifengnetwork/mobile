@@ -66,9 +66,10 @@ class DistributLogic
             $pay_status['status']=$pay_status;
         }
         if($table=='agent_performance_log'){
-            $count = M('agent_performance_log')->where($recharge_log_where)->count();
+            $count = M('agent_performance_log')->where($recharge_log_where)->where('deleted_at', 0)->count();
             //$Page = new Page($count, 15);
             $recharge_log = M('agent_performance_log')->where($recharge_log_where)
+                ->where('deleted_at', 0)
               //  ->limit($Page->firstRow . ',' . $Page->listRows)
                 ->order('performance_id desc')
                 ->limit(50)
@@ -102,11 +103,12 @@ class DistributLogic
         if($pay_status){
             $pay_status['status']=$pay_status;
         }
-        $count = M('account_log')->where($recharge_log_where)->whereOr($whereor)->count();
+        $count = M('account_log')->where($recharge_log_where)->whereOr($whereor)->where('deleted_at', 0)->count();
         $Page = new Page($count, 15);
 		$limit = $limit ? $limit : ($Page->firstRow . ',' . $Page->listRows);
         $recharge_log = M('account_log')->where($recharge_log_where)
             ->whereOr($whereor)
+            ->where('deleted_at', 0)
 			->order('change_time desc')
             ->limit($limit)
             ->select(); 

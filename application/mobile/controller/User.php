@@ -1609,6 +1609,7 @@ class User extends MobileBase
         $data = array(
             'user_id' => $user_id,
             'states' => 102,
+            'deleted_at' => 0,
         );
 
         $divide_order = M('order_divide')->where($data)->group('order_id')
