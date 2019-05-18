@@ -179,10 +179,6 @@
             layer.alert('请选择完整的时间间隔', {icon: 2});
             return false;
         }
-        if(start_time > end_time){
-            layer.alert('请选择正确的起始时间', {icon: 2});
-            return false;
-        }
         if(start_time !== '' && end_time !== ''){
             $('#timegap').val(start_time+","+end_time);
         }

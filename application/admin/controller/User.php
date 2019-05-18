@@ -489,21 +489,39 @@ class User extends Base
      */
     public function recharge_user_list() 
     {   
-        $count = M('recharge_user')->count();
+        $map = array();
+        $search_type  = I('search_type');
+        $search_value = I('search_value');
+        if ($search_value) {
+            if($search_type == 'user_id'){
+                $map['r.user_id'] = $search_value;
+            }else{
+                $map['u.nickname'] = array('like', "%$search_value%");
+            }
+            $this->assign('search_value', $search_value);
+        }
+
+        $count = M('recharge_user')->alias('r')
+                ->join('users u', 'u.user_id = r.user_id', 'LEFT')
+                ->where($map)
+                ->count();
         $page  = new Page($count, 20);
         $list  = M('recharge_user')->alias('r')
-                ->join('users u', 'u.user_id = r.user_id')
+                ->join('users u', 'u.user_id = r.user_id', 'LEFT')
+                ->where($map)
                 ->limit($page->firstRow, $page->listRows)
                 ->field('r.*, u.nickname')
                 ->order('id DESC')
                 ->select();
+
+        $this->assign('search_type', $search_type);
         $this->assign('list', $list);
         $this->assign('page', $page);
         return $this->fetch();
     }
 
     /**
-     * 充值会员列表
+     * 会员批量充值
      */
     public function recharge_batch() 
     {   
