@@ -524,7 +524,7 @@ class User extends Base
                 $log_arr[$key]['total'] = $total;
                 $log_arr[$key]['desc'] = $desc;
                 $log_arr[$key]['pay_status'] = 1;
-                $log_arr[$key]['nickname'] = $data['nickname'];
+                $log_arr[$key]['nickname'] = $data[$value]['nickname'];
 
                 $acc_arr[$key]['user_id'] = $value;
                 $acc_arr[$key]['order_id'] = 0;
@@ -532,10 +532,10 @@ class User extends Base
                 $acc_arr[$key]['change_time'] = $pre_time;
                 $acc_arr[$key]['desc'] = $desc; 
                 
-                $total_money = round($data[$value] + $money, 2);
+                $total_money = round($data[$value]['user_money'] + $money, 2);
                 Db::name('users')->where('user_id', $value)->update(['user_money'=>$total_money]);
             }
-            Db::name('account_log')->insertAll($log_arr);
+            Db::name('account_log')->insertAll($acc_arr);
             Db::name('recharge_log')->insertAll($log_arr);
             Db::commit();    
             $this->ajaxReturn(['status' => 1, 'msg'=>'成功充值' . $total . '人!']);
