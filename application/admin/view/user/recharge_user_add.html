@@ -7,12 +7,13 @@
     <div class="fixed-bar">
         <div class="item-title">
             <div class="subject">
-                <h3>会员批量充值</h3>
-                <h5>网站系统会员批量充值</h5>
+                <h3>添加充值会员</h3>
+                <h5>网站系统添加充值会员</h5>
             </div>
             <ul class="tab-base nc-row">
-                <li><a href="{:U('admin/user/recharge_batch')}" data-state="" class="current"><span>批量充值</span></a></li>
-                <li><a href="{:U('admin/user/recharge_log')}" data-state="0"><span>批量充值记录</span></a></li>
+                <li><a href="{:U('admin/user/recharge_user_add')}" data-state="" class="current"><span>添加充值会员</span></a></li>
+                <li><a href="{:U('admin/user/recharge_user_list')}" data-state=""><span>充值会员列表</span></a></li>
+                <li><a href="{:U('admin/user/recharge_user_log')}" data-state="0"><span>批量充值记录</span></a></li>
             </ul>
         </div>
     </div>
@@ -23,7 +24,7 @@
             <span title="收起提示" id="explanationZoom" style="display: block;"></span>
         </div>
         <ul>
-        	<li>点击添加可以添加填写充值会员，每次最多可以一键充值12个会员</li>
+        	<li>点击继续添加可以添加填写充值会员，每次最多可以一键添加12个会员</li>
         </ul>
     </div>
     <div class="flexigrid">
@@ -44,12 +45,6 @@
                         </th>
                         <th align="center" abbr="article_show" axis="col5" class="">
                             <div style="text-align: center; width: 150px;" class="">用户昵称</div>
-                        </th>
-                        <th align="center" abbr="article_show" axis="col5" class="">
-                            <div style="text-align: center; width: 150px;" class="">金额</div>
-                        </th>
-                        <th align="center" abbr="article_show" axis="col5" class="">
-                            <div style="text-align: center; width: 150px;" class="">描述</div>
                         </th>
                         <th style="width:100%" axis="col7">
                             <div></div>
@@ -76,41 +71,29 @@
         <div class="bDiv" style="height: auto; min-height:auto">
             <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
                 <form action="{:url('admin/user/recharge_batch')}" method="POST" id="form">
-                    <table id="table1">
-                          
-                                <tr>
-                                    <td align="center" class="">
-                                        <div style="text-align: center; width: 150px;">
-                                            <input type="text" name="data[0][]" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''" onblur="get_user(this);"/>
-                                        </div>
-                                    </td>
-                                    <td align="center" class="">
-                                        <div style="text-align: center; width: 150px;">
-                                            空
-                                        </div>
-                                    </td>
-                                    <td align="center" class="">
-                                        <div style="text-align: center; width: 150px;">
-                                            <input type="text" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''" name="data[0][]"/>
-                                        </div>
-                                    </td>
-                                    <td align="center" class="">
-                                        <div style="text-align: center; width: 150px;">
-                                            <input type="text" name="data[0][]"/>
-                                        </div>
-                                    </td>
-                                    <td align="" class="" style="width: 100%;">
-                                        <div>&nbsp;</div>
-                                    </td>
-                                </tr>
-                 
+                    <table id="table1">         
+                        <tr>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 150px;">
+                                    <input type="text" name="data[0]" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''" onblur="get_user(this);"/>
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 150px;">
+                                    空
+                                </div>
+                            </td>
+                            <td align="" class="" style="width: 100%;">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>               
                     </table>
                 </form>
             </div>
             <div class="iDiv" style="display: none;"></div>
         </div>
         <div class="bot" style="margin-top:20px; margin-left:30px;">
-            <a href="JavaScript:void(0);" onclick="to_submit();" class="ncap-btn-big ncap-btn-green">一键充值</a>
+            <a href="JavaScript:void(0);" onclick="to_submit();" class="ncap-btn-big ncap-btn-green">确认添加</a>
         </div>
 
         <div>
@@ -130,18 +113,15 @@
             location.href = location.href;
         });
 
+        //继续添加
         $("#addTable").click(function(){
             if(num >=12){
-                layer.alert('每一次最多只能充值12个会员!', {icon: 2});
+                layer.alert('每一次最多只能添加12个会员!', {icon: 2});
                 return false;
             }
-            var tr="<tr><td><input type=\"checkbox\" name=\"check\"/>"+
-                "</td><td>111</td><td>222</td><td>333</td></tr>";
             var tr="<tr><td align='center' class=''><div style='text-align: center; width: 150px;'>"+
-                        "<input type='text' name='data[" + num + "][]' onkeyup='check_number(this);' onblur='get_user(this);'/></div></td>"+
-                    " <td align='center' class=''><div style='text-align: center; width: 150px;'>空</div></td>"+"<td align='center' class=''>"+
-                        "<div style='text-align: center; width: 150px;'><input type='text' onkeyup='check_number(this);' name='data[" + num + "][]'/></div></td>"+
-                    " <td align='center' class=''><div style='text-align: center; width: 150px;'><input type='text' name='data[" + num + "][]'/></div></td>"+
+                        "<input type='text' name='data[" + num + "]' onkeyup='check_number(this);' onblur='get_user(this);'/></div></td>"+
+                    " <td align='center' class=''><div style='text-align: center; width: 150px;'>空</div></td>"+
                     " <td align='' class='' style='width: 100%;'><div>&nbsp;</div></td>" 
                     "</tr>"
             
@@ -154,11 +134,13 @@
 
     });
     
+    //检测input框输入的值是否为数字
     function check_number(obj){
         var value = obj.value=/^\d+\.?\d{0,2}$/.test(obj.value) ? obj.value : '';
         obj.value = value;
     }
 
+    //获取用户昵称
     function get_user(obj){
         var id = obj.value;
         if(id != ''){
@@ -171,7 +153,9 @@
                     if(data.status == 1){
                         obj.parentNode.parentNode.nextElementSibling.firstElementChild.innerText=data.result;
                     }else{
-                        layer.alert("用户ID" + id + "不存在", {icon: 2, time: 3000});
+                        layer.msg("用户ID" + id + "不存在", {icon: 2}, function () {
+                            obj.value = '';
+                        });
                     }
                 },
                 error:function(){
@@ -181,16 +165,17 @@
         }
     }
 
+    //添加提交
     function to_submit(){
         $.ajax({
             type: "POST",
-            url: "/index.php?m=Admin&c=User&a=recharge_batch",
+            url: "/index.php?m=Admin&c=User&a=recharge_user_add",
             data: $('#form').serialize(),
             dataType: 'json',
             success: function (data) {
                 if(data.status == 1){
                     layer.alert(data.msg, {icon: 1}, function (){
-                        window.location.href = "/index.php?m=Admin&c=User&a=recharge_log";
+                        window.location.href = "/index.php?m=Admin&c=User&a=recharge_user_list";
                     });
                 }else{
                     layer.alert(data.msg, {icon: 2, time: 3000});
