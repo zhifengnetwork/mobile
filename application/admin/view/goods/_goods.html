@@ -424,6 +424,36 @@
             </dl>
             <dl class="row">
                 <dt class="tit">
+                    <label>是否返利区域代理</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label id="is_area_label_1" for="is_area1" class="cb-enable <if condition='$goods.is_area eq 1'>selected</if>">是</label>
+                        <label id="is_area_label_0" for="is_area0" class="cb-disable <if condition='$goods.is_area eq 0'>selected</if>">否</label>
+                        <input id="is_area1" autocomplete="off" name="is_area" value="1" type="radio" <if condition="$goods[is_area] eq 1"> checked="checked"</if>>
+                        <input id="is_area0" autocomplete="off" name="is_area" value="0" type="radio" <if condition="$goods[is_area] eq 0"> checked="checked"</if>>
+                    </div>
+                    <span class="err" id="err_is_area"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>是否增加业绩</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label id="is_achievement_label_1" for="is_achievement1" class="cb-enable <if condition='$goods.is_achievement eq 1'>selected</if>">是</label>
+                        <label id="is_achievement_label_0" for="is_achievement0" class="cb-disable <if condition='$goods.is_achievement eq 0'>selected</if>">否</label>
+                        <input id="is_achievement1" autocomplete="off" name="is_achievement" value="1" type="radio" <if condition="$goods[is_achievement] eq 1"> checked="checked"</if>>
+                        <input id="is_achievement0" autocomplete="off" name="is_achievement" value="0" type="radio" <if condition="$goods[is_achievement] eq 0"> checked="checked"</if>>
+                    </div>
+                    <span class="err" id="err_is_achievement"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
                     <label>是否为地推商品</label>
                 </dt>
                 <dd class="opt">
@@ -434,6 +464,21 @@
                         <input id="is_push0" autocomplete="off" class="is_agent" name="is_ground_push" value="0" type="radio" <if condition="$goods[is_ground_push] eq 0"> checked="checked"</if>>
                     </div>
                     <span class="err" id="err_is_ground_push"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>是否在首页展示</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label id="is_show_label_1" for="is_show1" class="cb-enable <if condition='$goods.is_show eq 1'>selected</if>">是</label>
+                        <label id="is_show_label_0" for="is_show0" class="cb-disable <if condition='$goods.is_show eq 0'>selected</if>">否</label>
+                        <input id="is_show1" autocomplete="off" class="is_agent" name="is_show" value="1" type="radio" <if condition="$goods[is_show] eq 1"> checked="checked"</if>>
+                        <input id="is_show0" autocomplete="off" class="is_agent" name="is_show" value="0" type="radio" <if condition="$goods[is_show] eq 0"> checked="checked"</if>>
+                    </div>
+                    <span class="err" id="err_is_show"></span>
                     <p class="notic"></p>
                 </dd>
             </dl>
