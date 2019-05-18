@@ -11,8 +11,9 @@
                 <h5>网站系统会员批量充值记录</h5>
             </div>
             <ul class="tab-base nc-row">
-                <li><a href="{:U('admin/user/recharge_batch')}" data-state="" ><span>批量充值</span></a></li>
-                <li><a href="{:U('admin/user/recharge_log')}" data-state="0" class="current" ><span>批量充值记录</span></a></li>
+                <li><a href="{:U('admin/user/recharge_user_add')}" data-state=""><span>添加充值会员</span></a></li>
+                <li><a href="{:U('admin/user/recharge_user_list')}" data-state=""><span>充值会员列表</span></a></li>
+                <li><a href="{:U('admin/user/recharge_user_log')}" data-state="0" class="current"><span>批量充值记录</span></a></li>
             </ul>
         </div>
     </div>
@@ -49,7 +50,7 @@
                             <option value="user_id" <if condition="$search_type eq 'user_id'">selected</if>>会员ID</option>
                             <option value="nickname" <if condition="$search_type eq 'nickname'">selected</if>>会员昵称</option>
                         </select>
-                        <input type="text" size="30" name="search_value" value="{$search_value}" placeholder="模糊查询" class="qsbox">
+                        <input type="text" size="30" name="search_value" value="{$search_value}" placeholder="查询" class="qsbox">
                         <input type="button" onclick="clickSearch(this,'search-form')"  class="btn" value="搜索">
                     </div>
                 </div>
@@ -81,6 +82,9 @@
                         </th>
                         <th align="center" abbr="article_time" axis="col6" class="">
                             <div style="text-align: center; width: 100px;" class="">充值状态</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">本次充值总人数</div>
                         </th>
                         <th align="center" abbr="article_time" axis="col6" class="">
                             <div style="text-align: center; width: 100px;" class="">描述</div>
@@ -120,6 +124,9 @@
                             </td>
                             <td align="center" class="">
                                 <div style="text-align: center; width: 100px;"><if condition="$list[pay_status] eq 0">待充值<else/>已充值</if></div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$list.total}</div>
                             </td>
                             <td align="center" class="">
                                 <div style="text-align: center; width: 100px;">{$list.desc}</div>

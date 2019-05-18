@@ -1,0 +1,239 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>批量充值会员列表</h3>
+                <h5>网站系统批量充值会员列表</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <li><a href="{:U('admin/user/recharge_user_add')}" data-state=""><span>添加充值会员</span></a></li>
+                <li><a href="{:U('admin/user/recharge_user_list')}" data-state="" class="current"><span>充值会员列表</span></a></li>
+                <li><a href="{:U('admin/user/recharge_user_log')}" data-state="0"><span>批量充值记录</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>将列表中的是否进行充值设置为是可以将满足条件的会员进行充值，设置为否则不对改会员进行充值。</li>
+            <li>点击立即批量充值会对列表中设置为进行充值的会员充值。</li>
+        </ul>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>会员录列表</h3>
+                <h5>(共{$page->totalRows}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+            <!-- <form class="navbar-form form-inline" id="search-form" action="" method="post" onsubmit="return check_form();">
+                <input type="hidden" name="timegap" id="timegap" value="{$timegap}">
+                <div class="sDiv">
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" id="start_time" value="{$begin}" placeholder="起始时间" class="qsbox">
+                        <input type="button" class="btn" value="起始时间">
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" id="end_time" value="{$end}" placeholder="截止时间" class="qsbox">
+                        <input type="button" class="btn" value="截止时间">
+                    </div>
+                    <div class="sDiv2">
+                        <select class="select" name="search_type"> 
+                            <option value="user_id" <if condition="$search_type eq 'user_id'">selected</if>>会员ID</option>
+                            <option value="nickname" <if condition="$search_type eq 'nickname'">selected</if>>会员昵称</option>
+                        </select>
+                        <input type="text" size="30" name="search_value" value="{$search_value}" placeholder="模糊查询" class="qsbox">
+                        <input type="button" onclick="clickSearch(this,'search-form')"  class="btn" value="搜索">
+                    </div>
+                </div>
+            </form> -->
+        </div>
+        
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th align="left" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: left; width: 50px;" class="">记录ID</div>
+                        </th>
+                        <th align="left" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: left; width: 50px;" class="">会员ID</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 150px;" class="">会员昵称</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 150px;" class="">添加时间</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">是否进行充值</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="tDiv">
+            <div class="tDiv2">
+                <div class="fbutton">                   
+                    <a  id="recharge">
+                        <div title="立即批量充值">
+                            <span><i class="fa fa-plus"></i>立即批量充值</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                    <volist name="list" id="list">
+                        <tr>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 50px;">{$list.id}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 50px;">{$list.user_id}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 150px;">{$list.nickname}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 150px;">{$list.ctime|date="Y-m-d H:i:s",###}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                    <if condition='$list[status] eq 1'>
+                                        <span class="yes" onClick="changeTableVal('recharge_user','id','{$list.id}','status',this)">
+                                            <i class="fa fa-check-circle"></i>是
+                                        </span>
+                                    <else/>
+                                        <span class="no" onClick="changeTableVal('recharge_user','id','{$list.id}','status',this)">
+                                            <i class="fa fa-ban"></i>否
+                                        </span>
+                                    </if>
+                                </div>
+                            </td>
+                            <td align="" class="" style="width: 100%;">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+            <!--分页位置-->
+            {$page->show()} 
+        </div>
+</div>
+<script>
+
+
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+        $('#recharge').click(function() {
+            toCommit();
+        });
+
+        // $('#start_time').layDate();
+        // $('#end_time').layDate();
+        laydate.render({
+            theme: "molv",
+            type: "datetime",
+            elem: "#start_time"
+        })
+        laydate.render({
+            theme: "molv",
+            type: "datetime",
+            elem: "#end_time"
+        })        
+    });
+
+    function toCommit() {
+        layer.open({
+            type:1,
+            title:'请填写金额和备注(必填,金额不能为0)',
+            area:['380px','280px'],
+            content:'<div id="mydiv" style="margin-left:35px;margin-top:25px;">'+
+                        '<input type="text" id="money" placeholder="请输入金额" onkeyup="this.value=/^\\d+\.?\\d{0,2}$/.test(this.value) ? this.value : \'\'"/><br><br>'+
+                        '<textarea id="desc" style="width:300px;height:100px;resize:none;border-radius:6px;" placeholder="请输入备注"></textarea>'+
+                    '</div>',
+            btn:['确认','取消'],
+            btn1:function (index,layero){
+                //获取弹出层中的dom元素！！
+                var money = $('#money').val();
+                var desc  = $('#desc').val();
+                if((money != '') && (desc != '') && (money != 0)){
+                    layer.close(index);
+                    $.ajax({
+                        type: "POST",
+                        url: "/index.php?m=Admin&c=User&a=recharge_batch",
+                        data: {'money':money, 'desc':desc},
+                        dataType: 'json',
+                        success: function (data) {
+                            if(data.status == 1){
+                                layer.alert(data.msg, {icon:1}, function() {
+                                    window.location.href = '/index.php?m=Admin&c=User&a=recharge_user_log';
+                                });
+                            }else{
+                                layer.msg(data.msg, {icon: 2});
+                            }
+                        },
+                        error:function(){
+                            layer.alert('网络异常', {icon: 2,time: 3000});
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function check_form(){
+        var start_time = $.trim($('#start_time').val());
+        var end_time =  $.trim($('#end_time').val());
+        if(start_time == '' ^ end_time == ''){
+            layer.alert('请选择完整的时间间隔', {icon: 2});
+            return false;
+        }
+        if(start_time > end_time){
+            layer.alert('请选择正确的起始时间', {icon: 2});
+            return false;
+        }
+        if(start_time !== '' && end_time !== ''){
+            $('#timegap').val(start_time+","+end_time);
+        }
+        if(start_time == '' && end_time == ''){
+            $('#timegap').val('');
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

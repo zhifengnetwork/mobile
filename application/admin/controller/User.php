@@ -10,6 +10,7 @@ use think\console\command\make\Model;
 use think\Page;
 use think\Verify;
 use think\Db;
+use think\Exception;
 use app\admin\logic\UsersLogic;
 use app\common\logic\MessageTemplateLogic;
 use app\common\logic\MessageFactory;
@@ -426,65 +427,45 @@ class User extends Base
     }
 
     /**
-     * 批量充值会员
+     * 添加批量充值会员
      */
-    public function recharge_batch()
+    public function recharge_user_add() 
     {
         if(IS_POST){
             $data = I('post.');
-            //检查表单是否全部为空
-            $flag = $this->check_null($data['data']);
-            if($flag){
+            $data = array_filter($data['data']);
+            if(!$data){
                 $this->ajaxReturn(['status'=>0, 'msg'=>'数据不能为空，请填写数据！']);
                 exit;
             }
-            foreach($data['data'] as $k => $v){
-                if($v[0] || $v[1] || $v[2]){
-                    if(!$v[0]){
-                        $this->ajaxReturn(['status'=>0, 'msg'=>'用户ID不能为空']);
+            
+            $pre_time = time();
+            $all_data = array();
+            Db::startTrans();
+            try{
+                foreach ($data as $key => $value) {
+                    $is_exisit = M('recharge_user')->where('user_id', $value)->find();
+                    if(!$is_exisit){
+                        $all_data['user_id'] = $value;
+                        $all_data['ctime']   = $pre_time;
+                        $all_data['status']  = 1;
+                        Db::name('recharge_user')->insert($all_data);
+                    }else{
+                        $this->ajaxReturn(['status' => 0, 'msg'=>'用户ID' . $value . '已存在!']);
                         exit;
-                    }
-                    if(!$v[1]){
-                        $this->ajaxReturn(['status'=>0, 'msg'=>'ID' . $v[0] . '用户金额不能为空']);
-                        exit;
-                    }
-                    if(!$v[2]){
-                        $this->ajaxReturn(['status'=>0, 'msg'=>'ID' . $v[0] . '用户描述不能为空']);
-                        exit;
-                    }
-                    $nickname = M('users')->where('user_id', $v[0])->value('nickname');
-                    $result = accountLog($v[0], $v[1] , 0, $v[2],  0, 0, '');
-                    if($result){
-                        $log = array(
-                            'user_id' => $v[0],
-                            'nickname' => $nickname,
-                            'account' => $v[1],
-                            'ctime' => time(),
-                            'pay_status' => 1,
-                            'desc' => $v[2], 
-                        );
-                        M('recharge_log')->insert($log);
                     }
                 }
+                Db::commit(); 
+                $this->ajaxReturn(['status'=>1, 'msg'=>'添加成功!']);
+                exit; 
+            } catch (\Exception $e) {
+                Db::rollback();
+                $this->ajaxReturn(['status' => 0, 'msg'=>'添加失败!']);
+                exit;
             }
-            $this->ajaxReturn(['status'=>1, 'msg'=>'充值成功']);
-            exit;
         }
         
         return $this->fetch();
-    }
-
-    /**
-     * 检查表单是否全部为空
-     */
-    public function check_null($data)
-    {
-        foreach ($data as $key => $value) {
-            if($value[0] || $value[1] || $value[2]){
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
@@ -501,13 +482,75 @@ class User extends Base
             $this->ajaxReturn(['status'=>0, 'msg'=>'获取失败', 'result'=>'']);
             exit;
         }
+    } 
+
+    /**
+     * 充值会员列表
+     */
+    public function recharge_user_list() 
+    {   
+        $count = M('recharge_user')->count();
+        $page  = new Page($count, 20);
+        $list  = M('recharge_user')->alias('r')
+                ->join('users u', 'u.user_id = r.user_id')
+                ->limit($page->firstRow, $page->listRows)
+                ->field('r.*, u.nickname')
+                ->order('id DESC')
+                ->select();
+        $this->assign('list', $list);
+        $this->assign('page', $page);
+        return $this->fetch();
     }
 
-    
+    /**
+     * 充值会员列表
+     */
+    public function recharge_batch() 
+    {   
+        $desc  = I('desc/s');
+        $money = I('money/s');
+        $user_ids   = M('recharge_user')->where('status', 1)->column('user_id');
+        $data = M('users')->whereIn('user_id', $user_ids)->column('user_id, nickname, user_money');
+
+        Db::startTrans();
+        $total = count($user_ids);
+        $pre_time = time();
+        $log_arr  = array();
+        try{
+            foreach ($user_ids as $key => $value) {
+                $log_arr[$key]['user_id'] = $value;
+                $log_arr[$key]['account'] = $money;
+                $log_arr[$key]['ctime'] = $pre_time;
+                $log_arr[$key]['total'] = $total;
+                $log_arr[$key]['desc'] = $desc;
+                $log_arr[$key]['pay_status'] = 1;
+                $log_arr[$key]['nickname'] = $data['nickname'];
+
+                $acc_arr[$key]['user_id'] = $value;
+                $acc_arr[$key]['order_id'] = 0;
+                $acc_arr[$key]['user_money'] = $money;
+                $acc_arr[$key]['change_time'] = $pre_time;
+                $acc_arr[$key]['desc'] = $desc; 
+                
+                $total_money = round($data[$value] + $money, 2);
+                Db::name('users')->where('user_id', $value)->update(['user_money'=>$total_money]);
+            }
+            Db::name('account_log')->insertAll($log_arr);
+            Db::name('recharge_log')->insertAll($log_arr);
+            Db::commit();    
+            $this->ajaxReturn(['status' => 1, 'msg'=>'成功充值' . $total . '人!']);
+            exit;
+        } catch (\Exception $e) {
+            Db::rollback();
+            $this->ajaxReturn(['status' => 0, 'msg'=>'充值失败!']);
+            exit;
+        }   
+    }
+
     /**
      * 批量充值列表
      */
-    public function recharge_log()
+    public function recharge_user_log()
     {
         $timegap = urldecode(I('timegap'));
         $search_type  = I('search_type');
