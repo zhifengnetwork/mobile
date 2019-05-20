@@ -1003,7 +1003,7 @@ class User extends ApiBase
         $code = I('post.code/s','');
         $scene = I('post.scene/d',2);
 
-		if($mobile || $code)$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误', 'data'=>null]);
+		if(empty($mobile) || empty($code))$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误', 'data'=>null]);
 
 		$info = M('sms_log')->where(['mobile'=>$mobile,'scene'=>$scene])->find();
 		if(!$info)$this->ajaxReturn(['status' => -1 , 'msg'=>'请先获取验证码', 'data'=>null]);
