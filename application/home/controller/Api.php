@@ -619,7 +619,7 @@ class Api extends Base
 
             if ($resp['status'] == 1) {
                 //发送成功, 修改发送状态位成功
-                M('sms_log')->where(array('mobile' => $mobile, 'code' => $code, 'session_id' => $session_id, 'status' => 0))->save(array('status' => 1));
+                M('sms_log')->where(array('mobile' => $mobile, 'add_time'=>time(), 'code' => $code, 'session_id' => $session_id, 'status' => 0))->save(array('status' => 1));
                 $return_arr = array('status' => 1, 'msg' => '发送成功,请注意查收');
             } else {
                 $return_arr = array('status' => -1, 'msg' => '发送失败' . $resp['msg']);
