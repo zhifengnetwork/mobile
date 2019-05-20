@@ -1005,7 +1005,7 @@ class User extends ApiBase
 
 		if(empty($mobile) || empty($code))$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误', 'data'=>null]);
 
-		$info = M('sms_log')->where(['mobile'=>$mobile,'scene'=>$scene])->find();
+		$info = M('sms_log')->where(['mobile'=>$mobile,'scene'=>$scene,'code'=>$code])->find();
 		if(!$info)$this->ajaxReturn(['status' => -1 , 'msg'=>'请先获取验证码', 'data'=>null]);
 		if(($info['add_time']+180) < time())$this->ajaxReturn(['status' => -1 , 'msg'=>'验证码已失效', 'data'=>null]);
 		if($code != $info['code'])
