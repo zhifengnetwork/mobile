@@ -489,21 +489,39 @@ class User extends Base
      */
     public function recharge_user_list() 
     {   
-        $count = M('recharge_user')->count();
+        $map = array();
+        $search_type  = I('search_type');
+        $search_value = I('search_value');
+        if ($search_value) {
+            if($search_type == 'user_id'){
+                $map['r.user_id'] = $search_value;
+            }else{
+                $map['u.nickname'] = array('like', "%$search_value%");
+            }
+            $this->assign('search_value', $search_value);
+        }
+
+        $count = M('recharge_user')->alias('r')
+                ->join('users u', 'u.user_id = r.user_id', 'LEFT')
+                ->where($map)
+                ->count();
         $page  = new Page($count, 20);
         $list  = M('recharge_user')->alias('r')
-                ->join('users u', 'u.user_id = r.user_id')
+                ->join('users u', 'u.user_id = r.user_id', 'LEFT')
+                ->where($map)
                 ->limit($page->firstRow, $page->listRows)
                 ->field('r.*, u.nickname')
                 ->order('id DESC')
                 ->select();
+
+        $this->assign('search_type', $search_type);
         $this->assign('list', $list);
         $this->assign('page', $page);
         return $this->fetch();
     }
 
     /**
-     * 充值会员列表
+     * 会员批量充值
      */
     public function recharge_batch() 
     {   
@@ -524,7 +542,7 @@ class User extends Base
                 $log_arr[$key]['total'] = $total;
                 $log_arr[$key]['desc'] = $desc;
                 $log_arr[$key]['pay_status'] = 1;
-                $log_arr[$key]['nickname'] = $data['nickname'];
+                $log_arr[$key]['nickname'] = $data[$value]['nickname'];
 
                 $acc_arr[$key]['user_id'] = $value;
                 $acc_arr[$key]['order_id'] = 0;
@@ -532,10 +550,10 @@ class User extends Base
                 $acc_arr[$key]['change_time'] = $pre_time;
                 $acc_arr[$key]['desc'] = $desc; 
                 
-                $total_money = round($data[$value] + $money, 2);
+                $total_money = round($data[$value]['user_money'] + $money, 2);
                 Db::name('users')->where('user_id', $value)->update(['user_money'=>$total_money]);
             }
-            Db::name('account_log')->insertAll($log_arr);
+            Db::name('account_log')->insertAll($acc_arr);
             Db::name('recharge_log')->insertAll($log_arr);
             Db::commit();    
             $this->ajaxReturn(['status' => 1, 'msg'=>'成功充值' . $total . '人!']);

@@ -35,27 +35,18 @@
                 <h5>(共{$page->totalRows}条记录)</h5>
             </div>
             <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
-            <!-- <form class="navbar-form form-inline" id="search-form" action="" method="post" onsubmit="return check_form();">
-                <input type="hidden" name="timegap" id="timegap" value="{$timegap}">
+            <form class="navbar-form form-inline" id="search-form" action="" method="post" onsubmit="return check_form();">
                 <div class="sDiv">
-                    <div class="sDiv2" style="margin-right: 10px;">
-                        <input type="text" size="30" id="start_time" value="{$begin}" placeholder="起始时间" class="qsbox">
-                        <input type="button" class="btn" value="起始时间">
-                    </div>
-                    <div class="sDiv2" style="margin-right: 10px;">
-                        <input type="text" size="30" id="end_time" value="{$end}" placeholder="截止时间" class="qsbox">
-                        <input type="button" class="btn" value="截止时间">
-                    </div>
                     <div class="sDiv2">
                         <select class="select" name="search_type"> 
                             <option value="user_id" <if condition="$search_type eq 'user_id'">selected</if>>会员ID</option>
                             <option value="nickname" <if condition="$search_type eq 'nickname'">selected</if>>会员昵称</option>
                         </select>
-                        <input type="text" size="30" name="search_value" value="{$search_value}" placeholder="模糊查询" class="qsbox">
+                        <input type="text" size="30" name="search_value" value="{$search_value}" placeholder="查询" class="qsbox">
                         <input type="button" onclick="clickSearch(this,'search-form')"  class="btn" value="搜索">
                     </div>
                 </div>
-            </form> -->
+            </form>
         </div>
         
         <div class="hDiv">
