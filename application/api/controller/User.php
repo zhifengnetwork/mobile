@@ -1021,7 +1021,7 @@ class User extends ApiBase
         $password2 = I('post.password2/s','');
         $scene = I('post.scene/d',2);
 
-		if($mobile || $password || $password2)$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误', 'data'=>null]);
+		if(empty($mobile) || empty($password) || empty($password2))$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误', 'data'=>null]);
 		if(strlen($password) < 6)$this->ajaxReturn(['status' => -1 , 'msg'=>'密码至少6位', 'data'=>null]);
 		if($password != $password2)$this->ajaxReturn(['status' => -1 , 'msg'=>'两次密码不一致', 'data'=>null]);
 
