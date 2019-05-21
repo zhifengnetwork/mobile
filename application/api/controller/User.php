@@ -1020,22 +1020,40 @@ class User extends ApiBase
         $password2 = I('post.password2/s','');
         $scene = I('post.scene/d',2);
 
-		if($mobile || $password || $password2)$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误', 'data'=>null]);
-		if(strlen($password) < 6)$this->ajaxReturn(['status' => -1 , 'msg'=>'密码至少6位', 'data'=>null]);
-		if($password != $password2)$this->ajaxReturn(['status' => -1 , 'msg'=>'两次密码不一致', 'data'=>null]);
+		if(!$mobile){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'mobile参数错误', 'data'=>null]);
+        }
+        if(!$password ){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'password参数错误', 'data'=>null]);
+        }
+        if(!$password2){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'password2参数错误', 'data'=>null]);
+        }
+
+		if(strlen($password) < 6){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'密码至少6位', 'data'=>null]);
+        }
+
+		if($password != $password2){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'两次密码不一致', 'data'=>null]);
+        }
 
         $user_id = M('Users')->where(['mobile'=>$mobile])->value('user_id');
-        if($scene == 2)
-            $res = M('Users')->update(['user_id'=>$user_id,'password'=>encrypt($password)]);
-        elseif($scene == 6)
-            $res = M('Users')->update(['user_id'=>$user_id,'paypwd'=>encrypt($password)]);
-        else
-            $this->ajaxReturn(['status' => -3 , 'msg'=>'参数错误', 'data'=>null]);
 
-		if(false !== $res)
+        if($scene == 2){
+            $res = M('Users')->update(['user_id'=>$user_id,'password'=>encrypt($password)]);
+        }elseif($scene == 6){
+            $res = M('Users')->update(['user_id'=>$user_id,'paypwd'=>encrypt($password)]);
+        }else{
+            $this->ajaxReturn(['status' => -3 , 'msg'=>'scene参数错误', 'data'=>null]);
+        }
+
+		if(false !== $res){
 			$this->ajaxReturn(['status' => 0 , 'msg'=>'找回密码成功', 'data'=>null]);
-		else
-			$this->ajaxReturn(['status' => -2 , 'msg'=>'找回密码失败', 'data'=>null]);
+        }else{
+            $this->ajaxReturn(['status' => -2 , 'msg'=>'找回密码失败', 'data'=>null]);
+        }
+
     }
     
     //业绩明细
