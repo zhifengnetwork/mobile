@@ -383,12 +383,23 @@ class User extends MobileBase
      */
     public function fenxiang1()
     {
+    
         $user_id = session('user.user_id');
 
         if(!$user_id){
             $this->redirect('fenxiang_no');
             exit;
         }
+        $userinfo = M('users')->where(['user_id'=>$user_id])->find();
+        if(!$userinfo){
+            $this->redirect('fenxiang_no');
+            exit;
+        }
+        if($userinfo['is_distribut'] == 0 && $userinfo['is_agent'] == 0){
+            $this->redirect('fenxiang_no');
+            exit;
+        }
+
 
         define('IMGROOT_PATH', str_replace("\\","/",realpath(dirname(dirname(__FILE__)).'/../../'))); //图片根目录（绝对路径）
        
@@ -413,16 +424,6 @@ class User extends MobileBase
             }
         }
         
-
-        $userinfo = M('users')->where(['user_id'=>$user_id])->find();
-        if(!$userinfo){
-            $this->redirect('fenxiang_no');
-            exit;
-        }
-        if($userinfo['is_distribut'] == 0 && $userinfo['is_agent'] == 0){
-            $this->redirect('fenxiang_no');
-            exit;
-        }
 
         //没头像 默认头像
         $head_pic_url = M('users')->where(['user_id'=>$user_id])->value('head_pic');
