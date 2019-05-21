@@ -522,7 +522,9 @@ class User extends ApiBase
 
     }
 
-
+    /**
+     * 我的分销
+     */
     public function distribut(){
         $user_id = $this->get_user_id();
         if (!$user_id) {
@@ -530,7 +532,7 @@ class User extends ApiBase
         }
        
         $per_logic =  new \app\common\logic\PerformanceLogic();
-        $money_total = $per_logic->distribut_caculate();
+        $money_total = $per_logic->distribut_caculate_by_user_id($user_id);
        
         //补业绩
         if($money_total['moneys'] < 0){
@@ -541,25 +543,22 @@ class User extends ApiBase
            
             //重新来
             $per_logic =  new \app\common\logic\PerformanceLogic();
-            $money_total = $per_logic->distribut_caculate();
+            $money_total = $per_logic->distribut_caculate_by_user_id($user_id);
         }
-
-        $this->assign('money_total',$money_total);
 
         //上级用户信息
         $leader_id = M('users')->where(['user_id'=> $user_id])->value('first_leader');
         if($leader_id){
             $leader = M('users')->where(['user_id'=>$leader_id])->field('user_id, nickname')->find();
-            if($leader){
-                $this->assign('leader',$leader);
-            }
+        }else{
+            $leader = (object)[];
         }
       
         $underling_number = M('users')->where(['user_id'=>$user_id])->value('underling_number');
         $underling_number == NULL ? $underling_number = '0' : $underling_number;
-        $this->assign('underling_number', $underling_number);
+      
 
-        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['user_id'=>$user_id,'money_total'=>$money_total,'leader'=>$leader,'underling_number'=>$underling_number]]);
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>['user_id'=>$user_id,'money_total'=>$money_total,'leader'=>$leader,'underling_number'=>$underling_number,'statistical_time'=>date('Y-m-d H:i:s')]]);
     }
     
     
