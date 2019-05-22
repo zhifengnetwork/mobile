@@ -10,6 +10,7 @@ use think\Page;
 use app\common\logic\Message;
 use app\common\model\UserMessage;
 use app\common\logic\wechat\WechatUtil;
+use app\common\logic\ShareLogic;
 
 class User extends ApiBase
 {
@@ -1273,6 +1274,144 @@ class User extends ApiBase
             $this->ajaxReturn(['status'=>-11,'msg'=>'提交失败,联系客服!','data'=>null]);
         }
     }   
+
+    public function GetSharePic(){
+        $user_id = $this->get_user_id();
+        if (!$user_id) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>(object)null]);
+        }
+
+        if(!$user_id){
+            $this->ajaxReturn(['status'=>-2,'msg'=>"您没有分享权限",'data'=>null]);
+        }
+        $userinfo = M('users')->where(['user_id'=>$user_id])->find();
+        if(!$userinfo){
+            $this->ajaxReturn(['status'=>-2,'msg'=>"您没有分享权限",'data'=>null]);
+        }
+        if($userinfo['is_distribut'] == 0 && $userinfo['is_agent'] == 0){
+            $this->ajaxReturn(['status'=>-2,'msg'=>"您没有分享权限",'data'=>null]);
+        }
+
+
+        define('IMGROOT_PATH', str_replace("\\","/",realpath(dirname(dirname(__FILE__)).'/../../'))); //图片根目录（绝对路径）
+       
+        //加上 refresh == 1 , 强制重新获取海报
+        if(I('refresh') == '1'){
+            //删掉文件
+            @unlink(IMGROOT_PATH.'/public/share/head/'.$user_id.'.jpg');//删除头像
+            @unlink(IMGROOT_PATH."/public/share/picture_ok44/'.$user_id.'.jpg");//删除 44
+            @unlink(IMGROOT_PATH."/public/share/picture_888/".$user_id.".jpg");
+
+            //强制获取头像
+            $openid = M('Users')->where(['user_id'=>$user_id])->value('openid');
+            $access_token = access_token();
+            $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
+            $resp = httpRequest($url, "GET");
+            $res = json_decode($resp, true);
+           
+            $head_pic = $res['headimgurl'];
+            if($head_pic){
+                //得到头像
+                M('users')->where(['openid'=>$openid])->update(['head_pic'=>$head_pic]);
+            }
+        }
+        
+
+        //没头像 默认头像
+        $head_pic_url = M('users')->where(['user_id'=>$user_id])->value('head_pic');
+        if(!$head_pic_url || $head_pic_url == ''){
+            $head_pic_url = '/public/images/default.jpg';
+        }
+
+        $logic = new ShareLogic();
+        $ticket = $logic->get_ticket($user_id);
+
+        if( strlen($ticket) < 3){
+            $this->error("ticket不能为空");
+            exit;
+        }
+        $url= "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=".$ticket;
+
+        $url222 = IMGROOT_PATH.'/public/share/code/'.$user_id.'.jpg';
+        if( @fopen( $url222, 'r' ) )
+        {
+            //已经有二维码了
+        	$url_code = IMGROOT_PATH.'/public/share/code/'.$user_id.'.jpg';
+        }else{
+            //还没有二维码
+            $re = $logic->getImage($url,IMGROOT_PATH.'/public/share/code', $user_id.'.jpg');
+            $url_code = $re['save_path'];
+        }
+        
+        //判断图片大小
+        $logo_url = \think\Image::open($url_code);
+        $logo_url_logo_width = $logo_url->height();
+        $logo_url_logo_height = $logo_url->width();
+
+        if($logo_url_logo_height > 420 || $logo_url_logo_width > 420){
+            //压缩图片
+            $url_code = IMGROOT_PATH.'/public/share/code/'.$user_id.'.jpg';
+            $logo_url->thumb(410, 410)->save($url_code , null, 100);
+        }
+
+        $head_url = IMGROOT_PATH.'/public/share/head/'.$user_id.'.jpg';
+        if( @fopen( $head_url, 'r' ) )
+        {
+            //已经有二维码了
+        	$url_head_pp = IMGROOT_PATH.'/public/share/head/'.$user_id.'.jpg';
+        }else{
+            //还没有二维码
+            $re = $logic->getImage($head_pic_url,IMGROOT_PATH.'/public/share/head', $user_id.'.jpg');
+            $url_head_pp = $re['save_path'];
+        }
+        
+        //判断图片大小
+        $logo = \think\Image::open($url_head_pp);
+        $logo_width = $logo->height();
+        $logo_height = $logo->width();
+ 
+        //头像变成200
+        if($logo_height > 260 || $logo_width > 260){
+            //压缩图片
+             $url_head_file = IMGROOT_PATH.'/public/share/head/'.$user_id.'.jpg';
+             $logo->thumb(240, 240)->save($url_head_file , null, 100);
+        }
+        
+        //得到二维码的绝对路径
+
+        $pic = IMGROOT_PATH."/public/share/picture_ok44/'.$user_id.'.jpg";
+        if( @fopen( $pic, 'r' ) )
+        {
+        	$pic = "/share/picture_ok44/".$user_id.".jpg";
+        }
+        else
+        {
+        	$image = \think\Image::open(IMGROOT_PATH.'/public/share/bg1.jpg');
+        	// 给原图左上角添加水印并保存water_image.png
+        	$image->water($url_code,\think\Image::DCHQZG)->save(IMGROOT_PATH.'/public/share/picture_ok44/'.$user_id.'.jpg');
+        	
+        	$pic = "/public/share/picture_ok44/".$user_id.".jpg";
+        }
+    
+        //再次叠加
+
+        $pic111 = IMGROOT_PATH."/public/share/picture_888/".$user_id.".jpg";
+        if( @fopen( $pic111, 'r' ) )
+        {
+        	$picture = "/public/share/picture_888/".$user_id.".jpg";
+        }
+        else
+        {
+        	$image = \think\Image::open(IMGROOT_PATH.'/public/share/picture_ok44/'.$user_id.'.jpg');
+        	// 给原图左上角添加水印并保存water_image.png
+        	$image->water($url_head_pp,\think\Image::TOUXIANG)->save(IMGROOT_PATH.'/public/share/picture_888/'.$user_id.'.jpg');
+          
+        	$picture = "/public/share/picture_888/".$user_id.".jpg";
+        }
+
+        $picture = $picture.'?v='.time();
+        $this->ajaxReturn(['status' => 0, 'msg' => "请求成功", 'data'=>['pic'=>$picture]]);
+    }
 
 //----------------------------------------------------------------------------------------------------------
 
