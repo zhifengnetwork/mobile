@@ -1021,19 +1021,9 @@ class User extends ApiBase
         $scene = I('post.scene/d',2);
 
 
-		if(empty($mobile) || empty($password) || empty($password2))$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误', 'data'=>null]);
+		if(!$mobile || !$password || !$password2)$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误', 'data'=>null]);
 		if(strlen($password) < 6)$this->ajaxReturn(['status' => -1 , 'msg'=>'密码至少6位', 'data'=>null]);
 		if($password != $password2)$this->ajaxReturn(['status' => -1 , 'msg'=>'两次密码不一致', 'data'=>null]);
-
-		if(!$mobile){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'mobile参数错误', 'data'=>null]);
-        }
-        if(!$password ){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'password参数错误', 'data'=>null]);
-        }
-        if(!$password2){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'password2参数错误', 'data'=>null]);
-        }
 
 		if(strlen($password) < 6){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'密码至少6位', 'data'=>null]);
@@ -1060,6 +1050,44 @@ class User extends ApiBase
         }
 
     }
+
+	//修改密码
+	public function UpdatePwd(){
+        $user_id = $this->get_user_id();
+        if (!$user_id) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>(object)null]);
+        }
+
+		$passold = I('post.passold/s','');
+		$password = I('post.password/s','');
+        $password2 = I('post.password2/s','');
+
+		if(!$passold || !$password || !$password2)$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误', 'data'=>null]);
+		if(strlen($password) < 6)$this->ajaxReturn(['status' => -1 , 'msg'=>'密码至少6位', 'data'=>null]);
+		if($password != $password2)$this->ajaxReturn(['status' => -1 , 'msg'=>'两次密码不一致', 'data'=>null]);
+
+		if(strlen($password) < 6){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'密码至少6位', 'data'=>null]);
+        }
+
+		if($password != $password2){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'两次密码不一致', 'data'=>null]);
+        }
+
+        $userinfo = M('Users')->where(['user_id'=>$user_id,'password'=>encrypt($passold)])->count();
+        if(!$userinfo){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'原密码错误', 'data'=>null]);
+        }
+
+        $res = M('Users')->update(['user_id'=>$user_id,'password'=>encrypt($password)]);
+
+		if(false !== $res){
+			$this->ajaxReturn(['status' => 0 , 'msg'=>'修改密码成功', 'data'=>null]);
+        }else{
+            $this->ajaxReturn(['status' => -2 , 'msg'=>'修改密码失败', 'data'=>null]);
+        }
+
+    }    
     
     //业绩明细
     public function performance_log(){
