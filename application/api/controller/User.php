@@ -49,7 +49,7 @@ class User extends ApiBase
         if($user_id!=""){
             $data = Db::name("users")
             ->where(['user_id'=>$user_id])
-            ->field('user_id,level,nickname,user_money,head_pic,agent_user,first_leader,realname,mobile,is_distribut,is_agent,sex,birthyear,birthmonth,birthday')
+            ->field('user_id,agent_user as level,nickname,user_money,head_pic,agent_user,first_leader,realname,mobile,is_distribut,is_agent,sex,birthyear,birthmonth,birthday')
             ->find();
             $data['date_birth'] = $data['birthyear'].'-'.$data['birthmonth'].'-'.$data['birthday'];
             unset($data['birthyear']);
@@ -58,7 +58,7 @@ class User extends ApiBase
         }else{
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
-		$data['level_name'] = $data['level'] ? M('user_level')->where(['level_id'=>$data['level']])->value('level_name') : '普通用户';
+		$data['level_name'] = $data['level'] ? M('user_level')->where(['level'=>$data['level']])->value('level_name') : '普通用户';
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
 
     }
@@ -583,13 +583,13 @@ class User extends ApiBase
 		$user_id = $next_user_id ? $next_user_id : $user_id;
 
 		$Users = M('users');
-        $list = $Users->field('user_id,nickname,mobile')->order('user_id DESC')->where(['first_leader'=>$user_id])->limit($limit)->select();
+        $list = $Users->field('user_id,agent_user as level,nickname,mobile')->order('user_id DESC')->where(['first_leader'=>$user_id])->limit($limit)->select();
 		$UserLevel = M('User_level');
 		$per_logic =  new \app\common\logic\PerformanceLogic();
 		$add_logic = new \app\common\logic\AgentPerformanceAddLogic();
 		foreach($list as $k=>$v){
 			$openid = $Users->where(['user_id'=>$v['user_id']])->value('openid');
-			$list[$k]['levle_name'] = $v['level']? $UserLevel->where(['levle_id'=>$v['level']])->value('levle_name') : '';
+			$list[$k]['levle_name'] = $v['level']? $UserLevel->where(['levle'=>$v['level']])->value('levle_name') : '';
 			
 			$money_total = $per_logic->distribut_caculate($v['user_id'],$openid);
 			//补业绩
@@ -1005,7 +1005,7 @@ class User extends ApiBase
 
 		if(empty($mobile) || empty($code))$this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误', 'data'=>null]);
 
-		$info = M('sms_log')->where(['mobile'=>$mobile,'scene'=>$scene,'code'=>$code])->find();
+		$info = M('sms_log')->where(['mobile'=>$mobile,'scene'=>$scene])->order('add_time desc')->find();
 		if(!$info)$this->ajaxReturn(['status' => -1 , 'msg'=>'请先获取验证码', 'data'=>null]);
 		if(($info['add_time']+180) < time())$this->ajaxReturn(['status' => -1 , 'msg'=>'验证码已失效', 'data'=>null]);
 		if($code != $info['code'])
@@ -1045,9 +1045,9 @@ class User extends ApiBase
         }
 
 		if(false !== $res){
-			$this->ajaxReturn(['status' => 0 , 'msg'=>'找回密码成功', 'data'=>null]);
+			$this->ajaxReturn(['status' => 0 , 'msg'=>'操作成功', 'data'=>null]);
         }else{
-            $this->ajaxReturn(['status' => -2 , 'msg'=>'找回密码失败', 'data'=>null]);
+            $this->ajaxReturn(['status' => -2 , 'msg'=>'操作失败', 'data'=>null]);
         }
 
     }
