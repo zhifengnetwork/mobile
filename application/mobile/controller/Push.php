@@ -30,14 +30,19 @@ class Push extends MobileBase
      */
     public function recharge_record()
     {
+        $page = I('page/s', 1);
         $user_id = session('user.user_id');
         $condiction = array('user_id' => $user_id);
         $record = M('recharge_points')
                 ->where($condiction)
                 ->field('create_time, user_money, status')
                 ->order('id DESC')
+                ->page($page,20)
                 ->select();
         $this->assign('record', $record);
+        if($_GET['is_ajax']){
+            return $this->fetch('ajax_recharge_record');
+        }
         return $this->fetch();
     }
 
