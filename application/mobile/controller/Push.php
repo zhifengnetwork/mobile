@@ -285,22 +285,16 @@ class Push extends MobileBase
         $goods_id = M('goods')->where($condiction)->column('goods_id');
         $goodsModel = new \app\common\model\Goods();
         $goods = $goodsModel::all($goods_id);
-        //循环取第一种规格作为默认规格
-        // foreach($goods as $good_key => $good){
-        //     foreach ($good['spec'] as $spec_key => $spec) {
-        //         $spec_item = $spec['spec_item'];
-        //         dump($spec_item[0]['id']);
-        //     }
-        // }dump($goods);die;
         
         //删除地推购物车的数据,避免重复
         M('push_cart')->where('user_id', $user_id)->delete();
-
         $this->assign('goods', $goods);
         return $this->fetch();
     }
 
-    //获取商品规格
+    /**
+     * 获取商品规格
+     */
     public function getSpec($goods_id)
     {
         $spec_goods_price_key = db('spec_goods_price')->where("goods_id", $goods_id)->column('key');
