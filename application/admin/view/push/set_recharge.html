@@ -50,6 +50,18 @@
                 </dd>
             </dl>
 
+            <dl class="row">
+                <dt class="tit">
+                    <label>充值银行卡</label>
+                </dt>
+                <dd class="opt">
+                    <input onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,2}$" id="recharge_card" name="recharge_card" value="{$config.recharge_card}" class="input-txt" type="text">
+                    <span class="err">只能输入整数</span>
+
+                    <p class="notic">（注：请输入转账的银行卡号）</p>
+                </dd>
+            </dl>
+
             <!-- <dl class="row">
                 <dt class="tit">
                     <label for="reg_integral">最低手续费</label>
@@ -129,76 +141,17 @@
 
         function fromsubmit(){
             var points_rate = $('#points_rate').val();
+            var recharge_card = $('#recharge_card').val();
+            var patrn = /^([1-9]{1})(\d{14}|\d{18})$/;
+			if (!patrn.test(recharge_card)) {
+				layer.msg('银行卡号不正确',{icon: 2});
+				return false;
+			}
             if(points_rate == ''){
                 layer.msg('积分比例不能为空!', {icon: 2,time: 1000});
                 return false;
             }
-            // var min_cash    =   parseInt($('#min_cash').val());   //每次最低提现额
-            // var max_cash    =   parseInt($('#max_cash').val());   //每次最高提现额
-            // var cash_times  =   parseInt($('#cash_times').val()); //提现次数
-            // var count_cash  =   parseInt($('#count_cash').val()); //每日累计提现额
-            // var service_ratio   =   parseInt($('#service_ratio').val());
-            // var min_service_money   =   parseInt($('#min_service_money').val());
-            // var max_service_money   =   parseInt($('#max_service_money').val());
-
-            // var cash_open = $("input[name='cash_open']:checked").val();
-            // if (cash_open == 1) {
-            //     if(isNaN(min_cash) || isNaN(max_cash) || isNaN(cash_times) || isNaN(count_cash) || isNaN(service_ratio) || isNaN(min_service_money) || isNaN(max_service_money)){
-            //         layer.msg('选项不能为空且必须为数字!', {icon: 2,time: 1000});
-            //         return false;
-            //     }
-            //     if (service_ratio < 0) {
-            //         layer.msg('手续费不能小于0!', {icon: 2,time: 1000});
-            //         return false;
-            //     }
-            //     if (service_ratio >= 100) {
-            //         layer.msg('手续费比例必须小于100!', {icon: 2,time: 1000});
-            //         return false;
-            //     }
-            //     if (min_service_money > 0 && min_service_money >= min_cash) {
-
-            //         layer.msg('最低手续费必须小于最低提现额!', {icon: 2,time: 1000});
-            //         return false;
-            //     }
-            //     if (min_service_money >= max_service_money && min_service_money > 0) {
-            //         layer.msg('最低手续费不得大于最高手续费!', {icon: 2,time: 1000});
-            //         return false;
-            //     } else {
-            //         if(min_service_money < 0 || max_service_money < 0){
-            //             layer.msg('最低或最高手续费不得小于0!', {icon: 2,time: 1000});
-            //             return false;
-            //         }
-            //     }
-
-            //     if(min_cash >= max_cash && min_cash > 0){
-            //         layer.msg('最低提现额必须小于最高提现额!', {icon: 2,time: 1000});
-            //         return false;
-            //     } else {
-            //         if(min_cash < 0 || max_cash < 0){
-            //             layer.msg('最低或最高提现额不得小于0!', {icon: 2,time: 1000});
-            //             return false;
-            //         }
-
-            //     }
-            //     if (max_cash <= 0) {
-
-            //         layer.msg('最高提现额必须大于0!', {icon: 2,time: 1000});
-            //         return false;
-            //     }
-
-            //     if (count_cash > 0 && max_cash > 0 && cash_times > 0) {
-            //         if((max_cash * cash_times) > count_cash){
-            //             layer.msg('提现次数及最高提现额运算结果不得大于每日累计提现额度!', {icon: 2,time: 1000});
-            //             return false;
-            //         }
-            //     }
-
-            //     if(count_cash < 0){
-            //         layer.msg('每日累计提现额不能小于0!', {icon: 2,time: 1000});
-            //         return false;
-            //     }   
-            // }
-        
+            
             $.ajax({
                 type: "POST",
                 url: "/index.php?m=Admin&c=Push&a=set_recharge",//+tab,
