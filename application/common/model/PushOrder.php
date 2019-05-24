@@ -5,6 +5,8 @@ namespace app\common\model;
 use app\common\logic\User;
 use app\common\util\TpshopException;
 use app\common\logic\OrderLogic;
+use app\common\model\PushCart;
+use app\common\model\PushStock;
 use think\Cache;
 use think\Hook;
 use think\Model;
@@ -42,6 +44,44 @@ class PushOrder
         $this->order = new Order();
     }
 
+    /**
+     * 删除地推临时购物车个人数据
+     */
+    public function delPushCart()
+    {
+        $pushCart = new PushCart();
+        $pushCart::where('user_id', $this->user['user_id'])->delete();
+    }
+
+    /**
+     * 添加个人库存
+     */
+    public function addPersonStock()
+    {
+        $pushObj = new PushCart();
+        $pushStock  = new PushStock();
+        $goods_list = $pushObj::all(['user_id' => $this->user['user_id']]);
+        foreach ($goods_list as $key => $value) {
+            $arr = array(
+                'goods_id' => $value['goods_id'],
+                'user_id'  => $value['user_id'],
+                'item_id'  => $value['item_id'],
+            );
+            $good = $pushStock::get($arr);
+            if($good){
+                $good->goods_num = $value['goods_num'] + $good['goods_num'];
+                $good->update_time = time();
+                $good->save();
+            }else{
+                $pre_time = time();
+                $arr['goods_num'] = $value['goods_num'];
+                $arr['create_time'] = $pre_time;
+                $arr['update_time'] = $pre_time;
+                $pushStock->save($arr);
+            }
+        }
+    }
+
     public function addNormalOrder($goodsTotalPrice,$cartList)
     {
 
@@ -58,6 +98,8 @@ class PushOrder
             update_pay_status($this->order['order_sn']);
         }
         $this->changUserPointMoney($this->order,$goodsTotalPrice);//扣除用户积分余额
+        $this->addPersonStock();
+        $this->delPushCart();
         $this->queueDec();
     }
 

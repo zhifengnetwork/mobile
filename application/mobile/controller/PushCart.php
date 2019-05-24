@@ -151,7 +151,8 @@ class PushCart extends MobileBase
                 }
                 $pushOrder = new PushOrder($this->user);
                 $pushOrder->setUserAddress($address)->setInvoiceTitle($invoice_title)
-                    ->setUserNote($user_note)->setTaxpayer($taxpayer)->setInvoiceDesc($invoice_desc)->setPayPsw($pay_pwd)->addNormalOrder($goodsTotalPrice,$cartList);
+                    ->setUserNote($user_note)->setTaxpayer($taxpayer)->setInvoiceDesc($invoice_desc)->setPayPsw($pay_pwd)
+                    ->addNormalOrder($goodsTotalPrice,$cartList);
                 $order = $pushOrder->getOrder();
                 $this->ajaxReturn(['status' => 1, 'msg' => '提交订单成功',  'result' => $order['order_sn']]);
             }
