@@ -198,9 +198,9 @@ class Cart extends MobileBase {
         $consignee = input('consignee/s');//自提点收货人
         $mobile = input('mobile/s');//自提点联系方式
         $is_virtual = input('is_virtual/d',0);
+        $leader_id = input('leader_id/d',0);
         $data = input('request.');
         $cart_validate = Loader::validate('Cart');
-
         if($is_virtual === 1){
             $cart_validate->scene('is_virtual');
         }
@@ -226,7 +226,7 @@ class Cart extends MobileBase {
                 $pay->payCart($userCartList);
             }
 
-            $pay->setUserId($this->user_id)->setShopById($shop_id)->delivery($address)->orderPromotion()
+            $pay->setUserId($this->user_id)->setLeaderId($leader_id)->setShopById($shop_id)->delivery($address)->orderPromotion()
                 ->useCouponById($coupon_id)->getAuction()->getUserSign()->useUserMoney($user_money)
                 ->usePayPoints($pay_points,false,'mobile');
             // 提交订单

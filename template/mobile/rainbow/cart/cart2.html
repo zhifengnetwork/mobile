@@ -31,6 +31,7 @@
             <input type="hidden" name="address_id" value="" autocomplete="off"/> <!--收货地址id-->
             <input type="hidden" name="pay_points" value="" autocomplete="off">
             <input type="hidden" name="user_money" value="" autocomplete="off">
+            <input type="hidden" name="leader_id" value="">
             <input type="hidden" name="auth_code" value="{$Think.config.AUTH_CODE}"/>
             <!--立即购买才会用到-s-->
             <input type="hidden" name="action" value="{$Request.param.action}">
@@ -1131,23 +1132,25 @@
         });
         //上级id点击事件
         $(document).on('blur', '#leader_id', function () {
-            var data = [];
-            data['leader_id'] = $.trim($('#leader_id').val());
-            data['action'] = $('input[name="action"]').val();
-            data['goods_id'] = $('input[name="goods_id"]').val();
-            data['goods_num'] = $('input[name="goods_num"]').val();
-            data['item_id'] = $('input[name="item_id"]').val();
+            var leader_id = $.trim($('#leader_id').val());
+            $('input[name="leader_id"]').val(leader_id);
 
+            var action = $('input[name="action"]').val();
+            var goods_id = $('input[name="goods_id"]').val();
+            var goods_num = $('input[name="goods_num"]').val();
+            var item_id = $('input[name="item_id"]').val();
             $.ajax({
                 type: "POST",
-                url: '/index.php?m=Mobile&c=PushCart&a=cartCouponExchange',
-                data: {data : data},
+                data: {"leader_id": leader_id,"action": action,"goods_id": goods_id,"goods_num": goods_num,"item_id": item_id},
+                url: '/index.php?m=Mobile&c=PushCart&a=checkHigherGoods',
                 dataType: "json",
                 success: function (data) {
                     if (data.status != 1) {
-                        layer.msg(data.msg, {icon:2});
-                        return false;
+                       $('#leader_id').val("")
+                       $('input[name="leader_id"]').val("");
+                       showErrorMsg(data.msg);
                     }
+                    ajax_order_price();
                 }
             });
         })

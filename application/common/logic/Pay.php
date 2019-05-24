@@ -20,6 +20,7 @@ class Pay
     protected $payList;
     protected $userId;
     protected $user;
+    protected $leader_id;
 
     private $totalAmount = 0;//订单总价
     private $orderAmount = 0;//应付金额
@@ -72,6 +73,23 @@ class Pay
      * @throws TpshopException
      */
     public function payCart($cart_list){
+        $this->payList = $cart_list;
+        $goodsListCount = count($this->payList);
+        if ($goodsListCount == 0) {
+            throw new TpshopException('计算订单价格', 0, ['status' => -9, 'msg' => '你的购物车没有选中商品', 'result' => '']);
+        }
+        $this->Calculation();
+        return $this;
+    }
+
+    /**
+     * 计算地推产品价格
+     * @param $cart_list
+     * @return $this
+     * @throws TpshopException
+     */
+
+    public function payPushCart($cart_list){
         $this->payList = $cart_list;
         $goodsListCount = count($this->payList);
         if ($goodsListCount == 0) {
@@ -174,6 +192,17 @@ class Pay
     {
         if($shop_id){
             $this->shop = Shop::get($shop_id);
+        }
+        return $this;
+    }
+    /**
+     * 设置用户上级id
+     */
+
+    public function setLeaderId($leader_id){
+
+        if($leader_id){
+          $this->leader_id=$leader_id;
         }
         return $this;
     }
@@ -350,6 +379,11 @@ class Pay
         if ($this->payList[0]['prom_type'] == 4) {
             return $this;
         }
+         //购买上级产品不计算运费
+        if($this->leader_id){
+            return $this;
+        }
+
 		$this->payList[0]['goods']->sign_free_receive = M('goods')->where(['goods_id'=>$this->payList[0]['goods']->goods_id])->value('sign_free_receive');
         //非免费产品，内蒙、西藏、新疆满4件包邮
         if ($this->payList[0]['goods']->sign_free_receive != 1 ) {
@@ -622,6 +656,11 @@ class Pay
     public function getUser()
     {
         return $this->user;
+    }
+    //获取上级leader_id
+
+    public function getLeaderId(){
+        return $this->leader_id;
     }
 
     public function getPayList()

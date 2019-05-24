@@ -138,7 +138,7 @@ class PushCart extends MobileBase
             $cartLogic->checkStockCartList($cartList);
             $pay->setUserId($this->user_id);
             $userInfo=$pay->getUser();
-            $pay->payCart($cartList);
+            $pay->payPushCart($cartList);
             $goodsTotalPrice=$pay->deliveryPush($address);
             // 提交订单
             if ($_REQUEST['act'] == 'submit_order') {
@@ -162,6 +162,50 @@ class PushCart extends MobileBase
         }
     }
 
+    //查看某个用户购买的上级商品是否存在
+    public function  checkHigherGoods(){
+
+        $leader_id = I('leader_id');
+        $action = I('action');
+        $goods_id = I('goods_id');
+        $goods_num = I('goods_num');
+        $item_id = I('item_id');
+        if ($this->user_id == 0){
+            $this->error('请先登录', U('Mobile/User/login'));
+        }
+        $cartLogic = new CartLogic();
+        //该用户的上级用户id
+        $HigherUserId=$this->getHigherId();
+         if($leader_id==$HigherUserId){
+             //立即购买
+             if($action=="buy_now"){
+                //该商品是否存在属性
+                 $goodsWhere['user_id']=$HigherUserId;
+                 $goodsWhere['goods_id']=$goods_id;
+                 if(!empty($item_id)){
+                   $goodsWhere['item_id']=$item_id;
+                 }
+                 $goodsInfo=Db::name("push_stock")->where($goodsWhere)->find();
+                 if(!empty($goodsInfo)){
+                     if($goodsInfo['goods_num']<$goods_num){
+                         $this->ajaxReturn(['status'=>0,'msg'=>"商品库存不足！"]);
+                     }else{
+                         $this->ajaxReturn(['status'=>1,'msg'=>""]);
+                     }
+                 }else{
+                     $this->ajaxReturn(['status'=>0,'msg'=>"您的上级不存在这个商品！"]);
+                 }
+                }else{
+                 $userCartList = $cartLogic->getCartList(1);
+                 $this->checkHeigherStock($userCartList,$HigherUserId);
+
+             }
+
+         }else{
+             $this->ajaxReturn(['status'=>0,'msg'=>"您的上级id不存在，请重新输入！"]);
+         }
+
+    }
 
     //计算商品价格，运费
     public function getDeliver(){
@@ -179,10 +223,38 @@ class PushCart extends MobileBase
         $pay=new PayModel();
         $cartLogic->checkStockCartList($cartList);
         $pay->setUserId($this->user_id);
-        $pay->payCart($cartList);
+        $pay->payPushCart($cartList);
         $data=$pay->setUserId($this->user_id)->deliveryPush($address);
         $this->ajaxReturn(['status'=>1,'data'=>$data]);
     }
 
+    //获取某个用户的上级userId
+    public function getHigherId(){
+        $userInfo=$this->user;
+        return  $userInfo["first_leader"];
+    }
+
+    //检测上级商品库
+   public function checkHeigherStock($userCartList,$HigherUserId){
+       $goodsWhere['user_id']=$HigherUserId;
+       foreach ($userCartList as $key =>$value ){
+           $goodsWhere['goods_id']=$value['goods_id'];
+           if(!empty($value['item_id'])){
+               $goodsWhere['item_id']=$value['item_id'];
+           }
+           $goodsInfo=Db::name("push_stock")->where($goodsWhere)->find();
+           if(!empty($goodsInfo)){
+               if($goodsInfo['goods_num']<$value['goods_num']){
+                   $msg=$value['goods_name']."商品库存不足!";
+                   $this->ajaxReturn(['status'=>0,'msg'=>$msg]);
+               }else{
+                   $this->ajaxReturn(['status'=>1,'msg'=>""]);
+               }
+           }else{
+               $msg="您的上级没有".$value['goods_name']."这个商品!";
+               $this->ajaxReturn(['status'=>0,'msg'=>$msg]);
+           }
+       }
+   }
 
 }
