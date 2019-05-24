@@ -161,7 +161,7 @@ class Order extends ApiBase
 		$prom_type = input('prom_type/d',0); //0默认1秒杀2团购3优惠促销4预售5虚拟(5其实没用)6拼团7搭配购8竞拍
 		$prom_id = input('prom_id/d',0);
         $is_virtual = input('is_virtual/d',0);
-        $data = input('request.');
+        $data = I('POST.');
         $cart_validate = Loader::validate('Cart');
         if($is_virtual === 1){
             $cart_validate->scene('is_virtual');
