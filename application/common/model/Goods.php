@@ -186,4 +186,11 @@ class Goods extends Model
             return $price = round($data['shop_price'] - $data['exchange_integral'] / 10, 2);
         }
     }
+    //获取商品列表信息
+    public function getGoodsList($goodId){
+        $where['is_on_sale'] = 1;
+        $where['goods_id'] = array('in',$goodId);
+        return  M("goods")->where($where)->limit(4)->select();
+    }
+
 }

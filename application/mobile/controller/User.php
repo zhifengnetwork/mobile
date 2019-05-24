@@ -2017,6 +2017,11 @@ class User extends MobileBase
     {
         //检查是否第三方登录用户
         $user = M('users')->where('user_id', $this->user_id)->find();
+        if(!empty(I('get.redirect_url'))){
+            $this->assign("redirect_url",I('get.redirect_url'));
+        }else{
+            $this->assign("redirect_url",null);
+        }
         if ($user['mobile'] == '')
             $this->error('请先绑定手机号',U('User/setMobile',['source'=>'paypwd']));
         $step = I('step', 1);
