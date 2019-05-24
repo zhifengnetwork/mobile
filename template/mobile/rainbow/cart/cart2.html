@@ -37,6 +37,7 @@
             <input type="hidden" name="goods_id" value="{$Request.param.goods_id}">
             <input type="hidden" name="item_id" value="{$Request.param.item_id}">
             <input type="hidden" name="goods_num" value="{$Request.param.goods_num}">
+            <input type="hidden" name="leader_id" value=""/>
             <!--立即购买才会用到-e-->
             <input type="hidden" name="pay_pwd" value=""/>
             <input type="hidden" name="user_note" value="">
@@ -264,6 +265,48 @@
                     </div>
                 </div>
                 <!--使用余额、积分-e-->
+
+                <div class="information_dr">
+                    <!--线下提货-s-->
+                    <div class="information_dr">
+                        <!-- <div class="maleri30"> -->
+                            <div class="myorder p" style="padding:0;">
+                                <div class="content30">
+                                        <div class="order">
+                                            <div class="fl">
+                                                <span style="margin-left:0;">线下提货</span>
+                                            </div>
+                                            <div class="fr z-toggle-btn">
+                                                <label class="z-toggle z-toggle-royal">
+                                                    <input type="checkbox" id="self_inp" value="{$user['user_money']}"/>
+    
+                                                    <div class="z-tarck">
+                                                        <div class="z-handle">
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        <!-- </div> -->
+                    </div>
+                    <!--上级id -s-->
+                    <div id="balance-li" class="invoice list7">
+    
+                        <div class="myorder myorder-2 p" id="paypwd_self" style="display: none">
+                            <div class="content30">
+                                <label>
+                                    <div class="incorise">
+                                        <span>上级id：</span>
+                                        <input type="text" id="leader_id" placeholder="请输入id" autocomplete="off"/>             
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!--上级id -e-->
+                </div>
             </div>
         </div>
         <!--支持配送,发票信息-s-->
@@ -1087,6 +1130,22 @@
             panel();
             show_map();
         });
+        //上级id点击事件
+        $(document).on('blur', '#leader_id', function () {
+            var leader_id = $.trim($('#leader_id').val());
+            $('input[name="leader_id"]').val(leader_id);
+        })
+        //线下提货
+        $(document).on('click','#self_inp',function(){
+            //input
+            var self_evel = $('#self_inp');
+            if (self_evel.is(':checked')) {
+                $('#paypwd_self').show();
+                $('input[name="pay_pwd"]').val(pay_pwd);
+            }else {
+                $('#paypwd_self').hide();
+            }    
+        })
     })
     //积分余额密码
     $(function () {
