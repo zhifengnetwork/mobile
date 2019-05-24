@@ -225,6 +225,7 @@ class PlaceOrder
     {
         $OrderLogic = new OrderLogic();
         $user = $this->pay->getUser();
+        $leader_id=$this->pay->getLeaderId();
         $shop = $this->pay->getShop();
         $invoice_title = $this->invoiceTitle;
         if($this->invoiceTitle == "" && $this->invoiceDesc != "不开发票"){
@@ -316,7 +317,17 @@ class PlaceOrder
         if ($orderSaveResult === false) {
             throw new TpshopException("订单入库", 0, ['status' => -8, 'msg' => '添加订单失败', 'result' => '']);
         }
+
+        //如果是购买上级的商品，记录订单信息
+        if($leader_id){
+            $time=time();
+            $data=['user_id'=>$user['user_id'],'leader_id'=>$leader_id,'order_id'=>$this->order['order_id'],'user_money'=>$this->pay->getTotalAmount(),'create_time'=>$time,'pay_status'=>1];
+            Db::name("push_log")->save($data);
+        }
+
     }
+
+
 
     /**
      * 插入订单商品表
