@@ -41,6 +41,10 @@ return array(
             //array('name' => '管理员日志', 'act'=>'log', 'op'=>'Admin'),
             array('name' => '供应商列表', 'act' => 'supplier', 'op' => 'Admin'),
         )),
+        array('name' => 'App','child' => array(
+        	array('name' => '安卓APP管理', 'act'=>'index', 'op'=>'MobileApp'),
+            array('name' => '苹果APP管理', 'act'=>'ios_audit', 'op'=>'MobileApp'),
+        ))
         // array('name' => '数据','child'=>array(
         // 		array('name' => '数据备份', 'act'=>'index', 'op'=>'Tools'),
         // 		array('name' => '数据还原', 'act'=>'restore', 'op'=>'Tools'),
@@ -233,10 +237,7 @@ return array(
             array('name' => '运营概览', 'act' => 'finance', 'op' => 'Report'),
             array('name' => '平台支出记录', 'act' => 'expense_log', 'op' => 'Report'),
         )),
-        // array('name' => 'App','child' => array(
-        // 	array('name' => '安卓APP管理', 'act'=>'index', 'op'=>'MobileApp'),
-        //     array('name' => '苹果APP管理', 'act'=>'ios_audit', 'op'=>'MobileApp'),
-        // ))
+      
     )),
 
     'pickup' => array('name' => '门店', 'child' => array(

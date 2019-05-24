@@ -41,6 +41,10 @@ class MobileApp extends Base
 		$inc_type = $param['inc_type'];
         
         $file = request()->file('app_path');
+        dump($file);
+        exit;
+
+        
         if ($file) {
             $result = $this->validate(
                 ['android_app' => $file], 
@@ -58,6 +62,8 @@ class MobileApp extends Base
             }
             $return_url = $savePath.$info->getSaveName();
             tpCache($inc_type, ['app_path' => $return_url]);
+        }else{
+            return $this->error('没有文件');
         }
         
         tpCache($inc_type, ['app_version' => $param['app_version']]);

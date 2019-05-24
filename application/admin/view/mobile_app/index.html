@@ -47,13 +47,13 @@
                     <label for="app_path">安卓App</label>
                 </dt>
                 <dd class="opt">
-                <!--<div class="input-file-show">
+                    <!-- <div class="input-file-show">
                         <span class="type-file-box">
                             <input type="text" id="app_path" name="app_path" value="{$config.app_path}" class="type-file-text">
                             <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
-                            <input class="type-file-file" onClick="appUploadify(1,'','','img_call_back','Admin','MobileApp', 'upload')" size="30" hidefocus="true">
+                            <input class="type-file-file" onClick="appUploadify(1,'','','img_call_back','Admin','Uploadify', 'upload')" size="30" hidefocus="true">
                         </span>
-                    </div>-->
+                    </div> -->
                     <input id="app_version"  value="{$config.app_path}" class="input-txt" type="text" disabled/>
                     <input type="file" name="app_path">
                     <span class="err"></span>
@@ -77,26 +77,26 @@
         }
         document.form1.submit()
     }
-//    function img_call_back(fileurl_tmp)
-//    {
-//        $("#app_path").val(fileurl_tmp);
-//        $("#img_a").attr('href', fileurl_tmp);
-//        $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
-//    }
-//    
-//    function appUploadify(num,elementid,path,callback , module, cls, fun) {
-//        var upurl ='/index.php?m='+module+'&c='+cls+'&a='+fun+'&num='+num+'&input='+elementid+'&path='+path+'&func='+callback;
-//        var iframe_str='<iframe frameborder="0" ';
-//        iframe_str=iframe_str+'id=uploadify ';   		
-//        iframe_str=iframe_str+' src='+upurl;
-//        iframe_str=iframe_str+' allowtransparency="true" class="uploadframe" scrolling="no"> ';
-//        iframe_str=iframe_str+'</iframe>';    	    		
-//        $("body").append(iframe_str);	
-//        $("iframe.uploadframe").css("height",$(document).height()).css("width","100%").css("position","absolute").css("left","0px").css("top","0px").css("z-index","999999").show();
-//        $(window).resize(function(){
-//            $("iframe.uploadframe").css("height",$(document).height()).show();
-//        });
-//    }
+   function img_call_back(fileurl_tmp)
+   {
+       $("#app_path").val(fileurl_tmp);
+       $("#img_a").attr('href', fileurl_tmp);
+       $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+   }
+   
+   function appUploadify(num,elementid,path,callback , module, cls, fun) {
+       var upurl ='/index.php?m='+module+'&c='+cls+'&a='+fun+'&num='+num+'&input='+elementid+'&path='+path+'&func='+callback;
+       var iframe_str='<iframe frameborder="0" ';
+       iframe_str=iframe_str+'id=uploadify ';   		
+       iframe_str=iframe_str+' src='+upurl;
+       iframe_str=iframe_str+' allowtransparency="true" class="uploadframe" scrolling="no"> ';
+       iframe_str=iframe_str+'</iframe>';    	    		
+       $("body").append(iframe_str);	
+       $("iframe.uploadframe").css("height",$(document).height()).css("width","100%").css("position","absolute").css("left","0px").css("top","0px").css("z-index","999999").show();
+       $(window).resize(function(){
+           $("iframe.uploadframe").css("height",$(document).height()).show();
+       });
+   }
 </script>
 </body>
 </html>
