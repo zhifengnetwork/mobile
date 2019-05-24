@@ -77,9 +77,10 @@ class Pay
         if ($goodsListCount == 0) {
             throw new TpshopException('计算订单价格', 0, ['status' => -9, 'msg' => '你的购物车没有选中商品', 'result' => '']);
         }
-        $this->Calculation();
+        $this->pushCalculation();
         return $this;
     }
+
 
     /**
      * 计算购买商品表的商品
@@ -138,6 +139,18 @@ class Pay
             $this->totalNum += $this->payList[$payCursor]['goods_num'];
         }
         $this->orderAmount = $this->goodsPrice;
+        $this->totalAmount = $this->goodsPrice;
+    }
+
+    /**
+     * 初始化计算
+     */
+    private function pushCalculation()
+    {
+        $this->goodsPrice=0;
+        foreach ($this->payList as $value){
+            $this->goodsPrice+=$value['shop_price']*$value['goods_num'];
+        }
         $this->totalAmount = $this->goodsPrice;
     }
 
@@ -336,7 +349,7 @@ class Pay
         //预售活动暂不计算运费
         if ($this->payList[0]['prom_type'] == 4) {
             return $this;
-        } 
+        }
 		$this->payList[0]['goods']->sign_free_receive = M('goods')->where(['goods_id'=>$this->payList[0]['goods']->goods_id])->value('sign_free_receive');
         //非免费产品，内蒙、西藏、新疆满4件包邮
         if ($this->payList[0]['goods']->sign_free_receive != 1 ) {
@@ -368,6 +381,49 @@ class Pay
 
 
         return $this;
+    }
+
+
+
+    public function deliveryPush($district_id){
+
+        if (array_key_exists('is_virtual', $this->payList[0]) && $this->payList[0]['is_virtual'] == 0) {
+            if (empty($this->shop) && empty($district_id['district'])) {
+                throw new TpshopException("计算订单价格", 0, ['status' => -1, 'msg' => '请填写收货信息', 'result' => ['']]);
+            }
+        }
+        $GoodsLogic = new GoodsLogic();
+        $checkGoodsShipping = $GoodsLogic->checkGoodsListShipping($this->payList, $district_id['district']);
+        foreach($checkGoodsShipping as $shippingKey => $shippingVal){
+            if($shippingVal['shipping_able'] != true){
+                throw new TpshopException("计算订单价格",0,['status'=>-1, 'code' => 301,
+                    'msg'=>'订单中部分商品【 '.$shippingVal['goods_name'].' 】不支持对当前地址的配送请返回购物车修改',
+                    'result'=>['goods_shipping'=>$checkGoodsShipping]]);
+            }
+        }
+        //使用自提点不计算运费
+        if(!empty($this->shop)){
+            return $this;
+        }
+        //非免费产品，内蒙、西藏、新疆满4件包邮
+      if ($district_id['province'] == 4670 || $district_id['province'] == 41103 || $district_id['province'] == 46047) {
+                if ($this->totalNum >= 4 ) {
+                    return $this;
+                }
+          }
+        $freight_free = tpCache('shopping.freight_free'); // 全场满多少免运费
+
+        if($this->goodsPrice < $freight_free || $freight_free == 0){
+            $this->shippingPrice = $GoodsLogic->getFreight($this->payList, $district_id['district']);
+            $this->orderAmount = $this->orderAmount + $this->shippingPrice;
+            $this->totalAmount = $this->totalAmount + $this->shippingPrice;
+        }else{
+            $this->shippingPrice = 0;
+        }
+        $data['goodsPrice']=$this->goodsPrice;
+        $data['totalAmount']=$this->totalAmount;
+        $data['shippingPrice']=$this->shippingPrice;
+        return $data;
     }
 
     /**

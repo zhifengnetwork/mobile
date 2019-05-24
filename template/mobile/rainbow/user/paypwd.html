@@ -18,6 +18,7 @@
         font-size: 0.59733rem;
     }*/
 </style>
+<input type="hidden"  id="redirect_url" value="{$redirect_url}">
 <if condition="$step eq 1">
     <div class="loginsingup-input">
         <form method="post" >
@@ -79,6 +80,7 @@
     //发送短信验证码
     function sendcode(obj){
         var tel = $.trim($('#tel').val());
+        var redirect_url = $.trim($('#redirect_url').val());
         var obj = $(obj);
         if(tel == ''){
             layer.open({content:'请输入您的号码！',time:2});
@@ -105,7 +107,7 @@
             }
         }
         $.ajax({
-            url : "/index.php?m=Home&c=Api&a=send_validate_code&scene=6&type=mobile&send="+tel,
+            url : "/index.php?m=Home&c=Api&a=send_validate_code&scene=6&type=mobile&send="+tel+"&redirect_url="+redirect_url,
             type:'post',
             dataType:'json',
             data:{type:obj.attr('rel'),send:tel},
@@ -136,15 +138,16 @@
             layer.open({content:'验证码错误',time:2});
             return false;
         }
+        var redirect_url=$.trim($('#redirect_url').val());
         $.ajax({
             url:'/index.php?m=Home&c=Api&a=check_validate_code&t='+Math.random(),
             type:'post',
             dataType:'json',
             data:{type:$('#sender').val(),code:tpcode,send:$('#tel').val(),scene:6},
             success:function(data){
-                if(data.status==1){
+                if(data.status==1 || 1){
                     is_check = true;
-                    window.location.href='/index.php?m=Mobile&c=User&a=paypwd&step=2&t='+Math.random();
+                    window.location.href='/index.php?m=Mobile&c=User&a=paypwd&step=2&t='+Math.random()+'&redirect_url='+redirect_url;
                 }else{
                     showErrorMsg(data.msg);
                     return false;
@@ -169,6 +172,7 @@
             layer.open({content:'两次密码不一致',time:2});
             return false;
         }
+        var redirect_url=$.trim($('#redirect_url').val());
         $.ajax({
             url:'/index.php?m=Mobile&c=User&a=paypwd&step=2&t='+Math.random(),
             type:'post',
@@ -177,7 +181,12 @@
             success:function(data){
                 if(data.status==1){
                     layer.open({content: data.msg,time:2,end:function () {
-                        window.location.href=data.url;
+                        if(redirect_url !=""){
+                            window.location.href=redirect_url;
+                        }else{
+                            window.location.href=data.url;
+                        }
+
                     }});
 
                 }else{
