@@ -44,7 +44,7 @@ class Order extends ApiBase
         if ($type=='WAITSEND')$data = array('pay_status'=>1,'order_status'=>[0,1],'shipping_status'=>0,'pay_code'=>['not in','cod']);//'待发货',非货到付款*/
         if ($type == 1)$data = array('tp_order.pay_status'=>1,'tp_order.shipping_status'=>['neq',1],'tp_order.order_status' => ['in','0,1'],);//'待发货'	
         if ($type == 2)$data = array('tp_order.pay_status'=>0,'tp_order.order_status'=>0); //'待支付',
-        if ($type == 3)$data = array('tp_order.shipping_status'=>1,'order_status'=>1,);//'待收货',
+        if ($type == 3)$data = array('tp_order.pay_status'=>1,'tp_order.shipping_status'=>1,'order_status'=>1,);//'待收货',
         if ($type == 4)$data = array('tp_order.order_status'=>2,);//'待评价',  
         // $data = '订单列表数据';
         $data['tp_order.user_id'] = $user_id;
