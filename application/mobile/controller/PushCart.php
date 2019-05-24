@@ -154,7 +154,7 @@ class PushCart extends MobileBase
                     ->setUserNote($user_note)->setTaxpayer($taxpayer)->setInvoiceDesc($invoice_desc)->setPayPsw($pay_pwd)
                     ->addNormalOrder($goodsTotalPrice,$cartList);
                 $order = $pushOrder->getOrder();
-                $this->ajaxReturn(['status' => 1, 'msg' => '提交订单成功',  'result' => $order['order_sn']]);
+                $this->ajaxReturn(['status' => 1, 'msg' => '提交订单成功',  'result' => $order['order_id']]);
             }
         } catch (TpshopException $t) {
             $error = $t->getErrorArr();

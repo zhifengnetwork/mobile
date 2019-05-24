@@ -271,7 +271,7 @@
         <div class="mask-filter-div" style="display: none;"></div>
         <div class="payit fillpay ma-to-20">
             <div class="fr submit_price">
-                <a href="javascript:void(0)" onclick="submit_order()">提交订单</a>
+                <a href="javascript:void(0)" onclick="submit_order()">立即购买</a>
             </div>
             <div class="fl">
                 <p><span class="pmo">应付积分：</span>￥<span id="payables">0</span><span></span></p>
@@ -1028,7 +1028,7 @@
 
                 $("#payables").text(data.result.order_amount);// 应付
                 showErrorMsg('订单提交成功，跳转支付页面!');
-                location.href = "/index.php?m=Mobile&c=Order&a=order_list";
+                location.href = "/index.php?m=Mobile&c=Order&a=order_detail&id=" + data.result;
             }
         });
     }
