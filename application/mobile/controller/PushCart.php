@@ -155,7 +155,6 @@ class PushCart extends MobileBase
                 $order = $pushOrder->getOrder();
                 $this->ajaxReturn(['status' => 1, 'msg' => '提交订单成功',  'result' => $order['order_sn']]);
             }
-            $this->ajaxReturn(['status' => 1, 'msg' => '计算成功', 'result' => $pay->toArray()]);
         } catch (TpshopException $t) {
             $error = $t->getErrorArr();
             $this->ajaxReturn($error);
