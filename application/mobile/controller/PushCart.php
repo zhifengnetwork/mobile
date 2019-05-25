@@ -82,8 +82,10 @@ class PushCart extends MobileBase
             $goodsList[$i]['item_id']=$goodsItemList[$i];
             $data['goods_id']=$goodsIdList[$i];
             if(!empty($goodsList[$i]['item_id'])){
-                //$goodsList[$i]['spec_key_name']=$Goods->getSpecAttr(null, $data);
-                $goodsList[$i]['spec_key_name']='自然色';
+                $keyInfo=$this->getKeyInfo($goodsList[$i]['item_id']);
+                $goodsList[$i]['spec_key_name']=$keyInfo['key_name'];
+                //计算使用属性的价格；
+                $goodsList[$i]['shop_price']=$keyInfo['price'];
             }else{
                 $goodsList[$i]['spec_key_name']='';
             }
@@ -256,5 +258,13 @@ class PushCart extends MobileBase
            }
        }
    }
+
+   //获取商品的属性值
+    public function getKeyInfo($item_id){
+
+       $keyInfo= Db::name("spec_goods_price")->where(["item_id"=>$item_id])->field('key_name,price')->find();
+       return $keyInfo;
+
+    }
 
 }
