@@ -82,6 +82,7 @@ class Push extends MobileBase
             $insert_data['create_time'] = time();
             $insert_data['recharge_pic'] = $result['data'];
             $insert_data['user_money'] = $data['choice_number'];
+            $insert_data['bank_card'] = $data['choice_accountd'];
             $insert_data['exchange_integral'] = round($config['points_rate'] * $data['choice_number'], 2);
             $result = M('recharge_points')->insert($insert_data);
             if($result){
@@ -93,6 +94,8 @@ class Push extends MobileBase
                 exit;
             }
         }
+        $card = M('config')->where(['inc_type' => 'recharge', 'name' => 'recharge_card'])->value('value');
+        $this->assign('card', $card);
         return $this->fetch();
     }
 
