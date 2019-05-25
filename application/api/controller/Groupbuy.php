@@ -264,7 +264,7 @@ class Groupbuy extends ApiBase
 				$this->ajaxReturn(['status'=>-9, 'msg'=>'此团已不能加入','data'=>null]);
 		}
 
-		if(M('team_found')->where(['user_id'=>$user_id,'team_id'=>$team_id,'found_end_time'=>['egt',time()]])->count())
+		if(M('team_found')->where(['user_id'=>$user_id,'team_id'=>$team_id,'status'=>['not in','3,4'],'found_end_time'=>['egt',time()]])->count())
 			$this->ajaxReturn(['status'=>-9, 'msg'=>'您已有正在开的团啦','data'=>null]);
 
 		if($info['goods_item_id']){

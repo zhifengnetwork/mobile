@@ -45,7 +45,7 @@ class OrderLogic
 				$team_found_queue = Cache::get('team_found_queue');
 				$team_found_queue[$team_follow['found_id']] = $team_found_queue[$team_follow['found_id']] + 1;
 				Cache::set('team_found_queue', $team_found_queue);
-			}
+            }
 		}
 		//有余额支付的情况
 		if($order['user_money'] > 0 || $order['integral'] > 0){
@@ -57,7 +57,11 @@ class OrderLogic
 			M('coupon_list')->where(array('order_id'=>$order_id,'uid'=>$user_id))->save($res);
 		}
 
-		$row = M('order')->where(array('order_id'=>$order_id,'user_id'=>$user_id))->save(array('order_status'=>3));
+        $row = M('order')->where(array('order_id'=>$order_id,'user_id'=>$user_id))->save(array('order_status'=>3));
+        
+        if($order['prom_type'] == 6)
+            M('team_found')->where(array('order_id'=>$order_id,'user_id'=>$user_id))->save(array('status'=>4));
+
 		$reduce = tpCache('shopping.reduce');
 		if($reduce == 1 || empty($reduce)){
 			$this->alterReturnGoodsInventory($order);
