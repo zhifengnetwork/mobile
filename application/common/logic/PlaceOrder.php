@@ -5,6 +5,7 @@ namespace app\common\logic;
 use app\common\logic\team\Team;
 use app\common\model\CouponList;
 use app\common\model\Order;
+use app\common\model\PushStock;
 use app\common\model\PreSell;
 use app\common\model\ShopOrder;
 use app\common\model\Users;
@@ -56,8 +57,13 @@ class PlaceOrder
 
         Hook::listen('user_add_order', $this->order);//下单行为
         $reduce = tpCache('shopping.reduce');
-        if($reduce== 1 || empty($reduce)){
-            minus_stock($this->order);//下单减库存
+        $leader_id = $this->pay->getLeaderId();
+        if(!$leader_id){
+            if($reduce== 1 || empty($reduce)){
+                minus_stock($this->order);//下单减库存
+            }
+        }else{
+            $this->leader_stock($leader_id);
         }
         // 如果应付金额为0  可能是余额支付 + 积分 + 优惠券 这里订单支付状态直接变成已支付
         if ($this->order['order_amount'] == 0) {
@@ -383,6 +389,30 @@ class PlaceOrder
             array_push($orderGoodsAllData, $orderGoodsData);
         }
         Db::name('order_goods')->insertAll($orderGoodsAllData);
+    }
+
+    /**
+     * 减上级库存
+     */
+    public function leader_stock($leader_id)
+    {
+        //减上级库存
+        $goods_list = Db::name('order_goods')->where('order_id', $this->order['order_id'])
+                    ->column('rec_id, goods_id, item_id, goods_num');
+        $pushStock  = new PushStock();
+        $pre_time = time();
+        $data = [];
+        foreach ($goods_list as $key => $value) {
+            $arr = array(
+                'user_id' => $leader_id,
+                'goods_id'=> $value['goods_id'],
+                'item_id' => $value['item_id'], 
+            );
+            $good = $pushStock::get($arr);
+            $good->goods_num = $good->goods_num - $value['goods_num'];
+            $good->update_time = $pre_time;
+            $good->save();
+        }
     }
 
     /**

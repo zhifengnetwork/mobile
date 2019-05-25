@@ -1199,6 +1199,12 @@ function update_pay_status($order_sn, $ext = array())
             $update = array('pay_status' => 1, 'pay_time' => $time);
             if (isset($ext['transaction_id'])) $update['transaction_id'] = $ext['transaction_id'];
             M('order')->where("order_sn", $order_sn)->save($update);
+
+            $arr = ['order_id' => $order['order_id'], 'user_id'  => $order['user_id']];
+            $leader_order = Db::name('push_log')->where($arr)->find();
+            if($leader_order){
+                handle_leader($order, $leader_order);
+            }
         }
 
         // 减少对应商品的库存.注：拼团类型为抽奖团的，先不减库存
@@ -1292,6 +1298,15 @@ function update_pay_status($order_sn, $ext = array())
         // 买了399的东西
         can_super_nsign($order['order_id'], $order['user_id']);
     }
+}
+
+/**
+ * 处理上级地推订单
+ */
+function handle_leader($order, $leader)
+{
+    accountLog($leader['leader_id'], $order['total_amount'], 0, '地推订单金额', 0, $order['order_id'], $order['order_sn']);
+    Db::name('push_log')->where('id', $leader['id'])->save(['pay_status'=>1]);
 }
 
 /**
