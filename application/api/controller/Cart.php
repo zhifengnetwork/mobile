@@ -181,14 +181,24 @@ class Cart extends ApiBase
     public function changeNum(){
         $user_id = $this->get_user_id();
         $cart = input('cart/a',[]);
-        if (empty($cart)) {
+        $id = I('post.id/d',0);
+        $goods_num = I('post.goods_num/d',0);
+
+        if(!$cart){
+            $cart = ['id'=>$id,'goods_num'=>$goods_num];
+        }
+
+        if (empty($cart) || !$cart['id']) {
             $this->ajaxReturn(['status' => 0, 'msg' => '请选择要更改的商品', 'result' => (object)null]);
         }
         $cartLogic = new CartLogic();
         $result = $cartLogic->changeNum($cart['id'], $cart['goods_num']);
         $result['cart_price_info'] = $this->_getTotal($user_id);
-
-        $this->ajaxReturn(['status' => 0 , 'msg'=>'修改成功','data'=>$result]);
+        
+        if($result['status'] == 1)
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'修改成功','data'=>$result]);
+        else
+        $this->ajaxReturn(['status' => -1 , 'msg'=>$result['msg'],'data'=>null]);
 
     }
 
