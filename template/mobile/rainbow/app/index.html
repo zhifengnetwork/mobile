@@ -17,8 +17,8 @@
 
     <div class="page__bd page__bd_spacing">
         <div class="button-sp-area">
-            <a href="/dc_0524.apk" class="weui-btn weui-btn_primary">安卓下载</a>
-            <a id="showToast" class="weui-btn weui-btn_disabled weui-btn_primary">IOS下载</a>
+            <a href="javascript:down();" class="weui-btn weui-btn_primary">安卓下载</a>
+            <!-- <a id="showToast" class="weui-btn weui-btn_disabled weui-btn_primary">IOS下载</a> -->
         </div>
     </div>
 
@@ -28,6 +28,19 @@
         <div class="weui-toast">
             <i class="weui-loading weui-icon_toast"></i>
             <p class="weui-toast__content">正在开发中</p>
+        </div>
+    </div>
+
+
+    <!-- 浏览器打开 -->
+    <!--BEGIN dialog2-->
+    <div class="js_dialog" id="iosDialog2" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog">
+            <div class="weui-dialog__bd">请点击右上角，浏览器打开下载</div>
+            <div class="weui-dialog__ft">
+                <a href="javascript:close();" class="weui-dialog__btn weui-dialog__btn_primary">知道了</a>
+            </div>
         </div>
     </div>
 
@@ -41,6 +54,27 @@
                 $toast.fadeOut(100);
             }, 500);
         });
+
+        function close(){
+            $("#iosDialog2").hide();
+        }
+
+        function down(){
+           if(isWeiXin()){
+                $("#iosDialog2").show();
+           }else{
+                window.location.href = '/dc_0524.apk';
+            }
+        }
+
+        function isWeiXin(){
+            var ua = window.navigator.userAgent.toLowerCase();
+            if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+                return true;
+            }else{
+                return false;
+            }
+        }
     </script>
 
 </body>
