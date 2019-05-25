@@ -167,7 +167,11 @@ class Pay
     {
         $this->goodsPrice=0;
         foreach ($this->payList as $value){
-            $this->goodsPrice+=$value['shop_price']*$value['goods_num'];
+            if($value['item_id']){
+                $this->goodsPrice+=$value['goods_price']*$value['goods_num'];
+            }else{
+                $this->goodsPrice+=$value['shop_price']*$value['goods_num'];
+            }
         }
         $this->totalAmount = $this->goodsPrice;
     }
