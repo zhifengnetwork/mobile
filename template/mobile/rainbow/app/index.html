@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <title>APP下载</title>
+    <link rel="stylesheet" href="__PUBLIC__/css/weui.min.css" />
+    <script src="__PUBLIC__/js/jquery-1.10.2.min.js"></script>
+</head>
+<style>
+.button-sp-area{
+    padding-top: 250px;
+}
+</style>
+<body>
+
+    <div class="page__bd page__bd_spacing">
+        <div class="button-sp-area">
+            <a href="/dc_0524.apk" class="weui-btn weui-btn_primary">安卓下载</a>
+            <a id="showToast" class="weui-btn weui-btn_disabled weui-btn_primary">IOS下载</a>
+        </div>
+    </div>
+
+    <!-- loading toast -->
+    <div id="loadingToast" style="display:none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-loading weui-icon_toast"></i>
+            <p class="weui-toast__content">正在开发中</p>
+        </div>
+    </div>
+
+    <script>
+        var $toast = $('#loadingToast');
+        $('#showToast').on('click', function(){
+            if ($toast.css('display') != 'none') return;
+
+            $toast.fadeIn(100);
+            setTimeout(function () {
+                $toast.fadeOut(100);
+            }, 500);
+        });
+    </script>
+
+</body>
+
+</html>
