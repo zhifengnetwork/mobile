@@ -194,6 +194,34 @@ class Order extends MobileBase
     }
 
     /**
+     * 下级地推订单详情
+     * @return mixed
+     */
+    public function lower_order_detail()
+    {
+        $order_id = input('order_id/d', 0); 
+        $user_id = input('user_id/d', 0);
+
+        $Order = new OrderModel();
+        $order = $Order::get(['order_id' => $order_id, 'user_id' => $user_id]);
+
+        if (!$order) {
+            $this->error('没有获取到订单信息');
+        }
+        //获取订单
+        if ($order['prom_type'] == 5) {   //虚拟订单
+            $this->redirect(U('virtual/virtual_order', ['order_id' => $order_id]));
+        }
+
+        $this->assign('order', $order);
+        if($order['receive_btn']){
+            //待收货详情
+            return $this->fetch('wait_receive_detail');
+        }
+        return $this->fetch('order_detail');
+    }
+
+    /**
      * 物流信息
      * @return mixed
      */
@@ -220,6 +248,25 @@ class Order extends MobileBase
         $logic = new OrderLogic();
         $data = $logic->cancel_order($this->user_id, $id);
         $res = Db::name('order_sign_receive')->where('order_id',$id)->find();
+        if($res['type']==1){
+            Db::name('users')->where('user_id',$res['uid']) ->setInc('distribut_free_num');
+        }elseif($res['type']==2){
+            Db::name('users')->where('user_id',$res['uid']) ->setInc('agent_free_num');
+        }
+        $this->ajaxReturn($data);
+    }
+
+    /**
+    * 取消下级地推订单
+    */
+    public function cancel_lower_order()
+    {
+        $user_id = I('get.user_id/d');
+        $order_id = I('get.order_id/d');
+        //检查是否有积分，余额支付
+        $logic = new OrderLogic();
+        $data = $logic->cancel_order($user_id, $order_id);
+        $res = Db::name('order_sign_receive')->where('order_id',$order_id)->find();
         if($res['type']==1){
             Db::name('users')->where('user_id',$res['uid']) ->setInc('distribut_free_num');
         }elseif($res['type']==2){

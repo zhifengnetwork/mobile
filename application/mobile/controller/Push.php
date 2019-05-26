@@ -5,7 +5,8 @@ namespace app\mobile\controller;
 use app\common\util\TpshopException;
 use app\common\logic\PushCartLogic;
 use app\common\logic\GoodsLogic;
-use app\common\logic\Pay;   
+use app\common\logic\Pay;  
+use app\common\model\Order as OrderModel; 
 use think\Exception;
 use think\Page;
 use think\db;
@@ -176,6 +177,8 @@ class Push extends MobileBase
         $all_data = array();
         $pre_time = time();
         foreach ($data as $good_key => $good) {
+            $goods_info = M('goods')->where('goods_id', $good['comm_id'])
+                        ->field('goods_name, shop_price')->find();
             if(isset($good['com_speci'])){
                 $key = '';
                 foreach ($good['com_speci'] as $spec_key => $spec) {
@@ -186,16 +189,18 @@ class Push extends MobileBase
                     }
                 }
                 $arr = array('goods_id'=>$good['comm_id'], 'key'=>$key);
-                $item = M('spec_goods_price')->where($arr)->field('item_id, key, price')->find();
+                $item = M('spec_goods_price')->where($arr)->field('item_id, key, key_name, price')->find();
                 $all_data[$good_key]['item_id'] = $item['item_id'];
                 $all_data[$good_key]['spec_key'] = $item['key'];
+                $all_data[$good_key]['goods_spec'] = $item['key_name'];
                 $all_data[$good_key]['goods_price'] = $item['price'];
             }else{
-                $all_data[$good_key]['goods_price'] = M('goods')->where('goods_id', $good['comm_id'])->value('shop_price');
+                $all_data[$good_key]['goods_price'] = $goods_info['shop_price'];
                 $all_data[$good_key]['item_id'] = 0;
                 $all_data[$good_key]['spec_key'] = 0;
             }
 
+            $all_data[$good_key]['goods_name'] = $goods_info['goods_name'];
             $all_data[$good_key]['goods_id'] = $good['comm_id'];
             $all_data[$good_key]['goods_num'] = $good['com_num'];
             $all_data[$good_key]['create_time'] = $pre_time;
@@ -327,5 +332,38 @@ class Push extends MobileBase
             $this->ajaxReturn(['status'=>1, 'msg'=>'获取成功', 'result'=>$spec_list]);
         }
         $this->ajaxReturn(['status'=>0, 'msg'=>'获取失败', 'result'=>'']);
+    }
+
+
+    /**
+     * 下级订单
+     */
+    public function lower_order()
+    {
+        $type = input('type/s');
+        $page = input('page/s', 1);
+        $user_id = session('user.user_id');
+
+        $order_ids = M('push_log')->where('leader_id', $user_id)->column('order_id');
+        $order = new OrderModel();
+        $where_arr = [
+            'order_id' => ['in', $order_ids],
+            'deleted' => 0,//删除的订单不列出来
+            'prom_type' => ['lt',5],//虚拟拼团订单不列出来
+        ];
+
+        if($type == 'WAITPAY'){
+            $where_arr['pay_status'] = 0;
+        }else if($type == 'WAITSEND'){
+            $where_arr['pay_status'] = 1;
+        }
+
+        $order_list = $order->where($where_arr)->page($page, 16)
+                    ->order("order_id DESC")->select(); 
+        $this->assign('order_list', $order_list);
+        if ($_GET['is_ajax']) {
+            return $this->fetch('ajax_lower_order');
+        }
+        return $this->fetch();
     }
 }
