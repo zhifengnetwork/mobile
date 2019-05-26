@@ -3,6 +3,7 @@
 namespace app\common\logic;
 
 use app\common\logic\wechat\WechatUtil;
+use app\common\model\PushStock;
 use app\common\model\Order as OrderModel;
 use app\common\model\SpecGoodsPrice;
 use app\common\logic\MessageTemplateLogic;
@@ -62,14 +63,40 @@ class OrderLogic
         if($order['prom_type'] == 6)
             M('team_found')->where(array('order_id'=>$order_id,'user_id'=>$user_id))->save(array('status'=>4));
 
-		$reduce = tpCache('shopping.reduce');
-		if($reduce == 1 || empty($reduce)){
-			$this->alterReturnGoodsInventory($order);
-		}
+        $leader = M('push_log')->where('order_id', $order_id)->find();
+        if($leader){
+        	$this->returnLeaderStock($leader);
+        }else{
+        	$reduce = tpCache('shopping.reduce');
+			if($reduce == 1 || empty($reduce)){
+				$this->alterReturnGoodsInventory($order);
+			}
+        }
+		
         $this->orderActionLog($order_id,$action_note,'用户取消订单');
 		if(!$row)return array('status'=>-1,'msg'=>'操作失败','result'=>'');
 		return array('status'=>1,'msg'=>'操作成功','result'=>'');
 
+	}
+
+	//退还上级库存
+	public function returnLeaderStock($leader)
+	{
+        $goods_list = Db::name('order_goods')->where('order_id', $leader['order_id'])
+                    ->column('rec_id, goods_id, item_id, goods_num');
+        $pushStock  = new PushStock();
+        $pre_time = time();
+        foreach ($goods_list as $key => $value) {
+            $arr = array(
+                'user_id' => $leader_id,
+                'goods_id'=> $value['goods_id'],
+                'item_id' => $value['item_id'], 
+            );
+            $good = $pushStock::get($arr);
+            $good->goods_num = $good->goods_num + $value['goods_num'];
+            $good->update_time = $pre_time;
+            $good->save();
+        }
 	}
 
 	public function addReturnGoods($rec_id,$order)
