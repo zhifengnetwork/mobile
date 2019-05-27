@@ -48,6 +48,27 @@ class Push extends MobileBase
     }
 
     /**
+     * 地推积分变动记录
+     */
+    public function account_push()
+    {
+        $page = I('page/s', 1);
+        $user_id = session('user.user_id');
+        $condiction = array('user_id' => $user_id);
+        $record = M('account_push_log')
+                ->where($condiction)
+                ->field('change_time, integral_push, desc')
+                ->order('id DESC')
+                ->page($page,20)
+                ->select();
+        $this->assign('record', $record);
+        if($_GET['is_ajax']){
+            return $this->fetch('ajax_account_push');
+        }
+        return $this->fetch();
+    }
+
+    /**
      * 地推积分充值
      */
     public function recharge()
@@ -134,7 +155,7 @@ class Push extends MobileBase
             $data = ['status'=>0, 'msg'=>'写入文件内容错误'];
             return $data;
 	    }else{ 
-            $data = ['status'=>1, 'msg'=>'上传成功', 'data'=>substr($file['fullName'],1)];
+            $data = ['status'=>1, 'msg'=>'上传成功', 'data'=>$file['fullName']  ];
             return $data;
 	    }
     }
@@ -275,10 +296,9 @@ class Push extends MobileBase
     public function my_stock()
     {
         $user_id = session('user.user_id');
-        $fir = 'g.goods_name, g.original_img, g.goods_sn, s.goods_num, i.item';
+        $fir = 'g.goods_name, g.original_img, g.goods_sn, s.goods_num, s.goods_spec';
         $stock = M('push_stock')->alias('s')
-                ->join('goods g', 'g.goods_id = s.goods_id')
-                ->join('spec_item i', 'i.id = s.item_id', 'LEFT')
+                ->join('goods g', 'g.goods_id = s.goods_id', 'LEFT')
                 ->where('user_id', $user_id)
                 ->field($fir)
                 ->select();

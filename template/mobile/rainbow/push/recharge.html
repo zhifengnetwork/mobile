@@ -174,15 +174,15 @@
 				/*充值*/
 				$('.recharge_but').on('click',function(){
 					if(!data_obj['choice_id']){
-						alert('请选择充值方式！');
+						layer.msg('请选择充值方式！');
 						return false;
 					}
 					if(!data_obj['choice_number']){
-						alert('请选择充值金额！');
+						layer.msg('请选择充值金额！');
 						return false;
 					}
 					if(!data_obj['voucher_img']){
-						alert('请上传凭证！');
+						layer.msg('请上传凭证！');
 						return false;
 					}
 
