@@ -75,7 +75,7 @@ class PushCart extends MobileBase
         $goodsPriceTotal=0;
         //获取平台商品信息;
         $Goods=new GoodsModel();
-        $goodsList=$Goods->getGoodsList($goodsId);
+        $goodsList=$Goods->getGoodsList($goodsId); 
         $goodsLen=count($goodsList);
         for($i=0;$i<$goodsLen;$i++){
             $goodsList[$i]['goods_num']=$goodsNumList[$i];
@@ -144,7 +144,7 @@ class PushCart extends MobileBase
             $goodsTotalPrice=$pay->deliveryPush($address);
             // 提交订单
             if ($_REQUEST['act'] == 'submit_order') {
-                if($goodsTotalPrice['totalAmount']>$userInfo['integral_push']){
+                if($goodsTotalPrice['integralPush']>$userInfo['integral_push']){
                     $this->ajaxReturn(['status' => 0, 'msg' => '很抱歉,您的积分不足！']);
                 }
                 $paypwd=encrypt($pay_pwd);

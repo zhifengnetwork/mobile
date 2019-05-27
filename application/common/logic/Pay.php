@@ -35,6 +35,8 @@ class Pay
     private $signPrice = 0;//签到抵消金额
     private $deposit = 0;//竞拍订金
 
+    private $integralPush = 0;
+
     private $orderPromId;//订单优惠ID
     private $orderPromAmount = 0;//订单优惠金额
     private $couponId;
@@ -424,7 +426,7 @@ class Pay
 
 
     public function deliveryPush($district_id){
-
+        $rate = M('config')->where(['inc_type'=>'recharge', 'name'=>'points_rate'])->value('value');
         if (array_key_exists('is_virtual', $this->payList[0]) && $this->payList[0]['is_virtual'] == 0) {
             if (empty($this->shop) && empty($district_id['district'])) {
                 throw new TpshopException("计算订单价格", 0, ['status' => -1, 'msg' => '请填写收货信息', 'result' => ['']]);
@@ -444,22 +446,24 @@ class Pay
             return $this;
         }
         //非免费产品，内蒙、西藏、新疆满4件包邮
-      if ($district_id['province'] == 4670 || $district_id['province'] == 41103 || $district_id['province'] == 46047) {
-                if ($this->totalNum >= 4 ) {
-                    return $this;
-                }
-          }
+        if ($district_id['province'] == 4670 || $district_id['province'] == 41103 || $district_id['province'] == 46047) {
+            if ($this->totalNum >= 4 ) {
+                return $this;
+            }
+        }
         $freight_free = tpCache('shopping.freight_free'); // 全场满多少免运费
-
+        
         if($this->goodsPrice < $freight_free || $freight_free == 0){
             $this->shippingPrice = $GoodsLogic->getFreight($this->payList, $district_id['district']);
-            $this->orderAmount = $this->orderAmount + $this->shippingPrice;
+            $this->orderAmount = 0;
             $this->totalAmount = $this->totalAmount + $this->shippingPrice;
         }else{
             $this->shippingPrice = 0;
         }
+        $this->integralPush = round($rate * $this->totalAmount, 2);
         $data['goodsPrice']=$this->goodsPrice;
         $data['totalAmount']=$this->totalAmount;
+        $data['integralPush']=$this->integralPush;
         $data['shippingPrice']=$this->shippingPrice;
         return $data;
     }
@@ -573,6 +577,15 @@ class Pay
     public function getUserMoney()
     {
         return $this->userMoney;
+    }
+
+    /**
+     * 获取地推积分
+     * @return int
+     */
+    public function getIntegralPush()
+    {
+        return $this->integralPush;
     }
 
     /**

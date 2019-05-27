@@ -5,6 +5,7 @@ namespace app\common\model;
 use app\common\logic\User;
 use app\common\util\TpshopException;
 use app\common\logic\OrderLogic;
+use app\common\model\StockPushLog;
 use app\common\model\PushCart;
 use app\common\model\PushStock;
 use think\Cache;
@@ -56,11 +57,13 @@ class PushOrder
     /**
      * 添加个人库存
      */
-    public function addPersonStock()
+    public function addPersonStock($order_sn)
     {
         $pushObj = new PushCart();
         $pushStock  = new PushStock();
+        $stockLog  = new StockPushLog();
         $goods_list = $pushObj::all(['user_id' => $this->user['user_id']]);
+        $pre_time = time();
         foreach ($goods_list as $key => $value) {
             $arr = array(
                 'goods_id' => $value['goods_id'],
@@ -73,13 +76,24 @@ class PushOrder
                 $good->update_time = time();
                 $good->save();
             }else{
-                $pre_time = time();
+                $arr['goods_name'] = $value['goods_name'];
+                $arr['goods_spec'] = $value['goods_spec'];
                 $arr['goods_num'] = $value['goods_num'];
                 $arr['create_time'] = $pre_time;
                 $arr['update_time'] = $pre_time;
                 $pushStock->save($arr);
             }
+
+            $stock_log[$key]['goods_id'] = $value['goods_id'];
+            $stock_log[$key]['goods_name'] = $value['goods_name'];
+            $stock_log[$key]['goods_spec'] = $value['goods_spec'];
+            $stock_log[$key]['order_sn'] = $order_sn;
+            $stock_log[$key]['muid'] = $value['user_id'];
+            $stock_log[$key]['stock'] = $value['goods_num'];
+            $stock_log[$key]['ctime']  = $pre_time;
+            $stock_log[$key]['change_type'] = 0;
         }
+        $stockLog->saveAll($stock_log);
     }
 
     public function addNormalOrder($goodsTotalPrice,$cartList)
@@ -98,7 +112,7 @@ class PushOrder
             update_pay_status($this->order['order_sn']);
         }
         $this->changUserPointMoney($this->order,$goodsTotalPrice);//扣除用户积分余额
-        $this->addPersonStock();
+        $this->addPersonStock($this->order['order_sn']);
         $this->delPushCart();
         $this->queueDec();
     }
@@ -144,13 +158,14 @@ class PushOrder
             'user_money' => 0,//'使用余额',
             'coupon_price' => 0,//'使用优惠券',
             'pay_status' => 1,
-            'integral' => $Totalprice['totalAmount'], //'使用积分',
-            'integral_money' => $Totalprice['totalAmount'],//'使用积分抵多少钱',
+            'integral' => 0, //'使用积分',
+            'integral_money' => 0,//'使用积分抵多少钱',
             'sign_price' => 0,//'签到抵扣金额',
+            'integral_push' => $Totalprice['integralPush'],
             'total_amount' => $Totalprice['totalAmount'],// 订单总额
-            'order_amount' => $Totalprice['totalAmount'],//'应付款金额',
+            'order_amount' => 0,//'应付款金额',
             'add_time' => time(), // 下单时间
-            'pay_name' =>  '积分兑换',
+            'pay_name' =>  '地推积分购买',
         ];
         if($orderData["order_amount"] < 0){
             throw new TpshopException("订单入库", 0, ['status' => -8, 'msg' => '订单金额不能小于0', 'result' => '']);
@@ -239,22 +254,7 @@ class PushOrder
      */
     public function changUserPointMoney(Order $order,$goodsTotalPrice)
     {
-
-            $user = $this->user;
-            $user = Users::get($user['user_id']);
-            $user->integral_push = $user->integral_push - $goodsTotalPrice['totalAmount'];// 消费积分
-            $user->save();
-            $accountLogData = [
-                'user_id' => $order['user_id'],
-                'user_money' => -0,
-                'integral_push' => -$goodsTotalPrice['totalAmount'],
-                'change_time' => time(),
-                'desc' => '下单消费',
-                'order_sn'=>$order['order_sn'],
-                'order_id'=>$order['order_id'],
-            ];
-            Db::name('account_log')->insert($accountLogData);
-
+        accountPushLog($order['user_id'], -$goodsTotalPrice['integralPush'], '下单消费', $order['order_sn'], $order['order_id']);
     }
 
 

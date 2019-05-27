@@ -946,6 +946,41 @@ function accountLog($user_id, $user_money = 0, $pay_points = 0, $desc = '', $dis
     }
 }
 
+/**
+ * 记录地推积分变动
+ * @param   int $user_id 用户id
+ * @param   int $integral_push 变动地推积分
+ * @param   string $desc 变动说明
+ * @param int $order_id 订单id
+ * @param string $order_sn 订单sn
+ * @return  bool
+ */
+function accountPushLog($user_id, $integral_push = 0, $desc = '', $order_id = 0, $order_sn = '', $delete_at = 0)
+{
+    /* 插入地推变动记录 */
+    $account_log = array(
+        'user_id' => $user_id,
+        'integral_push' => $integral_push,
+        'change_time' => time(),
+        'desc' => $desc,
+        'order_id' => $order_id,
+        'order_sn' => $order_sn,
+        'delete_at'=> $delete_at,
+    );
+    /* 更新用户信息 */
+    $update_data = array(
+        'integral_push' => ['exp', 'integral_push+' . $integral_push],
+    );
+    if ($integral_push == 0) return false;
+    $update = Db::name('users')->where("user_id = $user_id")->save($update_data);
+    if ($update) {
+        M('account_push_log')->add($account_log);
+        return true;
+    } else {
+        return false;
+    }
+}
+
 /*
  * 获取地区列表
  */
@@ -1307,6 +1342,7 @@ function handle_leader($order, $leader)
 {
     accountLog($leader['leader_id'], $order['total_amount'], 0, '地推订单金额', 0, $order['order_id'], $order['order_sn']);
     Db::name('push_log')->where('id', $leader['id'])->save(['pay_status'=>1]);
+    Db::name('order')->where('order_id', $order['order_id'])->save(['shipping_status' => 1]);
 }
 
 /**

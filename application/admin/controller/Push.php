@@ -130,10 +130,8 @@ class Push extends Base
                     $recharge = M('recharge_points')->where('id', $value)->find();
                     $integral_push = M('users')->where('user_id', $recharge['user_id'])->value('integral_push');
                     $integral_push = bcadd($recharge['exchange_integral'], $integral_push, 2);
-                    $result = M('users')->where('user_id', $recharge['user_id'])->update(['integral_push'=>$integral_push]);
-                    if($result){
-                        M('recharge_points')->where('id', $value)->update($data);
-                    }
+                    accountPushLog($recharge['user_id'], $recharge['exchange_integral'], '积分充值', 0, 0);
+                    M('recharge_points')->where('id', $value)->update($data);
                 }
                 $this->ajaxReturn(['status'=>1,'msg'=>"操作成功"]);
                 exit;
