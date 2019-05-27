@@ -723,7 +723,7 @@
                 if(data.status==1){
                     $("#total_fee").empty().append(data.data.goodsPrice);
                     $("#postFee").empty().append(data.data.shippingPrice);
-                    $("#payables").empty().append(data.data.totalAmount);
+                    $("#payables").empty().append(data.data.integralPush);
                     shop_list_data = data;
                     set_shop_list();
                 }else{

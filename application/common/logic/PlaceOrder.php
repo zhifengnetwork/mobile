@@ -6,6 +6,7 @@ use app\common\logic\team\Team;
 use app\common\model\CouponList;
 use app\common\model\Order;
 use app\common\model\PushStock;
+use app\common\model\StockPushLog;
 use app\common\model\PreSell;
 use app\common\model\ShopOrder;
 use app\common\model\Users;
@@ -400,6 +401,7 @@ class PlaceOrder
         $goods_list = Db::name('order_goods')->where('order_id', $this->order['order_id'])
                     ->column('rec_id, goods_id, item_id, goods_num');
         $pushStock  = new PushStock();
+        $stockLog   = new StockPushLog();
         $pre_time = time();
         $data = [];
         foreach ($goods_list as $key => $value) {
@@ -411,8 +413,19 @@ class PlaceOrder
             $good = $pushStock::get($arr);
             $good->goods_num = $good->goods_num - $value['goods_num'];
             $good->update_time = $pre_time;
+
+            $stock_arr[$key]['goods_id'] = $good->goods_id;
+            $stock_arr[$key]['goods_name'] = $good->goods_name;
+            $stock_arr[$key]['goods_spec'] = $good->goods_spec;
+            $stock_arr[$key]['order_sn'] = $this->order['order_sn'];
+            $stock_arr[$key]['muid'] = $this->order['user_id'];
+            $stock_arr[$key]['stock'] = -$value['goods_num'];
+            $stock_arr[$key]['ctime'] = $pre_time;
+            $stock_arr[$key]['change_type'] = 1;
+
             $good->save();
         }
+        $stockLog->saveAll($stock_arr);
     }
 
     /**
