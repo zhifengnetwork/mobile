@@ -1,0 +1,8 @@
+<foreach name="record" item="v">
+    <div class="fll_acc">
+        <div class="fll">订单：订单{$v[order_id]|default='无'}</div>
+        <div class="fll">购买下级：{$v[user_id]|get_nickname}</div>
+        <div class="fll">变动金额：<span style="color:#e01222;">{$v[user_money]}</span></div>
+        <div class="fll" style="color:#999;">变动时间：{:date('Y-m-d H:i:s',$v[create_time])}</div>
+    </div>
+</foreach>

@@ -69,6 +69,27 @@ class Push extends MobileBase
     }
 
     /**
+     * 地推明细
+     */
+    public function push_log()
+    {
+        $page = I('page/s', 1);
+        $user_id = session('user.user_id');
+        $condiction = array('leader_id' => $user_id, 'pay_status' => 1);
+        $record = M('push_log')
+                ->where($condiction)
+                ->field('user_id, order_id, user_money, create_time')
+                ->order('id DESC')
+                ->page($page,16)
+                ->select();
+        $this->assign('record', $record);
+        if($_GET['is_ajax']){
+            return $this->fetch('ajax_push_log');
+        }
+        return $this->fetch();
+    }
+
+    /**
      * 地推积分充值
      */
     public function recharge()

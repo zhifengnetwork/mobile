@@ -23,3 +23,11 @@ function get_zongyeji_bu_user_id($user_id){
 
 	return $money_total['money_total'];
 }
+
+/**
+ * 通过 user_id 获取昵称
+ */
+function get_nickname($user_id){
+	$nickname = M('users')->where('user_id', $user_id)->value('nickname');
+	return $nickname;
+}
