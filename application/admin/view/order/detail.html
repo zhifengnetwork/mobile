@@ -269,8 +269,12 @@ a.green:hover { color: #FFF; background-color: #1BBC9D; border-color: #16A086; }
               <dd>-{$order.order_prom_amount}</dd>
               <dt>签到抵扣：</dt>
               <dd>-{$order.sign_price}</dd>
-            <dt>应付：</dt>
-            <dd><strong class="red_common">{$order.order_amount}</strong></dd>
+              <dt>地推积分:</dt>
+              <dd>-{$order.integral_push}</dd>
+           </dl>
+           <dl>
+              <dt>应付：</dt>
+              <dd><strong class="red_common">{$order.order_amount}</strong></dd>
            </dl>
         </div>
         <div class="contact-info">
