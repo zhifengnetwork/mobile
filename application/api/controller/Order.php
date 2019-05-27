@@ -228,7 +228,7 @@ class Order extends ApiBase
 
 
 			$pay->setUserId($user_id)->setShopById($shop_id)->delivery($address)->orderPromotion()
-                ->useCouponById($coupon_id)->getAuction()->getUserSign()->useUserMoney($user_money)
+                ->useCouponById($coupon_id)->getAuction()->getUserSign(1)->useUserMoney($user_money)
                 ->usePayPoints($pay_points,false,'mobile');
             // 提交订单
             if ($act == 1) {
