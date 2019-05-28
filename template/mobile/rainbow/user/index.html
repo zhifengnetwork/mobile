@@ -162,12 +162,10 @@
     $('.border10').css('border-color', '#f8f8f8');
 
     // 关闭弹框按钮
-    var Shut = document.getElementById('shut');
-    var pop = document.getElementById('popup-wrap');
-
-    Shut.onclick = function() {
-        pop.style.display = 'none';
-    }
+    $("#shut").click(function(){
+       $("#popup-wrap").hide();
+    }); 
+   
 </script>
 </body>
 </html>
