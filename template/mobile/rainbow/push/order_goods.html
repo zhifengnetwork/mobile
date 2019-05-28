@@ -51,6 +51,7 @@
 									<p class="goods_term_bottom_data_stock publicEllipsis">库存: <span class="stock_num">{$goods.store_count}</span></p>
 									<notempty name="goods.spec">
 										<p class="goods_term_bottom_data_gauge" onclick="template_but('{$goods.goods_id}','{$k}',this)">
+											可选规格:
 											<volist name="goods.spec" id="spec" key="g">
 												<volist name="spec.spec_item" id="spec_item" key="s">
 													<if condition="$s == 1">
@@ -533,10 +534,10 @@
 					console.log(data_sp[i]['speci_id'],data_sp[i]['value'])
 					/*区别-逗号*/
 					if(i == data_sp.length-1){
-						page_speci += '<span speci-id="'+ data_sp[i]['speci_id'] +'">'+ data_sp[i]['value'] +'</span>';
+						page_speci += '可选规格:<span speci-id="'+ data_sp[i]['speci_id'] +'">'+ data_sp[i]['value'] +'</span>';
 						break;
 					}
-					page_speci += '<span speci-id="'+ data_sp[i]['speci_id'] +'">'+ data_sp[i]['value'] +'</span>，';
+					page_speci += '可选规格:<span speci-id="'+ data_sp[i]['speci_id'] +'">'+ data_sp[i]['value'] +'</span>，';
 				}
 				/*页面-规格*/
 				$(data_ele).html(page_speci);
