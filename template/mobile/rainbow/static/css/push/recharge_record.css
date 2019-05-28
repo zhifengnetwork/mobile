@@ -1,7 +1,6 @@
 @charset "utf-8";
 
 .content_wrap {
-	text-align: center;
 	padding-top: .28rem;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -41,8 +40,11 @@
 	text-align: right;
 }
 .content_null{
-	left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
+	position:absolute;
+	left:0;
+	right:0;
+	top:0;
+	bottom:0;
+	margin:auto;
     font-size: 0.3rem;
 }
