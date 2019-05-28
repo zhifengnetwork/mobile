@@ -724,7 +724,6 @@
                     $("#total_fee").empty().append(data.data.goodsPrice);
                     $("#postFee").empty().append(data.data.shippingPrice);
                     $("#payables").empty().append(data.data.integralPush);
-                    layer.open({icon: 1, content: data.data.integralPush, time: 2});
                     shop_list_data = data;
                     set_shop_list();
                 }else{
