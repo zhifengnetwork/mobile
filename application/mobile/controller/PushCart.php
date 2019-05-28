@@ -195,7 +195,7 @@ class PushCart extends MobileBase
                          $this->ajaxReturn(['status'=>1,'msg'=>""]);
                      }
                  }else{
-                     $this->ajaxReturn(['status'=>0,'msg'=>"您的上级不存在这个商品！"]);
+                     $this->ajaxReturn(['status'=>0,'msg'=>"您的上级没有订购这个商品！"]);
                  }
                 }else{
                  $userCartList = $cartLogic->getCartList(1);

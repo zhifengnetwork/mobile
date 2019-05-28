@@ -31,7 +31,7 @@
             <input type="hidden" name="address_id" value="" autocomplete="off"/> <!--收货地址id-->
             <input type="hidden" name="pay_points" value="" autocomplete="off">
             <input type="hidden" name="user_money" value="" autocomplete="off">
-            <input type="hidden" name="leader_id" value="">
+            <input type="hidden" name="leader_id" id="leader" value="">
             <input type="hidden" name="auth_code" value="{$Think.config.AUTH_CODE}"/>
             <!--立即购买才会用到-s-->
             <input type="hidden" name="action" value="{$Request.param.action}">
@@ -278,7 +278,7 @@
                                             </div>
                                             <div class="fr z-toggle-btn">
                                                 <label class="z-toggle z-toggle-royal">
-                                                    <input type="checkbox" id="self_inp" value="{$user['user_money']}"/>
+                                                    <input type="checkbox" id="self_leader" value="{$user['user_money']}"/>
     
                                                     <div class="z-tarck">
                                                         <div class="z-handle">
@@ -294,7 +294,7 @@
                     <!--上级id -s-->
                     <div id="balance-li" class="invoice list7">
     
-                        <div class="myorder myorder-2 p" id="paypwd_self" style="display: none">
+                        <div class="myorder myorder-2 p" id="input_leader" style="display: none">
                             <div class="content30">
                                 <label>
                                     <div class="incorise">
@@ -774,6 +774,7 @@
 </div>
 <script type="text/javascript">
     var is_shipping_able = true,shop_list_data,cart2_form = $('#cart2_form');
+    var is_leader = false;
     window.addEventListener('popstate', function () {
         panel();
     });
@@ -1133,36 +1134,30 @@
         //上级id点击事件
         $(document).on('blur', '#leader_id', function () {
             var leader_id = $.trim($('#leader_id').val());
+            if(leader_id == ''){
+                showErrorMsg('请输入上级id!');
+                return false;   
+            }
             $('input[name="leader_id"]').val(leader_id);
 
-            var action = $('input[name="action"]').val();
-            var goods_id = $('input[name="goods_id"]').val();
-            var goods_num = $('input[name="goods_num"]').val();
-            var item_id = $('input[name="item_id"]').val();
-            $.ajax({
-                type: "POST",
-                data: {"leader_id": leader_id,"action": action,"goods_id": goods_id,"goods_num": goods_num,"item_id": item_id},
-                url: '/index.php?m=Mobile&c=PushCart&a=checkHigherGoods',
-                dataType: "json",
-                success: function (data) {
-                    if (data.status != 1) {
-                       $('#leader_id').val("")
-                       $('input[name="leader_id"]').val("");
-                       showErrorMsg(data.msg);
-                    }
-                    ajax_order_price();
-                }
-            });
+            if(check_leader()){
+                ajax_order_price();
+            }
         })
         //线下提货
-        $(document).on('click','#self_inp',function(){
-            //input
-            var self_evel = $('#self_inp');
+        $(document).on('click','#self_leader',function(){
+            var self_evel = $('#self_leader');
             if (self_evel.is(':checked')) {
-                $('#paypwd_self').show();
-                $('input[name="pay_pwd"]').val(pay_pwd);
+                is_leader = true;
+                $('#input_leader').show();
             }else {
-                $('#paypwd_self').hide();
+                is_leader = false;
+                $('input[name="leader_id"]').val('');
+                $('#leader_id').val('');
+                if(check_leader()){
+                    ajax_order_price();
+                }
+                $('#input_leader').hide();
             }    
         })
     })
@@ -1197,6 +1192,34 @@
             }
         });
     })
+
+    function check_leader(){
+        var leader_id = $('input[name="leader_id"]').val();
+        var action = $('input[name="action"]').val();
+        var goods_id = $('input[name="goods_id"]').val();
+        var goods_num = $('input[name="goods_num"]').val();
+        var item_id = $('input[name="item_id"]').val();
+        $.ajax({
+            type: "POST",
+            data: {"leader_id": leader_id,"action": action,"goods_id": goods_id,"goods_num": goods_num,"item_id": item_id},
+            url: '/index.php?m=Mobile&c=PushCart&a=checkHigherGoods',
+            dataType: "json",
+            success: function (data) {
+                if(!is_leader){
+                    is_leader = true;
+                    return false;
+                }
+                if (data.status != 1) {
+                    is_leader = false;
+                    $('#leader_id').val("")
+                    $('input[name="leader_id"]').val("");
+                    showErrorMsg(data.msg);
+                    return false;
+                }
+                return true;
+            }
+        });
+    }
     //支付密码是否显示
     function pay_pwd_view() {  
         var user_money = $('#user_money');
@@ -1339,6 +1362,9 @@
             return;
         }
         if (ajax_return_status == 0){
+            return false;
+        }
+        if (!check_leader()){
             return false;
         }
         ajax_return_status = 0;
