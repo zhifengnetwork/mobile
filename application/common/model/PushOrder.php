@@ -63,7 +63,12 @@ class PushOrder
         $pushStock  = new PushStock();
         $stockLog  = new StockPushLog();
         $goods_list = $pushObj::all(['user_id' => $this->user['user_id']]);
+        if(empty($goods_list)){
+            return false;
+        }
         $pre_time = time();
+        $update_arr = array();
+        $insert_arr = array();
         foreach ($goods_list as $key => $value) {
             $arr = array(
                 'goods_id' => $value['goods_id'],
@@ -72,19 +77,22 @@ class PushOrder
             );
             $good = $pushStock::get($arr);
             if($good){
-                $good->goods_num = $value['goods_num'] + $good['goods_num'];
-                $good->update_time = time();
-                $good->save();
+                $update_arr[$key]['id'] = $good->id; 
+                $update_arr[$key]['goods_num'] = $value['goods_num'] + $good->goods_num;
+                $update_arr[$key]['update_time'] = $pre_time;
             }else{
-                $arr['goods_name'] = $value['goods_name'];
-                $arr['goods_spec'] = $value['goods_spec'];
-                $arr['goods_num'] = $value['goods_num'];
-                $arr['create_time'] = $pre_time;
-                $arr['update_time'] = $pre_time;
-                $pushStock->save($arr);
+                $insert_arr[$key]['goods_id'] = $value['goods_id'];
+                $insert_arr[$key]['user_id'] = $value['user_id'];
+                $insert_arr[$key]['item_id'] = $value['item_id'];
+                $insert_arr[$key]['goods_name'] = $value['goods_name'];
+                $insert_arr[$key]['goods_spec'] = $value['goods_spec'];
+                $insert_arr[$key]['goods_num'] = $value['goods_num'];
+                $insert_arr[$key]['create_time'] = $pre_time;
+                $insert_arr[$key]['update_time'] = $pre_time;
             }
 
             $stock_log[$key]['goods_id'] = $value['goods_id'];
+            $stock_log[$key]['user_id'] = $value['user_id'];
             $stock_log[$key]['goods_name'] = $value['goods_name'];
             $stock_log[$key]['goods_spec'] = $value['goods_spec'];
             $stock_log[$key]['order_sn'] = $order_sn;
@@ -92,6 +100,12 @@ class PushOrder
             $stock_log[$key]['stock'] = $value['goods_num'];
             $stock_log[$key]['ctime']  = $pre_time;
             $stock_log[$key]['change_type'] = 0;
+        }
+        if($update_arr){
+            $pushStock->saveAll($update_arr);
+        }
+        if($insert_arr){
+            $pushStock->saveAll($insert_arr);
         }
         $stockLog->saveAll($stock_log);
     }

@@ -328,7 +328,7 @@ class PlaceOrder
         //如果是购买上级的商品，记录订单信息
         if($leader_id){
             $time=time();
-            $data=['user_id'=>$user['user_id'],'leader_id'=>$leader_id,'order_id'=>$this->order['order_id'],'user_money'=>$this->pay->getTotalAmount(),'create_time'=>$time,'pay_status'=>1];
+            $data=['user_id'=>$user['user_id'],'leader_id'=>$leader_id,'order_id'=>$this->order['order_id'],'user_money'=>$this->pay->getTotalAmount(),'create_time'=>$time,'pay_status'=>0];
             Db::name("push_log")->save($data);
         }
 
@@ -411,6 +411,9 @@ class PlaceOrder
                 'item_id' => $value['item_id'], 
             );
             $good = $pushStock::get($arr);
+            if(!$good){
+                return false;
+            }
             $good->goods_num = $good->goods_num - $value['goods_num'];
             $good->update_time = $pre_time;
 
@@ -420,6 +423,7 @@ class PlaceOrder
             $stock_arr[$key]['order_sn'] = $this->order['order_sn'];
             $stock_arr[$key]['muid'] = $this->order['user_id'];
             $stock_arr[$key]['stock'] = -$value['goods_num'];
+            $stock_arr[$key]['user_id'] = $leader_id;
             $stock_arr[$key]['ctime'] = $pre_time;
             $stock_arr[$key]['change_type'] = 1;
 
