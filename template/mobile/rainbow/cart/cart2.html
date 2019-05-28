@@ -1364,8 +1364,10 @@
         if (ajax_return_status == 0){
             return false;
         }
-        if (!check_leader()){
-            return false;
+        if($('#input_leader').is(':visible')){
+            if (!check_leader()){
+                return false;
+            }
         }
         ajax_return_status = 0;
 
