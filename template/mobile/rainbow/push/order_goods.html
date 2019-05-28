@@ -66,7 +66,7 @@
 									<div class="add_reduce_wrap" id="{$k}">
 										<span class="reduce_box" onclick="reduce_fun(this,'{$k}')"><i class="reduce_icon"></i></span>
 										<!--绑定:data-index="对应下标"=>更改'传后台的数据'-->
-										<input class="number_box" type="number" value="1" data-index="1"/>
+										<input class="number_box" type="number" value="0" data-index="{$k}"/>
 										<span class="add_box" onclick="add_fun(this,'{$k}')"><i class="add_icon"></i></span>
 									</div>
 								</div>
@@ -315,14 +315,15 @@
 				/*是否超过库存量*/
 				if(inp_val >= data_arr[speci_index]['com_stock']){
 					inp_val = data_arr[speci_index]['com_stock'];
-					alert('亲，库存只有:'+inp_val+'件');
+					layer.msg('亲，库存只有:'+inp_val+'件');
 				}
 				/*更新-传后台数据-data*/
+				// console.log(speci_index);
 				 data_arr[speci_index]['com_num'] = inp_val;
 				/*更新页面-data*/
 				$('.number_box').eq(speci_index).val(inp_val);
 				total_number();
-				console.log(inp_val);
+				// console.log(inp_val);
 				post_data(action, speci_index);
 			})
 			//对表请求操作

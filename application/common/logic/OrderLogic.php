@@ -104,6 +104,7 @@ class OrderLogic
             $stock_arr[$key]['order_sn'] = $order['order_sn'];
             $stock_arr[$key]['muid'] = session('user.user_id');
             $stock_arr[$key]['stock'] = $value['goods_num'];
+            $stock_arr[$key]['user_id'] = $leader['leader_id'];
             $stock_arr[$key]['ctime'] = $pre_time;
             $stock_arr[$key]['change_type'] = 2;
 

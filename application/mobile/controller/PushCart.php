@@ -200,7 +200,6 @@ class PushCart extends MobileBase
                 }else{
                  $userCartList = $cartLogic->getCartList(1);
                  $this->checkHeigherStock($userCartList,$HigherUserId);
-
              }
 
          }else{
@@ -249,12 +248,15 @@ class PushCart extends MobileBase
                if($goodsInfo['goods_num']<$value['goods_num']){
                    $msg=$value['goods_name']."商品库存不足!";
                    $this->ajaxReturn(['status'=>0,'msg'=>$msg]);
+                   exit;
                }else{
                    $this->ajaxReturn(['status'=>1,'msg'=>""]);
+                   exit;
                }
            }else{
                $msg="您的上级没有".$value['goods_name']."这个商品!";
                $this->ajaxReturn(['status'=>0,'msg'=>$msg]);
+               exit;
            }
        }
    }

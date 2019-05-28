@@ -232,14 +232,15 @@ class Push extends MobileBase
                 }
                 $arr = array('goods_id'=>$good['comm_id'], 'key'=>$key);
                 $item = M('spec_goods_price')->where($arr)->field('item_id, key, key_name, price')->find();
-                $all_data[$good_key]['item_id'] = $item['item_id'];
                 $all_data[$good_key]['spec_key'] = $item['key'];
-                $all_data[$good_key]['goods_spec'] = $item['key_name'];
+                $all_data[$good_key]['item_id'] = $item['item_id'];
                 $all_data[$good_key]['goods_price'] = $item['price'];
+                $all_data[$good_key]['goods_spec'] = $item['key_name'];
             }else{
-                $all_data[$good_key]['goods_price'] = $goods_info['shop_price'];
-                $all_data[$good_key]['item_id'] = 0;
                 $all_data[$good_key]['spec_key'] = 0;
+                $all_data[$good_key]['item_id'] = 0;
+                $all_data[$good_key]['goods_price'] = $goods_info['shop_price'];
+                $all_data[$good_key]['goods_spec'] = 0;
             }
 
             $all_data[$good_key]['goods_name'] = $goods_info['goods_name'];
