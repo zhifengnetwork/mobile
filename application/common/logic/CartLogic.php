@@ -115,10 +115,10 @@ class CartLogic extends Model
      * @return mixed
      * @throws TpshopException
      */
-    public function buyNow($ptype=0,$prom_id=0)
+    public function buyNow($ptype=0,$prom_id=0,$type=0)
     {
         if (empty($this->goods)) {
-            throw new TpshopException('立即购买', 0, ['status' => 0, 'msg' => '购买商品不存在1', 'result' => '']);
+            throw new TpshopException('立即购买', 0, ['status' => 0, 'msg' => '购买商品不存在', 'result' => '']);
         }
         // 是否可免费领取
         if ($this->goods['sign_free_receive'] != 0 ) {
@@ -127,6 +127,7 @@ class CartLogic extends Model
 
             if($isReceive['status'] == 0){
                 // throw new TpshopException('立即购买', 0, ['status' => 0, 'msg' => '购买商品不存在2', 'result' => '']);
+                if($type)$isReceive['status'] = -1;
                 throw new TpshopException("立即购买",0, $isReceive);
             }
         }

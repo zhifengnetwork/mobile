@@ -194,7 +194,7 @@ class Order extends ApiBase
                 $cartLogic->setGoodsModel($goods_id);
                 $cartLogic->setSpecGoodsPriceById($item_id);
                 $cartLogic->setGoodsBuyNum($goods_num);
-                $buyGoods = $cartLogic->buyNow($prom_type,$prom_id);
+                $buyGoods = $cartLogic->buyNow($prom_type,$prom_id,1);
                 $cartList[0] = $buyGoods;	
                 $pay->payGoodsList($cartList);
 				$arr = M('Goods')->field('goods_id,goods_name,shop_price,original_img')->find($goods_id);

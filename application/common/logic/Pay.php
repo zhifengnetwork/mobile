@@ -524,7 +524,7 @@ class Pay
                         $isReceive = ['status' => 0] ;
                     }
                 }
-                if($type)$isReceive['status'] = -1;
+                if($type && ($isReceive['status'] == 0))$isReceive['status'] = -1;
                 if($isReceive['status'] == 2){
                     $this->payList[0]['goods']->shop_price = $this->payList[0]['goods_price'];
                     if ($this->payList[0]['goods']->sign_free_receive == 1) {
