@@ -269,6 +269,11 @@
 					$('.goods_term_icon').each(function(_index){
 						/*更换-勾选状态-icon*/
 						$('.goods_term_icon').eq(_index).removeClass('selection_no').addClass('selection_yes');
+						/*全选默认数量为1*/
+						if($('.number_box').eq(_index).val() == 0){
+							$('.number_box').eq(_index).val(1);
+							data_arr[_index]['com_num'] = 1;
+						}
 						/*勾选状态*/
 						data_arr[_index]['checklist'] = true;
 					})
@@ -355,7 +360,8 @@
 				thisNum += 1;
 				if(thisNum > this_count){
 					thisNum = this_count;
-					alert('库存不足!');
+					layer.msg('库存不足!');
+					return false;
 				}
 				/*后台数据-数量*/
 				data_arr[_index]['com_num'] = thisNum;
@@ -428,7 +434,6 @@
 			})
 			/*点击出现-规格(遮罩层)*/
 			function template_but(goods_id,_index,_this){
-
 				_index = _index - 1;
 				/*蒙版(出现)*/
 				$('.bottomAlertWrap').show();
@@ -533,11 +538,15 @@
 				for(var i=0;i<data_sp.length;i++){
 					console.log(data_sp[i]['speci_id'],data_sp[i]['value'])
 					/*区别-逗号*/
-					if(i == data_sp.length-1){
+					if(i == 0){
 						page_speci += '可选规格:<span speci-id="'+ data_sp[i]['speci_id'] +'">'+ data_sp[i]['value'] +'</span>';
 						break;
 					}
-					page_speci += '可选规格:<span speci-id="'+ data_sp[i]['speci_id'] +'">'+ data_sp[i]['value'] +'</span>，';
+					if(i == data_sp.length-1){
+						page_speci += '<span speci-id="'+ data_sp[i]['speci_id'] +'">'+ data_sp[i]['value'] +'</span>';
+						break;
+					}
+					page_speci += '<span speci-id="'+ data_sp[i]['speci_id'] +'">'+ data_sp[i]['value'] +'</span>，';
 				}
 				/*页面-规格*/
 				$(data_ele).html(page_speci);
