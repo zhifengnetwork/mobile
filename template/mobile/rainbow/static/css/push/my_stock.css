@@ -84,3 +84,9 @@
 	font-size: .2rem;
 	line-height: .2rem;
 }
+.content_null{
+	left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 0.3rem;
+}
