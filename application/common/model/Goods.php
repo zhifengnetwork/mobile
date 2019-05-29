@@ -190,7 +190,7 @@ class Goods extends Model
     public function getGoodsList($goodId){
         $where['is_on_sale'] = 1;
         $where['goods_id'] = array('in',$goodId);
-        return  M("goods")->where($where)->limit(4)->select();
+        return  M("goods")->where($where)->select();
     }
 
 }
