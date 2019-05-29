@@ -14,6 +14,9 @@ use app\common\model\PreSell;
 use app\common\model\SpecGoodsPrice;
 use app\common\util\TpshopException;
 use app\common\logic\UsersLogic;
+
+// use app\mobile\controller\PushCart;
+
 use think\Db;
 use think\Loader;
 use think\Url;
@@ -201,6 +204,10 @@ class Cart extends MobileBase {
         $leader_id = input('leader_id/d',0);
         $data = input('request.');
         $cart_validate = Loader::validate('Cart');
+        if($leader_id){
+            $pushObj = new PushCart();
+            $pushObj->checkHigherGoods($action, $goods_id, $goods_num, $item_id, $leader_id);
+        }
         if($is_virtual === 1){
             $cart_validate->scene('is_virtual');
         }
@@ -226,9 +233,14 @@ class Cart extends MobileBase {
                 $pay->payCart($userCartList);
             }
 
-            $pay->setUserId($this->user_id)->setLeaderId($leader_id)->setShopById($shop_id)->delivery($address)->orderPromotion()
-                ->useCouponById($coupon_id)->getAuction()->getUserSign()->useUserMoney($user_money)
-                ->usePayPoints($pay_points,false,'mobile');
+            if($leader_id){
+                $pay->setUserId($this->user_id)->setLeaderId($leader_id)->setShopById($shop_id)->delivery($address)->useUserMoney($user_money)
+                    ->usePayPoints($pay_points,false,'mobile');
+            }else{
+                $pay->setUserId($this->user_id)->setShopById($shop_id)->delivery($address)->orderPromotion()
+                    ->useCouponById($coupon_id)->getAuction()->getUserSign()->useUserMoney($user_money)
+                    ->usePayPoints($pay_points,false,'mobile');
+            }
             // 提交订单
             if ($_REQUEST['act'] == 'submit_order') {
                 $placeOrder = new PlaceOrder($pay);

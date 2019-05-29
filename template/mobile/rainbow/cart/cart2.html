@@ -1139,24 +1139,16 @@
                 return false;   
             }
             $('input[name="leader_id"]').val(leader_id);
-
-            if(check_leader()){
-                ajax_order_price();
-            }
+            ajax_order_price()
         })
         //线下提货
         $(document).on('click','#self_leader',function(){
             var self_evel = $('#self_leader');
             if (self_evel.is(':checked')) {
-                is_leader = true;
                 $('#input_leader').show();
             }else {
-                is_leader = false;
                 $('input[name="leader_id"]').val('');
                 $('#leader_id').val('');
-                if(check_leader()){
-                    ajax_order_price();
-                }
                 $('#input_leader').hide();
             }    
         })
@@ -1193,51 +1185,6 @@
         });
     })
 
-    function check_leader(){
-        var leader_id = $('input[name="leader_id"]').val();
-        var action = $('input[name="action"]').val();
-        var goods_id = $('input[name="goods_id"]').val();
-        var goods_num = $('input[name="goods_num"]').val();
-        var item_id = $('input[name="item_id"]').val();
-        $.ajax({
-            type: "POST",
-            data: {"leader_id": leader_id,"action": action,"goods_id": goods_id,"goods_num": goods_num,"item_id": item_id},
-            url: '/index.php?m=Mobile&c=PushCart&a=checkHigherGoods',
-            dataType: "json",
-            success: function (data) {
-                if (data.status != 1) {
-                    $('#leader_id').val("")
-                    $('input[name="leader_id"]').val("");
-                    showErrorMsg(data.msg);
-                    return false;
-                }
-                return true;
-            }
-        });
-    }
-
-    function submit_check_leader(){
-        var leader_id = $('input[name="leader_id"]').val();
-        var action = $('input[name="action"]').val();
-        var goods_id = $('input[name="goods_id"]').val();
-        var goods_num = $('input[name="goods_num"]').val();
-        var item_id = $('input[name="item_id"]').val();
-        $.ajax({
-            type: "POST",
-            data: {"leader_id": leader_id,"action": action,"goods_id": goods_id,"goods_num": goods_num,"item_id": item_id},
-            url: '/index.php?m=Mobile&c=PushCart&a=checkHigherGoods',
-            dataType: "json",
-            success: function (data) {
-                if (data.status != 1) {
-                    $('#leader_id').val("")
-                    $('input[name="leader_id"]').val("");
-                    return false;
-                }else{
-                    return true;
-                }
-            }
-        });
-    }
     //支付密码是否显示
     function pay_pwd_view() {  
         var user_money = $('#user_money');
@@ -1367,7 +1314,8 @@
     
     function submit_order() {
         var prop = $('#user_money').prop('checked');
-        
+        var leader_id = $("input[name='leader_id']").val();
+
         if(prop){
             var paypwd = $('#pay_pwd').val();
             if(!paypwd){
@@ -1382,9 +1330,10 @@
         if (ajax_return_status == 0){
             return false;
         }
-        if($('#input_leader').is(':visible')){
-            if (!submit_check_leader()){
-                return false;
+        if($('#self_leader').is(':visible')){
+            if(leader_id == ''){
+                showErrorMsg('请输入上级id!');
+                return false;   
             }
         }
         ajax_return_status = 0;
