@@ -45,15 +45,13 @@
 						<span class="mode_trem_state mode_trem_state_no"></span>
 					</div> -->
 					<!--项-->
-					<!-- <div class="mode_trem" onclick="this_choice(this,'id3')">
-						<span class="mode_trem_name">建设银行 :</span>
-						<span class="mode_trem_value">62254566995666656</span>
-						<span class="mode_trem_state mode_trem_state_no"></span>
-					</div> -->
-					<div class="mode_trem" onclick="this_choice(this,'id3')">
+					<div class="mode_trem">
+						<span class="mode_trem_name">收款姓名 :</span>
+						<span class="mode_trem_value">{$card_data['recharge_name']}</span>
+					</div>
+					<div class="mode_trem">
 						<span class="mode_trem_name">银行卡号 :</span>
-						<span class="mode_trem_value">{$card}</span>
-						<span class="mode_trem_state mode_trem_state_no"></span>
+						<span class="mode_trem_value">{$card_data['recharge_card']}</span>
 					</div>
 				</div>
 				<!--充值金额-->
@@ -173,10 +171,10 @@
 				})
 				/*充值*/
 				$('.recharge_but').on('click',function(){
-					if(!data_obj['choice_id']){
-						layer.msg('请选择充值方式！');
-						return false;
-					}
+					// if(!data_obj['choice_id']){
+					// 	layer.msg('请选择充值方式！');
+					// 	return false;
+					// }
 					if(!data_obj['choice_number']){
 						layer.msg('请选择充值金额！');
 						return false;
