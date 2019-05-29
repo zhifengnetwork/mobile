@@ -165,13 +165,8 @@ class PushCart extends MobileBase
     }
 
     //查看某个用户购买的上级商品是否存在
-    public function  checkHigherGoods(){
+    public function  checkHigherGoods($action, $goods_id, $goods_num, $item_id, $leader_id){
 
-        $leader_id = I('leader_id');
-        $action = I('action');
-        $goods_id = I('goods_id');
-        $goods_num = I('goods_num');
-        $item_id = I('item_id');
         if ($this->user_id == 0){
             $this->error('请先登录', U('Mobile/User/login'));
         }
