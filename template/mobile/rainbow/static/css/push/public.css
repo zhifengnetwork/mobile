@@ -31,7 +31,6 @@ h1, h2, h3, h4, h5, h6 {
 .wrap_frame {
 	position: relative;
 	padding-top: .88rem;
-	padding-bottom: 1rem;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -89,4 +88,8 @@ input[type=text],input[type=button], input[type=submit], input[type=file], butto
 	-moz-box-flex: 1; 
 	-ms-flex: 1; 
 	flex: 1; 
+}
+/*底部空白*/
+.bottom_null{
+	height: .96rem;
 }
