@@ -307,6 +307,9 @@ class Push extends MobileBase
                     $result = ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
                 }
                 return $result;
+            }else{
+                $result = ['status'=>0, 'msg'=>'操作失败!', 'result' => $value['goods_price']];
+                return $result;
             }
         }
     }
