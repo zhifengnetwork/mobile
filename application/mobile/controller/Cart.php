@@ -11,7 +11,7 @@ use app\common\model\Combination;
 use app\common\model\Goods;
 use app\common\model\Order;
 use app\common\model\PreSell;
-use app\common\model\SpecGoodsPrice;
+use app\common\model\SpecGoodsPrice; 
 use app\common\util\TpshopException;
 use app\common\logic\UsersLogic;
 
@@ -237,7 +237,7 @@ class Cart extends MobileBase {
                 $pay->setUserId($this->user_id)->setLeaderId($leader_id)->setShopById($shop_id)->delivery($address)->useUserMoney($user_money)
                     ->usePayPoints($pay_points,false,'mobile');
             }else{
-                $pay->setUserId($this->user_id)->setShopById($shop_id)->delivery($address)->orderPromotion()
+                $pay->setUserId($this->user_id)->setLeaderId($leader_id)->setShopById($shop_id)->delivery($address)->orderPromotion()
                     ->useCouponById($coupon_id)->getAuction()->getUserSign()->useUserMoney($user_money)
                     ->usePayPoints($pay_points,false,'mobile');
             }

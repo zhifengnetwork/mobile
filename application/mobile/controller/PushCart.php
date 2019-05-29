@@ -186,9 +186,10 @@ class PushCart extends MobileBase
                  if(!empty($goodsInfo)){
                      if($goodsInfo['goods_num']<$goods_num){
                          $this->ajaxReturn(['status'=>0,'msg'=>"商品库存不足！"]);
-                     }else{
-                         $this->ajaxReturn(['status'=>1,'msg'=>""]);
                      }
+                     // else{
+                     //     $this->ajaxReturn(['status'=>1,'msg'=>""]);
+                     // }
                  }else{
                      $this->ajaxReturn(['status'=>0,'msg'=>"您的上级没有订购这个商品！"]);
                  }
@@ -244,10 +245,11 @@ class PushCart extends MobileBase
                    $msg=$value['goods_name']."商品库存不足!";
                    $this->ajaxReturn(['status'=>0,'msg'=>$msg]);
                    exit;
-               }else{
-                   $this->ajaxReturn(['status'=>1,'msg'=>""]);
-                   exit;
                }
+               // else{
+               //     $this->ajaxReturn(['status'=>1,'msg'=>""]);
+               //     exit;
+               // }
            }else{
                $msg="您的上级没有".$value['goods_name']."这个商品!";
                $this->ajaxReturn(['status'=>0,'msg'=>$msg]);

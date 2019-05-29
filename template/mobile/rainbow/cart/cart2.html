@@ -1149,6 +1149,7 @@
             }else {
                 $('input[name="leader_id"]').val('');
                 $('#leader_id').val('');
+                ajax_order_price()
                 $('#input_leader').hide();
             }    
         })
@@ -1330,7 +1331,7 @@
         if (ajax_return_status == 0){
             return false;
         }
-        if($('#self_leader').is(':visible')){
+        if($('#self_leader').is(':checked')){
             if(leader_id == ''){
                 showErrorMsg('请输入上级id!');
                 return false;   
