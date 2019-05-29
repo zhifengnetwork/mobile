@@ -24,6 +24,8 @@ class Push extends Base
                     ->update(['value'=>$data['points_rate']]);
                 Db::name('config')->where('name', 'recharge_card')->where('inc_type', 'recharge')
                     ->update(['value'=>$data['recharge_card']]);
+                Db::name('config')->where('name', 'recharge_name')->where('inc_type', 'recharge')
+                    ->update(['value'=>$data['recharge_name']]);
                 // 提交事务
                 Db::commit();
                 $this->ajaxReturn(['status'=>1,'msg'=>"修改成功"]);    
@@ -34,7 +36,7 @@ class Push extends Base
             }
         }
         $condition = array(
-            'name' => ['in', ['recharge_open', 'points_rate', 'recharge_card']],
+            'name' => ['in', ['recharge_open', 'points_rate', 'recharge_card', 'recharge_name']],
             'inc_type' => 'recharge',
         );
         $config = M('config')->where($condition)->column('name, value');
