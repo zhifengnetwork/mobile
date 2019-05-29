@@ -91,5 +91,5 @@ input[type=text],input[type=button], input[type=submit], input[type=file], butto
 }
 /*底部空白*/
 .bottom_null{
-	height: 1.96rem;
+	height: .96rem;
 }
