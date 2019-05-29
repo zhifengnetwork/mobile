@@ -47,7 +47,7 @@
 									<a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$goods.goods_id))}">
 										<p class="goods_term_bottom_data_name publicEllipsis">{$goods.goods_name}</p>
 									</a>
-									<p class="goods_term_bottom_data_price publicEllipsis">￥<span class="price_num">{$goods.shop_price}</span></p>
+									<p class="goods_term_bottom_data_price publicEllipsis">￥<span class="price_num {$key}_price">{$goods.shop_price}</span></p>
 									<p class="goods_term_bottom_data_stock publicEllipsis">库存: <span class="stock_num">{$goods.store_count}</span></p>
 									<notempty name="goods.spec">
 										<p class="goods_term_bottom_data_gauge" onclick="template_but('{$goods.goods_id}','{$k}',this)">
@@ -348,7 +348,12 @@
 					url : "{:url('Mobile/Push/push_cart')}",
 					data: {data : data, action : action},
 					dataType: 'json',
-					success: function (data) {},
+					success: function (data) {
+						if(data && data.result != ''){
+							data_arr[index]['com_price'] = data.result;
+							$('.'+index+'_price').html(data.result);
+						}
+					},
 				});
 			}
 			/*加（数量）*/
@@ -530,7 +535,7 @@
 			})
 			/*确定(规格)*/
 			$('.submi_box').on('click',function(){
-				console.log('后台数据:',data_arr);
+				// console.log('后台数据:',data_arr);
 				/*请求成功后台=>更改对应规格状态*/
 				/*渲染页面数据string*/
 				var page_speci = '';
@@ -538,7 +543,7 @@
 				/*当前对应data*/
 				var data_sp = data_arr[speci_obj['ind']]['com_speci'];
 				for(var i=0;i<data_sp.length;i++){
-					console.log(data_sp[i]['speci_id'],data_sp[i]['value'])
+					// console.log(data_sp[i]['speci_id'],data_sp[i]['value'])
 					/*区别-逗号*/
 					if(i == 0){
 						page_speci += '可选规格:<span speci-id="'+ data_sp[i]['speci_id'] +'">'+ data_sp[i]['value'] +'</span>';
@@ -551,10 +556,10 @@
 				}
 				/*页面-规格*/
 				$(data_ele).html(page_speci);
+				post_data(action, speci_obj['ind']);
 				total_number();
 				/*关闭-遮罩层*/
 				close_alert();
-				post_data(action, speci_obj['ind']);
 			})
 			
 		</script>

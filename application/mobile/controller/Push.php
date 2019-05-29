@@ -258,9 +258,9 @@ class Push extends MobileBase
     {
         $result = M('push_cart')->insertAll($data);
         if($result){
-            $result = ['status'=>1, 'msg'=>'操作成功!'];
+            $result = ['status'=>1, 'msg'=>'操作成功!', 'result' => ''];
         }else{
-            $result = ['status'=>0, 'msg'=>'操作失败!'];
+            $result = ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
         }
         return $result;
     }
@@ -281,9 +281,9 @@ class Push extends MobileBase
         );
         $retult = M('push_cart')->where($arr)->delete();
         if($result){
-            $result = ['status'=>1, 'msg'=>'操作成功!'];
+            $result = ['status'=>1, 'msg'=>'操作成功!', 'result' => ''];
         }else{
-            $result = ['status'=>0, 'msg'=>'操作失败!'];
+            $result = ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
         }
         return $result;
     }
@@ -302,9 +302,9 @@ class Push extends MobileBase
             if($is_exisit){
                 $result = M('push_cart')->where('id', $is_exisit['id'])->update($value);
                 if($result){
-                    $result = ['status'=>1, 'msg'=>'操作成功!'];
+                    $result = ['status'=>1, 'msg'=>'操作成功!', 'result' => $value['goods_price']];
                 }else{
-                    $result = ['status'=>0, 'msg'=>'操作失败!'];
+                    $result = ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
                 }
                 return $result;
             }
@@ -348,6 +348,19 @@ class Push extends MobileBase
         M('push_cart')->where('user_id', $user_id)->delete();
         $this->assign('goods', $goods);
         return $this->fetch();
+    }
+
+    /**
+     * 通过 item_id 获取组合规格的价格
+     */
+    function get_item_price(){
+        $item_id = I('item_id/s',0);
+        $price = M('spec_goods_price')->where('item_id', $item_id)->value('price');
+        if($price){
+            $this->ajaxReturn(['status'=>1, 'msg'=>'获取成功', 'result'=>$price]);
+        }else{
+            $this->ajaxReturn(['status'=>0, 'msg'=>'获取失败', 'result'=>'']);
+        }
     }
 
     /**
