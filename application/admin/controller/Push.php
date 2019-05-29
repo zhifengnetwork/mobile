@@ -128,6 +128,9 @@ class Push extends Base
             if($status == '1'){
                 foreach ($ids as $key => $value) {
                     $recharge = M('recharge_points')->where('id', $value)->find();
+                    if( (int)$recharge['status'] == 1){
+                        $this->ajaxReturn(['status'=>-1,'msg'=>"已充值"]);
+                    }
                     $integral_push = M('users')->where('user_id', $recharge['user_id'])->value('integral_push');
                     $integral_push = bcadd($recharge['exchange_integral'], $integral_push, 2);
                     accountPushLog($recharge['user_id'], $recharge['exchange_integral'], '积分充值', 0, 0);
