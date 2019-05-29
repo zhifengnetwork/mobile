@@ -112,7 +112,7 @@ class PushOrder
 
     public function addNormalOrder($goodsTotalPrice,$cartList)
     {
-
+        $this->setPromType(9);
         $this->queueInc();
         $this->addOrder($goodsTotalPrice);
         $this->addOrderGoods($cartList);
@@ -129,6 +129,15 @@ class PushOrder
         $this->addPersonStock($this->order['order_sn']);
         $this->delPushCart();
         $this->queueDec();
+    }
+
+    /**
+     * 设置订单类型
+     */
+    private function setPromType($prom_type)
+    {
+        $this->promType = $prom_type;
+        return $this;
     }
 
     private function queueInc()

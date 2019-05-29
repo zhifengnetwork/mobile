@@ -50,6 +50,11 @@ class PlaceOrder
 
     public function addNormalOrder()
     {
+        $leader_id = $this->pay->getLeaderId();
+        if($leader_id){
+            $this->setPromType(10);
+        }
+
         $this->check();
         $this->queueInc();
         $this->addOrder();
@@ -58,7 +63,6 @@ class PlaceOrder
 
         Hook::listen('user_add_order', $this->order);//下单行为
         $reduce = tpCache('shopping.reduce');
-        $leader_id = $this->pay->getLeaderId();
         if(!$leader_id){
             if($reduce== 1 || empty($reduce)){
                 minus_stock($this->order);//下单减库存
