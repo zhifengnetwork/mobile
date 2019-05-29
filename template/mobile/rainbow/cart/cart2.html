@@ -1205,18 +1205,36 @@
             url: '/index.php?m=Mobile&c=PushCart&a=checkHigherGoods',
             dataType: "json",
             success: function (data) {
-                if(!is_leader){
-                    is_leader = true;
-                    return false;
-                }
                 if (data.status != 1) {
-                    is_leader = false;
                     $('#leader_id').val("")
                     $('input[name="leader_id"]').val("");
                     showErrorMsg(data.msg);
                     return false;
                 }
                 return true;
+            }
+        });
+    }
+
+    function submit_check_leader(){
+        var leader_id = $('input[name="leader_id"]').val();
+        var action = $('input[name="action"]').val();
+        var goods_id = $('input[name="goods_id"]').val();
+        var goods_num = $('input[name="goods_num"]').val();
+        var item_id = $('input[name="item_id"]').val();
+        $.ajax({
+            type: "POST",
+            data: {"leader_id": leader_id,"action": action,"goods_id": goods_id,"goods_num": goods_num,"item_id": item_id},
+            url: '/index.php?m=Mobile&c=PushCart&a=checkHigherGoods',
+            dataType: "json",
+            success: function (data) {
+                if (data.status != 1) {
+                    $('#leader_id').val("")
+                    $('input[name="leader_id"]').val("");
+                    return false;
+                }else{
+                    return true;
+                }
             }
         });
     }
@@ -1365,7 +1383,7 @@
             return false;
         }
         if($('#input_leader').is(':visible')){
-            if (!check_leader()){
+            if (!submit_check_leader()){
                 return false;
             }
         }
