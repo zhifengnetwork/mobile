@@ -98,14 +98,16 @@
                     2:管理员审核生成充值记录 ( 生成时自动按比例给用户增加平台相应积分 ) <br/>
                 </dd>
             </dl>
+
             <div class="bot">
-                <if condition="in_array($data[status],array(0,2))">
+                <if condition="in_array($recharge[status],array(0,2))">
                     <a href="JavaScript:void(0);" onclick="confirm_withdrawals();" class="ncap-btn-big ncap-btn-green">审核通过</a>
                 </if>
-                <if condition="$data[status] eq 0">
+                <if condition="$recharge[status] eq 0">
                     <a href="JavaScript:void(0);" onclick="cancel_withdrawals();" class="ncap-btn-big ncap-btn-green">拒绝充值</a>
                 </if>
             </div>
+
         </div>
     </form>
 </div>
