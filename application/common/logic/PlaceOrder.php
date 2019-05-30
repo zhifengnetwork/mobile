@@ -68,7 +68,8 @@ class PlaceOrder
                 minus_stock($this->order);//下单减库存
             }
         }else{
-            $this->leader_stock($leader_id);
+            //减上级库存
+            update_leader_stock($leader_id, $this->order['order_sn'], $this->order['order_id'], $this->order['user_id'], 'minus');
         }
         // 如果应付金额为0  可能是余额支付 + 积分 + 优惠券 这里订单支付状态直接变成已支付
         if ($this->order['order_amount'] == 0) {
@@ -396,45 +397,45 @@ class PlaceOrder
         Db::name('order_goods')->insertAll($orderGoodsAllData);
     }
 
-    /**
-     * 减上级库存
-     */
-    public function leader_stock($leader_id)
-    {
-        //减上级库存
-        $goods_list = Db::name('order_goods')->where('order_id', $this->order['order_id'])
-                    ->column('rec_id, goods_id, item_id, goods_num');
-        $pushStock  = new PushStock();
-        $stockLog   = new StockPushLog();
-        $pre_time = time();
-        $data = [];
-        foreach ($goods_list as $key => $value) {
-            $arr = array(
-                'user_id' => $leader_id,
-                'goods_id'=> $value['goods_id'],
-                'item_id' => $value['item_id'], 
-            );
-            $good = $pushStock::get($arr);
-            if(!$good){
-                return false;
-            }
-            $good->goods_num = $good->goods_num - $value['goods_num'];
-            $good->update_time = $pre_time;
+    // /**
+    //  * 减上级库存
+    //  */
+    // public function leader_stock($leader_id)
+    // {
+    //     //减上级库存
+    //     $goods_list = Db::name('order_goods')->where('order_id', $this->order['order_id'])
+    //                 ->column('rec_id, goods_id, item_id, goods_num');
+    //     $pushStock  = new PushStock();
+    //     $stockLog   = new StockPushLog();
+    //     $pre_time = time();
+    //     $data = [];
+    //     foreach ($goods_list as $key => $value) {
+    //         $arr = array(
+    //             'user_id' => $leader_id,
+    //             'goods_id'=> $value['goods_id'],
+    //             'item_id' => $value['item_id'], 
+    //         );
+    //         $good = $pushStock::get($arr);
+    //         if(!$good){
+    //             return false;
+    //         }
+    //         $good->goods_num = $good->goods_num - $value['goods_num'];
+    //         $good->update_time = $pre_time;
 
-            $stock_arr[$key]['goods_id'] = $good->goods_id;
-            $stock_arr[$key]['goods_name'] = $good->goods_name;
-            $stock_arr[$key]['goods_spec'] = $good->goods_spec;
-            $stock_arr[$key]['order_sn'] = $this->order['order_sn'];
-            $stock_arr[$key]['muid'] = $this->order['user_id'];
-            $stock_arr[$key]['stock'] = -$value['goods_num'];
-            $stock_arr[$key]['user_id'] = $leader_id;
-            $stock_arr[$key]['ctime'] = $pre_time;
-            $stock_arr[$key]['change_type'] = 1;
+    //         $stock_arr[$key]['goods_id'] = $good->goods_id;
+    //         $stock_arr[$key]['goods_name'] = $good->goods_name;
+    //         $stock_arr[$key]['goods_spec'] = $good->goods_spec;
+    //         $stock_arr[$key]['order_sn'] = $this->order['order_sn'];
+    //         $stock_arr[$key]['muid'] = $this->order['user_id'];
+    //         $stock_arr[$key]['stock'] = -$value['goods_num'];
+    //         $stock_arr[$key]['user_id'] = $leader_id;
+    //         $stock_arr[$key]['ctime'] = $pre_time;
+    //         $stock_arr[$key]['change_type'] = 1;
 
-            $good->save();
-        }
-        $stockLog->saveAll($stock_arr);
-    }
+    //         $good->save();
+    //     }
+    //     $stockLog->saveAll($stock_arr);
+    // }
 
     /**
      * 扣除优惠券
