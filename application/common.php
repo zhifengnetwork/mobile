@@ -649,17 +649,16 @@ function update_leader_stock($leader_id, $order_sn, $order_id, $muid, $action)
         }
         if($action == 'plus'){
             $stock_arr[$key]['goods_num'] = $good->goods_num + $value['goods_num'];
+            $stock_log[$key]['stock'] = +$value['goods_num'];
+            $stock_log[$key]['change_type'] = 2;
         }else if($action == 'minus'){
             $stock_arr[$key]['goods_num'] = $good->goods_num - $value['goods_num'];
+            $stock_log[$key]['stock'] = -$value['goods_num'];
+            $stock_log[$key]['change_type'] = 1;
         }
         $stock_arr[$key]['update_time'] = $pre_time;
         $stock_arr[$key]['id'] = $good->id;
 
-        if($action == 'plus'){
-            $stock_log[$key]['stock'] = +$value['goods_num'];
-        }else if($action == 'minus'){
-            $stock_log[$key]['stock'] = -$value['goods_num'];
-        }
         $stock_log[$key]['goods_id'] = $good->goods_id;
         $stock_log[$key]['goods_name'] = $good->goods_name;
         $stock_log[$key]['goods_spec'] = $good->goods_spec;
@@ -667,7 +666,6 @@ function update_leader_stock($leader_id, $order_sn, $order_id, $muid, $action)
         $stock_log[$key]['muid'] = $muid;
         $stock_log[$key]['user_id'] = $leader_id;
         $stock_log[$key]['ctime'] = $pre_time;
-        $stock_log[$key]['change_type'] = 1;
     }
     $pushStock->saveAll($stock_arr);
     $stockLog->saveAll($stock_log);
