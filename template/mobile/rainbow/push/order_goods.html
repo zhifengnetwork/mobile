@@ -29,13 +29,13 @@
 				<empty name="goods">
 					<span>暂无商品</span>
 				<else/>
-					<volist name="goods" id="goods" key="k">
+					<foreach name="goods" item="goods" key="k">
 						<div class="goods_term clearfloat">
 							<!--class="goods_term_icon";=>没style
 								已-勾选图标clas="selection_yes";
 								未-勾选图标clas="selection_no";（初始化）
 							-->
-							<p class="goods_term_icon selection_no" onclick="choice_butOr(this,'{$key}')" id="{$goods.goods_id}"><!--勾选图标--></p>
+							<p class="goods_term_icon selection_no" onclick="choice_butOr(this,'{$k}')" id="{$goods.goods_id}"><!--勾选图标--></p>
 							<div class="goods_term_data">
 								<p class="goods_term_data_img_box"> 
 									<!--图片w:130px;h:130px-->
@@ -48,9 +48,9 @@
 										<p class="goods_term_bottom_data_name publicEllipsis">{$goods.goods_name}</p>
 									</a>
 									<notempty name="goods.spec">
-										<p class="goods_term_bottom_data_price publicEllipsis">￥<span class="price_num {$key}_price">{$goods['spec_goods_price'][0]['price']}</span></p>
+										<p class="goods_term_bottom_data_price publicEllipsis">￥<span class="price_num {$k}_price">{$goods['spec_goods_price'][0]['price']}</span></p>
 									<else/>
-										<p class="goods_term_bottom_data_price publicEllipsis">￥<span class="price_num {$key}_price">{$goods.shop_price}</span></p>
+										<p class="goods_term_bottom_data_price publicEllipsis">￥<span class="price_num {$k}_price">{$goods.shop_price}</span></p>
 									</notempty>
 									<p class="goods_term_bottom_data_stock publicEllipsis">库存: <span class="stock_num">{$goods.store_count}</span></p>
 									<notempty name="goods.spec">
@@ -77,7 +77,7 @@
 								</div>
 							</div>
 						</div>
-					</volist>
+					</foreach>
 				</empty>
 
 				<div class="bottom_null"></div>
@@ -219,13 +219,12 @@
 				}else {
 					$('.all_election').removeClass('all_selection_yes').addClass('all_selection_no');
 				}
-				console.log('初始化,有',all_num,'样选择','共有:',$('.content_wrap .goods_term').length,'样');
 			}
 			all_kind();
+
 			/*（单选）=>已||未 =>选择*/
 			function choice_butOr(_this,_index){
-				var index_index=parseInt(_index)+1;
-				var num_obj=$("#"+index_index+" .number_box");
+				var num_obj=$("#"+_index+" .number_box");
 				var num = num_obj.val();
 				
 				if(num == 0){
@@ -242,7 +241,6 @@
 					num_obj.val(num);
 				}
 
-				console.log('单选-下标:',_index);
 				action = '';
 				if($(_this).hasClass('selection_no')){
 					$(_this).removeClass('selection_no').addClass('selection_yes');
@@ -257,13 +255,12 @@
 				}
 				/*单选=>判断是否全选*/
 				all_kind();
+				/*存表*/
+				post_data(action, _index);  
 				/*总计*/
 				total_number();
-				/*传给后台，数组格式*/
-				console.log('现在-单选:',[data_arr[_index]]);
-				
-				post_data(action, _index);  
 			}
+
 			/*（全选）=>已||未 =>选择*/
 			function all_choice_butOr(_this){
 				var action = '';
@@ -299,22 +296,23 @@
 					$('.total_num').html(0);
 					action = 'delete';
 				}
-				console.log('全选:',all_num);
 				post_data(action);
 			}
+
 			/**获取焦点=> 隐藏'结算'元素**/
 			$('.number_box').focus(function(){
 				$('.fixed_bottom_wrpa').hide();
 				/*当前点击的index*/
 				speci_index = Number($(this).attr('data-index'));
-				console.log('获取-点击-对应的"传后台data"-规格下标:',speci_index);
 			})
+
 			/**失去焦点=> 显示'结算'元素**/
 			$('.number_box').blur(function(){
 				$('.fixed_bottom_wrpa').show();
 				/*初始化*/
 				speci_index = null;
 			})
+
 			/*(全部-input)监听input的输入值*/
 			$('input').live('input propertychange',function(){
 				/*if(isNaN($(this).val())){
@@ -330,14 +328,13 @@
 					layer.msg('亲，库存只有:'+inp_val+'件');
 				}
 				/*更新-传后台数据-data*/
-				// console.log(speci_index);
 				 data_arr[speci_index]['com_num'] = inp_val;
 				/*更新页面-data*/
 				$('.number_box').eq(speci_index).val(inp_val);
 				total_number();
-				// console.log(inp_val);
 				post_data(action, speci_index);
 			})
+
 			//对表请求操作
 			function post_data(action, index = 'all'){
 				var data = [];
@@ -363,12 +360,11 @@
 						}
 					},
 				});
-			}
+			}	
+
 			/*加（数量）*/
 			function add_fun(_this,_index){
 				var action = 'update';
-				_index = _index - 1;
-				console.log('加-下标：',_index);
 				/*当前，库存*/
 				var this_count = Number($(_this).parents('.add_reduce_wrap').siblings('.goods_term_bottom_data_stock').find('.stock_num').html());
 				var thisNum = Number($(_this).siblings('.number_box').val());
@@ -386,11 +382,10 @@
 				total_number();
 				post_data(action, _index);
 			}
+			
 			/*减(数量)*/
 			function reduce_fun(_this,_index){
 				var action = 'update';
-				_index = _index - 1;
-				console.log("减-下标:",_index);
 				var thisNum = Number($(_this).siblings('.number_box').val());
 				thisNum -= 1;
 				if(thisNum < 0){
@@ -401,6 +396,7 @@
 				total_number();
 				post_data(action, _index);
 			}
+
 			/*总计*/
 			function total_number(){
 				/*初始化*/
@@ -415,6 +411,7 @@
 				/*渲染-总计*/
 				$('.total_num').html(countNum.toFixed(2));
 			}
+
 			/*结算*/
 			$('.fixed_bottom_wrpa_right').on('click',function(){
 				console.log(data_arr);
@@ -447,9 +444,9 @@
 				window.location.href = "{:url('Mobile/PushCart/cart2')}";
 				
 			})
+			
 			/*点击出现-规格(遮罩层)*/
 			function template_but(goods_id,_index,_this){
-				_index = _index - 1;
 				/*蒙版(出现)*/
 				$('.bottomAlertWrap').show();
 				/*底部弹窗(出现)*/
@@ -466,7 +463,6 @@
 					'left': 0,
 				});
 				speci_obj['ind'] = _index;
-				console.log('对应的规格id:','对应的规格-data: index',speci_obj['ind']);
 				/*保存当前点击元素*/
 				data_ele = _this;
 				/*ajax*/
@@ -501,6 +497,7 @@
 				
 				return false;
 			}
+
 			/*关闭-规格(遮罩层)*/
 			function close_alert(){
 				$('.bottomAlertWrap').hide();
@@ -517,6 +514,7 @@
 				/*console.log('恢复当前用户滚动的位置',thisScrollNum);*/
 				return false;
 			}
+
 			/*选取规格-全部遍历下*/
 			// $('.bo_aler_content .bo_aler_box').on('click',function(){
 			$(document).on('click','.bo_aler_content .bo_aler_box',function(){
@@ -524,7 +522,6 @@
 				$(this).addClass('bo_aler_box_active').siblings().removeClass('bo_aler_box_active');
 				/*初始化-当前的商品规格*/
 				data_arr[speci_obj['ind']]['com_speci'] = [];
-				console.log(data_arr[speci_obj['ind']]['com_speci']);
 				/*遍历-规格选择*/
 				$('.bo_aler_content .bo_aler_box').each(function(_index){
 					/*存在active => 数组.push()*/
@@ -539,8 +536,8 @@
 						data_arr[speci_obj['ind']]['com_speci'].push(clones(speci_obj['value_arr']))
 					}
 				})
-				
 			})
+
 			/*确定(规格)*/
 			$('.submi_box').on('click',function(){
 				// console.log('后台数据:',data_arr);
