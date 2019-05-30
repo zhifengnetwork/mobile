@@ -246,6 +246,7 @@ class PlaceOrder
         $orderData = [
             'order_sn' => $OrderLogic->get_order_sn(), // 订单编号
             'user_id' => $user['user_id'], // 用户id
+            'leader_id' => $leader_id,
             'email' => $user['email'],//'邮箱'
             'invoice_title' => ($this->invoiceDesc != '不开发票') ?  $invoice_title : '', //'发票抬头',
             'invoice_desc' => $this->invoiceDesc, //'发票内容',
@@ -330,12 +331,12 @@ class PlaceOrder
             throw new TpshopException("订单入库", 0, ['status' => -8, 'msg' => '添加订单失败', 'result' => '']);
         }
 
-        //如果是购买上级的商品，记录订单信息
-        if($leader_id){
-            $time=time();
-            $data=['user_id'=>$user['user_id'],'leader_id'=>$leader_id,'order_id'=>$this->order['order_id'],'user_money'=>$this->pay->getTotalAmount(),'create_time'=>$time,'pay_status'=>0];
-            Db::name("push_log")->save($data);
-        }
+        // //如果是购买上级的商品，记录订单信息 
+        // if($leader_id){
+        //     $time=time();
+        //     $data=['user_id'=>$user['user_id'],'leader_id'=>$leader_id,'order_id'=>$this->order['order_id'],'user_money'=>$this->pay->getTotalAmount(),'create_time'=>$time,'pay_status'=>0];
+        //     Db::name("push_log")->save($data);
+        // }
 
     }
 

@@ -1297,10 +1297,10 @@ function update_pay_status($order_sn, $ext = array())
             if (isset($ext['transaction_id'])) $update['transaction_id'] = $ext['transaction_id'];
             M('order')->where("order_sn", $order_sn)->save($update);
 
-            $arr = ['order_id' => $order['order_id'], 'user_id'  => $order['user_id']];
-            $leader_order = Db::name('push_log')->where($arr)->find();
-            if($leader_order){
-                handle_leader($order, $leader_order);
+            // $arr = ['order_id' => $order['order_id'], 'user_id'  => $order['user_id']];
+            // $leader_order = Db::name('push_log')->where($arr)->find();
+            if($order['leader_id'] != 0){
+                handle_leader($order);
             }
         }
 
@@ -1400,10 +1400,10 @@ function update_pay_status($order_sn, $ext = array())
 /**
  * 处理上级地推订单
  */
-function handle_leader($order, $leader)
+function handle_leader($order)
 {
-    accountLog($leader['leader_id'], $order['total_amount'], 0, '地推订单金额', 0, $order['order_id'], $order['order_sn']);
-    Db::name('push_log')->where('id', $leader['id'])->save(['pay_status'=>1]);
+    accountLog($order['leader_id'], $order['total_amount'], 0, '地推订单金额', 0, $order['order_id'], $order['order_sn']);
+    // Db::name('push_log')->where('id', $leader['id'])->save(['pay_status'=>1]);
     Db::name('order')->where('order_id', $order['order_id'])->save(['shipping_status' => 1]);
 }
 
