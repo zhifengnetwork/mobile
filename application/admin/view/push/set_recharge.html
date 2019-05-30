@@ -154,7 +154,7 @@
         function fromsubmit(){
             var points_rate = $('#points_rate').val();
             var recharge_card = $('#recharge_card').val();
-            var patrn = /^([1-9]{1})(\d{14}|\d{18})$/;
+            var patrn = /^(\d{16}|\d{19})$/
 			if (!patrn.test(recharge_card)) {
 				layer.msg('银行卡号不正确',{icon: 2});
 				return false;
