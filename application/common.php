@@ -257,6 +257,12 @@ function replacement($order_id)
  */
 function agent_performance($order_id)
 {
+    //订单类型9为订货, 订货不返利
+    $order_data = M('order')->where('order_id', $order_id)
+                ->field('pay_status, prom_type')->find();
+    if($order_data['prom_type'] == 9 || $order_data['pay_status'] == 0){
+        return false;
+    }
 
     $goods_list = M('order_goods')->alias('og')
     ->join('tp_goods g ',' g.goods_id = og.goods_id')
@@ -282,9 +288,9 @@ function agent_performance($order_id)
             ->join('tp_users u ', ' u.user_id = o.user_id')
             ->where(['o.order_id' => $order_id])
             ->field('o.user_id,u.is_agent')->find();
-        if ($order['is_agent']) {
-            agent_performance_person_log($order['user_id'], $price, $order_id);
-        }
+        
+        agent_performance_person_log($order['user_id'], $price, $order_id);
+        
         //加个人业绩(下单人)
         //$cunzai = M('agent_performance')->where(['user_id' => $user_id])->find();
         $first_leader = M('users')->where(['user_id' => $order['user_id']])->value('first_leader');
@@ -1379,11 +1385,14 @@ function can_super_nsign($order_id, $user_id)
  */
 function change_role($order_id)
 {
-    $order = M('order')->where(['order_id' => $order_id])->field('pay_status,user_id,order_id')->find();
+    $order = M('order')->where(['order_id' => $order_id])->field('pay_status,user_id,order_id,prom_type')->find();
     if (!$order) {
         return false;
     }
     if ($order['pay_status'] == 0) {
+        return false;
+    }
+    if ($order['prom_type'] == 9) {
         return false;
     }
 

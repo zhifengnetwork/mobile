@@ -41,7 +41,11 @@
 								<div class="trem_box_bottom_data">
 									<p class="trem_box_bottom_data_name publicEllipsis">{$item.goods_name}</p>
 									<p class="trem_box_bottom_data_num publicEllipsis">剩余库存: <span>{$item.goods_num}</span></p>
-									<p class="trem_box_bottom_data_gauge publicEllipsis">{$item.goods_spec}</p>
+									<if condition="$item.goods_spec">
+										<p class="trem_box_bottom_data_gauge publicEllipsis">{$item.goods_spec}</p>
+									<else/>
+										<p class="trem_box_bottom_data_gauge publicEllipsis">无规格</p>
+									</if>
 								</div>
 							</div>
 						</div>
