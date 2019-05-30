@@ -325,6 +325,7 @@ class Push extends MobileBase
                 ->join('goods g', 'g.goods_id = s.goods_id', 'LEFT')
                 ->where('user_id', $user_id)
                 ->field($fir)
+                ->order('id DESC')
                 ->select();
         $this->assign('stock', $stock);
         return $this->fetch();
