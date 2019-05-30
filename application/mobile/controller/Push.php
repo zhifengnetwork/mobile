@@ -36,7 +36,7 @@ class Push extends MobileBase
         $condiction = array('user_id' => $user_id);
         $record = M('recharge_points')
                 ->where($condiction)
-                ->field('create_time, user_money, status')
+                ->field('create_time, user_money, exchange_integral, status')
                 ->order('id DESC')
                 ->page($page,20)
                 ->select();

@@ -31,7 +31,8 @@
 					<volist name="record" id="record">
 						<p class="trem_box">
 							<span class="trem_box_span trem_box_time">{$record.create_time|date="Y-m-d H:i:s", ###}</span>
-							<span class="trem_box_span trem_box_num">￥	{$record.user_money}</span>
+							<!-- <span class="trem_box_span trem_box_num">￥	{$record.user_money}</span> -->
+							<span class="trem_box_span trem_box_num">{$record.exchange_integral}积分</span>
 							<span class="trem_box_span trem_box_num">
 								<if condition="$record[status] eq -2">无效作废</if>
 								<if condition="$record[status] eq -1">审核失败</if>
