@@ -462,6 +462,7 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
             $where = [
                 'mobile'         => $arr[$k]['mobile'],
                 'order_status'   => ['in','0,1'],
+                'pay_status'     => 1 ,
                 'shipping_status'=> 0,
             ];
             $order     = Db::name('order')->where($where)->order('order_id DESC')->select();
