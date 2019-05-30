@@ -66,7 +66,8 @@ class OrderLogic
 
         $leader = M('push_log')->where('order_id', $order_id)->find();
         if($leader){
-        	$this->returnLeaderStock($leader, $order);
+        	//退还级库存
+            update_leader_stock($leader['leader_id'], $order['order_sn'], $leader['order_id'], session('user.user_id'), 'plus');
         }else{
         	$reduce = tpCache('shopping.reduce');
 			if($reduce == 1 || empty($reduce)){
@@ -80,38 +81,38 @@ class OrderLogic
 
 	}
 
-	//退还上级库存
-	public function returnLeaderStock($leader, $order)
-	{
-        $goods_list = Db::name('order_goods')->where('order_id', $leader['order_id'])
-                    ->column('rec_id, goods_id, item_id, goods_num');
-        $pushStock  = new PushStock();
-        $stockLog   = new StockPushLog();
-        $pre_time = time();
-        foreach ($goods_list as $key => $value) {
-            $arr = array(
-                'user_id' => $leader['leader_id']   ,
-                'goods_id'=> $value['goods_id'],
-                'item_id' => $value['item_id'], 
-            );
-            $good = $pushStock::get($arr);   
-            $good->goods_num = $good->goods_num + $value['goods_num'];
-            $good->update_time = $pre_time;
+	// //退还上级库存
+	// public function returnLeaderStock($leader, $order)
+	// {
+    //     $goods_list = Db::name('order_goods')->where('order_id', $leader['order_id'])
+    //                 ->column('rec_id, goods_id, item_id, goods_num');
+    //     $pushStock  = new PushStock();
+    //     $stockLog   = new StockPushLog();
+    //     $pre_time = time();
+    //     foreach ($goods_list as $key => $value) {
+    //         $arr = array(
+    //             'user_id' => $leader['leader_id']   ,
+    //             'goods_id'=> $value['goods_id'],
+    //             'item_id' => $value['item_id'], 
+    //         );
+    //         $good = $pushStock::get($arr);   
+    //         $good->goods_num = $good->goods_num + $value['goods_num'];
+    //         $good->update_time = $pre_time;
 
-            $stock_arr[$key]['goods_id'] = $good->goods_id;
-            $stock_arr[$key]['goods_name'] = $good->goods_name;
-            $stock_arr[$key]['goods_spec'] = $good->goods_spec;
-            $stock_arr[$key]['order_sn'] = $order['order_sn'];
-            $stock_arr[$key]['muid'] = session('user.user_id');
-            $stock_arr[$key]['stock'] = $value['goods_num'];
-            $stock_arr[$key]['user_id'] = $leader['leader_id'];
-            $stock_arr[$key]['ctime'] = $pre_time;
-            $stock_arr[$key]['change_type'] = 2;
+    //         $stock_arr[$key]['goods_id'] = $good->goods_id;
+    //         $stock_arr[$key]['goods_name'] = $good->goods_name;
+    //         $stock_arr[$key]['goods_spec'] = $good->goods_spec;
+    //         $stock_arr[$key]['order_sn'] = $order['order_sn'];
+    //         $stock_arr[$key]['muid'] = session('user.user_id');
+    //         $stock_arr[$key]['stock'] = $value['goods_num'];
+    //         $stock_arr[$key]['user_id'] = $leader['leader_id'];
+    //         $stock_arr[$key]['ctime'] = $pre_time;
+    //         $stock_arr[$key]['change_type'] = 2;
 
-            $good->save();
-        }
-        $stockLog->saveAll($stock_arr);
-	}
+    //         $good->save();
+    //     }
+    //     $stockLog->saveAll($stock_arr);
+	// }
 
 	public function addReturnGoods($rec_id,$order)
 	{

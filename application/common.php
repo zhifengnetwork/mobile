@@ -3,6 +3,8 @@
 use think\Log;
 use think\Db;
 
+use app\common\model\PushStock;
+use app\common\model\StockPushLog;
 use app\common\logic\BonusLogic;
 use app\common\logic\ReplacementLogic;
 
@@ -615,6 +617,60 @@ function minus_stock($order)
         }
         update_stock_log($order['user_id'], -$val['goods_num'], $val, $order['order_sn']);//库存日志
     }
+}
+
+/**
+ * 根据 order_goods 表更改上级商品库存
+ * @param $leader_id |上级ID
+ * @param $order_sn |订单编号
+ * @param $order_id |订单ID
+ * @param $muid |操作人ID
+ * @param $action |操作,加减
+ * @throws \think\Exception
+ */
+function update_leader_stock($leader_id, $order_sn, $order_id, $muid, $action)
+{
+    $goods_list = Db::name('order_goods')->where('order_id', $order_id)
+                ->column('rec_id, goods_id, item_id, goods_num');
+    $pushStock  = new PushStock();
+    $stockLog   = new StockPushLog();
+    $pre_time  = time();
+    $stock_arr = array();
+    $stock_log = array();
+    foreach ($goods_list as $key => $value) {
+        $arr = array(
+            'user_id' => $leader_id,
+            'goods_id'=> $value['goods_id'],
+            'item_id' => $value['item_id'], 
+        );
+        $good = $pushStock::get($arr);
+        if(!$good){
+            return false;
+        }
+        if($action == 'plus'){
+            $stock_arr[$key]['goods_num'] = $good->goods_num + $value['goods_num'];
+        }else if($action == 'minus'){
+            $stock_arr[$key]['goods_num'] = $good->goods_num - $value['goods_num'];
+        }
+        $stock_arr[$key]['update_time'] = $pre_time;
+        $stock_arr[$key]['id'] = $good->id;
+
+        if($action == 'plus'){
+            $stock_log[$key]['stock'] = +$value['goods_num'];
+        }else if($action == 'minus'){
+            $stock_log[$key]['stock'] = -$value['goods_num'];
+        }
+        $stock_log[$key]['goods_id'] = $good->goods_id;
+        $stock_log[$key]['goods_name'] = $good->goods_name;
+        $stock_log[$key]['goods_spec'] = $good->goods_spec;
+        $stock_log[$key]['order_sn'] = $order_sn;
+        $stock_log[$key]['muid'] = $muid;
+        $stock_log[$key]['user_id'] = $leader_id;
+        $stock_log[$key]['ctime'] = $pre_time;
+        $stock_log[$key]['change_type'] = 1;
+    }
+    $pushStock->saveAll($stock_arr);
+    $stockLog->saveAll($stock_log);
 }
 
 /**

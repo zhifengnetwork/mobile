@@ -407,7 +407,7 @@ class Push extends MobileBase
         $where_arr = [
             'order_id' => ['in', $order_ids],
             'deleted' => 0,//删除的订单不列出来
-            'prom_type' => ['lt',5],//虚拟拼团订单不列出来
+            'prom_type' => array(['lt',5], ['eq', 9], ['eq', 10], 'or')//虚拟拼团订单不列出来
         ];
 
         if($type == 'WAITPAY'){
