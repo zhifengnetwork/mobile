@@ -402,7 +402,7 @@ class Push extends MobileBase
         $page = input('page/s', 1);
         $user_id = session('user.user_id');
 
-        $order_ids = M('push_log')->where('leader_id', $user_id)->column('order_id');
+        $order_ids = M('order')->where('leader_id', $user_id)->column('order_id');
         $order = new OrderModel();
         $where_arr = [
             'order_id' => ['in', $order_ids],
