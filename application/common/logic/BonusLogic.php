@@ -34,7 +34,13 @@ class BonusLogic extends Model
 
 	public function bonusModel()
 	{
-		//$price = M('goods')->where(['goods_id'=>$this->goodId])->value('shop_price');
+		//订单类型9为订货, 订货不返利
+		$order = M('order')->where(['order_id'=>$this->orderId])
+				->field('prom_type, pay_status')->find();
+		if($order['prom_type'] == 9 || $order['pay_status'] == 0){
+			return false;
+		}
+
 		//判断商品是否是分销商品或者代理商品
 		$good = M('goods')
 				->where('goods_id', $this->goodId)

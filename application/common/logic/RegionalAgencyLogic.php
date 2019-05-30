@@ -66,9 +66,13 @@ class RegionalAgencyLogic
             'prom_type'  => 0,
             'order_id'   => $order_id,
         );
-        $fir = 'order_id, order_amount, user_money, district, city, province';
+        $fir = 'order_id, order_amount, user_money, district, city, province, prom_type';
         $order = M('order')->field($fir)->where($data)->find();
         if(!$order){
+            return false;
+        }
+        //订单类型9为订货, 订货不返利
+        if($order['prom_type'] == 9){
             return false;
         }
 
