@@ -78,7 +78,7 @@ class Push extends MobileBase
         $condiction = array('leader_id' => $user_id, 'pay_status' => 1);
         $record = M('order')
                 ->where($condiction)
-                ->field('user_id, order_id, total_amount, pay_time')
+                ->field('user_id, order_sn, total_amount, pay_time')
                 ->order('order_id DESC')
                 ->page($page,16)
                 ->select();
