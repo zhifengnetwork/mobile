@@ -64,10 +64,10 @@ class OrderLogic
         if($order['prom_type'] == 6)
             M('team_found')->where(array('order_id'=>$order_id,'user_id'=>$user_id))->save(array('status'=>4));
 
-        $leader = M('push_log')->where('order_id', $order_id)->find();
-        if($leader){
+        // $leader = M('push_log')->where('order_id', $order_id)->find();
+        if($order['leader_id'] != 0){
         	//退还级库存
-            update_leader_stock($leader['leader_id'], $order['order_sn'], $leader['order_id'], session('user.user_id'), 'plus');
+            update_leader_stock($order['leader_id'], $order['order_sn'], $order['order_id'], session('user.user_id'), 'plus');
         }else{
         	$reduce = tpCache('shopping.reduce');
 			if($reduce == 1 || empty($reduce)){
