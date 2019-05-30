@@ -1413,6 +1413,39 @@ class User extends ApiBase
         $this->ajaxReturn(['status' => 0, 'msg' => "请求成功", 'data'=>['pic'=>$picture]]);
     }
 
+	//绑定手机号
+	public function BindTel(){
+        $user_id = $this->get_user_id();
+        if (!$user_id) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>(object)null]);
+        }
+
+		$mobile = I('post.mobile/s','');
+		$mobile_code = I('post.mobile_code/s','');
+		$scene = I('post.scene', 6);
+
+		if(!$mobile || !$mobile_code)$this->ajaxReturn(['status' => -1 , 'msg'=>'请输入手机号码或验证码','data'=>(object)null]);
+
+		$c = Db::name('users')->where(['mobile' => $mobile, 'user_id' => ['<>', $user_id]])->count();
+		$c && $this->ajaxReturn(['status' => -2, 'msg' => "手机已被使用",'data'=>null]);
+		if (!$mobile_code)
+			$this->ajaxReturn(['status' => -3, 'msg' => "请输入验证码",'data'=>null]);
+
+		$userLogic = new UsersLogic();
+		$check_code = $userLogic->check_validate_code($mobile_code, $mobile, 'phone', 0, $scene);
+		if($check_code['status'] !=1){
+			$this->ajaxReturn(['status' => -4, 'msg' => $check_code['msg']]);
+		}
+
+		$res = Db::name('users')->where(['user_id' => $user_id])->update(['mobile'=>$mobile,'mobile_validated'=>1]);
+
+		if($res!==false){
+			$this->ajaxReturn(['status' => 0, 'msg' => '绑定成功','data'=>null]);
+		}else
+			$this->ajaxReturn(['status' => 0, 'msg' => '绑定失败','data'=>null]);
+			
+	}
+
 //----------------------------------------------------------------------------------------------------------
 
     private function GetOpenidFromMp($code)
