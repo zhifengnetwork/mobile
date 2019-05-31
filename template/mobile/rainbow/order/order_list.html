@@ -73,7 +73,6 @@
                                     </div>
                                     <div class="qxatten  wiconfine">
                                         <p class="weight"><span>数量</span>&nbsp;<span>{$goods[goods_num]}</span></p>
-
                                     </div>
                                     <div class="buttondde">
                                         <!-- <notempty name="goods['return_goods']">
@@ -97,6 +96,10 @@
                         <span class="red">￥{$order['total_amount']}</span><span class="threel"
                             id="goodsnum">共{$order.count_goods_num}件</span>
                         <!--if condition="$list['pay_code'] eq 'cod'"><i class="tits-ions qxatten-ions">货到付款</i></if -->
+
+                        <if condition="$order.leader_id != 0">
+                            <span class="threel">地推订单</span>
+                        </if>
                     </span>
                     <if condition="$order.pay_btn eq 1">
                         <a class="shop-rebuy paysoon"
