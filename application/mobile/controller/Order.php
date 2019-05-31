@@ -170,6 +170,13 @@ class Order extends MobileBase
 
         $Order = new OrderModel();
         $order = $Order::get(['order_id' => $id, 'user_id' => $this->user_id]);
+
+        //下级购买上级商品直接确认发货
+        if(($order['pay_status'] == 1) && ($order['leader_id'] != 0)){
+            $order->shipping_status = 1;
+            $order->order_status = 1;
+            $order->save();
+        }
         
         change_role($id);//修改分销、代理
         //检漏补发返利
