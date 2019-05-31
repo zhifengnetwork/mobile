@@ -171,7 +171,7 @@
     <div class="maleri30">
         <p class="butna">
             <if condition="$order['receive_btn'] eq 1 && $order['pay_status'] eq 1">
-                <a class="red receipt" href="javascript:void(0);" onclick="confirmReceive('{$order.order_id}'">确认收货</a>
+                <a class="red receipt" href="javascript:void(0);">确认收货</a>
                 </if>
             <if condition="$order['shipping_btn'] eq 1 && $order.shipping_name neq '' ">
                 <!-- <a href="{:U('Order/express',array('order_id'=>$order['order_id']))}" class="on_comment">查看物流</a> -->
@@ -205,6 +205,8 @@
         $('.mask-filter-div').hide();
         $('.losepay').hide();
     })
+
+
 
     //确认取消订单
     function cancel_order(id){

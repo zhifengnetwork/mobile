@@ -173,6 +173,7 @@ class Order extends MobileBase
 
         //下级购买上级商品直接确认发货
         if(($order['pay_status'] == 1) && ($order['leader_id'] != 0)){
+            Db::name('order_goods')->where('order_id', $id)->update(['is_send' => 1]);
             $order->shipping_status = 1;
             $order->order_status = 1;
             $order->save();
