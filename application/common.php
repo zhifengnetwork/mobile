@@ -1401,8 +1401,6 @@ function update_pay_status($order_sn, $ext = array())
 function handle_leader($order)
 {
     accountLog($order['leader_id'], $order['total_amount'], 0, '地推订单金额', 0, $order['order_id'], $order['order_sn']);
-    // Db::name('push_log')->where('id', $leader['id'])->save(['pay_status'=>1]);
-    Db::name('order')->where('order_id', $order['order_id'])->save(['shipping_status' => 1]);
 }
 
 /**
