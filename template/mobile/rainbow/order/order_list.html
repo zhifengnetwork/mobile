@@ -97,8 +97,11 @@
                             id="goodsnum">共{$order.count_goods_num}件</span>
                         <!--if condition="$list['pay_code'] eq 'cod'"><i class="tits-ions qxatten-ions">货到付款</i></if -->
 
-                        <if condition="$order.leader_id != 0">
+                        <if condition="$order.prom_type == 10">
                             <span class="threel">地推订单</span>
+                        </if>
+                        <if condition="$order.prom_type == 9">
+                            <span class="threel">订货订单</span>
                         </if>
                     </span>
                     <if condition="$order.pay_btn eq 1">
