@@ -194,7 +194,7 @@
                         location.href = "{:U('Admin/Promotion/flash_sale')}";
                     });
                 } else {
-                    layer.msg(data.msg, {icon: 2,time: 1000});
+                    layer.msg(data.result.title, {icon: 2,time: 1000});
                     $.each(data.result, function (index, item) {
                         $('#err_' + index).text(item).show();
                     });

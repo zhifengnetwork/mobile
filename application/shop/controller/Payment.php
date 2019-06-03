@@ -191,7 +191,7 @@ class Payment extends MobileBase
         $data['deposit'] = $money;
         $data['user_id'] = $user['user_id'];
         $data['auction_id'] = $goods_id;
-        $data['order_sn'] = 'Bond'.get_rand_str(10,0,1);
+        $data['order_sn'] = 'B'.get_rand_str(10,0,1);
         $data['create_time'] = time();
         $order_id = M('auctionDeposit')->add($data);
 
