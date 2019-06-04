@@ -35,7 +35,11 @@
 								已-勾选图标clas="selection_yes";
 								未-勾选图标clas="selection_no";（初始化）
 							-->
-							<p class="goods_term_icon selection_no" style="cursor :pointer;" onclick="choice_butOr(this,'{$k}')" id="{$goods.goods_id}"><!--勾选图标--></p>
+							<a href="javascript:alert('{$goods.goods_id}');">
+								<p class="goods_term_icon selection_no" id="{$goods.goods_id}">
+									<!--勾选图标-->
+								</p>
+							</a>
 							<div class="goods_term_data">
 								<p class="goods_term_data_img_box"> 
 									<!--图片w:130px;h:130px-->
@@ -223,45 +227,7 @@
 			}
 			all_kind();
 
-			/*（单选）=>已||未 =>选择*/
-			function choice_butOr(_this,_index){
-				var num_obj=$("#"+_index+" .number_box");
-				var num = num_obj.val();
-				
-				if(num == 0){
-					/*当前，库存*/
-					var this_count = Number(num_obj.parents('.add_reduce_wrap').siblings('.goods_term_bottom_data_stock').find('.stock_num').html());
-					num = Number(num) + 1;
-					if(num > this_count){
-						num = this_count;
-						alert('库存不足!');
-					}
-					/*后台数据-数量*/
-					data_arr[_index]['com_num'] = num;
-					/*更新-页面购买数量*/
-					num_obj.val(num);
-				}
-
-				action = '';
-				if($(_this).hasClass('selection_no')){
-					$(_this).removeClass('selection_no').addClass('selection_yes');
-					data_arr[_index]['checklist'] = true;
-					all_num += 1;
-					action = 'insert';
-				}else {
-					$(_this).removeClass('selection_yes').addClass('selection_no');
-					all_num -= 1;
-					data_arr[_index]['checklist'] = false;
-					action = 'delete';
-				}
-				/*单选=>判断是否全选*/
-				all_kind();
-				/*存表*/
-				post_data(action, _index);  
-				/*总计*/
-				total_number();
-			}
-
+			
 			/*（全选）=>已||未 =>选择*/
 			function all_choice_butOr(_this){
 				var action = '';
@@ -347,7 +313,7 @@
 				$.ajax({
 					type: "post",
 					url : "{:url('Mobile/Push/push_cart')}",
-					data: {data : data, action : action},
+					data: {data : data, action : action, user_id:"{$user_id}"},
 					dataType: 'json',
 					success: function (data) {
 						if((data.status == 1) && (data.result != '')){
@@ -567,6 +533,54 @@
 				close_alert();
 			})
 			
+
+			/*（单选）=>已||未 =>选择*/
+			function choice_butOr(_this,_index){
+				var num_obj=$("#"+_index+" .number_box");
+				var num = num_obj.val();
+				
+				if(num == 0){
+					/*当前，库存*/
+					var this_count = Number(num_obj.parents('.add_reduce_wrap').siblings('.goods_term_bottom_data_stock').find('.stock_num').html());
+					num = Number(num) + 1;
+					if(num > this_count){
+						num = this_count;
+						alert('库存不足!');
+					}
+					/*后台数据-数量*/
+					data_arr[_index]['com_num'] = num;
+					/*更新-页面购买数量*/
+					num_obj.val(num);
+				}
+
+				action = '';
+				if($(_this).hasClass('selection_no')){
+					$(_this).removeClass('selection_no').addClass('selection_yes');
+					data_arr[_index]['checklist'] = true;
+					all_num += 1;
+					action = 'insert';
+				}else {
+					$(_this).removeClass('selection_yes').addClass('selection_no');
+					all_num -= 1;
+					data_arr[_index]['checklist'] = false;
+					action = 'delete';
+				}
+				/*单选=>判断是否全选*/
+				all_kind();
+				/*存表*/
+				post_data(action, _index);  
+				/*总计*/
+				total_number();
+			}
+
+			/*
+			 * 选择单个商品
+			 */
+			function choice_one(id){
+				alert(id);
+			}
+
+
 		</script>
 	</body>
 </html>
