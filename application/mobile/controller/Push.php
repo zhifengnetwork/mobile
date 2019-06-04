@@ -343,7 +343,7 @@ class Push extends MobileBase
     {
         $user_id = session('user.user_id');
         if(!$user_id){
-            $this->error('请先登录');
+            $this->error('请先登录','Mobile/User/login');
         }
 
         $condiction = array(

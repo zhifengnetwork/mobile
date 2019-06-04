@@ -35,11 +35,11 @@
 								已-勾选图标clas="selection_yes";
 								未-勾选图标clas="selection_no";（初始化）
 							-->
-							<a href="javascript:alert('{$goods.goods_id}');">
-								<p class="goods_term_icon selection_no" id="{$goods.goods_id}">
-									<!--勾选图标-->
-								</p>
-							</a>
+							
+							<p class="goods_term_icon selection_no" onclick="javascript:choice_butOr(_this,_index);" id="{$goods.goods_id}">
+								<!--勾选图标-->
+							</p>
+							
 							<div class="goods_term_data">
 								<p class="goods_term_data_img_box"> 
 									<!--图片w:130px;h:130px-->
@@ -229,7 +229,7 @@
 
 			
 			/*（全选）=>已||未 =>选择*/
-			function all_choice_butOr(_this){
+			function all_choice_butOr(_this,_index){
 				var action = '';
 				/*全选*/
 				if($(_this).find('.all_election').hasClass('all_selection_no')){
@@ -572,14 +572,6 @@
 				/*总计*/
 				total_number();
 			}
-
-			/*
-			 * 选择单个商品
-			 */
-			function choice_one(id){
-				alert(id);
-			}
-
 
 		</script>
 	</body>
