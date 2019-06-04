@@ -187,7 +187,12 @@ class Push extends MobileBase
     {
         $action = I('action');
         $data   = I('data/a');
-        $user_id = session('user.user_id');
+        $user_id = I('user_id');;
+
+        if(!$user_id){
+            $result = ['status'=> 0, 'msg'=>'请登录', 'result' => ''];
+            $this->ajaxReturn($result);   
+        }
 
         switch ($action) {
             case 'insert':
@@ -336,6 +341,11 @@ class Push extends MobileBase
      */
     public function order_goods()
     {
+        $user_id = session('user.user_id');
+        if(!$user_id){
+            $this->error('请先登录');
+        }
+
         $condiction = array(
             'prom_type'  => 0,
             'is_virtual' => 0,
@@ -351,6 +361,9 @@ class Push extends MobileBase
         //删除地推购物车的数据,避免重复
         M('push_cart')->where('user_id', $user_id)->delete();
         $this->assign('goods', $goods);
+
+        $this->assign('user_id', $user_id);
+
         return $this->fetch();
     }
 
