@@ -475,10 +475,15 @@
 				all_num += 1;
 				action = 'insert';
 			} else {
+				//去掉  打钩
+
 				$(_this).removeClass('selection_yes').addClass('selection_no');
 				all_num -= 1;
 				// data_arr[_index]['checklist'] = false;
 				action = 'delete';
+				//数量等于0
+				num_obj.val(0);
+				
 			}
 			/*单选=>判断是否全选*/
 			all_kind();
@@ -513,8 +518,10 @@
 			var action = 'update';
 			var thisNum = Number($(_this).siblings('.number_box').val());
 			thisNum -= 1;
-			if (thisNum < 0) {
+			if (thisNum < 0 || thisNum == 0) {
 				thisNum = 0;
+				$("#"+goods_id).removeClass('selection_yes').addClass('selection_no');	
+				//等于0的话，取消打钩	
 			}
 			$(_this).siblings('.number_box').val(thisNum);
 			post_data_select_one(action, _index, goods_id);
