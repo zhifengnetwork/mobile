@@ -513,7 +513,7 @@
 
 				console.log(goods_id)
 
-				post_data(action, _index ,goods_id);
+				post_data_select_one(action, _index,goods_id);
 			}
 			
 			/*减(数量)*/
@@ -528,7 +528,7 @@
 				
 				$(_this).siblings('.number_box').val(thisNum);
 		
-				post_data(action, _index,goods_id);
+				post_data_select_one(action, _index,goods_id);
 			}
 
 			

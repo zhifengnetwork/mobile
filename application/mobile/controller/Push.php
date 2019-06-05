@@ -228,7 +228,6 @@ class Push extends MobileBase
         $num   = I('num');
         $user_id = I('user_id');;
 
-
         if(!$user_id){
             $result = ['status'=> 0, 'msg'=>'请登录', 'result' => ''];
             $this->ajaxReturn($result);   
@@ -237,24 +236,24 @@ class Push extends MobileBase
         $goods_id = I('goods_id');
         //商品ID
 
-
-        $data = M('goods')->where('goods_id', $goods_id)->field('goods_name, shop_price as goods_price')->find();
-        $data['goods_num'] = $num;
-        $data['user_id'] = $user_id;
-        $data['goods_spec'] = 0;
-        $data['spec_key'] = 0;
-        $data['create_time'] = time();
-
-        $result = M('push_cart')->add($data);
-
-        if($result){
-            //计算价格
-            $price = $this->total_price($user_id);
-            $result = ['status'=>1, 'msg'=>'操作成功!', 'result' => '','price'=>$price];
-        }else{
-            $result = ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
+        if($action == 'insert'){
+            $data = M('goods')->where('goods_id', $goods_id)->field('goods_name, shop_price as goods_price')->find();
+            $data['goods_num'] = $num;
+            $data['user_id'] = $user_id;
+            $data['goods_spec'] = 0;
+            $data['spec_key'] = 0;
+            $data['create_time'] = time();
+            M('push_cart')->add($data);
         }
 
+        if($action == 'update'){
+            M('push_cart')->where(['user_id'=>$user_id,'goods_id'=>$goods_id])->save(['goods_num'=>$num]);
+        }
+
+        //计算价格
+        $price = $this->total_price($user_id);
+        $result = ['status'=>1, 'msg'=>'操作成功!', 'result' => '','price'=>$price];
+       
         $this->ajaxReturn($result);   
 
     }
