@@ -120,7 +120,7 @@
 		
 		<script src="__STATIC__/js/push/jquery-1.8.3.js"></script>
 
-		<script src="__STATIC__/js/push/public.js?v={:time()}"></script>
+		<script src="__STATIC__/js/push/public.js"></script>
 
 		<script src="__PUBLIC__/js/layer/layer.js"></script>
 		
@@ -305,40 +305,16 @@
 			})
 
 			
-
-			
 			/*结算*/
 			$('.fixed_bottom_wrpa_right').on('click',function(){
-				console.log(data_arr);
-				var count = 0;
-				/*根据(传)后台数据的状态=>判断*/
-				for(var j=0;j<data_arr.length;j++){
-					/*查找=>勾选-状态*/
-//					if(data_arr[j]['checklist'] != true){
-//						alert('亲，您没有结算的商品!');
-//						return false;
-//					}
-					/**
-					 * 查找=>勾选-状态 &&当前-都选的商品-数量为空
-					 * **/
-					if(data_arr[j]['checklist'] == true && data_arr[j]['com_num'] == 0){
-						layer.msg('亲，您购买的商品数量为0件', {icon:2});
-						return false;
-					}
-					if(data_arr[j]['checklist'] == true && data_arr[j]['com_num'] != 0){
-						/*已有-勾选的商品（条件都满足）*/
-						count++;
-						
-					}
-				}
-				if(!count){
-					layer.msg('亲，您没有结算的商品!', {icon:2});
+				var price = Number($('.total_num').text());
+				if(price == 0){
+					layer.msg('亲，您没有结算的商品');
 					return false;
 				}
-				
 				window.location.href = "{:url('Mobile/PushCart/cart2')}";
-				
 			})
+			
 			
 			/*点击出现-规格(遮罩层)*/
 			function template_but(goods_id,_index,_this){
@@ -473,7 +449,6 @@
 				var num_obj=$("#"+_index+" .number_box");
 				var num = num_obj.val();
 				
-
 				if(num == 0){
 					/*当前，库存*/
 					var this_count = Number(num_obj.parents('.add_reduce_wrap').siblings('.goods_term_bottom_data_stock').find('.stock_num').html());
@@ -491,13 +466,13 @@
 				action = '';
 				if($(_this).hasClass('selection_no')){
 					$(_this).removeClass('selection_no').addClass('selection_yes');
-					data_arr[_index]['checklist'] = true;
+					// data_arr[_index]['checklist'] = true;
 					all_num += 1;
 					action = 'insert';
 				}else {
 					$(_this).removeClass('selection_yes').addClass('selection_no');
 					all_num -= 1;
-					data_arr[_index]['checklist'] = false;
+					// data_arr[_index]['checklist'] = false;
 					action = 'delete';
 				}
 
@@ -582,20 +557,12 @@
 						
 						//总价
 						if (typeof data.price !== 'undefined') {
-							console.log('总价：'+data.price)
+							
 							$('.total_num').html(data.price.toFixed(2));
 						}
 
 
-						if((data.status == 1) && (data.result != '')){
-							data_arr[index]['com_price'] = data.result;
-							$('.'+index+'_price').html(data.result);
-							
-						}
-						if((data.status == 0) && (data.result != '')){
-							data_arr[index]['com_price'] = data.result;
-							$('.'+index+'_price').html(data.result);
-						}
+	
 					},
 				});
 			}	
