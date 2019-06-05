@@ -445,7 +445,7 @@
 		<script>
 			/*（单选）=>已||未 =>选择*/
 			function choice_butOr(_this,_index,goods_id){
-
+				
 				var num_obj=$("#"+_index+" .number_box");
 				var num = num_obj.val();
 				
@@ -476,14 +476,19 @@
 					action = 'delete';
 				}
 
-				console.log(action);
+			
 
 				/*单选=>判断是否全选*/
 				all_kind();
+				
+				
 				/*存表*/
-				post_data(action, _index,goods_id);  
-			
+				post_data_select_one(action, _index,goods_id);  
+				
 			}
+			</script>
+
+			<script>
 
 			/*加（数量）*/
 			function add_fun(_this,_index,goods_id){
@@ -527,13 +532,15 @@
 			}
 
 			
+			</script>
+
+			
+			<script>
 
 			//对表请求操作
 			function post_data(action, index = 'all',goods_id = ''){
 
-				console.log('goods_id:::'+goods_id)
-				console.log('index:::'+index)
-
+				
 
 				var data = [];
 				if(index == 'all'){
@@ -560,12 +567,31 @@
 							
 							$('.total_num').html(data.price.toFixed(2));
 						}
-
-
-	
 					},
 				});
 			}	
+		</script>
+
+
+		<script>
+			function post_data_select_one(action, index,goods_id){
+			
+				var num = Number($('#'+index).find('.number_box').val());
+
+				$.ajax({
+					type: "post",
+					url : "{:url('Mobile/Push/post_data_select_one')}",
+					data: {num : num, action : action, user_id:"{$user_id}",goods_id:goods_id},
+					dataType: 'json',
+					success: function (data) {
+						//总价
+						if (typeof data.price !== 'undefined') {
+							$('.total_num').html(data.price.toFixed(2));
+						}
+					},
+				});
+
+			}
 		</script>
 	</body>
 </html>
