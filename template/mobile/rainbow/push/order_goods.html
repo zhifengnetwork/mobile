@@ -36,7 +36,7 @@
 								未-勾选图标clas="selection_no";（初始化）
 							-->
 							
-							<p class="goods_term_icon selection_no" style="cursor :pointer;" onclick="choice_butOr(this,'{$k}')" id="{$goods.goods_id}">
+							<p class="goods_term_icon selection_no" style="cursor :pointer;" onclick="choice_butOr(this,'{$k}','{$goods.goods_id}')" id="{$goods.goods_id}">
 								<!--勾选图标-->
 							</p>
 							
@@ -468,13 +468,11 @@
 
 		<script>
 			/*（单选）=>已||未 =>选择*/
-			function choice_butOr(_this,_index){
+			function choice_butOr(_this,_index,goods_id){
 
 				var num_obj=$("#"+_index+" .number_box");
 				var num = num_obj.val();
 				
-				var this_index = Number(_index);
-
 
 				if(num == 0){
 					/*当前，库存*/
@@ -484,9 +482,8 @@
 						num = this_count;
 						alert('库存不足!');
 					}
-					/*后台数据-数量*/
+					
 				
-					// data_arr[this_index]['com_num'] = num;
 					/*更新-页面购买数量*/
 					num_obj.val(num);
 				}
@@ -494,19 +491,22 @@
 				action = '';
 				if($(_this).hasClass('selection_no')){
 					$(_this).removeClass('selection_no').addClass('selection_yes');
-					data_arr[this_index]['checklist'] = true;
+					data_arr[_index]['checklist'] = true;
 					all_num += 1;
 					action = 'insert';
 				}else {
 					$(_this).removeClass('selection_yes').addClass('selection_no');
 					all_num -= 1;
-					data_arr[this_index]['checklist'] = false;
+					data_arr[_index]['checklist'] = false;
 					action = 'delete';
 				}
+
+				console.log(action);
+
 				/*单选=>判断是否全选*/
 				all_kind();
 				/*存表*/
-				post_data(action, this_index);  
+				post_data(action, _index,goods_id);  
 			
 			}
 

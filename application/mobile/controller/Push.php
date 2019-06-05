@@ -207,7 +207,7 @@ class Push extends MobileBase
             
             case 'delete':
                 $data   = $this->handle_data($user_id, $data);
-                $result = $this->delete_cart($user_id, $data);
+                $result = $this->delete_cart($user_id, $data, $goods_id);
                 $this->ajaxReturn($result);   
                 break;
 
@@ -269,6 +269,7 @@ class Push extends MobileBase
      */
     public function total_price($user_id){
         $data = M('push_cart')->where(['user_id'=>$user_id])->field('goods_price,goods_num')->select();
+        $price = 0;
         foreach($data as $k => $v){
             $price += $v['goods_price'] * $v['goods_num'];
         }
@@ -298,29 +299,35 @@ class Push extends MobileBase
     /**
      * 删除购买地推商品
      */
-    public function delete_cart($user_id, $data)
+    public function delete_cart($user_id, $data, $gid)
     {
         if(!$data){
             return ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
         }
 
-        foreach ($data as $key => $value) {
-            $goods_id[] = $value['goods_id'];
-            $item_id[]  = $value['item_id'];
+        if($data){
+            foreach ($data as $key => $value) {
+                $goods_id[] = $value['goods_id'];
+                $item_id[]  = $value['item_id'];
+            }
+            $arr = array(
+                'user_id' => $user_id,
+                'goods_id'=> ['in', $goods_id],
+                'item_id' => ['in', $item_id],
+            );
+            M('push_cart')->where($arr)->delete();
         }
-        $arr = array(
-            'user_id' => $user_id, 
-            'goods_id'=> ['in', $goods_id],
-            'item_id' => ['in', $item_id],
-        );
-        $retult = M('push_cart')->where($arr)->delete();
-        if($result){
-            //计算价格
-            $price = $this->total_price($user_id);
-            return ['status'=>1, 'msg'=>'操作成功!', 'result' => '','price'=>$price];
-        }else{
-            return ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
+
+        if($gid){
+            $arr = array(
+                'user_id' => $user_id,
+                'goods_id'=> $gid
+            );
+            M('push_cart')->where($arr)->delete();
         }
+
+        $price = $this->total_price($user_id);
+        return ['status'=>1, 'msg'=>'操作成功!', 'result' => '','price'=>$price];
       
     }
 
