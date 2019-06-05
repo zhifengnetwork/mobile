@@ -540,20 +540,16 @@
 			//对表请求操作
 			function post_data(action, index = 'all',goods_id = ''){
 
-				
-
 				var data = [];
 				if(index == 'all'){
 					data = data_arr;
 				}else{
 					data[0] = data_arr[index];
-
 					//根据 index 去获得  num
 					data[0]['com_num'] = Number($('#'+index).find('.number_box').val());
-
 				}
 
-				console.log(data)
+		
 
 				$.ajax({
 					type: "post",

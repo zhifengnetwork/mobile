@@ -241,14 +241,29 @@ class Push extends MobileBase
             $data['goods_id'] = $goods_id;
             $data['goods_num'] = $num;
             $data['user_id'] = $user_id;
-            $data['goods_spec'] = 0;
-            $data['spec_key'] = 0;
+
+            $spec = M('spec_goods_price')->where(['goods_id'=>$goods_id])->find();
+            if($spec){
+                $data['item_id'] = $spec['item_id'];
+                $data['goods_spec'] = $spec['key_name'];
+                $data['spec_key'] = $spec['key'];
+
+            }else{
+                $data['item_id'] = 0;
+                $data['goods_spec'] = $goods_spec;
+                $data['spec_key'] = 0;
+            }
+
             $data['create_time'] = time();
             M('push_cart')->add($data);
         }
 
         if($action == 'update'){
             M('push_cart')->where(['user_id'=>$user_id,'goods_id'=>$goods_id])->save(['goods_num'=>$num]);
+        }
+
+        if($action == 'delete'){
+            M('push_cart')->where(['user_id'=>$user_id,'goods_id'=>$goods_id])->delete();
         }
 
         //计算价格
