@@ -238,6 +238,7 @@ class Push extends MobileBase
 
         if($action == 'insert'){
             $data = M('goods')->where('goods_id', $goods_id)->field('goods_name, shop_price as goods_price')->find();
+            $data['goods_id'] = $goods_id;
             $data['goods_num'] = $num;
             $data['user_id'] = $user_id;
             $data['goods_spec'] = 0;
