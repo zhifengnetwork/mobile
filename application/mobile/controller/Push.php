@@ -189,15 +189,19 @@ class Push extends MobileBase
         $data   = I('data/a');
         $user_id = I('user_id');;
 
+
         if(!$user_id){
             $result = ['status'=> 0, 'msg'=>'请登录', 'result' => ''];
             $this->ajaxReturn($result);   
         }
 
+        $goods_id = I('goods_id');
+        //商品ID
+
         switch ($action) {
             case 'insert':
                 $data   = $this->handle_data($user_id, $data);
-                $result = $this->insert_cart($data);
+                $result = $this->insert_cart($user_id,$data);
                 $this->ajaxReturn($result);   
                 break;
             
@@ -209,7 +213,7 @@ class Push extends MobileBase
 
             default:
                 $data   = $this->handle_data($user_id, $data);
-                $result = $this->update_cart($user_id, $data);
+                $result = $this->update_cart($user_id, $data, $goods_id);
                 $this->ajaxReturn($result);  
                 break;
         }
@@ -220,6 +224,10 @@ class Push extends MobileBase
      */
     public function handle_data($user_id, $data)
     {   
+       if(!$data || $data == ''){
+            return false;
+       }
+
         $all_data = array();
         $pre_time = time();
         foreach ($data as $good_key => $good) {
@@ -257,17 +265,34 @@ class Push extends MobileBase
     }
 
     /**
+     * 计算价格
+     */
+    public function total_price($user_id){
+        $data = M('push_cart')->where(['user_id'=>$user_id])->field('goods_price,goods_num')->select();
+        foreach($data as $k => $v){
+            $price += $v['goods_price'] * $v['goods_num'];
+        }
+        return $price;
+    }
+    
+    /**
      * 添加购买地推商品
      */
-    public function insert_cart($data)
+    public function insert_cart($user_id,$data)
     {
+        if(!$data){
+            return ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
+        }
+
         $result = M('push_cart')->insertAll($data);
         if($result){
-            $result = ['status'=>1, 'msg'=>'操作成功!', 'result' => ''];
+            //计算价格
+            $price = $this->total_price($user_id);
+            return ['status'=>1, 'msg'=>'操作成功!', 'result' => '','price'=>$price];
         }else{
-            $result = ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
+            return  ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
         }
-        return $result;
+        
     }
 
     /**
@@ -275,6 +300,10 @@ class Push extends MobileBase
      */
     public function delete_cart($user_id, $data)
     {
+        if(!$data){
+            return ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
+        }
+
         foreach ($data as $key => $value) {
             $goods_id[] = $value['goods_id'];
             $item_id[]  = $value['item_id'];
@@ -286,18 +315,49 @@ class Push extends MobileBase
         );
         $retult = M('push_cart')->where($arr)->delete();
         if($result){
-            $result = ['status'=>1, 'msg'=>'操作成功!', 'result' => ''];
+            //计算价格
+            $price = $this->total_price($user_id);
+            return ['status'=>1, 'msg'=>'操作成功!', 'result' => '','price'=>$price];
         }else{
-            $result = ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
+            return ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
         }
-        return $result;
+      
     }
 
     /**
      * 修改购买地推商品
      */
-    public function update_cart($user_id, $data)
+    public function update_cart($user_id, $data ,$goods_id )
     {
+        if(!$data){
+            if(!$goods_id){
+                return ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
+            }
+
+            //有了 goods_id
+            $condition = array(
+                'user_id'  => $user_id,
+                'goods_id' => $goods_id,
+            );
+
+            $is_exisit = M('push_cart')->where($condition)->find();
+
+            if($is_exisit){
+                $num = $is_exisit['goods_num'] + 1;
+                $result = M('push_cart')->where('id', $is_exisit['id'])->update(['goods_num'=>$num]);
+                if($result){
+                     //计算价格
+                    $price = $this->total_price($user_id);
+                    return ['status'=>1, 'msg'=>'操作成功!', 'result' => $value['goods_price'],'price'=>$price];
+
+                }else{
+                    return ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
+                }
+            }
+
+           
+        }
+
         foreach ($data as $key => $value) {
             $condition = array(
                 'user_id'  => $user_id,
@@ -307,14 +367,16 @@ class Push extends MobileBase
             if($is_exisit){
                 $result = M('push_cart')->where('id', $is_exisit['id'])->update($value);
                 if($result){
-                    $result = ['status'=>1, 'msg'=>'操作成功!', 'result' => $value['goods_price']];
+                    //计算价格
+                    $price = $this->total_price($user_id);
+                    return ['status'=>1, 'msg'=>'操作成功!', 'result' => $value['goods_price'],'price'=>$price];
+                   
                 }else{
-                    $result = ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
+                    return ['status'=>0, 'msg'=>'操作失败!', 'result' => ''];
                 }
-                return $result;
+                
             }else{
-                $result = ['status'=>0, 'msg'=>'操作失败!', 'result' => $value['goods_price']];
-                return $result;
+                return ['status'=>0, 'msg'=>'操作失败!', 'result' => $value['goods_price']];
             }
         }
     }
