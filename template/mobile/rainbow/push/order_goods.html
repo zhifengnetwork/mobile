@@ -84,7 +84,7 @@
 								</notempty>
 								<!--加、减 wrap-->
 								<div class="add_reduce_wrap" id="{$k}">
-									<span class="reduce_box" onclick="reduce_fun(this,'{$k}')"><i
+									<span class="reduce_box" onclick="reduce_fun(this,'{$k}','{$goods.goods_id}')"><i
 											class="reduce_icon"></i></span>
 									<!--绑定:data-index="对应下标"=>更改'传后台的数据'-->
 									<input class="number_box" type="number" value="0" data-index="{$k}" />
@@ -450,19 +450,13 @@
 			/*关闭-遮罩层*/
 			close_alert();
 		})
-
-
-
-
 	</script>
 
 	<script>
 		/*（单选）=>已||未 =>选择*/
 		function choice_butOr(_this, _index, goods_id) {
-
 			var num_obj = $("#" + _index + " .number_box");
 			var num = num_obj.val();
-
 			if (num == 0) {
 				/*当前，库存*/
 				var this_count = Number(num_obj.parents('.add_reduce_wrap').siblings('.goods_term_bottom_data_stock').find('.stock_num').html());
@@ -471,12 +465,9 @@
 					num = this_count;
 					alert('库存不足!');
 				}
-
-
 				/*更新-页面购买数量*/
 				num_obj.val(num);
 			}
-
 			action = '';
 			if ($(_this).hasClass('selection_no')) {
 				$(_this).removeClass('selection_no').addClass('selection_yes');
@@ -489,16 +480,10 @@
 				// data_arr[_index]['checklist'] = false;
 				action = 'delete';
 			}
-
-
-
 			/*单选=>判断是否全选*/
 			all_kind();
-
-
 			/*存表*/
 			post_data_select_one(action, _index, goods_id);
-
 		}
 	</script>
 
@@ -506,9 +491,6 @@
 
 		/*加（数量）*/
 		function add_fun(_this, _index, goods_id) {
-
-			console.log('加');
-
 			var action = 'update';
 			/*当前，库存*/
 			var this_count = Number($(_this).parents('.add_reduce_wrap').siblings('.goods_term_bottom_data_stock').find('.stock_num').html());
@@ -520,39 +502,28 @@
 				return false;
 			}
 			/*后台数据-数量*/
-
 			/*更新-页面购买数量*/
 			$(_this).siblings('.number_box').val(thisNum);
-
 			console.log(goods_id)
-
 			post_data_select_one(action, _index, goods_id);
 		}
 
 		/*减(数量)*/
 		function reduce_fun(_this, _index, goods_id) {
-
 			var action = 'update';
 			var thisNum = Number($(_this).siblings('.number_box').val());
 			thisNum -= 1;
 			if (thisNum < 0) {
 				thisNum = 0;
 			}
-
 			$(_this).siblings('.number_box').val(thisNum);
-
 			post_data_select_one(action, _index, goods_id);
 		}
-
-
 	</script>
 
-
 	<script>
-
 		//对表请求操作
 		function post_data(action, index = 'all', goods_id = '') {
-
 			var data = [];
 			if (index == 'all') {
 				data = data_arr;
@@ -561,32 +532,24 @@
 				//根据 index 去获得  num
 				data[0]['com_num'] = Number($('#' + index).find('.number_box').val());
 			}
-
-
-
 			$.ajax({
 				type: "post",
 				url: "{:url('Mobile/Push/push_cart')}",
 				data: { data: data, action: action, user_id: "{$user_id}", goods_id: goods_id },
 				dataType: 'json',
 				success: function (data) {
-
 					//总价
 					if (typeof data.price !== 'undefined') {
-
 						$('.total_num').html(data.price.toFixed(2));
 					}
-				},
+				}
 			});
 		}	
 	</script>
 
-
 	<script>
 		function post_data_select_one(action, index, goods_id) {
-
 			var num = Number($('#' + index).find('.number_box').val());
-
 			$.ajax({
 				type: "post",
 				url: "{:url('Mobile/Push/post_data_select_one')}",
@@ -597,11 +560,9 @@
 					if (typeof data.price !== 'undefined') {
 						$('.total_num').html(data.price.toFixed(2));
 					}
-				},
+				}
 			});
-
 		}
 	</script>
 </body>
-
 </html>
