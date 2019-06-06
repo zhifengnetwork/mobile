@@ -98,6 +98,10 @@ class Cx extends Taglib
             }
             return ;
     }     
+
+    // cache(true,TPSHOP_CACHE_TIME)->
+    // 去掉 缓存
+    
 	public function tagAdv($tag, $content)
         {
      	$order = $tag['order']; //排序
@@ -109,7 +113,7 @@ class Cx extends Taglib
            
         $str = '<?php ';
         $str .= '$pid ='.$pid.';';
-        $str .= '$ad_position = M("ad_position")->cache(true,TPSHOP_CACHE_TIME)->column("position_id,position_name,ad_width,ad_height","position_id");';
+        $str .= '$ad_position = M("ad_position")->column("position_id,position_name,ad_width,ad_height","position_id");';
         $str .= '$result = M("ad")->where("pid=$pid  and enabled = 1 and start_time < '.strtotime(date('Y-m-d H:00:00')).' and end_time > '.strtotime(date('Y-m-d H:00:00')).' ")->order("orderby desc")->cache(true,TPSHOP_CACHE_TIME)->limit("'.$limit.'")->select();';
         $str .= '
 if(is_array($ad_position) && !in_array($pid,array_keys($ad_position)) && $pid)
