@@ -1469,16 +1469,17 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
     	$strTable .= '<tr>';
     	$strTable .= '<td style="text-align:center;font-size:12px;width:120px;">订单编号</td>';
     	$strTable .= '<td style="text-align:center;font-size:12px;" width="100">日期</td>';
-    	$strTable .= '<td style="text-align:center;font-size:12px;" width="*">收货人</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">收货人</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">电话</td>';
     	$strTable .= '<td style="text-align:center;font-size:12px;" width="*">收货地址</td>';
-    	$strTable .= '<td style="text-align:center;font-size:12px;" width="*">电话</td>';
     	$strTable .= '<td style="text-align:center;font-size:12px;" width="*">订单金额</td>';
     	$strTable .= '<td style="text-align:center;font-size:12px;" width="*">实际支付</td>';
     	$strTable .= '<td style="text-align:center;font-size:12px;" width="*">支付方式</td>';
     	$strTable .= '<td style="text-align:center;font-size:12px;" width="*">支付状态</td>';
     	$strTable .= '<td style="text-align:center;font-size:12px;" width="*">发货状态</td>';
         $strTable .= '<td style="text-align:center;font-size:12px;" width="*">商品数量</td>';
-    	$strTable .= '<td style="text-align:center;font-size:12px;" width="*">商品信息</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">商品信息</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">备注</td>';
     	$strTable .= '</tr>';
 	    if(is_array($orderList)){
 	    	$region	= get_region_list();
@@ -1486,9 +1487,9 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
 	    		$strTable .= '<tr>';
 	    		$strTable .= '<td style="text-align:center;font-size:12px;">&nbsp;'.$val['order_sn'].'</td>';
 	    		$strTable .= '<td style="text-align:left;font-size:12px;">'.$val['create_time'].' </td>';	    		
-	    		$strTable .= '<td style="text-align:left;font-size:12px;">'.$val['consignee'].'</td>';
+                $strTable .= '<td style="text-align:left;font-size:12px;">'.$val['consignee'].'</td>';
+                $strTable .= '<td style="text-align:left;font-size:12px;">'.$val['mobile'].'</td>';
                 $strTable .= '<td style="text-align:left;font-size:12px;">'."{$region[$val['province']]},{$region[$val['city']]},{$region[$val['district']]},{$region[$val['twon']]}{$val['address']}".' </td>';
-	    		$strTable .= '<td style="text-align:left;font-size:12px;">'.$val['mobile'].'</td>';
 	    		$strTable .= '<td style="text-align:left;font-size:12px;">'.$val['goods_price'].'</td>';
 	    		$strTable .= '<td style="text-align:left;font-size:12px;">'.$val['order_amount'].'</td>';
 	    		$strTable .= '<td style="text-align:left;font-size:12px;">'.$val['pay_name'].'</td>';
@@ -1505,7 +1506,8 @@ exit("请联系DC环球直供网络客服购买高级版支持此功能");
 	    		}
 	    		unset($orderGoods);
                 $strTable .= '<td style="text-align:left;font-size:12px;">总'.$goods_num.' </td>';
-	    		$strTable .= '<td style="text-align:left;font-size:12px;">'.$strGoods.' </td>';
+                $strTable .= '<td style="text-align:left;font-size:12px;">'.$strGoods.' </td>';
+                $strTable .= '<td style="text-align:left;font-size:12px;">'.$val['user_note'].' </td>';
 	    		$strTable .= '</tr>';
 	    	}
 	    }
