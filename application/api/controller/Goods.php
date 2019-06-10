@@ -158,14 +158,14 @@ class Goods extends ApiBase
         }
 
 		$GoodsCategory = M('goods_category');
-		foreach($goods_list as $k=>$v){
-			$commission_rate = $v['is_distribut'] ? $GoodsCategory->where(['id'=>$v['cat_id']])->value('commission_rate') : 0;
-			$goods_list[$k]['commission_num'] = (intval($v['shop_price'] * $commission_rate) / 100);
-        }
-        
+	
         if($goods_list){
             $seller_arr = Db::name('seller')->field('seller_id,seller_name')->select();
             foreach($goods_list as $k=>$v){
+                
+                $commission_rate = $v['is_distribut'] ? $GoodsCategory->where(['id'=>$v['cat_id']])->value('commission_rate') : 0;
+                $goods_list[$k]['commission_num'] = (intval($v['shop_price'] * $commission_rate) / 100);
+            
                 foreach($seller_arr as $ks=>$vs){
                     if($v['seller_id'] == $vs['seller_id'] ){
                    
