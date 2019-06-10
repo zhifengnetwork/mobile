@@ -115,7 +115,6 @@ class Cart extends ApiBase
         $this->ajaxReturn(['status' => 0 , 'msg'=>'购物车列表成功','data'=>$res]);
     }
 
-
      /**
      * 删除购物车的商品
      */
