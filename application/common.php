@@ -810,9 +810,12 @@ function getCatGrandson($cat_id)
     $GLOBALS['category_id_arr'] = M('GoodsCategory')->cache(true, TPSHOP_CACHE_TIME)->getField('id,parent_id');
     // 先把所有儿子找出来
     $son_id_arr = M('GoodsCategory')->where("parent_id", $cat_id)->cache(true, TPSHOP_CACHE_TIME)->getField('id', true);
-    foreach ($son_id_arr as $k => $v) {
-        getCatGrandson2($v);
+    if($son_id_arr){
+        foreach ($son_id_arr as $k => $v) {
+            getCatGrandson2($v);
+        }
     }
+
     return $GLOBALS['catGrandson'];
 }
 
