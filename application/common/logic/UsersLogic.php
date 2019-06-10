@@ -305,7 +305,7 @@ class UsersLogic extends Model
             // } 
 
 			$data['unionid'] && $map['unionid'] = $data['unionid'];
-			$is_cunzai = Db::name('users')->where(array('unionid'=>$map['unionid']))->find();
+			$is_cunzai = $map['unionid'] ? Db::name('users')->where(array('unionid'=>$map['unionid']))->find() : '';
             !$is_cunzai && $is_cunzai = Db::name('users')->where(array('openid'=>$map['openid']))->find();
             if(!$is_cunzai){
                 $row_id = Db::name('users')->add($map);
