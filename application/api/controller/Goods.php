@@ -100,7 +100,8 @@ class Goods extends ApiBase
 
         // 筛选 品牌 规格 属性 价格
         $cat_id_arr = getCatGrandson($id);
-        $goods_where = ['is_on_sale' => 1, 'exchange_integral' => 0, 'cat_id' => ['in', $cat_id_arr]];
+        $goods_where = ['is_on_sale' => 1, 'exchange_integral' => 0];
+		(count($cat_id_arr) > 1) && $goods_where['cat_id'] = ['in', $cat_id_arr];
         $filter_goods_id = Db::name('goods')->where($goods_where)->cache(true)->getField("goods_id", true);
 
         // 过滤筛选的结果集里面找商品
