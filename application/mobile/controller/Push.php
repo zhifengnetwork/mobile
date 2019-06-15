@@ -98,6 +98,11 @@ class Push extends MobileBase
             $data = I('post.');
             $data = $data['data'];
 
+            if($data['choice_number'] < 0){
+                $this->ajaxReturn(['status'=>0, 'msg'=>'充值金额不能小于0']);
+                exit;
+            }
+
             $arr  = array(
                 'inc_type' => 'recharge',
                 'name' => ['in',['recharge_open', 'points_rate']],
