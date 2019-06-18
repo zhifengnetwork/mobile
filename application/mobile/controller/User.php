@@ -284,6 +284,9 @@ class User extends MobileBase
 		return $performance;
 	}
 
+    /**
+     * 个人中心
+     */
     public function index()
     {
         $MenuCfg = new MenuCfg();
@@ -308,11 +311,11 @@ class User extends MobileBase
         $this->assign('menu_list', $menu_list);
 
         //更新团队总人数
-        $url = SITE_URL."/api/distribut/get_team_num?user_id=".$user_id;
-        httpRequest($url);
+        // $url = SITE_URL."/api/distribut/get_team_num?user_id=".$user_id;
+        // httpRequest($url);
 
-        $up_url = SITE_URL."/api/distribut/upgrade?user_id=".$user_id;
-        httpRequest($up_url);
+        // $up_url = SITE_URL."/api/distribut/upgrade?user_id=".$user_id;
+        // httpRequest($up_url);
 
         //区域代理
         $area_agent = M('user_regional_agency')->where('user_id', $user_id)->find();
