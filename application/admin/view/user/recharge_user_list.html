@@ -167,13 +167,15 @@
         })        
     });
 
+    // onkeyup="this.value=/^\\d+\.?\\d{0,2}$/.test(this.value) ? this.value : \'\'"
+    
     function toCommit() {
         layer.open({
             type:1,
             title:'请填写金额和备注(必填,金额不能为0)',
             area:['380px','280px'],
             content:'<div id="mydiv" style="margin-left:35px;margin-top:25px;">'+
-                        '<input type="text" id="money" placeholder="请输入金额" onkeyup="this.value=/^\\d+\.?\\d{0,2}$/.test(this.value) ? this.value : \'\'"/><br><br>'+
+                        '<input type="text" id="money" placeholder="请输入金额" /><br><br>'+
                         '<textarea id="desc" style="width:300px;height:100px;resize:none;border-radius:6px;" placeholder="请输入备注"></textarea>'+
                     '</div>',
             btn:['确认','取消'],
