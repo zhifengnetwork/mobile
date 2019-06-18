@@ -138,7 +138,7 @@
 				   style="background: #FFFFFF; border-radius: 50%;width:.3rem;border: 1px solid black;outline: none;" id="jian">
 			<input type=text name=price value=<if condition="$bondUser[0] eq ''">{$auction.start_price}<else />{$bondUser[0]['offer_price']}</if>
 				   style="width: .8rem; text-align: center;outline: none;" id="mmer">
-			<input type=button value="+" onClick="javascript:this.form.amount.value++;"
+			<input type=button value="+"
 				   style="background:#FFFFFF; color: white;width: .3rem;border-radius: 50%;border: 1px solid black;color: black;outline: none;" id="jia">
 		</form>
 		<div id="myprice">
@@ -284,8 +284,8 @@
 
 	var step = {$auction.increase_price}; // 起拍价
 	document.getElementById("jian").onclick=function(){
-
-		$("#mmer").val($("#mmer").val()*1-step);
+		var fd = $("#mmer").val() * 10000000000000000;
+		$("#mmer").val( (Math.floor((fd*1-step*10000000000000000))/10000000000000000).toFixed(2));
 		if($("#mmer").val()*1<0){
 
 			$("#mmer").val(0);
@@ -294,9 +294,8 @@
 
 	};
 	document.getElementById("jia").onclick=function(){
-
-		$("#mmer").val($("#mmer").val()*1+step);
-
+		var fd = $("#mmer").val() * 10000000000000000;
+		$("#mmer").val( (Math.floor((fd*1+step*10000000000000000))/10000000000000000).toFixed(2) );	
 	};
 
 	// 活动结束

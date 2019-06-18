@@ -762,6 +762,13 @@ class Promotion extends Base
 			if($data['start_price'] <= 0)
 				$this->ajaxReturn(['status' => 0, 'msg' => '起拍必须大于0', 'result' => '']);
 
+            $goods_price = M('Goods')->where(['goods_id'=>$data['goods_id']])->value('shop_price');
+            if($data['item_id']){
+                $goods_price = Db::name('spec_goods_price')->where('item_id',$data['item_id'])->value('price');
+            }
+            if($data['deposit'] > ($goods_price*20)/100)
+            $this->ajaxReturn(['status' => 0, 'msg' => '保证金不能大于商品价格的20%', 'result' => '']);
+
             if (empty($data['id'])) {
                 $auctionInsertId = Db::name('auction')->insertGetId($data);
                 if($data['item_id'] > 0){

@@ -47,18 +47,19 @@ class Team extends Controller{
         $Auction = M('Auction');
         $AuctionDeposit = M('Auction_deposit');
         $AuctionPprice = M('Auction_price');
-        $alist = $Auction->field('id,deposit,payment_time,end_time')->where(['start_time'=>['lt',(time()-24*3600)],'is_end'=>1])->select();
+        $alist = $Auction->field('id,deposit,payment_time,end_time')->where(['end_time'=>['gt',(time()-360)],'is_end'=>1])->select();
         foreach($alist as $v2){
-            $aplist = $AuctionPprice->field('user_id,pay_status')->where(['is_out'=>['neq',2],'auction_id'=>$v2['id']])->select();    
+            $aplist = $AuctionPprice->field('user_id')->where(['is_out'=>['neq',2],'auction_id'=>$v2['id']])->grouy('user_id')->select();  
+            //成交用户
+            $uid = $AuctionPprice->field('user_id')->where(['is_out'=>2,'auction_id'=>$v2['id']])->column('user_id');     
             foreach($aplist as $v3){
+                if($v3['user_id'] == $uid)continue;
                 $order_sn = $AuctionDeposit->where(['user_id'=>$v3['user_id'],'auction_id'=>$v2['id'],'is_back'=>0])->value('order_sn');
                 if(!$order_sn)continue;
                 $AuctionDeposit->where(['user_id'=>$v3['user_id'],'auction_id'=>$v2['id']])->update(['is_back'=>1]);    
                 $Users->where(['user_id'=>$v3['user_id']])->setInc('pay_points',$v2['deposit']);  
                 $AccountLog->add(['user_id'=>$v3['user_id'],'user_money'=>$v2['deposit'],'change_time'=>time(),'desc'=>'竞拍失败保证金返回','states'=>104]);  
             }
-            //$apinfo = $AuctionPprice->field('user_id')->where(['is_out'=>2,'auction_id'=>$v2['id'],'pay_status'=>['neq',1]])->find(); 
-            //if($apinfo && (time() > ($v2['end_time']+($v2['payment_time']*60))))
         }
                
     }
