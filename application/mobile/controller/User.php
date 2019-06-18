@@ -294,7 +294,7 @@ class User extends MobileBase
         
         $user_id = session('user.user_id');
 
-        write_log($user_id.'：begin time：'.microtime());
+        write_log($user_id.'  begin time  '.microtime());
 
         //当前登录用户信息
         $logic = new UsersLogic();
@@ -348,7 +348,7 @@ class User extends MobileBase
         $this->assign('regional_agency_is_valid', $regional_agency_is_valid);
 
 
-        write_log($user_id.'：after time：'.microtime());
+        write_log($user_id.'  after time  '.microtime());
 
         return $this->fetch();
     }
