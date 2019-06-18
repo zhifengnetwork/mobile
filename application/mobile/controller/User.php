@@ -294,6 +294,8 @@ class User extends MobileBase
         
         $user_id = session('user.user_id');
 
+        write_log($user_id.'：begin time：'.microtime());
+
         //当前登录用户信息
         $logic = new UsersLogic();
         $user_info = $logic->get_info($user_id); 
@@ -310,12 +312,13 @@ class User extends MobileBase
         $this->assign('order_info', $order_info);
         $this->assign('menu_list', $menu_list);
 
+       
         //更新团队总人数
-        // $url = SITE_URL."/api/distribut/get_team_num?user_id=".$user_id;
-        // httpRequest($url);
+        $url = SITE_URL."/api/distribut/get_team_num?user_id=".$user_id;
+        httpRequest($url);
 
-        // $up_url = SITE_URL."/api/distribut/upgrade?user_id=".$user_id;
-        // httpRequest($up_url);
+        $up_url = SITE_URL."/api/distribut/upgrade?user_id=".$user_id;
+        httpRequest($up_url);
 
         //区域代理
         $area_agent = M('user_regional_agency')->where('user_id', $user_id)->find();
@@ -344,7 +347,8 @@ class User extends MobileBase
         }
         $this->assign('regional_agency_is_valid', $regional_agency_is_valid);
 
-        
+
+        write_log($user_id.'：after time：'.microtime());
 
         return $this->fetch();
     }
