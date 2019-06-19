@@ -15,4 +15,10 @@ return array(
     'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),
     'Symfony\\Component\\DomCrawler\\' => array($vendorDir . '/symfony/dom-crawler'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
+	
+	
+	'think\\worker\\' => array($vendorDir . '/topthink/think-worker/src'),
+    'app\\' => array($baseDir . '/application'),
+    'Workerman\\' => array($vendorDir . '/workerman/workerman', $vendorDir . '/workerman/workerman-for-win'),
+    'GatewayWorker\\' => array($vendorDir . '/workerman/gateway-worker/src', $vendorDir . '/workerman/gateway-worker-for-win/src'),
 );

@@ -115,6 +115,19 @@
                     </div>
                 </case>
                 <default/>
+                <a href="{:U('Live/apply/index',array('id'=>$v[user_id]))}">
+                    <div class="z_user_list <if condition='$menu.is_tab eq 1'>border10</if>">
+                        <div class="user_list_cont padd10">
+                            <div class="cont_fl">
+                                <img src="__PUBLIC__/static/images/w{$menu.menu_id}.png"/>
+                                <span>我的直播</span>
+                            </div>
+                            <div class="cont_fr">
+                                <i class="zMright"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
                 <a href="{$menu.menu_url}">
                     <div class="z_user_list <if condition='$menu.is_tab eq 1'>border10</if>">
                         <div class="user_list_cont padd10">
@@ -128,8 +141,10 @@
                         </div>
                     </div>
                 </a>
+
             </switch>
         </volist>
+
     </div>
 </div>
 
