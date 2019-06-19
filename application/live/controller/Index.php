@@ -25,11 +25,12 @@ class Index extends Base
         $user = $this->user;
         $user_id = $user->user_id;
         $room_id = input('get.room_id',16);
-        $room = Db::name('user_video')->where(['user_id'=>$user_id,'room_id'=>$room_id])->find();
+        $room = Db::name('user_video')->where(['room_id'=>$room_id])->find();
         if(empty($room)){
             return $this->failResult('不存在的直播间',301);
         }
         $this->assign('room_id',$room_id);
+        $this->assign('user_id', $user_id.time());
         return $this->fetch();
     }
 

@@ -11,9 +11,9 @@ namespace app\live\controller;
 
 use app\mobile\controller\MobileBase;
 use app\common\model\Users as UserModel;
-use think\console\command\make\Controller;
+use think\Controller;
 
-class Abtract extends Controller
+class LiveAbstract extends Controller
 {
     public $level = [
         0=>'普通会员',

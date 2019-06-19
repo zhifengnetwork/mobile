@@ -21,112 +21,113 @@
 <body onload="connect();">
 <div class="wrapper">
 
-    <div id="div_device" class="panel panel-default" style="display:none">
-        <div class="select">
-            <label for="audioSource">Audio source: </label><select id="audioSource"></select>
-        </div>
-        <div class="select">
-            <label for="videoSource">Video source: </label><select id="videoSource"></select>
-        </div>
+<div id="div_device" class="panel panel-default" style="display:none">
+    <div class="select">
+        <label for="audioSource">Audio source: </label><select id="audioSource"></select>
     </div>
-
-    <div id="div_join" class="panel panel-default" style="display:none;">
-        <div class="panel-body">
-            App ID: <input id="appId" type="text" value="4c2954a8e1524f5ea15dc5ae14232042" size="36"></input>
-            Channel: <input id="channel" type="text" value="1000" size="4"></input>
-            Host: <input id="video" type="checkbox"></input>
-            <button id="join" class="btn btn-primary" onclick="join()">Join</button>
-            <button id="leave" class="btn btn-primary" onclick="leave()">Leave</button>
-            <button id="publish" class="btn btn-primary" onclick="publish()">Publish</button>
-            <button id="unpublish" class="btn btn-primary" onclick="unpublish()">Unpublish</button>
-        </div>
+    <div class="select">
+        <label for="videoSource">Video source: </label><select id="videoSource"></select>
     </div>
+</div>
 
-    <div id="video_live" style="margin:0 auto;width: 100%;height: 100vh;" >
+<div id="div_join" class="panel panel-default" style="display:none;">
+    <div class="panel-body">
+        App ID: <input id="appId" type="text" value="4c2954a8e1524f5ea15dc5ae14232042" size="36"></input>
+        Channel: <input id="channel" type="text" value="1000" size="4"></input>
+        Host: <input id="video" type="checkbox"></input>
+        <button id="join" class="btn btn-primary" onclick="join()">Join</button>
+        <button id="leave" class="btn btn-primary" onclick="leave()">Leave</button>
+        <button id="publish" class="btn btn-primary" onclick="publish()">Publish</button>
+        <button id="unpublish" class="btn btn-primary" onclick="unpublish()">Unpublish</button>
+    </div>
+</div>
+
+<div id="video_live" style="margin:0 auto;width: 100%;height: 100vh;" >
         <div id="agora_local" style="width: 7.5rem;height:100vh;display:inline-block;"></div>
     </div>
 
-    <!-- 直播间内容 -->
-    <div class="live-room">
-        <div class="topBar">
-            <div class="live-status">
-                <span class="status">直播中</span>
-                <i class="dot-red"></i>
-                <span class="time">01:33:23</span>
-            </div>
-            <div class="liveId">
-                <span class="shop-name">DC商城</span>
-                <span class="id">ID:123456</span>
-            </div>
-            <div class="closeBtn"></div>
+<!-- 直播间内容 -->
+<div class="live-room">
+    <div class="topBar">
+        <div class="live-status">
+            <span class="status">直播中</span>
+            <i class="dot-red"></i>
+            <span class="time">01:33:23</span>
         </div>
-
-        <div class="anchor-part">
-            <span class="viewer" id="user_count"><i class="icon"></i>1人</span>
-            <span class="follow" id="user_top"><i class="icon"></i>88人</span>
+        <div class="liveId">
+            <span class="shop-name">DC商城</span>
+            <span class="id">ID:123456</span>
         </div>
-
-        <!-- 聊天窗口 -->
-        <div class="chat-wrap">
-
-            <!-- 礼物 -->
-            <div class="showGift-wrap">
-                <div class="gift-item">
-                    <span class="gift-icon"><img src="__STATIC__/live/static/images/play/gift-icon-1.png" /></span>
-                    <span class="gift-count">x2</span>
-                    <span class="viewer-name">美丽的小猪猪</span>
-                </div>
-            </div>
-
-            <!-- 弹幕滚动 -->
-            <div class="barrage-scroll">
-                <ul class="barrage-list" id="dialog-list">
-                </ul>
-            </div>
-
-            <!-- 发送弹幕 -->
-            <form >
-                <div class="chat-operate">
-                    <div class="send-redPacket"></div>
-                    <div class="msg-input">
-                        <input type="text" placeholder="说点什么..." id="textarea">
-                    </div>
-                    <div class="endLive">
-                        <input type="button" class="btn btn-default" onclick="onSubmit()" value="发表" />
-                    </div>
-                </div>
-            </form>
-        </div>
-
+        <div class="closeBtn"></div>
     </div>
 
-    <!-- 遮罩层 -->
-    <div class="mask">
-        <!-- 红包弹窗 -->
-        <div class="popup redPacket-popup">
-            <div class="popup-header">
-                <h3>手气红包</h3>
+    <div class="anchor-part">
+        <span class="viewer" id="user_count"><i class="icon"></i>1人</span>
+        <span class="follow" id="user_top"><i class="icon"></i>88人</span>
+    </div>
+
+    <!-- 聊天窗口 -->
+    <div class="chat-wrap">
+
+        <!-- 礼物 -->
+        <div class="showGift-wrap">
+            <div class="gift-item">
+                <span class="gift-icon"><img src="__STATIC__/live/static/images/play/gift-icon-1.png" /></span>
+                <span class="gift-count">x2</span>
+                <span class="viewer-name">美丽的小猪猪</span>
             </div>
-            <div class="popup-body">
-                <div class="group-wrap">
-                    <span class="title">总金额</span>
+        </div>
+
+        <!-- 弹幕滚动 -->
+        <div class="barrage-scroll">
+            <ul class="barrage-list" id="dialog-list">
+            </ul>
+        </div>
+
+        <!-- 发送弹幕 -->
+        <form >
+            <div class="chat-operate">
+                <div class="send-redPacket"></div>
+                <div class="msg-input">
+                    <input type="text" placeholder="说点什么..." id="textarea">
+                </div>
+                <div class="endLive">
+                    <input type="button" class="btn btn-default" onclick="onSubmit()" value="发表" />
+                    <!--<a href="./end_life.html" onclick="">结束直播</a>-->
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<!-- 遮罩层 -->
+<div class="mask">
+    <!-- 红包弹窗 -->
+    <div class="popup redPacket-popup">
+        <div class="popup-header">
+            <h3>手气红包</h3>
+        </div>
+        <div class="popup-body">
+            <div class="group-wrap">
+                <span class="title">总金额</span>
 						<span class="right">
 							<input type="text" placeholder="0.00">
 						元</span>
-                </div>
-                <div class="group-wrap">
-                    <span class="title">红包个数</span>
+            </div>
+            <div class="group-wrap">
+                <span class="title">红包个数</span>
 						<span class="right">
 							<input type="text" placeholder="填写红包个数">
 						个</span>
-                </div>
             </div>
-            <div class="popup-footer">
-                <span class="send-btn">发红包</span>
-            </div>
-            <div class="close-btn"></div>
         </div>
+        <div class="popup-footer">
+            <span class="send-btn">发红包</span>
+        </div>
+        <div class="close-btn"></div>
     </div>
+</div>
 </div>
 
 
@@ -149,13 +150,6 @@
         alert("Your browser does not support WebRTC!");
     }
 
-    /* select Log type */
-    // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.NONE);
-    // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.ERROR);
-    // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.WARNING);
-    // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.INFO);
-    // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.DEBUG);
-
     /* simulated data to proof setLogLevel() */
     AgoraRTC.Logger.error('this is error');
     AgoraRTC.Logger.warning('this is warning');
@@ -170,6 +164,7 @@
     function join() {
         document.getElementById("join").disabled = true;
         document.getElementById("video").disabled = true;
+        var channel_key = null;
 
         var channel_key=null;
         $.ajax({
@@ -230,10 +225,6 @@
         }, function (err) {
             console.log("AgoraRTC client init failed", err);
         });
-
-
-
-
     }
 
 </script>
