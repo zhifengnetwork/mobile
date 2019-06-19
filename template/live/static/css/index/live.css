@@ -1,0 +1,87 @@
+.icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: .6rem; 
+    height: .6rem;
+    fill: currentColor;
+    overflow: hidden;
+}
+/* 上传图片 */
+.live_uploading{
+    margin-top: .2rem;
+}
+.uploading_img{
+    width: 4.5rem;
+    height: 4.5rem;
+    margin: 0 auto;
+    border: .02rem solid #ccc;
+}
+.uploading_icon{
+    display: block;
+    color: #ccc;
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 1rem auto;
+}
+.uploading_text{
+    font-size: .32rem;
+    text-align: center;
+}
+/* 分享 */
+.share{
+    margin-top: .5rem;
+}
+.share_title{
+    text-align: center;
+}
+.share_content{
+    text-align: center;
+}
+.share_content_item{
+    display: inline-block;
+    width: 1rem;
+    margin: .5rem;
+}
+.share_content_icon{
+    position: relative;
+    width: 1rem;
+    height: 1rem;
+    line-height: 1rem;
+    text-align: center;
+    border-radius: 50%;
+    border: .02rem solid #ffaac2;
+}
+.share_title .share_title_text{
+    margin-right: .2rem;
+}
+.share_content_text{
+    margin-top: .1rem;
+    text-align: center;
+}
+.share_icon{
+    font-size: .5rem; 
+}
+/* 开始直播 */
+.live{
+    margin-top: 2rem;
+    width: 100%;
+    padding: 0 .28rem;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.live_btn{
+    color: #fff;
+    text-align: center;
+    line-height: .8rem;
+    border-radius: .1rem;
+    /*从左到右的渐变色：*/
+	background:-webkit-linear-gradient(left,#f8566c,#fa3479);
+	background:-o-linear-gradient(right,#f8566c,#fa3479);
+	background:-moz-linear-gradient(right,#f8566c,#fa3479);
+	background: linear-gradient(to right,#f8566c,#fa3479);
+}

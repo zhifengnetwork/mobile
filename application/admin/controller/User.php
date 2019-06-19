@@ -526,10 +526,20 @@ class User extends Base
     public function recharge_batch() 
     {   
         $desc  = I('desc/s');
+        if(!$desc){
+            $this->ajaxReturn(['status' => 0, 'msg'=>'描述不能为空!']);
+            exit;
+        }
         $money = I('money/s');
-        $user_ids   = M('recharge_user')->where('status', 1)->column('user_id');
-        $data = M('users')->whereIn('user_id', $user_ids)->column('user_id, nickname, user_money');
+        if(!$money){
+            $this->ajaxReturn(['status' => 0, 'msg'=>'金额不能为空!']);
+            exit;
+        }
 
+        $user_ids   = M('recharge_user')->where('status', 1)->column('user_id');
+       
+        $data = M('users')->whereIn('user_id', $user_ids)->column('user_id, nickname, user_money');
+       
         Db::startTrans();
         $total = count($user_ids);
         $pre_time = time();
@@ -549,10 +559,12 @@ class User extends Base
                 $acc_arr[$key]['user_money'] = $money;
                 $acc_arr[$key]['change_time'] = $pre_time;
                 $acc_arr[$key]['desc'] = $desc; 
-                
+              
                 $total_money = round($data[$value]['user_money'] + $money, 2);
+
                 Db::name('users')->where('user_id', $value)->update(['user_money'=>$total_money]);
             }
+         
             Db::name('account_log')->insertAll($acc_arr);
             Db::name('recharge_log')->insertAll($log_arr);
             Db::commit();    

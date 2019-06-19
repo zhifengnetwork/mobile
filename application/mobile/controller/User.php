@@ -284,12 +284,17 @@ class User extends MobileBase
 		return $performance;
 	}
 
+    /**
+     * 个人中心
+     */
     public function index()
     {
         $MenuCfg = new MenuCfg();
         $menu_list = $MenuCfg->where('is_show', 1)->order('menu_id asc')->select();
         
         $user_id = session('user.user_id');
+
+        write_log($user_id.'  begin time  '.microtime());
 
         //当前登录用户信息
         $logic = new UsersLogic();
@@ -307,6 +312,7 @@ class User extends MobileBase
         $this->assign('order_info', $order_info);
         $this->assign('menu_list', $menu_list);
 
+       
         //更新团队总人数
         $url = SITE_URL."/api/distribut/get_team_num?user_id=".$user_id;
         httpRequest($url);
@@ -341,7 +347,8 @@ class User extends MobileBase
         }
         $this->assign('regional_agency_is_valid', $regional_agency_is_valid);
 
-        
+
+        write_log($user_id.'  after time  '.microtime());
 
         return $this->fetch();
     }

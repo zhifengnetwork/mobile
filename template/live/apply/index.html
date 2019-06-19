@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+    <link rel="stylesheet" href="__STATIC__/css/public/base.css">
+    <link rel="stylesheet" href="__STATIC__/css/public/head.css">
+    <link rel="stylesheet" href="__STATIC__/css/apply/apply.css">
+    <script src="__STATIC__/js/public/rem.js"></script>
+    <title>申请直播</title>
+</head>
+<body>
+<div class="public_head">
+    <i class="iconfont head_icon">&#xe63f;</i>
+    <p>申请直播</p>
+</div>
+<div class="apply_content">
+    <form class="form-horizontal" role="form" action="{:U('/Live/Apply/upload')}" method="post" enctype="multipart/form-data">
+    <!-- 申请信息 -->
+    <div class="apply_info">
+        <div class="apply_info_item">
+            <label class="apply_info_label">
+                <span class="apply_info_text">手机号码:</span>
+                <input class="apply_info_inp" type="number" placeholder="请输入手机号码">
+            </label>
+        </div>
+        <div class="apply_info_item">
+            <label class="apply_info_label">
+                <span class="apply_info_text">用户名:</span>
+                <input class="apply_info_inp" type="number" placeholder="请输入用户名">
+            </label>
+        </div>
+        <div class="apply_info_item">
+            <label class="apply_info_label">
+                <span class="apply_info_text">ID:</span>
+                <input class="apply_info_inp" type="number" placeholder="请输入ID">
+            </label>
+        </div>
+    </div>
+    <!-- 选择等级 -->
+    <div class="apply_grade">
+        选择等级
+        <i class="iconfont apply_grade_icon">&#xe620;</i>
+    </div>
+    <div class="apply_grade_mask">
+        <div class="mask_content">
+            <div class="mask_content_title">
+                <div class="mask_content_back">
+                    <i class="iconfont mask_content_icon">&#xe680;</i>
+                </div>
+            </div>
+            <div class="mask_content_item active">
+                普通会员
+            </div>
+            <div class="mask_content_item">
+                分销商
+            </div>
+            <div class="mask_content_item">
+                总代
+            </div>
+            <div class="mask_content_item">
+                经理
+            </div>
+            <div class="mask_content_item">
+                总监
+            </div>
+            <div class="mask_content_item">
+                总裁
+            </div>
+        </div>
+    </div>
+    <input placeholder="" name="pic_front" type="file">
+    <input placeholder="" name="pic_back" type="file">
+    <!-- 上传图片 -->
+    <div class="apply_uploading">
+        <div class="apply_uploading_imgwrap">
+            <i class="iconfont uploading_icon">&#xe614;</i>
+
+            <!--<img class="apply_uploading_img" src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2109756402,943807001&fm=27&gp=0.jpg" alt="">-->
+        </div>
+        <div class="apply_uploading_text">
+            身份证正面
+        </div>
+    </div>
+    <div class="apply_uploading">
+        <div class="apply_uploading_imgwrap">
+            <i class="iconfont uploading_icon">&#xe614;</i>
+
+            <!-- <img class="apply_uploading_img" src="__STATIC__/images/play/00live-bg.png" alt=""> -->
+        </div>
+        <div class="apply_uploading_text">
+            身份证反面
+        </div>
+    </div>
+    <!-- 提交 -->
+    <div class="apply">
+        <div class="apply_send">
+            <button type="submit" class="btn btn-default">提交</button>
+        </div>
+    </div>
+</div>
+</form>
+<!-- 审核中 -->
+<div class="review">
+    <div class="review_imgwrap">
+        <img class="review_img" src="__STATIC__/images/apply/review.png">
+    </div>
+    <div class="review_text">
+        正在审核中请耐心等待...
+    </div>
+</div>
+<!-- 审核成功 -->
+<div class="prosperity">
+    <div class="prosperity_imgwrap">
+        <img class="prosperity_img" src="__STATIC__/images/apply/prosperity.png">
+    </div>
+    <div class="prosperity_text">
+        直播功能已开通,请前往直播室直播!
+    </div>
+    <div class="prosperity_btn">
+        去直播
+    </div>
+</div>
+<script src="__STATIC__/js/public/jquery-3.3.1.min.js"></script>
+</body>
+</html>
