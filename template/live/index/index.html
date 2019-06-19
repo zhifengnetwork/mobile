@@ -81,6 +81,9 @@
             </div>
 
             <!-- 弹幕滚动 -->
+            <select style="margin-bottom:8px;display: none" id="client_list">
+                <option value="all">所有人</option>
+            </select>
             <div class="barrage-scroll">
                 <ul class="barrage-list" id="dialog-list">
                     <!--<li class="dm-item">-->
@@ -438,7 +441,6 @@
                 break;
             // 发言
             case 'say':
-                //{"type":"say","from_client_id":xxx,"to_client_id":"all/client_id","content":"xxx","time":"xxx"}
                 say(data['from_client_id'], data['from_client_name'], data['content'], data['time']);
                 break;
             // 用户退出 更新用户列表
