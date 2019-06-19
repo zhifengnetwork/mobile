@@ -35,7 +35,6 @@ class User extends LiveAbstract
         }
         $this->assign('user_id', $user_id);
         $this->assign('room_id',$room_id);
-
         return $this->fetch();
     }
 
