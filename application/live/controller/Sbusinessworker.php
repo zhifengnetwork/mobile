@@ -16,7 +16,7 @@ class Sbusinessworker{
 		// 服务注册地址
 		$worker->registerAddress = '127.0.0.1:1236';
 		//设置处理业务的类,此处制定Events的命名空间
-		$worker->eventHandler = 'app\index\controller\Events';
+		$worker->eventHandler = 'app\live\controller\Events';
 		
 		// 如果不是在根目录启动，则运行runAll方法
 		if(!defined('GLOBAL_START'))
