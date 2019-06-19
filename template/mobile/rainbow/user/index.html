@@ -51,6 +51,7 @@
         </div>
     </div>
     <div class="z_user_li_wrap">
+        <?php $zhibo_i = 0; ?>
         <volist name="menu_list" id="menu">
             <switch name="$menu['menu_id']">
                 <case value="1">
@@ -115,6 +116,7 @@
                     </div>
                 </case>
                 <default/>
+                <?php if($zhibo_i == 0){ ?>
                 <a href="{:U('Live/apply/index',array('id'=>$v[user_id]))}">
                     <div class="z_user_list <if condition='$menu.is_tab eq 1'>border10</if>">
                         <div class="user_list_cont padd10">
@@ -128,6 +130,8 @@
                         </div>
                     </div>
                 </a>
+                <?php } ?>
+                <?php $zhibo_i++; ?>
                 <a href="{$menu.menu_url}">
                     <div class="z_user_list <if condition='$menu.is_tab eq 1'>border10</if>">
                         <div class="user_list_cont padd10">
