@@ -362,7 +362,7 @@ color: gray;
 }
 .paicheng1{
 	font-size: .3rem;
-	padding:.2rem 0 ;
+	padding:.2rem;
 
 }
 #tobuy{
@@ -373,7 +373,7 @@ color: gray;
 	font-size: .3rem;
 	padding: .2rem 0;
 	position: absolute;
-	top: 50%;
+	top: 54%;
 	left: 50%;
 	transform: translate(-50%,50%);
 	border-radius: 10%;
@@ -499,7 +499,7 @@ li input  {
 .tanchuk{
 	
 	width: 5rem;
-	height: 3rem;
+	height: 3.4rem;
 	background: white;
 	position: absolute;
 	top: 50%;
@@ -519,7 +519,7 @@ li input  {
 }
 .paicheng1{
 	font-size: .3rem;
-	padding:.2rem 0 ;
+	padding:.2rem;
 
 }
 #tobuy1{

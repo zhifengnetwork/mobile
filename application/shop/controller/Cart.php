@@ -132,7 +132,7 @@ class Cart extends MobileBase {
         
         //立即购买
         if($action == 'buy_now'){
-            $cartLogic->setGoodsModel($goods_id);
+            $cartLogic->setGoodsModel($goods_id,I('post.shop_price/s',0));
             $cartLogic->setSpecGoodsPriceById($item_id);
             $cartLogic->setGoodsBuyNum($goods_num);
             $buyGoods = [];
@@ -167,6 +167,9 @@ class Cart extends MobileBase {
         $this->assign('cartGoodsTotalNum', $cartGoodsTotalNum);
         $this->assign('cartList', $cartList['cartList']); // 购物车的商品
         $this->assign('cartPriceInfo', $cartPriceInfo);//商品优惠总价
+        $this->assign('shop_price', I('post.shop_price/s',0));
+        $this->assign('prom_type', I('post.goods_prom_type/d',0));
+        $this->assign('prom_id', I('post.prom_id/d',0));
         return $this->fetch();
     }
 
@@ -210,7 +213,7 @@ class Cart extends MobileBase {
         try {
             $cartLogic->setUserId($this->user_id);
             if ($action == 'buy_now') {
-                $cartLogic->setGoodsModel($goods_id);
+                $cartLogic->setGoodsModel($goods_id,I('post.shop_price/s',0));
                 $cartLogic->setSpecGoodsPriceById($item_id);
                 $cartLogic->setGoodsBuyNum($goods_num);
                 $buyGoods = $cartLogic->buyNow();
@@ -227,7 +230,7 @@ class Cart extends MobileBase {
             if ($_REQUEST['act'] == 'submit_order') {
                 $placeOrder = new PlaceOrder($pay);
                 $placeOrder->setMobile($mobile)->setUserAddress($address)->setConsignee($consignee)->setInvoiceTitle($invoice_title)
-                    ->setUserNote($user_note)->setTaxpayer($taxpayer)->setInvoiceDesc($invoice_desc)->setPayPsw($pay_pwd)->setTakeTime($take_time)->addNormalOrder();
+                    ->setUserNote($user_note)->setTaxpayer($taxpayer)->setInvoiceDesc($invoice_desc)->setPayPsw($pay_pwd)->setTakeTime($take_time)->addNormalOrder(I('post.prom_type/d',0),I('post.prom_id/d',0));
                 $cartLogic->clear();
                 $order = $placeOrder->getOrder();
                 $this->ajaxReturn(['status' => 1, 'msg' => '提交订单成功', 'result' => $order['order_sn']]);
