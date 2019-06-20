@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>主播-直播间</title>
+    <title>用户端</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-
-
     <link rel="stylesheet" href="__STATIC__/live/vendor/bootstrap.min.css">
-    
     <script src="__STATIC__/live/js/AgoraRTCSDK-2.6.1.js"></script>
     <script src="__STATIC__/live/vendor/jquery.js"></script>
 
@@ -24,32 +21,30 @@
 <body onload="connect();">
 <div class="wrapper">
 
-<div id="div_device" class="panel panel-default" style="display:none">
-    <div class="select">
-        <label for="audioSource">Audio source: </label><select id="audioSource"></select>
+    <div id="div_device" class="panel panel-default" style="display:none">
+        <div class="select">
+            <label for="audioSource">Audio source: </label><select id="audioSource"></select>
+        </div>
+        <div class="select">
+            <label for="videoSource">Video source: </label><select id="videoSource"></select>
+        </div>
     </div>
-    <div class="select">
-        <label for="videoSource">Video source: </label><select id="videoSource"></select>
-    </div>
-</div>
 
-<div id="div_join" class="panel panel-default" style="display:none">
-    <div class="panel-body">
-        App ID: <input id="appId" type="text" value="4c2954a8e1524f5ea15dc5ae14232042" size="36"></input>
-        Channel: <input id="channel" type="text" value="1000" size="4"></input>
-        Host: <input id="video" type="checkbox" checked></input>
-        <button id="join" class="btn btn-primary" onclick="join()">Join</button>
-        <button id="leave" class="btn btn-primary" onclick="leave()">Leave</button>
-        <button id="publish" class="btn btn-primary" onclick="publish()">Publish</button>
-        <button id="unpublish" class="btn btn-primary" onclick="unpublish()">Unpublish</button>
+    <div id="div_join" class="panel panel-default" style="display:none;">
+        <div class="panel-body">
+            App ID: <input id="appId" type="text" value="4c2954a8e1524f5ea15dc5ae14232042" size="36"></input>
+            Channel: <input id="channel" type="text" value="1000" size="4"></input>
+            Host: <input id="video" type="checkbox" checked></input>
+            <button id="join" class="btn btn-primary" onclick="join()">Join</button>
+            <button id="leave" class="btn btn-primary" onclick="leave()">Leave</button>
+            <button id="publish" class="btn btn-primary" onclick="publish()">Publish</button>
+            <button id="unpublish" class="btn btn-primary" onclick="unpublish()">Unpublish</button>
+        </div>
     </div>
-</div>
 
-<div id="video" style="margin:0 auto;width: 100%;height: 100vh;" >
+    <div id="video_live" style="margin:0 auto;width: 100%;height: 100vh;" >
         <div id="agora_local" style="width: 7.5rem;height:100vh;display:inline-block;"></div>
     </div>
-
-
 
     <!-- 直播间内容 -->
     <div class="live-room">
@@ -86,41 +81,6 @@
             <!-- 弹幕滚动 -->
             <div class="barrage-scroll">
                 <ul class="barrage-list" id="dialog-list">
-                    <!--<li class="dm-item">-->
-                    <!--<span class="level level-1"></span>-->
-                    <!--<span class="viewer-name">小猪猪朋友：</span>-->
-                    <!--<span class="barrage-con">你好吗</span>-->
-                    <!--</li>-->
-                    <!--<li class="dm-item">-->
-                    <!--<span class="level level-2"></span>-->
-                    <!--<span class="viewer-name">小猪猪朋友：</span>-->
-                    <!--<span class="barrage-con">你好吗</span>-->
-                    <!--</li>-->
-                    <!--<li class="dm-item">-->
-                    <!--<span class="level level-3"></span>-->
-                    <!--<span class="viewer-name">小猪猪朋友：</span>-->
-                    <!--<span class="barrage-con">你好吗</span>-->
-                    <!--</li>-->
-                    <!--<li class="dm-item">-->
-                    <!--<span class="level level-4"></span>-->
-                    <!--<span class="viewer-name">小猪猪朋友：</span>-->
-                    <!--<span class="barrage-con">你好吗</span>-->
-                    <!--</li>-->
-                    <!--<li class="dm-item">-->
-                    <!--<span class="level level-4"></span>-->
-                    <!--<span class="viewer-name">小猪猪朋友：</span>-->
-                    <!--<span class="barrage-con">你好吗</span>-->
-                    <!--</li>-->
-                    <!--<li class="dm-item">-->
-                    <!--<span class="level level-5"></span>-->
-                    <!--<span class="viewer-name">小猪猪朋友：</span>-->
-                    <!--<span class="barrage-con">你好吗</span>-->
-                    <!--</li>-->
-                    <!--<li class="dm-item">-->
-                    <!--<span class="level level-6"></span>-->
-                    <!--<span class="viewer-name">小猪猪朋友：</span>-->
-                    <!--<span class="barrage-con">你好吗</span>-->
-                    <!--</li>-->
                 </ul>
             </div>
 
@@ -133,7 +93,6 @@
                     </div>
                     <div class="endLive">
                         <input type="button" class="btn btn-default" onclick="onSubmit()" value="发表" />
-                        <!--<a href="./end_life.html" onclick="">结束直播</a>-->
                     </div>
                 </div>
             </form>
@@ -170,7 +129,6 @@
     </div>
 </div>
 
-    </div>
 
 <script type="text/javascript" src="__STATIC__/chat/js/swfobject.js"></script>
 <script type="text/javascript" src="__STATIC__/chat/js/web_socket.js"></script>
@@ -185,7 +143,6 @@
 
     })
 </script>
-
 <script language="javascript">
 
     if(!AgoraRTC.checkSystemRequirements()) {
@@ -237,7 +194,7 @@
                 if (document.getElementById("video").checked) {
                     camera = videoSource.value;
                     microphone = audioSource.value;
-                    localStream = AgoraRTC.createStream({streamID: uid, audio: true, cameraId: camera, microphoneId: microphone, video: document.getElementById("video").checked, screen: false});
+                    localStream = AgoraRTC.createStream({streamID: uid, audio: true, cameraId: camera, microphoneId: microphone, video: document.getElementById("video_live").checked, screen: false});
                     //localStream = AgoraRTC.createStream({streamID: uid, audio: false, cameraId: camera, microphoneId: microphone, video: false, screen: true, extensionId: 'minllpmhdgpndnkomcoccfekfegnlikg'});
                     if (document.getElementById("video").checked) {
                         localStream.setVideoProfile('720p_3');

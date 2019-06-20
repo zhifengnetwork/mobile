@@ -42,8 +42,7 @@
 }
 .mask_content{
     position: absolute;
-    bottom: -100%;
-    bottom: 0;
+    bottom: -50%;
     width: 100%;
 }
 .mask_content_title{
@@ -104,6 +103,7 @@
     font-size: 1.2rem;
 }
 .apply_uploading_img{
+    display: none;
     position: absolute;
     top: 0;
     left: 0;

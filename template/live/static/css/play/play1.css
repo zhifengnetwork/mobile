@@ -1,11 +1,10 @@
 .wrapper{
     overflow: hidden;
-    height: 100vh;
 }
 /* 直播视频 */
 .live-wrap{
     width: 100%;
-    height: 100vh;
+    height: 100%;
     position: fixed;
     left: 0;
     top: 0;
@@ -19,7 +18,7 @@
 /* 直播间内容 */
 .live-room{
     width: 100%;
-    height: 100vh;
+    height: 100%;
     position: fixed;
     left: 0;
     top: 0;
@@ -39,7 +38,6 @@
     -ms-flex-pack: justify;
     justify-content: space-between;
     position: relative;
-    margin-top: .2rem;
     margin-bottom: .1rem;
 }
 .topBar .live-status{
@@ -141,8 +139,7 @@
     width: 100%;
     padding-left:.24rem;
     box-sizing: border-box;
-    /* margin-top: 6.2rem; */
-    margin-top: 55%;
+    margin-top: 6.2rem;
     position: relative;
     padding-top: 1.08rem;
     box-sizing: border-box;
@@ -150,7 +147,7 @@
 
 .barrage-scroll{
     width: 100%;
-    height: 4.1rem;
+    height: 4rem;
     overflow-y: auto;
     
 }
@@ -362,10 +359,6 @@
     padding: 0 .38rem;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-}
-.popup-body .group-wrap .title{
-    color: #151515;
-    font-size: .3rem;
 }
 .popup-body .group-wrap input{
     font-size: .24rem;
