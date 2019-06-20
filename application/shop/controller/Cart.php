@@ -228,6 +228,10 @@ class Cart extends MobileBase {
                 ->useCouponById($coupon_id)->useUserMoney($user_money)->usePayPoints($pay_points,false,'mobile');
             // 提交订单
             if ($_REQUEST['act'] == 'submit_order') {
+                if(I('post.prom_type/d',0) == 8){
+                    $anum = M('Order')->where(['user_id'=>$this->user_id,'prom_type'=>8,'prom_id'=>I('post.prom_id/d',0)])->count();
+                    if($anum)exit(json_encode(array('status' => -2, 'msg' => "不能重复提交竞拍订单!", 'result' => null)));
+                }
                 $placeOrder = new PlaceOrder($pay);
                 $placeOrder->setMobile($mobile)->setUserAddress($address)->setConsignee($consignee)->setInvoiceTitle($invoice_title)
                     ->setUserNote($user_note)->setTaxpayer($taxpayer)->setInvoiceDesc($invoice_desc)->setPayPsw($pay_pwd)->setTakeTime($take_time)->addNormalOrder(I('post.prom_type/d',0),I('post.prom_id/d',0));

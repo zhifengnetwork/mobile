@@ -51,7 +51,7 @@ class Team extends Controller{
         $alist = $Auction->field('id,deposit,payment_time,end_time')->where(['end_time'=>['gt',(time()-360)],'is_end'=>1])->select();
 		$Auction->where(['end_time'=>['lt',time()],'is_end'=>['neq',1]])->update(['is_end'=>1]);
         foreach($alist as $v2){
-            $aplist = $AuctionPprice->field('user_id')->where(['is_out'=>['neq',2],'auction_id'=>$v2['id']])->grouy('user_id')->select();  
+            $aplist = $AuctionPprice->field('user_id')->where(['is_out'=>['neq',2],'auction_id'=>$v2['id']])->group('user_id')->select();  
             //成交用户
             $uid = $AuctionPprice->field('user_id')->where(['is_out'=>2,'auction_id'=>$v2['id']])->column('user_id');     
             foreach($aplist as $v3){
