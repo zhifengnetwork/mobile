@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>用户端</title>
+    <title>用户端-直播间</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
@@ -9,136 +9,402 @@
     <script src="__STATIC__/live/js/AgoraRTCSDK-2.6.1.js"></script>
     <script src="__STATIC__/live/vendor/jquery.js"></script>
 
-    <script src="__STATIC__/live/static/js/public/rem.js" type="text/javascript" charset="utf-8"></script>
-    <link rel="stylesheet" type="text/css" href="__STATIC__/live/static/css/public/base.css" />
-    <link rel="stylesheet" href="__STATIC__/live/static/css/play/play.css">
-
     <link href="__STATIC__/chat/css/bootstrap.min.css" rel="stylesheet">
     <link href="__STATIC__/chat/css/style.css" rel="stylesheet">
+
+    <script src="__STATIC__/live/static/js/public/rem.js" type="text/javascript" charset="utf-8"></script>
+
+    <link rel="stylesheet" href="__STATIC__/live/static/css/public/swiper.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/live/static/css/public/base.css" />
+    <link rel="stylesheet" href="__STATIC__/live/static/css/play/viewer_room.css?v=201906121840">
 
 </head>
 
 <body onload="connect();">
-<div class="wrapper">
+    <div class="wrapper">
 
-<div id="div_device" class="panel panel-default" style="display:none">
-    <div class="select">
-        <label for="audioSource">Audio source: </label><select id="audioSource"></select>
-    </div>
-    <div class="select">
-        <label for="videoSource">Video source: </label><select id="videoSource"></select>
-    </div>
-</div>
-
-<div id="div_join" class="panel panel-default" style="display:none;">
-    <div class="panel-body">
-        App ID: <input id="appId" type="text" value="4c2954a8e1524f5ea15dc5ae14232042" size="36"></input>
-        Channel: <input id="channel" type="text" value="1000" size="4"></input>
-        Host: <input id="video" type="checkbox"></input>
-        <button id="join" class="btn btn-primary" onclick="join()">Join</button>
-        <button id="leave" class="btn btn-primary" onclick="leave()">Leave</button>
-        <button id="publish" class="btn btn-primary" onclick="publish()">Publish</button>
-        <button id="unpublish" class="btn btn-primary" onclick="unpublish()">Unpublish</button>
-    </div>
-</div>
-
-<div id="video_live" style="margin:0 auto;width: 100%;height: 100vh;" >
-        <div id="agora_local" style="width: 7.5rem;height:100vh;display:inline-block;"></div>
-    </div>
-
-<!-- 直播间内容 -->
-<div class="live-room">
-    <div class="topBar">
-        <div class="live-status">
-            <span class="status">直播中</span>
-            <i class="dot-red"></i>
-            <span class="time">01:33:23</span>
-        </div>
-        <div class="liveId">
-            <span class="shop-name">DC商城</span>
-            <span class="id">ID:123456</span>
-        </div>
-        <div class="closeBtn"></div>
-    </div>
-
-    <div class="anchor-part">
-        <span class="viewer" id="user_count"><i class="icon"></i>1人</span>
-        <span class="follow" id="user_top"><i class="icon"></i>88人</span>
-    </div>
-
-    <!-- 聊天窗口 -->
-    <div class="chat-wrap">
-
-        <!-- 礼物 -->
-        <div class="showGift-wrap">
-            <div class="gift-item">
-                <span class="gift-icon"><img src="__STATIC__/live/static/images/play/gift-icon-1.png" /></span>
-                <span class="gift-count">x2</span>
-                <span class="viewer-name">美丽的小猪猪</span>
+        <div id="div_device" class="panel panel-default" style="display: none">
+            <div class="select">
+                <label for="audioSource">Audio source: </label><select id="audioSource"></select>
+            </div>
+            <div class="select">
+                <label for="videoSource">Video source: </label><select id="videoSource"></select>
             </div>
         </div>
-
-        <!-- 弹幕滚动 -->
-        <select style="margin-bottom:8px;display: none" id="client_list">
-            <option value="all">所有人</option>
-        </select>
-        <div class="barrage-scroll">
-            <ul class="barrage-list" id="dialog-list">
-            </ul>
+    
+        <div id="div_join" class="panel panel-default" style="display: none">
+            <div class="panel-body">
+                App ID: <input id="appId" type="text" value="4c2954a8e1524f5ea15dc5ae14232042" size="36" />
+                Channel: <input id="channel" type="text" value="1000" size="4" />
+                Host: <input id="video" type="checkbox" {if condition="$user_id eq 1"}checked{/if} />
+                <button id="join" class="btn btn-primary" onclick="join()">Join</button>
+                <button id="leave" class="btn btn-primary" onclick="leave()">Leave</button>
+                <button id="publish" class="btn btn-primary" onclick="publish()">Publish</button>
+                <button id="unpublish" class="btn btn-primary" onclick="unpublish()">Unpublish</button>
+            </div>
         </div>
-
-        <!-- 发送弹幕 -->
-        <form >
-            <div class="chat-operate">
-                <div class="send-redPacket"></div>
-                <div class="msg-input">
-                    <input type="text" placeholder="说点什么..." id="textarea">
+    
+        <!-- 摄像头 -->
+        <div id="video" style="margin:0 auto;width: 100%;height: 100vh;" >
+            <div id="agora_local" style="width: 7.5rem;height:100vh;display:inline-block;"></div>
+        </div>
+    
+        <!-- 直播间内容 -->
+        <div class="live-room">
+            <div class="topBar">
+                    <div class="viewer-info">
+                    <img class="avatar" src="__STATIC__/live/static/images/play/00viewer-avatar.png" />
+                    <span class="name">美丽的小猪猪</span>
                 </div>
-                <div class="endLive">
-                    <input type="button" class="btn btn-default" onclick="onSubmit()" value="发表" />
-                    <!--<a href="./end_life.html" onclick="">结束直播</a>-->
+                <div class="liveId">
+                    <span class="shop-name">DC商城</span>
+                    <span class="id">ID:123456</span>
                 </div>
+                <div class="closeBtn"></div>
             </div>
-        </form>
+    
+            <div class="anchor-part">
+                <span class="viewer" id="user_count"><i class="icon"></i>1人</span>
+                <span class="follow" id="user_top"><i class="icon"></i>88人</span>
+            </div>
+    
+            <!-- 聊天窗口 -->
+            <div class="chat-wrap">
+    
+                <!-- 礼物 -->
+                <div class="showGift-wrap">
+                    <div class="gift-item">
+                        <span class="gift-icon"><img src="__STATIC__/live/static/images/play/gift-icon-1.png" /></span>
+                        <span class="gift-count">x2</span>
+                        <span class="viewer-name">美丽的小猪猪</span>
+                    </div>
+                    <div class="gift-item">
+                        <span class="gift-icon"><img src="__STATIC__/live/static/images/play/gift-icon-1.png" /></span>
+                        <span class="gift-count">x2</span>
+                        <span class="viewer-name">美丽的小猪猪2</span>
+                    </div>
+                    <div class="gift-item">
+                        <span class="gift-icon"><img src="__STATIC__/live/static/images/play/gift-icon-1.png" /></span>
+                        <span class="gift-count">x2</span>
+                        <span class="viewer-name">美丽的小猪猪3</span>
+                    </div>
+                    <div class="gift-item">
+                        <span class="gift-icon"><img src="__STATIC__/live/static/images/play/gift-icon-1.png" /></span>
+                        <span class="gift-count">x2</span>
+                        <span class="viewer-name">美丽的小猪猪4</span>
+                    </div>
+                </div>
+    
+                <!-- 弹幕滚动 -->
+                <div class="barrage-scroll">
+                    <ul class="barrage-list" id="dialog-list">
+                        <!--<li class="dm-item">-->
+                        <!--<span class="level level-1"></span>-->
+                        <!--<span class="viewer-name">小猪猪朋友：</span>-->
+                        <!--<span class="barrage-con">你好吗</span>-->
+                        <!--</li>-->
+                        <!--<li class="dm-item">-->
+                        <!--<span class="level level-2"></span>-->
+                        <!--<span class="viewer-name">小猪猪朋友：</span>-->
+                        <!--<span class="barrage-con">你好吗</span>-->
+                        <!--</li>-->
+                        <!--<li class="dm-item">-->
+                        <!--<span class="level level-3"></span>-->
+                        <!--<span class="viewer-name">小猪猪朋友：</span>-->
+                        <!--<span class="barrage-con">你好吗</span>-->
+                        <!--</li>-->
+                        <!--<li class="dm-item">-->
+                        <!--<span class="level level-4"></span>-->
+                        <!--<span class="viewer-name">小猪猪朋友：</span>-->
+                        <!--<span class="barrage-con">你好吗</span>-->
+                        <!--</li>-->
+                        <!--<li class="dm-item">-->
+                        <!--<span class="level level-4"></span>-->
+                        <!--<span class="viewer-name">小猪猪朋友：</span>-->
+                        <!--<span class="barrage-con">你好吗</span>-->
+                        <!--</li>-->
+                        <!--<li class="dm-item">-->
+                        <!--<span class="level level-5"></span>-->
+                        <!--<span class="viewer-name">小猪猪朋友：</span>-->
+                        <!--<span class="barrage-con">你好吗</span>-->
+                        <!--</li>-->
+                        <!--<li class="dm-item">-->
+                        <!--<span class="level level-6"></span>-->
+                        <!--<span class="viewer-name">小猪猪朋友：</span>-->
+                        <!--<span class="barrage-con">你好吗</span>-->
+                        <!--</li>-->
+                    </ul>
+                </div>
+    
+                <!-- 商品链接 -->
+                <div class="goods-links">
+                    商品链接：<a href="http://zhibo.com/mobile/play/viewer_room">http://zhibo.com/mobile/play/viewer_room</a>
+                </div>
+    
+                    <!-- 发送弹幕 -->
+                    <div class="chat-operate" >
+                    <div class="msg-input">
+                        <span>说点什么...</span>
+                        <!-- <input type="text" placeholder="说点什么..."> -->
+                    </div>
+                    <div class="send-redPacket"></div>
+                    <div class="cart"></div>
+                    <div class="share"></div>
+                    <div class="gift"></div>
+                </div>
+    
+                <!-- 输入框 -->
+                <div class="send-group">
+                    <div class="textarea" contenteditable="true" placeholder ="说点什么"></div>
+                    <div class="send-btn">发送</div>
+                </div>
+    
+                <!-- 发送弹幕2 -->
+                <!-- <form >
+                    <div class="chat-operate">
+                        <div class="send-redPacket"></div>
+                        <div class="msg-input">
+                            <input type="text" placeholder="说点什么..." id="textarea">
+                        </div>
+                        <div class="endLive">
+                            <input type="button" class="btn btn-default" onclick="onSubmit()" value="发表" />
+                            <a href="./end_life.html" onclick="">结束直播</a>
+                        </div>
+                    </div>
+                </form> -->
+    
+            </div>
+    
+        </div>
+    
+        <!-- 遮罩层 -->
+        <div class="mask">
+            <!-- 红包弹窗 -->
+            <div class="popup redPacket-popup">
+                <div class="popup-header">
+                    <h3>手气红包</h3>
+                </div>
+                <div class="popup-body">
+                    <div class="group-wrap">
+                        <span class="title">单个金额</span>
+                        <span class="right">
+                            <input type="text" placeholder="0.00">
+                        元</span>
+                    </div>
+                </div>
+                <div class="popup-footer">
+                    <span class="send-btn">发红包</span>
+                </div>
+                <div class="close-btn"></div>
+            </div>
+        </div>
+    
+            <!-- 赠送礼物 -->
+            <div class="gift-wrap">
+            <div class="thead"><h3>赠送礼物</h3><span class="close"></span></div>
+            <div class="tbody">
+                <div class="swiper-container gift-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
+                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>                    
+    
+            </div>
+            <div class="sendBtn">发送</div>
+        </div>
+    
     </div>
-
-</div>
-
-<!-- 遮罩层 -->
-<div class="mask">
-    <!-- 红包弹窗 -->
-    <div class="popup redPacket-popup">
-        <div class="popup-header">
-            <h3>手气红包</h3>
-        </div>
-        <div class="popup-body">
-            <div class="group-wrap">
-                <span class="title">总金额</span>
-						<span class="right">
-							<input type="text" placeholder="0.00">
-						元</span>
-            </div>
-            <div class="group-wrap">
-                <span class="title">红包个数</span>
-						<span class="right">
-							<input type="text" placeholder="填写红包个数">
-						个</span>
-            </div>
-        </div>
-        <div class="popup-footer">
-            <span class="send-btn">发红包</span>
-        </div>
-        <div class="close-btn"></div>
-    </div>
-</div>
-</div>
+    
+    <!--<div class="container" style="display: none">-->
+    <!--<div class="row clearfix">-->
+    <!--<div class="col-md-1 column">-->
+    <!--</div>-->
+    <!--<div class="col-md-6 column">-->
+    <!--<div class="thumbnail">-->
+    <!--<div class="caption" id="dialog"></div>-->
+    <!--</div>-->
+    <!--<form>-->
+    <!--<select style="margin-bottom:8px" id="client_list">-->
+    <!--<option value="all">所有人</option>-->
+    <!--</select>-->
+    <!--<textarea class="textarea thumbnail" id="textarea"></textarea>-->
+    <!--<div class="say-btn"><input type="button" class="btn btn-default" value="发表" onclick="onSubmit()" /></div>-->
+    <!--</form>-->
+    <!--<div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-md-3 column">-->
+    <!--<div class="thumbnail">-->
+    <!--<div class="caption" id="userlist"></div>-->
+    <!--</div>-->
+    
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+            
 
 
-<script type="text/javascript" src="__STATIC__/chat/js/swfobject.js"></script>
-<script type="text/javascript" src="__STATIC__/chat/js/web_socket.js"></script>
-<script type="text/javascript" src="__STATIC__/chat/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/chat/js/swfobject.js"></script>
+    <script type="text/javascript" src="__STATIC__/chat/js/web_socket.js"></script>
+    <script type="text/javascript" src="__STATIC__/chat/js/jquery.min.js"></script>
+    
+    <script src="__STATIC__/live/static/js/public/jquery-3.3.1.min.js"></script>
+    <script src="__STATIC__/live/static/js/public/swiper.js"></script>
 
-<script src="__STATIC__/live/static/js/public/jquery-3.3.1.min.js"></script>
+    <script>
+        $(function(){
+            //礼物滑动
+            var swiper = new Swiper('.gift-container', {
+                loop: true,
+                pagination: '.swiper-pagination',
+                paginationClickable: true,
+                autoplayDisableOnInteraction: false
+            });
+    
+            // 主播发红包
+            $('.send-redPacket').click(function(){
+                $(".mask,.redPacket-popup").show();
+            });
+    
+            // 关闭发红包
+            $(".close-btn").click(function(){
+                $(".mask,.redPacket-popup").hide()
+            });
+    
+            // 礼物显示
+            $(".gift").click(function(){
+                $(".gift-wrap").css("visibility","visible");
+            })
+    
+            // 礼物隐藏
+            $(".gift-wrap .close").click(function(){
+                $(".gift-wrap").css("visibility","hidden");
+            })
+
+            // 取消冒泡
+            $(".gift-wrap,.gift").click(function(){
+                var e = window.event || event;
+                if(e.stopPropagation){
+                    e.stopPropagation();
+                }else{
+                    e.cancelBubble = true;
+                }
+            })
+    
+            //点击输入框
+            $(".msg-input").click(function(){
+                var e = window.event || event;
+                if(e.stopPropagation){
+                    e.stopPropagation();
+                }else{
+                    e.cancelBubble = true;
+                }
+                $(".chat-operate").hide();
+                $(".goods-links").hide();
+                $(".send-group").css("visibility","visible");
+                // 点击发送按钮获取焦点
+                $('.textarea').focus();
+            })
+    
+            //改变发送按钮样式
+            $('.send-group .textarea').keyup(function(){
+                if($(this).html()!=''){
+                    $('.send-group .send-btn').css('opacity','1')
+                }else{
+                    $('.send-group .send-btn').css('opacity','.5')
+                }
+            })
+    
+            // 发送消息
+            $('.send-group .send-btn').click(function(){
+                var e = window.event || event;
+                if(e.stopPropagation){
+                    e.stopPropagation();
+                }else{
+                    e.cancelBubble = true;
+                }
+    
+                let str = '';
+                let text = $('.send-group .textarea').html();
+                if(text == ''){
+                    return;
+                }
+                str += `<li class="dm-item">
+                            <span class="level level-1"></span>
+                            <span class="viewer-name">小猪猪朋友：</span>
+                            <span class="barrage-con">${text}</span>
+                        </li>`
+                $('.barrage-list').append(str);
+                // 点击发送按钮获取焦点
+                $('.textarea').focus();
+                $('.send-group .textarea').html('');
+                $('.send-group .send-btn').css('opacity','.5');
+                // 滚动条到底部
+                $('.barrage-scroll').animate({
+                    scrollTop: $('.barrage-scroll').height()
+                }, 100);
+            
+            })
+    
+    
+            if($(".send-group").css("visibility") == 'visibility'){
+                return false;
+            }else{
+                $(".chat-operate").show();
+                $(".goods-links").show();
+            }
+    
+            // 点击空白处关闭
+            document.onclick = function(){
+                $(".send-group").css("visibility","hidden");
+                $(".gift-wrap").css("visibility","hidden");
+                $(".chat-operate").show();
+                $(".goods-links").show();
+            };
+
+
+            // $(".gift-item").animate({ 
+            //     left: "0",
+            // }, 500 );
+            $(".showGift-wrap .gift-item").last().hide();
+            $(".showGift-wrap .gift-item").first().fadeOut(2000);
+            $(".showGift-wrap .gift-item").last().fadeIn(2000);
+
+
+         
+    
+        })
+    </script>
 
 <script>
     $(function(){
@@ -152,6 +418,13 @@
     if(!AgoraRTC.checkSystemRequirements()) {
         alert("Your browser does not support WebRTC!");
     }
+
+    /* select Log type */
+    // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.NONE);
+    // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.ERROR);
+    // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.WARNING);
+    // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.INFO);
+    // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.DEBUG);
 
     /* simulated data to proof setLogLevel() */
     AgoraRTC.Logger.error('this is error');
@@ -228,6 +501,10 @@
         }, function (err) {
             console.log("AgoraRTC client init failed", err);
         });
+
+
+
+
     }
 
 </script>
