@@ -173,7 +173,7 @@
 		<!--<p>1.集满福袋的人才可以参与竞拍</p>
 		<p>2.竞拍时间30分钟，价高者得</p>-->
 		<p>1.竞拍成功需要在{$auction.payment_time}分钟内支付，如不支付购买，奖品取消，并且不予退还保证金。</p>
-		<p>2.对于恶意抬价，活动方有奇效该用户以后参与活动</p>
+		<p>2.对于恶意抬价，活动方有权限禁止该用户以后参与活动</p>
 
 	</div>
 </div>
@@ -240,9 +240,8 @@
 <script>
 	//定义方法
 	$(document).ready(function () {
-
+		<if condition="$auction.delay_end_time lt time()">submit_order();</if>
 		<if condition="$auction.delay_end_time lt time()">activityResult();</if>
-		<if condition="$auction.delay_end_time lt time() AND $auction.is_end eq 0">submit_order();</if>
 		<if condition="$auction.start_time lt time()">
 			//定义参数 显示出GetRTime()方法 1000毫秒以后启动
 			<if condition="$auction.delay_end_time gt time()">timer_rt = window.setInterval("GetRTime({$auction.delay_end_time})", 100);</if>
