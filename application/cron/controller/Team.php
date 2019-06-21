@@ -52,7 +52,7 @@ class Team extends Controller{
         $Tf = M('team_found');
 
         //获取5分钟内结束的拼团
-        $time = (time() . ' and ' . time()-360);
+        $time = ((time()-360) . ' and ' . time());
         $list = $Tf->field('f.found_id')->alias('f')->field('f.found_id,f.need,f.order_id,f.status,t.group_number')->join('tp_team_activity t','f.team_id=t.team_id','left')->where('(f.found_end_time between ' . $time . " and f.status <> 2) or (f.status=4 and f.need=0)")->select(); 
         //echo $Tf->getLastSql(); exit;
         $Tf->where('found_end_time between (' . $time . ") and need>0 and status <> 2")->update(['status'=>3]);

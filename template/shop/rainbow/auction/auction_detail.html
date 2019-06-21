@@ -311,7 +311,7 @@
 			url: "{:U('Shop/Auction/auctionEnd')}",
 			data: {aid:goods_id},
 			dataType: "json",
-			success: function (data) {
+			success: function (data) {return;
 				layer.closeAll();
 				if (data.status != 1) {
 					layer.open({content:data.msg, time:3});  //执行有误
