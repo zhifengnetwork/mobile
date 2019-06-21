@@ -250,4 +250,10 @@ return array(
             //array('name' => '商家门店管理', 'act' => 'store_list', 'op' => 'SellerManagement'),
         ))
     )),
+    'live' => array('name' => '直播', 'child' => array(
+        array('name' => '申请直播', 'child' => array(
+            array('name' => '主播列表', 'act' => 'info_list', 'op' => 'Live'),
+            array('name' => '直播列表', 'act' => 'video_list', 'op' => 'Live'),
+        ))
+    )),
 );

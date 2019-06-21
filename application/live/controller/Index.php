@@ -12,25 +12,30 @@ use app\common\model\Users as UserModel;
 use app\live\service\AccessToken;
 use app\live\service\RtmTokenBuilder;
 use app\mobile\controller\MobileBase;
+use think\AjaxPage;
 use think\Db;
 
 class Index extends Base
 {
+    private $uploadDir = 'public' . DS . 'static' . DS . 'uploads' . DS . 'fengmian';
 
     /**
-     * 直播页面
+     * 主播开始直播页面
      * @return mixed
      */
-    public function index(){
-        $user = $this->user;
-        $user_id = $user->user_id;
-        $room_id = input('get.room_id',16);
-        $room = Db::name('user_video')->where(['room_id'=>$room_id])->find();
-        if(empty($room)){
-            return $this->failResult('不存在的直播间',301);
-        }
-        $this->assign('room_id',$room_id);
-        $this->assign('user_id', $user_id.time());
+    public function index()
+    {
+        $user_id = $this->user->user_id;
+        // 不是主播，跳转申请页面
+        $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
+        !$identity && $this->redirect('/Live/Apply');
+
+        // 没有正在直播的，跳转设置直播信息
+        $room = Db::name('user_video')->where(['user_id' => $user_id, 'status' => 1])->order('id desc')->find();
+        !$room && $this->redirect('/Live/Index/set');
+
+        $this->assign('room_id', $room['room_id']);
+        $this->assign('user_id', $user_id . time());
         return $this->fetch();
     }
 
@@ -48,10 +53,36 @@ class Index extends Base
      * 直播列表页
      * @return mixed
      */
-    public function videoList(){
-        $user = $this->user;
-        $user_id = $user->user_id;
+    public function videoList()
+    {
+        $user_id = $this->user->user_id;
+        $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
+        // 主播显示直播按钮
+        $this->assign('zhubo', $identity ? 1 : 0);
+        return $this->fetch();
+    }
 
+    /*
+     * ajax正在直播列表
+     */
+    public function ajaxVideoList()
+    {
+        $where = ['status' => 1];
+        $count = M('UserVideo')->where($where)->count();
+        $page_count = C('PAGESIZE');
+        $page = new AjaxPage($count, $page_count);
+        $list = M('UserVideo')
+            ->alias('v')
+            ->join('tp_user_verify_identity_info i', 'v.user_id = i.user_id', 'LEFT')
+            ->where($where)->field('v.*,i.name')
+            ->order("v.id desc")
+            ->limit($page->firstRow . ',' . $page->listRows)
+            ->select();
+        $this->assign('videoList', $list);
+        $this->assign('count', $count);//总条数
+        $this->assign('page_count', $page_count);//页数
+        $this->assign('current_count', $page_count * I('p'));//当前条
+        $this->assign('p', I('p'));//页数
         return $this->fetch();
     }
 
@@ -59,41 +90,86 @@ class Index extends Base
      * 设置直播
      * @return mixed
      */
-    public function set(){
+    public function set()
+    {
+        $user_id = $this->user->user_id;
+        $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
+        if (empty($identity)) {
+            return $this->failResult('身份验证错误', 301);
+        }
         return $this->fetch();
+    }
+
+    /**
+     * 提交开始直播
+     * @return mixed
+     */
+    public function start()
+    {
+        $user_id = $this->user->user_id;
+        $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
+        if (empty($identity)) {
+            return $this->failResult('身份验证错误', 301);
+        }
+
+        if (!($fengmian = request()->file('fengmian'))) {
+            return $this->failResult('请上传身份证正面照', 301);
+        }
+        //将传入的图片移动到框架应用根目录/public/uploads/ 目录下，ROOT_PATH是根目录下，DS是代表斜杠 /
+        if (!($info = $fengmian->move(ROOT_PATH . $this->uploadDir))) {
+            // 上传失败获取错误信息
+            return $this->failResult('身份证正面上传失败', 301);
+        }
+        $roomId = 11;
+        $data = [
+            'user_id' => $this->user->user_id,
+            'room_id' => $roomId,
+            'pic_fengmian' => $this->uploadDir . DS . $info->getSaveName(),
+            'location' => '火星',
+            'start_time' => time(),
+            'status' => 1
+        ];
+        $result = Db::name('user_video')->insert($data);
+        if (!$result) {
+            return $this->failResult('开始直播失败', 301);
+        }
+
+        return $this->successResult(['room_id' => $roomId]);
     }
 
     /**
      * 直播结束
      * @return mixed
      */
-    public function end(){
-        $user = $this->user;
-        $user_id = $user->user_id;
-        $room_id = input('get.room_id',0);
-        $room = Db::name('user_video')->where(['user_id'=>$user_id,'room_id'=>$room_id])->find();
-        if(empty($room)){
-            return $this->failResult('不存在的直播间',301);
+    public function end()
+    {
+        $user_id = $this->user->user_id;
+        $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
+        if (empty($identity)) {
+            return $this->failResult('身份验证错误', 301);
         }
-        $user_identity = Db::name('user_verify_identity_info')->where(['user_id'=>$user_id])->order('id desc')->find();
-        $user_identity['pic_head'] = $this->url.$user_identity['pic_head'];
-        $user_identity['pic_fengmian'] = $this->url.$user_identity['pic_fengmian'];
-        $this->assign('user',$user_identity);
-        $this->assign('room',$room);
+
+        $room = Db::name('user_video')->where(['user_id' => $user_id, 'status' => 1])->find();
+        if (empty($room)) {
+            return $this->failResult('不存在的直播间', 301);
+        }
+        $identity['pic_head'] = $this->url . $identity['pic_head'];
+        $identity['pic_fengmian'] = $this->url . $identity['pic_fengmian'];
+        $this->assign('identity', $identity);
+        $this->assign('room', $room);
         return $this->fetch();
     }
 
-    public function RtmTokenBuilderSample(){
-
+    public function RtmTokenBuilderSample()
+    {
         $appID = "4c2954a8e1524f5ea15dc5ae14232042";
         $appCertificate = "1580a6da5ed94447840d870a07e1c6e2";
         $account = "1000";
         $expiredTs = 0;
         $builder = new RtmTokenBuilder($appID, $appCertificate, $account);
         $builder->setPrivilege(AccessToken::Privileges["kRtmLogin"], $expiredTs);
-        echo  $builder->buildToken();
+        echo $builder->buildToken();
         exit;
     }
-
 
 }

@@ -8,32 +8,31 @@
 
 namespace app\live\controller;
 
-use app\common\model\Users as UserModel;
 use think\Db;
 
 class Apply extends Base
 {
+    private $uploadDir = 'public' . DS . 'static' . DS . 'uploads' . DS . 'apply';
 
     /**
      * 直播审核页面
      * @return mixed
      */
-    public function index(){
-        $user = $this->user;
-        $user_id = $user->user_id;
-        $verifyData = Db::name('user_verify_identity')->where(['user_id'=>$user_id])->find();
-        $verify_state = 0;//认证状态
-        if(empty($verifyData)){
-
-        }else{
-            if($verifyData['verify_state'] == 2){
-                $verify_state = 2;
-            }else{
-                $verify_state = 1;
+    public function index()
+    {
+        $userId = $this->user->user_id;
+        $verifyData = Db::name('user_verify_identity_info')->where(['user_id' => $userId])->find();
+        if ($verifyData) {
+            if ($verifyData['verify_state'] == 1) {
+                $this->redirect('/Live/Index/videoList');
+            } else if ($verifyData['verify_state'] == 2) {
+                $log = Db::name('user_verify_identity_log')->where('verify_id', $verifyData['id'])->order('id')->find();
+                $log && $verifyData['reason'] = $log['reason_cn'];
             }
         }
-        $this->assign('verify_state',$verify_state);
-        $this->assign('user',$user);
+
+        // state:认证状态,默认-1，显示编辑页面
+        $this->assign(['data' => $verifyData, 'state' => $verifyData ? $verifyData['verify_state'] : -1, 'user' => $this->user]);
         return $this->fetch();
     }
 
@@ -41,89 +40,60 @@ class Apply extends Base
      * 提交审核页面
      * @return mixed
      */
-    public function upload(){
-        $user_name = input('post.user_name/s');
-        $phone = input('post.pone/s');
-        $user_id = input('post.user_id/d');
-        $user = $this->user;
-        $level = input('post.level/d');
+    public function upload()
+    {
+        $userId = $this->user->user_id;
+        $verifyData = Db::name('user_verify_identity_info')->where(['user_id' => $userId])->find();
+        if ($verifyData && $verifyData['verify_state'] == 0 || $verifyData['verify_state'] == 1) {
+            return $this->failResult('信息审核中或已通过', 301);
+        }
 
-        $validate = $this->validate(input('post.'), 'User.name_phone');
+        $name = input('post.name/s');
+        $mobile = input('post.mobile/s');
+        $validate = $this->validate(input('post.'), 'Apply.upload');
         if (true !== $validate) {
             return $this->failResult($validate, 301);
         }
 
-
-        $file = request()->file('pic_front');
-        if($file) {
-            //将传入的图片移动到框架应用根目录/public/uploads/ 目录下，ROOT_PATH是根目录下，DS是代表斜杠 /
-            $info = $file->move(ROOT_PATH . 'public' . DS . 'static' . DS . 'uploads'.DS. 'apply');
-            if ($info) {
-                $pic_front = 'public' . DS . 'static' . DS . 'uploads'.DS. 'apply'.DS.$info->getSaveName();
-            } else {
-                // 上传失败获取错误信息
-                return $this->failResult('正面上传失败', 301);
-            }
-        }else{
-            return $this->failResult('正面不能为空', 301);
+        if (!($file = request()->file('front'))) {
+            return $this->failResult('请上传身份证正面照', 301);
         }
-
-        $file = request()->file('pic_back');
-        if($file) {
-            //将传入的图片移动到框架应用根目录/public/uploads/ 目录下，ROOT_PATH是根目录下，DS是代表斜杠 /
-            $info = $file->move(ROOT_PATH . 'public' . DS . 'static' . DS . 'uploads'.DS. 'apply');
-            if ($info) {
-                $pic_back = 'public' . DS . 'static' . DS . 'uploads'.DS. 'apply'.DS.$info->getSaveName();
-            } else {
-                // 上传失败获取错误信息
-                return $this->failResult('反面上传失败', 301);
-            }
-        }else{
-            return $this->failResult('正面不能为空', 301);
+        //将传入的图片移动到框架应用根目录/public/uploads/ 目录下，ROOT_PATH是根目录下，DS是代表斜杠 /
+        if (!($info = $file->move(ROOT_PATH . $this->uploadDir))) {
+            // 上传失败获取错误信息
+            return $this->failResult('身份证正面照上传失败', 301);
         }
+        $picFront = $this->uploadDir . DS . $info->getSaveName();
+
+        if (!($file = request()->file('back'))) {
+            return $this->failResult('请上传身份证反面照', 301);
+        }
+        if (!($info = $file->move(ROOT_PATH . $this->uploadDir))) {
+            return $this->failResult('身份证反面照上传失败', 301);
+        }
+        $picBack = $this->uploadDir . DS . $info->getSaveName();
 
         //提交申请直播
-        Db::startTrans();
-        $user_id = $user->user_id;
-        $verifyData = Db::name('user_verify_identity')->where(['user_id'=>$user_id])->find();
-        $data = array(
-            'verify_state' => 1,
-            'state' => 1,
+        $logData = array(
+            'user_id' => $userId,
+            'name' => $name,
+            'mobile' => $mobile,
+            'pic_front' => $picFront,
+            'pic_back' => $picBack,
+            'verify_state' => 0,
             'create_time' => time(),
         );
-        if (empty($verifyData)) {
-            //新增记录
-            $data['user_id'] = $user_id;
-            $result = Db::name('user_verify_identity')->insert($data);
+        if ($verifyData) {
+            $result = Db::name('user_verify_identity_info')->where(['user_id' => $userId])->update($logData);
         } else {
-            //修改记录
-            $result = Db::name('user_verify_identity')->where(['user_id'=>$user_id])->save($data);
+            $result = Db::name('user_verify_identity_info')->insert($logData);
         }
         if (!$result) {
-            Db::rollback();
-            return $this->failResult('设置失败', 301);
-        }
-        //新增实名认证信息
-        $logData = array(
-            'user_id' => $user_id,
-            'level' => $level,
-            'user_name' => $user_name,
-            'phone' => $phone,
-            'pic_front' => $pic_front,
-            'pic_back' => $pic_back,
-            'create_time' => time(),
-        );
-        $result = Db::name('verify_identity_info')->insert($logData);
-        if ($result) {
-            Db::commit();
-            return $this->successResult('设置成功');
-        } else {
-            Db::rollback();
-            return $this->failResult('设置失败', 301);
+            return $this->failResult('提交失败', 301);
         }
 
-        return $this->successResult('success');
+        return $this->successResult(Db::name('user_verify_identity_info')->getLastSql() . '提交成功');
+
     }
-
 
 }

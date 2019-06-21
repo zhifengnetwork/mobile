@@ -1,0 +1,65 @@
+<table>
+    <tbody>
+    <volist name="list" id="list">
+        <tr data-id="{$list[id]}">
+            <td class="sign" axis="col6">
+                <div style="width: 24px;"><i class="ico-check"></i></div>
+            </td>
+            <td class="handle">
+                <div style="text-align:left;   min-width:50px !important; max-width:inherit !important;">
+                  <span class="btn"><em><i class="fa fa-cog"></i>设置<i class="arrow"></i></em>
+                  <ul>
+                      <li><a href="{:U('Admin/Live/info',array('id'=>$list['id']))}">
+                          <if condition="$list['verify_state'] eq 0">审核<else/>查看</if></a><li>
+<!--                        <li><a href="javascript:void(0);" onclick="publicHandle('{$list[id]}','del')">删除</a></li>-->
+                  </ul>
+                  </span>
+                </div>
+            </td>
+            <td align="left" class="">
+                <div style="text-align: left; width: 100px;">{$list.id}</div>
+            </td>
+
+            <td align="left" class="">
+                <div style="text-align: left; width: 100px;">{$list.user_id}</div>
+            </td>
+            <td align="left" class="">
+                <div style="text-align: left; width: 100px;">{$list.name}</div>
+            </td>
+            <td align="left" class="">
+                <div style="text-align: left; width: 100px;">{$list.mobile}</div>
+            </td>
+            <td align="left" class="">
+                <div style="text-align: left; width: 200px;">{:date('Y-m-d H:i:s',$list.create_time)}</div>
+            </td>
+            <td align="left" class="">
+                <div style="text-align: left; width: 100px;">
+                    <if condition='$list[verify_state] eq 0'><i style="color: #ff0000">待审核</i>
+                        <elseif condition='$list[verify_state] eq 2'>
+                            <i style="color:#0fff0f">未通过</i>
+                        </elseif>
+                        <else/>
+                        <i style="color:#0fff0f">通过</i>
+                    </if>
+                </div>
+            </td>
+            <td align="center" class="handle">
+                <div style="text-align: center; width: 170px; max-width:170px;">
+                    <a class="btn blue" href="{:U('Admin/user/detail',array('id'=>$list['user_id']))}">用户详情</a>
+                </div>
+            </td>
+            <td align="" class="" style="width: 100%;">
+                <div>&nbsp;</div>
+            </td>
+        </tr>
+    </volist>
+    </tbody>
+</table>
+<!--分页位置--> {$page}
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function () {
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2', cur_page);
+    });
+</script>

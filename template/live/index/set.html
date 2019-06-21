@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="public_head">
-        <i class="iconfont head_icon">&#xe63f;</i>
+        <i class="iconfont head_icon" onclick="window.history.go(-1);">&#xe63f;</i>
         <p>开始直播</p>
     </div>
     <!-- 上传图片 -->
@@ -60,6 +60,7 @@
     <script src="__STATIC__/js/public/jquery-3.3.1.min.js"></script>
     <script>
         $(function(){
+            var formData = new FormData();
             $("#img").change(function (e) {
                 for (var i = 0; i < e.target.files.length; i++) {
                     var file = e.target.files.item(i);
@@ -72,11 +73,36 @@
                     var freader = new FileReader();
                     freader.readAsDataURL(file);
                     freader.onload = function (e) {
-                        $('.up_img').attr('src',e.target.result)
+                        formData.append('fengmian', file);
+                        $('.up_img').attr('src', e.target.result)
                     }
                     $("#img").val('');
                 }
             });
+
+            $('.live_btn').click(function () {
+                $.ajax({
+                    type: 'post',
+                    url: '/index.php?m=Live&c=Index&a=start&t=' + Math.random(),
+                    data: formData,
+                    dataType: 'json',
+                    async: false,
+                    cache: false,  //上传文件不需要缓存
+                    contentType: false,
+                    processData: false, //因为data值是FormData对象，不需要对数据做处理
+                    success: function (data) {
+                        console.log(data);
+                        if (data.status == 200) {
+                            window.location.href = '/index.php/live';
+                        } else {
+                            layer.open({content: data.msg, time: 2});
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        showErrorMsg('网络异常，请稍后重试');
+                    }
+                })
+            })
         })
     </script>
 </body>

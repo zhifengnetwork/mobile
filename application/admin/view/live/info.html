@@ -1,0 +1,165 @@
+<include file="public/layout"/>
+<style type="text/css">.hide{display:none!important}</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer"
+     style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i
+                class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>直播 - 查看直播信息</h3>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="sellerHandle" method="post">
+        <input type="hidden" name="id" value="{$info.id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label>申请用户</label>
+                </dt>
+                <dd class="opt">
+                    {$info.user_id}
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>身份证姓名</label>
+                </dt>
+                <dd class="opt">
+                    {$info.name}
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>手机号</label>
+                </dt>
+                <dd class="opt">
+                    {$info.mobile}
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>证件正面</label>
+                </dt>
+                <dd class="opt">
+                    <img width="350px" height="200px" src="/{$info.pic_front}">
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>证件反面</label>
+                </dt>
+                <dd class="opt">
+                    <img width="350px" height="200px" src="/{$info.pic_back}">
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>申请时间</label>
+                </dt>
+                <dd class="opt">
+                    {:date('Y-m-d H:i:s',$info.create_time)}
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>状态</label>
+                </dt>
+                <dd class="opt">
+                    <if condition='$info[verify_state] eq 0'><i style="color: #ff0000">待审核</i>
+                        <elseif condition='$info[verify_state] eq 2'>
+                            <i style="color:#0fff0f">未通过</i></elseif>
+                        <else/>
+                        <i style="color:#0fff0f">通过</i>
+                    </if>
+                </dd>
+            </dl>
+            <if condition='$info[verify_state] eq 0'>
+                <dl class="row">
+                    <dt class="tit">
+                        <label>是否启用：</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="radio" name="verify_status" value="1" checked="checked"> 通过
+                        <input type="radio" name="verify_status" value="2"> 不通过
+                        <span class="err"></span>
+                        <p class="notic"></p>
+                    </dd>
+                </dl>
+                <dl class="row failed hide">
+                    <dt class="tit">
+                        <label for="reason">不通过原因</label>
+                    </dt>
+                    <dd class="opt">
+                            <input type="text" name="reason" id="reason" maxlength="20" class="input-txt">
+                        <span class="err" id="err_reason"></span>
+                        <p class="notic">不通过原因</p>
+                    </dd>
+                </dl>
+                <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+
+                <else/>
+                <if condition='$info[verify_state] eq 2'>
+                    <dt class="tit">
+                        <label>不通过原因</label>
+                    </dt>
+                    <dd class="opt">
+                        {$info.reason}
+                    </dd>
+                </if>
+                    <dt class="tit">
+                        <label>审核时间</label>
+                    </dt>
+                    <dd class="opt">
+                        {:date('Y-m-d H:i:s',$info.verify_time)}
+                    </dd>
+            </if>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $("input[name='verify_status']").change(function () {
+        var opt = $("input[name='verify_status']:checked").val();
+        if (opt == 1) {
+            $('.failed').addClass('hide');
+        } else {
+            $('.failed').removeClass('hide');
+        }
+    });
+
+    function adsubmit() {
+        $('.err').show();
+        var verify_status = $("input[name='verify_status']:checked").val();
+        var reason = $('#reason').val();
+        if (verify_status == 2 && !reason) {
+            layer.msg('不通过原因不能为空！', {icon: 2, time: 1000});
+            return false;
+        }
+        $.ajax({
+            async: false,
+            url: '/index.php?m=Admin&c=Live&a=verify&t=' + Math.random(),
+            data: $('#sellerHandle').serialize(),
+            type: 'post',
+            dataType: 'json',
+            success: function (data) {
+                if (data.status != 1) {
+                    layer.msg(data.msg, {icon: 2, time: 2000});
+                } else {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        window.location.href = data.url;
+                    })
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $('#error').html('<span class="error">网络失败，请刷新页面后重试!</span>');
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -136,7 +136,6 @@
 }
 /* 审核中 */
 .review,.prosperity{
-    display: none;
     text-align: center;
 }
 .review_imgwrap,.prosperity_imgwrap{
