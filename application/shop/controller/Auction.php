@@ -319,7 +319,7 @@ class Auction extends MobileBase
                 'is_out'  => 1,
             ];
             $id = $AuctionPrice->lock(true)->add($data);
-			$info = $AuctionPrice->field('user_id,offer_price,offer_time,is_out')->order('offer_price desc')->find($auction_id);
+			$info = $AuctionPrice->field('user_id,offer_price,offer_time,is_out')->order('offer_price desc')->where(['auction_id'=>$auction_id])->find();
 			if($info['user_id'] && ($info['user_id'] !== $uid)){
 				Db::rollback();
 				$this->ajaxReturn(['status' => 0, 'msg' => '您的出价不是最高价', 'result' => '']);
