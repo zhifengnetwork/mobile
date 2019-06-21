@@ -550,6 +550,7 @@ class Pay
      */
     public function getAuction()
     {
+		if($this->payList[0]['prom_type'] != 8)return $this;		
         $query = Db::name('AuctionPrice')
             ->where(['auction_id' => $this->payList[0]['prom_id'], 'is_out' => 2])
             ->order('offer_price desc')->find();

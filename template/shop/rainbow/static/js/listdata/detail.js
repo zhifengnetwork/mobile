@@ -78,6 +78,8 @@ $(document).ready(function(){
 
 	/*点击拼单-拼单弹框 */
 	$('.pellListTermBut').on('click',function(){
+		var price = $('#hidden_groupbuy_price').val();
+		$('.hidden_price').html(price);
 		$('.assembleAlertWrap').show();
 		$('.wrapL').eq(0).css({'overflow':'hidden'})
 	})

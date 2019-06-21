@@ -173,6 +173,24 @@ class Activity extends MobileBase {
         return $this->fetch();
     }
 
+    public function ajax_getmyauction(){
+        $user_id = $_SESSION['think']['user']['user_id'];
+        $list = [];
+        if($user_id){
+            //$this->redirect('Mobile/User/login');
+
+            $list = M('auction_price')->alias('AP')->field('A.*,AP.user_id')->join('auction A','AP.auction_id=A.id','left')->where(['AP.user_id'=>$user_id,'AP.is_out'=>2])->group('AP.auction_id')->order('AP.offer_time desc')->select(); 
+
+            $Order = M('Order');
+            foreach($list as $k=>$v){
+                $num = $Order->where(['user_id'=>$v['user_id'],'prom_type'=>8,'prom_id'=>$v['id']])->count();
+                if($num)unset($list[$k]);
+            }
+        }
+        $this->assign('auction_goods', $list);
+        return $this->fetch('ajax_auction');       
+    }
+
     /**
      * 竞拍活动列表ajax
      */

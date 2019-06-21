@@ -30,6 +30,7 @@ class CartLogic extends Model
     protected $userGoodsTypeCount = 0;//用户购物车的全部商品种类
     protected $userCouponNumArr; //用户符合购物车店铺可用优惠券数量
     protected $combination;
+	protected $shop_price = 0.00;
 
     public function __construct()
     {
@@ -50,11 +51,16 @@ class CartLogic extends Model
      * 包含一个商品模型
      * @param $goods_id
      */
-    public function setGoodsModel($goods_id)
+    public function setGoodsModel($goods_id,$shop_price=0)
     {
         if ($goods_id > 0) {
             $goodsModel = new Goods();
             $this->goods = $goodsModel::get($goods_id);
+
+			if($shop_price){
+                $this->goods['shop_price'] = $shop_price;
+                $this->shop_price = $shop_price;
+            }
         }
     }
 
@@ -222,6 +228,8 @@ class CartLogic extends Model
 		if($ptype == 8){ //竞拍
 			$buyGoods['goods_price'] = $buyGoods['member_goods_price'] = M('auction')->where(['id'=>$prom_id])->value('transaction_price');
 		}
+
+		if($this->shop_price)$buyGoods['goods_price'] = $this->shop_price;
 
         $cart = new Cart();
         $buyGoods['member_goods_price']?$buyGoods['member_goods_price']=round($buyGoods['member_goods_price'],2):'';

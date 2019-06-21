@@ -180,9 +180,12 @@ class Auction extends MobileBase
     public function auctionResult()
     {
         $auction_id = input("aid/d", 0);
-        $victory = M('AuctionPrice')->where(['user_id' => $this->user_id, 'auction_id' => $auction_id, 'is_read' => 0])->order('offer_price desc')->find();
+        $victory = M('AuctionPrice')->where(['user_id' => $this->user_id, 'auction_id' => $auction_id])->order('offer_price desc')->find();
+        $auctioninfo = M('Auction')->field('end_time,payment_time')->find($auction_id);
+
+        $bol = (time() < ($auctioninfo['end_time'] + $auctioninfo['payment_time'] * 60)) + 0 ;
         if(!empty($victory)){
-            $this->ajaxReturn(['status' => 1, 'msg'=>$victory['is_out']]);
+            $this->ajaxReturn(['status' => 1, 'msg'=>$victory['is_out'],'payment_time'=>$bol]);
         } else {
             $this->ajaxReturn(['status'=>0]);
         }
@@ -316,7 +319,7 @@ class Auction extends MobileBase
                 'is_out'  => 1,
             ];
             $id = $AuctionPrice->lock(true)->add($data);
-			$info = $AuctionPrice->field('user_id,offer_price,offer_time,is_out')->order('offer_price desc')->find($auction_id);
+			$info = $AuctionPrice->field('user_id,offer_price,offer_time,is_out')->order('offer_price desc')->where(['auction_id'=>$auction_id])->find();
 			if($info['user_id'] && ($info['user_id'] !== $uid)){
 				Db::rollback();
 				$this->ajaxReturn(['status' => 0, 'msg' => '您的出价不是最高价', 'result' => '']);
