@@ -48,9 +48,9 @@ class Apply extends Base
             return $this->failResult('信息审核中或已通过', 301);
         }
 
-        $name = input('post.name/s');
-        $mobile = input('post.mobile/s');
-        $validate = $this->validate(input('post.'), 'Apply.upload');
+        $name = I('post.name/s', '', 'trim');
+        $mobile = I('post.mobile/s', '', 'trim');
+        $validate = $this->validate(I('post.'), 'Apply.upload');
         if (true !== $validate) {
             return $this->failResult($validate, 301);
         }
@@ -63,7 +63,7 @@ class Apply extends Base
             // 上传失败获取错误信息
             return $this->failResult('身份证正面照上传失败', 301);
         }
-        $picFront = $this->uploadDir . DS . $info->getSaveName();
+        $picFront = DS . $this->uploadDir . DS . $info->getSaveName();
 
         if (!($file = request()->file('back'))) {
             return $this->failResult('请上传身份证反面照', 301);
@@ -71,7 +71,7 @@ class Apply extends Base
         if (!($info = $file->move(ROOT_PATH . $this->uploadDir))) {
             return $this->failResult('身份证反面照上传失败', 301);
         }
-        $picBack = $this->uploadDir . DS . $info->getSaveName();
+        $picBack = DS . $this->uploadDir . DS . $info->getSaveName();
 
         //提交申请直播
         $logData = array(
@@ -92,7 +92,7 @@ class Apply extends Base
             return $this->failResult('提交失败', 301);
         }
 
-        return $this->successResult(Db::name('user_verify_identity_info')->getLastSql() . '提交成功');
+        return $this->successResult('提交成功');
 
     }
 

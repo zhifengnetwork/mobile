@@ -18,7 +18,8 @@
 		    </div>
 			<!--内容-->
 			<div class="content">
-
+				<div class="item_wrap" id="videoList">
+				</div>
 			</div>
 			<!--直播按钮-->
 			<if condition='$zhubo eq 1'>
@@ -40,7 +41,7 @@
                 type: "GET",
                 url: "/index.php?m=Live&c=index&a=ajaxVideoList&p=1",
                 success: function (data) {
-                    $(".content").empty().append(data);
+                    $("#videoList").empty().append(data);
                 }
             });
         });
