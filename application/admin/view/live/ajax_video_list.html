@@ -1,7 +1,7 @@
 <table>
     <tbody>
     <volist name="list" id="list">
-        <tr data-id="{$list[id]}">
+        <tr data-id="{$list.id}">
             <td class="sign" axis="col6">
                 <div style="width: 24px;"><i class="ico-check"></i></div>
             </td>
@@ -9,10 +9,7 @@
                 <div style="text-align: left; width: 100px;">{$list.id}</div>
             </td>
             <td align="left" class="">
-                <div style="text-align: left; width: 100px;">{$list.name}</div>
-            </td>
-            <td align="left" class="">
-                <div style="text-align: left; width: 100px;">{$list.location}</div>
+                <div style="text-align: left; width: 100px;">{$list.info_name}</div>
             </td>
             <td align="left" class="">
                 <div style="text-align: left; width: 100px;">{$list.look_amount}</div>
@@ -24,12 +21,12 @@
                 <div style="text-align: left; width: 100px;">{$list.money}</div>
             </td>
             <td align="left" class="">
-                <div style="text-align: left; width: 100px;">{$list.start_time}</div>
+                <div style="text-align: left; width: 200px;">{:date('Y-m-d H:i:s', $list.start_time)}</div>
             </td>
             <td align="left" class="">
                 <div style="text-align: left; width: 100px;">
-                    <if condition='$list[status] eq 1'><i style="color: #ff0000">直播中</i>
-                        <elseif condition='$list[status] eq 2'>
+                    <if condition='$list.status eq 1'><i style="color: #ff0000">直播中</i>
+                        <elseif condition='$list.status eq 2'>
                             已结束
                         </elseif>
                         <else/>
@@ -38,13 +35,7 @@
             </td>
             <td align="center" class="handle">
                 <div style="text-align: center; width: 170px; max-width:170px;">
-                    <a href="javascript:void(0)"
-                       class="btn blue">详情</a>
-                    <if condition="$list['status'] eq 2">
-                        <a class="btn red" href="javascript:void(0)"
-                           data-url="{:U('Live/videoHandle')}" data-id="{$list.id}"
-                           onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
-                    </if>
+                    <a href="{:U('Live/video', array('id'=>$list.id))}" class="btn blue">详情</a>
                 </div>
             </td>
             <td align="" class="" style="width: 100%;">

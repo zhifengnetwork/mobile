@@ -10,7 +10,7 @@
         <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i
                 class="fa fa-arrow-circle-o-left"></i></a>
             <div class="subject">
-                <h3>直播 - 查看直播信息</h3>
+                <h3>主播 - 查看主播信息</h3>
             </div>
         </div>
     </div>
@@ -63,7 +63,7 @@
                     <label>申请时间</label>
                 </dt>
                 <dd class="opt">
-                    {:date('Y-m-d H:i:s',$info.create_time)}
+                    {$info.create_time}
                 </dd>
             </dl>
             <dl class="row">
@@ -71,15 +71,15 @@
                     <label>状态</label>
                 </dt>
                 <dd class="opt">
-                    <if condition='$info[verify_state] eq 0'><i style="color: #ff0000">待审核</i>
-                        <elseif condition='$info[verify_state] eq 2'>
+                    <if condition='$info.verify_state eq 0'><i style="color: #ff0000">待审核</i>
+                        <elseif condition='$info.verify_state eq 2'>
                             <i style="color:#0fff0f">未通过</i></elseif>
                         <else/>
                         <i style="color:#0fff0f">通过</i>
                     </if>
                 </dd>
             </dl>
-            <if condition='$info[verify_state] eq 0'>
+            <if condition='$info.verify_state eq 0'>
                 <dl class="row">
                     <dt class="tit">
                         <label>是否启用：</label>
@@ -104,20 +104,24 @@
                 <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
 
                 <else/>
-                <if condition='$info[verify_state] eq 2'>
-                    <dt class="tit">
-                        <label>不通过原因</label>
-                    </dt>
-                    <dd class="opt">
-                        {$info.reason}
-                    </dd>
+                <if condition='$info.verify_state eq 2'>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label>不通过原因</label>
+                        </dt>
+                        <dd class="opt">
+                            {$info.log_reason}
+                        </dd>
+                    </dl>
                 </if>
+                <dl class="row">
                     <dt class="tit">
                         <label>审核时间</label>
                     </dt>
                     <dd class="opt">
-                        {:date('Y-m-d H:i:s',$info.verify_time)}
+                        {$info.verify_time}
                     </dd>
+                </dl>
             </if>
         </div>
     </form>

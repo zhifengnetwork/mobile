@@ -8,10 +8,9 @@
 
 namespace app\live\controller;
 
-use app\common\model\Users as UserModel;
+use app\common\model\UserVideo;
 use app\live\service\AccessToken;
 use app\live\service\RtmTokenBuilder;
-use app\mobile\controller\MobileBase;
 use think\AjaxPage;
 use think\Db;
 
@@ -71,11 +70,7 @@ class Index extends Base
         $count = M('UserVideo')->where($where)->count();
         $page_count = C('PAGESIZE');
         $page = new AjaxPage($count, $page_count);
-        $list = M('UserVideo')
-            ->alias('v')
-            ->join('tp_user_verify_identity_info i', 'v.user_id = i.user_id', 'LEFT')
-            ->where($where)->field('v.*,i.name')
-            ->order("v.id desc")
+        $list = (new UserVideo)->where($where)->order("id desc")
             ->limit($page->firstRow . ',' . $page->listRows)
             ->select();
         $this->assign('videoList', $list);
@@ -152,7 +147,7 @@ class Index extends Base
         if (empty($room)) {
             return $this->failResult('不存在的直播间', 301);
         }
-        $identity['pic_head'] = $this->url . $identity['pic_head'];
+        $identity['pic_head'] = $this->user['head_pic'];
         $identity['pic_fengmian'] = $this->url . $identity['pic_fengmian'];
         $this->assign('identity', $identity);
         $this->assign('room', $room);

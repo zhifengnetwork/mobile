@@ -2,6 +2,8 @@
 
 namespace app\admin\controller;
 
+use app\common\model\UserVerifyIdentityInfo;
+use app\common\model\UserVideo;
 use think\AjaxPage;
 use think\Db;
 
@@ -42,17 +44,16 @@ class Live extends Base
 
     /**
      * 直播 - 主播列表 - 查看/审核
+     *
      */
     public function info()
     {
         $id = I('get.id/d', 0);
         if ($id) {
-            $info = Db::name('user_verify_identity_info')->where('id', $id)->find();
+            $info = (new UserVerifyIdentityInfo)->where('id', $id)->find();
             if (!$info) {
                 return $this->fetch('public/error');
             }
-            $log = Db::name('user_verify_identity_log')->where('verify_id', $id)->order('id')->find();
-            $log && ($info['reason'] = $log['reason_cn']) && ($info['verify_time'] = $log['create_time']);
             $this->assign('info', $info);
         }
         return $this->fetch();
@@ -86,7 +87,7 @@ class Live extends Base
             'reason_cn' => $reason,
             'admin_id' => $this->admin_id,
             'create_time' => time(),
-        );;
+        );
         if (!($result = Db::name('user_verify_identity_log')->insert($logData))) {
             Db::rollback();
             return $this->ajaxReturn(['status' => -1, 'msg' => '设置失败']);
@@ -125,18 +126,27 @@ class Live extends Base
         }
         (I('status/d') !== '') && $where = "$where and status = " . I('status/d');
 
-        $count = D('user_video')->where($where)->count();
-        $Page = new AjaxPage($count, 20);
-        $show = $Page->show();
-        $list = D('user_video')->where($where)->order('id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
-
-        foreach ($list as &$value) {
-            $info = Db::name('user_verify_identity_info')->where('user_id', $value['user_id'])->find();
-            $value['name'] = $info['name'];
-        }
+        $userVideo = new UserVideo;
+        $count = $userVideo->where($where)->count();
+        $page = new AjaxPage($count, 20);
+        $list = $userVideo->where($where)->order('id desc')
+            ->limit($page->firstRow . ',' . $page->listRows)
+            ->select();
 
         $this->assign('list', $list);
-        $this->assign('page', $show);
+        $this->assign('page', $page->show());
+        return $this->fetch();
+    }
+
+    public function video()
+    {
+        $id = I('get.id/d', 0);
+        if ($id) {
+            if (!($video = (new UserVideo)->where('id', $id)->find())) {
+                return $this->fetch('public/error');
+            }
+            $this->assign('video', $video);
+        }
         return $this->fetch();
     }
 }

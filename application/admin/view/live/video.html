@@ -1,0 +1,85 @@
+<include file="public/layout"/>
+<style type="text/css">.hide{display:none!important}</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer"
+     style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i
+                class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>直播 - 查看直播信息</h3>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="sellerHandle" method="post">
+        <input type="hidden" name="id" value="{$video.id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label>主播</label>
+                </dt>
+                <dd class="opt">
+                    {$video.info_name}
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>封面</label>
+                </dt>
+                <dd class="opt">
+                    <img width="230px" height="300px" src="{$video.pic_fengmian}">
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>观看人数</label>
+                </dt>
+                <dd class="opt">
+                    {$video.look_amount}
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>点赞人数</label>
+                </dt>
+                <dd class="opt">
+                    {$video.top_amount}
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>打赏金额</label>
+                </dt>
+                <dd class="opt">
+                    {$video.money}
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>开始时间</label>
+                </dt>
+                <dd class="opt">
+                    {:date('Y-m-d H:i:s',$video.start_time)}
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>状态</label>
+                </dt>
+                <dd class="opt">
+                    <if condition='$video.status eq 1'><i style="color: #ff0000">直播中</i>
+                        <elseif condition='$video.status eq 2'>
+                            <i style="color:#0fff0f">已结束</i></elseif>
+                        <else/>
+                        <i style="color:#0fff0f">未开始</i>
+                    </if>
+                </dd>
+            </dl>
+        </div>
+    </form>
+</div>
+</body>
+</html>
