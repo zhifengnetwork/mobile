@@ -177,7 +177,35 @@
 <script type="text/javascript" src="__STATIC__/chat/js/jquery.min.js"></script>
 
 <script src="__STATIC__/live/static/js/public/jquery-3.3.1.min.js"></script>
+<script>
+    //红包隐藏显示
+    $(".close-btn").click(function(){
+        $(".popup").hide();
+        $(".mask").hide();
+    })
+    $(".send-redPacket").click(function(){
+        $(".mask").show();
+        $(".popup").show();
+    })
+    // $.ajax({
+    //     async:false,//同步，异步
+    //     url:"/addjoke", //请求的服务端地址
+    //     data:{
+    //         content:mycontent,
+    //         title:joketitle,
+    //         d:Math.random()
+    //     },
+    //     type:"post",
+    //     dataType:"text",
+    //     success:function(data){
+    //         //成功之后的处理，返回的数据就是 data
+    //     },
+    //     error:function(){
+    //         alert('error'); //错误的处理
+    //     }
+    // });
 
+</script>
 <script>
     $(function(){
         // 调用摄像头
