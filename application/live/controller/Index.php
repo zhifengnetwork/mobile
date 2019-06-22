@@ -113,19 +113,18 @@ class Index extends Base
         }
 
         if (!($fengmian = request()->file('fengmian'))) {
-            return $this->failResult('请上传身份证正面照', 301);
+            return $this->failResult('请设置封面', 301);
         }
         //将传入的图片移动到框架应用根目录/public/uploads/ 目录下，ROOT_PATH是根目录下，DS是代表斜杠 /
         if (!($info = $fengmian->move(ROOT_PATH . $this->uploadDir))) {
             // 上传失败获取错误信息
-            return $this->failResult('身份证正面上传失败', 301);
+            return $this->failResult('封面上传失败', 301);
         }
-        $roomId = 11;
         $data = [
-            'user_id' => $this->user->user_id,
-            'room_id' => $roomId,
-            'pic_fengmian' => $this->uploadDir . DS . $info->getSaveName(),
-            'location' => '火星',
+            'user_id' => $user_id,
+            'room_id' => $user_id . time(),
+            'pic_fengmian' => DS . $this->uploadDir . DS . $info->getSaveName(),
+            'location' => '',
             'start_time' => time(),
             'status' => 1
         ];
@@ -134,7 +133,7 @@ class Index extends Base
             return $this->failResult('开始直播失败', 301);
         }
 
-        return $this->successResult(['room_id' => $roomId]);
+        return $this->successResult(['room_id' => $data['room_id']]);
     }
 
     /**

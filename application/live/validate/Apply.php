@@ -8,7 +8,7 @@ class Apply extends Validate
 {
     protected $rule = [
         'mobile' => 'require|length:11|checkMobile',
-        'name' => 'require|max:50',
+        'name' => 'require|max:50|unique:user_verify_identity_info',
     ];
 
     protected $message = [
@@ -17,6 +17,7 @@ class Apply extends Validate
         'mobile.checkMobile' => '手机号码格式错误',
         'name.require' => '用户名必填',
         'name.length' => '长度不能超过50位',
+        'name.unique' => '用户名已存在',
     ];
 
     protected $scene = [
