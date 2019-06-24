@@ -18,8 +18,12 @@
 		    </div>
 			<!--内容-->
 			<div class="content">
-				<div class="item_wrap" id="videoList">
+				<div class="item_wrap" id="videoList"></div>
+
+				<div class="getmore" style="font-size:.32rem;text-align:center;color:#888;padding:.25rem .24rem .4rem; clear:both;display: none">
+					<a href="javascript:void(0)">点击加载更多</a>
 				</div>
+				<div class="nomore">已显示完所有直播</div>
 			</div>
 			<!--直播按钮-->
 			<if condition='$zhubo eq 1'>
@@ -35,15 +39,57 @@
     <script src="__PUBLIC__/js/global.js"></script>
     <script src="__STATIC__/js/layer.js?v=22222"  type="text/javascript" ></script>
 	<script type="text/javascript">
-        $(document).ready(function () {
-             // 加载列表
-            $.ajax({
-                type: "GET",
-                url: "/index.php?m=Live&c=index&a=ajaxVideoList&p=1",
-                success: function (data) {
-                    $("#videoList").empty().append(data);
+        $(function () {
+            var list = {
+                page: 1,
+                list: $('#videoList'),
+                getMore: $('.getmore'),
+                noMore: $('.nomore'),
+                init: function () {
+                    var that = this;
+                    that.load();
+                    $(document).on('click', '.getmore', function () {
+                        that.load();
+                    })
+                },
+                load: function () {
+                    var that = this;
+                    that.hideGetMore();
+                    that.hideNoMore();
+                    $.ajax({
+                        type: 'GET',
+                        url: '/index.php?m=Live&c=index&a=ajaxVideoList&p=' + that.page,
+                        success: function (data) {
+                            that.list.append(data.content);
+                            that.hasMore(data);
+                            that.showNoMore(data);
+                        }
+                    });
+                    return false;
+                },
+                hasMore: function (data) {
+                    if (data.count > data.current_count && data.list_count == data.page_count) {
+                        this.page++;
+                        this.showGetMore();
+                    }
+                },
+                showGetMore: function () {
+                    if (this.getMore) this.getMore.show();
+                },
+                hideGetMore: function () {
+                    if (this.getMore) this.getMore.hide();
+                },
+                showNoMore: function (data) {
+                    if (data.count <= data.current_count && data.count > 0) {
+                        this.noMore.show();
+                    }
+                },
+                hideNoMore: function () {
+                    if (this.noMore) this.noMore.hide();
                 }
-            });
+            };
+            list.init();
         });
+
 	</script>
 </html>

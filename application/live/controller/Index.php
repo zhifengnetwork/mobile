@@ -73,12 +73,14 @@ class Index extends Base
         $list = (new UserVideo)->where($where)->order("id desc")
             ->limit($page->firstRow . ',' . $page->listRows)
             ->select();
-        $this->assign('videoList', $list);
-        $this->assign('count', $count);//总条数
-        $this->assign('page_count', $page_count);//页数
-        $this->assign('current_count', $page_count * I('p'));//当前条
-        $this->assign('p', I('p'));//页数
-        return $this->fetch();
+        return $this->ajaxReturn([
+            'content' => $this->fetch('index/ajaxVideoList', ['videoList' => $list, 'count' => $count]),
+            'count' => $count,
+            'list_count' => count($list),
+            'page_count' => $page_count,
+            'current_count' => $page_count * I('p'),
+            'p' => I('p')
+        ]);
     }
 
     /**
@@ -143,9 +145,13 @@ class Index extends Base
             return $this->failResult('身份验证错误', 301);
         }
 
-        $room = Db::name('user_video')->where(['user_id' => $user_id, 'status' => 1])->find();
+        $room_id = I('id');
+        $room = (new UserVideo)->where(['user_id' => $user_id, 'room_id' => $room_id, 'status' => 1])->find();
         if (empty($room)) {
             return $this->failResult('不存在的直播间', 301);
+        }
+        if (!$room->save(['status' => 2])) {
+            return $this->failResult('结束直播失败', 301);
         }
         $identity['pic_head'] = $this->user['head_pic'];
         $identity['pic_fengmian'] = $this->url . $identity['pic_fengmian'];
