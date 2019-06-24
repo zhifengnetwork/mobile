@@ -254,7 +254,7 @@ class UsersLogic extends Model
     public function thirdLogin($data = array())
     {
         if (!$data['openid'] || !$data['oauth']) {
-            return array('status' => -1, 'msg' => '参数有误openid或oauth丢失', 'result' => 'aaa');
+            return array('status' => -1, 'msg' => '参数有误openid或oauth丢失', 'result' => '');
         }
         $user2 = session('user');
         if (!empty($user2)) {
