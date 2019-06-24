@@ -50,6 +50,43 @@ CREATE TABLE `tp_user_verify_identity` (
   KEY `user_id` (`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
 
+--add by zgp 直播相关表 --
+CREATE TABLE `tp_red_detail` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '红包从表id',
+  `m_id` int(11) NOT NULL COMMENT '红包主表id',
+  `get_uid` int(11) NOT NULL COMMENT '获取红包用户uid',
+  `money` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '红包金额（最小单位）',
+  `get_time` int(11) DEFAULT NULL COMMENT '领取时间',
+  `type` tinyint(4) DEFAULT '0' COMMENT '默认0，1领取，2超时退回',
+  `out_time` int(11) DEFAULT NULL COMMENT '超时红包退回时间',
+  `get_award_money` decimal(10,2) DEFAULT '0.00' COMMENT '记录获得奖励金额',
+  `status` tinyint(4) DEFAULT '0' COMMENT '默认0，禁用1',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `id` (`id`) USING BTREE,
+  KEY `m_id` (`m_id`) USING BTREE,
+  KEY `get_uid` (`get_uid`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='红包从表';
+
+--add by zgp 直播相关表 --
+CREATE TABLE `tp_red_master` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '红包主表id',
+  `uid` int(10) NOT NULL COMMENT '用户id',
+  `room_id` int(6) NOT NULL COMMENT '群id',
+  `num` int(6) NOT NULL DEFAULT '0' COMMENT '红包个数',
+  `money` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '红包金额',
+  `create_time` int(11) NOT NULL COMMENT '创建时间',
+  `is_award` tinyint(4) DEFAULT '0' COMMENT '默认0，1已奖励(中雷人数达到时)',
+  `time_out` tinyint(2) DEFAULT '0' COMMENT '默认0,1有红包超时已退回过',
+  `all_get` tinyint(2) DEFAULT '0' COMMENT '默认0, 1标识红包被抢完',
+  `status` tinyint(4) DEFAULT '0' COMMENT '默认0，禁用1',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `id` (`id`) USING BTREE,
+  KEY `uid` (`uid`) USING BTREE,
+  KEY `room_id` (`room_id`) USING BTREE,
+  KEY `time_out` (`time_out`) USING BTREE,
+  KEY `all_get` (`all_get`) USING BTREE,
+  KEY `is_award` (`is_award`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='红包主表';
 
 
 
