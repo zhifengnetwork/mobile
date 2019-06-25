@@ -50,10 +50,11 @@ CREATE TABLE `tp_user_verify_identity` (
   KEY `user_id` (`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
 
---add by zgp 直播相关表 --
+--add by lyx 直播相关表 --
 CREATE TABLE `tp_red_detail` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '红包从表id',
   `m_id` int(11) NOT NULL COMMENT '红包主表id',
+  `room_id` int(11) NOT NULL COMMENT '群id',
   `get_uid` int(11) NOT NULL COMMENT '获取红包用户uid',
   `money` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '红包金额（最小单位）',
   `get_time` int(11) DEFAULT NULL COMMENT '领取时间',
@@ -67,7 +68,7 @@ CREATE TABLE `tp_red_detail` (
   KEY `get_uid` (`get_uid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='红包从表';
 
---add by zgp 直播相关表 --
+--add by lyx 直播相关表 --
 CREATE TABLE `tp_red_master` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '红包主表id',
   `uid` int(10) NOT NULL COMMENT '用户id',
@@ -75,7 +76,6 @@ CREATE TABLE `tp_red_master` (
   `num` int(6) NOT NULL DEFAULT '0' COMMENT '红包个数',
   `money` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '红包金额',
   `create_time` int(11) NOT NULL COMMENT '创建时间',
-  `is_award` tinyint(4) DEFAULT '0' COMMENT '默认0，1已奖励(中雷人数达到时)',
   `time_out` tinyint(2) DEFAULT '0' COMMENT '默认0,1有红包超时已退回过',
   `all_get` tinyint(2) DEFAULT '0' COMMENT '默认0, 1标识红包被抢完',
   `status` tinyint(4) DEFAULT '0' COMMENT '默认0，禁用1',
