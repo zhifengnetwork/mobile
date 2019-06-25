@@ -20,7 +20,8 @@
 
 <body onload="connect();">
 <div class="wrapper">
-
+    <input type="text" id="room_id" value="{$room_id}" style="display: none;">
+    <input type="text" id="users_id" value="{$users_id}" style="display: none;">
     <div id="div_device" class="panel panel-default" style="display:none">
         <div class="select">
             <label for="audioSource">Audio source: </label><select id="audioSource"></select>
@@ -152,18 +153,18 @@
                 <div class="group-wrap">
                     <span class="title">总金额</span>
 						<span class="right">
-							<input type="text" placeholder="0.00">
+							<input type="text" id="money" name="money" placeholder="0.00">
 						元</span>
                 </div>
                 <div class="group-wrap">
                     <span class="title">红包个数</span>
 						<span class="right">
-							<input type="text" placeholder="填写红包个数">
+							<input type="text" id='num' name="num" placeholder="填写红包个数">
 						个</span>
                 </div>
             </div>
             <div class="popup-footer">
-                <span class="send-btn">发红包</span>
+                <span class="send-btn" onclick="redSubmit()" value="发红包" >发红包</span>
             </div>
             <div class="close-btn"></div>
         </div>
@@ -187,23 +188,6 @@
         $(".mask").show();
         $(".popup").show();
     })
-    // $.ajax({
-    //     async:false,//同步，异步
-    //     url:"/addjoke", //请求的服务端地址
-    //     data:{
-    //         content:mycontent,
-    //         title:joketitle,
-    //         d:Math.random()
-    //     },
-    //     type:"post",
-    //     dataType:"text",
-    //     success:function(data){
-    //         //成功之后的处理，返回的数据就是 data
-    //     },
-    //     error:function(){
-    //         alert('error'); //错误的处理
-    //     }
-    // });
 
 </script>
 <script>
@@ -471,6 +455,10 @@
             case 'say':
                 say(data['from_client_id'], data['from_client_name'], data['content'], data['time']);
                 break;
+            // 红包
+            case 'redSubmit':
+                
+                break;
             // 用户退出 更新用户列表
             case 'logout':
                 //{"type":"logout","client_id":xxx,"time":"xxx"}
@@ -497,6 +485,40 @@
         ws.send('{"type":"say","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+input.value.replace(/"/g, '\\"').replace(/\n/g,'\\n').replace(/\r/g, '\\r')+'"}');
         input.value = "";
         input.focus();
+    }
+    //红包提交
+    function redSubmit(){
+        var money = document.getElementById('money').value;
+        var num = document.getElementById('num').value;
+        var room_id = document.getElementById('room_id').value;
+        var users_id = document.getElementById('users_id').value;
+        var to_client_id = $("#client_list option:selected").attr("value");
+        var to_client_name = $("#client_list option:selected").text();
+       
+        $.ajax({
+            type: 'post',
+            url: "{:U('live/index/redSubmit')}", //请求的服务端地址
+            data: {
+                money: money,
+                num: num,
+                room_id: room_id,
+                users_id: users_id
+            },
+            dataType: 'json',
+            success: function (data) {
+                console.log('ok');
+                // if (data.status == 200) {
+                //     window.location.href = '/index.php/live';
+                // } else {
+                //     layer.open({ content: data.msg, time: 2 });
+                // }
+            }
+        })
+        // console.log(money);
+        // console.log(num);
+        // console.log(to_client_id);
+        // console.log(room_id);
+        // console.log(to_client_name);
     }
 
     // 刷新用户列表框

@@ -11,6 +11,7 @@ namespace app\live\controller;
 use app\common\model\UserVideo;
 use app\live\service\AccessToken;
 use app\live\service\RtmTokenBuilder;
+use app\live\controller\Events;
 use think\AjaxPage;
 use think\Db;
 
@@ -32,9 +33,9 @@ class Index extends Base
         // 没有正在直播的，跳转设置直播信息
         $room = Db::name('user_video')->where(['user_id' => $user_id, 'status' => 1])->order('id desc')->find();
         !$room && $this->redirect('/Live/Index/set');
-
         $this->assign('room_id', $room['room_id']);
         $this->assign('user_id', $user_id . time());
+        $this->assign('users_id', $user_id);
         return $this->fetch();
     }
 
@@ -172,4 +173,137 @@ class Index extends Base
         exit;
     }
 
+    /**
+     * 红包生成
+     */
+    public function redSubmit()
+    {
+        if ($_POST) {
+            $money = $_POST['money']; //红包金额
+            $num = $_POST['num']; //红包个数
+            $monroom_idey = $_POST['room_id']; //房间id
+            $users_id = $_POST['users_id']; //用户id
+            $createRedDate = $this->createRedDate($money, $num); //生成红包
+            // dump($createRedDate);
+            $red_master_data = [
+                "uid" => $users_id,
+                "room_id" => $monroom_idey,
+                "num" => $num,
+                "money" => $money,
+                "create_time" => time()
+            ];
+            $red_master = $this->tp_red_master($red_master_data);
+            if ($red_master) {
+                // 遍历插入红包从表
+                foreach ($createRedDate['redMoneyList'] as $key => $vey_money) {
+                    $red_detail_data = [
+                        'money' => $vey_money,
+                        'm_id' => $red_master,
+                        'room_id' => $monroom_idey
+                    ];
+                    $red_detail = $this->tp_red_detail($red_detail_data);
+                }
+            }
+        }
+        //调用
+        $builder = new Events();
+        $message = '';
+        $onMessage = $builder->onMessage($monroom_idey, $message);
+        return $onMessage;
+        // dump($createRedDate);
+    }
+    //tp_red_detail红包从表插入
+    public function tp_red_detail($data)
+    {
+        $result = Db::name('red_detail')->insert($data);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //tp_red_detail红包主表插入
+    public function tp_red_master($data)
+    {
+        $result = Db::name('red_master')->insertGetId($data);
+        if ($result) {
+            return $result;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param $total  [要发的红包总额]
+     * @param int $num  [红包个数]
+     * @return array [生成红包金额]
+     */
+    public function createRedDate($total, $num)
+    {
+        if (!$total || !$num) {
+            return false;
+        }
+        $min = 0.01; // 保证最小金额
+        $wamp = array();
+        $returnData = array();
+        for ($i = 1; $i < $num; ++$i) {
+            $safe_total = ($total - ($num - $i) * $min) / ($num - $i); // 随机安全上限 红包金额的最大值
+            if ($safe_total < 0) break;
+            $money = @mt_rand($min * 100, $safe_total * 100) / 100; // 随机产生一个红包金额
+            $total = $total - $money;   // 剩余红包总额
+            $wamp[$i] = sprintf("%.2f", $money); // 保留两位有效数字
+        }
+        $wamp[$i] = sprintf("%.2f", $total);
+        $returnData['redMoneyList'] = $wamp;
+        $returnData['newTotalMoney'] = array_sum($wamp);
+        return $returnData;
+    }
+
+    /**
+     * 用户点击领取红包
+     * user_id    抢包人id
+     * room_id    房间id
+     * users_id   发包人id
+     * red_master_id   红包主表id
+     */
+    public function click_red_packet($user_id, $room_id, $users_id, $red_master_id)
+    {
+        //获取红包从表信息
+        $red_master_find = $this->red_master_find($room_id, $users_id);
+        if (empty($red_master_find)) {
+            return $this->failResult('该红包已不存在');
+        }
+        $red_detail_find = Db::name('red_detail')->where(['m_id' => $red_master_find['id'], 'room_id' => $red_master_find['room_id']])->find();
+        if (empty($red_detail_find)) {
+            return $this->failResult('红包已领完!!!');
+        }
+
+        //获取抢包用户信息
+        $user_data = $this->user($user_id);
+    }
+    /**
+     * 查找对应红包从表数据
+     */
+    public function red_master_find($red_master_id, $room_id)
+    {
+        $red_user_find = Db::name("red_master")->where(['room_id' => $room_id, 'id' => $red_master_id])->find();
+        if ($red_user_find) {
+            return $red_user_find;
+        } else {
+            return false;
+        }
+    }
+    /**
+     * 查询用户信息
+     */
+    public function user($user_id)
+    {
+        $user_find = Db::name("users")->where(['user_id' => $user_id])->find();
+        if ($user_find) {
+            return $user_find;
+        } else {
+            return false;
+        }
+    }
 }
