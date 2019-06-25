@@ -477,6 +477,14 @@
                 say(data['from_client_id'], data['from_client_name'], data['from_client_name']+' 退出了', data['time']);
                 delete client_list[data['from_client_id']];
                 flush_client_list();
+                //红包
+            case 'redpicket':
+
+                break;
+            //礼物
+            case 'gift':
+
+                break;
         }
     }
 

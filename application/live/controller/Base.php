@@ -16,11 +16,11 @@ class Base extends MobileBase
 {
     public $level = [
         0=>'普通会员',
-        1=>'分销商',
-        2=>'总代',
-        3=>'经理',
-        4=>'总监',
-        5=>'总裁'
+        1=>'总代',
+        2=>'经理',
+        3=>'总监',
+        4=>'总裁',
+        5=>'金牌合伙人'
     ];
     public $url = '';
     public $user_id = 0;
