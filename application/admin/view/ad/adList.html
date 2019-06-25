@@ -73,6 +73,12 @@
               <th align="center" abbr="article_time" axis="col6" class="">
                 <div style="text-align: center; width: 100px;" class="">排序</div>
               </th>              
+              <th align="center" abbr="article_time" axis="col6" class="">
+                <div style="text-align: center; width: 150px;" class="">开始时间</div>
+              </th>  
+              <th align="center" abbr="article_time" axis="col6" class="">
+                <div style="text-align: center; width: 150px;" class="">结束时间</div>
+              </th>  
               <th align="center" axis="col1" class="handle">
                 <div style="text-align: center; width: 100px;">操作</div>
               </th>
@@ -152,6 +158,15 @@
                   <input type="text" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" onBlur="changeTableVal('ad','ad_id','{$vo.ad_id}','orderby',this)" size="4" value="{$vo.orderby}" />
                 </div>
               </td>
+
+              <td align="left" class="">
+                <div style="text-align: left; width: 150px;">{$vo.start_time|date='Y-m-d H:i:s',###}</div>
+              </td>
+              <td align="left" class="">
+                <div style="text-align: left; width: 150px;">{$vo.end_time|date='Y-m-d H:i:s',###}</div>
+              </td>
+
+
                 <td align="center" class="handle">
                   <div style="text-align: center; width: 100px;">                    
                     <a class="btn red" onClick="delfunc(this)" data-url="{:U('Ad/adHandle')}" data-id="{$vo.ad_id}"><i class="fa fa-trash-o"></i>删除</a>                                                            

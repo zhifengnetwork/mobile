@@ -961,13 +961,26 @@ class User extends ApiBase
 	//微信登录
 	public function weixin_login(){
 		//上面获取到code后这里跳转回来
-		$code =I('post.code/s','');
-		$data = $this->getOpenidFromMp($code);//获取网页授权access_token和用户openid
+        $code = I('code');
+        if(!$code){
+            $data = ['status' => -1 , 'msg'=>'缺少code'];
+		    $this->ajaxReturn($data);
+        }
+
+        $data = $this->getOpenidFromMp($code);//获取网页授权access_token和用户openid
+        if(isset($data['errcode'])){
+            $data = ['status' => -1 , 'msg'=>$data['errmsg']];
+		    $this->ajaxReturn($data);
+        }
+       
+        if(!$data){
+            $data = ['status' => -1 , 'msg'=>'获取openid失败'];
+		    $this->ajaxReturn($data);
+        }
 
 		$first_leader = $this->user_unionid($data['unionid']);
-		!$first_leader && $first_leader = $this->user_openid($data['openid']);
-		$this->write_log('first_leader:'.$first_leader);
-		$this->write_log("openid:".$data['openid']);
+        !$first_leader && $first_leader = $this->user_openid($data['openid']);
+        
 		$data2 = $this->GetUserInfo($data['access_token'],$data['openid']);//获取微信用户信息
 		$data['nickname'] = $data2['nickname'] ? replaceSpecialStr($data2['nickname']) : '微信用户';
 		//$data['nickname'] = empty($data2['nickname']) ? '微信用户' : trim($data2['nickname']);
@@ -986,13 +999,14 @@ class User extends ApiBase
 			$data = $logic->thirdLogin($data);
 			$data['status'] = ($data['status'] == 1) ? 0 : $data['status'];
 			if(isset($data['result'])){
-				$data['data']['user_id'] = $data['result']['user_id'];
-				$data['data']['token'] = $data['result']['token'];
+				$data['data']['user_id'] =  isset($data['result']['user_id']) ? $data['result']['user_id'] : '';
+				$data['data']['token'] = isset($data['result']['token']) ? $data['result']['token'] : '';
 				unset($data['result']);
 			}
-		}else
-			$data = ['status' => 0 , 'msg'=>'请求成功', 'data'=>$userinfo];
-
+		}else{
+            $data = ['status' => 0 , 'msg'=>'请求成功', 'data'=>$userinfo];
+        }
+        
 		$data['data']['token'] = $this->create_token($data['data']['user_id']);
 		$this->ajaxReturn($data);
 	}
@@ -1450,6 +1464,7 @@ class User extends ApiBase
 
     private function GetOpenidFromMp($code)
     {
+       
         //通过code获取网页授权access_token 和 openid 。网页授权access_token是一次性的，而基础支持的access_token的是有时间限制的：7200s。
     	//1、微信网页授权是通过OAuth2.0机制实现的，在用户授权给公众号后，公众号可以获取到一个网页授权特有的接口调用凭证（网页授权access_token），通过网页授权access_token可以进行授权后接口调用，如获取用户基本信息；
     	//2、其他微信接口，需要通过基础支持中的“获取access_token”接口来获取到的普通access_token调用。
@@ -1519,6 +1534,7 @@ class User extends ApiBase
         $path = $dir.'/'.date('Ymd').'.txt';
         file_put_contents($path,$content,FILE_APPEND);
     }
+
     private function user_openid($openid){
         $user = M('users')->where(['openid'=>$openid])->find();
         if($user){

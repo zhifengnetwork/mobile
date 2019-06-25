@@ -76,47 +76,55 @@ class User extends Base
         $user_id = input('user_id');
         $mobile = I('mobile');
         $leader = I('leader');
-        // dump($user_id);exit;
+        
         $mobile ? $condition['mobile'] = ['like', "%$mobile%"] : false;
         $leader ? $condition['first_leader'] = $leader : false;
         $nickname ? $condition['nickname'] = ['like', "%$nickname%"] : false;
         $realname ? $condition['realname'] = ['like', "%$realname%"] : false;
         $user_id ? $condition['user_id'] = $user_id : false;
+       
+        // I('first_leader') && ($condition['first_leader'] = I('first_leader')); // 查看一级下线人有哪些
+        // I('second_leader') && ($condition['second_leader'] = I('second_leader')); // 查看二级下线人有哪些
+        // I('third_leader') && ($condition['third_leader'] = I('third_leader')); // 查看三级下线人有哪些
 
-        I('first_leader') && ($condition['first_leader'] = I('first_leader')); // 查看一级下线人有哪些
-        I('second_leader') && ($condition['second_leader'] = I('second_leader')); // 查看二级下线人有哪些
-        I('third_leader') && ($condition['third_leader'] = I('third_leader')); // 查看三级下线人有哪些
         $sort_order = I('order_by') . ' ' . I('sort');
 
         $usersModel = new Users();
         $count = $usersModel->where($condition)->count();
         $Page = new AjaxPage($count, 10);
-
+       
+       
         if(trim($sort_order) == ''){
             $userList = $usersModel->where($condition)->limit($Page->firstRow . ',' . $Page->listRows)->select();
         }else{
             $userList = $usersModel->where($condition)->order($sort_order)->limit($Page->firstRow . ',' . $Page->listRows)->select();
         }
+       
+        //$user_id_arr = get_arr_column($userList, 'user_id');
+       
+        // if (!empty($user_id_arr)) {
+        //     $first_leader = DB::query("select first_leader,count(1) as count  from __PREFIX__users where first_leader in(" . implode(',', $user_id_arr) . ")  group by first_leader");
+        //     $first_leader = convert_arr_key($first_leader, 'first_leader');
 
-        $user_id_arr = get_arr_column($userList, 'user_id');
-        if (!empty($user_id_arr)) {
-            $first_leader = DB::query("select first_leader,count(1) as count  from __PREFIX__users where first_leader in(" . implode(',', $user_id_arr) . ")  group by first_leader");
-            $first_leader = convert_arr_key($first_leader, 'first_leader');
+        //     $second_leader = DB::query("select second_leader,count(1) as count  from __PREFIX__users where second_leader in(" . implode(',', $user_id_arr) . ")  group by second_leader");
+        //     $second_leader = convert_arr_key($second_leader, 'second_leader');
 
-            $second_leader = DB::query("select second_leader,count(1) as count  from __PREFIX__users where second_leader in(" . implode(',', $user_id_arr) . ")  group by second_leader");
-            $second_leader = convert_arr_key($second_leader, 'second_leader');
+        //     $third_leader = DB::query("select third_leader,count(1) as count  from __PREFIX__users where third_leader in(" . implode(',', $user_id_arr) . ")  group by third_leader");
+        //     $third_leader = convert_arr_key($third_leader, 'third_leader');
+        // }
+        // $this->assign('first_leader', $first_leader);
+        // $this->assign('second_leader', $second_leader);
+        // $this->assign('third_leader', $third_leader);
 
-            $third_leader = DB::query("select third_leader,count(1) as count  from __PREFIX__users where third_leader in(" . implode(',', $user_id_arr) . ")  group by third_leader");
-            $third_leader = convert_arr_key($third_leader, 'third_leader');
-        }
-        $this->assign('first_leader', $first_leader);
-        $this->assign('second_leader', $second_leader);
-        $this->assign('third_leader', $third_leader);
+    
         $show = $Page->show();
+       
         $this->assign('userList', $userList);
+       
         $this->assign('level', M('user_level')->getField('level,level_name'));
         $this->assign('page', $show);// 赋值分页输出
         $this->assign('pager', $Page);
+        
         return $this->fetch();
     }
 
