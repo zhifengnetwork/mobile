@@ -1,0 +1,55 @@
+<table>
+    <tbody>
+    <volist name="list" id="list">
+        <tr data-id="{$list.id}">
+            <td class="sign" axis="col6">
+                <div style="width: 24px;"><i class="ico-check"></i></div>
+            </td>
+            <td align="left" class="">
+                <div style="text-align: left; width: 100px;">{$list.id}</div>
+            </td>
+            <td align="left" class="">
+                <div style="text-align: left; width: 100px;">{$list.info_name}</div>
+            </td>
+            <td align="left" class="">
+                <div style="text-align: left; width: 100px;">{$list.look_amount}</div>
+            </td>
+            <td align="left" class="">
+                <div style="text-align: left; width: 100px;">{$list.top_amount}</div>
+            </td>
+            <td align="left" class="">
+                <div style="text-align: left; width: 100px;">{$list.money}</div>
+            </td>
+            <td align="left" class="">
+                <div style="text-align: left; width: 200px;">{:date('Y-m-d H:i:s', $list.start_time)}</div>
+            </td>
+            <td align="left" class="">
+                <div style="text-align: left; width: 100px;">
+                    <if condition='$list.status eq 1'><i style="color: #ff0000">直播中</i>
+                        <elseif condition='$list.status eq 2'>
+                            已结束
+                        </elseif>
+                        <else/>
+                        <i style="color:#0fff0f">未开始</i></if>
+                </div>
+            </td>
+            <td align="center" class="handle">
+                <div style="text-align: center; width: 170px; max-width:170px;">
+                    <a href="{:U('Live/video', array('id'=>$list.id))}" class="btn blue">详情</a>
+                </div>
+            </td>
+            <td align="" class="" style="width: 100%;">
+                <div>&nbsp;</div>
+            </td>
+        </tr>
+    </volist>
+    </tbody>
+</table>
+<!--分页位置--> {$page}
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function () {
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2', cur_page);
+    });
+</script>

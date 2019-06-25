@@ -1,0 +1,83 @@
+/* 直播结束 */
+.live-wrap{
+    width: 100%;
+    height: 100%;
+	filter: blur(.05rem);
+}
+.live-wrap img{
+    width: 100%;
+}
+.mask{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99;
+}
+.end-popup {
+    color: #ffffff;
+    padding: 0 .24rem;
+    box-sizing: border-box;
+    
+}
+.end-popup .user-info{
+    font-size: .26rem;
+    color: #ffffff;
+    text-align: center;
+    margin: 1.1rem auto .4rem;
+}
+.end-popup .user-info .avatar{
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    margin: 0 auto .28rem;
+}
+.end-popup .user-info .avatar img{
+    width: 100%;
+    display: inline-block;
+}
+.end-popup .user-info .name{
+    margin-right: .28rem;
+}
+.end-popup .life-status{
+    text-align: center;
+    font-size: .72rem;
+    margin-bottom: .2rem;
+}
+.end-popup .life-duration{
+    text-align: center;
+    font-size: .3rem;
+    margin-bottom: 1.7rem;
+}
+.end-popup .result-wrap{
+    font-size: .3rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    margin-bottom: 1.7rem;
+}
+.end-popup .result-wrap .item{
+    text-align: center;
+}
+.end-popup .result-wrap .item span{
+    display: block;
+}
+.end-popup .result-wrap .item span:first-child{
+    margin-bottom: .4rem;
+}
+.end-popup .backHome a{
+    width: 100%;
+    height: .88rem;
+    line-height: .88rem;
+    font-size: .36rem;
+    border-radius: .1rem;
+    text-align: center;
+    color: #ffffff;
+    display: block;
+    background: linear-gradient(to right, #f8566c, #fa3479); 
+}

@@ -60,7 +60,7 @@ class Order extends Base {
         if($begin && $end){
         	$condition['order.add_time'] = array('between',"$begin,$end");
         }
-        $condition['order.prom_type'] = array(['lt',5], ['eq',9], ['eq',10], 'or');
+        $condition['order.prom_type'] = array(['lt',5],['eq',8], ['eq',9], ['eq',10], 'or');
         $order_sn = ($keyType && $keyType == 'order_sn') ? $keywords : I('order_sn') ;
         $order_sn ? $condition['order.order_sn'] = trim($order_sn) : false;
 

@@ -112,6 +112,7 @@ class Groupbuy extends ApiBase
             # 正在开团的数量
             $team_found_num = Db::table('tp_team_found')
                 ->where('team_id',$info['team_id'])
+				->where('need','>',0)
 				->where('found_time', '<', time())
                 ->where('found_end_time', '>', time())
                 ->where('status', 1)
@@ -170,6 +171,7 @@ class Groupbuy extends ApiBase
 			->field('`found_id`,`found_time`,`found_end_time`,`user_id`,`nickname`,`head_pic`,`order_id`,`join`,`need`')
 			->order('found_end_time asc')
 			->where('team_id',$team_id)
+			->where('need', '>', 0)
 			->where('found_time', '<', time())
             ->where('found_end_time', '>', time())
 			->where('status', 1)
@@ -435,12 +437,16 @@ class Groupbuy extends ApiBase
 			# 订单ID
 			$order_insid = Db::table('tp_order')->getLastInsID();
 			# 订单商品表sql拼装
-			$ogsql = "insert into `tp_order_goods` (`order_id`,`goods_id`,`cat_id`,`seller_id`,`order_sn`,`consignee`,`mobile`,`goods_name`,`goods_sn`,`goods_num`,`final_price`,`goods_price`,`cost_price`,`item_id`,`spec_key`,`spec_key_name`,`prom_type`) values ('$order_insid','$info[goods_id]','$info[cat_id]','$info[seller_id]','$order_sn','$addressInfo[consignee]','$addressInfo[mobile]','$info[goods_name]','$info[goods_sn]','$buy_num','$final_price','$price','$cost_price','$info[goods_item_id]','$spec[key]','$spec[key_name]','$prom_type')";
+			$ogsql = "insert into `tp_order_goods` (`order_id`,`goods_id`,`cat_id`,`seller_id`,`order_sn`,`consignee`,`mobile`,`goods_name`,`goods_sn`,`goods_num`,`final_price`,`goods_price`,`cost_price`,`item_id`,`spec_key`,`spec_key_name`,`prom_type`,`prom_id`) values ('$order_insid','$info[goods_id]','$info[cat_id]','$info[seller_id]','$order_sn','$addressInfo[consignee]','$addressInfo[mobile]','$info[goods_name]','$info[goods_sn]','$buy_num','$final_price','$price','$cost_price','$info[goods_item_id]','$spec[key]','$spec[key_name]','$prom_type','$team_id')";
 			$ogins = Db::execute($ogsql);
 			if(!$ogins){
 				Db::execute("delete from `tp_order` where `order_id` = '$order_insid'");
 				$this->ajaxReturn(['status'=>-11, 'msg'=>'订单提交失败，订单商品写入失败','data'=>null]);
 			}
+
+			if(($buy_type != 1) && (tpCache('shopping.reduce') == 1)){
+				minus_stock(['order_id'=>$order_insid,'order_sn'=>$order_sn,'user_id'=>$user_id]);
+			}     
 
 			# 单独购买 || 拼团
 			if($prom_type){
@@ -467,7 +473,8 @@ class Groupbuy extends ApiBase
 					$found_sql = "insert into `tp_team_found` (`found_time`,`found_end_time`,`user_id`,`team_id`,`nickname`,`head_pic`,`order_id`,`join`,`need`,`price`,`goods_price`,`status`) values ('$found_time','$found_end_time','$user_id','$info[team_id]','$user[nickname]','$head_pic','$order_insid','1','$needer','$final_price','$price','$status')";
 				
 					$found_ins = Db::execute($found_sql);
-					if($needer == 0)M('team_found')->update(['found_id'=>Db::name('team_follow')->getLastInsID(),'status'=>2]);
+					M('Order')->update(['order_id'=>$order_insid,'order_prom_id'=>Db::name('team_found')->getLastInsID()]);
+					//if($needer == 0)M('team_found')->update(['found_id'=>Db::name('team_follow')->getLastInsID(),'status'=>2]);
 				}else{
 					$found_ins = M('team_follow')->add([
 						'follow_user_id'		=> $user_id,
@@ -481,6 +488,7 @@ class Groupbuy extends ApiBase
 					]);
 					M('team_found')->where(['found_id'=>$found_id])->setInc('join');
 					M('team_found')->where(['found_id'=>$found_id])->setDec('need');
+					$needer = M('team_found')->where(['found_id'=>$found_id])->value('need');
 					if($needer == 0){
 						M('team_found')->update(['found_id'=>$found_id,'status'=>2]); 
 						M('team_follow')->where(['found_id'=>$found_id])->update(['status'=>2]);
@@ -494,6 +502,7 @@ class Groupbuy extends ApiBase
 					# 更新用户余额
 					//session('user.user_money',$ruser_money);
 					if($user_money)Db::execute("update `tp_users` set `user_money` = '$ruser_money' where `user_id` = '$user_id'");
+					M('account_log')->add(['user_id'=>$user_id,'user_money'=>0-$auser_money,'change_time'=>time(),'desc'=>'拼团使用余额','order_sn'=>$order_sn,'order_id'=>$order_insid,'states'=>111]);
 					$this->ajaxReturn(['status'=>($user_money ? 1 : 0), 'msg'=>'订单提交成功','data'=>['type'=>2]]);
 				}else{
 					Db::execute("delete from `tp_order` where `order_id` = '$order_insid'");
@@ -503,6 +512,7 @@ class Groupbuy extends ApiBase
 				# 更新用户余额
 				//session('user.user_money',$ruser_money);
 				if($user_money)Db::execute("update `tp_users` set `user_money` = '$ruser_money' where `user_id` = '$user_id'");
+				M('account_log')->add(['user_id'=>$user_id,'user_money'=>0-$auser_money,'change_time'=>time(),'desc'=>'拼团使用余额','order_sn'=>$order_sn,'order_id'=>$order_insid,'states'=>111]);
 				$this->ajaxReturn(['status'=>($user_money ? 1 : 0), 'msg'=>'订单提交成功','data'=>['type'=>1]]);
 			}
 		}else{

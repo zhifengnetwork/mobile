@@ -71,6 +71,16 @@ class ComposerStaticInit73de9b3c2080f19e754b92aa68d5d0d1
         array (
             0 => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator',
         ),
+        'Workerman\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/workerman/workerman',
+                1 => __DIR__ . '/..' . '/workerman/workerman-for-win',
+            ),
+        'GatewayWorker\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/workerman/gateway-worker/src',
+                1 => __DIR__ . '/..' . '/workerman/gateway-worker-for-win/src',
+            ),
     );
 
     public static $prefixesPsr0 = array (

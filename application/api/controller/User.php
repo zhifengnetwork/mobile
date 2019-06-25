@@ -999,9 +999,8 @@ class User extends ApiBase
 			$data = $logic->thirdLogin($data);
 			$data['status'] = ($data['status'] == 1) ? 0 : $data['status'];
 			if(isset($data['result'])){
-
-				$data['data']['user_id'] = $data['result']['user_id'];
-				$data['data']['token'] = $data['result']['token'];
+				$data['data']['user_id'] =  isset($data['result']['user_id']) ? $data['result']['user_id'] : '';
+				$data['data']['token'] = isset($data['result']['token']) ? $data['result']['token'] : '';
 				unset($data['result']);
 			}
 		}else{

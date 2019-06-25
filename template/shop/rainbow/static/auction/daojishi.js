@@ -1,5 +1,6 @@
  //倒计时js
 //定义方法  
+var timer_rt = null;
 	    function GetRTime(end_time){
 	    
 	    // var month=month-1;
@@ -36,6 +37,8 @@
 			var nI = Math.floor(nMS/100)%10;
 			//如果秒钟大于0
 	        if (nMS <= 0 ){
+				window.clearInterval(timer_rt);
+				window.location.reload(); return;
 	        	 //获得天数隐藏  
 	            $("#dao").hide();
 	            //获得活动截止时间展开  

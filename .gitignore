@@ -13,3 +13,4 @@ cron_team.sh
 /logs
 /public/share
 /plugins/payment/weixin/cert
+/public/static/uploads/*

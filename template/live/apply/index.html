@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+        <link rel="stylesheet" href="__STATIC__/css/public/base.css">
+        <link rel="stylesheet" href="__STATIC__/css/public/head.css">
+        <link rel="stylesheet" href="__STATIC__/css/apply/apply.css">
+        <script src="__STATIC__/js/public/rem.js"></script>
+        <title>申请直播</title>
+    </head>
+<body>
+    <div class="public_head">
+        <i class="iconfont head_icon" onclick="window.history.back();">&#xe63f;</i>
+        <p>申请直播</p>
+    </div>
+    <if condition='$state eq 0'>
+        <!-- 审核中 -->
+        <div class="review">
+            <div class="review_imgwrap">
+                <img class="review_img" src="__STATIC__/images/apply/review.png">
+            </div>
+            <div class="review_text">
+                正在审核中请耐心等待...
+            </div>
+        </div>
+        <elseif condition='$state eq 1'>
+            <!-- 审核成功 -->
+            <div class="prosperity">
+                <div class="prosperity_imgwrap">
+                    <img class="prosperity_img" src="__STATIC__/images/apply/prosperity.png">
+                </div>
+                <div class="prosperity_text">
+                    直播功能已开通,请前往直播室直播!
+                </div>
+                <div class="prosperity_btn">
+                    去直播
+                </div>
+            </div>
+
+        </elseif>
+        <else/>
+        <div class="apply_content">
+            <if condition='$state eq 2'>
+                <div class="red2">{$data.reason}</div>
+            </if>
+            <!-- 申请信息 -->
+            <form id="form" method="post" enctype="multipart/form-data">
+                <div class="apply_info">
+                    <div class="apply_info_item">
+                        <label class="apply_info_label">
+                            <span class="apply_info_text">手机号码:</span>
+                            <input class="apply_info_inp" type="number" id="mobile" name="mobile" placeholder="请输入手机号码" value="{$data.mobile}">
+                        </label>
+                    </div>
+                    <div class="apply_info_item">
+                        <label class="apply_info_label">
+                            <span class="apply_info_text">用户名:</span>
+                            <input class="apply_info_inp" type="text" id="name" name="name" placeholder="请输入用户名" value="{$data.name}">
+                        </label>
+                    </div>
+                </div>
+                <!-- 上传图片 -->
+                <div class="apply_uploading">
+                    <div class="apply_uploading_imgwrap">
+                        <input id="img" type="file" style="position:absolute;left:0;top:0;width:100%;height:100%;border:0;outline:none;opacity:0;z-index:10;">
+                        <i class="iconfont uploading_icon">&#xe614;</i>
+                        <img class="apply_uploading_img" src="__STATIC__/images/public/opacity.png" alt="">
+                    </div>
+                    <div class="apply_uploading_text">
+                        身份证正面
+                    </div>
+                </div>
+                <div class="apply_uploading">
+                    <div class="apply_uploading_imgwrap">
+                        <input id="img1" type="file" style="position:absolute;left:0;top:0;width:100%;height:100%;border:0;outline:none;opacity:0;z-index:10;">
+                        <i class="iconfont uploading_icon">&#xe614;</i>
+                        <img class="apply_uploading_img" src="__STATIC__/images/public/opacity.png" alt="">
+                    </div>
+                    <div class="apply_uploading_text">
+                        身份证反面
+                    </div>
+                </div>
+            </form>
+            <!-- 提交 -->
+            <div class="apply">
+                <div class="apply_send">
+                    提交
+                </div>
+            </div>
+        </div>
+    </if>
+
+    <script src="__STATIC__/js/public/jquery-3.3.1.min.js"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js?v=22222"  type="text/javascript" ></script>
+    <script>
+        $(function(){
+            var formData = new FormData();
+
+            $("#img").change(function (e) {
+                for (var i = 0; i < e.target.files.length; i++) {
+                    var file = e.target.files.item(i);
+                    //验证是否为图片，不是就跳出循环
+                    if (!(/^image\/.*$/i.test(file.type))) {
+                        alert("请选择图片上传！")
+                        continue;
+                    }
+                    //实例化FileReader API
+                    var freader = new FileReader();
+                    freader.readAsDataURL(file);
+                    freader.onload = function (e) {
+                        formData.append('front', file);
+                        $('.apply_uploading_img').eq(0).attr('src', e.target.result)
+                        $('.apply_uploading_img').eq(0).css('display', 'block');
+                    }
+                    $("#img").val('');
+                }
+            });
+            $("#img1").change(function (e) {
+                for (var i = 0; i < e.target.files.length; i++) {
+                    var file = e.target.files.item(i);
+                    //验证是否为图片，不是就跳出循环
+                    if (!(/^image\/.*$/i.test(file.type))) {
+                        alert("请选择图片上传！")
+                        continue;
+                    }
+                    //实例化FileReader API
+                    var freader = new FileReader();
+                    freader.readAsDataURL(file);
+                    freader.onload = function (e) {
+                        formData.append('back', file);
+                        $('.apply_uploading_img').eq(1).attr('src', e.target.result);
+                        $('.apply_uploading_img').eq(1).css('display', 'block');
+                    }
+                    $("#img1").val('');
+                }
+            });
+
+            $('.apply_send').click(function () {
+                var name = $.trim($('#name').val());
+                var mobile = $.trim($('#mobile').val());
+                if (name == '') {
+                    layer.open({content: '用户名不能为空!', time: 2});
+                    return false;
+                }
+                if (mobile == '') {
+                    layer.open({content: '用户名不能为空!', time: 2});
+                    return false;
+                }
+                if (!checkMobile(mobile)) {
+                    layer.open({content: '请输入正确的手机号码!', time: 2});
+                    return false;
+                }
+
+                $('#form').find('input').each(function () {
+                    if ($(this).attr('type') != 'file') {
+                        formData.append($(this).attr('name'), $(this).val());
+                    }
+                });
+
+                $.ajax({
+                    type: 'post',
+                    url: '/index.php?m=Live&c=Apply&a=upload&t=' + Math.random(),
+                    data: formData,
+                    dataType: 'json',
+                    async: false,
+                    cache: false,  //上传文件不需要缓存
+                    contentType: false,
+                    processData: false, //因为data值是FormData对象，不需要对数据做处理
+                    success: function (data) {
+                        if (data.status == 200) {
+                            window.location.href = '/index.php/live/apply';
+                        } else {
+                            layer.open({content: data.msg, time: 2});
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        showErrorMsg('网络异常，请稍后重试');
+                    }
+                })
+            })
+
+
+        })
+    </script>
+</body>
+</html>

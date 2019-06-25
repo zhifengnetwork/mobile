@@ -1,0 +1,15 @@
+<if condition="$count gt 0">
+	<foreach name="videoList" item="vo" key="k">
+		<div class="live_list">
+			<div class="live">
+				<img src="{$vo.pic_fengmian}" />
+			</div>
+			<div class="site" style="display: none">{$vo.location}</div>
+			<div class="nickname">{$vo.info_name}</div>
+			<div class="traffic">
+				<span class="icon"></span>
+				<span>{$vo.look_amount}</span>
+			</div>
+		</div>
+	</foreach>
+</if>

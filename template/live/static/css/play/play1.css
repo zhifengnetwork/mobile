@@ -1,0 +1,395 @@
+.wrapper{
+    overflow: hidden;
+}
+/* 直播视频 */
+.live-wrap{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+.live-wrap img{
+    width: 100%;
+    display: block;
+}
+
+/* 直播间内容 */
+.live-room{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9;
+}
+
+
+.topBar{
+    height: .4rem;
+    padding: 0 .24rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    position: relative;
+    margin-bottom: .1rem;
+}
+.topBar .live-status{
+    width: 3.36rem;
+    height: .4rem;
+    line-height: .4rem;
+    font-size: .3rem;
+    color: #fff;
+    border-radius: .16rem;
+    background: rgba(0,0,0,.3);
+    padding: 0 .26rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.topBar .live-status .dot-red{
+    width: .11rem;
+    height: .11rem;
+    display: inline-block;
+    background: url(../../images/play/dot-red.png) no-repeat;
+    background-size: 100%;
+    margin: 0 .22rem 0 .12rem;
+}
+.topBar .liveId{
+    height: .4rem;
+    line-height: .4rem;
+    font-size: .2rem;
+    color: #fff;
+    border-radius: .16rem;
+    background: rgba(0,0,0,.3);
+    padding: 0 .2rem;
+    box-sizing: border-box;
+    margin-right: .42rem;
+}
+.topBar .closeBtn{
+    width: .25rem;
+    height: .4rem;
+    display: inline-block;
+    background: url(../../images/play/login-out-icon.png) no-repeat center center;
+    background-size: .25rem .26rem;
+    position: absolute;
+    right: .24rem;
+    top: 0;
+}
+
+.anchor-part{
+    width: 2.6rem;
+    height: .3rem;
+    line-height: .3rem;
+    font-size: .22rem;
+    color: #ffffff;
+    border-radius: .16rem;
+    background: rgba(0,0,0,.3);
+    margin: 0 .24rem;
+    padding: 0 .24rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+.anchor-part span{
+    height: .3rem;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-flow:nowrap;
+    flex-flow:nowrap;
+}
+.anchor-part i{
+    width: .19rem;
+    height: .3rem;
+    margin-right: .1rem;
+    display: inline-block;
+}
+
+.anchor-part .viewer .icon{
+    background: url(../../images/play/viewer-icon.png) no-repeat center center;
+    background-size: .19rem .18rem;
+}
+.anchor-part .follow .icon{
+    background: url(../../images/play/follow-icon.png) no-repeat center center;
+    background-size: .19rem .17rem;
+}
+
+/* 聊天窗口 */
+.chat-wrap{
+    width: 100%;
+    padding-left:.24rem;
+    box-sizing: border-box;
+    margin-top: 6.2rem;
+    position: relative;
+    padding-top: 1.08rem;
+    box-sizing: border-box;
+}
+
+.barrage-scroll{
+    width: 100%;
+    height: 4rem;
+    overflow-y: auto;
+    
+}
+
+/* 修改滚动条样式 */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* 礼物显示 */
+.showGift-wrap{
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 9;
+}
+.showGift-wrap .gift-item{
+    width: 3.36rem;
+    height: .88rem;
+    color: #ffffff;
+    font-size: .24rem;
+    background: rgba(0,0,0,.3);
+    border-radius: .3rem;
+    padding: 0 .3rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: .2rem;
+}
+.showGift-wrap .gift-icon{
+    width: .41rem;
+    height: .6rem;
+}
+.showGift-wrap .gift-icon img{
+    width: 100%;
+}
+.showGift-wrap .gift-count{
+    margin: 0 .25rem 0 .08rem;
+}
+
+/* 弹幕 */
+.barrage-scroll .barrage-list .dm-item{
+    font-size: .3rem;
+    color: #ffffff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: .2rem;
+}
+.barrage-scroll .barrage-list .dm-item .level{
+    width: .92rem;
+    height: .3rem;
+    display: inline-block;
+    margin-right: .2rem;
+}
+.barrage-scroll .barrage-list .dm-item .level-1{
+    background: url(../../images/play/level-1.png) no-repeat;
+    background-size: 100%;
+}
+.barrage-scroll .barrage-list .dm-item .level-2{
+    background: url(../../images/play/level-2.png) no-repeat;
+    background-size: 100%;
+}
+.barrage-scroll .barrage-list .dm-item .level-3{
+    background: url(../../images/play/level-3.png) no-repeat;
+    background-size: 100%;
+}
+.barrage-scroll .barrage-list .dm-item .level-4{
+    background: url(../../images/play/level-4.png) no-repeat;
+    background-size: 100%;
+}
+.barrage-scroll .barrage-list .dm-item .level-5{
+    background: url(../../images/play/level-5.png) no-repeat;
+    background-size: 100%;
+}
+.barrage-scroll .barrage-list .dm-item .level-6{
+    background: url(../../images/play/level-6.png) no-repeat;
+    background-size: 100%;
+}
+
+/* 发送弹幕 */
+.chat-wrap .chat-operate{
+    width: 100%;
+    height: .88rem;
+    color: #fff;
+    font-size: .3rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0 .24rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    bottom: .2rem;
+}
+
+.chat-operate .send-redPacket{
+    width: .88rem;
+    height: .88rem;
+    margin-right: .24rem;
+    border-radius: 50%;
+    background: rgba(0,0,0,.3) url(../../images/play/money-icon.png) no-repeat center center;
+    background-size: .41rem .49rem;
+}
+.chat-operate .msg-input{
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    height: 100%;
+    line-height: .88rem;
+    border-radius: .3rem;
+    background: rgba(0,0,0,.3);
+    padding: 0 .24rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.chat-operate .msg-input input{
+    width: 100%;
+    height: .4rem;
+    line-height: .4rem;
+    font-size: .3rem;
+    color: #ffffff;
+    background: none;
+    outline: none;
+    border: none;
+}
+.chat-operate .msg-input input::-webkit-input-placeholder { 
+    color: #ffffff; 
+} 
+.chat-operate .endLive{
+    width: 1.66rem;
+    height: 100%;
+    line-height: .88rem;
+    text-align: center;
+    margin-left: .24rem;
+    border-radius: .4rem;
+    background: rgba(0,0,0,.3);
+}
+.chat-operate .endLive a{
+    display: block;
+    color: #ffffff;
+}
+
+/* 遮罩层 */
+.mask{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    display: none;
+}
+
+/* 红包弹窗 */
+.redPacket-popup{
+    display: none;
+}
+.popup{
+    width: 92%;
+    min-height: 6rem;
+    background-color: #fff;
+    border-radius: .1rem;
+    position: absolute;
+    left: 50%;
+    bottom: 1.8rem;
+    margin-left: -46%;
+    padding: .34rem;
+    box-sizing: border-box;
+}
+.popup .popup-header{
+    margin-bottom: .4rem;
+}
+.popup .popup-header h3{
+    line-height: .75rem;
+    text-align: center;
+    font-size: .3rem;
+    color: #151515;
+}
+.popup-body .group-wrap{
+    width: 100%;
+    height: .88rem;
+    font-size: .3rem;
+    border-radius: .38rem;
+    border:.01rem solid #cdcdcd;
+    margin-bottom: .2rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 0 .38rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.popup-body .group-wrap input{
+    font-size: .24rem;
+    text-align: right;
+    border: none;
+    background: none;
+    outline: none;
+}
+.popup-footer .send-btn{
+    width: 100%;
+    height: .88rem;
+    line-height: .88rem;
+    text-align: center;
+    font-size: .36rem;
+    color: #ffffff;
+    border-radius: .1rem;
+    margin-top: .84rem;
+    background: -webkit-gradient(linear, left top, left bottom, from(#f8566c), to(#fa3479));
+    background: -webkit-linear-gradient(#f8566c, #fa3479);
+    background: -o-linear-gradient(#f8566c, #fa3479);
+    background: linear-gradient(#f8566c, #fa3479);
+    display: block;
+}
+.popup .close-btn{
+    width: .52rem;
+    height: .52rem;
+    background: url(../../images/play/close-btn.png) no-repeat;
+    background-size: 100%;
+    position: absolute;
+    left: 50%; 
+    bottom: -.8rem;
+    margin-left: -.26rem;
+}
+

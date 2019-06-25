@@ -83,7 +83,7 @@ return array(
         )),
         array('name' => '订单', 'child' => array(
             array('name' => '订单列表', 'act' => 'index', 'op' => 'Order'),
-            array('name' => '虚拟订单', 'act' => 'virtual_list', 'op' => 'Order'),
+            //array('name' => '虚拟订单', 'act' => 'virtual_list', 'op' => 'Order'),
             array('name' => '发货单', 'act' => 'delivery_list', 'op' => 'Order'),
             array('name' => '退款单', 'act' => 'refund_order_list', 'op' => 'Order'),
             array('name' => '退换货', 'act' => 'return_list', 'op' => 'Order'),
@@ -92,8 +92,8 @@ return array(
             array('name' => '发货单处理', 'act' => 'delivery_order_handle', 'op' => 'Order'),
             //array('name' => '首页滚动', 'act' => 'index', 'op' => 'Virtual'),
             // array('name' => '发票管理','act'=>'index', 'op'=>'Invoice'),
-            //     array('name' => '拼团列表','act'=>'team_list','op'=>'Team'),
-            //     array('name' => '拼团订单','act'=>'order_list','op'=>'Team'),
+            array('name' => '拼团列表','act'=>'team_list','op'=>'Team'),
+            array('name' => '拼团订单','act'=>'order_list','op'=>'Team'),
             //     array('name' => '上门自提','act'=>'index','op'=>'ShopOrder'),
         )),
         array('name' => '广告', 'child' => array(
@@ -248,6 +248,12 @@ return array(
         array('name' => '商家管理', 'child' => array(
             array('name' => '商家列表', 'act' => 'seller_list', 'op' => 'SellerManagement'),
             //array('name' => '商家门店管理', 'act' => 'store_list', 'op' => 'SellerManagement'),
+        ))
+    )),
+    'live' => array('name' => '直播', 'child' => array(
+        array('name' => '申请直播', 'child' => array(
+            array('name' => '主播列表', 'act' => 'info_list', 'op' => 'Live'),
+            array('name' => '直播列表', 'act' => 'video_list', 'op' => 'Live'),
         ))
     )),
 );

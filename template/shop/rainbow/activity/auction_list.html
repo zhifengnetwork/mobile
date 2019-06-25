@@ -15,76 +15,128 @@
 
 <body>
 
-<div class="big">
-	<!--头部 wrap
+	<div class="big">
+		<!--头部 wrap
         returnFun()=>data-num="1" 或  不写; => 返回上一页。data-num="跳转路径"; => 返回上一页。
     -->
-	<div class="headWrap_lb">
-		<p class="returnBut_lb" data-num="/mobile/Index/index.html" onclick="returnFun()">
-			<img class="returnIcon_lb" src="__STATIC__/images/public_lb/returnImg_lb.png" />
-		</p>
+		<div class="headWrap_lb">
+			<p class="returnBut_lb" data-num="/mobile/Index/index.html" onclick="returnFun()">
+				<img class="returnIcon_lb" src="__STATIC__/images/public_lb/returnImg_lb.png" />
+			</p>
 
-		<!--Tab, data-tab="1"=>从零开始-->
-		<div class="headTab_lb" data-tab="0">
-			<!--页面跳转=>pageJump("路径")-->
-			<p class="headTabTerm_lb" onclick="pageJump('/shop/activity/auction_list')">竞拍</p>
-			<p class="headTabTerm_lb" onclick="pageJump('/shop/groupbuy/grouplist')">拼团</p>
-			<p class="headTabTerm_lb" onclick="pageJump('/shop/activity/flash_sale_list')">秒杀</p>
+			<!--Tab, data-tab="1"=>从零开始-->
+			<div class="headTab_lb" data-tab="0">
+				<!--页面跳转=>pageJump("路径")-->
+				<p class="headTabTerm_lb" onclick="pageJump('/shop/activity/auction_list')">竞拍</p>
+				<p class="headTabTerm_lb" onclick="pageJump('/shop/groupbuy/grouplist')">拼团</p>
+				<p class="headTabTerm_lb" onclick="pageJump('/shop/activity/flash_sale_list')">秒杀</p>
+			</div>
 		</div>
+
+		<div class="tab_bigbox">
+			<div class="tab_boxtop">
+				<p class="tab_boxtop_p tab">正在竞拍</p>
+				<p class="tab_boxtop_p">我的竞拍</p>
+			</div>
+			<div class="tab_boxconnect">
+				<div class="div_show">
+					<div class="shopkill shopkill1">
+						<!--竞拍商品-s-->
+						<ul style="list-style:none;">
+							<if condition="empty($commodity)">
+								<li style="text-align: center;font-size:.3rem;margin-top:15px;line-height: 41px;">
+									暂无竞拍商品...
+								<li>
+							</if>
+						</ul>
+					</div>
+				</div>
+				<div>
+					<div class="shopkill shopkill2">
+						<!--竞拍商品-s-->
+						<ul style="list-style:none;">
+							<if condition="empty($commodity)">
+								<li style="text-align: center;font-size:.3rem;margin-top:15px;line-height: 41px;">
+									暂无竞拍商品...
+								<li>
+							</if>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 
-	<div class="shopkill">
-		<!--竞拍商品-s-->
-		<if condition="empty($commodity)">
-			<li style="text-align: center;">暂无竞拍商品。。。。<li>
-		</if>
-	</div>
+	<script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		$(function () {
+			ajax_sourch_submit();
+			ajax_getmyauction();
+		})
 
-</div>
+		var page = 0;//页数
 
-<script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
-<script>
-	$(function(){
-		ajax_sourch_submit()
-	})
+		/**
+		 * ajax加载更多商品
+		 */
+		function ajax_sourch_submit() {
+			++page;
+			$.ajax({
+				type: "GET",
+				url: "/index.php?m=Shop&c=Activity&a=ajax_auction&p=" + page,
+				success: function (data) {
+					if ($.trim(data)) {
+						$(".shopkill1").append(data);
+					} else {
+						$html = '<li style="text-align: center;font-size:.3rem;margin-top:15px;line-height: 41px;">暂无竞拍商品...<li>';
+						$(".shopkill1 ul").append($html);
+						return false;
+					}
+				}
+			});
+		}
 
-	var page = 0;//页数
-
-	/**
-	 * ajax加载更多商品
-	 */
-	function ajax_sourch_submit()
-	{
-		++page;
-		$.ajax({
-			type : "GET",
-			url: "/index.php?m=Shop&c=Activity&a=ajax_auction&p=" + page,
-			success: function(data){
-				if ($.trim(data)) {
-					$(".shopkill").append(data);
-				} else {
-					return false;
+		function ajax_getmyauction() {
+			++page;
+			$.ajax({
+				type: "GET",
+				url: "/index.php?m=Shop&c=Activity&a=ajax_getmyauction&p=" + page,
+				success: function (data) {
+					if ($.trim(data)) {
+						$(".shopkill2").append(data);
+					} else {
+						$html = '<li style="text-align: center;font-size:.3rem;margin-top:15px;line-height: 41px;">暂无尚未下单的竞拍成功商品...<li>';
+						$(".shopkill2 ul").append($html);
+						return false;
+					}
+				}
+			});
+		}		
+		//滚动加载更多
+		$(window).scroll(
+			function () {
+				var scrollTop = $(this).scrollTop();
+				var scrollHeight = $(document).height();
+				var windowHeight = $(this).height();
+				if (scrollTop + windowHeight == scrollHeight) {
+					ajax_sourch_submit();//调用加载更多
 				}
 			}
-		});
-	}
-	//滚动加载更多
-	$(window).scroll(
-		function() {
-			var scrollTop = $(this).scrollTop();
-			var scrollHeight = $(document).height();
-			var windowHeight = $(this).height();
-			if (scrollTop + windowHeight == scrollHeight) {
-				ajax_sourch_submit();//调用加载更多
-			}
-		}
-	);
-</script>
+		);
+		// tab切換
+		$('.tab_boxtop p').click(function (event) {
+			$(this).addClass('tab');
+			$(this).siblings().removeClass('tab');
+			$('.tab_boxconnect>div').eq($(this).index()).addClass('div_show');
+			$('.tab_boxconnect>div').eq($(this).index()).siblings().removeClass('div_show');
+		})
+	</script>
 
-<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
-<script src="__STATIC__/js/public/public_lb.js"></script>
-<!--头部 Tab切换样式(跳转)-->
-<script src="__STATIC__/js/listdata/public.js"></script>
+	<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
+	<script src="__STATIC__/js/public/public_lb.js"></script>
+	<!--头部 Tab切换样式(跳转)-->
+	<script src="__STATIC__/js/listdata/public.js"></script>
 
 </body>
 

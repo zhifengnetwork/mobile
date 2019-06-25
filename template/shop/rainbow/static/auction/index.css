@@ -11,8 +11,30 @@
 	-moz-box-sizing: border-box;
 	/*margin-top: 80px;*/
 }
-.section{
-	
+/* tab_box */
+.tab_boxtop{
+	height: .88rem;
+	margin: .1rem 0;
+}
+.tab_bigbox .tab_boxtop_p {
+	float: left;
+	line-height: .88rem;
+	font-size: .3rem;
+	width: 50%;
+	text-align: center;
+}
+.tab_boxconnect>div{
+	display: none;
+}
+.tab_boxconnect .div_show{
+	display: block;
+	height: 100%;
+}
+.tab{
+	color: red;
+}
+
+.section{	
 	width: 96%;
 	height: 5.53rem;
 	margin: 3% 2%;
@@ -41,28 +63,17 @@
 }
 
 .fu{
-	
-	width:5.5rem;
-	height: 2.5rem;
-	overflow: hidden;
-	position: relative;
-	top: 1rem;
-	left: 50%;
-	transform: translate(-50%,0);
-	
-	
+	margin: .65rem .52rem 0 .52rem;
+	width:6.24rem;
+	height: 3rem;	
 }
 
 
 .img{
-	
-	width:5.5rem;
-	/*margin: 0 7%;*/
-	position: absolute;
-	left: 50%;
-	transform: translate(-50%,0);
-
-	
+	margin: 0 auto;
+	display: block;
+	max-width: 100%;
+	height: 100%;	
 }
 .bottom{
 	margin-top:3rem;

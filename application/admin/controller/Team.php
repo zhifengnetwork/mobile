@@ -120,4 +120,124 @@ class Team extends Base
         return $this->fetch($tpl);
     }
 
+    public function team_list(){       
+        $count = M('team_found')->where(['status'=>2])->count();
+        $Page = new Page($count, 10);
+        $list = M('team_found')->field('discount_price,status,bonus_status',true)->where(['status'=>2])->order('found_end_time desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
+
+        $TeamActivity = M('team_activity');
+        $Goods = M('Goods');
+        foreach($list as $k=>$v){
+            $info = $TeamActivity->field('act_name,goods_name,goods_id,group_price,group_number')->find($v['team_id']);
+            $list[$k]['act_name'] = $info['act_name'];
+            $list[$k]['goods_name'] = $info['goods_name'];
+            $list[$k]['goods_id'] = $info['goods_id'];
+            $list[$k]['group_price'] = $info['group_price'];
+            $list[$k]['group_number'] = $info['group_number'];
+            $list[$k]['group_number'] = $Goods->where(['goods_id'=>$v['goods_id']])->value('goods_name');
+        }
+
+        $this->assign('list', $list);
+        $this->assign('page', $Page);
+		return $this->fetch();        
+    }
+
+    public function foundinfo(){
+        $found_id = I('get.found_id/d',0);
+        $foundinfo = M('team_found')->field('found_time,user_id,nickname,head_pic')->order('found_end_time desc')->find($found_id);
+        $follow = M('team_follow')->field('follow_user_id,follow_user_nickname,follow_user_head_pic,follow_time')->where(['found_id'=>$found_id])->select();  
+
+        $this->assign('foundinfo', $foundinfo);
+        $this->assign('follow', $follow);
+        return $this->fetch();     
+    }
+
+    public function order_list(){
+        return $this->fetch();
+    }
+
+    public function ajax_order_list(){
+        $begin = $this->begin;
+        $end = $this->end;
+        // 搜索条件
+        $condition = array('order.shop_id'=>0);
+        $keyType = I("key_type");
+        $keywords = I('keywords','','trim');
+        
+        $consignee =  ($keyType && $keyType == 'consignee') ? $keywords : I('consignee','','trim');
+        $consignee ? $condition['order.consignee'] = trim($consignee) : false;
+
+        if($begin && $end){
+        	$condition['order.add_time'] = array('between',"$begin,$end");
+        }
+        $condition['order.prom_type'] = 6;
+        $condition['order.pay_status'] = 1;
+        $condition['order.order_status'] = ['not in',[3,5]];
+        $order_sn = ($keyType && $keyType == 'order_sn') ? $keywords : I('order_sn') ;
+        $order_sn ? $condition['order.order_sn'] = trim($order_sn) : false;
+
+        //搜索昵称,手机号码,快递单号
+        $users_id = ($keyType && $keyType == 'users_id') ? $keywords : I('users_id') ;
+        $nickname = ($keyType && $keyType == 'nickname') ? $keywords : I('nickname') ;
+        $mobile = ($keyType && $keyType == 'mobile') ? $keywords : I('mobile') ;
+        $invoice_no = ($keyType && $keyType == 'invoice_no') ? $keywords : I('invoice_no') ;
+        $users_id ? $condition['users.user_id'] = trim($users_id) : false;
+        $nickname ? $condition['users.nickname'] = ['like', '%' . trim($nickname) . '%'] : false;
+        $mobile ? $condition['order.mobile'] = ['like', '%' . trim($mobile) . '%'] : false;
+        $invoice_no ? $condition['delivery.invoice_no'] = trim($invoice_no) : false;
+        
+        I('order_status') != '' ? $condition['order.order_status'] = I('order_status') : false;
+        I('pay_status') != '' ? $condition['order.pay_status'] = I('pay_status') : false;
+        //I('pay_code') != '' ? $condition['pay_code'] = I('pay_code') : false;
+        if(I('pay_code')){
+            switch (I('pay_code')){
+                case '余额支付':
+                    $condition['order.pay_name'] = I('pay_code');
+                    break;
+                case '积分兑换':
+                    $condition['order.pay_name'] = I('pay_code');
+                    break;
+                case 'alipay':
+                    $condition['order.pay_code'] = ['in',['alipay','alipayMobile']];
+                    break;
+                case 'weixin':
+                    $condition['order.pay_code'] = ['in',['weixin','weixinH5','miniAppPay']];
+                    break;
+                case '其他方式':
+                    $condition['order.pay_name'] = '';
+                    $condition['order.pay_code'] = '';
+                    break;
+                default:
+                    $condition['order.pay_code'] = I('pay_code');
+                    break;
+            }
+        }
+
+        $condition['team_found.status'] = 2;
+        I('shipping_status') != '' ? $condition['order.shipping_status'] = I('shipping_status') : false;
+        I('user_id') ? $condition['order.user_id'] = trim(I('user_id')) : false;
+        $sort_order = I('order_by','DESC').' '.I('sort');
+        $sort_order = 'order.'.$sort_order;
+        $count = Db::name('order')->alias('order')
+                ->join('users', 'users.user_id = order.user_id', 'LEFT')
+                ->join('delivery_doc delivery', 'delivery.order_id = order.order_id', 'LEFT')
+                ->join('team_found', 'users.user_id = team_found.user_id', 'LEFT')
+                ->where($condition)->count();
+        $Page  = new \think\AjaxPage($count,20);
+        $show = $Page->show();
+        $orderList = Db::name('order')->alias('order')
+                    ->join('users', 'users.user_id = order.user_id', 'LEFT')
+                    ->join('delivery_doc delivery', 'delivery.order_id = order.order_id', 'LEFT')
+                    ->join('team_found', 'users.user_id = team_found.user_id', 'LEFT')
+                    ->where($condition)
+                    ->limit($Page->firstRow,$Page->listRows)
+                    ->field('order.*')
+                    ->order($sort_order)->select();
+
+        $this->assign('orderList',$orderList);
+        $this->assign('page',$show);// 赋值分页输出
+        $this->assign('pager',$Page);
+        return $this->fetch();        
+    }
+
 }

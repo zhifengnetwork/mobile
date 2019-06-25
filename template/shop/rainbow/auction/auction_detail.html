@@ -13,6 +13,7 @@
 	<script src="__STATIC__/auction/detail.js"></script>
 	<script src="__STATIC__/auction/daojishi.js"></script>
 	<script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+	<link rel="stylesheet" href="__STATIC__/css/public_lb/public.css" />
 	<link rel="stylesheet" href="__STATIC__/css/listdata/public.css" />
 </head>
 <style>
@@ -31,7 +32,11 @@
 <body>
 
 <div class="detail">
-
+	<div class="headWrap_lb">
+		<p class="returnBut_lb" data-num="/mobile/Index/index.html" onclick="returnFun()">
+			<img class="returnIcon_lb" src="__STATIC__/images/public_lb/returnImg_lb.png" />
+		</p>
+	</div>
 	<div class="header">
 
 		<div class="timerbg starttime" id="starttime">
@@ -121,7 +126,7 @@
 				<span>保留价</span><span>有</span>
 			</div>
 			<div class="pright">
-				<span>预支付时间</span><span>{$auction.payment_time}小时内</span>
+				<span>预支付时间</span><span>{$auction.payment_time}分钟内</span>
 			</div>
 		</p>
 
@@ -138,7 +143,7 @@
 				   style="background: #FFFFFF; border-radius: 50%;width:.3rem;border: 1px solid black;outline: none;" id="jian">
 			<input type=text name=price value=<if condition="$bondUser[0] eq ''">{$auction.start_price}<else />{$bondUser[0]['offer_price']}</if>
 				   style="width: .8rem; text-align: center;outline: none;" id="mmer">
-			<input type=button value="+" onClick="javascript:this.form.amount.value++;"
+			<input type=button value="+"
 				   style="background:#FFFFFF; color: white;width: .3rem;border-radius: 50%;border: 1px solid black;color: black;outline: none;" id="jia">
 		</form>
 		<div id="myprice">
@@ -146,7 +151,7 @@
 			<if condition="time() lt $auction.delay_end_time AND $auction['isBond'] eq 0">
 				<form action="{:U('Mobile/Payment/payBond')}" method="post" name="cart5_form" id="cart5_form">
 					<div class="ccc" onclick="deposit()">
-						<p>立即参拍</p>
+						<p>立即竞拍</p>
 						<p>保证金(￥{$auction.deposit})</p>
 	                    <input type="hidden" value="pay_code=weixin" name="pay_radio" style="display:none;"/>
 	                    <input type="hidden" value="maleBee" name="beeType" style="display:none;"/>
@@ -165,10 +170,10 @@
 	<div style="margin-top:.4rem;" class="content">
 
 		<h1 class="rule">竞拍规则</h1>
-		<p>1.集满福袋的人才可以参与竞拍</p>
-		<p>2.竞拍时间30分钟，价高者得</p>
-		<p>3.竞拍成功需要在{$auction.payment_time}小时内支付，如不支付购买，奖品取消，并且取消已获取的的福袋</p>
-		<p>4.对于恶意抬价，活动方有奇效该用户以后参与活动</p>
+		<!--<p>1.集满福袋的人才可以参与竞拍</p>
+		<p>2.竞拍时间30分钟，价高者得</p>-->
+		<p>1.竞拍成功需要在{$auction.payment_time}分钟内支付，如不支付购买，奖品取消，并且不予退还保证金。</p>
+		<p>2.对于恶意抬价，活动方有权限禁止该用户以后参与活动</p>
 
 	</div>
 </div>
@@ -219,27 +224,27 @@
 			</div>
 		</form>
 		<p class="paicheng">竞拍成功</p>
-		<p class="paicheng1">恭喜你拍到产品，请在{$auction.payment_time}小时内完成付款</p>
+		<p class="paicheng1">恭喜你拍到产品，请在{$auction.payment_time}分钟内完成付款</p>
 		<p id="tobuy">付款购买</p>
 	</div>
 </div>
 <div id="mask3">
 	<div class="tanchuk">
-		<p class="paicheng">竞拍失败</p>
-		<p class="paicheng1">抱歉，竞拍失败，下次继续努力</p>
+		<p class="paicheng" id='sb1'>竞拍失败</p>
+		<p class="paicheng1" id='sb2'>抱歉，竞拍失败，下次继续努力</p>
 		<p id="tobuy1">完成</p>
 	</div>
 </div>
-
+<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
+<script src="__STATIC__/js/public/public_lb.js"></script>
 <script>
 	//定义方法
 	$(document).ready(function () {
-
+		<if condition="$auction.delay_end_time lt time()">submit_order();</if>
 		<if condition="$auction.delay_end_time lt time()">activityResult();</if>
-		<if condition="$auction.delay_end_time lt time() AND $auction.is_end eq 0">submit_order();</if>
 		<if condition="$auction.start_time lt time()">
 			//定义参数 显示出GetRTime()方法 1000毫秒以后启动
-			var timer_rt = window.setInterval("GetRTime({$auction.delay_end_time})", 100);
+			<if condition="$auction.delay_end_time gt time()">timer_rt = window.setInterval("GetRTime({$auction.delay_end_time})", 100);</if>
 			//每5秒请求一次是否有新出价
 			var clock = window.setInterval(function(){
 				var goods_id = $('input[name="goods_id"]').val();
@@ -284,8 +289,8 @@
 
 	var step = {$auction.increase_price}; // 起拍价
 	document.getElementById("jian").onclick=function(){
-
-		$("#mmer").val($("#mmer").val()*1-step);
+		var fd = $("#mmer").val() * 10000000000000000;
+		$("#mmer").val( (Math.floor((fd*1-step*10000000000000000))/10000000000000000).toFixed(2));
 		if($("#mmer").val()*1<0){
 
 			$("#mmer").val(0);
@@ -294,9 +299,8 @@
 
 	};
 	document.getElementById("jia").onclick=function(){
-
-		$("#mmer").val($("#mmer").val()*1+step);
-
+		var fd = $("#mmer").val() * 10000000000000000;
+		$("#mmer").val( (Math.floor((fd*1+step*10000000000000000))/10000000000000000).toFixed(2) );	
 	};
 
 	// 活动结束
@@ -307,7 +311,7 @@
 			url: "{:U('Shop/Auction/auctionEnd')}",
 			data: {aid:goods_id},
 			dataType: "json",
-			success: function (data) {
+			success: function (data) {return;
 				layer.closeAll();
 				if (data.status != 1) {
 					layer.open({content:data.msg, time:3});  //执行有误
@@ -364,11 +368,18 @@
 				if (data.status == -100){
 					location.href = "{:U('Shop/User/login')}";
 				}
-				if (data.status == 1 && data.msg == 2) {
+				if ((data.status == 1) && (data.msg == 2) && data.payment_time) {
 					$("#mask").show();
 					return false;
 				}
-				if (data.status == 1 && data.msg == 0) {
+				if((data.msg == 2) && !data.payment_time){
+					$("#sb1").html('支付时间已过');
+					$("#sb2").html('抱歉，您的竞拍已过支付时间！');
+					$("#mask3").show();
+				}
+				if (data.status == 1 && data.msg == 0) {				
+					$("#sb1").html('竞拍失败');
+					$("#sb2").html('抱歉，竞拍失败，下次继续努力！');
 					$("#mask3").show();
 				}
 
