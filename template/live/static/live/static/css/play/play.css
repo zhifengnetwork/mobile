@@ -141,18 +141,17 @@
     width: 100%;
     padding-left:.24rem;
     box-sizing: border-box;
-    /* margin-top: 6.2rem; */
-    margin-top: 55%;
-    position: relative;
     padding-top: 1.08rem;
     box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    bottom: 5.8em;
 }
 
 .barrage-scroll{
     width: 100%;
-    height: 4.1rem;
+    height: 4rem;
     overflow-y: auto;
-    
 }
 
 /* 修改滚动条样式 */
@@ -162,10 +161,9 @@
 
 /* 礼物显示 */
 .showGift-wrap{
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 9;
+    width: 100%;
+    height: 4rem;
+    overflow: auto;
 }
 .showGift-wrap .gift-item{
     width: 3.36rem;
@@ -184,10 +182,13 @@
     -ms-flex-align: center;
     align-items: center;
     margin-bottom: .2rem;
+    /* position: absolute;
+    left: -3.36rem; */
 }
 .showGift-wrap .gift-icon{
     width: .41rem;
-    height: .6rem;
+    height: 2.6rem;
+    margin-right: .2rem;
 }
 .showGift-wrap .gift-icon img{
     width: 100%;
@@ -267,6 +268,149 @@
     background: rgba(0,0,0,.3) url(../../images/play/money-icon.png) no-repeat center center;
     background-size: .41rem .49rem;
 }
+
+
+/* 发送内容框 */
+.send-group{
+    width: 100%;
+    min-height: .88rem;
+    color: #fff;
+    font-size: .3rem;
+    background-color: #fff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0 .24rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    visibility:hidden;
+}
+.send-group .textarea{
+    flex:1;
+    font-size:.3rem;
+    color:#151515;
+    height: auto;
+    min-height:.5rem;
+    line-height:.5rem;
+    max-height:1.3rem;
+    _height:1.3rem;
+    margin-left:auto;
+    margin-right:auto;
+    padding:.03rem;
+    outline:0;  
+    word-wrap:break-word;
+    overflow-x:hidden;
+    overflow-y:auto;
+    _overflow-y:visible;
+    -webkit-user-modify:read-write-plaintext-only; 
+    -webkit-user-select:text;
+}
+                
+.send-group .textarea[placeholder]:empty:before {
+    content: attr(placeholder); 
+}
+    
+.textarea[placeholder]:empty:focus:before{
+    content: "";
+} 
+
+.send-group .send-btn{
+    font-size: .3rem;
+    padding: .02rem .1rem;
+    background-color: #1e9f21;
+    border-radius: .06rem;
+    color: #ffffff;
+    opacity: .5;
+}
+
+/* 选择商品发布 */
+.chat-operate .goodShow{
+    width: .88rem;
+    height: .88rem;
+    margin-right: .24rem;
+    border-radius: 50%;
+    background: rgba(0,0,0,.3) url(../../images/play/goodShow-bg.png) no-repeat center center;
+    background-size: .47rem .49rem;
+}
+
+.all-goods{
+    width: 100%;
+    padding: 0 .24rem;
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    bottom: 1.28rem;
+    z-index: 10;
+    display: none;
+}
+.all-goods h1{
+    font-size: .26rem;
+    color: #ffffff;
+    font-weight: normal;
+}
+.all-goods .goods-list{
+    width: 7.02rem;
+    height: 8.2rem;
+    overflow: auto;
+    background-color: #fff;
+    border-radius: .08rem;
+    padding:.1rem .24rem;
+    box-sizing: border-box;
+}
+.all-goods .goods-item{
+    display: flex;
+    position: relative;
+    border-bottom: .01rem solid #fbfbfa;
+    padding: .14rem 0;
+    box-sizing: border-box;
+}
+.all-goods .goods-item .img-wrap{
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-right: .3rem;
+}
+.all-goods .goods-item .img-wrap img{
+    width: 100%;
+}
+.all-goods .goods-item .text {
+    flex: 1;
+}
+.all-goods .goods-item .text h3{
+    font-size: .28rem;
+    line-height: .36rem;
+    margin:0 0 .38rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+.all-goods .goods-item .text h3 a{
+    color: #151515;
+}
+.all-goods .goods-item .text .price{
+    font-size: .28rem;
+    color: #f70909;
+}
+.all-goods .goods-item .text .publish-btn{
+    width: 1.2rem;
+    height: .5rem;
+    line-height: .5rem;
+    text-align: center;
+    font-size: .26rem;
+    color: #f70909;
+    border: .01rem solid #f70909;
+    border-radius: .2rem;
+    position: absolute;
+    right: 0;
+    bottom: .2rem;
+}
+
 .chat-operate .msg-input{
     -webkit-box-flex: 1;
     -ms-flex: 1;
@@ -279,6 +423,10 @@
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
+.chat-operate .msg-input span{
+    color: #ffffff;
+}
+
 .chat-operate .msg-input input{
     width: 100%;
     height: .4rem;

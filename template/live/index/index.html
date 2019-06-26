@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Agora Web Sample</title>
+    <title>主播--直播中</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
@@ -85,71 +85,63 @@
         <div class="chat-wrap">
 
             <!-- 礼物 -->
-            <div class="showGift-wrap">
-                <div class="gift-item">
-                    <span class="gift-icon"><img src="__STATIC__/live/static/images/play/gift-icon-1.png" /></span>
-                    <span class="gift-count">x2</span>
-                    <span class="viewer-name">美丽的小猪猪</span>
-                </div>
-            </div>
+            <div class="showGift-wrap"></div>
 
             <!-- 弹幕滚动 -->
+
+            <!-- 弹幕滚动 -->
+            <div class="barrage-scroll">
+                <ul class="barrage-list" id="dialog-list">
+                </ul>
+            </div>
+
             <select style="margin-bottom:8px;display: none" id="client_list">
                 <option value="all">所有人</option>
             </select>
-            <div class="barrage-scroll">
-                <ul class="barrage-list" id="dialog-list">
-                    <!--<li class="dm-item">-->
-                    <!--<span class="level level-1"></span>-->
-                    <!--<span class="viewer-name">小猪猪朋友：</span>-->
-                    <!--<span class="barrage-con">你好吗</span>-->
-                    <!--</li>-->
-                    <!--<li class="dm-item">-->
-                    <!--<span class="level level-2"></span>-->
-                    <!--<span class="viewer-name">小猪猪朋友：</span>-->
-                    <!--<span class="barrage-con">你好吗</span>-->
-                    <!--</li>-->
-                    <!--<li class="dm-item">-->
-                    <!--<span class="level level-3"></span>-->
-                    <!--<span class="viewer-name">小猪猪朋友：</span>-->
-                    <!--<span class="barrage-con">你好吗</span>-->
-                    <!--</li>-->
-                    <!--<li class="dm-item">-->
-                    <!--<span class="level level-4"></span>-->
-                    <!--<span class="viewer-name">小猪猪朋友：</span>-->
-                    <!--<span class="barrage-con">你好吗</span>-->
-                    <!--</li>-->
-                    <!--<li class="dm-item">-->
-                    <!--<span class="level level-4"></span>-->
-                    <!--<span class="viewer-name">小猪猪朋友：</span>-->
-                    <!--<span class="barrage-con">你好吗</span>-->
-                    <!--</li>-->
-                    <!--<li class="dm-item">-->
-                    <!--<span class="level level-5"></span>-->
-                    <!--<span class="viewer-name">小猪猪朋友：</span>-->
-                    <!--<span class="barrage-con">你好吗</span>-->
-                    <!--</li>-->
-                    <!--<li class="dm-item">-->
-                    <!--<span class="level level-6"></span>-->
-                    <!--<span class="viewer-name">小猪猪朋友：</span>-->
-                    <!--<span class="barrage-con">你好吗</span>-->
-                    <!--</li>-->
-                </ul>
-            </div>
 
             <!-- 发送弹幕 -->
             <form >
                 <div class="chat-operate">
                     <div class="send-redPacket"></div>
+                    <div class="goodShow"></div>
                     <div class="msg-input">
-                        <input type="text" placeholder="说点什么..." id="textarea">
+                        <span>说点什么...</span>
                     </div>
                     <div class="endLive">
-                        <input type="button" class="btn btn-default" onclick="onSubmit()" value="发表" />
-                        <!--<a href="./end_life.html" onclick="">结束直播</a>-->
+                        <a href="#" onclick="">结束直播</a>
                     </div>
                 </div>
             </form>
+
+            <!-- 输入框 -->
+            <div class="send-group">
+                <div class="textarea" contenteditable="true" placeholder ="说点什么" id="textarea"></div>
+                <div class="send-btn" onclick="onSubmit()">发送</div>
+            </div>
+
+            <!-- 商品选择 -->
+            <div class="all-goods">
+                <h1>全部宝贝<?php echo count($goodsList); ?></h1>
+                <div class="goods-list">
+                    <?php if(!empty($goodsList)){ ?>
+                        <?php foreach($goodsList as $k=>$v){ ?>
+                            <div class="goods-item" onclick="send_goods_url(<?php echo $v['goods_id']; ?>);">
+                                <div class="img-wrap">
+                                    <a href="#"><img src="<?php echo $v['goods_url']; ?>" /></a>
+                                </div>
+                                <div class="text">
+                                    <h3><a href="#"><?php echo $v['goods_name']; ?></a></h3>
+                                    <p class="price">￥<?php echo $v['shop_price']; ?></p>
+                                    <div class="publish-btn">发布商品</div>
+                                </div>
+                            </div>
+                        <?php } ?>
+
+                    <?php } ?>
+
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -190,6 +182,7 @@
 <script type="text/javascript" src="__STATIC__/chat/js/jquery.min.js"></script>
 
 <script src="__STATIC__/live/static/js/public/jquery-3.3.1.min.js"></script>
+
 <script>
     //红包隐藏显示
     $(".close-btn").click(function(){
@@ -201,7 +194,62 @@
         $(".popup").show();
     })
 
+    // 发布商品
+    $(".goodShow").click(function(){
+        $(".all-goods").toggle();
+    })
+
+    // 取消冒泡
+    $(".all-goods,.goodShow").click(function(){
+        var e = window.event || event;
+        if(e.stopPropagation){
+            e.stopPropagation();
+        }else{
+            e.cancelBubble = true;
+        }
+    })
+
+    //点击输入框
+    $(".msg-input").click(function(){
+        var e = window.event || event;
+        if(e.stopPropagation){
+            e.stopPropagation();
+        }else{
+            e.cancelBubble = true;
+        }
+        $(".chat-operate").hide();
+        $(".send-group").css("visibility","visible");
+        // 点击发送按钮获取焦点
+        $('.textarea').focus();
+    })
+
+    //改变发送按钮样式
+    $('.send-group .textarea').keyup(function(){
+        if($(this).html()!=''){
+            $('.send-group .send-btn').css('opacity','1')
+        }else{
+            $('.send-group .send-btn').css('opacity','.5')
+        }
+    })
+
+    // 发送消息
+    $('.send-group .send-btn').click(function(){
+        $('.send-group .textarea').html('');
+    })
+
+    // 点击空白处关闭
+    document.onclick = function(){
+        $(".all-goods").hide();//商品选择
+        $(".send-group").css("visibility","hidden");
+        $(".chat-operate").show();
+    };
+
+    $(".showGift-wrap .gift-item").last().hide();
+    $(".showGift-wrap .gift-item").first().fadeOut(2000);
+    $(".showGift-wrap .gift-item").last().fadeIn(2000);
+
 </script>
+
 <script>
     $(function(){
         // 调用摄像头
@@ -213,7 +261,7 @@
 <script language="javascript">
 
     if(!AgoraRTC.checkSystemRequirements()) {
-        alert("Your browser does not support WebRTC!");
+//        alert("Your browser does not support WebRTC!");
     }
 
     /* select Log type */
@@ -398,6 +446,8 @@
 </script>
 
 
+
+
 <!--聊天室-->
 <script type="text/javascript">
     if (typeof console == "undefined") {    this.console = { log: function (msg) {  } };}
@@ -428,12 +478,9 @@
     // 连接建立时发送登录信息
     function onopen()
     {
-        if(!name)
-        {
-            show_prompt();
-        }
+        name = "{$user_name}";
         // 登录
-        var login_data = '{"type":"login","client_name":"'+name.replace(/"/g, '\\"')+'","room_id":"<?php echo isset($_GET['room_id']) ? $_GET['room_id'] : 1?>"}';
+        var login_data = '{"type":"login","client_name":"'+name.replace(/"/g, '\\"')+'","room_id":"<?php echo isset($room_id) ? $room_id : 1?>"}';
         console.log("websocket握手成功，发送登录数据:"+login_data);
         ws.send(login_data);
     }
@@ -486,24 +533,24 @@
         }
     }
 
-    // 输入姓名
-    function show_prompt(){
-        name = prompt('输入你的名字：', '');
-        if(!name || name=='null'){
-            name = '游客';
-        }
-    }
-
     // 提交对话
     function onSubmit() {
 
-        var input = document.getElementById("textarea");
+        var input = $('#textarea').html();
         var to_client_id = $("#client_list option:selected").attr("value");
         var to_client_name = $("#client_list option:selected").text();
-        ws.send('{"type":"say","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+input.value.replace(/"/g, '\\"').replace(/\n/g,'\\n').replace(/\r/g, '\\r')+'"}');
-        input.value = "";
-        input.focus();
+
+        $('.send-group .textarea').html('');
+        ws.send('{"type":"say","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+input.replace(/"/g, '\\"').replace(/\n/g,'\\n').replace(/\r/g, '\\r')+'"}');
     }
+
+    //发送礼物推送
+    function send_goods_url(goods_id){
+        var room_id = '<?php echo $room_id; ?>';
+        var user_id = '<?php echo $user_id; ?>';
+
+    }
+
     //红包提交
     function redSubmit(){
         var money = document.getElementById('money').value;
@@ -556,16 +603,24 @@
 
     // 发言
     function say(from_client_id, from_client_name, content, time){
-        var html = '';
-        html += '<li class="dm-item">';
-        html += '<span class="level level-1"></span>';
-        html +=  '<span class="viewer-name"> '+from_client_name+'：</span>';
-        html += '<span class="barrage-con">'+content+'</span>';
-        html += '</li>';
-        $("#dialog-list").append(html);
+        var str = '';
+        str += '<li class="dm-item">';
+        str +='<span class="level level-<?php echo $level;?>"></span>';
+        str +=' <span class="viewer-name">'+from_client_name+'：</span>';
+        str +='<span class="barrage-con">'+content+'</span>';
+        str +='</li>';
 
-        //$("#dialog").append('<div class="speech_item"><img src="http://lorempixel.com/38/38/?'+from_client_id+'" class="user_icon" /> '+from_client_name+' <br> '+time+'<div style="clear:both;"></div><p class="triangle-isosceles top">'+content+'</p> </div>');
+
+        $("#dialog-list").append(str);
+        // 点击发送按钮获取焦点
+        $('.textarea').focus();
+        $('.send-group .send-btn').css('opacity','.5');
+        // 滚动条到底部
+        $('.barrage-scroll').animate({
+            scrollTop: $('.barrage-scroll').height()
+        }, 100);
     }
+
     //发红包
     function red_anchor(from_client_id, from_client_name, content, time){
         console.log(content);

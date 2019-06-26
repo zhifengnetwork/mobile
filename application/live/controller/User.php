@@ -147,12 +147,16 @@ class User extends Base
         $result = Db::name('users')->where(['user_id'=>$userId])->update(['user_money'=>$user_money]);
         if(!$result){
             Db::rollback();
-            return $this->failResult('事务处理失败',301);
+            return $this->failResult('事务处理失败1',301);
         }
 
         //增加主播余额的钱
         $zhubo_user_id = 0;
         $zhobuInfo = Db::name('user_video')->where(['room_id'=>$room_id])->find();
+        if(!$zhobuInfo){
+            Db::rollback();
+            return $this->failResult('主播直播间不存在',301);
+        }
         $zhubo_user_id = $zhobuInfo['user_id'];
         $zhobuInfo = Db::name('users')->where(['user_id'=>$zhubo_user_id])->find();
         $user_money = bcadd($zhobuInfo['user_money'],$money,2);
@@ -160,7 +164,7 @@ class User extends Base
         $result = Db::name('users')->where(['user_id'=>$zhubo_user_id])->update(['user_money'=>$user_money]);
         if(!$result){
             Db::rollback();
-            return $this->failResult('事务处理失败',301);
+            return $this->failResult('事务处理失败2',301);
         }
 
         //新增用户给主播发红包流水
@@ -175,7 +179,7 @@ class User extends Base
         $result = Db::name('live_red_sending_log')->insert($data);
         if(!$result){
             Db::rollback();
-            return $this->failResult('事务处理失败',301);
+            return $this->failResult('事务处理失败3',301);
         }
         Db::commit();
 
@@ -207,7 +211,6 @@ class User extends Base
         $user = Db::name('users')->where(['user_id'=>$userId])->find();
         $user_video = Db::name('user_video')->where(['room_id'=>$room_id])->find();
 
-//        $list = Goods::get(['goods_id' => $goods_id])->column('goods_id,goods_name,original_img,store_count,market_price,shop_price,cost_price');
         $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
         $url=$http_type.$_SERVER['SERVER_NAME'];
 

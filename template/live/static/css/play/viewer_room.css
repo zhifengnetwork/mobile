@@ -169,9 +169,10 @@
     left: 0;
     top: 0;
     z-index: 9;
+  
 }
 .showGift-wrap .gift-item{
-    width: 3.36rem;
+    width: 3.46rem;
     height: .88rem;
     color: #ffffff;
     font-size: .24rem;
@@ -191,6 +192,7 @@
 .showGift-wrap .gift-icon{
     width: .41rem;
     height: .6rem;
+    margin-right: .2rem;
 }
 .showGift-wrap .gift-icon img{
     width: 100%;
@@ -583,6 +585,10 @@
     margin-bottom: .5rem;    
     margin-right: .58rem;
 }
+.gift-wrap .gift-item.active{
+    border: .01rem solid #fa3579;
+}
+
 .gift-wrap .gift-item:nth-child(4n+4){
     margin-right: 0;
 }
