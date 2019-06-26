@@ -71,43 +71,22 @@
                     <span class="name">{$user_name}</span>
                 </div>
                 <div class="liveId">
-                    <span class="shop-name">DC商城</span>
-                    <span class="id">ID:123456</span>
+                    <span class="shop-name" onclick="shop_url();">DC商城</span>
+                    <!--<span class="id">ID:123456</span>-->
                 </div>
                 <div class="closeBtn"></div>
             </div>
     
             <div class="anchor-part">
                 <span class="viewer" id="user_count"><i class="icon"></i>1人</span>
-                <span class="follow" id="user_top"><i class="icon"></i>88人</span>
+                <span class="follow" id="user_top"><i class="icon" onclick="live_top('<?php echo $user_id; ?>','<?php echo $room_id; ?>')"></i><?php echo $room['top_amount']; ?>人</span>
             </div>
     
             <!-- 聊天窗口 -->
             <div class="chat-wrap">
     
                 <!-- 礼物 -->
-                <div class="showGift-wrap">
-                    <div class="gift-item">
-                        <span class="gift-icon"><img src="__STATIC__/live/static/images/play/gift-icon-1.png" /></span>
-                        <span class="gift-count">x2</span>
-                        <span class="viewer-name">美丽的小猪猪</span>
-                    </div>
-                    <div class="gift-item">
-                        <span class="gift-icon"><img src="__STATIC__/live/static/images/play/gift-icon-1.png" /></span>
-                        <span class="gift-count">x2</span>
-                        <span class="viewer-name">美丽的小猪猪2</span>
-                    </div>
-                    <div class="gift-item">
-                        <span class="gift-icon"><img src="__STATIC__/live/static/images/play/gift-icon-1.png" /></span>
-                        <span class="gift-count">x2</span>
-                        <span class="viewer-name">美丽的小猪猪3</span>
-                    </div>
-                    <div class="gift-item">
-                        <span class="gift-icon"><img src="__STATIC__/live/static/images/play/gift-icon-1.png" /></span>
-                        <span class="gift-count">x2</span>
-                        <span class="viewer-name">美丽的小猪猪4</span>
-                    </div>
-                </div>
+                <div class="showGift-wrap"></div>
     
                 <!-- 弹幕滚动 -->
                 <div class="barrage-scroll">
@@ -116,9 +95,7 @@
                 </div>
     
                 <!-- 商品链接 -->
-                <div class="goods-links">
-                    商品链接：<a href="http://zhibo.com/mobile/play/viewer_room">http://zhibo.com/mobile/play/viewer_room</a>
-                </div>
+                <div class="goods-links"></div>
     
                     <!-- 发送弹幕 -->
                     <div class="chat-operate" >
@@ -126,7 +103,7 @@
                         <span>说点什么...</span>
                     </div>
                     <div class="send-redPacket"></div>
-                    <div class="cart" onclick="cart_url();"></div>
+                    <div class="cart" onclick="cart_url('<?php echo $user_id; ?>','<?php echo $room_id; ?>');"></div>
                     <div class="share" onclick="share_url();"></div>
                     <div class="gift"></div>
                 </div>
@@ -170,41 +147,17 @@
                 <div class="swiper-container gift-container">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-2.png" /></div>
-                            <div class="gift-item"><img src="__STATIC__/live/static/images/play/gift-icon-3.png" /></div>
-                        </div>
+                            <?php if(!empty($giftList)){ ?>
+                                <?php foreach($giftList as $k=>$v){ ?>
+                                    <div class="gift-item"><img src="<?php echo $url; ?><?php echo $v['image']; ?>" /></div>
+                                <?php } ?>
+                            <?php } ?>
                     </div>
                     <div class="swiper-pagination"></div>
                 </div>                    
     
             </div>
-            <div class="sendBtn">发送</div>
+            <div class="sendBtn" onclick="send_gift('<?php echo $user_id; ?>','<?php echo $room_id; ?>')">发送</div>
         </div>
     
     </div>
@@ -269,6 +222,7 @@
             // 礼物显示
             $(".gift").click(function(){
                 $(".gift-wrap").css("visibility","visible");
+                $(".gift-wrap").show();
             })
     
             // 礼物隐藏
@@ -313,7 +267,6 @@
             // 发送消息
             $('.send-group .send-btn').click(function(){
 
-//                $('.send-group .textarea').html('');
             })
     
     
@@ -354,8 +307,58 @@
     })
 </script>
     <script>
+        //Dc商城跳转
+        function shop_url(){
+            location.href="{:U('mobile/index/index');}";
+        }
+
+        //点赞
+        function live_top(user_id,room_id){
+            $.ajax({
+                type: "POST",
+                data:{user_id:user_id,room_id:room_id},
+                async:false,
+                url: "/Live/user/like",
+                success: function(data){
+                    if(data.status==200){
+                        var content = data.data;
+                        var amount = content.count;
+                        $("#user_top").html('<i class="icon" onclick="live_top('+user_id+','+room_id+');"></i>'+amount+"人");
+                    }else{
+                        alert(data.msg);
+                    }
+                }
+            })
+        }
+
+        //发送商品链接
+        function cart_url(user_id,room_id){
+            var goods_id = $("#redmoney").val();
+            var to_client_id = $("#client_list option:selected").attr("value");
+            var to_client_name = $("#client_list option:selected").text();
+            $.ajax({
+                type: "POST",
+                data:{user_id:user_id,room_id:room_id,goods_id:goods_id},
+                async:false,
+                url: "/Live/user/sendGoodsUrl",
+                success: function(data){
+                    if(data.status==200){
+                        var content = data.data;
+                        var to_client_id = content.to_client_id;
+                        var content = content.content;
+                        var to_client_name = content.to_client_name;
+                        var goods_url = content.goods_url;
+                        ws.send('{"type":"goods","goods_url":"'+goods_url+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
+                        $(".mask,.redPacket-popup").hide();
+                    }else{
+                        alert(data.msg);
+                    }
+                }
+            })
+        }
+
         //跳转到购物车
-        function cart_url(){
+        function cart_url_old(){
             location.href="{:U('mobile/Cart/index');}";
         }
 
@@ -380,8 +383,42 @@
                         var content = content.content;
                         var to_client_name = content.to_client_name;
                         ws.send('{"type":"say","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
+                        $(".mask,.redPacket-popup").hide();
                     }else{
-                        alert('发送失败');
+                        alert(data.msg);
+                    }
+                }
+            })
+        }
+
+        //发礼物
+        function send_gift(user_id,room_id){
+            //待修改礼物ID   add by zgp
+            var gift_id = $("#redmoney").val();
+            var to_client_id = $("#client_list option:selected").attr("value");
+            var to_client_name = $("#client_list option:selected").text();
+            $.ajax({
+                type: "POST",
+                data:{user_id:user_id,room_id:room_id,gift_id:1},
+                async:false,
+                url: "/Live/user/sendGift",
+                success: function(data){
+                    if(data.status==200){
+                        var content = data.data;
+                        var gift_id_return = content.gift_id;
+                        var to_client_id = content.to_client_id;
+                        var content = content.content;
+
+                        var to_client_name = content.to_client_name;
+                        console.log(gift_id_return);
+                        //消息聊天
+                        ws.send('{"type":"say","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
+                        //礼物显示
+                        ws.send('{"type":"gift","gift_id":"'+gift_id_return+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
+                        $(".gift-wrap").hide();
+
+                    }else{
+                        alert(data.msg);
                     }
                 }
             })
@@ -534,7 +571,7 @@
                 break;;
             // 登录 更新用户列表
             case 'login':
-                say(data['client_id'], data['client_name'],  data['client_name']+' 加入了直播间', data['time']);
+                say(data['client_id'], data['client_name'],  ' 加入了直播间', data['time']);
                 if(data['client_list'])
                 {
                     client_list = data['client_list'];
@@ -563,7 +600,11 @@
                 console.log(data['from_client_name']+"说："+data['content']);
                 break;
             case 'gift':
-                gift(data['from_client_id'], data['from_client_name'], data['content'], data['time']);
+                gift(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['gift_id']);
+                console.log(data['from_client_name']+"说："+data['content']);
+                break;
+            case 'goods':
+                goods_url(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['goods_url']);
                 console.log(data['from_client_name']+"说："+data['content']);
                 break;
         }
@@ -598,11 +639,30 @@
         userlist_window.append('</ul>');
         $("#user_count").html('<i class="icon"></i>'+count+"人");
 
+        //刷新点赞人数
+        var user_id = '<?php echo $user_id; ?>';
+        var room_id = '<?php echo $room_id; ?>';
+        $.ajax({
+            type: "POST",
+            data:{user_id:user_id,room_id:room_id},
+            async:false,
+            url: "/Live/user/userTopAmount",
+            success: function(data){
+                if(data.status==200){
+                    var content = data.data;
+                    var amount = content.count;
+                    if(amount == 0){
+                        amount = 1;
+                    }
+                    $("#user_top").html('<i class="icon" onclick="live_top('+user_id+','+room_id+');"></i>'+amount+"人");
+                }
+            }
+        })
+
     }
 
     // 发言
     function say(from_client_id, from_client_name, content, time){
-        console.log(content);
         var str = '';
         str += '<li class="dm-item">';
         str +='<span class="level level-<?php echo $level;?>"></span>';
@@ -631,21 +691,51 @@
         str +='<span class="barrage-con">'+content+'</span>';
         str +='</li>';
         $("#dialog-list").append(str);
+
+        // 点击发送按钮获取焦点
+        $('.textarea').focus();
+        $('.send-group .send-btn').css('opacity','.5');
+        // 滚动条到底部
+        $('.barrage-scroll').animate({
+            scrollTop: $('.barrage-scroll').height()
+        }, 100);
     }
 
     //发礼物
-    function gift(from_client_id, from_client_name, content, time){
+    function gift(from_client_id, from_client_name, content, time,gift_id){
         console.log(content);
-
+        $(".showGift-wrap .gift-item").remove();
         var str = '';
-        str += '<li class="dm-item">';
-        str +='<span class="level level-<?php echo $level;?>"></span>';
-        str +=' <span class="viewer-name">'+from_client_name+'：</span>';
-        str +='<span class="barrage-con">'+content+'</span>';
-        str +='</li>';
+        str += '<div class="gift-item">';
+        str += '<span class="gift-icon"><img src="__STATIC__/live/static/images/play/gift-icon-'+gift_id+'.png" /></span>';
+        str += '<span class="gift-count">x1</span>';
+        str += '<span class="viewer-name">'+from_client_name+'</span>';
+        str += '</div>';
+
+        $(".showGift-wrap").append(str);
+        $(".showGift-wrap .gift-item").last().hide();
+        $(".showGift-wrap .gift-item").last().fadeIn(2000);
 
 
-        $("#dialog-list").append(str);
+        // 点击发送按钮获取焦点
+        $('.textarea').focus();
+        $('.send-group .send-btn').css('opacity','.5');
+        // 滚动条到底部
+        $('.barrage-scroll').animate({
+            scrollTop: $('.barrage-scroll').height()
+        }, 100);
+    }
+
+    //发购物链接
+    function goods_url(from_client_id, from_client_name, content, time,goods_url){
+        console.log(content);
+        $(".goods-links").remove();
+        var str = '';
+        str += '<div class="goods-links">';
+        str += '商品链接：<a href="'+goods_url+'">'+goods_url+'</a>';
+        str += '</div>';
+        $(".goods-links").html(str);
+
     }
 
     $(function(){
