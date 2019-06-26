@@ -95,6 +95,7 @@ class Events
 
             //礼物
             case 'gift':
+                print_r($message_data);
                 // 非法请求
                 if(!isset($_SESSION['room_id']))
                 {
@@ -102,13 +103,14 @@ class Events
                 }
                 $room_id = $_SESSION['room_id'];
                 $client_name = $_SESSION['client_name'];
-
+                $gift_id = isset($message_data['gift_id'])&&!empty($message_data['gift_id']) ? $message_data['gift_id'] : 0;
                 $new_message = array(
                     'type'=>'gift',
                     'from_client_id'=>$client_id,
                     'from_client_name' =>$client_name,
                     'to_client_id'=>'all',
                     'content'=>nl2br(htmlspecialchars($message_data['content'])),
+                    'gift_id'=>$gift_id,
                     'time'=>date('Y-m-d H:i:s'),
                 );
                 return Gateway::sendToGroup($room_id ,json_encode($new_message));
@@ -133,15 +135,14 @@ class Events
                 );
                 return Gateway::sendToGroup($room_id ,json_encode($new_message));
                 break;
+            //主播发红包
             case 'red_anchor':
-            
                 // 非法请求
+                dump($_SESSION['room_id']);
                 if(!isset($_SESSION['room_id']))
                 {
-                    dump($_SESSION['room_id']);die;
                     throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
                 }
-                
                 $room_id = $_SESSION['room_id'];
                 $client_name = $_SESSION['client_name'];
 
@@ -153,9 +154,30 @@ class Events
                     'content'=>nl2br(htmlspecialchars($message_data['content'])),
                     'time'=>date('Y-m-d H:i:s'),
                 );
-                dump($new_message);die;
                 return Gateway::sendToGroup($room_id ,json_encode($new_message));
                 break;
+            //购物链接
+            case 'goods':
+                // 非法请求
+                if(!isset($_SESSION['room_id']))
+                {
+                    throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                $room_id = $_SESSION['room_id'];
+                $client_name = $_SESSION['client_name'];
+                $goods_url = isset($message_data['goods_url'])&&!empty($message_data['goods_url']) ? $message_data['goods_url'] : 0;
+                $new_message = array(
+                    'type'=>'goods',
+                    'from_client_id'=>$client_id,
+                    'from_client_name' =>$client_name,
+                    'to_client_id'=>'all',
+                    'content'=>nl2br(htmlspecialchars($message_data['content'])),
+                    'goods_url'=>$goods_url,
+                    'time'=>date('Y-m-d H:i:s'),
+                );
+                return Gateway::sendToGroup($room_id ,json_encode($new_message));
+                break;
+            //点赞人数
         }
    }
    
