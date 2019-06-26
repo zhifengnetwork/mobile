@@ -154,7 +154,6 @@ class Events
                     'goods_url'=>$goods_url,
                     'time'=>date('Y-m-d H:i:s'),
                 );
-                print_r($new_message);
                 return Gateway::sendToGroup($room_id ,json_encode($new_message));
                 break;
         }
