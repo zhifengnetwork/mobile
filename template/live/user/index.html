@@ -610,6 +610,11 @@
                 goods_url(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['goods_url']);
                 console.log(data['from_client_name']+"说："+data['content']);
                 break;
+            //直播发红包
+            case 'red_anchor':
+                red_anchor(data['from_client_id'], data['from_client_name'], data['content'], data['time']);
+                console.log(data['from_client_name']+"说："+data['content']);
+                break;
         }
     }
 
@@ -727,6 +732,18 @@
         $('.barrage-scroll').animate({
             scrollTop: $('.barrage-scroll').height()
         }, 100);
+    }
+
+    //发红包
+    function red_anchor(from_client_id, from_client_name, content, time){
+        console.log(content);
+        var str = '';
+        str += '<li class="dm-item">';
+        str +='<span class="level level-<?php echo $level;?>"></span>';
+        str +=' <span class="viewer-name">'+from_client_name+'：</span>';
+        str +='<span class="barrage-con">'+content+'</span>';
+        str +='</li>';
+        $("#dialog-list").append(str);
     }
 
     //发购物链接

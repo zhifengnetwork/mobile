@@ -17,7 +17,19 @@
     <link href="__STATIC__/chat/css/style.css" rel="stylesheet">
 
 </head>
-
+<style type="text/css">
+    .barrage-scroll .barrage-list .dm-item{
+        font-size: .3rem;
+        color: black;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        margin-bottom: .2rem;
+    }
+</style>
 <body onload="connect();">
 <div class="wrapper">
     <input type="text" id="room_id" value="{$room_id}" style="display: none;">
@@ -455,23 +467,21 @@
             case 'say':
                 say(data['from_client_id'], data['from_client_name'], data['content'], data['time']);
                 break;
-            // 红包
-            case 'redSubmit':
-                
-                break;
             // 用户退出 更新用户列表
             case 'logout':
                 //{"type":"logout","client_id":xxx,"time":"xxx"}
                 say(data['from_client_id'], data['from_client_name'], data['from_client_name']+' 退出了', data['time']);
                 delete client_list[data['from_client_id']];
                 flush_client_list();
-                //红包
-            case 'redpicket':
-
+            //直播发红包
+            case 'red_anchor':
+                red_anchor(data['from_client_id'], data['from_client_name'], data['content'], data['time']);
+                console.log(data['from_client_name']+"说："+data['content']);
                 break;
             //礼物
             case 'gift':
-
+                gift(data['from_client_id'], data['from_client_name'], data['content'], data['time']);
+                console.log(data['from_client_name']+"说："+data['content']);
                 break;
         }
     }
@@ -505,28 +515,23 @@
        
         $.ajax({
             type: 'post',
+            async:false,
             url: "{:U('live/index/redSubmit')}", //请求的服务端地址
-            data: {
-                money: money,
-                num: num,
-                room_id: room_id,
-                users_id: users_id
-            },
+            data: {money: money,num: num,room_id: room_id},
             dataType: 'json',
             success: function (data) {
-                console.log('ok');
-                // if (data.status == 200) {
-                //     window.location.href = '/index.php/live';
-                // } else {
-                //     layer.open({ content: data.msg, time: 2 });
-                // }
+                if(data.status==200){
+                    var content = data.data;
+                    var to_client_id = content.to_client_id;
+                    var to_client_name = content.to_client_name;
+                    var content = content.content;
+                    ws.send('{"type":"say","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
+                    $(".mask,.redPacket-popup").hide();
+                }else{
+                    alert(data.msg);
+                }
             }
         })
-        // console.log(money);
-        // console.log(num);
-        // console.log(to_client_id);
-        // console.log(room_id);
-        // console.log(to_client_name);
     }
 
     // 刷新用户列表框
@@ -560,6 +565,32 @@
         $("#dialog-list").append(html);
 
         //$("#dialog").append('<div class="speech_item"><img src="http://lorempixel.com/38/38/?'+from_client_id+'" class="user_icon" /> '+from_client_name+' <br> '+time+'<div style="clear:both;"></div><p class="triangle-isosceles top">'+content+'</p> </div>');
+    }
+    //发红包
+    function red_anchor(from_client_id, from_client_name, content, time){
+        console.log(content);
+        var str = '';
+        str += '<li class="dm-item">';
+        str +='<span class="level level-<?php echo $level;?>"></span>';
+        str +=' <span class="viewer-name">'+from_client_name+'：</span>';
+        str +='<span class="barrage-con">'+content+'</span>';
+        str +='</li>';
+        $("#dialog-list").append(str);
+    }
+
+    //发礼物
+    function gift(from_client_id, from_client_name, content, time){
+        console.log(content);
+
+        var str = '';
+        str += '<li class="dm-item">';
+        str +='<span class="level level-<?php echo $level;?>"></span>';
+        str +=' <span class="viewer-name">'+from_client_name+'：</span>';
+        str +='<span class="barrage-con">'+content+'</span>';
+        str +='</li>';
+
+
+        $("#dialog-list").append(str);
     }
 
     $(function(){

@@ -135,6 +135,27 @@ class Events
                 );
                 return Gateway::sendToGroup($room_id ,json_encode($new_message));
                 break;
+            //主播发红包
+            case 'red_anchor':
+                // 非法请求
+                // dump($_SESSION['room_id']);die;
+                if(!isset($_SESSION['room_id']))
+                {
+                    throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                $room_id = $_SESSION['room_id'];
+                $client_name = $_SESSION['client_name'];
+
+                $new_message = array(
+                    'type'=>'red_anchor',
+                    'from_client_id'=>$client_id,
+                    'from_client_name' =>$client_name,
+                    'to_client_id'=>'all',
+                    'content'=>nl2br(htmlspecialchars($message_data['content'])),
+                    'time'=>date('Y-m-d H:i:s'),
+                );
+                return Gateway::sendToGroup($room_id ,json_encode($new_message));
+                break;
             //购物链接
             case 'goods':
                 // 非法请求
