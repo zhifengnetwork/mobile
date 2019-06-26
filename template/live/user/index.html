@@ -345,9 +345,9 @@
                     if(data.status==200){
                         var content = data.data;
                         var to_client_id = content.to_client_id;
-                        var content = content.content;
                         var to_client_name = content.to_client_name;
                         var goods_url = content.goods_url;
+                        var content = content.content;
                         ws.send('{"type":"goods","goods_url":"'+goods_url+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
                         $(".mask,.redPacket-popup").hide();
                     }else{
@@ -380,8 +380,8 @@
                     if(data.status==200){
                         var content = data.data;
                         var to_client_id = content.to_client_id;
-                        var content = content.content;
                         var to_client_name = content.to_client_name;
+                        var content = content.content;
                         ws.send('{"type":"say","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
                         $(".mask,.redPacket-popup").hide();
                     }else{
@@ -407,10 +407,8 @@
                         var content = data.data;
                         var gift_id_return = content.gift_id;
                         var to_client_id = content.to_client_id;
-                        var content = content.content;
-
                         var to_client_name = content.to_client_name;
-                        console.log(gift_id_return);
+                        var content = content.content;
                         //消息聊天
                         ws.send('{"type":"say","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
                         //礼物显示
@@ -729,7 +727,7 @@
     //发购物链接
     function goods_url(from_client_id, from_client_name, content, time,goods_url){
         console.log(content);
-        $(".goods-links").remove();
+//        $(".goods-links").remove();
         var str = '';
         str += '<div class="goods-links">';
         str += '商品链接：<a href="'+goods_url+'">'+goods_url+'</a>';
