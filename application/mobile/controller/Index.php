@@ -288,8 +288,7 @@ class Index extends MobileBase {
         $wechat = new WechatUtil;
    
         $signPackage = $wechat->getSignPackage($askUrl);
-        var_dump($signPackage);
-        die;
+       
         if (!$signPackage) {
             exit($wechat->getError());
         }
