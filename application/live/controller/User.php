@@ -37,7 +37,7 @@ class User extends Base
         //获取礼物列表
         $giftList = Db::name('live_gift')->order('sort asc')->select();
 
-        $this->assign('user_id', time() . $this->user->user_id);
+        $this->assign('user_id', $this->user->user_id);
         $this->assign('user_name',$this->user->nickname);
         $this->assign('head_pic',$this->user->head_pic);
         $this->assign('level',isset($this->user->agentlevel)&&!empty($this->user->agentlevel) ? $this->user->agentlevel : 0);
@@ -97,7 +97,7 @@ class User extends Base
             'user_id'=>$userId,
             'to_user_id'=>$zhubo_user_id,
             'room_id'=>$room_id,
-            'data'=>'粉丝给主播发'.$gift['name'].'礼物',
+            'data'=>"【{$userId}:{$this->user->nickname}】给【{$zhubo_user_id}:{$zhobuInfo['nickname']}】发价值【{$gift['price']}】的【{$gift_id}:{$gift['name']}】礼物",
             'create_time'=>time(),
         ];
         $result = Db::name('live_gift_sending_log')->insert($data);
@@ -173,7 +173,7 @@ class User extends Base
             'to_user_id'=>$zhubo_user_id,
             'room_id'=>$room_id,
             'money'=>$money,
-            'data'=>'粉丝给主播发红包',
+            'data'=>"【{$userId}:{$this->user->nickname}】给主播【{$zhubo_user_id}:{$zhobuInfo['nickname']}】发了【{$money}】的红包",
             'create_time'=>time(),
         ];
         $result = Db::name('live_red_sending_log')->insert($data);

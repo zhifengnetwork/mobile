@@ -2,7 +2,7 @@
 	<foreach name="videoList" item="vo" key="k">
 		<div class="live_list">
 			<div class="live">
-				<img src="{$vo.pic_fengmian}" />
+				<a href="{:U('Live/user/index',array('room_id'=>$vo.room_id))}"><img src="{$vo.pic_fengmian}"/></a>
 			</div>
 			<div class="site" style="display: none">{$vo.location}</div>
 			<div class="nickname">{$vo.info.name}</div>
