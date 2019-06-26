@@ -14,3 +14,4 @@ cron_team.sh
 /public/share
 /plugins/payment/weixin/cert
 /public/static/uploads/*
+/vendor/workerman/*
