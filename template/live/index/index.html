@@ -467,17 +467,13 @@
             case 'say':
                 say(data['from_client_id'], data['from_client_name'], data['content'], data['time']);
                 break;
-            // 红包
-            case 'redSubmit':
-                
-                break;
             // 用户退出 更新用户列表
             case 'logout':
                 //{"type":"logout","client_id":xxx,"time":"xxx"}
                 say(data['from_client_id'], data['from_client_name'], data['from_client_name']+' 退出了', data['time']);
                 delete client_list[data['from_client_id']];
                 flush_client_list();
-                //直播发红包
+            //直播发红包
             case 'red_anchor':
                 red_anchor(data['from_client_id'], data['from_client_name'], data['content'], data['time']);
                 console.log(data['from_client_name']+"说："+data['content']);

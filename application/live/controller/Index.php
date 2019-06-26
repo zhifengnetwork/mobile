@@ -237,10 +237,7 @@ class Index extends Base
             'content' => $this->user->nickname . '主播发了' . $money . '元红包',
             'time' => date('Y-m-d H:i:s'),
         );
-        
-        $json = json_encode($message, true);
-        Events::onMessage($userId, $json);
-        return $this->successResult('success');
+        return $this->successResult($message);
         // dump($createRedDate);
     }
     //tp_red_detail红包从表插入
