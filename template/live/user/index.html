@@ -190,7 +190,6 @@
     </div>
     </div>
      <!-- 分享直播间 -->
-    <include file="public/wx_share"/>
 
     <script type="text/javascript" src="__STATIC__/chat/js/swfobject.js"></script>
     <script type="text/javascript" src="__STATIC__/chat/js/web_socket.js"></script>
@@ -199,6 +198,82 @@
     <script src="__STATIC__/live/static/js/public/jquery-3.3.1.min.js"></script>
     <script src="__STATIC__/live/static/js/public/swiper.js"></script>
 
+
+
+<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+ //如果微信分销配置正常, 商品详情分享内容中的"图标"不显示, 则检查域名否配置了https, 如果配置了https,分享图片地址也要https开头
+ var httpPrefix = "http://{$Think.server.SERVER_NAME}";
+ var ShareLink = httpPrefix+"/index.php?m=live&c=user&a=index&room_id={$room_id}"; //默认分享链接
+ var ShareImgUrl = httpPrefix+"{$tpshop_config['shop_info_store_logo']}"; //分享图标
+ var ShareTitle = "某某的直播间"; //分享标题
+ var ShareDesc = "{$tpshop_config['shop_info_store_desc']}"; //分享描述
+
+$(function() {
+	if( 1){
+		$.ajax({
+			type : "POST",
+			url:"/index.php?m=Mobile&c=Index&a=ajaxGetWxConfig&t="+Math.random(),
+			data:{'askUrl':encodeURIComponent(location.href.split('#')[0])},		
+			dataType:'JSON',
+			success: function(res)
+			{
+				//微信配置
+				wx.config({
+				    debug: false, 
+				    appId: res.appId,
+				    timestamp: res.timestamp, 
+				    nonceStr: res.nonceStr, 
+				    signature: res.signature,
+				    jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage','onMenuShareQQ','onMenuShareQZone','hideOptionMenu'] // 功能列表，我们要使用JS-SDK的什么功能
+				});
+			},
+			error:function(res){
+				console.log("wx.config error:");
+				console.log(res);
+				return false;
+			}
+		}); 
+
+		// config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在 页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready 函数中。
+		wx.ready(function(){
+		    // 获取"分享到朋友圈"按钮点击状态及自定义分享内容接口
+		    wx.onMenuShareTimeline({
+		        title: ShareTitle, // 分享标题
+		        link:ShareLink,
+		        desc: ShareDesc,
+		        imgUrl:ShareImgUrl // 分享图标
+		    });
+
+		    // 获取"分享给朋友"按钮点击状态及自定义分享内容接口
+		    wx.onMenuShareAppMessage({
+		        title: ShareTitle, // 分享标题
+		        desc: ShareDesc, // 分享描述
+		        link:ShareLink,
+		        imgUrl:ShareImgUrl // 分享图标
+		    });
+			// 分享到QQ
+			wx.onMenuShareQQ({
+		        title: ShareTitle, // 分享标题
+		        desc: ShareDesc, // 分享描述
+		        link:ShareLink,
+		        imgUrl:ShareImgUrl // 分享图标
+			});	
+			// 分享到QQ空间
+			wx.onMenuShareQZone({
+		        title: ShareTitle, // 分享标题
+		        desc: ShareDesc, // 分享描述
+		        link:ShareLink,
+		        imgUrl:ShareImgUrl // 分享图标
+			});
+
+		   <if condition="CONTROLLER_NAME eq 'User'"> 
+				wx.hideOptionMenu();  // 用户中心 隐藏微信菜单
+		   </if>	
+		});
+	}
+});
+</script>
     <script>
         $(function(){
             //礼物滑动
