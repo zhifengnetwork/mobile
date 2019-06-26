@@ -520,15 +520,15 @@
             data: {money: money,num: num,room_id: room_id},
             dataType: 'json',
             success: function (data) {
-                // console.log(data);
                 if(data.status==200){
                     var content = data.data;
                     var to_client_id = content.to_client_id;
-                    var content = content.content;
                     var to_client_name = content.to_client_name;
-                    ws.send('{"type":"red_anchor","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
+                    var content = content.content;
+                    ws.send('{"type":"say","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
+                    $(".mask,.redPacket-popup").hide();
                 }else{
-                    alert('发送失败');
+                    alert(data.msg);
                 }
             }
         })
