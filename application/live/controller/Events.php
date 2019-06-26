@@ -138,7 +138,7 @@ class Events
             //主播发红包
             case 'red_anchor':
                 // 非法请求
-                dump($_SESSION['room_id']);
+                dump($_SESSION['room_id']);die;
                 if(!isset($_SESSION['room_id']))
                 {
                     throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");

@@ -17,7 +17,19 @@
     <link href="__STATIC__/chat/css/style.css" rel="stylesheet">
 
 </head>
-
+<style type="text/css">
+    .barrage-scroll .barrage-list .dm-item{
+        font-size: .3rem;
+        color: black;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        margin-bottom: .2rem;
+    }
+</style>
 <body onload="connect();">
 <div class="wrapper">
     <input type="text" id="room_id" value="{$room_id}" style="display: none;">
