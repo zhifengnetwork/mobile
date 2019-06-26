@@ -176,40 +176,71 @@ class Index extends Base
     /**
      * 红包生成
      */
-    public function redSubmit()
-    {
-        if ($_POST) {
-            $money = $_POST['money']; //红包金额
-            $num = $_POST['num']; //红包个数
-            $monroom_idey = $_POST['room_id']; //房间id
-            $users_id = $_POST['users_id']; //用户id
-            $createRedDate = $this->createRedDate($money, $num); //生成红包
-            // dump($createRedDate);
-            $red_master_data = [
-                "uid" => $users_id,
-                "room_id" => $monroom_idey,
-                "num" => $num,
-                "money" => $money,
-                "create_time" => time()
+    public function redSubmit(){
+
+        $money = input('post.money', 0); //红包金额
+        $num = input('post.num', 0); //红包个数
+        $room_id = input('post.room_id', 0); //房间id
+        // $users_id = input('post.users_id', 0); //用户id
+        if (empty($num) || empty($money) || empty($room_id)) {
+            return $this->failResult('参数有误', 301);
+        }
+        $userId = $this->user->user_id;
+        $user = Db::name('users')->where(['user_id' => $userId])->find();
+        $koujian = bcsub($user['user_money'], $money, 2);
+        if ($koujian < 0) {
+            return $this->failResult('余额不足', 301);
+        }
+        //事务处理
+        Db::startTrans();
+        //剩余的用户钱
+        $user_money = bcsub($user['user_money'], $money, 2);
+        //扣减用户余额的钱
+        $result = Db::name('users')->where(['user_id' => $userId])->update(['user_money' => $user_money]);
+        if (!$result) {
+            return $this->failResult('事务处理失败', 301);
+        }
+        $createRedDate = $this->createRedDate($money, $num); //生成红包
+        if (!$createRedDate) {
+            return $this->failResult('事务处理失败', 301);
+        }
+        // dump($createRedDate);
+        $red_master_data = [
+            "uid" => $userId,
+            "room_id" => $room_id,
+            "num" => $num,
+            "money" => $money,
+            "create_time" => time()
+        ];
+        $red_master = $this->tp_red_master($red_master_data);
+        if (!$red_master) {
+            return $this->failResult('事务处理失败', 301);
+        }
+        // 遍历插入红包从表
+        foreach ($createRedDate['redMoneyList'] as $key => $vey_money) {
+            $red_detail_data = [
+                'money' => $vey_money,
+                'm_id' => $red_master,
+                'room_id' => $room_id
             ];
-            $red_master = $this->tp_red_master($red_master_data);
-            if ($red_master) {
-                // 遍历插入红包从表
-                foreach ($createRedDate['redMoneyList'] as $key => $vey_money) {
-                    $red_detail_data = [
-                        'money' => $vey_money,
-                        'm_id' => $red_master,
-                        'room_id' => $monroom_idey
-                    ];
-                    $red_detail = $this->tp_red_detail($red_detail_data);
-                }
+            $red_detail = $this->tp_red_detail($red_detail_data);
+            if (!$red_detail) {
+                return $this->failResult('事务处理失败', 301);
             }
         }
-        //调用
-        $builder = new Events();
-        $message = '';
-        $onMessage = $builder->onMessage($monroom_idey, $message);
-        return $onMessage;
+        Db::commit();
+        $message = array(
+            'type' => 'red_anchor',
+            'from_client_id' => $userId,
+            'from_client_name' => $this->user->nickname,
+            'to_client_id' => 'all',
+            'content' => $this->user->nickname . '主播发了' . $money . '元红包',
+            'time' => date('Y-m-d H:i:s'),
+        );
+        
+        $json = json_encode($message, true);
+        Events::onMessage($userId, $json);
+        return $this->successResult('success');
         // dump($createRedDate);
     }
     //tp_red_detail红包从表插入
