@@ -209,13 +209,13 @@ class Index extends Base
         }
 
         $room_id = I('id');
-        $room = (new UserVideo)->where(['user_id' => $user_id, 'room_id' => $room_id, 'status' => 1])->find();
+        $room = (new UserVideo)->where(['user_id' => $user_id, 'room_id' => $room_id])->find();
         if (empty($room)) {
-            return $this->failResult('不存在的直播间', 301);
+//            return $this->failResult('不存在的直播间', 301);
         }
-//        if (!$room->save(['status' => 2])) {
-//            return $this->failResult('结束直播失败', 301);
-//        }
+        Db::name('user_video')->where(['room_id'=>$room_id])->update(['status'=>2]);
+
+        $arr = timediff($room['start_time'],time());
         $identity['pic_head'] = $this->user['head_pic'];
         $identity['pic_fengmian'] = $this->url . $identity['pic_fengmian'];
         $this->assign('identity', $identity);
@@ -225,6 +225,7 @@ class Index extends Base
         $this->assign('room_pic',$url.$room['pic_fengmian']);
         $this->assign('user_name',$this->user->nickname);
         $this->assign('user_id',$user_id);
+        $this->assign('end_time',$arr['hour']."：".$arr['min']."：".$arr['sec']);
         $this->assign('head_pic',$this->user->head_pic);
         return $this->fetch();
     }
@@ -402,4 +403,5 @@ class Index extends Base
             return false;
         }
     }
+
 }
