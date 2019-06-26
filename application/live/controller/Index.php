@@ -70,14 +70,36 @@ class Index extends Base
         return $this->fetch();
     }
 
-    public function member()
-    {
-        $user_id = input('user_id');
-        if (!empty($user_id)) {
-            $user_id = 1;
+    /**
+     * 主播分享购物链接
+     * @return \think\response\Json
+     * @throws \think\Exception
+     */
+    public function sendGoodsUrl(){
+        $room_id = input('post.room_id', 0);
+        //上线后去掉默认值  add by zgp
+        $goods_id = input('post.goods_id',0);
+        if(empty($room_id) || empty($goods_id)){
+            return $this->failResult('参数有误',301);
         }
-        $this->assign('user_id', $user_id);
-        return $this->fetch('member');
+        $userId = $this->user->user_id;
+        $user = Db::name('users')->where(['user_id'=>$userId])->find();
+        $user_video = Db::name('user_video')->where(['room_id'=>$room_id])->find();
+
+        $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
+        $url=$http_type.$_SERVER['SERVER_NAME'];
+
+        $goods_url = $url.'/Mobile/Goods/goodsInfo/id/'.$goods_id.'.html?zhubo_id='.$user_video['user_id'];
+        $message = array(
+            'type'=>'gift',
+            'from_client_id'=>$userId,
+            'from_client_name' =>$this->user->nickname,
+            'to_client_id'=>'all',
+            'goods_url'=>$goods_url,
+            'content'=>'主播发了商品链接分享',
+            'time'=>date('Y-m-d H:i:s'),
+        );
+        return $this->successResult($message);
     }
 
     /**
@@ -191,13 +213,19 @@ class Index extends Base
         if (empty($room)) {
             return $this->failResult('不存在的直播间', 301);
         }
-        if (!$room->save(['status' => 2])) {
-            return $this->failResult('结束直播失败', 301);
-        }
+//        if (!$room->save(['status' => 2])) {
+//            return $this->failResult('结束直播失败', 301);
+//        }
         $identity['pic_head'] = $this->user['head_pic'];
         $identity['pic_fengmian'] = $this->url . $identity['pic_fengmian'];
         $this->assign('identity', $identity);
         $this->assign('room', $room);
+        $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
+        $url=$http_type.$_SERVER['SERVER_NAME'];
+        $this->assign('room_pic',$url.$room['pic_fengmian']);
+        $this->assign('user_name',$this->user->nickname);
+        $this->assign('user_id',$user_id);
+        $this->assign('head_pic',$this->user->head_pic);
         return $this->fetch();
     }
 

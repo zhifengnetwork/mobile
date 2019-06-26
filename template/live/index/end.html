@@ -13,7 +13,7 @@
 <body>
     <div class="wrapper">
         <div class="live-wrap">
-            <img src="__STATIC__/images/play/00live-bg.png">
+            <img src="{$room_pic}">
             <!--<img src="__STATIC__/images/play/00live-bg.png">-->
         </div>
         <!-- 遮罩层 -->
@@ -21,10 +21,10 @@
             <!-- 结束直播 -->
             <div class="end-popup">
                 <div class="user-info">
-                    <div class="avatar"><img src="__STATIC__/images/play/00avatar.png"/></div>
+                    <div class="avatar"><img src="{$head_pic}"/></div>
                     <div class="user-name">
-                        <span class="name">{$user.user_name}</span>
-                        <span class="id">ID:{$user.user_id}</span>
+                        <span class="name">{$user_name}</span>
+                        <span class="id">ID:{$user_id}</span>
                     </div>
                 </div>
                 <div class="life-status">结束直播</div>
