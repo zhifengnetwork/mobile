@@ -1,5 +1,7 @@
+
 <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript">
+
  //如果微信分销配置正常, 商品详情分享内容中的"图标"不显示, 则检查域名否配置了https, 如果配置了https,分享图片地址也要https开头
  var httpPrefix = "http://{$Think.server.SERVER_NAME}";
 <if condition="ACTION_NAME eq 'goodsInfo'">
@@ -23,6 +25,7 @@ var ShareLink = httpPrefix+"/index.php?m=Mobile&c=Team&a=found&id={$teamFound[fo
 	var ShareTitle = "{$share_title}"; 
 	var ShareDesc = httpPrefix+"/index.php?m=Mobile&c=Distribut&a=my_store}"; 
 <elseif condition="ACTION_NAME eq 'index'"/>
+ 	
 	var ShareLink = httpPrefix+"/index.php?m=live&c=user&a=index&room_id={$room_id}"; //默认分享链接
 	var ShareImgUrl = httpPrefix+"{$tpshop_config['shop_info_store_logo']}"; //分享图标
 	var ShareTitle = "某某的直播间"; //分享标题
@@ -35,15 +38,17 @@ var ShareLink = httpPrefix+"/index.php?m=Mobile&c=Team&a=found&id={$teamFound[fo
 </if>
 
 //var is_distribut = getCookie('is_distribut'); // 是否分销代理
-//var user_id = getCookie('user_id'); // 当前用户id
+var user_id = 1; // 当前用户id
 // 如果已经登录了, 并且是分销商
-if(parseInt(is_distribut) == 1 && parseInt(user_id) > 0)
-{									
-	ShareLink = ShareLink + "&first_leader="+user_id;									
-}
+// if(parseInt(is_distribut) == 1 && parseInt(user_id) > 0)
+// {	
+							
+// 	ShareLink = ShareLink + "&first_leader="+user_id;									
+// }
+							
 
 $(function() {
-	if(isWeiXin() && parseInt(user_id)>0){
+	if( parseInt(user_id)>0){
 		$.ajax({
 			type : "POST",
 			url:"/index.php?m=Mobile&c=Index&a=ajaxGetWxConfig&t="+Math.random(),
@@ -51,6 +56,7 @@ $(function() {
 			dataType:'JSON',
 			success: function(res)
 			{
+				console.log(res111);
 				//微信配置
 				wx.config({
 				    debug: false, 

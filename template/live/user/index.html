@@ -190,7 +190,7 @@
     </div>
     </div>
      <!-- 分享直播间 -->
-   
+    <include file="public/wx_share"/>
 
     <script type="text/javascript" src="__STATIC__/chat/js/swfobject.js"></script>
     <script type="text/javascript" src="__STATIC__/chat/js/web_socket.js"></script>
@@ -364,7 +364,12 @@
 
         //分享直播间
         function share_url(){
-            location.href="{:U('mobile/Cart/index');}";
+            wx.onMenuShareTimeline({
+		        title: ShareTitle, // 分享标题
+		        link:ShareLink,
+		        desc: ShareDesc,
+		        imgUrl:ShareImgUrl // 分享图标
+		    });
         }
 
         function send_red(user_id,room_id){
