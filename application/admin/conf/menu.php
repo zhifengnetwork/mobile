@@ -254,6 +254,9 @@ return array(
         array('name' => '申请直播', 'child' => array(
             array('name' => '主播列表', 'act' => 'info_list', 'op' => 'Live'),
             array('name' => '直播列表', 'act' => 'video_list', 'op' => 'Live'),
+            array('name' => '礼物列表', 'act' => 'gift_list', 'op' => 'Live'),
+            array('name' => '礼物日志', 'act' => 'gift_log', 'op' => 'Live'),
+            array('name' => '点赞日志', 'act' => 'like_log', 'op' => 'Live'),
         ))
     )),
 );

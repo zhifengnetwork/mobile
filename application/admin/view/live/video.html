@@ -22,7 +22,7 @@
                     <label>主播</label>
                 </dt>
                 <dd class="opt">
-                    {$video.info_name}
+                    {$video.info.name}
                 </dd>
             </dl>
             <dl class="row">
@@ -70,12 +70,7 @@
                     <label>状态</label>
                 </dt>
                 <dd class="opt">
-                    <if condition='$video.status eq 1'><i style="color: #ff0000">直播中</i>
-                        <elseif condition='$video.status eq 2'>
-                            <i style="color:#0fff0f">已结束</i></elseif>
-                        <else/>
-                        <i style="color:#0fff0f">未开始</i>
-                    </if>
+                    {$video.status_text}
                 </dd>
             </dl>
         </div>

@@ -17,12 +17,9 @@ class UserVerifyIdentityInfo extends Model
         //TODO:自定义的初始化
     }
 
-    public static function getNameByUserId($userId = 0)
+    public function User()
     {
-        if ($userId > 0 && ($data = self::get(['user_id' => $userId]))) {
-            return $data['name'];
-        }
-        return '';
+        return $this->hasOne('Users', 'user_id', 'user_id');
     }
 
     // 最新审核日志的原因

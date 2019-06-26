@@ -8,6 +8,7 @@
 
 namespace app\live\controller;
 
+use app\common\model\UserVerifyIdentityInfo;
 use think\Db;
 
 class Apply extends Base
@@ -21,13 +22,10 @@ class Apply extends Base
     public function index()
     {
         $userId = $this->user->user_id;
-        $verifyData = Db::name('user_verify_identity_info')->where(['user_id' => $userId])->find();
+        $verifyData = (new UserVerifyIdentityInfo)->where(['user_id' => $userId])->find();
         if ($verifyData) {
             if ($verifyData['verify_state'] == 1) {
                 $this->redirect('/Live/Index/videoList');
-            } else if ($verifyData['verify_state'] == 2) {
-                $log = Db::name('user_verify_identity_log')->where('verify_id', $verifyData['id'])->order('id')->find();
-                $log && $verifyData['reason'] = $log['reason_cn'];
             }
         }
 

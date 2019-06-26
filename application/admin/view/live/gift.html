@@ -1,0 +1,140 @@
+<include file="public/layout"/>
+<style type="text/css">.hide{display:none!important}</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer"
+     style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i
+                class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>礼物 - 添加与管理</h3>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="form" method="post">
+        <input type="hidden" name="id" value="{$gift.id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="name"><em>*</em>名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" placeholder="名称" class="input-txt" id="name" name="name" value="{$gift.name}">
+                    <span class="err" id="err_name" style="color:#F00; display:none;"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+            <dt class="tit">
+                <label><em>*</em>图片</label>
+            </dt>
+            <dd class="opt">
+                <div class="input-file-show">
+              <span class="show">
+                  <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="{$gift.image}">
+                    <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$gift.image}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                  </a>
+              </span>
+                    <span class="type-file-box">
+                  <input type="text" id="image" name="image" value="{$gift.image}" class="type-file-text">
+                  <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                  <input class="type-file-file" onClick="GetUploadify(1,'','gift','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo"
+                         title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+              </span>
+                </div>
+                <span class="err" id="err_image"></span>
+                <p class="notic">请上传图片格式文件</p>
+            </dd>
+        </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="name"><em>*</em>价格</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" placeholder="价格" class="input-txt" id="price" name="price" value="{$gift.price}">
+                    <span class="err" id="err_price" style="color:#F00; display:none;"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="name">排序</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" placeholder="排序" class="input-txt" id="sort" name="sort" value="{$gift.sort|default='0'}">
+                    <span class="err" id="err_sort" style="color:#F00; display:none;"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="desc">描述</label>
+                </dt>
+                <dd class="opt">
+                    <textarea rows="4" cols="60" name="desc" id="desc" class="input-txt">{$gift.desc}</textarea>
+                    <span class="err" id="err_desc" style="color:#F00; display:none;"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>是否显示</label>
+                </dt>
+                <dd class="opt">
+                    <input type="radio" name="is_show" value="1"<if condition="$gift.is_show neq '0'"> checked="checked"</if>> 是
+                    <input type="radio" name="is_show" value="0"<if condition="$gift.is_show eq '0'"> checked="checked"</if>> 否
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <div class="bot"><a href="JavaScript:void(0);" onClick="verifyForm();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function verifyForm(){
+        $('.err').hide();
+
+        var name = $("#name").val();
+        if($.trim(name) == '') {
+            layer.msg('请输入名称！！', {icon: 2});return false;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: "{:U('Admin/Live/gift')}",
+            data: $('#form').serialize(),
+            dataType: 'json',
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {icon: 1},function () {
+                        location.href = "{:U('Admin/Live/gift_list')}";
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 2});
+                    $.each(data.result, function (index, item) {
+                        $('#err_' + index).text(item).show();
+                    });
+                }
+            }
+        });
+    }
+
+    function img_call_back(fileurl_tmp)
+    {
+        $("#image").val(fileurl_tmp);
+        $("#img_a").attr('href', fileurl_tmp);
+        $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+</script>
+</body>
+</html>

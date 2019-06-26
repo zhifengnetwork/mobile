@@ -42,7 +42,7 @@
         <else/>
         <div class="apply_content">
             <if condition='$state eq 2'>
-                <div class="red2">{$data.reason}</div>
+                <div class="red2">{$data.log_reason}</div>
             </if>
             <!-- 申请信息 -->
             <form id="form" method="post" enctype="multipart/form-data">
@@ -158,7 +158,6 @@
                         formData.append($(this).attr('name'), $(this).val());
                     }
                 });
-
                 $.ajax({
                     type: 'post',
                     url: '/index.php?m=Live&c=Apply&a=upload&t=' + Math.random(),

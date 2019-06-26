@@ -172,4 +172,35 @@ class User extends Base
         echo $builder->buildToken();
         exit;
     }
+
+    public function like()
+    {
+        $room_id = I('post.room_id', 0);
+        $room = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->find();
+        if (empty($room)) {
+            return $this->failResult('不存在的直播间', 301);
+        }
+
+        $user_id = $this->user->user_id;
+        $verifyData = Db::name('live_like')->where(['user_id' => $user_id, 'room_id' => $room_id])->find();
+        // 没有点赞记录，新增、top_amount++
+        if (!$verifyData) {
+            $data = array(
+                'room_id' => $room_id,
+                'user_id' => $user_id,
+                'create_time' => time()
+            );
+            Db::startTrans();
+            $like = Db::name('live_like')->insert($data);
+            $result = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->setInc('top_amount');
+            if ($like && $result) {
+                Db::commit();
+                return $this->successResult('点赞成功');
+            } else {
+                Db::rollback();
+                return $this->failResult('点赞失败', 301);
+            }
+        }
+        return $this->successResult('已点赞');
+    }
 }

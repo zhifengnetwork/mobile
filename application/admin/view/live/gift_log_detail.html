@@ -1,0 +1,94 @@
+<include file="public/layout"/>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+    <form class="form-horizontal" id="sellerHandle" method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label>ID</label>
+                </dt>
+                <dd class="opt">
+                    {$detail.id}
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>用户</label>
+                </dt>
+                <dd class="opt">
+                    {$detail.user.realname? : $detail.user.nickname}
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>主播</label>
+                </dt>
+                <dd class="opt">
+                    {$detail.to_user.realname? : $detail.to_user.nickname}
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>房间号</label>
+                </dt>
+                <dd class="opt">
+                    {$detail.room_id}
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>时间</label>
+                </dt>
+                <dd class="opt">
+                    {$detail.create_time}
+                </dd>
+            </dl>
+            <if condition="$detail.data">
+            <if condition="$detail.data.id">
+                <dl class="row">
+                    <dt class="tit">
+                        <label>礼物ID</label>
+                    </dt>
+                    <dd class="opt">
+                        {$detail.data.id}
+                    </dd>
+                </dl>
+            </if>
+            <if condition="$detail.data.name">
+            <dl class="row">
+                <dt class="tit">
+                    <label>礼物名称</label>
+                </dt>
+                <dd class="opt">
+                    {$detail.data.name}
+                </dd>
+            </dl>
+            </if>
+            <if condition="$detail.data.image">
+                <dl class="row">
+                    <dt class="tit">
+                        <label>礼物图片</label>
+                    </dt>
+                    <dd class="opt">
+                        <img src="{$detail.data.image}"/>
+                    </dd>
+                </dl>
+            </if>
+            <if condition="$detail.data.price">
+            <dl class="row">
+                <dt class="tit">
+                    <label>礼物金额</label>
+                </dt>
+                <dd class="opt">
+                    {$detail.data.price}
+                </dd>
+            </dl>
+            </if>
+            </if>
+
+        </div>
+    </form>
+</body>
+</html>
