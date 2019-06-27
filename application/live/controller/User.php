@@ -27,11 +27,15 @@ class User extends Base
     public function index()
     {
         $userId = $this->user->user_id;
-        //上线后去掉默认值  add by zgp
         $room_id = input('get.room_id', 0);
-        $room = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->find();
-        if (empty($room)) {
-            return $this->failResult('不存在的直播间', 301);
+        $room = Db::name('user_video')->where(['room_id' => $room_id])->find();
+        if(empty($room)){//不存在直播；跳转到直播间列表
+            $this->redirect("Live/Index/videoList");
+            exit;
+        }
+        if ($room['status']==2) {//如果主播已结束，跳转到结束页面
+            $this->redirect("Live/index/end/id/".$room_id.'.html');
+            exit;
         }
 
         //获取礼物列表

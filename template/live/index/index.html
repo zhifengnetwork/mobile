@@ -256,6 +256,25 @@
         join();
 
     })
+
+    //点赞
+    function live_top(user_id,room_id){
+        $.ajax({
+            type: "POST",
+            data:{user_id:user_id,room_id:room_id},
+            async:false,
+            url: "/Live/user/like",
+            success: function(data){
+                if(data.status==200){
+                    var content = data.data;
+                    var amount = content.count;
+                    $("#user_top").html('<i class="icon" onclick="live_top('+user_id+','+room_id+');"></i>'+amount+"人");
+                }else{
+                    alert(data.msg);
+                }
+            }
+        })
+    }
 </script>
 
 <script language="javascript">
@@ -498,7 +517,7 @@
             // 登录 更新用户列表
             case 'login':
                 //{"type":"login","client_id":xxx,"client_name":"xxx","client_list":"[...]","time":"xxx"}
-                say(data['client_id'], data['client_name'],  ' 加入了直播间', data['time']);
+                say(data['client_id'], data['client_name'],  ' 加入了直播间', data['time'],'<?php echo $level; ?>');
                 if(data['client_list'])
                 {
                     client_list = data['client_list'];
@@ -513,12 +532,12 @@
                 break;
             // 发言
             case 'say':
-                say(data['from_client_id'], data['from_client_name'], data['content'], data['time']);
+                say(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level']);
                 break;
             // 用户退出 更新用户列表
             case 'logout':
                 //{"type":"logout","client_id":xxx,"time":"xxx"}
-                say(data['from_client_id'], data['from_client_name'], data['from_client_name']+' 退出了', data['time']);
+                say(data['from_client_id'], data['from_client_name'], data['from_client_name']+' 退出了', data['time'],data['user_level']);
                 delete client_list[data['from_client_id']];
                 flush_client_list();
             //直播发红包
@@ -545,9 +564,11 @@
         var input = $('#textarea').html();
         var to_client_id = $("#client_list option:selected").attr("value");
         var to_client_name = $("#client_list option:selected").text();
+        var user_level = '<?php echo $level; ?>';
+        console.log(user_level);
 
         $('.send-group .textarea').html('');
-        ws.send('{"type":"say","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+input.replace(/"/g, '\\"').replace(/\n/g,'\\n').replace(/\r/g, '\\r')+'"}');
+        ws.send('{"type":"say","user_level":"'+user_level+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+input.replace(/"/g, '\\"').replace(/\n/g,'\\n').replace(/\r/g, '\\r')+'"}');
     }
 
     //发送礼物推送
@@ -586,6 +607,7 @@
         var users_id = document.getElementById('users_id').value;
         var to_client_id = $("#client_list option:selected").attr("value");
         var to_client_name = $("#client_list option:selected").text();
+        var user_level = '<?php echo $level; ?>';
        
         $.ajax({
             type: 'post',
@@ -599,7 +621,7 @@
                     var to_client_id = content.to_client_id;
                     var to_client_name = content.to_client_name;
                     var content = content.content;
-                    ws.send('{"type":"say","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
+                    ws.send('{"type":"say","user_level":"'+user_level+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
                     $(".mask,.redPacket-popup").hide();
                 }else{
                     alert(data.msg);
@@ -615,6 +637,7 @@
         var users_id = document.getElementById('users_id').value;
         var to_client_id = $("#client_list option:selected").attr("value");
         var to_client_name = $("#client_list option:selected").text();
+        var user_level = '<?php echo $level; ?>';
        
         $.ajax({
             type: 'post',
@@ -628,7 +651,7 @@
                     var to_client_id = content.to_client_id;
                     var to_client_name = content.to_client_name;
                     var content = content.content;
-                    ws.send('{"type":"say","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
+                    ws.send('{"type":"say","user_level":"'+user_level+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
                     $(".mask,.redPacket-popup").hide();
                 }else{
                     alert(data.msg);
@@ -678,10 +701,10 @@
     }
 
     // 发言
-    function say(from_client_id, from_client_name, content, time){
+    function say(from_client_id, from_client_name, content, time,user_level){
         var str = '';
         str += '<li class="dm-item">';
-        str +='<span class="level level-<?php echo $level;?>"></span>';
+        str +='<span class="level level-'+user_level+'"></span>';
         str +=' <span class="viewer-name">'+from_client_name+'：</span>';
         str +='<span class="barrage-con">'+content+'</span>';
         str +='</li>';

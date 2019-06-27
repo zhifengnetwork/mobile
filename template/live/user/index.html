@@ -407,32 +407,6 @@ $(function() {
             })
         }
 
-        //发送商品链接
-//        function cart_url(user_id,room_id){
-//            var goods_id = $("#redmoney").val();
-//            var to_client_id = $("#client_list option:selected").attr("value");
-//            var to_client_name = $("#client_list option:selected").text();
-//            $.ajax({
-//                type: "POST",
-//                data:{user_id:user_id,room_id:room_id,goods_id:goods_id},
-//                async:false,
-//                url: "/Live/index/sendGoodsUrl",
-//                success: function(data){
-//                    if(data.status==200){
-//                        var content = data.data;
-//                        var to_client_id = content.to_client_id;
-//                        var to_client_name = content.to_client_name;
-//                        var goods_url = content.goods_url;
-//                        var content = content.content;
-//                        ws.send('{"type":"goods","goods_url":"'+goods_url+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
-//                        $(".mask,.redPacket-popup").hide();
-//                    }else{
-//                        alert(data.msg);
-//                    }
-//                }
-//            })
-//        }
-
         //跳转到购物车
         function cart_url(){
             location.href="{:U('mobile/Cart/index');}";
@@ -452,6 +426,8 @@ $(function() {
             var redmoney = $("#redmoney").val();
             var to_client_id = $("#client_list option:selected").attr("value");
             var to_client_name = $("#client_list option:selected").text();
+            var user_level = '<?php echo $level; ?>';
+
             $.ajax({
                 type: "POST",
                 data:{user_id:user_id,room_id:room_id,money:redmoney},
@@ -463,7 +439,7 @@ $(function() {
                         var to_client_id = content.to_client_id;
                         var to_client_name = content.to_client_name;
                         var content = content.content;
-                        ws.send('{"type":"say","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
+                        ws.send('{"type":"say","user_level":"'+user_level+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
                         $(".mask,.redPacket-popup").hide();
                     }else{
                         alert(data.msg);
@@ -478,6 +454,8 @@ $(function() {
             var gift_id = $("#redmoney").val();
             var to_client_id = $("#client_list option:selected").attr("value");
             var to_client_name = $("#client_list option:selected").text();
+            var user_level = '<?php echo $level; ?>';
+
             $.ajax({
                 type: "POST",
                 data:{user_id:user_id,room_id:room_id,gift_id:1},
@@ -491,7 +469,7 @@ $(function() {
                         var to_client_name = content.to_client_name;
                         var content = content.content;
                         //消息聊天
-                        ws.send('{"type":"say","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
+                        ws.send('{"type":"say","user_level":"'+user_level+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
                         //礼物显示
                         ws.send('{"type":"gift","gift_id":"'+gift_id_return+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
                         $(".gift-wrap").hide();
@@ -650,7 +628,7 @@ $(function() {
                 break;;
             // 登录 更新用户列表
             case 'login':
-                say(data['client_id'], data['client_name'],  ' 加入了直播间', data['time']);
+                say(data['client_id'], data['client_name'],  ' 加入了直播间', data['time'],'<?php echo $level; ?>');
                 if(data['client_list'])
                 {
                     client_list = data['client_list'];
@@ -664,22 +642,22 @@ $(function() {
                 break;
             // 发言
             case 'say':
-                say(data['from_client_id'], data['from_client_name'], data['content'], data['time']);
+                say(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level']);
                 console.log(data['from_client_name']+"说："+data['content']);
                 break;
             // 用户退出 更新用户列表
             case 'logout':
                 //{"type":"logout","client_id":xxx,"time":"xxx"}
-                say(data['from_client_id'], data['from_client_name'], data['from_client_name']+' 退出了', data['time']);
+                say(data['from_client_id'], data['from_client_name'], data['from_client_name']+' 退出了', data['time'],data['user_level']);
                 delete client_list[data['from_client_id']];
                 flush_client_list();
                 break;
             case 'redpacket':
-                redpacket(data['from_client_id'], data['from_client_name'], data['content'], data['time']);
+                redpacket(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level']);
                 console.log(data['from_client_name']+"说："+data['content']);
                 break;
             case 'gift':
-                gift(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['gift_id']);
+                gift(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['gift_id'],data['user_level']);
                 console.log(data['from_client_name']+"说："+data['content']);
                 break;
             case 'goods':
@@ -688,7 +666,7 @@ $(function() {
                 break;
             //直播发红包
             case 'red_anchor':
-                red_anchor(data['from_client_id'], data['from_client_name'], data['content'], data['time']);
+                red_anchor(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level']);
                 console.log(data['from_client_name']+"说："+data['content']);
                 break;
         }
@@ -700,9 +678,10 @@ $(function() {
         var input = $('#textarea').html();
         var to_client_id = $("#client_list option:selected").attr("value");
         var to_client_name = $("#client_list option:selected").text();
+        var user_level = '<?php echo $level; ?>';
 
         $('.send-group .textarea').html('');
-        ws.send('{"type":"say","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+input.replace(/"/g, '\\"').replace(/\n/g,'\\n').replace(/\r/g, '\\r')+'"}');
+        ws.send('{"type":"say","user_level":"'+user_level+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+input.replace(/"/g, '\\"').replace(/\n/g,'\\n').replace(/\r/g, '\\r')+'"}');
     }
 
     // 刷新用户列表框
@@ -746,10 +725,10 @@ $(function() {
     }
 
     // 发言
-    function say(from_client_id, from_client_name, content, time){
+    function say(from_client_id, from_client_name, content, time,user_level){
         var str = '';
         str += '<li class="dm-item">';
-        str +='<span class="level level-<?php echo $level;?>"></span>';
+        str +='<span class="level level-'+user_level+'"></span>';
         str +=' <span class="viewer-name">'+from_client_name+'：</span>';
         str +='<span class="barrage-con">'+content+'</span>';
         str +='</li>';
@@ -766,11 +745,11 @@ $(function() {
     }
 
     //发红包
-    function redpacket(from_client_id, from_client_name, content, time){
+    function redpacket(from_client_id, from_client_name, content, time,user_level){
         console.log(content);
         var str = '';
         str += '<li class="dm-item">';
-        str +='<span class="level level-<?php echo $level;?>"></span>';
+        str +='<span class="level level-'+user_level+'"></span>';
         str +=' <span class="viewer-name">'+from_client_name+'：</span>';
         str +='<span class="barrage-con">'+content+'</span>';
         str +='</li>';
@@ -811,11 +790,11 @@ $(function() {
     }
 
     //发红包
-    function red_anchor(from_client_id, from_client_name, content, time){
+    function red_anchor(from_client_id, from_client_name, content, time,user_level){
         console.log(content);
         var str = '';
         str += '<li class="dm-item">';
-        str +='<span class="level level-<?php echo $level;?>"></span>';
+        str +='<span class="level level-'+user_level+'""></span>';
         str +=' <span class="viewer-name">'+from_client_name+'：</span>';
         str +='<span class="barrage-con">'+content+'</span>';
         str +='</li>';
