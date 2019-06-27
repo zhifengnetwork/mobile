@@ -105,7 +105,7 @@
                     </div>
                     <div class="send-redPacket"></div>
                     <div class="cart" onclick="cart_url('<?php echo $user_id; ?>','<?php echo $room_id; ?>');"></div>
-                    <div class="share" onclick="share_url();"></div>
+                    <div class="share" onclick = "share_url()"></div>
                     <div class="gift"></div>
                 </div>
     
@@ -246,6 +246,8 @@ $(function() {
 			}
 		}); 
 	}
+
+        
      
 });
 </script>
@@ -261,6 +263,8 @@ $(function() {
                 paginationClickable: true,
                 autoplayDisableOnInteraction: false
             });
+
+  
     
             // 主播发红包
             $('.send-redPacket').click(function(){
@@ -375,9 +379,9 @@ $(function() {
             location.href="{:U('mobile/index/index');}";
         }
 
-         //分享直播间
+                   //分享直播间
       function share_url(){
-            
+            // alert(111);
             wx.onMenuShareTimeline({
                     title: ShareTitle, // 分享标题
                     link:  ShareLink,
@@ -398,6 +402,8 @@ $(function() {
             });
            
       }
+
+    
 
         //点赞
         function live_top(user_id,room_id){
