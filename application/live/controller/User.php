@@ -57,6 +57,7 @@ class User extends Base
         $this->assign('url',$url);
         $this->assign('room',$room);
         $this->assign('giftList',$giftList);
+        $this->assign('server_name',$_SERVER['SERVER_NAME']);
         return $this->fetch();
     }
 
@@ -309,7 +310,8 @@ class User extends Base
     {
         $appID = "4c2954a8e1524f5ea15dc5ae14232042";
         $appCertificate = "1580a6da5ed94447840d870a07e1c6e2";
-        $account = input('post.room_id', 0);
+        $account = input('post.channel', 0);
+        echo $account;die;
         $expiredTs = 0;
         $builder = new RtmTokenBuilder($appID, $appCertificate, $account);
         $builder->setPrivilege(AccessToken::Privileges["kRtmLogin"], $expiredTs);
