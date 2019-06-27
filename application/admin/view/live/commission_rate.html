@@ -12,6 +12,25 @@
     <!--表单数据-->
     <form method="post" id="commission_rateForm" >
     <div class="ncap-form-default">
+
+      <dl class="row">
+        <dt class="tit">
+          <label><em>*</em>返佣方式</label>
+        </dt>
+        <dd class="opt">
+              <ul>
+                <li style="float:left;">
+                  <label><input <if condition="$info.type eq 1 or !isset($info.type)"> checked </if> class="radio" name="type" value="1" type="radio">下单付款返佣</label>
+                </li>
+                <li style="float:left;">
+                  <label><input <if condition="$info.type eq 2"> checked </if> class="radio" name="type" value="2" type="radio">确认收货返佣</label>
+                </li>
+              </ul>
+          <span class="err" id="err_tags"></span>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+
       <dl class="row">
         <dt class="tit">
           <label for="ac_name"><em>*</em>佣金比例</label>
