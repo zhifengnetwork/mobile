@@ -262,4 +262,29 @@ class Live extends Base
         return $this->fetch();
     }
 
+    public function commission_rate(){
+
+        $info = Db::name('commission_rate')->find();
+
+        if(request()->isPost()){
+            $data = input('post.');
+
+            if($data['id']){
+                $res = Db::name('commission_rate')->update($data);
+            }else{
+                $res = Db::name('commission_rate')->insert($data);
+            }
+            
+            if($res !== false){
+                $this->ajaxReturn(['status' => 1, 'msg' => '操作成功！']);
+            }else{
+                $this->ajaxReturn(['status' => 0, 'msg' => '操作失败！']);
+            }
+        }
+
+        return $this->fetch('',[
+            'info'  =>  $info,
+        ]);
+    }
+
 }

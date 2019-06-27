@@ -114,3 +114,10 @@ CREATE TABLE `tp_live_gift_sending_log` (
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8 COMMENT='直播礼物发送日志表';
 
 
+--add by xiaozhi
+CREATE TABLE `tp_commission_rate` (
+  `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `rate` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '佣金比例',
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '返佣方式 1:付款返佣,2:收货返佣',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='佣金比例表';

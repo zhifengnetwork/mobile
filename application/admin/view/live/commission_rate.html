@@ -1,0 +1,84 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;"> 
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>佣金比例</h3>
+        <h5>主播分享商品佣金比例设置</h5>
+      </div>
+    </div>
+  </div>
+    <!--表单数据-->
+    <form method="post" id="commission_rateForm" >
+    <div class="ncap-form-default">
+
+      <dl class="row">
+        <dt class="tit">
+          <label><em>*</em>返佣方式</label>
+        </dt>
+        <dd class="opt">
+              <ul>
+                <li style="float:left;">
+                  <label><input <if condition="$info.type eq 1 or !isset($info.type)"> checked </if> class="radio" name="type" value="1" type="radio">下单付款返佣</label>
+                </li>
+                <li style="float:left;">
+                  <label><input <if condition="$info.type eq 2"> checked </if> class="radio" name="type" value="2" type="radio">确认收货返佣</label>
+                </li>
+              </ul>
+          <span class="err" id="err_tags"></span>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+
+      <dl class="row">
+        <dt class="tit">
+          <label for="ac_name"><em>*</em>佣金比例</label>
+        </dt>
+        <dd class="opt">
+          <input type="text" placeholder="比例：百分比" class="input-txt" id="rate" name="rate" style="width:75px !important;" value="{$info.rate}">%
+		  <span class="err" id="err_name" style="color:#F00; display:none;"></span>
+            <p class="notic"></p>
+        </dd>
+      </dl>
+	  
+                              
+      <div class="bot"><a href="JavaScript:void(0);" onClick="verifyForm();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+    </div>
+        <input type="hidden" name="id" value="{$info.id}">
+  </form>
+</div>
+<script>
+function verifyForm(){
+    var name = $("#rate").val();
+    if($.trim(name) == '') {
+        layer.msg('请输入佣金比例！！', {icon: 2});return false;
+    }
+
+    $('span.err').show();
+    $.ajax({
+        type: "POST",
+        url: "{:U('Admin/Live/commission_rate')}",
+        data: $('#commission_rateForm').serialize(),
+        dataType: "json",
+        error: function () {
+            layer.alert("服务器繁忙, 请联系管理员!");
+        },
+        success: function (data) {
+            if (data.status == 1) {
+                layer.msg(data.msg, {icon: 1},function () {
+                    location.reload();
+                });
+            } else {
+                layer.msg(data.msg, {icon: 2});
+                $.each(data.result, function (index, item) {
+                    $('#err_' + index).text(item).show();
+                });
+            }
+        }
+    });
+}
+
+</script>
+</body>
+</html>

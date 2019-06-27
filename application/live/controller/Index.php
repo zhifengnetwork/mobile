@@ -38,12 +38,6 @@ class Index extends Base
 
         //add by zgp 2019.6.26
         //获取商品列表
-        // $room_id = input('get.room_id', 1);
-        // $room = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->find();
-        // dump($room['room_id']);die;
-//        if (empty($room)) {
-//            return $this->failResult('不存在的直播间', 301);
-//        }
         $goodsList = [];
         if(!empty($room['good_ids'])){
             $ids = json_decode($room['good_ids']);
@@ -79,13 +73,11 @@ class Index extends Base
      */
     public function sendGoodsUrl(){
         $room_id = input('post.room_id', 0);
-        //上线后去掉默认值  add by zgp
         $goods_id = input('post.goods_id',0);
         if(empty($room_id) || empty($goods_id)){
             return $this->failResult('参数有误',301);
         }
         $userId = $this->user->user_id;
-        $user = Db::name('users')->where(['user_id'=>$userId])->find();
         $user_video = Db::name('user_video')->where(['room_id'=>$room_id])->find();
 
         $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
@@ -305,6 +297,7 @@ class Index extends Base
             'from_client_id' => $userId,
             'from_client_name' => $this->user->nickname,
             'to_client_id' => 'all',
+            'm_id'=>$red_master,
             'content' => $this->user->nickname . '主播发了' . $money . '元红包',
             'time' => date('Y-m-d H:i:s'),
         );
@@ -366,34 +359,43 @@ class Index extends Base
      * users_id   发包人id
      * red_master_id   红包主表id
      */
-    public function click_red_packet($room_id, $users_id, $red_master_id)
+    public function click_red_packet()
     {
-        $money = input('post.money', 0); //红包金额
-        $num = input('post.num', 0); //红包个数
         $room_id = input('post.room_id', 0); //房间id
-        // $users_id = input('post.users_id', 0); //用户id
-        if (empty($num) || empty($money) || empty($room_id)) {
+        $users_id = input('post.users_id', 0); //用户id
+        $m_id = input('post.m_id', 0); //用户id
+        if (empty($users_id) || empty($room_id) || empty($m_id)) {
             return $this->failResult('参数有误', 301);
         }
+
         $userId = $this->user->user_id;
+        //判断用户是否已经抢过红包
+        $if_red = Db::name('red_detail')->where(['get_uid' => $userId,'m_id' => $m_id,'room_id' => $room_id])->find();
+        if($if_red){
+            return $this->failResult('已抢过红包!!!', 301);
+        }
         //事务处理
         Db::startTrans();
         //获取红包从表信息
-        $red_master_find = $this->red_master_find($room_id, $users_id);
-        if (empty($red_master_find)) {
-            return $this->failResult('该红包已不存在',301);
+        $red_master_find = $this->red_master_find($room_id,$m_id);
+        if (!$red_master_find) {
+            return $this->failResult('事务处理失败',301);
         }
-        $red_detail_find = Db::name('red_detail')->where(['m_id' => $red_master_find['id'], 'room_id' => $red_master_find['room_id']])->find();
-        if (empty($red_detail_find)) {
+        $red_detail_find = Db::name('red_detail')->where(['m_id' => $m_id,'type'=>0, 'room_id' => $room_id])->find();
+        if (!$red_detail_find) {
             return $this->failResult('红包已领完!!!',301);
         }
         //获取抢包用户信息
         $user_data = $this->user($userId);
-        $result = Db::name('users')->where(['id'=>$red_detail_find['mid'],'room_id'=>$room_id])->update(['get_uid'=>$user_data['get_uid'],'type'=>1,'get_award_money'=>$red_detail_find['money']]);
+        $data = ['get_uid'=>$user_data['user_id'],'type'=>1,'get_award_money'=>$red_detail_find['money']];
+
+        $result = Db::name('red_detail')->where(['m_id'=>$m_id,'id'=>$red_detail_find['id'],'room_id'=>$room_id])->update($data);
         if(!$result){
             return $this->failResult('事务处理失败', 301);
         }
+
         $user_money = bcadd($user_data['user_money'],$red_detail_find['money'],2);
+
         //增加抢包用户余额的钱
         $result_money = Db::name('users')->where(['user_id'=>$user_data['user_id']])->update(['user_money'=>$user_money]);
         if(!$result_money){
@@ -406,6 +408,7 @@ class Index extends Base
             'from_client_id' => $userId,
             'from_client_name' => $this->user->nickname,
             'to_client_id' => 'all',
+            'moeny' => $money,
             'content' => $this->user->nickname . '领取了' . $money . '元红包',
             'time' => date('Y-m-d H:i:s'),
         );
@@ -414,9 +417,10 @@ class Index extends Base
     /**
      * 查找对应红包从表数据
      */
-    public function red_master_find($red_master_id, $room_id)
-    {
-        $red_user_find = Db::name("red_master")->where(['room_id' => $room_id, 'id' => $red_master_id,'type'=>0])->find();
+    public function red_master_find($room_id,$m_id)
+    {   
+        $where = "room_id = '".$room_id."' and id = '".$m_id."' and all_get = 0";
+        $red_user_find = Db::name("red_master")->where($where)->find();
         if ($red_user_find) {
             return $red_user_find;
         } else {

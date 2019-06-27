@@ -258,6 +258,7 @@ return array(
             array('name' => '礼物日志', 'act' => 'gift_log', 'op' => 'Live'),
             array('name' => '点赞日志', 'act' => 'like_log', 'op' => 'Live'),
             array('name' => '红包日志', 'act' => 'red_log', 'op' => 'Live'),
+            array('name' => '佣金比例', 'act' => 'commission_rate', 'op' => 'Live'),
         ))
     )),
 );
