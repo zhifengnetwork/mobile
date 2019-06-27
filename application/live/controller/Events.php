@@ -14,6 +14,7 @@ namespace app\live\controller;
  * 主要是处理 onMessage onClose 
  */
 use \GatewayWorker\Lib\Gateway;
+use think\Db;
 
 class Events
 {
@@ -62,10 +63,17 @@ class Events
                 }
                 $clients_list[$client_id] = $client_name;
                 
-                // 转播给当前房间的所有客户端，xx进入聊天室 message {type:login, client_id:xx, name:xx} 
-                $new_message = array('type'=>$message_data['type'], 'client_id'=>$client_id, 'client_name'=>htmlspecialchars($client_name), 'time'=>date('Y-m-d H:i:s'));
-                Gateway::sendToGroup($room_id, json_encode($new_message));
+                // 转播给当前房间的所有客户端，xx进入聊天室 message {type:login, client_id:xx, name:xx}
+                //新增用户等级字段  add by zgp
+                $user_level = isset($message_data['user_level'])&&!empty($message_data['user_level']) ? $message_data['user_level'] : 0;
+                $new_message = array('type'=>$message_data['type'], 'client_id'=>$client_id, 'client_name'=>htmlspecialchars($client_name), 'time'=>date('Y-m-d H:i:s'),'user_level'=>$user_level);
+                print_r($new_message);
+                //Gateway::sendToGroup($room_id, json_encode($new_message));
                 Gateway::joinGroup($client_id, $room_id);
+                //更新观看人数
+                if(!empty($room_id)){
+                    Db::name('user_video')->where(['room_id' => $room_id])->setInc('look_amount');
+                }
                
                 // 给当前用户发送用户列表 
                 $new_message['client_list'] = $clients_list;
@@ -81,15 +89,19 @@ class Events
                 }
                 $room_id = $_SESSION['room_id'];
                 $client_name = $_SESSION['client_name'];
-                
+
+                //新增用户等级字段  add by zgp
+                $user_level = isset($message_data['user_level'])&&!empty($message_data['user_level']) ? $message_data['user_level'] : 0;
                 $new_message = array(
                     'type'=>'say', 
                     'from_client_id'=>$client_id,
                     'from_client_name' =>$client_name,
                     'to_client_id'=>'all',
                     'content'=>nl2br(htmlspecialchars($message_data['content'])),
+                    'user_level'=>$user_level,
                     'time'=>date('Y-m-d H:i:s'),
                 );
+                print_r($new_message);
 
                 return Gateway::sendToGroup($room_id ,json_encode($new_message));
 
@@ -215,7 +227,7 @@ class Events
        {
            $room_id = $_SESSION['room_id'];
            $new_message = array('type'=>'logout', 'from_client_id'=>$client_id, 'from_client_name'=>$_SESSION['client_name'], 'time'=>date('Y-m-d H:i:s'));
-           Gateway::sendToGroup($room_id, json_encode($new_message));
+          // Gateway::sendToGroup($room_id, json_encode($new_message));
        }
    }
   

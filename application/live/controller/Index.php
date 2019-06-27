@@ -37,11 +37,14 @@ class Index extends Base
 
         //add by zgp 2019.6.26
         //获取商品列表
+<<<<<<< HEAD
         // $room_id = input('get.room_id', 1);
         // $room = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->find();
 //        if (empty($room)) {
 //            return $this->failResult('不存在的直播间', 301);
 //        }
+=======
+>>>>>>> 836022f8d251a30c3d7e453f93198055e2bf97c6
         $goodsList = [];
         if(!empty($room['good_ids'])){
             $ids = json_decode($room['good_ids']);
@@ -77,13 +80,11 @@ class Index extends Base
      */
     public function sendGoodsUrl(){
         $room_id = input('post.room_id', 0);
-        //上线后去掉默认值  add by zgp
         $goods_id = input('post.goods_id',0);
         if(empty($room_id) || empty($goods_id)){
             return $this->failResult('参数有误',301);
         }
         $userId = $this->user->user_id;
-        $user = Db::name('users')->where(['user_id'=>$userId])->find();
         $user_video = Db::name('user_video')->where(['room_id'=>$room_id])->find();
 
         $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
