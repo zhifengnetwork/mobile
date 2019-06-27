@@ -355,16 +355,16 @@
  var ShareImgUrl = httpPrefix+"{$tpshop_config['shop_info_store_logo']}"; //分享图标
  var ShareTitle  = "某某的直播间"; //分享标题
  var ShareDesc   = "{$tpshop_config['shop_info_store_desc']}"; //分享描述
-
-$(function() {
-    //是否微信打开
-    function is_weixn() {
+ //是否微信打开
+ function is_weixn() {
         var ua = navigator.userAgent.toLowerCase();
         if (ua.match(/MicroMessenger/i) == "micromessenger") {
             return true;
         }
         return false;
-    }
+}
+
+$(function() {
     //判断是否是微信环境
 	if(is_weixn()){
 		$.ajax({
@@ -563,7 +563,8 @@ $(function() {
 
                    //分享直播间
       function share_url(){
-          $('.share-shade').show();
+         
+        is_weixn() && $('.share-shade').show();
       }
 
       $('.share-shade').on('touchend', function() {
