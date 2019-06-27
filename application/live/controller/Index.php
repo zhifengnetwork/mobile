@@ -37,14 +37,6 @@ class Index extends Base
 
         //add by zgp 2019.6.26
         //获取商品列表
-<<<<<<< HEAD
-        // $room_id = input('get.room_id', 1);
-        // $room = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->find();
-//        if (empty($room)) {
-//            return $this->failResult('不存在的直播间', 301);
-//        }
-=======
->>>>>>> 836022f8d251a30c3d7e453f93198055e2bf97c6
         $goodsList = [];
         if(!empty($room['good_ids'])){
             $ids = json_decode($room['good_ids']);
