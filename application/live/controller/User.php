@@ -28,11 +28,11 @@ class User extends Base
     {
         $userId = $this->user->user_id;
         //上线后去掉默认值  add by zgp
-        $room_id = input('get.room_id', 1);
+        $room_id = input('get.room_id', 0);
         $room = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->find();
-//        if (empty($room)) {
-//            return $this->failResult('不存在的直播间', 301);
-//        }
+        if (empty($room)) {
+            return $this->failResult('不存在的直播间', 301);
+        }
 
         //获取礼物列表
         $giftList = Db::name('live_gift')->order('sort asc')->select();
@@ -114,14 +114,14 @@ class User extends Base
             'from_client_name' =>$this->user->nickname,
             'to_client_id'=>'all',
             'gift_id'=>1,
-            'content'=>$this->user->nickname.'给主播发了'.$gift['name'].'礼物',
+            'content'=>'给主播发了'.$gift['name'].'礼物',
             'time'=>date('Y-m-d H:i:s'),
         );
         return $this->successResult($message);
     }
 
     /**
-     * 用户发礼物
+     * 用户发红包
      * @return \think\response\Json
      * @throws \think\Exception
      */
@@ -151,15 +151,14 @@ class User extends Base
         }
 
         //增加主播余额的钱
-        $zhubo_user_id = 0;
-        $zhobuInfo = Db::name('user_video')->where(['room_id'=>$room_id])->find();
-        if(!$zhobuInfo){
+        $zhobuVideo = Db::name('user_video')->where(['room_id'=>$room_id])->find();
+        if(!$zhobuVideo){
             Db::rollback();
             return $this->failResult('主播直播间不存在',301);
         }
-        $zhubo_user_id = $zhobuInfo['user_id'];
-        $zhobuInfo = Db::name('users')->where(['user_id'=>$zhubo_user_id])->find();
-        $user_money = bcadd($zhobuInfo['user_money'],$money,2);
+        $zhubo_user_id = $zhobuVideo['user_id'];
+        $zhobuUser = Db::name('users')->where(['user_id'=>$zhubo_user_id])->find();
+        $user_money = bcadd($zhobuUser['user_money'],$money,2);
         //增加主播余额的钱
         $result = Db::name('users')->where(['user_id'=>$zhubo_user_id])->update(['user_money'=>$user_money]);
         if(!$result){
@@ -173,13 +172,21 @@ class User extends Base
             'to_user_id'=>$zhubo_user_id,
             'room_id'=>$room_id,
             'money'=>$money,
-            'data'=>"【{$userId}:{$this->user->nickname}】给主播【{$zhubo_user_id}:{$zhobuInfo['nickname']}】发了【{$money}】的红包",
+            'data'=>"【{$userId}:{$this->user->nickname}】给主播【{$zhubo_user_id}:{$zhobuUser['nickname']}】发了【{$money}】的红包",
             'create_time'=>time(),
         ];
         $result = Db::name('live_red_sending_log')->insert($data);
         if(!$result){
             Db::rollback();
             return $this->failResult('事务处理失败3',301);
+        }
+
+        //修改用户的金额
+        $updateMoney = bcadd($zhobuVideo['money'],$money,2);
+        $result = Db::name('user_video')->where(['user_id'=>$zhubo_user_id])->update(['money'=>$updateMoney]);
+        if(!$result){
+            Db::rollback();
+            return $this->failResult('事务处理失败4',301);
         }
         Db::commit();
 
@@ -202,8 +209,7 @@ class User extends Base
     public function sendGoodsUrl(){
         $room_id = input('post.room_id', 0);
         //上线后去掉默认值  add by zgp
-        $goods_id = 285;
-//        $goods_id = input('post.goods_id',0);
+        $goods_id = input('post.goods_id',0);
         if(empty($room_id) || empty($goods_id)){
             return $this->failResult('参数有误',301);
         }
@@ -279,6 +285,15 @@ class User extends Base
         $room = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->find();
         $data['count'] = $room['top_amount'];
         return $this->successResult($data);
+    }
+
+    /**
+     * 用户观看人数加1
+     * @throws \think\Exception
+     */
+    public function userLookAmount(){
+        $room_id = I('post.room_id', 0);
+        Db::name('user_video')->where(['room_id' => $room_id])->setInc('look_amount');
     }
 
     public function RtmTokenBuilderSample()
