@@ -46,7 +46,7 @@
     <div id="div_join" class="panel panel-default" style="display:none">
         <div class="panel-body">
             App ID: <input id="appId" type="text" value="4c2954a8e1524f5ea15dc5ae14232042" size="36"></input>
-            Channel: <input id="channel" type="text" value="1000" size="4"></input>
+            Channel: <input id="channel" type="text" value="<?php echo $room_id; ?>"></input>
             Host: <input id="video" type="checkbox" checked></input>
             <button id="join" class="btn btn-primary" onclick="join()">Join</button>
             <button id="leave" class="btn btn-primary" onclick="leave()">Leave</button>
@@ -311,7 +311,7 @@
         var channel_key=null;
         $.ajax({
             type: "POST",
-            data:{appId:appId.value,channel:'1000'},
+            data:{appId:appId.value,channel:'<?php echo $room_id; ?>'},
             async:false,
             url: "/Live/index/RtmTokenBuilderSample",
             success: function(data){
@@ -322,7 +322,7 @@
         client = AgoraRTC.createClient({mode: 'live'});
         client.init(appId.value, function () {
             console.log("AgoraRTC client initialized");
-            client.join(channel_key, '1000', null, function(uid) {
+            client.join(channel_key, '<?php echo $room_id; ?>', null, function(uid) {
                 console.log("User " + uid + " join channel successfully");
 
                 if (document.getElementById("video").checked) {
@@ -479,8 +479,10 @@
 
     // 连接服务端
     function connect() {
+        console.log(document.domain);
         // 创建websocket
-        ws = new WebSocket("ws://"+document.domain+":3636");
+        var server_name = '<?php echo $server_name; ?>';
+        ws = new WebSocket("ws://"+server_name+":7373");
         // 当socket连接打开时，输入用户名
         ws.onopen = onopen;
         // 当有消息时根据消息类型显示不同信息

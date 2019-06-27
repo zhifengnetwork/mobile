@@ -60,6 +60,7 @@ class Index extends Base
         //add by zgp 2019.6.26
 
         $this->assign('room_id', $room['room_id']);
+        $this->assign('server_name',$_SERVER['SERVER_NAME']);
         $this->assign('user_id', $user_id . time());
         $this->assign('users_id', $user_id);
         return $this->fetch();
@@ -252,7 +253,7 @@ class Index extends Base
     {
         $appID = "4c2954a8e1524f5ea15dc5ae14232042";
         $appCertificate = "1580a6da5ed94447840d870a07e1c6e2";
-        $account = "1000";
+        $account = input('post.channel', 0);
         $expiredTs = 0;
         $builder = new RtmTokenBuilder($appID, $appCertificate, $account);
         $builder->setPrivilege(AccessToken::Privileges["kRtmLogin"], $expiredTs);

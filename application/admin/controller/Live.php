@@ -5,6 +5,9 @@ namespace app\admin\controller;
 use app\common\model\LiveGift;
 use app\common\model\LiveGiftSendingLog;
 use app\common\model\LiveLike;
+use app\common\model\LiveRedSendingLog;
+use app\common\model\RedDetail;
+use app\common\model\RedMaster;
 use app\common\model\UserVerifyIdentityInfo;
 use app\common\model\UserVideo;
 use think\Db;
@@ -145,11 +148,11 @@ class Live extends Base
 
     public function gift_list()
     {
-        $where = ' 1 = 1 ';
+        $where = ' 1 = 1';
         $keywords = I('keywords') ? trim(I('keywords')) : '';
-        $keywords && $where = "$where and (name like '%$keywords%')";
+        $keywords && $where .= " and (name like '%$keywords%')";
 
-        (I('is_show/d') !== '') && $where = "$where and is_show = " . I('is_show/d');
+        (I('is_show/d') !== '') && $where .= " and is_show = " . I('is_show/d');
 
         $userVideo = new LiveGift();
         $count = $userVideo->where($where)->count();
@@ -211,12 +214,12 @@ class Live extends Base
 
     public function gift_log()
     {
-        $where = ' 1 = 1 ';
+        $where = ' 1 = 1';
         $keywords = I('keywords') ? trim(I('keywords')) : '';
-        $keywords && $where = "room_id like '%$keywords%')";
+        $keywords && $where .= " and (room_id like '%$keywords%')";
 
         $roomId = I('room_id');
-        ($roomId != '') && $where = "$where and room_id = " . $roomId;
+        ($roomId != '') && $where .= " and (room_id = $roomId)";
 
         $log = new LiveGiftSendingLog();
         $count = $log->where($where)->count();
@@ -244,12 +247,12 @@ class Live extends Base
 
     public function like_log()
     {
-        $where = ' 1 = 1 ';
+        $where = ' 1 = 1';
         $keywords = I('keywords') ? trim(I('keywords')) : '';
-        $keywords && $where = "$where and (name like '%$keywords%')";
+        $keywords && $where .= " and (name like '%$keywords%')";
 
         $roomId = I('room_id');
-        ($roomId != '') && $where = "$where and room_id = " . $roomId;
+        ($roomId != '') && $where .= " and (room_id = $roomId)";
 
         $like = new LiveLike();
         $count = $like->where($where)->count();
@@ -262,29 +265,90 @@ class Live extends Base
         return $this->fetch();
     }
 
-    public function commission_rate(){
+    public function commission_rate()
+    {
 
         $info = Db::name('commission_rate')->find();
 
-        if(request()->isPost()){
+        if (request()->isPost()) {
             $data = input('post.');
 
-            if($data['id']){
+            if ($data['id']) {
                 $res = Db::name('commission_rate')->update($data);
-            }else{
+            } else {
                 $res = Db::name('commission_rate')->insert($data);
             }
-            
-            if($res !== false){
+
+            if ($res !== false) {
                 $this->ajaxReturn(['status' => 1, 'msg' => '操作成功！']);
-            }else{
+            } else {
                 $this->ajaxReturn(['status' => 0, 'msg' => '操作失败！']);
             }
         }
 
-        return $this->fetch('',[
-            'info'  =>  $info,
+        return $this->fetch('', [
+            'info' => $info,
         ]);
+    }
+
+    public function red_log()
+    {
+        $where = ' 1 = 1';
+        $keywords = I('keywords') ? trim(I('keywords')) : '';
+        $keywords && $where .= " and (room_id like '%$keywords%')";
+
+        $roomId = I('room_id');
+        ($roomId != '') && $where .= " and (room_id = $roomId)";
+
+        $log = new RedMaster();
+        $count = $log->where($where)->count();
+        $page = new Page($count, 20);
+        $list = $log->where($where)->order('id desc')
+            ->limit($page->firstRow . ',' . $page->listRows)
+            ->select();
+
+        $this->assign(['list' => $list, 'page' => $page->show(), 'pager' => $page, 'room_id' => $roomId]);
+        return $this->fetch();
+    }
+
+    public function red_detail()
+    {
+        $where = ' 1 = 1';
+        $keywords = I('keywords') ? trim(I('keywords')) : '';
+        $keywords && $where .= " and (room_id like '%$keywords%')";
+
+        $roomId = I('room_id');
+        ($roomId != '') && $where .= " and (room_id = $roomId)";
+
+        $log = new RedDetail();
+        $count = $log->where($where)->count();
+        $page = new Page($count, 20);
+        $list = $log->where($where)->order('id desc')
+            ->limit($page->firstRow . ',' . $page->listRows)
+            ->select();
+
+        $this->assign(['list' => $list, 'page' => $page->show(), 'pager' => $page, 'room_id' => $roomId]);
+        return $this->fetch();
+    }
+
+    public function user_red_log()
+    {
+        $where = ' 1 = 1 ';
+        $keywords = I('keywords') ? trim(I('keywords')) : '';
+        $keywords && $where .= " and (room_id like '%$keywords%')";
+
+        $roomId = I('room_id');
+        ($roomId != '') && $where .= " and (room_id = $roomId)";
+
+        $log = new LiveRedSendingLog();
+        $count = $log->where($where)->count();
+        $page = new Page($count, 20);
+        $list = $log->where($where)->order('id desc')
+            ->limit($page->firstRow . ',' . $page->listRows)
+            ->select();
+
+        $this->assign(['list' => $list, 'page' => $page->show(), 'pager' => $page, 'room_id' => $roomId]);
+        return $this->fetch();
     }
 
 }

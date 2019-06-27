@@ -114,7 +114,7 @@
                 formData.append('good_ids',good_ids);
                 $.ajax({
                     type: 'post',
-                    url: '/index.php?m=Live&c=Index&a=start&t=' + Math.random(),
+                    url:"{:U('live/index/start')}",
                     data: formData,
                     dataType: 'json',
                     async: false,
