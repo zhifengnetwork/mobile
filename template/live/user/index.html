@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="__STATIC__/live/vendor/bootstrap.min.css">
     <script src="__STATIC__/live/js/AgoraRTCSDK-2.6.1.js"></script>
     <script src="__STATIC__/live/vendor/jquery.js"></script>
+    <script src="__STATIC__/live/vendor/rem.js"></script>
 
     <link href="__STATIC__/chat/css/bootstrap.min.css" rel="stylesheet">
     <link href="__STATIC__/chat/css/style.css" rel="stylesheet">
@@ -17,6 +18,7 @@
     <link rel="stylesheet" href="__STATIC__/live/static/css/public/swiper.css">
     <link rel="stylesheet" type="text/css" href="__STATIC__/live/static/css/public/base.css" />
     <link rel="stylesheet" href="__STATIC__/live/static/css/play/viewer_room.css?v=201906121840">
+    <link href="__STATIC__/chat/css/base.css" rel="stylesheet">
 
     <style type="text/css">
         .barrage-scroll .barrage-list .dm-item{
@@ -31,10 +33,150 @@
             margin-bottom: .2rem;
         }
     </style>
+<style>
+    .sendBtn{
+        width: 5rem;
+        height: .6rem;
+        line-height: .6rem;
+        font-size: .3rem;
+        background-color: #ef67c9;
+        display: block;
+        text-align: center;
+        /* color: #ffffff; */
+        border-radius: .12rem;
+        margin: .3rem auto;
+    }
+    .enveloper-popup{
+        width: 100%;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        display: none;
+        z-index:99999;
+    }
+    /* 未拆状态  */
+    .enveloper-popup .undemolished{
+        width: 4.44rem;
+        height: 4.44rem;
+        color: #ffffff;
+        text-align: center;
+        background: url(/public/images/red-enveloper-bg.png) no-repeat;
+        background-size: 100%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 3;
+        transform: translate(-50%,-50%);
+        display: none;
+    }
+    .enveloper-popup .undemolished .popup-header{
+        height: 1.6rem;
+        line-height: 1.6rem;
+        text-align: center;
+        font-size: .36rem;
+    }
+    .enveloper-popup .undemolished .popup-body{
+        margin: .66rem auto .9rem;
+    }
+    .enveloper-popup .undemolished .popup-body p{
+        font-size: .36rem;
+    }
+    .enveloper-popup .undemolished .popup-footer .open-btn{
+        width: 3.24rem;
+        height: 1.04rem;
+        line-height: 1.04rem;
+        text-align: center;
+        font-size: .3rem;
+        color: #ff008a;
+        margin: 0 auto;
+        background: url(/public/images/enveloper-send-bg.png) no-repeat;
+        background-size: 100%;
+    }
+    .enveloper-popup .undemolished .popup-footer .close-btn{
+        width:.99rem;
+        height: .99rem;
+        background: url(/public/images/enveloper-close-btn.png) no-repeat;
+        background-size: 100%;
+        margin: -.2rem auto 0;
+    }
 
+    /* 拆开状态 */
+    .open-status{
+        width: 4.44rem;
+        height: 5.21rem;
+        /* color: #ffffff; */
+        text-align: center;
+        background: url(/public/images/red-enveloper-open-bg.png) no-repeat;
+        background-size: 100%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 3;
+        transform: translate(-50%,-50%);
+        display: none;
+        z-index:99999;
+    }
+    .open-status .popup-header{
+        height: 1rem;
+        line-height: 1rem;
+        margin-bottom: 1rem;
+    }
+    .open-status .popup-body{
+        margin-bottom: 1.8rem;
+    }
+    .open-status .popup-body h3{
+        font-size: .4rem;
+        margin-bottom: .34rem;
+    }
+    .open-status .popup-body p{
+        font-size: .28rem;
+    }
+    .open-status .popup-body p .amount-num{
+        font-size: .28rem;
+        color: #fff600;
+    }
+    .open-status .close-btn{
+        width:.99rem;
+        height: .99rem;
+        background: url(/public/images/enveloper-close-btn.png) no-repeat;
+        background-size: 100%;
+        margin:0 auto;
+    }
+</style>
 </head>
 
 <body onload="connect();">
+    <div class="enveloper-popup">
+        <!-- 未拆状态 -->
+        <!-- <div class="undemolished">
+            <div class="popup-header">
+                <h3>主播红包</h3>
+            </div>
+            <div class="popup-body">
+                <p>红包</p>
+            </div>
+            <div class="popup-footer">
+                <div class="open-btn">立即拆开</div>
+                <div class="close-btn"></div>
+            </div>
+        </div> -->
+    
+        <!-- 拆开状态 -->
+        <!-- <div class="open-status">
+            <div class="popup-header">
+                <h3>红包</h3>
+            </div>
+            <div class="popup-body">
+                <h3>获得红包</h3>
+                <p><span class="amount-num">8.88</span> 元</p>
+            </div>
+            <div class="popup-footer">
+                <div class="close-btn"></div>
+            </div>
+        </div> -->
+    
+    </div>
     <div class="wrapper">
         <input type="text" id="room_id" value="{$room_id}" style="display: none;">
         <input type="text" id="users_id" value="{$users_id}" style="display: none;">
@@ -46,7 +188,8 @@
                 <label for="videoSource">Video source: </label><select id="videoSource"></select>
             </div>
         </div>
-    
+        <input type="text" id="room_id" value="{$room_id}" style="display: none;">
+        <input type="text" id="users_id" value="{$users_id}" style="display: none;">
         <div id="div_join" class="panel panel-default" style="display: none">
             <div class="panel-body">
                 App ID: <input id="appId" type="text" value="4c2954a8e1524f5ea15dc5ae14232042" size="36" />
@@ -703,6 +846,12 @@ $(function() {
                 red_anchor(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level']);
                 console.log(data['from_client_name']+"说："+data['content']);
                 break;
+            //抢红包
+            case 'red_receive':
+                red_receive(data['from_client_id'], data['from_client_name'], data['content'], data['money'], data['time']);
+                // console.log(data['from_client_name']+"说："+data['content']);
+                say(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level']);
+                break;
         }
     }
 
@@ -824,15 +973,76 @@ $(function() {
     }
 
     //发红包
-    function red_anchor(from_client_id, from_client_name, content, time,user_level){
+    function red_anchor(from_client_id, from_client_name, content, m_id, time){
         console.log(content);
         var str = '';
-        str += '<li class="dm-item">';
-        str +='<span class="level level-'+user_level+'""></span>';
-        str +=' <span class="viewer-name">'+from_client_name+'：</span>';
-        str +='<span class="barrage-con">'+content+'</span>';
-        str +='</li>';
-        $("#dialog-list").append(str);
+        str +='<div class="undemolished">';
+        str +='<div class="popup-header">';
+        str +='<h3 style="margin-top: 23px;">主播红包</h3>';
+        str +='</div>';
+        str +='<div class="popup-body">';
+        str +='<p>红包</p>';
+        str +='</div>';
+        str +='<div class="popup-footer">';
+        str +='<div class="open-btn" onclick="testa('+m_id+');">立即拆开</div>';
+        str +='<div class="close-btn" onclick="closeRed();"></div>';
+        str +='</div>';
+        str +='</div>';
+        $(".enveloper-popup").append(str);
+        $(".enveloper-popup").show();
+        $(".enveloper-popup .undemolished").last().hide();
+        $(".enveloper-popup .undemolished").last().fadeIn(2000);
+    }
+    //抢包
+    function testa(m_id){
+        var room_id = document.getElementById('room_id').value;
+        var users_id = document.getElementById('users_id').value;
+        var to_client_id = $("#client_list option:selected").attr("value");
+        var to_client_name = $("#client_list option:selected").text();
+        var user_level = '<?php echo $level; ?>';
+        
+        $.ajax({
+            type: 'post',
+            async:false,
+            url: "{:U('live/index/click_red_packet')}", //请求的服务端地址
+            data: {room_id: room_id,users_id: users_id,m_id: m_id},    
+            dataType: 'json',
+            success: function (data) {
+                if(data.status==200){
+                    var content = data.data;
+                    var to_client_id = content.to_client_id;
+                    var to_client_name = content.to_client_name;
+                    var content = content.content;
+                    var money = content.money;
+                    console.log(money);
+                    ws.send('{"type":"red_receive","user_level":"'+user_level+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","money":"'+money+'","content":"'+content+'"}');
+                    $(".mask,.redPacket-popup").hide();
+                }else{
+                    alert(data.msg);
+                }
+            }
+        })
+    }
+
+    //用户抢红包
+    function red_receive(from_client_id, from_client_name, money, content, time){
+        console.log(content);
+        var str = '';
+        str +='<div class="open-status">';
+        str +='<div class="popup-header">';
+        str +='<h3 style="margin-top: 13px;">红包</h3>';
+        str +='</div>';
+        str +='<div class="popup-body">';
+        str +='<h3>获得红包</h3>';
+        str +='<p><span class="amount-num">'+money+'</span> 元</p>';
+        str +='</div>';
+        str +='<div class="popup-footer"><div class="close-btn" onclick="closeRed();"></div></div>';
+        str +='</div>';
+        $(".enveloper-popup").append(str);
+        $(".enveloper-popup").show();
+        $(".open-status").show();
+        $(".undemolished").hide();
+
     }
 
     //发购物链接

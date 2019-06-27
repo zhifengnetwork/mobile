@@ -1,0 +1,65 @@
+@charset "utf-8";
+/* 重置样式 */
+body,div,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td,span,button{
+	margin: 0;
+	padding: 0;
+}
+
+body{
+	font-size: 0.24rem;
+}
+
+ h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+
+em{
+	font-style: normal;
+}
+
+i{font-style: inherit;}
+
+a{
+	text-decoration: none;
+}
+
+input,textarea,button{
+	outline: none;
+}
+
+/*去除input默认样式*/
+input[type=button], input[type=submit], input[type=file], button { 
+	cursor: pointer; 
+	-webkit-appearance: none; 
+	background: none;
+	border: none;
+	outline: none;
+}
+
+li{
+	list-style-type: none;
+}
+
+/*清除浮动*/	
+.clearfix:before{
+	display:block;
+	clear:both;
+	content:"";
+	visibility:hidden;
+	height:0;
+}
+.clearfix:after{
+	display:block;
+	clear:both;
+	content:"";
+	visibility:hidden;
+	height:0;
+} 
+.clearfix{zoom:1}  /*是在处理兼容性问题*/
+
+/*public 省略号*/
+.publicEllipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
