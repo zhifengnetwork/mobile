@@ -352,7 +352,13 @@ class Goods extends MobileBase
 			if($pinfo['end_time'] < time()){
 				M('goods')->update(['goods_id'=>$goods['goods_id'],'prom_type'=>0,'prom_id'=>0]);
 			}
-		}
+        }
+        
+        if(input('zhubo_id')){
+            session('zhubo_id',input('zhubo_id'));
+        }else{
+            session('zhubo_id',null);
+        }
 
         $recommend_goods = M('goods')->where("is_recommend=1 and is_on_sale=1 and cat_id = {$goods['cat_id']}")->cache(7200)->limit(9)->field("goods_id, goods_name, shop_price")->select();
         $this->assign('recommend_goods', $recommend_goods);
