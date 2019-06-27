@@ -2224,3 +2224,30 @@ function provingReceive($user, $type, $num = 1)
     
     return array('status' => 2, 'msg' => '可领取', 'result' => array());
 }
+
+/**
+ * 计算相差时间 **：**：**
+ * @param $begin_time
+ * @param $end_time
+ * @return array
+ */
+function timediff($begin_time, $end_time)
+{
+    if ($begin_time < $end_time) {
+        $starttime = $begin_time;
+        $endtime = $end_time;
+    } else {
+        $starttime = $end_time;
+        $endtime = $begin_time;
+    }
+    //计算天数
+    $timediff = $endtime - $starttime;
+    $days = intval($timediff / 86400);//计算小时数
+    $remain = $timediff % 86400;
+    $hours = intval($remain / 3600);
+    $remain = $remain % 3600;
+    $mins = intval($remain / 60);
+    $secs = $remain % 60;
+    $res = array("day" => $days, "hour" => $hours, "min" => $mins, "sec" => $secs);
+    return $res;
+}

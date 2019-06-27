@@ -10,7 +10,7 @@ class LiveGiftSendingLog extends Model
         'user_id' => 'integer',
         'to_user_id' => 'integer',
         'room_id' => 'string',
-        'data' => 'array',
+        'data' => 'string'
     ];
 
     protected static function init()

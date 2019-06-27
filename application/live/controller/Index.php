@@ -8,6 +8,7 @@
 
 namespace app\live\controller;
 
+use app\admin\validate\Goods;
 use app\common\model\UserVideo;
 use app\live\service\AccessToken;
 use app\live\service\RtmTokenBuilder;
@@ -27,26 +28,78 @@ class Index extends Base
     {
         $user_id = $this->user->user_id;
         // 不是主播，跳转申请页面
-        $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
-        !$identity && $this->redirect('/Live/Apply');
+//        $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
+//        !$identity && $this->redirect('/Live/Apply');
 
         // 没有正在直播的，跳转设置直播信息
         $room = Db::name('user_video')->where(['user_id' => $user_id, 'status' => 1])->order('id desc')->find();
         !$room && $this->redirect('/Live/Index/set');
+
+        //add by zgp 2019.6.26
+        //获取商品列表
+        $room_id = input('get.room_id', 1);
+        $room = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->find();
+//        if (empty($room)) {
+//            return $this->failResult('不存在的直播间', 301);
+//        }
+        $goodsList = [];
+        if(!empty($room['good_ids'])){
+            $ids = json_decode($room['good_ids']);
+            if (count($ids) > 0) {
+                foreach ($ids as $id) {
+                    $goodsList[] = Db::name('goods')->where(['goods_id' => $id])->field('goods_id,goods_name,original_img,store_count,market_price,shop_price,cost_price')->find();
+                }
+            }
+        }
+        $goodsListData = [];
+        $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
+        $url=$http_type.$_SERVER['SERVER_NAME'];
+        foreach($goodsList as $k=>$v){
+            $goodsListData[$k] = $v;
+            $goodsListData[$k]['goods_url'] = $url.$v['original_img'];
+        }
+//        print_r($goodsListData);die;
+        $this->assign('goodsList',$goodsListData);
+        $this->assign('user_name',$this->user->nickname);
+        $this->assign('level',isset($this->user->agentlevel)&&!empty($this->user->agentlevel) ? $this->user->agentlevel : 0);
+        //add by zgp 2019.6.26
+
         $this->assign('room_id', $room['room_id']);
         $this->assign('user_id', $user_id . time());
         $this->assign('users_id', $user_id);
         return $this->fetch();
     }
 
-    public function member()
-    {
-        $user_id = input('user_id');
-        if (!empty($user_id)) {
-            $user_id = 1;
+    /**
+     * 主播分享购物链接
+     * @return \think\response\Json
+     * @throws \think\Exception
+     */
+    public function sendGoodsUrl(){
+        $room_id = input('post.room_id', 0);
+        //上线后去掉默认值  add by zgp
+        $goods_id = input('post.goods_id',0);
+        if(empty($room_id) || empty($goods_id)){
+            return $this->failResult('参数有误',301);
         }
-        $this->assign('user_id', $user_id);
-        return $this->fetch('member');
+        $userId = $this->user->user_id;
+        $user = Db::name('users')->where(['user_id'=>$userId])->find();
+        $user_video = Db::name('user_video')->where(['room_id'=>$room_id])->find();
+
+        $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
+        $url=$http_type.$_SERVER['SERVER_NAME'];
+
+        $goods_url = $url.'/Mobile/Goods/goodsInfo/id/'.$goods_id.'.html?zhubo_id='.$user_video['user_id'];
+        $message = array(
+            'type'=>'gift',
+            'from_client_id'=>$userId,
+            'from_client_name' =>$this->user->nickname,
+            'to_client_id'=>'all',
+            'goods_url'=>$goods_url,
+            'content'=>'主播发了商品链接分享',
+            'time'=>date('Y-m-d H:i:s'),
+        );
+        return $this->successResult($message);
     }
 
     /**
@@ -74,8 +127,17 @@ class Index extends Base
         $list = (new UserVideo)->where($where)->order("id desc")
             ->limit($page->firstRow . ',' . $page->listRows)
             ->select();
+        //跳转到用户端直播间
+        $data = [];
+        $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
+        $url=$http_type.$_SERVER['SERVER_NAME'];
+        foreach($list as $k=>$v){
+            $data[$k] = $v;
+            //跳转到直播间url
+            $data[$k]['url'] = $url.'/Live/user/index.html?room_id='.$v['room_id'];
+        }
         return $this->ajaxReturn([
-            'content' => $this->fetch('index/ajaxVideoList', ['videoList' => $list, 'count' => $count]),
+            'content' => $this->fetch('index/ajaxVideoList', ['videoList' => $data, 'count' => $count]),
             'count' => $count,
             'list_count' => count($list),
             'page_count' => $page_count,
@@ -147,17 +209,24 @@ class Index extends Base
         }
 
         $room_id = I('id');
-        $room = (new UserVideo)->where(['user_id' => $user_id, 'room_id' => $room_id, 'status' => 1])->find();
+        $room = (new UserVideo)->where(['user_id' => $user_id, 'room_id' => $room_id])->find();
         if (empty($room)) {
-            return $this->failResult('不存在的直播间', 301);
+//            return $this->failResult('不存在的直播间', 301);
         }
-        if (!$room->save(['status' => 2])) {
-            return $this->failResult('结束直播失败', 301);
-        }
+        Db::name('user_video')->where(['room_id'=>$room_id])->update(['status'=>2]);
+
+        $arr = timediff($room['start_time'],time());
         $identity['pic_head'] = $this->user['head_pic'];
         $identity['pic_fengmian'] = $this->url . $identity['pic_fengmian'];
         $this->assign('identity', $identity);
         $this->assign('room', $room);
+        $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
+        $url=$http_type.$_SERVER['SERVER_NAME'];
+        $this->assign('room_pic',$url.$room['pic_fengmian']);
+        $this->assign('user_name',$this->user->nickname);
+        $this->assign('user_id',$user_id);
+        $this->assign('end_time',$arr['hour']."：".$arr['min']."：".$arr['sec']);
+        $this->assign('head_pic',$this->user->head_pic);
         return $this->fetch();
     }
 
@@ -364,4 +433,5 @@ class Index extends Base
             return false;
         }
     }
+
 }

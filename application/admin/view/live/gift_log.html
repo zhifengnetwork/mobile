@@ -58,7 +58,7 @@
                             <div style="text-align: left; width: 100px;" class="">房间号</div>
                         </th>
                         <th align="center" abbr="article_show" axis="col5" class="">
-                            <div style="text-align: left; width: 100px;" class="">礼物价格</div>
+                            <div style="text-align: left; width: 400px;" class="">备注</div>
                         </th>
                         <th align="center" abbr="article_show" axis="col3" class="">
                             <div style="text-align: left; width: 200px;" class="">时间</div>
@@ -97,14 +97,13 @@
                                 <div style="text-align: left; width: 100px;">{$list.room_id}</div>
                             </td>
                             <td align="left" class="">
-                                <div style="text-align: left; width: 100px;">{$list.gift.price}</div>
+                                <div style="text-align: left; width: 400px;">{$list.data}</div>
                             </td>
                             <td align="left" class="">
                                 <div style="text-align: left; width: 200px;">{$list.create_time}</div>
                             </td>
                             <td align="center" abbr="article_time" axis="col6" class="">
                                 <div style="text-align: center; width: 200px;" class="">
-                                    <a class="btn blue detail" data-url="{:U('Live/gift_log_detail',array('id'=>$list.id))}"><i class="fa fa-search"></i>查看</a>
                                 </div>
                             </td>
                             <td align="" class="" style="width: 100%;">

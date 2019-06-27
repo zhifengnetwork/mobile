@@ -286,7 +286,9 @@ class Index extends MobileBase {
         $askUrl = urldecode($askUrl);
 
         $wechat = new WechatUtil;
+   
         $signPackage = $wechat->getSignPackage($askUrl);
+       
         if (!$signPackage) {
             exit($wechat->getError());
         }
