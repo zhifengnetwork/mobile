@@ -533,6 +533,35 @@
             }
         })
     }
+    //用户抢红包提交
+    function red_receive(){
+        var money = document.getElementById('money').value;
+        var num = document.getElementById('num').value;
+        var room_id = document.getElementById('room_id').value;
+        var users_id = document.getElementById('users_id').value;
+        var to_client_id = $("#client_list option:selected").attr("value");
+        var to_client_name = $("#client_list option:selected").text();
+       
+        $.ajax({
+            type: 'post',
+            async:false,
+            url: "{:U('live/index/click_red_packet')}", //请求的服务端地址
+            data: {room_id: room_id},
+            dataType: 'json',
+            success: function (data) {
+                if(data.status==200){
+                    var content = data.data;
+                    var to_client_id = content.to_client_id;
+                    var to_client_name = content.to_client_name;
+                    var content = content.content;
+                    ws.send('{"type":"say","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
+                    $(".mask,.redPacket-popup").hide();
+                }else{
+                    alert(data.msg);
+                }
+            }
+        })
+    }
 
     // 刷新用户列表框
     function flush_client_list(){
@@ -568,6 +597,17 @@
     }
     //发红包
     function red_anchor(from_client_id, from_client_name, content, time){
+        console.log(content);
+        var str = '';
+        str += '<li class="dm-item">';
+        str +='<span class="level level-<?php echo $level;?>"></span>';
+        str +=' <span class="viewer-name">'+from_client_name+'：</span>';
+        str +='<span class="barrage-con">'+content+'</span>';
+        str +='</li>';
+        $("#dialog-list").append(str);
+    }
+    //用户抢红包
+    function red_receive(from_client_id, from_client_name, content, time){
         console.log(content);
         var str = '';
         str += '<li class="dm-item">';

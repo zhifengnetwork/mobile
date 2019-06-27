@@ -295,27 +295,57 @@ class Index extends Base
      * users_id   发包人id
      * red_master_id   红包主表id
      */
-    public function click_red_packet($user_id, $room_id, $users_id, $red_master_id)
+    public function click_red_packet($room_id, $users_id, $red_master_id)
     {
+        $money = input('post.money', 0); //红包金额
+        $num = input('post.num', 0); //红包个数
+        $room_id = input('post.room_id', 0); //房间id
+        // $users_id = input('post.users_id', 0); //用户id
+        if (empty($num) || empty($money) || empty($room_id)) {
+            return $this->failResult('参数有误', 301);
+        }
+        $userId = $this->user->user_id;
+        //事务处理
+        Db::startTrans();
         //获取红包从表信息
         $red_master_find = $this->red_master_find($room_id, $users_id);
         if (empty($red_master_find)) {
-            return $this->failResult('该红包已不存在');
+            return $this->failResult('该红包已不存在',301);
         }
         $red_detail_find = Db::name('red_detail')->where(['m_id' => $red_master_find['id'], 'room_id' => $red_master_find['room_id']])->find();
         if (empty($red_detail_find)) {
-            return $this->failResult('红包已领完!!!');
+            return $this->failResult('红包已领完!!!',301);
         }
-
         //获取抢包用户信息
-        $user_data = $this->user($user_id);
+        $user_data = $this->user($userId);
+        $result = Db::name('users')->where(['id'=>$red_detail_find['mid'],'room_id'=>$room_id])->update(['get_uid'=>$user_data['get_uid'],'type'=>1,'get_award_money'=>$red_detail_find['money']]);
+        if(!$result){
+            return $this->failResult('事务处理失败', 301);
+        }
+        $user_money = bcadd($user_data['user_money'],$red_detail_find['money'],2);
+        //增加抢包用户余额的钱
+        $result_money = Db::name('users')->where(['user_id'=>$user_data['user_id']])->update(['user_money'=>$user_money]);
+        if(!$result_money){
+            return $this->failResult('事务处理失败', 301);
+        }
+        Db::commit();
+        $money = bcadd($red_detail_find['money'],'0.00',2);
+        $message = array(
+            'type' => 'red_receive',
+            'from_client_id' => $userId,
+            'from_client_name' => $this->user->nickname,
+            'to_client_id' => 'all',
+            'content' => $this->user->nickname . '领取了' . $money . '元红包',
+            'time' => date('Y-m-d H:i:s'),
+        );
+        return $this->successResult($message);
     }
     /**
      * 查找对应红包从表数据
      */
     public function red_master_find($red_master_id, $room_id)
     {
-        $red_user_find = Db::name("red_master")->where(['room_id' => $room_id, 'id' => $red_master_id])->find();
+        $red_user_find = Db::name("red_master")->where(['room_id' => $room_id, 'id' => $red_master_id,'type'=>0])->find();
         if ($red_user_find) {
             return $red_user_find;
         } else {
