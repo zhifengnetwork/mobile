@@ -68,8 +68,7 @@ class User extends Base
     public function sendGift(){
         $room_id = input('post.room_id', 0);
         //上线后去掉默认值  add by zgp
-        $gift_id = 1;
-//        $gift_id = input('post.gift_id',1);
+        $gift_id = input('post.gift_id',0);
         if(empty($room_id) || empty($gift_id)){
             return $this->failResult('参数有误',301);
         }

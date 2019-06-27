@@ -95,9 +95,7 @@
                 </div>
     
                 <!-- 商品链接 -->
-                <div class="goods-links">
-                    asdadadsad
-                </div>
+                <div class="goods-links"></div>
     
                     <!-- 发送弹幕 -->
                 <div class="chat-operate" >
@@ -149,9 +147,10 @@
                 <div class="swiper-container gift-container">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
+                            <input type="hidden" id="item_gift_id" name="item_gift_id" value="0" />
                             <?php if(!empty($giftList)){ ?>
                                 <?php foreach($giftList as $k=>$v){ ?>
-                                    <div class="gift-item"><img src="<?php echo $url; ?><?php echo $v['image']; ?>" /></div>
+                                    <div class="gift-item" id="<?php echo $v['id']; ?>"><img src="<?php echo $url; ?><?php echo $v['image']; ?>" /></div>
                                 <?php } ?>
                             <?php } ?>
                     </div>
@@ -309,6 +308,16 @@ $(function() {
                 $(".gift-wrap").css("visibility","hidden");
             })
 
+            // 礼物选中
+            $(".gift-wrap .gift-item").click(function(){
+                $("#item_gift_id").val(this.id);
+                var giftVal = $(this).html();
+                $(this).parents().siblings().children().removeClass("active");
+                $(this).siblings().removeClass("active");
+                $(this).addClass("active");
+
+            })
+
             // 取消冒泡
             $(".gift-wrap,.gift").click(function(){
                 var e = window.event || event;
@@ -454,14 +463,14 @@ $(function() {
         //发礼物
         function send_gift(user_id,room_id){
             //待修改礼物ID   add by zgp
-            var gift_id = $("#redmoney").val();
+            var gift_id = $("#item_gift_id").val();
             var to_client_id = $("#client_list option:selected").attr("value");
             var to_client_name = $("#client_list option:selected").text();
             var user_level = '<?php echo $level; ?>';
 
             $.ajax({
                 type: "POST",
-                data:{user_id:user_id,room_id:room_id,gift_id:1},
+                data:{user_id:user_id,room_id:room_id,gift_id:gift_id},
                 async:false,
                 url: "/Live/user/sendGift",
                 success: function(data){
@@ -807,11 +816,8 @@ $(function() {
     //发购物链接
     function goods_url(from_client_id, from_client_name, content, time,goods_url){
         console.log(content);
-//        $(".goods-links").remove();
         var str = '';
-        str += '<div class="goods-links">';
         str += '商品链接：<a href="'+goods_url+'">'+goods_url+'</a>';
-        str += '</div>';
         $(".goods-links").html(str);
 
     }
