@@ -12,6 +12,7 @@ use app\common\model\GoodsCategory;
 use think\AjaxPage;
 use think\Page;
 use think\Db;
+use think\Session;
 
 class Goods extends MobileBase
 {
@@ -355,9 +356,7 @@ class Goods extends MobileBase
         }
         
         if(input('zhubo_id')){
-            session('zhubo_id',input('zhubo_id'));
-        }else{
-            session('zhubo_id',null);
+            Session::set("GOODS{$goods_id}",input('zhubo_id'));
         }
 
         $recommend_goods = M('goods')->where("is_recommend=1 and is_on_sale=1 and cat_id = {$goods['cat_id']}")->cache(7200)->limit(9)->field("goods_id, goods_name, shop_price")->select();
