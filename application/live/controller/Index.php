@@ -223,24 +223,28 @@ class Index extends Base
         }
 
         $room_id = I('id');
-        $room = (new UserVideo)->where(['user_id' => $user_id, 'room_id' => $room_id])->find();
+        $room = (new UserVideo)->where(['room_id' => $room_id])->find();
         if (empty($room)) {
-//            return $this->failResult('不存在的直播间', 301);
+            return $this->failResult('不存在的直播间', 301);
         }
         Db::name('user_video')->where(['room_id'=>$room_id])->update(['status'=>2]);
 
         $arr = timediff($room['start_time'],time());
-        $identity['pic_head'] = $this->user['head_pic'];
+        //主播的用户名  主播图片
+        $zhubo = Db::name('users')->where(['user_id'=>$room['user_id']])->find();
+
+        $identity['pic_head'] = $zhubo['head_pic'];
         $identity['pic_fengmian'] = $this->url . $identity['pic_fengmian'];
         $this->assign('identity', $identity);
         $this->assign('room', $room);
         $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
         $url=$http_type.$_SERVER['SERVER_NAME'];
+
         $this->assign('room_pic',$url.$room['pic_fengmian']);
-        $this->assign('user_name',$this->user->nickname);
-        $this->assign('user_id',$user_id);
+        $this->assign('user_name',$zhubo['nickname']);
+        $this->assign('user_id',$zhubo['user_id']);
         $this->assign('end_time',$arr['hour']."：".$arr['min']."：".$arr['sec']);
-        $this->assign('head_pic',$this->user->head_pic);
+        $this->assign('head_pic',$zhubo['head_pic']);
         return $this->fetch();
     }
 

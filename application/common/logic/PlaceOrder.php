@@ -15,6 +15,7 @@ use think\Cache;
 use think\Hook;
 use think\Model;
 use think\Db;
+use think\Session;
 /**
  * 提交下单类
  * Class CatsLogic
@@ -263,6 +264,11 @@ class PlaceOrder
             'order_amount' => $this->pay->getOrderAmount(),//'应付款金额',
             'add_time' => time(), // 下单时间
         ];
+
+        if( Session::has("GOODS{$this->pay->getPayList()[0]['goods']->goods_id}") ){
+            $orderData['zhubo_id'] = Session::get("GOODS{$this->pay->getPayList()[0]['goods']->goods_id}");
+        }
+
         if($orderData["order_amount"] < 0){
             throw new TpshopException("订单入库", 0, ['status' => -8, 'msg' => '订单金额不能小于0', 'result' => '']);
         }
