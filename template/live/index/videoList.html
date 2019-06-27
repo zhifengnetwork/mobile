@@ -58,7 +58,8 @@
                     that.hideNoMore();
                     $.ajax({
                         type: 'GET',
-                        url: '/index.php?m=Live&c=index&a=ajaxVideoList&p=' + that.page,
+						url:"{:U('live/index/ajaxvideolist')}",
+						data: {p: that.page},
                         success: function (data) {
                             that.list.append(data.content);
                             that.hasMore(data);
