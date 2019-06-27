@@ -68,7 +68,7 @@ class Events
                 $user_level = isset($message_data['user_level'])&&!empty($message_data['user_level']) ? $message_data['user_level'] : 0;
                 $new_message = array('type'=>$message_data['type'], 'client_id'=>$client_id, 'client_name'=>htmlspecialchars($client_name), 'time'=>date('Y-m-d H:i:s'),'user_level'=>$user_level);
                 print_r($new_message);
-                //Gateway::sendToGroup($room_id, json_encode($new_message));
+                Gateway::sendToGroup($room_id, json_encode($new_message));
                 Gateway::joinGroup($client_id, $room_id);
                 //更新观看人数
                 if(!empty($room_id)){
@@ -227,7 +227,7 @@ class Events
        {
            $room_id = $_SESSION['room_id'];
            $new_message = array('type'=>'logout', 'from_client_id'=>$client_id, 'from_client_name'=>$_SESSION['client_name'], 'time'=>date('Y-m-d H:i:s'));
-          // Gateway::sendToGroup($room_id, json_encode($new_message));
+           Gateway::sendToGroup($room_id, json_encode($new_message));
        }
    }
   

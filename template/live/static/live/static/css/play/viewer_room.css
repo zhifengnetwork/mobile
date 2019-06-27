@@ -167,7 +167,6 @@
 /* 礼物显示 */
 .showGift-wrap{
     width: 100%;
-    height: 4rem;
     overflow: auto;
 }
 .showGift-wrap .gift-item{
@@ -190,7 +189,6 @@
 }
 .showGift-wrap .gift-icon{
     width: .41rem;
-    height: 2.6rem;
     margin-right: .2rem;
 }
 .showGift-wrap .gift-icon img{
