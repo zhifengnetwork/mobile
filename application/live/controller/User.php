@@ -41,9 +41,15 @@ class User extends Base
         //获取礼物列表
         $giftList = Db::name('live_gift')->order('sort asc')->select();
 
+        //主播的用户名  主播图片
+        $zhubo = Db::name('users')->where(['user_id'=>$room['user_id']])->find();
+
         $this->assign('user_id', $this->user->user_id);
         $this->assign('user_name',$this->user->nickname);
         $this->assign('head_pic',$this->user->head_pic);
+        $this->assign('zhubo_user_name',$zhubo['nickname']);
+        $this->assign('zhubo_head_pic',$zhubo['head_pic']);
+
         $this->assign('level',isset($this->user->agentlevel)&&!empty($this->user->agentlevel) ? $this->user->agentlevel : 0);
         $this->assign('room_id', $room_id);
         $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
@@ -51,6 +57,7 @@ class User extends Base
         $this->assign('url',$url);
         $this->assign('room',$room);
         $this->assign('giftList',$giftList);
+        $this->assign('server_name',$_SERVER['SERVER_NAME']);
         return $this->fetch();
     }
 
@@ -62,8 +69,7 @@ class User extends Base
     public function sendGift(){
         $room_id = input('post.room_id', 0);
         //上线后去掉默认值  add by zgp
-        $gift_id = 1;
-//        $gift_id = input('post.gift_id',1);
+        $gift_id = input('post.gift_id',0);
         if(empty($room_id) || empty($gift_id)){
             return $this->failResult('参数有误',301);
         }
@@ -304,7 +310,8 @@ class User extends Base
     {
         $appID = "4c2954a8e1524f5ea15dc5ae14232042";
         $appCertificate = "1580a6da5ed94447840d870a07e1c6e2";
-        $account = input('post.room_id', 1);
+        $account = input('post.channel', 0);
+        echo $account;die;
         $expiredTs = 0;
         $builder = new RtmTokenBuilder($appID, $appCertificate, $account);
         $builder->setPrivilege(AccessToken::Privileges["kRtmLogin"], $expiredTs);

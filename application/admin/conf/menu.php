@@ -259,6 +259,8 @@ return array(
             array('name' => '点赞日志', 'act' => 'like_log', 'op' => 'Live'),
             array('name' => '红包日志', 'act' => 'red_log', 'op' => 'Live'),
             array('name' => '佣金比例', 'act' => 'commission_rate', 'op' => 'Live'),
+            array('name' => '主播红包', 'act' => 'red_log', 'op' => 'Live'),
+            array('name' => '用户红包', 'act' => 'user_red_log', 'op' => 'Live'),
         ))
     )),
 );

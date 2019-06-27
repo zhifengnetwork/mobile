@@ -121,3 +121,5 @@ CREATE TABLE `tp_commission_rate` (
   `type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '返佣方式 1:付款返佣,2:收货返佣',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='佣金比例表';
+ALTER TABLE  `tp_cart` ADD  `zhubo_id` INT( 11 ) UNSIGNED NOT NULL DEFAULT  '0' COMMENT  '主播ID（用户ID）' AFTER  `user_id`
+ALTER TABLE  `tp_order` ADD  `zhubo_id` INT( 11 ) UNSIGNED NOT NULL DEFAULT  '0' COMMENT  '主播ID（用户ID）' AFTER  `user_id`

@@ -16,6 +16,14 @@ define('EXTEND_MINIAPP', 5);
 define("EXTEND_H5", 6);//添加终端h5
 define('TIME_MOUTH', 4);
 
+function pre($data){
+    echo '<pre>';
+    print_r($data);
+}
+function pred($data){
+    echo '<pre>';
+    print_r($data);die;
+}
 
 function access_token()
 {

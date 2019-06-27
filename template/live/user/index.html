@@ -12,7 +12,7 @@
 
     <link href="__STATIC__/chat/css/bootstrap.min.css" rel="stylesheet">
     <link href="__STATIC__/chat/css/style.css" rel="stylesheet">
-
+    <script type="text/javascript" src="__PUBLIC__/js/mobile-util.js"></script>
     <script src="__STATIC__/live/static/js/public/rem.js" type="text/javascript" charset="utf-8"></script>
 
     <link rel="stylesheet" href="__STATIC__/live/static/css/public/swiper.css">
@@ -178,7 +178,8 @@
     
     </div>
     <div class="wrapper">
-
+        <input type="text" id="room_id" value="{$room_id}" style="display: none;">
+        <input type="text" id="users_id" value="{$users_id}" style="display: none;">
         <div id="div_device" class="panel panel-default" style="display: none">
             <div class="select">
                 <label for="audioSource">Audio source: </label><select id="audioSource"></select>
@@ -192,8 +193,8 @@
         <div id="div_join" class="panel panel-default" style="display: none">
             <div class="panel-body">
                 App ID: <input id="appId" type="text" value="4c2954a8e1524f5ea15dc5ae14232042" size="36" />
-                Channel: <input id="channel" type="text" value="<?php echo $room_id; ?>" size="4" />
-                Host: <input id="video" type="checkbox" {if condition="$user_id eq 1"}checked{/if} />
+                Channel: <input id="channel" type="text" value="<?php echo $room_id; ?>" />
+                Host: <input id="video" type="checkbox"></input>
                 <button id="join" class="btn btn-primary" onclick="join()">Join</button>
                 <button id="leave" class="btn btn-primary" onclick="leave()">Leave</button>
                 <button id="publish" class="btn btn-primary" onclick="publish()">Publish</button>
@@ -202,7 +203,7 @@
         </div>
     
         <!-- 摄像头 -->
-        <div id="video" style="margin:0 auto;width: 100%;height: 100vh;" >
+        <div id="video_live" style="margin:0 auto;width: 100%;height: 100vh;" >
             <div id="agora_local" style="width: 7.5rem;height:100vh;display:inline-block;"></div>
         </div>
     
@@ -210,8 +211,8 @@
         <div class="live-room">
             <div class="topBar">
                     <div class="viewer-info">
-                    <img class="avatar" src="{$head_pic}" />
-                    <span class="name">{$user_name}</span>
+                        <img class="avatar" src="{$zhubo_head_pic}" />
+                        <span class="name">{$zhubo_user_name}</span>
                 </div>
                 <div class="liveId">
                     <span class="shop-name" onclick="shop_url();">DC商城</span>
@@ -241,13 +242,13 @@
                 <div class="goods-links"></div>
     
                     <!-- 发送弹幕 -->
-                    <div class="chat-operate" >
+                <div class="chat-operate" >
                     <div class="msg-input">
                         <span>说点什么...</span>
                     </div>
                     <div class="send-redPacket"></div>
                     <div class="cart" onclick="cart_url('<?php echo $user_id; ?>','<?php echo $room_id; ?>');"></div>
-                    <div class="share" onclick="share_url();"></div>
+                    <div class="share" onclick = "share_url()"></div>
                     <div class="gift"></div>
                 </div>
     
@@ -290,9 +291,10 @@
                 <div class="swiper-container gift-container">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
+                            <input type="hidden" id="item_gift_id" name="item_gift_id" value="0" />
                             <?php if(!empty($giftList)){ ?>
                                 <?php foreach($giftList as $k=>$v){ ?>
-                                    <div class="gift-item"><img src="<?php echo $url; ?><?php echo $v['image']; ?>" /></div>
+                                    <div class="gift-item" id="<?php echo $v['id']; ?>"><img src="<?php echo $url; ?><?php echo $v['image']; ?>" /></div>
                                 <?php } ?>
                             <?php } ?>
                     </div>
@@ -336,7 +338,6 @@
     <script type="text/javascript" src="__STATIC__/chat/js/swfobject.js"></script>
     <script type="text/javascript" src="__STATIC__/chat/js/web_socket.js"></script>
     <script type="text/javascript" src="__STATIC__/chat/js/jquery.min.js"></script>
-    
     <script src="__STATIC__/live/static/js/public/jquery-3.3.1.min.js"></script>
     <script src="__STATIC__/live/static/js/public/swiper.js"></script>
 
@@ -352,23 +353,35 @@
  var ShareDesc   = "{$tpshop_config['shop_info_store_desc']}"; //分享描述
 
 $(function() {
-	if(isWeiXin()){
+    //是否微信打开
+    function is_weixn() {
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+            return true;
+        }
+        return false;
+    }
+    //判断是否是微信环境
+	if(true){
 		$.ajax({
 			type : "POST",
 			url:"/index.php?m=Mobile&c=Index&a=ajaxGetWxConfig&t="+Math.random(),
 			data:{'askUrl':encodeURIComponent(location.href.split('#')[0])},		
 			dataType:'JSON',
+            async:false,
 			success: function(res)
 			{
 				//微信配置
 				wx.config({
-				    debug: false, 
+				    debug: true, 
 				    appId: res.appId,
 				    timestamp: res.timestamp, 
 				    nonceStr: res.nonceStr, 
 				    signature: res.signature,
 				    jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage','onMenuShareQQ','onMenuShareQZone','hideOptionMenu'] // 功能列表，我们要使用JS-SDK的什么功能
 				});
+                console.log(123123);
+                console.log(res);
 			},
 			error:function(res){
 				console.log("wx.config error:");
@@ -376,8 +389,9 @@ $(function() {
 				return false;
 			}
 		}); 
+	}
 
-		// config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在 页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready 函数中。
+    	// config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在 页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready 函数中。
 		wx.ready(function(){
 		    // 获取"分享到朋友圈"按钮点击状态及自定义分享内容接口
 		    wx.onMenuShareTimeline({
@@ -408,14 +422,16 @@ $(function() {
 		        link:ShareLink,
 		        imgUrl:ShareImgUrl // 分享图标
 			});
-
-		   <if condition="CONTROLLER_NAME eq 'User'"> 
-				wx.hideOptionMenu();  // 用户中心 隐藏微信菜单
-		   </if>	
+		  	
 		});
-	}
+
+        
+     
 });
 </script>
+
+
+
     <script>
         $(function(){
             //礼物滑动
@@ -425,6 +441,8 @@ $(function() {
                 paginationClickable: true,
                 autoplayDisableOnInteraction: false
             });
+
+  
     
             // 主播发红包
             $('.send-redPacket').click(function(){
@@ -445,6 +463,16 @@ $(function() {
             // 礼物隐藏
             $(".gift-wrap .close").click(function(){
                 $(".gift-wrap").css("visibility","hidden");
+            })
+
+            // 礼物选中
+            $(".gift-wrap .gift-item").click(function(){
+                $("#item_gift_id").val(this.id);
+                var giftVal = $(this).html();
+                $(this).parents().siblings().children().removeClass("active");
+                $(this).siblings().removeClass("active");
+                $(this).addClass("active");
+
             })
 
             // 取消冒泡
@@ -529,6 +557,32 @@ $(function() {
             location.href="{:U('mobile/index/index');}";
         }
 
+                   //分享直播间
+      function share_url(){
+            // alert(111);
+            wx.onMenuShareTimeline({
+                    title: ShareTitle, // 分享标题
+                    link:  ShareLink,
+                    desc:  ShareDesc,
+                    imgUrl:ShareImgUrl, // 分享图标
+                    success: function () { 
+                        // 用户确认分享后执行的回调函数
+                        alert('分享成功');
+                    },
+                    cancel: function () { 
+                        alert('已取消');
+                        // 用户取消分享后执行的回调函数
+                    }
+            });
+            wx.error(function(res){
+                // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+                alert("errorMSG:"+res);
+            });
+           
+      }
+
+    
+
         //点赞
         function live_top(user_id,room_id){
             $.ajax({
@@ -553,15 +607,7 @@ $(function() {
             location.href="{:U('mobile/Cart/index');}";
         }
 
-        //分享直播间
-        function share_url(){
-            wx.onMenuShareTimeline({
-		        title: ShareTitle, // 分享标题
-		        link:ShareLink,
-		        desc: ShareDesc,
-		        imgUrl:ShareImgUrl // 分享图标
-		    });
-        }
+      
 
         function send_red(user_id,room_id){
             var redmoney = $("#redmoney").val();
@@ -592,14 +638,14 @@ $(function() {
         //发礼物
         function send_gift(user_id,room_id){
             //待修改礼物ID   add by zgp
-            var gift_id = $("#redmoney").val();
+            var gift_id = $("#item_gift_id").val();
             var to_client_id = $("#client_list option:selected").attr("value");
             var to_client_name = $("#client_list option:selected").text();
             var user_level = '<?php echo $level; ?>';
 
             $.ajax({
                 type: "POST",
-                data:{user_id:user_id,room_id:room_id,gift_id:1},
+                data:{user_id:user_id,room_id:room_id,gift_id:gift_id},
                 async:false,
                 url: "/Live/user/sendGift",
                 success: function(data){
@@ -733,7 +779,8 @@ $(function() {
     // 连接服务端
     function connect() {
         // 创建websocket
-        ws = new WebSocket("ws://"+document.domain+":7272");
+        var server_name = '<?php echo $server_name; ?>';
+        ws = new WebSocket("ws://"+server_name+":7373");
         // 当socket连接打开时，输入用户名
         ws.onopen = onopen;
         // 当有消息时根据消息类型显示不同信息
@@ -1012,11 +1059,8 @@ $(function() {
     //发购物链接
     function goods_url(from_client_id, from_client_name, content, time,goods_url){
         console.log(content);
-//        $(".goods-links").remove();
         var str = '';
-        str += '<div class="goods-links">';
         str += '商品链接：<a href="'+goods_url+'">'+goods_url+'</a>';
-        str += '</div>';
         $(".goods-links").html(str);
 
     }

@@ -6,10 +6,21 @@
     <link rel="stylesheet" href="__STATIC__/css/public/base.css">
     <link rel="stylesheet" href="__STATIC__/css/public/head.css">
     <link rel="stylesheet" href="__STATIC__/css/index/live.css">
+    <link rel="stylesheet" href="__STATIC__/live/static/css/play/play.css">
     <script src="__STATIC__/js/public/rem.js"></script>
     <script src="//at.alicdn.com/t/font_1233771_hrw8d8gme1.js"></script>
     <title>开始直播</title>
 </head>
+<style type="text/css">
+    .on{
+        color: white;
+        background:red;
+    }
+    /* .publish-btn{
+        color: black;
+    } */
+</style>
+
 <body>
     <div class="public_head">
         <i class="iconfont head_icon" onclick="window.history.back();">&#xe63f;</i>
@@ -26,37 +37,49 @@
     </div>
     <!-- 分享 -->
     <div class="share">
-        <div class="share_title">
-            <span class="share_title_text">分享直播</span>
-            <span class="share_title_text">获得更多人气</span>
-        </div>
         <div class="share_content">
             <div class="share_content_item">
                 <div class="share_content_icon">
                    <i class="iconfont share_icon" style="color: #f94971;">&#xe600;</i>
                 </div>
                 <div class="share_content_text">
-                    好友
-                </div>
-            </div>
-            <div class="share_content_item">
-                <div class="share_content_icon">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-pengyouquan"></use>
-                    </svg>
-                </div>
-                <div class="share_content_text">
-                    朋友圈
+                    添加商品
                 </div>
             </div>
         </div>
     </div>
-    <!-- 开始直播 -->
-    <div class="live">
-        <div class="live_btn">
-            开始直播
+
+
+    
+    <!-- 商品选择 -->
+    <div class="all-goods" style="display:block">
+        <h1>全部宝贝<?php echo count($goodsList); ?></h1>
+        <div class="goods-list" style="height: 6rem">
+            <?php if(!empty($goodsList)){ ?>
+                <?php foreach($goodsList as $k=>$v){ ?>
+                    <div class="goods-item" >
+                        <div class="img-wrap">
+                            <a href="#"><img src="<?php echo $v['goods_url']; ?>" /></a>
+                        </div>
+                        <div class="text">
+                            <h3><a href="#"><?php echo $v['goods_name']; ?></a></h3>
+                            <p class="price">￥<?php echo $v['shop_price']; ?></p>
+                            <div class="publish-btn"  style="color:black" good_ids = "<?php echo $v['goods_id']; ?>">选择</div>
+                        </div>
+                    </div>
+                <?php } ?>
+            <?php } ?>
         </div>
-    </div>
+     </div>
+
+     <div  class ="live_btns" style="position: fixed; bottom:0.5rem;color: #fff;
+     text-align: center;
+     line-height: .8rem;
+     border-radius: .1rem;  
+     background: linear-gradient(to right,#f8566c,#fa3479);z-index:99 ; 
+    width: 100%;padding: 0 ;" >
+            开始直播 
+     </div>
     <script src="__STATIC__/js/public/jquery-3.3.1.min.js"></script>
     <script src="__PUBLIC__/js/global.js"></script>
     <script src="__STATIC__/js/layer.js?v=22222"  type="text/javascript" ></script>
@@ -82,10 +105,16 @@
                 }
             });
 
-            $('.live_btn').click(function () {
+            $('.live_btns').click(function () {
+                //商品
+                var good_ids = '';
+                $(".on").each(function(i){ 
+                     good_ids += $(this).attr('good_ids') + ',';
+                })
+                formData.append('good_ids',good_ids);
                 $.ajax({
                     type: 'post',
-                    url: '/index.php?m=Live&c=Index&a=start&t=' + Math.random(),
+                    url:"{:U('live/index/start')}",
                     data: formData,
                     dataType: 'json',
                     async: false,
@@ -104,6 +133,22 @@
                     }
                 })
             })
+
+
+
+            // // 发布商品
+            $(".publish-btn").click(function(){
+                if($(this).hasClass('on')){
+                    $(this).removeClass('on');
+                }else{
+                    $(this).addClass('on'); 
+                    $(this).css('color:white')
+                }
+            })
+
+
+
+
         })
     </script>
 </body>

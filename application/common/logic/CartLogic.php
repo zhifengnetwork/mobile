@@ -13,6 +13,7 @@ use app\common\util\TpshopException;
 use think\Model;
 use think\Db;
 use think\Page;
+use think\Session;
 
 
 /**
@@ -360,6 +361,9 @@ class CartLogic extends Model
                 'prom_type' => 0,   // 0 普通订单,1 限时抢购, 2 团购 , 3 促销优惠
                 'prom_id' => 0,   // 活动id
             );
+            if( Session::has("GOODS{$this->goods['goods_id']}") ){
+                $cartAddData['zhubo_id'] = Session::get("GOODS{$this->goods['goods_id']}");
+            }
             if ($this->specGoodsPrice) {
                 $cartAddData['item_id'] = $this->specGoodsPrice['item_id'];
                 $cartAddData['spec_key'] = $this->specGoodsPrice['key'];
@@ -436,6 +440,10 @@ class CartLogic extends Model
                 'add_time' => time(), // 加入购物车时间
                 'prom_type' => 1,   // 0 普通订单,1 限时抢购, 2 团购 , 3 促销优惠
             );
+            if( Session::has("GOODS{$this->goods['goods_id']}") ){
+                $cartAddFlashSaleData['zhubo_id'] = Session::get("GOODS{$this->goods['goods_id']}");
+            }
+
             //商品有规格
             if ($this->specGoodsPrice) {
                 $cartAddFlashSaleData['spec_key'] = $this->specGoodsPrice['key'];
@@ -508,6 +516,9 @@ class CartLogic extends Model
                 'add_time' => time(), // 加入购物车时间
                 'prom_type' => 2,   // 0 普通订单,1 限时抢购, 2 团购 , 3 促销优惠
             );
+            if( Session::has("GOODS{$this->goods['goods_id']}") ){
+                $cartAddFlashSaleData['zhubo_id'] = Session::get("GOODS{$this->goods['goods_id']}");
+            }
             //商品有规格
             if ($this->specGoodsPrice) {
                 $cartAddFlashSaleData['spec_key'] = $this->specGoodsPrice['key'];
@@ -598,6 +609,9 @@ class CartLogic extends Model
                 'add_time' => time(), // 加入购物车时间
                 'prom_type' => 3,   // 0 普通订单,1 限时抢购, 2 团购 , 3 促销优惠
             );
+            if( Session::has("GOODS{$this->goods['goods_id']}") ){
+                $cartAddData['zhubo_id'] = Session::get("GOODS{$this->goods['goods_id']}");
+            }
             //商品有规格
             if ($this->specGoodsPrice) {
                 $cartAddData['item_id'] = $this->specGoodsPrice['item_id'];

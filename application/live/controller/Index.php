@@ -61,6 +61,7 @@ class Index extends Base
         //add by zgp 2019.6.26
         // dump($room['room_id']);die;
         $this->assign('room_id', $room['room_id']);
+        $this->assign('server_name',$_SERVER['SERVER_NAME']);
         $this->assign('user_id', $user_id . time());
         $this->assign('users_id', $user_id);
         return $this->fetch();
@@ -147,6 +148,19 @@ class Index extends Base
     public function set()
     {
         $user_id = $this->user->user_id;
+
+        $goodsList  =  Db::name('goods')->field('goods_id,goods_name,original_img,store_count,market_price,shop_price,cost_price')->limit(0,100)->select();
+      
+        $goodsListData = [];
+
+        $url = SITE_URL;
+       
+        foreach($goodsList as $k=>$v){
+            $goodsListData[$k] = $v;
+            $goodsListData[$k]['goods_url'] = $url.$v['original_img'];
+        }
+        $this->assign('goodsList',$goodsListData);
+
         $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
         if (empty($identity)) {
             return $this->failResult('身份验证错误', 301);
@@ -160,10 +174,16 @@ class Index extends Base
      */
     public function start()
     {
-        $user_id = $this->user->user_id;
+        $user_id  = $this->user->user_id;
+        //添加商品
+        $good_ids = rtrim(input('good_ids', ''), ',');
         $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
         if (empty($identity)) {
             return $this->failResult('身份验证错误', 301);
+        }
+        if(!empty($good_ids)){
+            $good_ids  = explode(',', $good_ids);
+            $goods_arr = json_encode($good_ids, JSON_NUMERIC_CHECK);
         }
 
         if (!($fengmian = request()->file('fengmian'))) {
@@ -175,13 +195,15 @@ class Index extends Base
             return $this->failResult('封面上传失败', 301);
         }
         $data = [
-            'user_id' => $user_id,
-            'room_id' => $user_id . time(),
+            'good_ids' => !empty($good_ids)?$goods_arr:'',
+            'user_id'  => $user_id,
+            'room_id'  => $user_id . time(),
             'pic_fengmian' => DS . $this->uploadDir . DS . $info->getSaveName(),
             'location' => '',
             'start_time' => time(),
             'status' => 1
         ];
+        
         $result = Db::name('user_video')->insert($data);
         if (!$result) {
             return $this->failResult('开始直播失败', 301);
@@ -203,24 +225,28 @@ class Index extends Base
         }
 
         $room_id = I('id');
-        $room = (new UserVideo)->where(['user_id' => $user_id, 'room_id' => $room_id])->find();
+        $room = (new UserVideo)->where(['room_id' => $room_id])->find();
         if (empty($room)) {
-//            return $this->failResult('不存在的直播间', 301);
+            return $this->failResult('不存在的直播间', 301);
         }
         Db::name('user_video')->where(['room_id'=>$room_id])->update(['status'=>2]);
 
         $arr = timediff($room['start_time'],time());
-        $identity['pic_head'] = $this->user['head_pic'];
+        //主播的用户名  主播图片
+        $zhubo = Db::name('users')->where(['user_id'=>$room['user_id']])->find();
+
+        $identity['pic_head'] = $zhubo['head_pic'];
         $identity['pic_fengmian'] = $this->url . $identity['pic_fengmian'];
         $this->assign('identity', $identity);
         $this->assign('room', $room);
         $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
         $url=$http_type.$_SERVER['SERVER_NAME'];
+
         $this->assign('room_pic',$url.$room['pic_fengmian']);
-        $this->assign('user_name',$this->user->nickname);
-        $this->assign('user_id',$user_id);
+        $this->assign('user_name',$zhubo['nickname']);
+        $this->assign('user_id',$zhubo['user_id']);
         $this->assign('end_time',$arr['hour']."：".$arr['min']."：".$arr['sec']);
-        $this->assign('head_pic',$this->user->head_pic);
+        $this->assign('head_pic',$zhubo['head_pic']);
         return $this->fetch();
     }
 
@@ -228,7 +254,7 @@ class Index extends Base
     {
         $appID = "4c2954a8e1524f5ea15dc5ae14232042";
         $appCertificate = "1580a6da5ed94447840d870a07e1c6e2";
-        $account = "1000";
+        $account = input('post.channel', 0);
         $expiredTs = 0;
         $builder = new RtmTokenBuilder($appID, $appCertificate, $account);
         $builder->setPrivilege(AccessToken::Privileges["kRtmLogin"], $expiredTs);

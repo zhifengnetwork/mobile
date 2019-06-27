@@ -46,7 +46,7 @@ class Wechat extends Base
                 $row && exit($this->success("修改成功"));
                 exit($this->error("修改失败"));
             }
-            $apiurl = 'http://' . $_SERVER['HTTP_HOST'] . '/index.php?m=Home&c=Weixin&a=index';
+            $apiurl = 'https://' . $_SERVER['HTTP_HOST'] . '/index.php?m=Home&c=Weixin&a=index';
 
             $this->assign('wechat', $wechat);
             $this->assign('apiurl', $apiurl);

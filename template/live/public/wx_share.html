@@ -66,6 +66,7 @@ $(function() {
 				    signature: res.signature,
 				    jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage','onMenuShareQQ','onMenuShareQZone','hideOptionMenu'] // 功能列表，我们要使用JS-SDK的什么功能
 				});
+			
 			},
 			error:function(res){
 				console.log("wx.config error:");
@@ -107,6 +108,7 @@ $(function() {
 			});
 
 		   <if condition="CONTROLLER_NAME eq 'User'"> 
+		        alert(1111);
 				wx.hideOptionMenu();  // 用户中心 隐藏微信菜单
 		   </if>	
 		});

@@ -160,7 +160,7 @@
                 });
                 $.ajax({
                     type: 'post',
-                    url: '/index.php?m=Live&c=Apply&a=upload&t=' + Math.random(),
+                    url:"{:U('live/apply/upload')}",
                     data: formData,
                     dataType: 'json',
                     async: false,
