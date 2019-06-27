@@ -95,10 +95,12 @@
                 </div>
     
                 <!-- 商品链接 -->
-                <div class="goods-links"></div>
+                <div class="goods-links">
+                    asdadadsad
+                </div>
     
                     <!-- 发送弹幕 -->
-                    <div class="chat-operate" >
+                <div class="chat-operate" >
                     <div class="msg-input">
                         <span>说点什么...</span>
                     </div>
@@ -211,6 +213,7 @@
  var ShareDesc   = "{$tpshop_config['shop_info_store_desc']}"; //分享描述
 
 $(function() {
+    //判断是否是微信环境
 	if(isWeiXin()){
 		$.ajax({
 			type : "POST",

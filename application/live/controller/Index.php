@@ -37,8 +37,8 @@ class Index extends Base
 
         //add by zgp 2019.6.26
         //获取商品列表
-        $room_id = input('get.room_id', 1);
-        $room = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->find();
+        // $room_id = input('get.room_id', 1);
+        // $room = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->find();
 //        if (empty($room)) {
 //            return $this->failResult('不存在的直播间', 301);
 //        }
@@ -144,10 +144,16 @@ class Index extends Base
      */
     public function start()
     {
-        $user_id = $this->user->user_id;
+        $user_id  = $this->user->user_id;
+        //添加商品
+        $good_ids = rtrim(input('good_ids', ''), ',');
         $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
         if (empty($identity)) {
             return $this->failResult('身份验证错误', 301);
+        }
+        if(!empty($good_ids)){
+            $good_ids  = explode(',', $good_ids);
+            $goods_arr = json_encode($good_ids, JSON_NUMERIC_CHECK);
         }
 
         if (!($fengmian = request()->file('fengmian'))) {
@@ -159,13 +165,15 @@ class Index extends Base
             return $this->failResult('封面上传失败', 301);
         }
         $data = [
-            'user_id' => $user_id,
-            'room_id' => $user_id . time(),
+            'good_ids' => !empty($good_ids)?$goods_arr:'',
+            'user_id'  => $user_id,
+            'room_id'  => $user_id . time(),
             'pic_fengmian' => DS . $this->uploadDir . DS . $info->getSaveName(),
             'location' => '',
             'start_time' => time(),
             'status' => 1
         ];
+        
         $result = Db::name('user_video')->insert($data);
         if (!$result) {
             return $this->failResult('开始直播失败', 301);
