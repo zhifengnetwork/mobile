@@ -245,6 +245,42 @@ $(function() {
 				return false;
 			}
 		}); 
+        	// config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在 页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready 函数中。
+		wx.ready(function(){
+		    // 获取"分享到朋友圈"按钮点击状态及自定义分享内容接口
+		    wx.onMenuShareTimeline({
+		        title: ShareTitle, // 分享标题
+		        link:ShareLink,
+		        desc: ShareDesc,
+		        imgUrl:ShareImgUrl // 分享图标
+		    });
+
+		    // 获取"分享给朋友"按钮点击状态及自定义分享内容接口
+		    wx.onMenuShareAppMessage({
+		        title: ShareTitle, // 分享标题
+		        desc: ShareDesc, // 分享描述
+		        link:ShareLink,
+		        imgUrl:ShareImgUrl // 分享图标
+		    });
+			// 分享到QQ
+			wx.onMenuShareQQ({
+		        title: ShareTitle, // 分享标题
+		        desc: ShareDesc, // 分享描述
+		        link:ShareLink,
+		        imgUrl:ShareImgUrl // 分享图标
+			});	
+			// 分享到QQ空间
+			wx.onMenuShareQZone({
+		        title: ShareTitle, // 分享标题
+		        desc: ShareDesc, // 分享描述
+		        link:ShareLink,
+		        imgUrl:ShareImgUrl // 分享图标
+			});
+
+		   <if condition="CONTROLLER_NAME eq 'User'"> 
+				wx.hideOptionMenu();  // 用户中心 隐藏微信菜单
+		   </if>	
+		});
 	}
 
         
