@@ -353,7 +353,7 @@
  var httpPrefix  = "http://{$Think.server.SERVER_NAME}";
  var ShareLink   = httpPrefix+"/index.php?m=live&c=user&a=index&room_id={$room_id}"; //默认分享链接
  var ShareImgUrl = httpPrefix+"{$tpshop_config['shop_info_store_logo']}"; //分享图标
- var ShareTitle  = "某某的直播间"; //分享标题
+ var ShareTitle  = "{$zhubo_user_name}"+"的直播间"; //分享标题
  var ShareDesc   = "{$tpshop_config['shop_info_store_desc']}"; //分享描述
  //是否微信打开
  function is_weixn() {
