@@ -14,6 +14,7 @@ namespace app\live\controller;
  * 主要是处理 onMessage onClose 
  */
 use \GatewayWorker\Lib\Gateway;
+use think\Db;
 
 class Events
 {
@@ -66,6 +67,10 @@ class Events
                 $new_message = array('type'=>$message_data['type'], 'client_id'=>$client_id, 'client_name'=>htmlspecialchars($client_name), 'time'=>date('Y-m-d H:i:s'));
                 Gateway::sendToGroup($room_id, json_encode($new_message));
                 Gateway::joinGroup($client_id, $room_id);
+                //更新观看人数
+                if(!empty($room_id)){
+                    Db::name('user_video')->where(['room_id' => $room_id])->setInc('look_amount');
+                }
                
                 // 给当前用户发送用户列表 
                 $new_message['client_list'] = $clients_list;
