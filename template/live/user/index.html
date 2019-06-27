@@ -230,7 +230,7 @@ $(function() {
 			{
 				//微信配置
 				wx.config({
-				    debug: false, 
+				    debug: true, 
 				    appId: res.appId,
 				    timestamp: res.timestamp, 
 				    nonceStr: res.nonceStr, 
@@ -279,10 +279,7 @@ $(function() {
 		        link:ShareLink,
 		        imgUrl:ShareImgUrl // 分享图标
 			});
-
-		   <if condition="CONTROLLER_NAME eq 'User'"> 
-				wx.hideOptionMenu();  // 用户中心 隐藏微信菜单
-		   </if>	
+		  	
 		});
 
         
