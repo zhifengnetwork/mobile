@@ -33,12 +33,14 @@ class Index extends Base
 
         // 没有正在直播的，跳转设置直播信息
         $room = Db::name('user_video')->where(['user_id' => $user_id, 'status' => 1])->order('id desc')->find();
+        
         !$room && $this->redirect('/Live/Index/set');
 
         //add by zgp 2019.6.26
         //获取商品列表
-        $room_id = input('get.room_id', 1);
-        $room = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->find();
+        // $room_id = input('get.room_id', 1);
+        // $room = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->find();
+        // dump($room['room_id']);die;
 //        if (empty($room)) {
 //            return $this->failResult('不存在的直播间', 301);
 //        }
@@ -63,7 +65,7 @@ class Index extends Base
         $this->assign('user_name',$this->user->nickname);
         $this->assign('level',isset($this->user->agentlevel)&&!empty($this->user->agentlevel) ? $this->user->agentlevel : 0);
         //add by zgp 2019.6.26
-
+        // dump($room['room_id']);die;
         $this->assign('room_id', $room['room_id']);
         $this->assign('user_id', $user_id . time());
         $this->assign('users_id', $user_id);

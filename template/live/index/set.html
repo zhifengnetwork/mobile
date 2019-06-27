@@ -94,7 +94,7 @@
                     processData: false, //因为data值是FormData对象，不需要对数据做处理
                     success: function (data) {
                         if (data.status == 200) {
-                            window.location.href = '/index.php/live';
+                            window.location.href = '/live';
                         } else {
                             layer.open({content: data.msg, time: 2});
                         }

@@ -168,7 +168,7 @@
                 </div>
             </div>
             <div class="popup-footer">
-                <span class="send-btn" onclick="redSubmit()" value="发红包" >发红包</span>
+                <span class="send-btn" onclick="redSubmit('<?php echo $user_id; ?>','<?php echo $room_id; ?>')" value="发红包" >发红包</span>
             </div>
             <div class="close-btn"></div>
         </div>
@@ -578,19 +578,16 @@
     }
 
     //红包提交
-    function redSubmit(){
+    function redSubmit(user_id,room_id){
         var money = document.getElementById('money').value;
         var num = document.getElementById('num').value;
-        var room_id = document.getElementById('room_id').value;
-        var users_id = document.getElementById('users_id').value;
         var to_client_id = $("#client_list option:selected").attr("value");
         var to_client_name = $("#client_list option:selected").text();
-       
         $.ajax({
             type: 'post',
             async:false,
             url: "{:U('live/index/redSubmit')}", //请求的服务端地址
-            data: {money: money,num: num,room_id: room_id},
+            data: {money: money,num: num,room_id: room_id,user_id: user_id},
             dataType: 'json',
             success: function (data) {
                 if(data.status==200){
@@ -699,9 +696,9 @@
     function red_receive(from_client_id, from_client_name, content, time){
         console.log(content);
         var str = '';
-        str += '<li class="dm-item">';
+        str +='<li class="dm-item">';
         str +='<span class="level level-<?php echo $level;?>"></span>';
-        str +=' <span class="viewer-name">'+from_client_name+'：</span>';
+        str +='<span class="viewer-name">'+from_client_name+'：</span>';
         str +='<span class="barrage-con">'+content+'</span>';
         str +='</li>';
         $("#dialog-list").append(str);
@@ -715,6 +712,7 @@
         str +='<span class="level level-<?php echo $level;?>"></span>';
         str +=' <span class="viewer-name">'+from_client_name+'：</span>';
         str +='<span class="barrage-con">'+content+'</span>';
+        str +='<span class="barrage-con" ><button type="button">抢红包</button></span>';
         str +='</li>';
         $("#dialog-list").append(str);
     }
