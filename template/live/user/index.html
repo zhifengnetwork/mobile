@@ -411,33 +411,33 @@ $(function() {
         }
 
         //发送商品链接
-        function cart_url(user_id,room_id){
-            var goods_id = $("#redmoney").val();
-            var to_client_id = $("#client_list option:selected").attr("value");
-            var to_client_name = $("#client_list option:selected").text();
-            $.ajax({
-                type: "POST",
-                data:{user_id:user_id,room_id:room_id,goods_id:goods_id},
-                async:false,
-                url: "/Live/user/sendGoodsUrl",
-                success: function(data){
-                    if(data.status==200){
-                        var content = data.data;
-                        var to_client_id = content.to_client_id;
-                        var to_client_name = content.to_client_name;
-                        var goods_url = content.goods_url;
-                        var content = content.content;
-                        ws.send('{"type":"goods","goods_url":"'+goods_url+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
-                        $(".mask,.redPacket-popup").hide();
-                    }else{
-                        alert(data.msg);
-                    }
-                }
-            })
-        }
+//        function cart_url(user_id,room_id){
+//            var goods_id = $("#redmoney").val();
+//            var to_client_id = $("#client_list option:selected").attr("value");
+//            var to_client_name = $("#client_list option:selected").text();
+//            $.ajax({
+//                type: "POST",
+//                data:{user_id:user_id,room_id:room_id,goods_id:goods_id},
+//                async:false,
+//                url: "/Live/index/sendGoodsUrl",
+//                success: function(data){
+//                    if(data.status==200){
+//                        var content = data.data;
+//                        var to_client_id = content.to_client_id;
+//                        var to_client_name = content.to_client_name;
+//                        var goods_url = content.goods_url;
+//                        var content = content.content;
+//                        ws.send('{"type":"goods","goods_url":"'+goods_url+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
+//                        $(".mask,.redPacket-popup").hide();
+//                    }else{
+//                        alert(data.msg);
+//                    }
+//                }
+//            })
+//        }
 
         //跳转到购物车
-        function cart_url_old(){
+        function cart_url(){
             location.href="{:U('mobile/Cart/index');}";
         }
 
