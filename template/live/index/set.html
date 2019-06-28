@@ -106,15 +106,11 @@
             });
 
             $('.live_btns').click(function () {
-<<<<<<< HEAD
-                layer.msg('正在读取数据，请稍候……');
-=======
                 if (!btn) return false;
                 btn = false;
->>>>>>> 15a252459fa64f88d1888ba3b2648f03a2ab146c
                 //商品
-                var el = $(this),
-                    text = el.text(),
+                var el      = $(this),
+                    text     = el.text(),
                     good_ids = '';
                 $(".on").each(function (i) {
                     good_ids += $(this).attr('good_ids') + ',';
