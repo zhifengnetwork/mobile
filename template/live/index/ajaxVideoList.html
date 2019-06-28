@@ -1,6 +1,6 @@
 <if condition="$count gt 0">
 	<foreach name="videoList" item="vo" key="k">
-		<div class="live_list">
+		<div class="live_list" style="width:48%;height:4rem;border-radius:10px;overflow:hidden;">
 			<div class="live">
 				<a href="{:U('Live/user/index',array('room_id'=>$vo.room_id))}"><img src="{$vo.pic_fengmian}"/></a>
 			</div>

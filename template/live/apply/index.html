@@ -96,7 +96,7 @@
     <script src="__STATIC__/js/layer.js?v=22222"  type="text/javascript" ></script>
     <script>
         $(function(){
-            var formData = new FormData();
+            var formData = new FormData(),btn = true;
 
             $("#img").change(function (e) {
                 for (var i = 0; i < e.target.files.length; i++) {
@@ -138,8 +138,12 @@
             });
 
             $('.apply_send').click(function () {
-                var name = $.trim($('#name').val());
-                var mobile = $.trim($('#mobile').val());
+                if (!btn) return false;
+                btn = false;
+                var el = $(this),
+                    text = el.text(),
+                    name = $.trim($('#name').val()),
+                    mobile = $.trim($('#mobile').val());
                 if (name == '') {
                     layer.open({content: '用户名不能为空!', time: 2});
                     return false;
@@ -176,6 +180,13 @@
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         showErrorMsg('网络异常，请稍后重试');
+                    },
+                    beforeSend: function () {
+                        el.text('提交中...');
+                    },
+                    complete: function () {
+                        btn = true;
+                        el.text(text);
                     }
                 })
             })
