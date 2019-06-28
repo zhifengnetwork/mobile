@@ -2,13 +2,13 @@
 
 namespace app\live\validate;
 
-use    think\Validate;
+use think\Validate;
 
 class Apply extends Validate
 {
     protected $rule = [
         'mobile' => 'require|length:11|checkMobile',
-        'name' => 'require|max:50|unique:user_verify_identity_info',
+        'name' => 'require|max:50|unique:user_verify_identity_info,name^id',
     ];
 
     protected $message = [
