@@ -466,4 +466,73 @@ class Index extends Base
         }
     }
 
+    /**
+     * 红包超时退回
+     */
+    public function sendBackRed()
+    {
+
+        // 获取所有大于5分钟的红包
+        $key = $_GET['key'];
+        
+        if(!$key|| $key != 'HGQ3keAjEyWPnT9AoutsCWFky99lbgKE'){
+            echo 'no...';exit;
+        }
+        // dump($key);exit;
+        $map['m.time_out'] = 0;
+        $map['m.all_get'] = 0;
+        $red_all = Db::name('red_master')->alias('m')
+                ->field('m.id,m.uid,m.room_id,m.num,m.money,m.create_time,m.time_out,m.all_get')
+                ->where('m.time_out',0)
+                ->select();
+        // 如果超时退回标记主表time_out=1 以及从表type=2，并且统计红包是否全部领取，如果全部领取标记主表all_get=1
+        $out_time = 350; // 过期时间
+        $i = 0;
+        if($red_all){
+            foreach($red_all as $k=>$v){
+                // 判断当前时间是否大于等于红包创建时间+过期时间
+                if(time() >= $v['create_time']+$out_time){
+                    // 根据当前主表id获取从表没被抢的红包记录 统计没被领取红包总金额
+                    $no_get_money = Db::name('red_detail')->where(['m_id'=>$v['id'], 'type'=>0])->sum('money');
+                    // dump($v['uid']);
+                    // 退还金额到对应用户
+                    if($no_get_money){
+                        $out_money_res = Db::name('users')->where(['user_id'=>$v['uid']])->setInc('user_money', $no_get_money);
+                        if($out_money_res){
+                            // dump($out_money_res);
+                            // 修改状态
+                            $out_update_res = Db::name('red_detail')->where(['m_id'=>$v['id'], 'type'=>0])->update(['type'=>2, 'out_time'=>time()]);
+                            $out_update_res2 = Db::name('red_master')->where(['id'=>$v['id']])->update(['time_out'=>1,'all_get'=>1]);
+                            // 插入日志
+                            $out_money_log = [
+                                'from_id' => $v['uid'],
+                                'uid' => $v['uid'],
+                                'm_id' => $v['id'],
+                                'red_money' => $v['money'],
+                                'money' => $no_get_money,
+                                'type' => 12,
+                                'create_time' => time(),
+                                'remake' => '红包退回'
+                            ];
+                            $out_money_log_res = Db::name('red_log')->insert($out_money_log);
+                        }else{
+                            // echo 'out red update red err\n';
+                        }
+                    }else{
+                        // 修改主表标记全部领取
+                        $out_update_res3 = Db::name('red_master')->where(['id'=>$v['id']])->update(['all_get'=>1]);
+                        continue;
+                    }
+                }
+                $i++;
+            }
+            echo 'out red '.$i;
+        }else{
+            echo 'no order\n';
+            exit;
+        }
+
+
+    }
+
 }
