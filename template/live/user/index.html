@@ -178,8 +178,6 @@
     
     </div>
     <div class="wrapper">
-        <input type="text" id="room_id" value="{$room_id}" style="display: none;">
-        <input type="text" id="users_id" value="{$users_id}" style="display: none;">
         <div id="div_device" class="panel panel-default" style="display: none">
             <div class="select">
                 <label for="audioSource">Audio source: </label><select id="audioSource"></select>
@@ -189,7 +187,7 @@
             </div>
         </div>
         <input type="text" id="room_id" value="{$room_id}" style="display: none;">
-        <input type="text" id="users_id" value="{$users_id}" style="display: none;">
+        <input type="text" id="user_id" value="{$users_id}" style="display: none;">
         <div id="div_join" class="panel panel-default" style="display: none">
             <div class="panel-body">
                 App ID: <input id="appId" type="text" value="4c2954a8e1524f5ea15dc5ae14232042" size="36" />
@@ -203,7 +201,7 @@
         </div>
     
         <!-- 摄像头 -->
-        <div id="video_live" style="margin:0 auto;width: 100%;height: 100vh;" >
+        <div id="video" style="margin:0 auto;width: 100%;height: 100vh;" >
             <div id="agora_local" style="width: 7.5rem;height:100vh;display:inline-block;"></div>
         </div>
     
@@ -662,7 +660,7 @@ $(function() {
 <script language="javascript">
 
     if(!AgoraRTC.checkSystemRequirements()) {
-//        alert("Your browser does not support WebRTC!");
+        alert("Your browser does not support WebRTC!");
     }
 
     /* select Log type */
@@ -687,8 +685,6 @@ $(function() {
         document.getElementById("join").disabled = true;
         document.getElementById("video").disabled = true;
         var channel_key = null;
-
-        var channel_key=null;
         $.ajax({
             type: "POST",
             data:{appId:appId.value,channel:'<?php echo $room_id; ?>'},
