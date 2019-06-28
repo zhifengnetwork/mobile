@@ -136,7 +136,7 @@ class Events
                 }
                 $room_id = $_SESSION['room_id'];
                 $client_name = $_SESSION['client_name'];
-
+                
                 $new_message = array(
                     'type'=>'redpacket',
                     'from_client_id'=>$client_id,
@@ -163,6 +163,7 @@ class Events
                     'from_client_id'=>$client_id,
                     'from_client_name' =>$client_name,
                     'to_client_id'=>'all',
+                    'm_id'=>$message_data['m_id'],
                     'content'=>nl2br(htmlspecialchars($message_data['content'])),
                     'time'=>date('Y-m-d H:i:s'),
                 );
@@ -184,6 +185,7 @@ class Events
                     'from_client_id'=>$client_id,
                     'from_client_name' =>$client_name,
                     'to_client_id'=>'all',
+                    'moeny'=>$message_data['money'],
                     'content'=>nl2br(htmlspecialchars($message_data['content'])),
                     'time'=>date('Y-m-d H:i:s'),
                 );
