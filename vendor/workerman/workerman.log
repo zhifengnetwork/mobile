@@ -1,2 +1,879 @@
 2019-06-26 16:32:35 pid:1 Worker process terminated
 2019-06-26 16:33:19 pid:1 Worker process terminated
+2019-06-28 14:38:51 pid:1 think\exception\ErrorException: Undefined index: money in F:\Visual-NMP-x64\www\mobile\application\live\controller\Events.php:210
+Stack trace:
+#0 F:\Visual-NMP-x64\www\mobile\application\live\controller\Events.php(210): think\Error::appError(8, 'Undefined index...', 'F:\\Visual-NMP-x...', 210, Array)
+#1 [internal function]: app\live\controller\Events::onMessage('7f00000108fc000...', '{"type":"red_re...')
+#2 F:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(384): call_user_func('app\\live\\contro...', '7f00000108fc000...', '{"type":"red_re...')
+#3 [internal function]: GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#4 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Connection\TcpConnection.php(657): call_user_func(Array, Object(Workerman\Connection\AsyncTcpConnection), Array)
+#5 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #26)
+#6 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Events\Select.php(286): call_user_func_array(Array, Array)
+#7 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(2096): Workerman\Events\Select->loop()
+#8 F:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(190): Workerman\Worker->run()
+#9 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1160): GatewayWorker\BusinessWorker->run()
+#10 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1102): Workerman\Worker::forkWorkersForWindows()
+#11 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(459): Workerman\Worker::forkWorkers()
+#12 F:\Visual-NMP-x64\www\mobile\application\live\controller\Sbusinessworker.php(24): Workerman\Worker::runAll()
+#13 [internal function]: app\live\controller\Sbusinessworker->__construct()
+#14 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(362): ReflectionClass->newInstanceArgs(Array)
+#15 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\Loader.php(459): think\App::invokeClass('app\\live\\contro...')
+#16 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(577): think\Loader::controller('Sbusinessworker', 'controller', false, 'Error')
+#17 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(459): think\App::module(Array, Array, false)
+#18 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(142): think\App::exec(Array, Array)
+#19 F:\Visual-NMP-x64\www\mobile\thinkphp\start.php(19): think\App::run()
+#20 F:\Visual-NMP-x64\www\mobile\start_businessworker.php(5): require('F:\\Visual-NMP-x...')
+#21 {main}
+2019-06-28 14:38:51 pid:1 Worker process terminated
+2019-06-28 14:50:33 pid:1 think\exception\ErrorException: Undefined index: money in F:\Visual-NMP-x64\www\mobile\application\live\controller\Events.php:210
+Stack trace:
+#0 F:\Visual-NMP-x64\www\mobile\application\live\controller\Events.php(210): think\Error::appError(8, 'Undefined index...', 'F:\\Visual-NMP-x...', 210, Array)
+#1 [internal function]: app\live\controller\Events::onMessage('7f00000108fc000...', '{"type":"red_re...')
+#2 F:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(384): call_user_func('app\\live\\contro...', '7f00000108fc000...', '{"type":"red_re...')
+#3 [internal function]: GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#4 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Connection\TcpConnection.php(657): call_user_func(Array, Object(Workerman\Connection\AsyncTcpConnection), Array)
+#5 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #26)
+#6 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Events\Select.php(286): call_user_func_array(Array, Array)
+#7 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(2096): Workerman\Events\Select->loop()
+#8 F:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(190): Workerman\Worker->run()
+#9 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1160): GatewayWorker\BusinessWorker->run()
+#10 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1102): Workerman\Worker::forkWorkersForWindows()
+#11 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(459): Workerman\Worker::forkWorkers()
+#12 F:\Visual-NMP-x64\www\mobile\application\live\controller\Sbusinessworker.php(24): Workerman\Worker::runAll()
+#13 [internal function]: app\live\controller\Sbusinessworker->__construct()
+#14 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(362): ReflectionClass->newInstanceArgs(Array)
+#15 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\Loader.php(459): think\App::invokeClass('app\\live\\contro...')
+#16 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(577): think\Loader::controller('Sbusinessworker', 'controller', false, 'Error')
+#17 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(459): think\App::module(Array, Array, false)
+#18 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(142): think\App::exec(Array, Array)
+#19 F:\Visual-NMP-x64\www\mobile\thinkphp\start.php(19): think\App::run()
+#20 F:\Visual-NMP-x64\www\mobile\start_businessworker.php(5): require('F:\\Visual-NMP-x...')
+#21 {main}
+2019-06-28 14:50:33 pid:1 Worker process terminated
+2019-06-28 14:53:16 pid:1 think\exception\ErrorException: Undefined index: money in F:\Visual-NMP-x64\www\mobile\application\live\controller\Events.php:210
+Stack trace:
+#0 F:\Visual-NMP-x64\www\mobile\application\live\controller\Events.php(210): think\Error::appError(8, 'Undefined index...', 'F:\\Visual-NMP-x...', 210, Array)
+#1 [internal function]: app\live\controller\Events::onMessage('7f00000108fc000...', '{"type":"red_re...')
+#2 F:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(384): call_user_func('app\\live\\contro...', '7f00000108fc000...', '{"type":"red_re...')
+#3 [internal function]: GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#4 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Connection\TcpConnection.php(657): call_user_func(Array, Object(Workerman\Connection\AsyncTcpConnection), Array)
+#5 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #26)
+#6 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Events\Select.php(286): call_user_func_array(Array, Array)
+#7 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(2096): Workerman\Events\Select->loop()
+#8 F:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(190): Workerman\Worker->run()
+#9 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1160): GatewayWorker\BusinessWorker->run()
+#10 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1102): Workerman\Worker::forkWorkersForWindows()
+#11 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(459): Workerman\Worker::forkWorkers()
+#12 F:\Visual-NMP-x64\www\mobile\application\live\controller\Sbusinessworker.php(24): Workerman\Worker::runAll()
+#13 [internal function]: app\live\controller\Sbusinessworker->__construct()
+#14 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(362): ReflectionClass->newInstanceArgs(Array)
+#15 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\Loader.php(459): think\App::invokeClass('app\\live\\contro...')
+#16 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(577): think\Loader::controller('Sbusinessworker', 'controller', false, 'Error')
+#17 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(459): think\App::module(Array, Array, false)
+#18 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(142): think\App::exec(Array, Array)
+#19 F:\Visual-NMP-x64\www\mobile\thinkphp\start.php(19): think\App::run()
+#20 F:\Visual-NMP-x64\www\mobile\start_businessworker.php(5): require('F:\\Visual-NMP-x...')
+#21 {main}
+2019-06-28 14:53:16 pid:1 Worker process terminated
+2019-06-28 14:56:17 pid:1 think\exception\ErrorException: Undefined index: money in F:\Visual-NMP-x64\www\mobile\application\live\controller\Events.php:210
+Stack trace:
+#0 F:\Visual-NMP-x64\www\mobile\application\live\controller\Events.php(210): think\Error::appError(8, 'Undefined index...', 'F:\\Visual-NMP-x...', 210, Array)
+#1 [internal function]: app\live\controller\Events::onMessage('7f00000108fc000...', '{"type":"red_re...')
+#2 F:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(384): call_user_func('app\\live\\contro...', '7f00000108fc000...', '{"type":"red_re...')
+#3 [internal function]: GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#4 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Connection\TcpConnection.php(657): call_user_func(Array, Object(Workerman\Connection\AsyncTcpConnection), Array)
+#5 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #26)
+#6 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Events\Select.php(286): call_user_func_array(Array, Array)
+#7 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(2096): Workerman\Events\Select->loop()
+#8 F:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(190): Workerman\Worker->run()
+#9 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1160): GatewayWorker\BusinessWorker->run()
+#10 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1102): Workerman\Worker::forkWorkersForWindows()
+#11 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(459): Workerman\Worker::forkWorkers()
+#12 F:\Visual-NMP-x64\www\mobile\application\live\controller\Sbusinessworker.php(24): Workerman\Worker::runAll()
+#13 [internal function]: app\live\controller\Sbusinessworker->__construct()
+#14 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(362): ReflectionClass->newInstanceArgs(Array)
+#15 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\Loader.php(459): think\App::invokeClass('app\\live\\contro...')
+#16 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(577): think\Loader::controller('Sbusinessworker', 'controller', false, 'Error')
+#17 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(459): think\App::module(Array, Array, false)
+#18 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(142): think\App::exec(Array, Array)
+#19 F:\Visual-NMP-x64\www\mobile\thinkphp\start.php(19): think\App::run()
+#20 F:\Visual-NMP-x64\www\mobile\start_businessworker.php(5): require('F:\\Visual-NMP-x...')
+#21 {main}
+2019-06-28 14:56:17 pid:1 Worker process terminated
+2019-06-28 15:01:56 pid:1 Worker process terminated
+2019-06-28 15:03:56 pid:1 Worker process terminated
+2019-06-28 15:03:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:59 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:59 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:59 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:59 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:59 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:59 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:59 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:59 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:59 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:59 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:59 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:03:59 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:00 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:00 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:00 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:00 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:00 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:00 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:00 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:00 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:00 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:00 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:00 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:00 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:02 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:02 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:02 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:02 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:02 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:02 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:02 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:02 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:04 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:04 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:04 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:04 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:07 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:07 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:07 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:07 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:08 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:08 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:08 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:08 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:09 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:09 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:09 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:09 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:09 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:09 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:09 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:09 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:10 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:10 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:10 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:10 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:10 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:10 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:12 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:12 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:12 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:12 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:12 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:12 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:13 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:13 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:13 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:13 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:14 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:14 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:14 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:14 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:15 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:15 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:16 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:16 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:17 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:17 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:19 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:19 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:19 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:19 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:20 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:20 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:22 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:22 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:24 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:24 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:26 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:26 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:28 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:28 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:28 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:28 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:29 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:29 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:31 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:31 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:37 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:37 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:37 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:37 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:38 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:38 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:41 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:41 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:41 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:41 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:42 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:42 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:44 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:44 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:45 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:45 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:46 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:46 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:47 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:47 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:47 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:47 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:49 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:49 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:49 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:49 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:51 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:51 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:51 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:51 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:53 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:53 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:53 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:53 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:54 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:54 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:04:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:02 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:02 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:02 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:02 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:05 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:05 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:06 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:06 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:07 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:07 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:07 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:07 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:08 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:08 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:09 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:09 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:10 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:10 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:13 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:13 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:14 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:14 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:14 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:14 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:15 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:15 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:17 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:17 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:17 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:17 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:18 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:18 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:19 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:19 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:21 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:21 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:22 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:22 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:25 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:25 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:25 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:25 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:26 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:26 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:27 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:27 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:28 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:28 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:31 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:31 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:37 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:37 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:38 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:38 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:38 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:38 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:39 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:39 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:39 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:39 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:42 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:42 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:42 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:42 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:44 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:44 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:45 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:45 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:47 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:47 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:48 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:48 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:49 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:49 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:50 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:50 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:52 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:52 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:52 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:52 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:55 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:55 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:55 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:55 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:57 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:57 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:57 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:57 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:57 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:57 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:59 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:05:59 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:00 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:00 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:05 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:05 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:05 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:05 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:08 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:08 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:08 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:08 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:09 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:09 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:13 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:13 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:13 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:13 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:14 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:14 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:16 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:16 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:17 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:17 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:18 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:18 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:21 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:21 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:21 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:21 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:22 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:22 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:24 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:24 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:25 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:25 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:27 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:27 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:28 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:28 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:28 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:28 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:30 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:30 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:31 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:31 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:36 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:36 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:37 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:37 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:39 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:39 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:41 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:41 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:43 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:43 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:43 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:43 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:43 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:43 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:45 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:45 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:46 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:46 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:48 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:48 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:48 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:48 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:51 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:51 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:53 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:53 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:53 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:53 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:56 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:56 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:56 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:56 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:56 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:56 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:06:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:00 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:00 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:04 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:04 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:05 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:05 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:07 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:07 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:09 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:09 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:09 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:09 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:10 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:10 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:12 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:12 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:13 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:13 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:13 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:13 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:15 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:15 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:15 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:15 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:17 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:17 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:19 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:19 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:19 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:19 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:20 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:20 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:21 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:21 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:21 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:21 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:25 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:25 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:26 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:26 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:26 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:26 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:29 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:29 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:29 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:29 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:30 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:30 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:36 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:36 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:42 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:07:42 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:08:53 pid:1 Worker process terminated
+2019-06-28 15:14:07 pid:1 Worker process terminated
+2019-06-28 15:20:17 pid:1 think\exception\ErrorException: Undefined index: money in F:\Visual-NMP-x64\www\mobile\application\live\controller\Events.php:210
+Stack trace:
+#0 F:\Visual-NMP-x64\www\mobile\application\live\controller\Events.php(210): think\Error::appError(8, 'Undefined index...', 'F:\\Visual-NMP-x...', 210, Array)
+#1 [internal function]: app\live\controller\Events::onMessage('7f00000108fc000...', '{"type":"red_re...')
+#2 F:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(384): call_user_func('app\\live\\contro...', '7f00000108fc000...', '{"type":"red_re...')
+#3 [internal function]: GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#4 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Connection\TcpConnection.php(657): call_user_func(Array, Object(Workerman\Connection\AsyncTcpConnection), Array)
+#5 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #26)
+#6 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Events\Select.php(286): call_user_func_array(Array, Array)
+#7 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(2096): Workerman\Events\Select->loop()
+#8 F:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(190): Workerman\Worker->run()
+#9 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1160): GatewayWorker\BusinessWorker->run()
+#10 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1102): Workerman\Worker::forkWorkersForWindows()
+#11 F:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(459): Workerman\Worker::forkWorkers()
+#12 F:\Visual-NMP-x64\www\mobile\application\live\controller\Sbusinessworker.php(24): Workerman\Worker::runAll()
+#13 [internal function]: app\live\controller\Sbusinessworker->__construct()
+#14 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(362): ReflectionClass->newInstanceArgs(Array)
+#15 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\Loader.php(459): think\App::invokeClass('app\\live\\contro...')
+#16 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(577): think\Loader::controller('Sbusinessworker', 'controller', false, 'Error')
+#17 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(459): think\App::module(Array, Array, false)
+#18 F:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(142): think\App::exec(Array, Array)
+#19 F:\Visual-NMP-x64\www\mobile\thinkphp\start.php(19): think\App::run()
+#20 F:\Visual-NMP-x64\www\mobile\start_businessworker.php(5): require('F:\\Visual-NMP-x...')
+#21 {main}
+2019-06-28 15:20:17 pid:1 Worker process terminated
+2019-06-28 15:31:20 pid:1 Worker process terminated
+2019-06-28 15:31:21 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:21 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:22 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:22 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:22 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:22 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:22 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:22 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:23 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:24 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:24 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:24 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:24 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:24 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:24 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:25 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:25 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:25 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:25 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:25 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:25 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:26 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:26 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:26 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:26 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:26 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:26 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:26 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:26 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:27 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:27 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:27 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:27 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:27 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:27 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:28 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:28 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:28 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:28 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:28 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:28 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:29 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:29 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:29 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:29 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:29 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:29 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:30 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:30 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:30 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:30 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:30 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:30 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:31 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:31 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:31 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:31 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:31 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:31 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:31 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:31 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:31 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:31 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:32 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:33 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:34 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:35 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:36 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:36 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:36 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:36 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:36 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:36 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:37 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:37 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:37 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:37 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:37 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:37 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:37 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:37 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:38 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:38 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:38 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:38 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:38 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:38 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:38 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:38 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:39 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:39 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:39 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:39 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:39 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:39 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:39 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:39 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:40 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:41 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:41 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:41 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:41 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:41 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:41 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:41 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:41 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:42 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:42 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:42 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:42 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:42 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:42 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:43 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:43 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:43 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:43 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:44 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:44 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:44 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:44 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:44 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:44 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:44 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:44 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:44 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:44 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:45 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:45 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:45 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:45 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:46 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:46 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:46 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:46 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:46 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:46 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:46 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:46 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:46 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:46 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:47 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:47 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:48 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:48 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:48 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:48 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:49 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:49 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:49 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:49 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:49 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:49 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:50 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:50 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:51 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:51 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:52 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:52 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:53 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:53 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:53 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:53 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:54 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:54 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:55 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:55 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:56 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:56 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:57 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:57 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:31:58 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:01 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:02 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:02 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:02 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:02 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:03 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:06 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:06 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:07 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:07 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:08 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:08 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:08 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:08 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:08 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:08 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:10 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:10 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:11 pid:1 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2019-06-28 15:32:46 pid:1 Worker process terminated

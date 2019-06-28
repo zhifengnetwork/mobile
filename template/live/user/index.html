@@ -147,36 +147,7 @@
 </head>
 
 <body onload="connect();">
-    <div class="enveloper-popup">
-        <!-- 未拆状态 -->
-        <!-- <div class="undemolished">
-            <div class="popup-header">
-                <h3>主播红包</h3>
-            </div>
-            <div class="popup-body">
-                <p>红包</p>
-            </div>
-            <div class="popup-footer">
-                <div class="open-btn">立即拆开</div>
-                <div class="close-btn"></div>
-            </div>
-        </div> -->
-    
-        <!-- 拆开状态 -->
-        <!-- <div class="open-status">
-            <div class="popup-header">
-                <h3>红包</h3>
-            </div>
-            <div class="popup-body">
-                <h3>获得红包</h3>
-                <p><span class="amount-num">8.88</span> 元</p>
-            </div>
-            <div class="popup-footer">
-                <div class="close-btn"></div>
-            </div>
-        </div> -->
-    
-    </div>
+    <div class="enveloper-popup"></div>
     <div class="wrapper">
         <input type="text" id="room_id" value="{$room_id}" style="display: none;">
         <input type="text" id="users_id" value="{$users_id}" style="display: none;">
@@ -188,8 +159,6 @@
                 <label for="videoSource">Video source: </label><select id="videoSource"></select>
             </div>
         </div>
-        <input type="text" id="room_id" value="{$room_id}" style="display: none;">
-        <input type="text" id="users_id" value="{$users_id}" style="display: none;">
         <div id="div_join" class="panel panel-default" style="display: none">
             <div class="panel-body">
                 App ID: <input id="appId" type="text" value="4c2954a8e1524f5ea15dc5ae14232042" size="36" />
@@ -842,16 +811,20 @@ $(function() {
                 goods_url(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['goods_url']);
                 console.log(data['from_client_name']+"说："+data['content']);
                 break;
-            //直播发红包
-            case 'red_anchor':
-                red_anchor(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level']);
-                console.log(data['from_client_name']+"说："+data['content']);
+           //直播发红包
+           case 'red_anchor':
+                red_anchor(data['from_client_id'], data['from_client_name'], data['content'], data['m_id'], data['time']);
+                // console.log(data['from_client_name']+"说："+data['content']);
+                break;
+            //主播抢红包
+            case 'red_receive':
+                say(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level'],data['money']);
                 break;
             //抢红包
-            case 'red_receive':
-                red_receive(data['from_client_id'], data['from_client_name'], data['content'], data['money'], data['time']);
+            case 'red_receive_user':
+                red_receive_user(data['from_client_id'], data['from_client_name'], data['content'], data['money'], data['time']);
                 // console.log(data['from_client_name']+"说："+data['content']);
-                say(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level']);
+                say(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level'],data['money']);
                 break;
         }
     }
@@ -985,17 +958,18 @@ $(function() {
         str +='<p>红包</p>';
         str +='</div>';
         str +='<div class="popup-footer">';
-        str +='<div class="open-btn" onclick="testa('+m_id+');">立即拆开</div>';
+        str +='<div class="open-btn" onclick="testa_user('+m_id+');">立即拆开</div>';
         str +='<div class="close-btn" onclick="closeRed();"></div>';
         str +='</div>';
         str +='</div>';
-        $(".enveloper-popup").append(str);
+        $(".enveloper-popup").html(str);
         $(".enveloper-popup").show();
         $(".enveloper-popup .undemolished").last().hide();
         $(".enveloper-popup .undemolished").last().fadeIn(2000);
     }
+
     //抢包
-    function testa(m_id){
+    function testa_user(m_id){
         var room_id = document.getElementById('room_id').value;
         var users_id = document.getElementById('users_id').value;
         var to_client_id = $("#client_list option:selected").attr("value");
@@ -1005,7 +979,7 @@ $(function() {
         $.ajax({
             type: 'post',
             async:false,
-            url: "{:U('live/index/click_red_packet')}", //请求的服务端地址
+            url: "{:U('live/user/click_red_packet')}", //请求的服务端地址
             data: {room_id: room_id,users_id: users_id,m_id: m_id},    
             dataType: 'json',
             success: function (data) {
@@ -1013,10 +987,9 @@ $(function() {
                     var content = data.data;
                     var to_client_id = content.to_client_id;
                     var to_client_name = content.to_client_name;
-                    var content = content.content;
                     var money = content.money;
-                    console.log(money);
-                    ws.send('{"type":"red_receive","user_level":"'+user_level+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","money":"'+money+'","content":"'+content+'"}');
+                    var content = content.content;
+                    ws.send('{"type":"red_receive_user","user_level":"'+user_level+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","money":"'+money+'","content":"'+content+'"}');
                     $(".mask,.redPacket-popup").hide();
                 }else{
                     alert(data.msg);
@@ -1026,7 +999,7 @@ $(function() {
     }
 
     //用户抢红包
-    function red_receive(from_client_id, from_client_name, money, content, time){
+    function red_receive_user(from_client_id, from_client_name, moeny, content, time){
         console.log(content);
         var str = '';
         str +='<div class="open-status">';
@@ -1035,15 +1008,18 @@ $(function() {
         str +='</div>';
         str +='<div class="popup-body">';
         str +='<h3>获得红包</h3>';
-        str +='<p><span class="amount-num">'+money+'</span> 元</p>';
+        str +='<p><span class="amount-num">'+moeny+'</span> 元</p>';
         str +='</div>';
         str +='<div class="popup-footer"><div class="close-btn" onclick="closeRed();"></div></div>';
         str +='</div>';
-        $(".enveloper-popup").append(str);
-        $(".enveloper-popup").show();
-        $(".open-status").show();
+        $(".enveloper-popup").html(str);
         $(".undemolished").hide();
+        $(".open-status").show();
 
+    }
+
+    function closeRed(){
+        $(".enveloper-popup").hide();
     }
 
     //发购物链接
