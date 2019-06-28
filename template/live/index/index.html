@@ -451,7 +451,7 @@
 <script language="javascript">
 
     if(!AgoraRTC.checkSystemRequirements()) {
-//        alert("Your browser does not support WebRTC!");
+        alert("Your browser does not support WebRTC!");
     }
 
     /* select Log type */
@@ -479,7 +479,6 @@
 
         console.log("Init AgoraRTC client with App ID: " + appId.value);
 
-        var channel_key=null;
         $.ajax({
             type: "POST",
             data:{appId:appId.value,channel:'<?php echo $room_id; ?>'},
