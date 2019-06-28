@@ -451,7 +451,7 @@
 <script language="javascript">
 
     if(!AgoraRTC.checkSystemRequirements()) {
-//        alert("Your browser does not support WebRTC!");
+        alert("Your browser does not support WebRTC!");
     }
 
     /* select Log type */
@@ -479,7 +479,6 @@
 
         console.log("Init AgoraRTC client with App ID: " + appId.value);
 
-        var channel_key=null;
         $.ajax({
             type: "POST",
             data:{appId:appId.value,channel:'<?php echo $room_id; ?>'},
@@ -724,6 +723,10 @@
                 // console.log(data['from_client_name']+"说："+data['content']);
                 say(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level']);
                 break;
+            //用户端抢包显示
+            case 'red_receive_user':
+                say(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level']);
+                break;
             //礼物
             case 'gift':
                 gift(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['gift_id']);
@@ -881,7 +884,7 @@
         str +='</div>';
         str +='<div class="popup-footer"><div class="close-btn" onclick="closeRed();"></div></div>';
         str +='</div>';
-        $(".enveloper-popup").append(str);
+        $(".enveloper-popup").html(str);
         $(".enveloper-popup").show();
         $(".open-status").show();
         $(".undemolished").hide();
@@ -904,7 +907,7 @@
         str +='<div class="close-btn" onclick="closeRed();"></div>';
         str +='</div>';
         str +='</div>';
-        $(".enveloper-popup").append(str);
+        $(".enveloper-popup").html(str);
         $(".enveloper-popup").show();
         $(".enveloper-popup .undemolished").last().hide();
         $(".enveloper-popup .undemolished").last().fadeIn(2000);

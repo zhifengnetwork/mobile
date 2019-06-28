@@ -85,7 +85,7 @@
     <script src="__STATIC__/js/layer.js?v=22222"  type="text/javascript" ></script>
     <script>
         $(function(){
-            var formData = new FormData();
+            var formData = new FormData(),btn = true;
             $("#img").change(function (e) {
                 for (var i = 0; i < e.target.files.length; i++) {
                     var file = e.target.files.item(i);
@@ -106,16 +106,23 @@
             });
 
             $('.live_btns').click(function () {
+<<<<<<< HEAD
                 layer.msg('正在读取数据，请稍候……');
+=======
+                if (!btn) return false;
+                btn = false;
+>>>>>>> 15a252459fa64f88d1888ba3b2648f03a2ab146c
                 //商品
-                var good_ids = '';
-                $(".on").each(function(i){ 
-                     good_ids += $(this).attr('good_ids') + ',';
+                var el = $(this),
+                    text = el.text(),
+                    good_ids = '';
+                $(".on").each(function (i) {
+                    good_ids += $(this).attr('good_ids') + ',';
                 })
-                formData.append('good_ids',good_ids);
+                formData.append('good_ids', good_ids);
                 $.ajax({
                     type: 'post',
-                    url:"{:U('live/index/start')}",
+                    url: "{:U('live/index/start')}",
                     data: formData,
                     dataType: 'json',
                     async: false,
@@ -131,6 +138,13 @@
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         showErrorMsg('网络异常，请稍后重试');
+                    },
+                    beforeSend: function () {
+                        el.text('提交中...');
+                    },
+                    complete: function () {
+                        btn = true;
+                        el.text(text);
                     }
                 })
             })

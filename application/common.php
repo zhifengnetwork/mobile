@@ -1343,8 +1343,8 @@ function update_pay_status($order_sn, $ext = array())
         //if($distribut_condition == 1)  // 购买商品付款才可以成为分销商
         //M('users')->where("user_id", $order['user_id'])->save(array('is_distribut'=>1));
         
-        $pay_status = M('order')->where('order_sn', $order['order_sn'])->value('pay_status');
-        if($pay_status == 1){
+        $pay_status = M('order')->where('order_sn', $order['order_sn'])->field('pay_status,zhubo_id,user_money,order_amount')->find();
+        if($pay_status['pay_status'] == 1){
             //分开调用
             change_role($order['order_id']);
 
@@ -1357,6 +1357,16 @@ function update_pay_status($order_sn, $ext = array())
             //区域地理分钱
             $regional_agency = new \app\common\logic\RegionalAgencyLogic();
             $regional_agency->fenqian($order['order_id']);
+
+            if($pay_status['zhubo_id']){
+                $zhubo_rate = Db::name('commission_rate')->find();
+                if($zhubo_rate['type']==1){
+                    $bili = $zhubo_rate['rate'] / 100;
+                    //主播分享商品的佣金
+                    $zhubo_money = sprintf("%.2f",($pay_status['user_money'] + $pay_status['order_amount'] ) * $bili );
+                    accountLog($pay_status['zhubo_id'], $zhubo_money, 0, '分享商品得佣金', $zhubo_money, $order['order_id'], $order['order_sn']);
+                }
+            }
         }
 
         //虚拟服务类商品支付

@@ -52,6 +52,7 @@ class User extends Base
 
         $this->assign('level',isset($this->user->agentlevel)&&!empty($this->user->agentlevel) ? $this->user->agentlevel : 0);
         $this->assign('room_id', $room_id);
+        $this->assign('users_id', $userId);
         $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
         $url=$http_type.$_SERVER['SERVER_NAME'];
         $this->assign('url',$url);
@@ -311,11 +312,98 @@ class User extends Base
         $appID = "4c2954a8e1524f5ea15dc5ae14232042";
         $appCertificate = "1580a6da5ed94447840d870a07e1c6e2";
         $account = input('post.channel', 0);
-        echo $account;die;
         $expiredTs = 0;
         $builder = new RtmTokenBuilder($appID, $appCertificate, $account);
         $builder->setPrivilege(AccessToken::Privileges["kRtmLogin"], $expiredTs);
         echo $builder->buildToken();
         exit;
+    }
+
+    /**
+     * 用户点击领取红包
+     * user_id    抢包人id
+     * room_id    房间id
+     * users_id   发包人id
+     * red_master_id   红包主表id
+     */
+    public function click_red_packet()
+    {
+        $room_id = input('post.room_id', 0); //房间id
+        $users_id = input('post.users_id', 0); //用户id
+        $m_id = input('post.m_id', 0); //用户id
+        if (empty($users_id) || empty($room_id) || empty($m_id)) {
+            return $this->failResult('参数有误', 301);
+        }
+
+        $userId = $this->user->user_id;
+        //判断用户是否已经抢过红包
+        $if_red = Db::name('red_detail')->where(['get_uid' => $userId,'m_id' => $m_id,'room_id' => $room_id])->find();
+        if($if_red){
+            return $this->failResult('已抢过红包!!!', 301);
+        }
+        //事务处理
+        Db::startTrans();
+        //获取红包从表信息
+        $red_master_find = $this->red_master_find($room_id,$m_id);
+        if (!$red_master_find) {
+            return $this->failResult('事务处理失败',301);
+        }
+        $red_detail_find = Db::name('red_detail')->where(['m_id' => $m_id,'type'=>0, 'room_id' => $room_id])->find();
+        if (!$red_detail_find) {
+            return $this->failResult('红包已领完!!!',301);
+        }
+        //获取抢包用户信息
+        $user_data = $this->user($userId);
+        $data = ['get_uid'=>$user_data['user_id'],'type'=>1,'get_award_money'=>$red_detail_find['money']];
+
+        $result = Db::name('red_detail')->where(['m_id'=>$m_id,'id'=>$red_detail_find['id'],'room_id'=>$room_id])->update($data);
+        if(!$result){
+            return $this->failResult('事务处理失败', 301);
+        }
+
+        $user_money = bcadd($user_data['user_money'],$red_detail_find['money'],2);
+
+        //增加抢包用户余额的钱
+        $result_money = Db::name('users')->where(['user_id'=>$user_data['user_id']])->update(['user_money'=>$user_money]);
+        if(!$result_money){
+            return $this->failResult('事务处理失败', 301);
+        }
+        Db::commit();
+        $money = bcadd($red_detail_find['money'],'0.00',2);
+        $message = array(
+            'type' => 'red_receive_user',
+            'from_client_id' => $userId,
+            'from_client_name' => $this->user->nickname,
+            'to_client_id' => 'all',
+            'moeny' => $money,
+            'content' => $this->user->nickname . '领取了' . $money . '元红包',
+            'time' => date('Y-m-d H:i:s'),
+        );
+        return $this->successResult($message);
+    }
+    /**
+     * 查找对应红包从表数据
+     */
+    public function red_master_find($room_id,$m_id)
+    {   
+        $where = "room_id = '".$room_id."' and id = '".$m_id."' and all_get = 0";
+        $red_user_find = Db::name("red_master")->where($where)->find();
+        if ($red_user_find) {
+            return $red_user_find;
+        } else {
+            return false;
+        }
+    }
+    /**
+     * 查询用户信息
+     */
+    public function user($user_id)
+    {
+        $user_find = Db::name("users")->where(['user_id' => $user_id])->find();
+        if ($user_find) {
+            return $user_find;
+        } else {
+            return false;
+        }
     }
 }

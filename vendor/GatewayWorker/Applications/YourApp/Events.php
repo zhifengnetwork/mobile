@@ -1,6 +1,16 @@
 <?php
-namespace app\live\controller;
-
+/**
+ * This file is part of workerman.
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the MIT-LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @author walkor<walkor@workerman.net>
+ * @copyright walkor<walkor@workerman.net>
+ * @link http://www.workerman.net/
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ */
 
 /**
  * 用于检测业务代码死循环或者长时间阻塞等问题
@@ -9,32 +19,46 @@ namespace app\live\controller;
  */
 //declare(ticks=1);
 
-/**
- * 聊天主逻辑
- * 主要是处理 onMessage onClose 
- */
 use \GatewayWorker\Lib\Gateway;
-use think\Db;
 
+/**
+ * 主逻辑
+ * 主要是处理 onConnect onMessage onClose 三个方法
+ * onConnect 和 onClose 如果不需要可以不用实现并删除
+ */
 class Events
 {
-   /**
-    * 有消息时
-    * @param int $client_id
-    * @param mixed $message
-    */
-   public static function onMessage($client_id, $message)
-   {
+    /**
+     * 当客户端连接时触发
+     * 如果业务不需此回调可以删除onConnect
+     *
+     * @param int $client_id 连接id
+     */
+    public static function onConnect($client_id)
+    {
+        // 向当前client_id发送数据
+        Gateway::sendToClient($client_id, "Hello $client_id\r\n");
+        // 向所有人发送
+        Gateway::sendToAll("$client_id login\r\n");
+    }
+
+    /**
+     * 有消息时
+     * @param int $client_id
+     * @param mixed $message
+     */
+    public static function onMessage($client_id, $message)
+    {
         // debug
         echo "client:{$_SERVER['REMOTE_ADDR']}:{$_SERVER['REMOTE_PORT']} gateway:{$_SERVER['GATEWAY_ADDR']}:{$_SERVER['GATEWAY_PORT']}  client_id:$client_id session:".json_encode($_SESSION)." onMessage:".$message."\n";
-        
+
         // 客户端传递的是json数据
         $message_data = json_decode($message, true);
         if(!$message_data)
         {
             return ;
         }
-        
+
         // 根据类型执行不同的业务
         switch($message_data['type'])
         {
@@ -48,21 +72,21 @@ class Events
                 {
                     throw new \Exception("\$message_data['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']} \$message:$message");
                 }
-                
+
                 // 把房间号昵称放到session中
                 $room_id = $message_data['room_id'];
                 $client_name = htmlspecialchars($message_data['client_name']);
                 $_SESSION['room_id'] = $room_id;
                 $_SESSION['client_name'] = $client_name;
-              
-                // 获取房间内所有用户列表 
+
+                // 获取房间内所有用户列表
                 $clients_list = Gateway::getClientSessionsByGroup($room_id);
                 foreach($clients_list as $tmp_client_id=>$item)
                 {
                     $clients_list[$tmp_client_id] = $item['client_name'];
                 }
                 $clients_list[$client_id] = $client_name;
-                
+
                 // 转播给当前房间的所有客户端，xx进入聊天室 message {type:login, client_id:xx, name:xx}
                 //新增用户等级字段  add by zgp
                 $user_level = isset($message_data['user_level'])&&!empty($message_data['user_level']) ? $message_data['user_level'] : 0;
@@ -72,14 +96,20 @@ class Events
                 Gateway::joinGroup($client_id, $room_id);
                 //更新观看人数
                 if(!empty($room_id)){
-                    Db::name('user_video')->where(['room_id' => $room_id])->setInc('look_amount');
+                    $arr = include dirname(dirname(dirname(dirname(__DIR__)))).'/application/database.php';
+                    $conn = @mysqli_connect($arr['hostname'],$arr['username'],$arr['password']);
+                    if (!$conn){die("连接数据库失败：" . mysql_error());}
+                    mysqli_select_db($conn,$arr['database']);
+                    //字符转换，读库
+                    $query_sql = "update tp_user_video set look_amount =look_amount + 1  where room_id=".$room_id;
+                    mysqli_query($conn,$query_sql);
                 }
-               
-                // 给当前用户发送用户列表 
+
+                // 给当前用户发送用户列表
                 $new_message['client_list'] = $clients_list;
                 Gateway::sendToCurrentClient(json_encode($new_message));
                 return;
-                
+
             // 客户端发言 message: {type:say, to_client_id:xx, content:xx}
             case 'say':
                 // 非法请求
@@ -93,7 +123,7 @@ class Events
                 //新增用户等级字段  add by zgp
                 $user_level = isset($message_data['user_level'])&&!empty($message_data['user_level']) ? $message_data['user_level'] : 0;
                 $new_message = array(
-                    'type'=>'say', 
+                    'type'=>'say',
                     'from_client_id'=>$client_id,
                     'from_client_name' =>$client_name,
                     'to_client_id'=>'all',
@@ -136,7 +166,7 @@ class Events
                 }
                 $room_id = $_SESSION['room_id'];
                 $client_name = $_SESSION['client_name'];
-                
+
                 $new_message = array(
                     'type'=>'redpacket',
                     'from_client_id'=>$client_id,
@@ -236,24 +266,17 @@ class Events
                 return Gateway::sendToGroup($room_id ,json_encode($new_message));
                 break;
         }
-   }
-   
-   /**
-    * 当客户端断开连接时
-    * @param integer $client_id 客户端id
+    }
+
+
+
+    /**
+    * 当用户断开连接时触发
+    * @param int $client_id 连接id
     */
    public static function onClose($client_id)
    {
-       // debug
-       echo "client:{$_SERVER['REMOTE_ADDR']}:{$_SERVER['REMOTE_PORT']} gateway:{$_SERVER['GATEWAY_ADDR']}:{$_SERVER['GATEWAY_PORT']}  client_id:$client_id onClose:''\n";
-       
-       // 从房间的客户端列表中删除
-       if(isset($_SESSION['room_id']))
-       {
-           $room_id = $_SESSION['room_id'];
-           $new_message = array('type'=>'logout', 'from_client_id'=>$client_id, 'from_client_name'=>$_SESSION['client_name'], 'time'=>date('Y-m-d H:i:s'));
-           Gateway::sendToGroup($room_id, json_encode($new_message));
-       }
+       // 向所有人发送 
+       // GateWay::sendToAll("$client_id logout\r\n");
    }
-  
 }
