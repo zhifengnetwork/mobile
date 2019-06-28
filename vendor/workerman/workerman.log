@@ -1,2 +1,98 @@
 2019-06-26 16:32:35 pid:1 Worker process terminated
 2019-06-26 16:33:19 pid:1 Worker process terminated
+2019-06-28 15:56:54 pid:1 Exception: $message_data['room_id'] not set. client_ip:127.0.0.1 $message:{"type":"login","fromid":1} in D:\Visual-NMP-x64\www\mobile\application\live\controller\Events.php:49
+Stack trace:
+#0 [internal function]: app\live\controller\Events::onMessage('7f00000108fc000...', '{"type":"login"...')
+#1 D:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(384): call_user_func('app\\live\\contro...', '7f00000108fc000...', '{"type":"login"...')
+#2 [internal function]: GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#3 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Connection\TcpConnection.php(657): call_user_func(Array, Object(Workerman\Connection\AsyncTcpConnection), Array)
+#4 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #27)
+#5 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Events\Select.php(286): call_user_func_array(Array, Array)
+#6 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(2096): Workerman\Events\Select->loop()
+#7 D:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(190): Workerman\Worker->run()
+#8 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1160): GatewayWorker\BusinessWorker->run()
+#9 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1102): Workerman\Worker::forkWorkersForWindows()
+#10 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(459): Workerman\Worker::forkWorkers()
+#11 D:\Visual-NMP-x64\www\mobile\application\live\controller\Sbusinessworker.php(24): Workerman\Worker::runAll()
+#12 [internal function]: app\live\controller\Sbusinessworker->__construct()
+#13 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(362): ReflectionClass->newInstanceArgs(Array)
+#14 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\Loader.php(459): think\App::invokeClass('app\\live\\contro...')
+#15 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(577): think\Loader::controller('Sbusinessworker', 'controller', false, 'Error')
+#16 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(459): think\App::module(Array, Array, false)
+#17 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(142): think\App::exec(Array, Array)
+#18 D:\Visual-NMP-x64\www\mobile\thinkphp\start.php(19): think\App::run()
+#19 D:\Visual-NMP-x64\www\mobile\start_businessworker.php(5): require('D:\\Visual-NMP-x...')
+#20 {main}
+2019-06-28 15:56:54 pid:1 Worker process terminated
+2019-06-28 15:58:17 pid:1 Exception: $message_data['room_id'] not set. client_ip:127.0.0.1 $message:{"type":"login","fromid":1} in D:\Visual-NMP-x64\www\mobile\application\live\controller\Events.php:49
+Stack trace:
+#0 [internal function]: app\live\controller\Events::onMessage('7f00000108fc000...', '{"type":"login"...')
+#1 D:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(384): call_user_func('app\\live\\contro...', '7f00000108fc000...', '{"type":"login"...')
+#2 [internal function]: GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#3 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Connection\TcpConnection.php(657): call_user_func(Array, Object(Workerman\Connection\AsyncTcpConnection), Array)
+#4 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #27)
+#5 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Events\Select.php(286): call_user_func_array(Array, Array)
+#6 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(2096): Workerman\Events\Select->loop()
+#7 D:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(190): Workerman\Worker->run()
+#8 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1160): GatewayWorker\BusinessWorker->run()
+#9 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1102): Workerman\Worker::forkWorkersForWindows()
+#10 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(459): Workerman\Worker::forkWorkers()
+#11 D:\Visual-NMP-x64\www\mobile\application\live\controller\Sbusinessworker.php(24): Workerman\Worker::runAll()
+#12 [internal function]: app\live\controller\Sbusinessworker->__construct()
+#13 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(362): ReflectionClass->newInstanceArgs(Array)
+#14 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\Loader.php(459): think\App::invokeClass('app\\live\\contro...')
+#15 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(577): think\Loader::controller('Sbusinessworker', 'controller', false, 'Error')
+#16 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(459): think\App::module(Array, Array, false)
+#17 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(142): think\App::exec(Array, Array)
+#18 D:\Visual-NMP-x64\www\mobile\thinkphp\start.php(19): think\App::run()
+#19 D:\Visual-NMP-x64\www\mobile\start_businessworker.php(5): require('D:\\Visual-NMP-x...')
+#20 {main}
+2019-06-28 15:58:17 pid:1 Worker process terminated
+2019-06-28 16:12:05 pid:1 Exception: $message_data['room_id'] not set. client_ip:127.0.0.1 $message:{"type":"login","fromid":1} in D:\Visual-NMP-x64\www\mobile\application\live\controller\Events.php:49
+Stack trace:
+#0 [internal function]: app\live\controller\Events::onMessage('7f00000108fc000...', '{"type":"login"...')
+#1 D:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(384): call_user_func('app\\live\\contro...', '7f00000108fc000...', '{"type":"login"...')
+#2 [internal function]: GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#3 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Connection\TcpConnection.php(657): call_user_func(Array, Object(Workerman\Connection\AsyncTcpConnection), Array)
+#4 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #27)
+#5 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Events\Select.php(286): call_user_func_array(Array, Array)
+#6 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(2096): Workerman\Events\Select->loop()
+#7 D:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(190): Workerman\Worker->run()
+#8 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1160): GatewayWorker\BusinessWorker->run()
+#9 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1102): Workerman\Worker::forkWorkersForWindows()
+#10 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(459): Workerman\Worker::forkWorkers()
+#11 D:\Visual-NMP-x64\www\mobile\application\live\controller\Sbusinessworker.php(24): Workerman\Worker::runAll()
+#12 [internal function]: app\live\controller\Sbusinessworker->__construct()
+#13 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(362): ReflectionClass->newInstanceArgs(Array)
+#14 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\Loader.php(459): think\App::invokeClass('app\\live\\contro...')
+#15 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(577): think\Loader::controller('Sbusinessworker', 'controller', false, 'Error')
+#16 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(459): think\App::module(Array, Array, false)
+#17 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(142): think\App::exec(Array, Array)
+#18 D:\Visual-NMP-x64\www\mobile\thinkphp\start.php(19): think\App::run()
+#19 D:\Visual-NMP-x64\www\mobile\start_businessworker.php(5): require('D:\\Visual-NMP-x...')
+#20 {main}
+2019-06-28 16:12:05 pid:1 Worker process terminated
+2019-06-28 16:12:17 pid:1 Exception: $message_data['room_id'] not set. client_ip:127.0.0.1 $message:{"type":"login","fromid":1} in D:\Visual-NMP-x64\www\mobile\application\live\controller\Events.php:49
+Stack trace:
+#0 [internal function]: app\live\controller\Events::onMessage('7f00000108fc000...', '{"type":"login"...')
+#1 D:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(384): call_user_func('app\\live\\contro...', '7f00000108fc000...', '{"type":"login"...')
+#2 [internal function]: GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#3 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Connection\TcpConnection.php(657): call_user_func(Array, Object(Workerman\Connection\AsyncTcpConnection), Array)
+#4 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #27)
+#5 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Events\Select.php(286): call_user_func_array(Array, Array)
+#6 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(2096): Workerman\Events\Select->loop()
+#7 D:\Visual-NMP-x64\www\mobile\vendor\workerman\gateway-worker\src\BusinessWorker.php(190): Workerman\Worker->run()
+#8 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1160): GatewayWorker\BusinessWorker->run()
+#9 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(1102): Workerman\Worker::forkWorkersForWindows()
+#10 D:\Visual-NMP-x64\www\mobile\vendor\workerman\workerman\Worker.php(459): Workerman\Worker::forkWorkers()
+#11 D:\Visual-NMP-x64\www\mobile\application\live\controller\Sbusinessworker.php(24): Workerman\Worker::runAll()
+#12 [internal function]: app\live\controller\Sbusinessworker->__construct()
+#13 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(362): ReflectionClass->newInstanceArgs(Array)
+#14 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\Loader.php(459): think\App::invokeClass('app\\live\\contro...')
+#15 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(577): think\Loader::controller('Sbusinessworker', 'controller', false, 'Error')
+#16 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(459): think\App::module(Array, Array, false)
+#17 D:\Visual-NMP-x64\www\mobile\thinkphp\library\think\App.php(142): think\App::exec(Array, Array)
+#18 D:\Visual-NMP-x64\www\mobile\thinkphp\start.php(19): think\App::run()
+#19 D:\Visual-NMP-x64\www\mobile\start_businessworker.php(5): require('D:\\Visual-NMP-x...')
+#20 {main}
+2019-06-28 16:12:17 pid:1 Worker process terminated
