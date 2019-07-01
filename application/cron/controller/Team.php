@@ -55,10 +55,10 @@ class Team extends Controller{
 
        if(count($list) > 0){
             foreach( $list as $v){
-                if(($time + $v['start_time']) > time()){
+                if(($time + $v['start_time']) < time()){
                     Db::name('user_video')->where(['id' => $v['id']])->update(['status' => 2,'end_time' => time()]);
                 }
-            }
+          }
        }
 
        
