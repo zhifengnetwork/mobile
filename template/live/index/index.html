@@ -214,7 +214,7 @@
             <div class="live-status">
                 <span class="status">直播中</span>
                 <i class="dot-red"></i>
-                <span class="time">01:33:23</span>
+                <span class="time" id="time">00:00:00</span>
             </div>
             <div class="liveId">
                 <span class="shop-name">DC商城</span>
@@ -331,6 +331,27 @@
 
 <script src="__STATIC__/live/static/js/public/jquery-3.3.1.min.js"></script>
 <script>
+
+// 计时显示
+
+function checkTime(i) {
+          if (i < 10) {
+              i = "0" + i;
+          }
+          return i;
+}
+
+var timing_timerid = setInterval(function(){
+          var now_time   =  Math.round(new Date().getTime()/1000)
+          var start_time =  "<?php echo $start_time; ?>";
+          var t = now_time - start_time ;
+          var d = Math.floor(t/60/60/24);
+          var h = Math.floor(t/60/60%24);
+          var m = Math.floor(t/60%60);
+          var s = Math.floor(t%60);
+          document.getElementById('time').innerHTML = checkTime(h)+':'+checkTime(m)+':'+checkTime(s);
+}, 1000);
+
        
     $(function(){
         // 打开红包
@@ -647,24 +668,24 @@
 
     var ws, name, client_list={};
 
-    // 连接服务端
-    function connect() {
-        console.log(document.domain);
-        // 创建websocket
-        var server_name = '<?php echo $server_name; ?>';
-        ws = new WebSocket("ws://"+server_name+":7373");
-        // 当socket连接打开时，输入用户名
-        ws.onopen = onopen;
-        // 当有消息时根据消息类型显示不同信息
-        ws.onmessage = onmessage;
-        ws.onclose = function() {
-            console.log("连接关闭，定时重连");
-            connect();
-        };
-        ws.onerror = function() {
-            console.log("出现错误");
-        };
-    }
+    // // 连接服务端
+    // function connect() {
+    //     console.log(document.domain);
+    //     // 创建websocket
+    //     var server_name = '<?php echo $server_name; ?>';
+    //     ws = new WebSocket("ws://"+server_name+":7373");
+    //     // 当socket连接打开时，输入用户名
+    //     ws.onopen = onopen;
+    //     // 当有消息时根据消息类型显示不同信息
+    //     ws.onmessage = onmessage;
+    //     ws.onclose = function() {
+    //         console.log("连接关闭，定时重连");
+    //         connect();
+    //     };
+    //     ws.onerror = function() {
+    //         console.log("出现错误");
+    //     };
+    // }
 
     // 连接建立时发送登录信息
     function onopen()

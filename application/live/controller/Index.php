@@ -60,6 +60,7 @@ class Index extends Base
         $this->assign('level',isset($this->user->agentlevel)&&!empty($this->user->agentlevel) ? $this->user->agentlevel : 0);
         //add by zgp 2019.6.26
         // dump($room['room_id']);die;
+        $this->assign('start_time', $room['start_time']);
         $this->assign('room_id', $room['room_id']);
         $this->assign('server_name',$_SERVER['SERVER_NAME']);
         $this->assign('user_id', $user_id . time());

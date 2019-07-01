@@ -47,6 +47,24 @@ class Team extends Controller{
                
     }
 
+    public function CheckLive(){
+       $info = Db::name('config')->where(['name' => 'video_time'])->find();  
+       $time = $info['value'] * 60;
+
+       $list = Db::name('user_video')->where(['status' => 1])->select();
+
+       if(count($list) > 0){
+            foreach( $list as $v){
+                if(($time + $v['start_time']) > time()){
+                    Db::name('user_video')->where(['id' => $v['id']])->update(['status' => 2,'end_time' => time()]);
+                }
+            }
+       }
+
+       
+
+    }
+
     public function CheckTeamFound(){
         //对过期的拼团订单进行取消,在服务器上由定时器任务执行
         $Tf = M('team_found');
@@ -96,5 +114,9 @@ class Team extends Controller{
         }
         $Order->where(['order_prom_id'=>$found_id])->update(['order_status'=>3,'admin_note'=>'拼团失败']);	
     }
+
+
+
+
 
 }

@@ -1,0 +1,60 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;"> 
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>直播时长</h3>
+        <h5>直播时长设置</h5>
+      </div>
+    </div>
+  </div>
+    <!--表单数据-->
+    <form method="post" id="commission_rateForm" >
+    <div class="ncap-form-default">
+      <dl class="row">
+        <dt class="tit">
+          <label for="ac_name"><em>*</em>时长</label>
+        </dt>
+        <dd class="opt">
+          <input type="text" placeholder="分钟" class="input-txt" id="rate" name="value" style="width:75px !important;" value="{$info.value}">分钟
+		  <span class="err" id="err_name" style="color:#F00; display:none;"></span>
+            <p class="notic"></p>
+        </dd>
+      </dl>
+	  
+                              
+      <div class="bot"><a href="JavaScript:void(0);" onClick="verifyForm();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+    </div>
+        <input type="hidden" name="id" value="{$info.id}">
+  </form>
+</div>
+<script>
+function verifyForm(){
+  
+    $.ajax({
+        type: "POST",
+        url: "{:U('Admin/Live/video_time')}",
+        data: $('#commission_rateForm').serialize(),
+        dataType: "json",
+        error: function () {
+            layer.alert("服务器繁忙, 请联系管理员!");
+        },
+        success: function (data) {
+            if (data.status == 1) {
+                layer.msg(data.msg, {icon: 1},function () {
+                    location.reload();
+                });
+            } else {
+                layer.msg(data.msg, {icon: 2});
+                $.each(data.result, function (index, item) {
+                    $('#err_' + index).text(item).show();
+                });
+            }
+        }
+    });
+}
+
+</script>
+</body>
+</html>

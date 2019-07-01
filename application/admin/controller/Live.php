@@ -291,6 +291,30 @@ class Live extends Base
         ]);
     }
 
+
+
+    public function video_time()
+    {
+
+        $info = Db::name('config')->where(['name' => 'video_time'])->find();
+
+        if (request()->isPost()) {
+            $data = input('post.');
+           
+            $res = Db::name('config')->where(['name' => 'video_time'])->update($data);
+
+            if ($res !== false) {
+                $this->ajaxReturn(['status' => 1, 'msg' => '操作成功！']);
+            } else {
+                $this->ajaxReturn(['status' => 0, 'msg' => '操作失败！']);
+            }
+        }
+
+        return $this->fetch('', [
+            'info' => $info,
+        ]);
+    }
+
     public function red_log()
     {
         $where = ' 1 = 1';
