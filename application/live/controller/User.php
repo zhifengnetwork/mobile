@@ -34,7 +34,7 @@ class User extends Base
             exit;
         }
         if ($room['status']==2) {//如果主播已结束，跳转到结束页面
-            $this->redirect("Live/index/end/id/".$room_id.'.html');
+            $this->redirect(U('Live/index/end', ['id' => $room_id]));
             exit;
         }
 
