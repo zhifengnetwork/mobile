@@ -305,13 +305,13 @@
                 <div class="group-wrap">
                     <span class="title">总金额</span>
 						<span class="right">
-							<input type="text" id="money" name="money" placeholder="0.00">
+							<input type="text" onkeyup="value=(parseInt((value=value.replace(/\D/g,''))==''||parseInt((value=value.replace(/\D/g,''))==0)?'1':value,10))" onafterpaste="value=(parseInt((value=value.replace(/\D/g,''))==''||parseInt((value=value.replace(/\D/g,''))==0)?'1':value,10))" id="money" name="money" placeholder="0.00">
 						元</span>
                 </div>
                 <div class="group-wrap">
                     <span class="title">红包个数</span>
 						<span class="right">
-							<input type="text" id='num' name="num" placeholder="填写红包个数">
+							<input type="text" onkeyup="value=(parseInt((value=value.replace(/\D/g,''))==''||parseInt((value=value.replace(/\D/g,''))==0)?'1':value,10))" onafterpaste="value=(parseInt((value=value.replace(/\D/g,''))==''||parseInt((value=value.replace(/\D/g,''))==0)?'1':value,10))" id='num' name="num" placeholder="填写红包个数">
 						个</span>
                 </div>
             </div>

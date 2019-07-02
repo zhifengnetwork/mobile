@@ -969,7 +969,7 @@ $(function() {
     //抢包
     function testa_user(m_id){
         var room_id = document.getElementById('room_id').value;
-        var users_id = document.getElementById('users_id').value;
+        var users_id = '<?php echo $user_id; ?>';
         var to_client_id = $("#client_list option:selected").attr("value");
         var to_client_name = $("#client_list option:selected").text();
         var user_level = '<?php echo $level; ?>';

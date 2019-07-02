@@ -20,6 +20,10 @@ class User extends Validate
 		'new_password' => 'require|length:7,20|alphaNum|regex:/^.*(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*$/',
 	];
 
+	protected $nums = [
+		
+	];
+
 
 	protected $message = [
 //		'email.email' => '{%email_email}',
