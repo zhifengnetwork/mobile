@@ -276,7 +276,7 @@ class Index extends Base
         if (empty($num) || empty($money_input) || empty($room_id)) {
             return $this->failResult('参数有误', 301);
         }
-        if($money < 0 && $money != $money_input)
+        if($money < 0 || $money != $money_input)
         {
             return $this->failResult('金额格式不正确', 301);
         }
