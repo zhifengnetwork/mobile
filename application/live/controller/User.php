@@ -139,11 +139,14 @@ class User extends Base
 
     public function sendRedPacket(){
         $room_id = input('post.room_id', 0);
-        $money = input('post.money',0);
-        if(empty($room_id) || empty($money)){
+        $money_input = input('post.money',0);
+        if(empty($room_id) || empty($money_input)){
             return $this->failResult('参数有误',301);
         }
-        $money = bcadd($money,'0.00',2);
+        $money = bcadd($money_input,'0.00',2);
+        if($money < 0 || $money != $money_input ){
+            return $this->failResult('金额格式不对',301);
+        }
         $userId = $this->user->user_id;
         $user = Db::name('users')->where(['user_id'=>$userId])->find();
         $koujian = bcsub($user['user_money'],$money,2);
