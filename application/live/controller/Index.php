@@ -372,6 +372,9 @@ class Index extends Base
             return false;
         }
         $min = 0.01; // 保证最小金额
+        if($num <= $min){
+            return $this->failResult('金额不正确', 301);
+        }
         $wamp = array();
         $returnData = array();
         for ($i = 1; $i < $num; ++$i) {
