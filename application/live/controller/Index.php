@@ -268,12 +268,20 @@ class Index extends Base
      */
     public function redSubmit(){
 
-        $money = input('post.money', 0); //红包金额
+        $money_input = input('post.money', 0); //红包金额
         $num = input('post.num', 0); //红包个数
         $room_id = input('post.room_id', 0); //房间id
+        $money = bcadd($money_input,'0.00',2);
         // $users_id = input('post.users_id', 0); //用户id
-        if (empty($num) || empty($money) || empty($room_id)) {
+        if (empty($num) || empty($money_input) || empty($room_id)) {
             return $this->failResult('参数有误', 301);
+        }
+        if($money < 0 && $money != $money_input)
+        {
+            return $this->failResult('金额格式不正确', 301);
+        }
+        if(!is_numeric($num)||strpos($num,".")!==false){
+            return $this->failResult('红包个数不正确', 301);
         }
         $userId = $this->user->user_id;
         $user = Db::name('users')->where(['user_id' => $userId])->find();
