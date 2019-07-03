@@ -39,7 +39,7 @@ class User extends Base
         }
 
         //获取礼物列表
-        $giftList = Db::name('live_gift')->where('delete_time', '>', 1)->order('sort asc')->select();
+        $giftList = Db::name('live_gift')->where('delete_time', '<', 1)->order('sort asc')->select();
 
         //主播的用户名  主播图片
         $zhubo = Db::name('users')->where(['user_id'=>$room['user_id']])->find();
