@@ -337,12 +337,8 @@ class Live extends Base
 
     public function red_detail()
     {
-        $where = ' 1 = 1';
-        $keywords = I('keywords') ? trim(I('keywords')) : '';
-        $keywords && $where .= " and (room_id like '%$keywords%')";
-
-        $roomId = I('room_id');
-        ($roomId != '') && $where .= " and (room_id = $roomId)";
+        $id = $_GET['id'];
+        $where = " m_id = $id";
 
         $log = new RedDetail();
         $count = $log->where($where)->count();
