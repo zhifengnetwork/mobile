@@ -335,13 +335,11 @@ class Goods extends MobileBase
         }
 
 		if($goods['prom_type'] == 1){ //秒杀
-			$pinfo = M('flash_sale')->field('price,end_time')->find($goods['prom_id']);
+			$pinfo = M('flash_sale')->field('end_time')->find($goods['prom_id']);
 			if($pinfo['end_time'] < time()){
 				M('flash_sale')->update(['id'=>$goods['prom_id'],'is_end'=>1]);
 				M('goods')->update(['goods_id'=>$goods['goods_id'],'prom_type'=>0,'prom_id'=>0]);
 			}
-			$goods['end_time'] = $pinfo['end_time'];
-			$goods['price'] = $pinfo['price'];
 		}
 		if($goods['prom_type'] == 2){ //团购
 			$pinfo = M('group_buy')->field('end_time')->find($goods['prom_id']);
