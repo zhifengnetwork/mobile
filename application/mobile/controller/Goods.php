@@ -335,11 +335,13 @@ class Goods extends MobileBase
         }
 
 		if($goods['prom_type'] == 1){ //秒杀
-			$pinfo = M('flash_sale')->field('end_time')->find($goods['prom_id']);
+			$pinfo = M('flash_sale')->field('price,end_time')->find($goods['prom_id']);
 			if($pinfo['end_time'] < time()){
 				M('flash_sale')->update(['id'=>$goods['prom_id'],'is_end'=>1]);
 				M('goods')->update(['goods_id'=>$goods['goods_id'],'prom_type'=>0,'prom_id'=>0]);
 			}
+			$goods['end_time'] = $pinfo['end_time'];
+			$goods['price'] = $pinfo['price'];
 		}
 		if($goods['prom_type'] == 2){ //团购
 			$pinfo = M('group_buy')->field('end_time')->find($goods['prom_id']);
@@ -605,10 +607,13 @@ class Goods extends MobileBase
             $filter_param['qtype'] = $qtype;
             $where[$qtype] = 1;
         }
-        if ($q) $where['goods_name'] = array('like', '%' . $q . '%');
+        if ($q){
+			$where['goods_name'] = array('like', '%' . $q . '%');
+			$whereor['keywords'] = array('like', '%' . $q . '%');
+		}
 
         $goodsLogic = new GoodsLogic();
-        $filter_goods_id = M('goods')->where($where)->getField("goods_id", true);
+        $filter_goods_id = M('goods')->where($where)->whereor($whereor)->getField("goods_id", true);
 
         // 过滤帅选的结果集里面找商品
         if ($brand_id || $price)// 品牌或者价格

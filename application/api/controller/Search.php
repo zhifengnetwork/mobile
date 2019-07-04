@@ -45,10 +45,13 @@ class Search extends ApiBase
 		$limit = (($page-1)*$num) . ',' . $num;
         $where = array('is_on_sale' => 1);
 
-        if ($q) $where['goods_name'] = array('like', '%' . $q . '%');
+        if ($q){
+			$where['goods_name'] = array('like', '%' . $q . '%');
+			$whereor['keywords'] = array('like', '%' . $q . '%');
+		}
 
         $goodsLogic = new GoodsLogic();
-        $filter_goods_id = M('goods')->where($where)->getField("goods_id", true);
+        $filter_goods_id = M('goods')->where($where)->whereor($whereor)->getField("goods_id", true);
 
         // 过滤筛选的结果集里面找商品
         if ($brand_id || $price)// 品牌或者价格
