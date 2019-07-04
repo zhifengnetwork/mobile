@@ -39,7 +39,7 @@ class User extends Base
         }
 
         //获取礼物列表
-        $giftList = Db::name('live_gift')->order('sort asc')->select();
+        $giftList = Db::name('live_gift')->where(['delete_time'=>['EXP','IS NULL']])->order('sort asc')->select();
 
         //主播的用户名  主播图片
         $zhubo = Db::name('users')->where(['user_id'=>$room['user_id']])->find();
@@ -74,6 +74,15 @@ class User extends Base
         if(empty($room_id) || empty($gift_id)){
             return $this->failResult('参数有误',301);
         }
+
+        $room = Db::name('user_video')->where(['room_id' => $room_id])->find();
+        if(empty($room)){//不存在直播；跳转到直播间列表
+            return $this->failResult('不存在直播',301);
+        }
+        if ($room['status']==2) {//如果主播已结束，跳转到结束页面
+            return $this->failResult('直播已结束',301);
+        }
+
         $userId = $this->user->user_id;
         $user = Db::name('users')->where(['user_id'=>$userId])->find();
         $money = 0;
@@ -143,6 +152,15 @@ class User extends Base
         if(empty($room_id) || empty($money_input)){
             return $this->failResult('参数有误',301);
         }
+
+        $room = Db::name('user_video')->where(['room_id' => $room_id])->find();
+        if(empty($room)){//不存在直播；跳转到直播间列表
+            return $this->failResult('不存在直播',301);
+        }
+        if ($room['status']==2) {//如果主播已结束，跳转到结束页面
+            return $this->failResult('直播已结束',301);
+        }
+
         $money = bcadd($money_input,'0.00',2);
         if($money < 0 || $money != $money_input ){
             return $this->failResult('金额格式不对',301);

@@ -49,7 +49,7 @@ class User extends ApiBase
         if($user_id!=""){
             $data = Db::name("users")
             ->where(['user_id'=>$user_id])
-            ->field('user_id,agent_user as level,nickname,user_money,head_pic,agent_user,first_leader,realname,mobile,is_distribut,is_agent,sex,birthyear,birthmonth,birthday')
+            ->field('user_id,agent_user as level,nickname,user_money,head_pic,agent_user,first_leader,realname,mobile,is_distribut,is_agent,sex,birthyear,paypwd,birthmonth,birthday')
             ->find();
             $data['date_birth'] = $data['birthyear'].'-'.$data['birthmonth'].'-'.$data['birthday'];
             unset($data['birthyear']);
