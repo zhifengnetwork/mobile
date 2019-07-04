@@ -326,6 +326,9 @@ class Index extends Base
                 return $this->failResult('事务处理失败', 301);
             }
         }
+        //添加消费记录
+        accountLog($userId, -$money, 0,  '直播发红包',0,$red_master,time());
+
         Db::commit();
         $message = array(
             'type' => 'red_anchor',
@@ -439,6 +442,8 @@ class Index extends Base
         if(!$result_money){
             return $this->failResult('事务处理失败', 301);
         }
+        //添加消费记录
+        accountLog($userId, $red_detail_find['money'], 0,  '领取红包',0,$red_detail_find,time());
         Db::commit();
         $money = bcadd($red_detail_find['money'],'0.00',2);
         $message = array(
@@ -450,6 +455,7 @@ class Index extends Base
             'content' => $this->user->nickname . '领取了' . $money . '元红包',
             'time' => date('Y-m-d H:i:s'),
         );
+        
         return $this->successResult($message);
     }
     /**

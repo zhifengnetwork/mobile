@@ -15,6 +15,34 @@ function agent_level($agent_user){
 }
 
 /**
+ * 记录帐户变动
+ * @param   int $user_id 用户id
+ * @param   int $user_money 可用余额变动
+ * @param   int $pay_points 消费积分变动
+ * @param   string $desc 变动说明
+ * @param   int    distribut_money 分佣金额
+ * @param int $order_id 订单id
+ * @param string $order_sn 订单sn
+ * @return  bool
+ */
+function account_log($user_id, $user_money = 0, $pay_points = 0, $desc = '', $order_id = 0, $order_sn = '')
+{
+    /* 插入帐户变动记录 */
+    $account_log = array(
+        'user_id' => $user_id,
+        'user_money' => $user_money,
+        'pay_points' => $pay_points,
+        'change_time' => time(),
+        'desc' => $desc,
+        'order_id' => $order_id,
+        'order_sn' => $order_sn
+	);
+	
+    M('account_log')->add($account_log);
+    return true;
+}
+
+/**
  * 通过 user_id 获取 总业绩
  */
 function get_zongyeji_bu_user_id($user_id){
