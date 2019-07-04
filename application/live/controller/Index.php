@@ -424,6 +424,10 @@ class Index extends Base
         }
         $red_detail_find = Db::name('red_detail')->where(['m_id' => $m_id,'type'=>0, 'room_id' => $room_id])->find();
         if (!$red_detail_find) {
+            $all_get_master = Db::name('red_master')->where(['id' => $m_id,'room_id' => $room_id])->update(['all_get'=>1]);
+            if(!$all_get_master){
+                return $this->failResult('红包已领完!!!',301);
+            }
             return $this->failResult('红包已领完!!!',301);
         }
         //获取抢包用户信息
