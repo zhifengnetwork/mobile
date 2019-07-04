@@ -741,7 +741,6 @@ var timing_timerid = setInterval(function(){
             //抢红包
             case 'red_receive':
                 red_receive(data['from_client_id'], data['from_client_name'], data['content'], data['money'], data['time']);
-                // console.log(data['from_client_name']+"说："+data['content']);
                 say(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level']);
                 break;
             //用户端抢包显示

@@ -814,10 +814,6 @@ $(function() {
                 red_anchor(data['from_client_id'], data['from_client_name'], data['content'], data['m_id'], data['time']);
                 // console.log(data['from_client_name']+"说："+data['content']);
                 break;
-            //主播抢红包
-            case 'red_receive':
-                say(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level'],data['money']);
-                break;
             //抢红包
             case 'red_receive_user':
                 red_receive_user(data['from_client_id'], data['from_client_name'], data['content'], data['money'], data['time']);
