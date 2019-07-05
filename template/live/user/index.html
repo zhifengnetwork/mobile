@@ -737,7 +737,7 @@ $(function() {
     function connect() {
         // 创建websocket
         var server_name = '<?php echo $server_name; ?>';
-        ws = new WebSocket("ws://"+server_name+":7373");
+        ws = new WebSocket("ws://"+server_name+":8282");
         // 当socket连接打开时，输入用户名
         ws.onopen = onopen;
         // 当有消息时根据消息类型显示不同信息
