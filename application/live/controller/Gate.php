@@ -36,7 +36,7 @@ class Gate
 		//设置处理业务的类,此处制定Events的命名空间
 		$worker->eventHandler = 'app\live\controller\Events';
 		// 初始化 gateway 进程
-		$gateway = new Gateway("websocket://0.0.0.0:8282");
+		$gateway = new Gateway("websocket://0.0.0.0:7373");
 		// 设置名称，方便status时查看
 		$gateway->name = 'ChatGateway';
 		$gateway->count = 4;

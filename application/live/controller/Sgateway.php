@@ -8,7 +8,7 @@ use Workerman\Autoloader;
 class Sgateway{
 	public function __construct(){
 		// gateway 进程
-		$gateway = new Gateway("Websocket://0.0.0.0:8282");
+		$gateway = new Gateway("Websocket://0.0.0.0:7373");
 		// 设置名称，方便status时查看
 		$gateway->name = 'ChatGateway';
 		// 设置进程数，gateway进程数建议与cpu核数相同
