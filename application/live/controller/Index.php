@@ -286,6 +286,7 @@ class Index extends Base
         $userId = $this->user->user_id;
         $user = Db::name('users')->where(['user_id' => $userId])->find();
         $koujian = bcsub($user['user_money'], $money, 2);
+        // dump($koujian);
         if ($koujian < 0) {
             return $this->failResult('余额不足', 301);
         }
@@ -293,11 +294,12 @@ class Index extends Base
         Db::startTrans();
         //剩余的用户钱
         $user_money = bcsub($user['user_money'], $money, 2);
+        // dump($user_money);
         //扣减用户余额的钱
-        $result = Db::name('users')->where(['user_id' => $userId])->update(['user_money' => $user_money]);
-        if (!$result) {
-            return $this->failResult('事务处理失败', 301);
-        }
+        // $result = Db::name('users')->where(['user_id' => $userId])->update(['user_money' => $user_money]);
+        // if (!$result) {
+        //     return $this->failResult('事务处理失败', 301);
+        // }
         $createRedDate = $this->createRedDate($money, $num); //生成红包
         if (!$createRedDate) {
             return $this->failResult('事务处理失败', 301);
