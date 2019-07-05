@@ -451,7 +451,7 @@ class Index extends Base
         Db::commit();
         $money = bcadd($red_detail_find['money'],'0.00',2);
         $message = array(
-            'type' => 'red_receive',
+            // 'type' => 'red_receive',
             'from_client_id' => $userId,
             'from_client_name' => $this->user->nickname,
             'to_client_id' => 'all',
@@ -459,6 +459,11 @@ class Index extends Base
             'content' => $this->user->nickname . '领取了' . $money . '元红包',
             'time' => date('Y-m-d H:i:s'),
         );
+        if(input('index',0) == 'idnex'){
+            $message['type'] = 'red_receive';
+        }else if(input('index',0) == 'user'){
+            $message['type'] = 'red_receive_user';
+        }
         
         return $this->successResult($message);
     }

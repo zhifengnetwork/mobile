@@ -944,7 +944,7 @@ var timing_timerid = setInterval(function(){
             type: 'post',
             async:false,
             url: "{:U('live/index/click_red_packet')}", //请求的服务端地址
-            data: {room_id: room_id,users_id: users_id,m_id: m_id},    
+            data: {room_id: room_id,users_id: users_id,m_id: m_id,index:'index'},    
             dataType: 'json',
             success: function (data) {
                 if(data.status==200){
