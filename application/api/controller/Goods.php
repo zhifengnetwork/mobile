@@ -393,7 +393,7 @@ class Goods extends ApiBase
 		
 		$goods['goods_content'] = htmlspecialchars_decode($goods['goods_content']); 
 		$goods_content = preg_replace('/src="(.*?)"/', 'src="'.SITE_URL.'$1"', $goods['goods_content']);
-		unset($goods['goods_content']);
+        unset($goods['goods_content']);
 		$goodsModel = new \app\common\model\Goods();
 		$goods['is_collect'] = M('goods_collect')->where(['goods_id'=>$goods_id,'user_id'=>$user_id])->count();
 		$goods['is_cart'] = M('cart')->where(['goods_id'=>$goods_id,'user_id'=>$user_id])->count();

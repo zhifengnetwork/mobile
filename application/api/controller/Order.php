@@ -140,7 +140,7 @@ class Order extends ApiBase
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
         }
-        $address_id = input("address_id/d", 0); //  收货地址id
+        $address_id = input("address_id", 0); //  收货地址id
         $invoice_title = input('invoice_title');  // 发票  
         $taxpayer = input('taxpayer');       // 纳税人识别号
         $invoice_desc = input('invoice_desc');       // 发票内容
