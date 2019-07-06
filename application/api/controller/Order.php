@@ -173,18 +173,19 @@ class Order extends ApiBase
 		if($act != 1){
             if($address_id){
                 $address = Db::name('user_address')->where(["user_id"=> $user_id,"address_id"=>$address_id])->find();
+                
             }else{
                 $address = Db::name('user_address')->where(["user_id"=> $user_id])->order('is_default desc')->find();
             }
         }else{
 			$address = Db::name('user_address')->where(["user_id"=> $user_id,"address_id"=>$address_id])->find();
         }
-
+        
         //判断地址正不正确
         if(!$address){
             $this->ajaxReturn(['status' => -1, 'msg' => '地址不存在', 'data'=> null]);
         }
-
+        
         $cartLogic = new CartLogic();
         $pay = new Pay();
 		$goodsinfo = [];
@@ -231,6 +232,7 @@ class Order extends ApiBase
                 ->useCouponById($coupon_id)->getAuction()->getUserSign(1)->useUserMoney($user_money)
                 ->usePayPoints($pay_points,false,'mobile');
             // 提交订单
+            
             if ($act == 1) {
                 $placeOrder = new PlaceOrder($pay);
                 $placeOrder->setMobile($mobile)->setUserAddress($address)->setConsignee($consignee)->setInvoiceTitle($invoice_title)
@@ -239,7 +241,8 @@ class Order extends ApiBase
                 $order = $placeOrder->getOrder();
                 $this->ajaxReturn(['status' => ($user_money ? 1 : 0), 'msg' => '提交订单成功', 'data' => ['order_sn' => $order['order_sn']] ]);
             }
-			$address = M('user_address')->where(['user_id'=>$user_id])->order('is_default desc')->find();
+            // dump($address);die;
+			// $address = M('user_address')->where(['user_id'=>$user_id])->order('is_default desc')->find();
 			if($address){
 				$address['province_name'] = $address['province'] ? M('region')->where(['id'=>$address['province']])->value('name') : '';
 				$address['city_name'] = $address['city'] ? M('region')->where(['id'=>$address['city']])->value('name') : '';
