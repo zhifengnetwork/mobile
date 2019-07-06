@@ -47,8 +47,8 @@ class Sign extends ApiBase
 
 		$data = $this->sign_in($user_id);
 		$data['status'] = ($data['status'] == 1) ? 0 : $data['status'];
-		$data['accumulate_day'] = $accumulate_day['accumulate_day'];
-		$data['data'] = ['time'=>$data['date'],'points'=>$points,'continue_sign'=>$continue_sign,'add_point'=>$add_point];
+		// $data['accumulate_day'] = $accumulate_day['accumulate_day'];
+		$data['data'] = ['time'=>$data['date'],'points'=>$points,'continue_sign'=>$continue_sign,'add_point'=>$add_point,'accumulate_day'=>$accumulate_day['accumulate_day']];
 		unset($data['date']);
 		return $this->ajaxReturn($data);
 
