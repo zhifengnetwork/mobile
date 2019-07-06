@@ -1,0 +1,283 @@
+<include file="public/layout" />
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+	<div class="fixed-bar">
+		<div class="item-title">
+			<div class="subject">
+				<h3>拼团管理</h3>
+				<!--<h5>网站系统拼团活动审核与管理</h5>-->
+			</div>
+		</div>
+	</div>
+	<!-- 操作说明 -->
+	<!-- <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+		<div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+			<h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+			<span title="收起提示" id="explanationZoom" style="display: block;"></span>
+		</div>
+		<ul>
+			<li>拼团管理, 由平台设置管理.</li>
+		</ul>
+	</div> -->
+	<div class="flexigrid">
+		<div class="mDiv">
+			<div class="ftitle">
+				<h3>拼团列表</h3>
+				<h5>(共{$page->totalRows}条记录)</h5>
+				<!--
+                <div class="fbutton" style="margin-left: 30px;">
+                    <a href="http://help.tp-shop.cn/Index/Help/info/cat_id/5/id/496.html" target="_blank">
+                        <div class="" title="帮助">
+                            <span>帮助</span>
+                        </div>
+                    </a>
+				</div>
+				-->
+			</div>
+			<a href=""><div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div></a>
+		</div>
+		<div class="hDiv">
+			<div class="hDivBox">
+				<table cellspacing="0" cellpadding="0">
+					<thead>
+					<tr>
+						<th class="sign" axis="col0">
+							<div style="width: 24px;"><i class="ico-check"></i></div>
+						</th>
+						<th abbr="article_title" axis="col3" class="">
+							<div style="text-align: center; width: 150px;" class="">商品</div>
+						</th>
+
+						<th abbr="ac_id" axis="col4" class="">
+							<div style="text-align: center; width: 150px;" class="">截止时间</div>
+						</th>
+
+						<th  abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 150px;" class="">团长</div>
+						</th>
+						<th abbr="article_time" axis="col6" class="">
+
+								<div style="text-align: center; width: 150px;" class="">拼团价格</div>
+						</th>						
+						<th abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 50px;" class="">拼团人数</div>
+						</th>
+						<th abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 150px;" class="">状态</div>
+						</th>
+						
+						<th axis="col1" class="handle">
+							<div style="text-align: center;">操作</div>
+						</th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<!--
+		<div class="tDiv">
+			<div class="tDiv2">
+				<a href="{:U('Team/info')}">
+					<div class="fbutton">
+						<div title="添加拼团" class="add">
+							<span><i class="fa fa-plus"></i>添加拼团</span>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div style="clear:both"></div>
+		</div>
+		-->
+		<div class="bDiv" style="height: auto;">
+			<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+				<table>
+					<tbody>
+					<volist name="list" id="team">
+						<tr>
+							<td class="sign">
+								<div style="width: 24px;"><i class="ico-check"></i></div>
+							</td>
+							<td>
+								<div style="text-align: left; width: 150px;">{$team.goods_name}</div>
+							</td>
+
+							<td>
+								<div style="text-align: center; width: 150px;">{:date('Y-m-d h:i:s', $team.found_end_time)}</div>
+							</td>	
+							<td>
+								<div style="text-align: center; width: 150px;">{$team.nickname}</div>
+							</td>	
+							<td>
+								<div style="text-align: center; width: 150px;">￥{$team.group_price}</div>
+							</td>								
+							<td>
+								<div style="text-align: center; width: 50px;">{$team.join}</div>
+							</td>
+							<td>
+									<div style="text-align: center; width: 150px;">
+											<span class="yes"><i class="fa fa-check-circle"></i>成功</span>
+										</if>
+									</div>
+							</td>
+																								
+							<td style="text-align:center" class="handle">
+								<div style="width: 150px;">
+									<a class="btn blue" href="{:U('Team/foundinfo',array('found_id'=>$team['found_id'],'team_id'=>$team['team_id']))}"><i class="fa fa-pencil-square-o"></i>查看</a>
+									<!--
+									<a class="btn red" data-url="{:U('Team/teamHandle',array('act'=>'del'))}" data-id="{$team.team_id}" onclick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>-->	
+								</div>
+							</td>	
+						</tr>
+					</volist>
+					</tbody>
+				</table>
+			</div>
+			<div class="iDiv" style="display: none;"></div>
+		</div>
+		<!--分页位置-->
+		<div>
+			{$page->show()} 
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function(){
+		// 表格行点击选中切换
+		$('#flexigrid > table>tbody >tr').click(function(){
+			$(this).toggleClass('trSelected');
+		});
+
+		// 点击刷新数据
+		$('.fa-refresh').click(function(){
+			location.href = location.href;
+		});
+	});
+
+	function delfun(obj) {
+		// console.log($(obj).attr('data-url'));
+		layer.confirm('确认删除？', {
+					btn: ['确定', '取消'] //按钮
+				}, function () {
+					$.ajax({
+						type: 'post',
+						url: $(obj).attr('data-url'),
+						data: {team_id: $(obj).attr('data-id')},
+						dataType: 'json',
+						success: function (data) {
+							layer.closeAll();
+							if (data.status == 1) {
+								layer.msg(data.msg, {icon: 1});
+								$(obj).parent().parent().parent().remove();
+							} else {
+								layer.msg(data.msg, {icon: 2, time: 2000});
+							}
+						}
+					})
+				}, function (index) {
+					layer.close(index);
+				}
+		);
+	}
+
+	//抽奖
+	$(function () {
+		$(document).on("click", '.gift_button', function (e) {
+			var team_id = $(this).data('team-id');
+			layer.open({
+				content: '确认抽奖将从该拼团活动下拼团成功的订单里抽取，并把中奖的订单确认，未中奖的订单都执行退款操作,并且结束该活动。该操作不可逆，确定要执行吗？'
+				,btn: ['确定', '取消']
+				,yes: function(index, layero){
+					layer.close(index);
+					$.ajax({
+						type: "POST",
+						url: "{:U('Team/lottery')}",//+tab,
+						data: {team_id: team_id},
+						dataType: 'json',
+						success: function (data) {
+							if (data.status == 1) {
+								layer.msg(data.msg, {icon: 1, time: 2000}, function(){
+									window.location.reload();
+								});
+							} else {
+								layer.msg(data.msg, {icon: 2, time: 2000});
+							}
+						}
+					});
+				}
+				,btn2: function(index, layero){
+					layer.close(index);
+				}
+				,cancel: function(){
+					//右上角关闭回调
+					layer.close();
+				}
+			});
+		})
+	})
+
+
+    // 修改指定表的指定字段值 包括有按钮点击切换是否 或者 排序 或者输入框文字
+    function changeTableVal2(table, id_name, id_value, field, obj,yes,no,status) {
+        if (status == '进行中') {
+            layer.confirm('活动进行中，确认关闭？', {
+                btn: ['确定', '取消'] //按钮
+            },function () {
+                var value = $(obj).val();
+                if(yes == '' || typeof(yes)== 'undefined')yes='是';
+                if(no == '' || typeof(no) == 'undefined')no='否';
+                if ($(obj).hasClass('yes')) // 图片点击是否操作
+                {
+                    $(obj).removeClass('no').addClass('yes');
+                    $(obj).html("<i class='fa fa-check-circle'></i>"+yes+"");
+                    value = 1;
+                } else if ($(obj).hasClass('yes')) { // 图片点击是否操作
+                    $(obj).removeClass('yes').addClass('no');
+                    $(obj).html("<i class='fa fa-ban'></i>"+no+"");
+                    value = 0;
+                }
+
+                $.ajax({
+                    url: "/index.php?m=Admin&c=Index&a=changeTableVal&table=" + table + "&id_name=" + id_name + "&id_value=" + id_value + "&field=" + field + '&value=' + value,
+                    success: function () {
+                        if (!$(obj).hasClass('no') && !$(obj).hasClass('yes'))
+                            layer.msg('更新成功', {icon: 1});
+                        window.location.reload();
+                    }
+                });
+            },function (index) {
+                layer.close(index);
+                return false;
+            })
+        }else{
+            var value = $(obj).val();
+            if(yes == '' || typeof(yes)== 'undefined')yes='已开启';
+            if(no == '' || typeof(no) == 'undefined')no='未开启';
+            if ($(obj).hasClass('no')) // 图片点击是否操作
+            {
+                $(obj).removeClass('no').addClass('yes');
+                $(obj).html("<i class='fa fa-check-circle'></i>"+yes+"");
+                value = 1;
+            } else if ($(obj).hasClass('yes')) { // 图片点击是否操作
+                $(obj).removeClass('yes').addClass('no');
+                $(obj).html("<i class='fa fa-ban'></i>"+no+"");
+                value = 0;
+            }
+
+            $.ajax({
+                url: "/index.php?m=Admin&c=Index&a=changeTableVal&table=" + table + "&id_name=" + id_name + "&id_value=" + id_value + "&field=" + field + '&value=' + value,
+                success: function () {
+					// alert('aaa');
+                    // if (!$(obj).hasClass('no') && !$(obj).hasClass('yes'))
+                    //     layer.msg('更新成功', {icon: 1});
+                    // window.location.reload();
+                }
+            });
+        }
+
+    }
+
+</script>
+</body>
+</html>
