@@ -733,8 +733,10 @@ var timing_timerid = setInterval(function(){
                 say(data['from_client_id'], data['from_client_name'], data['from_client_name']+' 退出了', data['time'],data['user_level']);
                 delete client_list[data['from_client_id']];
                 flush_client_list();
+                break;
             //直播发红包
             case 'red_anchor':
+                console.log('aaaaaaaaaaaa');
                 red_anchor(data['from_client_id'], data['from_client_name'], data['content'], data['m_id'], data['time']);
                 // console.log(data['from_client_name']+"说："+data['content']);
                 break;
@@ -913,7 +915,8 @@ var timing_timerid = setInterval(function(){
 
     //发红包
     function red_anchor(from_client_id, from_client_name, content, m_id, time){
-        console.log(content);
+        console.log('sdfsdfsdfsdf');
+        console.log(from_client_name);
         var str = '';
         str +='<div class="undemolished">';
         str +='<div class="popup-header">';
