@@ -44,6 +44,10 @@ class Search extends ApiBase
 		$num = I('post.num/d',6);
 		$limit = (($page-1)*$num) . ',' . $num;
         $where = array('is_on_sale' => 1);
+		
+		//2019/7/6 星期六 增加活动商品不被搜索
+		$where['prom_type'] = 0;
+		$where['prom_id'] = 0;
 
         if ($q){
 			$where['goods_name'] = array('like', '%' . $q . '%');

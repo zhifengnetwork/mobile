@@ -610,6 +610,10 @@ class Goods extends MobileBase
 			$whereor['keywords'] = array('like', '%' . $q . '%');
 		}
 
+		//2019/7/6 星期六 增加活动商品不被搜索
+		$where['prom_type'] = 0;
+		$where['prom_id'] = 0;
+
         $goodsLogic = new GoodsLogic();
         $filter_goods_id = M('goods')->where($where)->whereor($whereor)->getField("goods_id", true);
 
