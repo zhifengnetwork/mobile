@@ -279,8 +279,8 @@ class User extends ApiBase
             I('post.nickname') ? $post['nickname'] = I('post.nickname') : false; //昵称
             I('post.qq') ? $post['qq'] = I('post.qq') : false;  //QQ号码
             I('post.head_pic') ? $post['head_pic'] = I('post.head_pic') : false; //头像地址
-        
-            if(empty(I('post.sex')) && ($user_info['sex'] != I('post.sex'))){
+            if(empty(I('post.sex')) || ($user_info['sex'] != I('post.sex'))){
+                // dump(I('post.sex'));die;
                 $post['sex'] = I('post.sex');
             }
             
@@ -322,6 +322,7 @@ class User extends ApiBase
             $result['head_pic'] = $user_info['head_pic'];
             $result['nickname'] = $user_info['nickname'];
             $result['mobile'] = $user_info['mobile'];
+            // $result['sex'] = input('sex',0)==''?$user_info['sex']:input('sex',0);
             $result['sex'] = $user_info['sex'];
             $result['birthyear'] = $user_info['birthyear'];
             $result['birthmonth'] = $user_info['birthmonth'];
@@ -330,6 +331,7 @@ class User extends ApiBase
             $result['province'] = $user_info['province'];
             $result['city'] = $user_info['city'];
             $result['district'] = $user_info['district'];
+            
             $this->ajaxReturn(['status' => 0 , 'msg'=>'保存成功','data'=>$result]);
 
         }else{
