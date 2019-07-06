@@ -1511,7 +1511,7 @@ function confirm_order($id, $user_id = 0)
     $order = M('order')->where($where)->find();
     if ($order['order_status'] != 1)
         return array('status' => -1, 'msg' => '该订单不能收货确认');
-    if (empty($order['pay_time']) || $order['pay_status'] != 1) {
+    if ($order['pay_status'] != 1) {
         return array('status' => -1, 'msg' => '商家未确定付款，该订单暂不能确定收货');
     }
     $data['order_status'] = 2; // 已收货

@@ -65,7 +65,7 @@ class Order
         if($this->order['order_status'] == 5){
             throw new TpshopException("自提订单核销",0,['status' => 0, 'msg' => '该订单已作废']);
         }
-        if(empty($this->order['pay_time']) || $this->order['pay_status'] != 1){
+        if($this->order['pay_status'] != 1){
             throw new TpshopException('订单确认收货', 0, ['status' => 0, 'msg' => '商家未确定付款，该订单暂不能确定收货']);
         }
         $data['order_status'] = 2; // 已收货
