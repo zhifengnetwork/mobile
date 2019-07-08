@@ -47,6 +47,7 @@ class Order extends ApiBase
         if ($type == 3)$data = array('tp_order.pay_status'=>1,'tp_order.shipping_status'=>1,'order_status'=>1,);//'待收货',
         if ($type == 4)$data = array('tp_order.order_status'=>2,);//'待评价',  
         if ($type == 5)$data = array('tp_order.order_status'=>4,);//'已评价',  
+        if ($type == 6)$data = array('tp_order.order_status'=>['in','2,4'],);//'已评价',  
         // $data = '订单列表数据';
         $data['tp_order.user_id'] = $user_id;
         /*$name = array(
