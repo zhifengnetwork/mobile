@@ -86,7 +86,7 @@ class Order extends ApiBase
 				$order[$k]['store_name'] = $ssinfo['store_name'];
 				$order[$k]['avatar'] = $ssinfo['avatar'];
 			}
-			$order[$k]['goods'] = $OrderGoods->alias('OG')->field('OG.goods_id,OG.goods_name,OG.goods_num,OG.final_price,OG.item_id,OG.spec_key,OG.spec_key_name,G.original_img')->join('tp_goods G','OG.goods_id=G.goods_id','left')->where(['OG.order_id'=>$v['order_id']])->select();
+			$order[$k]['goods'] = $OrderGoods->alias('OG')->field('OG.goods_id,OG.goods_name,OG.goods_num,OG.final_price,OG.item_id,OG.spec_key,OG.spec_key_name,G.original_img,OG.is_comment')->join('tp_goods G','OG.goods_id=G.goods_id','left')->where(['OG.order_id'=>$v['order_id']])->select();
 			$order[$k]['num'] = $OrderGoods->where(['order_id'=>$v['order_id']])->sum('goods_num');
         }
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$order]);
@@ -415,6 +415,11 @@ class Order extends ApiBase
 		M('Order')->update(['order_id'=>$order_id,'order_status'=>4]);
 
 		$this->ajaxReturn(['status' => 0 , 'msg'=>'请求成功','data'=>null]);
-	}
+    }
+    
+    //已评价
+    public function git_order_common(){
+
+    }
 	  
 }

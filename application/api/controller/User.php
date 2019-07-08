@@ -58,6 +58,7 @@ class User extends ApiBase
         }else{
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
+        // dump($data['level']);die;
         $data['level_name'] = $data['level'] ? M('user_level')->where(['level'=>$data['level']])->value('level_name') : '普通用户';
         
         // $data['user_paypwd'] = $data['paypwd'] == '' ? 1 : 2;
