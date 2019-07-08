@@ -73,7 +73,8 @@ class Sign extends ApiBase
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>null]);
         }
-		$data = $this->get_sign_days($user_id);
+        $data = $this->get_sign_days($user_id);
+        // dump($data);die;
 		$data = [
 			'date'	=> $data['data'],
 			'today_sign'	=> $data['today_sign'],
@@ -109,7 +110,8 @@ class Sign extends ApiBase
     private function deal_time($time)
     {
         //
-        $m=date('m',strtotime($time))-1;
+        // $m=date('m',strtotime($time))-1;
+        $m=date('m',strtotime($time));
         $y=date('Y',strtotime($time));
         $d=date('d',strtotime($time));
         $newtime="$y-$m-$d";
