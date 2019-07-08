@@ -479,7 +479,7 @@ class Groupbuy extends MobileBase
                 if(($data['buy_type'] != 1) && (tpCache('shopping.reduce') == 1)){
                     minus_stock(['order_id'=>$order_insid,'order_sn'=>$order_sn,'user_id'=>$user_id]);
                 }     
-
+                
                 # 单独购买 || 拼团
                 if($prom_type){
                     # 开团数据拼装
@@ -522,11 +522,11 @@ class Groupbuy extends MobileBase
 							'team_id'				=> $info['team_id']
 						]);
 						M('team_found')->where(['found_id'=>$data['found_id']])->setInc('join');	
-						M('team_found')->where(['found_id'=>$data['found_id']])->setDec('need');	
+                        M('team_found')->where(['found_id'=>$data['found_id']])->setDec('need');	
 						$needer = M('team_found')->where(['found_id'=>$data['found_id']])->value('need');
 						if($needer == 0){
-							M('team_found')->update(['found_id'=>$data['found_id'],'status'=>2]);
-							M('team_follow')->update(['found_id'=>$data['found_id'],'status'=>2]);
+                            M('team_found')->update(['found_id'=>$data['found_id'],'status'=>4]);
+                            M('team_follow')->where(['found_id'=>$data['found_id']])->update(['status'=>4]);
 						}
 					}
 					if($found_ins){
