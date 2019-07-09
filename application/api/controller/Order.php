@@ -94,6 +94,36 @@ class Order extends ApiBase
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$order]);
     }
 
+    
+    /**
+     * 评论详情
+     * @return mixed
+     */
+    public function comment_info(){
+        $commentLogic = new \app\common\logic\CommentLogic;
+        $comment_id = I('comment_id/d');
+        $res = $commentLogic->getCommentInfo($comment_id);
+        // dump($res);die;
+        if(empty($res)){
+            $this->error('参数错误！！');
+        }
+        if(!empty($res['comment_info']['img'])) $res['comment_info']['img'] = unserialize($res['comment_info']['img']);
+        $user = get_user_info($res['comment_info']['user_id']);
+        $res['comment_info']['nickname'] = $user['nickname'];
+        $res['comment_info']['head_pic'] = $user['head_pic'];
+        $this->assign('comment_info',$res['comment_info']);
+        $this->assign('comment_id',$res['comment_info']['comment_id']);
+        $this->assign('reply',$res['reply']);
+        $this->assign('user',$this->user);
+        $data = [
+            'comment_info'=>$res['comment_info'],
+            'comment_id'=>$res['comment_info']['comment_id'],
+            'reply'=>$res['reply'],
+            'user'=>$this->user
+        ];
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
+    }
+
     /**
     * 订单
     */
