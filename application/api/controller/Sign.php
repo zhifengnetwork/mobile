@@ -38,17 +38,18 @@ class Sign extends ApiBase
 
         //当前积分
         $points = M('users')->where(['user_id' => $user_id])->value('pay_points');
-        //连续签到几天
-        $continue_sign = continue_sign($user_id);
+       
 
         $accumulate_day = $this->get_sign_days($user_id);
         //签到积分
         $add_point = (int) M('config')->where(['name' => 'sign_integral'])->value('value');
 
 		$data = $this->sign_in($user_id);
-		$data['status'] = ($data['status'] == 1) ? 0 : $data['status'];
+        $data['status'] = ($data['status'] == 1) ? 0 : $data['status'];
+         //连续签到几天
+         $continue_sign = $data['a'] ==''?continue_sign($user_id):$data['a'];
 		// $data['accumulate_day'] = $accumulate_day['accumulate_day'];
-		$data['data'] = ['time'=>$data['date'],'points'=>$points,'continue_sign'=>$data['a'],'add_point'=>$add_point,'accumulate_day'=>$accumulate_day['accumulate_day']];
+		$data['data'] = ['time'=>$data['date'],'points'=>$points,'continue_sign'=>$continue_sign,'add_point'=>$add_point,'accumulate_day'=>$accumulate_day['accumulate_day']];
 		unset($data['date']);
 		return $this->ajaxReturn($data);
 
