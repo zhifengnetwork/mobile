@@ -93,10 +93,30 @@ class Order extends ApiBase
         }
         foreach($order[$k]['goods'] as $key=>$val){
             $commint = Db::name('comment')->where(['goods_id'=>$val['goods_id'],'user_id'=>$user_id])->find();
-            // dump($commint);
             $order[$k]['goods'][$key]['comment_id'] = $commint['comment_id'];
         }
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$order]);
+    }
+     /**
+     *  点赞
+     */
+    public function ajaxZan()
+    {
+        $comment_id = I('post.comment_id/d');
+        $user_id = $this->get_user_id();
+        $comment_info = M('comment')->where(array('comment_id' => $comment_id))->find();  //获取点赞用户ID
+        $comment_user_id_array = explode(',', $comment_info['zan_userid']);
+        // dump($comment_info);die;
+        if (in_array($user_id, $comment_user_id_array)) {  //判断用户有没点赞过
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'您已经点过赞了~','data'=>'']);
+        } else {
+            array_push($comment_user_id_array, $user_id);  //加入用户ID
+            $comment_user_id_string = implode(',', $comment_user_id_array);
+            $comment_data['zan_num'] = $comment_info['zan_num'] + 1;  //点赞数量加1
+            $comment_data['zan_userid'] = $comment_user_id_string;
+            M('comment')->where(array('comment_id' => $comment_id))->save($comment_data);
+            $this->ajaxReturn(['status' => 1 , 'msg'=>'点赞成功~','data'=>'']);
+        }
     }
 
     
