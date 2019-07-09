@@ -165,7 +165,7 @@ class Order extends ApiBase
             $this->ajaxReturn(['status' => -2 , 'msg'=>'非本人订单','data'=>null]);
         }
 
-		$field = 'order_id,seller_id,order_sn,user_id,order_status,shipping_status,pay_status,consignee,country,province,city,district,twon,address,shipping_price,user_money,order_amount,total_amount,mobile,pay_time,pay_name,add_time,prom_id,prom_type,order_prom_id,goods_price,shipping_name,user_note,order_prom_amount,sign_price,integral_money,coupon_price';
+		$field = 'order_id,seller_id,order_sn,user_id,order_status,shipping_status,pay_status,consignee,country,province,city,district,twon,address,shipping_price,user_money,order_amount,total_amount,mobile,pay_time,pay_name,add_time,prom_id,prom_type,order_prom_id,goods_price,shipping_name,user_note,order_prom_amount,sign_price,integral_money,coupon_price,pay_code,invoice_title,taxpayer,invoice_desc,pay_name';
         $orderinfo = Db::name('order')->field($field)->order('add_time desc')->find($order_id);
 		$Region = M('Region');
 		$orderinfo['province_name'] = $orderinfo['province'] ? $Region->where(['id'=>$orderinfo['province']])->value('name') : '';
