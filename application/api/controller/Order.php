@@ -88,8 +88,8 @@ class Order extends ApiBase
 				$order[$k]['store_name'] = $ssinfo['store_name'];
 				$order[$k]['avatar'] = $ssinfo['avatar'];
 			}
-			$order[$k]['goods'] = $OrderGoods->alias('OG')->field('OG.goods_id,OG.goods_name,OG.goods_num,OG.final_price,OG.item_id,OG.spec_key,OG.spec_key_name,G.original_img,OG.is_comment')->join('tp_goods G','OG.goods_id=G.goods_id','left')->where(['OG.order_id'=>$v['order_id']])->select();
-			$order[$k]['num'] = $OrderGoods->where(['order_id'=>$v['order_id']])->sum('goods_num');
+			$order[$k]['goods'] = $OrderGoods->alias('OG')->field('OG.goods_id,OG.goods_name,OG.goods_num,OG.final_price,OG.item_id,OG.spec_key,OG.spec_key_name,G.original_img,OG.is_comment,C.comment_id')->join('tp_goods G','OG.goods_id=G.goods_id','left')->join('tp_comment C','OG.goods_id=C.goods_id','left')->where(['OG.order_id'=>$v['order_id']])->select();
+            $order[$k]['num'] = $OrderGoods->where(['order_id'=>$v['order_id']])->sum('goods_num');
         }
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$order]);
     }
@@ -111,10 +111,7 @@ class Order extends ApiBase
         $user = get_user_info($res['comment_info']['user_id']);
         $res['comment_info']['nickname'] = $user['nickname'];
         $res['comment_info']['head_pic'] = $user['head_pic'];
-        $this->assign('comment_info',$res['comment_info']);
-        $this->assign('comment_id',$res['comment_info']['comment_id']);
-        $this->assign('reply',$res['reply']);
-        $this->assign('user',$this->user);
+
         $data = [
             'comment_info'=>$res['comment_info'],
             'comment_id'=>$res['comment_info']['comment_id'],
