@@ -110,8 +110,8 @@ class Cart extends ApiBase
         $res['list'] = $data;
         $res['cart_price_info'] = $this->_getTotal($user_id);
         $res['selected_flag'] = array('all_flag'=>$all_flag);
-
-        
+        $hot_goods = db('Goods')->where('is_hot=1 and is_on_sale=1')->limit(20)->cache(true, TPSHOP_CACHE_TIME)->select();
+        $res['hot_goods'] = $hot_goods;
         $this->ajaxReturn(['status' => 0 , 'msg'=>'购物车列表成功','data'=>$res]);
     }
 
