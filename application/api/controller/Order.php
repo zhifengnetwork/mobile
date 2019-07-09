@@ -91,10 +91,13 @@ class Order extends ApiBase
 			$order[$k]['goods'] = $OrderGoods->alias('OG')->field('OG.goods_id,OG.goods_name,OG.goods_num,OG.final_price,OG.item_id,OG.spec_key,OG.spec_key_name,G.original_img,OG.is_comment')->join('tp_goods G','OG.goods_id=G.goods_id','left')->where(['OG.order_id'=>$v['order_id']])->select();
             $order[$k]['num'] = $OrderGoods->where(['order_id'=>$v['order_id']])->sum('goods_num');
         }
-        foreach($order[$k]['goods'] as $key=>$val){
-            $commint = Db::name('comment')->where(['goods_id'=>$val['goods_id'],'user_id'=>$user_id])->find();
-            $order[$k]['goods'][$key]['comment_id'] = $commint['comment_id'];
+        if($order[$k]['goods']){
+            foreach($order[$k]['goods'] as $key=>$val){
+                $commint = Db::name('comment')->where(['goods_id'=>$val['goods_id'],'user_id'=>$user_id])->find();
+                $order[$k]['goods'][$key]['comment_id'] = $commint['comment_id'];
+            }
         }
+        
         $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$order]);
     }
      /**
