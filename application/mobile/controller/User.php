@@ -469,6 +469,11 @@ class User extends MobileBase
             $logo_url->thumb(410, 410)->save($url_code , null, 100);
         }
 
+        
+        if(strpos($head_pic_url,'?')){
+            $head_pic_url=substr($head_pic_url,0,strpos($head_pic_url,'?'));
+        }
+
         $head_url = IMGROOT_PATH.'/public/share/head/'.$user_id.'.jpg';
         if( @fopen( $head_url, 'r' ) )
         {
@@ -480,6 +485,8 @@ class User extends MobileBase
             $url_head_pp = $re['save_path'];
         }
         
+       
+
         //判断图片大小
         $logo = \think\Image::open($url_head_pp);
         $logo_width = $logo->height();
