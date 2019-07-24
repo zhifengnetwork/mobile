@@ -59,7 +59,17 @@ class User extends ApiBase
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
         // dump($data['level']);die;
-        $data['level_name'] = $data['level'] ? M('user_level')->where(['level'=>$data['level']])->value('level_name') : '普通用户';
+        // $data['level_name'] = $data['level'] ? M('user_level')->where(['level'=>$data['level']])->value('level_name') : '普通用户';
+        $level_name=M('user_level')->where(['level'=>$data['level']])->value('level_name');
+        if($level_name){
+            $data['level_name']=$level_name;
+        }else{
+            if($data['is_distribut']==1){
+                $data['level_name']="分销商";
+            }else{
+                $data['level_name']='普通用户';
+            }
+        }
         
         // $data['user_paypwd'] = $data['paypwd'] == '' ? 1 : 2;
         if($data['paypwd'] == null){
