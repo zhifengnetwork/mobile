@@ -356,7 +356,14 @@ class Goods extends MobileBase
         }
         
         if(input('zhubo_id')){
-            Session::set("GOODS{$goods_id}",input('zhubo_id'));
+            // $user_id = $this->user_id;
+            $zhubo_id = input('zhubo_id');
+            Session::set("GOODS{$goods_id}",$zhubo_id);
+            $filter_user = Db::name('users')->where(['user_id'=>$user_id])->find();
+            // dump($filter_user);
+            if($filter_user['first_leader'] == ''){
+                M('users')->where(['user_id'=>$user_id])->update(['first_leader'=>$zhubo_id]);
+            }
         }
 
         $recommend_goods = M('goods')->where("is_recommend=1 and is_on_sale=1 and cat_id = {$goods['cat_id']}")->cache(7200)->limit(9)->field("goods_id, goods_name, shop_price")->select();
