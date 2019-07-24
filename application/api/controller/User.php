@@ -978,6 +978,45 @@ class User extends ApiBase
         
     }
 
+     //微信登录
+	public function weixin_login_userinfo(){
+        $nickname = I('nickname');
+        $head_pic = I('head_pic');
+        $unionid = I('unionid');
+        $openid = I('openid');
+
+        if(!$openid && !$unionid){
+            $data = ['status' => -1 , 'msg'=>'缺少openid或unionid'];
+		    $this->ajaxReturn($data);
+        }
+
+        $userinfo = M('users')->field('user_id,nickname,openid,unionid,token')->where(['unionid'=>$unionid])->find();
+        if(!$userinfo){
+            $userinfo = M('users')->field('user_id,nickname,openid,unionid,token')->where(['openid'=> $openid])->find();
+        }
+		if(!$userinfo){
+            $logic = new UsersLogic(); 
+            $data['nickname'] = $nickname;
+            $data['head_pic'] = $head_pic;
+            $data['unionid'] = $unionid;
+            $data['openid'] = $openid;
+
+			$data = $logic->thirdLogin($data);
+			$data['status'] = ($data['status'] == 1) ? 0 : $data['status'];
+			if(isset($data['result'])){
+				$data['data']['user_id'] = $data['result']['user_id'];
+				$data['data']['token'] = $data['result']['token'];
+				unset($data['result']);
+			}
+		}else{
+            $data = ['status' => 0 , 'msg'=>'请求成功', 'data'=>$userinfo];
+        }
+        
+		$data['data']['token'] = $this->create_token($data['data']['user_id']);
+		$this->ajaxReturn($data);
+    }
+
+
 	//微信登录
 	public function weixin_login(){
 		//上面获取到code后这里跳转回来

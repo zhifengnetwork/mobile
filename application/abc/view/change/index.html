@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <title>改变用户ID</title>
+    <link rel="stylesheet" href="/public/css/weui.min.css" />
+</head>
+
+<body>
+
+    <div class="weui-cells__title">改变用户ID</div>
+    <form method="POST">
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">不用的ID：</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" name="no" placeholder="不用的ID，删掉" />
+                </div>
+            </div>
+
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">新的ID：</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" name="you" placeholder="用的ID，留着" />
+                </div>
+            </div>
+
+        </div>
+
+        <input type="hidden" name="token" value="{$token}" />
+
+
+        <div class="button-sp-area">
+            <button type="submit" class="weui-btn weui-btn_primary">确定修改</button>
+        </div>
+
+    </form>
+
+</body>
+
+</html>

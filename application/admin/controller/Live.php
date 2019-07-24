@@ -330,7 +330,6 @@ class Live extends Base
         $list = $log->where($where)->order('id desc')
             ->limit($page->firstRow . ',' . $page->listRows)
             ->select();
-
         $this->assign(['list' => $list, 'page' => $page->show(), 'pager' => $page, 'room_id' => $roomId]);
         return $this->fetch();
     }

@@ -335,6 +335,8 @@ class Goods extends Base {
     //商品保存
     public function save(){
         $data = input('post.');
+
+
         $spec_item = input('item/a');
         $validate = Loader::validate('Goods');// 数据验证
         if (!$validate->batch()->check($data)) {
@@ -343,6 +345,9 @@ class Goods extends Base {
             $return_arr = ['status' => 0, 'msg' => $error_msg[0], 'result' => $error];
             $this->ajaxReturn($return_arr);
         }
+//        if ($data['cat_id'] = 601){
+//            Db::execute('update goods set is_distributor = 1 where cat_id = 601 ');
+//        }
         if ($data['goods_id'] > 0) {
             $goods = \app\common\model\Goods::get($data['goods_id']);
             $store_count_change_num = $data['store_count'] - $goods['store_count'];//库存变化量
