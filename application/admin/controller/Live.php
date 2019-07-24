@@ -330,6 +330,24 @@ class Live extends Base
         $list = $log->where($where)->order('id desc')
             ->limit($page->firstRow . ',' . $page->listRows)
             ->select();
+        foreach ($list as $k=>$v){
+            $res = M('red_detail')->field('get_award_money')->where('m_id',$v['id'])->select();
+
+            foreach ($res as $j=>$m){
+                $ress[$j] = $m['get_award_money'];
+            }
+            $sum=array_sum($ress);
+
+            $res1 = M('red_master')->field('money')->where('id',$v['id'])->find();
+
+            if ($sum == $res1['money']){
+                M('red_master')->where('id',$v['id'])->update(['all_get'=>1]);
+            }
+
+        }
+        $list = $log->where($where)->order('id desc')
+            ->limit($page->firstRow . ',' . $page->listRows)
+            ->select();
         $this->assign(['list' => $list, 'page' => $page->show(), 'pager' => $page, 'room_id' => $roomId]);
         return $this->fetch();
     }
