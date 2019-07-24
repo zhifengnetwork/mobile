@@ -351,7 +351,7 @@ class Live extends Base
         $this->assign(['list' => $list, 'page' => $page->show(), 'pager' => $page, 'room_id' => $roomId]);
         return $this->fetch();
     }
-
+ 
     public function red_detail()
     {
         $id = $_GET['id'];
