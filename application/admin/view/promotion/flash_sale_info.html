@@ -118,11 +118,12 @@
 
 
 
-            <if condition="$info['is_edit'] eq 0">
-                <div class="bot"><a class="ncap-btn-big">确认提交</a></div>
-            <else/>
+            <if condition="$info['is_edit'] eq 1">
+                <div class="bot"><a onclick="verifyForm()" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+                <else/>
 
-            <dl class="row" txt="发布活动时，进行通知">
+
+                <dl class="row" txt="发布活动时，进行通知">
                 <dt class="tit">站内信通知</dt>
                 <dd class="opt">
                     <div class="onoff">

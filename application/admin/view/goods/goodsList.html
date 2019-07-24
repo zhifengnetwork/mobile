@@ -51,7 +51,7 @@
         <a href=""><div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div></a>
 	<form action="" id="search-form2" class="navbar-form form-inline" method="post" onSubmit="return false">
       <div class="sDiv">
-        <div class="sDiv2">           
+        <div class="sDiv2">
           <select name="cat_id" id="cat_id" class="select">
             <option value="">所有分类</option>
             <foreach name="categoryList" item="v" key="k" >
@@ -63,9 +63,9 @@
                 <foreach name="brandList" item="v" key="k" >
                    <option value="{$v['id']}">{$v['name']}</option>
                 </foreach>
-          </select>          
+          </select>
           <select name="is_on_sale" id="is_on_sale" class="select">
-            <option value="">全部</option>                  
+            <option value="">全部</option>
             <option value="1">上架</option>
             <option value="0">下架</option>
           </select>
@@ -73,7 +73,7 @@
                 <option value="0">全部</option>
                 <option value="is_new">新品</option>
                 <option value="is_recommend">推荐</option>
-            </select>     
+            </select>
 
             <!--排序规则-->
             <input type="hidden" name="orderby1" value="goods_id" />
@@ -94,7 +94,7 @@
               </th>
               <th align="left" abbr="article_title" axis="col6" class="">
                 <div style="text-align: left; width:65px;" class="">操作</div>
-              </th>              
+              </th>
               <th align="left" abbr="article_title" axis="col6" class="">
                 <div style="text-align: left; width:50px;" class="" onClick="sort('goods_id');">id</div>
               </th>
@@ -104,10 +104,10 @@
 
               <th align="center" abbr="article_time" axis="col6" class="">
                 <div style="text-align: center; width: 60px;" class="" onClick="sort('is_distribut');">是否分销</div>
-              </th>                                     
+              </th>
               <th align="center" abbr="article_time" axis="col6" class="">
                 <div style="text-align: center; width: 60px;" class="" onClick="sort('is_agent');">是否代理</div>
-              </th>  
+              </th>
 
               <th align="center" abbr="article_show" axis="col6" class="">
                 <div style="text-align: center; width: 100px;" class="" onClick="sort('goods_sn');">货号</div>
@@ -117,16 +117,16 @@
               </th>
               <th align="center" abbr="article_time" axis="col6" class="">
                 <div style="text-align: center; width: 50px;" class="" onClick="sort('shop_price');">价格</div>
-              </th>                  
+              </th>
               <th align="center" abbr="article_time" axis="col6" class="">
                 <div style="text-align: center; width: 30px;" class="" onClick="sort('is_recommend');">推荐</div>
-              </th>                       
+              </th>
               <th align="center" abbr="article_time" axis="col6" class="">
                 <div style="text-align: center; width: 30px;" class="" onClick="sort('is_new');">新品</div>
-              </th>                                     
+              </th>
               <th align="center" abbr="article_time" axis="col6" class="">
                 <div style="text-align: center; width: 30px;" class="" onClick="sort('is_hot');">热卖</div>
-              </th>  
+              </th>
               <th align="center" abbr="article_time" axis="col6" class="">
                 <div style="text-align: center; width: 50px;" class="" onClick="sort('is_on_sale');">上/下架</div>
               </th>
@@ -146,16 +146,16 @@
           </thead>
         </table>
       </div>
-    </div>    
+    </div>
     <div class="tDiv">
       <div class="tDiv2">
-        <div class="fbutton">       
+        <div class="fbutton">
           <a href="{:U('Admin/goods/addEditGoods')}">
           <div class="add" title="添加商品">
             <span><i class="fa fa-plus"></i>添加商品</span>
           </div>
-          </a>          
-          </div> 
+          </a>
+          </div>
         <div class="fbutton">
             <a href="{:U('Admin/Goods/initGoodsSearchWord')}">
                 <div class="add" title="初始化商品搜索关键词">
@@ -174,7 +174,7 @@
       <div style="clear:both"></div>
     </div>
     <div class="bDiv" style="height: auto;">
-     <!--ajax 返回 --> 
+     <!--ajax 返回 -->
       <div id="flexigrid" cellpadding="0" cellspacing="0" border="0" data-url="{:U('admin/goods/delGoods')}"></div>
     </div>
 
@@ -216,12 +216,12 @@
             }
         });
     }
-	
+
         // 点击排序
         function sort(field)
         {
            $("input[name='orderby1']").val(field);
-           var v = $("input[name='orderby2']").val() == 'desc' ? 'asc' : 'desc';             
+           var v = $("input[name='orderby2']").val() == 'desc' ? 'asc' : 'desc';
            $("input[name='orderby2']").val(v);
            ajax_get_table('search-form2',cur_page);
         }

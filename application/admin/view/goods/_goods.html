@@ -148,7 +148,7 @@
                     <select name="cat_id" id="cat_id" class="small form-control">
                         <option value="0">请选择商品分类</option>
                         <foreach name="cat_list" item="v" key="k">
-                            <option value="{$v['id']}" <if condition="$v['id'] eq $level_cat['1']">selected="selected"</if>>
+                            <option id="catname" value="{$v['id']}" <if condition="$v['id'] eq $level_cat['1']">selected="selected"</if>>
                             {$v['name']}
                             </option>
                         </foreach>
@@ -857,7 +857,10 @@
             }
             $('#cat_id_3').empty().html("<option value='0'>请选择商品分类</option>");
         })
+
     })
+
+
 
     //规格批量填充
     $(function () {
