@@ -355,6 +355,7 @@ class Goods extends MobileBase
 			}
         }
         
+        //直播分享商品绑定上下级关系
         if(input('zhubo_id')){
             // $user_id = $this->user_id;
             $zhubo_id = input('zhubo_id');
