@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>主播--直播中</title>
     <meta charset="UTF-8">
@@ -20,7 +21,7 @@
 
 </head>
 <style type="text/css">
-    .barrage-scroll .barrage-list .dm-item{
+    .barrage-scroll .barrage-list .dm-item {
         font-size: .3rem;
         color: black;
         display: -webkit-box;
@@ -33,7 +34,7 @@
     }
 </style>
 <style>
-    .sendBtn{
+    .sendBtn {
         width: 5rem;
         height: .6rem;
         line-height: .6rem;
@@ -45,17 +46,19 @@
         border-radius: .12rem;
         margin: .3rem auto;
     }
-    .enveloper-popup{
+
+    .enveloper-popup {
         width: 100%;
         height: 100vh;
         position: fixed;
         left: 0;
         top: 0;
         display: none;
-        z-index:99999;
+        z-index: 99999;
     }
+
     /* 未拆状态  */
-    .enveloper-popup .undemolished{
+    .enveloper-popup .undemolished {
         width: 4.44rem;
         height: 4.44rem;
         color: #ffffff;
@@ -66,22 +69,26 @@
         left: 50%;
         top: 50%;
         z-index: 3;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
         display: none;
     }
-    .enveloper-popup .undemolished .popup-header{
+
+    .enveloper-popup .undemolished .popup-header {
         height: 1.6rem;
         line-height: 1.6rem;
         text-align: center;
         font-size: .36rem;
     }
-    .enveloper-popup .undemolished .popup-body{
+
+    .enveloper-popup .undemolished .popup-body {
         margin: .66rem auto .9rem;
     }
-    .enveloper-popup .undemolished .popup-body p{
+
+    .enveloper-popup .undemolished .popup-body p {
         font-size: .36rem;
     }
-    .enveloper-popup .undemolished .popup-footer .open-btn{
+
+    .enveloper-popup .undemolished .popup-footer .open-btn {
         width: 3.24rem;
         height: 1.04rem;
         line-height: 1.04rem;
@@ -92,8 +99,9 @@
         background: url(../public/images/enveloper-send-bg.png) no-repeat;
         background-size: 100%;
     }
-    .enveloper-popup .undemolished .popup-footer .close-btn{
-        width:.99rem;
+
+    .enveloper-popup .undemolished .popup-footer .close-btn {
+        width: .99rem;
         height: .99rem;
         background: url(../public/images/enveloper-close-btn.png) no-repeat;
         background-size: 100%;
@@ -101,7 +109,7 @@
     }
 
     /* 拆开状态 */
-    .open-status{
+    .open-status {
         width: 4.44rem;
         height: 5.21rem;
         /* color: #ffffff; */
@@ -112,45 +120,51 @@
         left: 50%;
         top: 50%;
         z-index: 3;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
         display: none;
-        z-index:99999;
+        z-index: 99999;
     }
-    .open-status .popup-header{
+
+    .open-status .popup-header {
         height: 1rem;
         line-height: 1rem;
         margin-bottom: 1rem;
     }
-    .open-status .popup-body{
+
+    .open-status .popup-body {
         margin-bottom: 1.8rem;
     }
-    .open-status .popup-body h3{
+
+    .open-status .popup-body h3 {
         font-size: .4rem;
         margin-bottom: .34rem;
     }
-    .open-status .popup-body p{
+
+    .open-status .popup-body p {
         font-size: .28rem;
     }
-    .open-status .popup-body p .amount-num{
+
+    .open-status .popup-body p .amount-num {
         font-size: .28rem;
         color: #fff600;
     }
-    .open-status .close-btn{
-        width:.99rem;
+
+    .open-status .close-btn {
+        width: .99rem;
         height: .99rem;
         background: url(../public/images/enveloper-close-btn.png) no-repeat;
         background-size: 100%;
-        margin:0 auto;
+        margin: 0 auto;
     }
 </style>
 
 <body onload="connect();">
 
-<!-- <span class="sendBtn">发红包</span> -->
+    <!-- <span class="sendBtn">发红包</span> -->
 
-<div class="enveloper-popup">
-    <!-- 未拆状态 -->
-    <!-- <div class="undemolished">
+    <div class="enveloper-popup">
+        <!-- 未拆状态 -->
+        <!-- <div class="undemolished">
         <div class="popup-header">
             <h3>主播红包</h3>
         </div>
@@ -163,8 +177,8 @@
         </div>
     </div> -->
 
-    <!-- 拆开状态 -->
-    <!-- <div class="open-status">
+        <!-- 拆开状态 -->
+        <!-- <div class="open-status">
         <div class="popup-header">
             <h3>红包</h3>
         </div>
@@ -177,842 +191,841 @@
         </div>
     </div> -->
 
-</div>
-<div class="wrapper">
-    <input type="text" id="room_id" value="{$room_id}" style="display: none;">
-    <input type="text" id="users_id" value="{$users_id}" style="display: none;">
-    <div id="div_device" class="panel panel-default" style="display:none">
-        <div class="select">
-            <label for="audioSource">Audio source: </label><select id="audioSource"></select>
-        </div>
-        <div class="select">
-            <label for="videoSource">Video source: </label><select id="videoSource"></select>
-        </div>
     </div>
-
-    <div id="div_join" class="panel panel-default" style="display:none">
-        <div class="panel-body">
-            App ID: <input id="appId" type="text" value="4c2954a8e1524f5ea15dc5ae14232042" size="36"></input>
-            Channel: <input id="channel" type="text" value="<?php echo $room_id; ?>"></input>
-            Host: <input id="video" type="checkbox" checked></input>
-            <button id="join" class="btn btn-primary" onclick="join()">Join</button>
-            <button id="leave" class="btn btn-primary" onclick="leave()">Leave</button>
-            <button id="publish" class="btn btn-primary" onclick="publish()">Publish</button>
-            <button id="unpublish" class="btn btn-primary" onclick="unpublish()">Unpublish</button>
-        </div>
-    </div>
-
-    <div id="video" style="margin:0 auto;width: 100%;height: 100vh;" >
-        <div id="agora_local" style="width: 7.5rem;height:100vh;display:inline-block;"></div>
-    </div>
-
-
-
-    <!-- 直播间内容 -->
-    <div class="live-room">
-        <div class="topBar">
-            <div class="live-status">
-                <span class="status">直播中</span>
-                <i class="dot-red"></i>
-                <span class="time" id="time">00:00:00</span>
+    <div class="wrapper">
+        <input type="text" id="room_id" value="{$room_id}" style="display: none;">
+        <input type="text" id="users_id" value="{$users_id}" style="display: none;">
+        <div id="div_device" class="panel panel-default" style="display:none">
+            <div class="select">
+                <label for="audioSource">Audio source: </label><select id="audioSource"></select>
             </div>
-            <div class="liveId">
-                <span class="shop-name">DC商城</span>
+            <div class="select">
+                <label for="videoSource">Video source: </label><select id="videoSource"></select>
             </div>
-            <div class="closeBtn"></div>
         </div>
 
-        <div class="anchor-part">
-            <span class="viewer" id="user_count"><i class="icon"></i>1人</span>
-            <span class="follow" id="user_top"><i class="icon"></i><?php echo $room['top_amount']; ?>人</span>
+        <div id="div_join" class="panel panel-default" style="display:none">
+            <div class="panel-body">
+                App ID: <input id="appId" type="text" value="4c2954a8e1524f5ea15dc5ae14232042" size="36"></input>
+                Channel: <input id="channel" type="text" value="<?php echo $room_id; ?>"></input>
+                Host: <input id="video" type="checkbox" checked></input>
+                <button id="join" class="btn btn-primary" onclick="join()">Join</button>
+                <button id="leave" class="btn btn-primary" onclick="leave()">Leave</button>
+                <button id="publish" class="btn btn-primary" onclick="publish()">Publish</button>
+                <button id="unpublish" class="btn btn-primary" onclick="unpublish()">Unpublish</button>
+            </div>
         </div>
 
-        <!-- 聊天窗口 -->
-        <div class="chat-wrap">
+        <div id="video" style="margin:0 auto;width: 100%;height: 100vh;">
+            <div id="agora_local" style="width: 7.5rem;height:100vh;display:inline-block;"></div>
+        </div>
 
-            <!-- 礼物 -->
-            <div class="showGift-wrap"></div>
 
-            <!-- 弹幕滚动 -->
-            <div class="barrage-scroll">
-                <ul class="barrage-list" id="dialog-list">
-                </ul>
-            </div>
-            <!-- 抢红包 -->
-            <div class="redSubmit"></div>
-            <!-- 商品链接 -->
-            <div class="goods-links"></div>
 
-            <select style="margin-bottom:8px;display: none" id="client_list">
-                <option value="all">所有人</option>
-            </select>
-
-            <!-- 发送弹幕 -->
-            <form >
-                <div class="chat-operate">
-                    <div class="send-redPacket"></div>
-                    <div class="goodShow"></div>
-                    <div class="msg-input">
-                        <span>说点什么...</span>
-                    </div>
-                    <div class="endLive">
-                        <a href="<?php echo U('/Live/index/end',array('id'=>$room_id)); ?>">结束直播</a>
-                    </div>
+        <!-- 直播间内容 -->
+        <div class="live-room">
+            <div class="topBar">
+                <div class="live-status">
+                    <span class="status">直播中</span>
+                    <i class="dot-red"></i>
+                    <span class="time" id="time">00:00:00</span>
                 </div>
-            </form>
-
-            <!-- 输入框 -->
-            <div class="send-group">
-                <div class="textarea" contenteditable="true" placeholder ="说点什么" id="textarea"></div>
-                <div class="send-btn" onclick="onSubmit()">发送</div>
+                <div class="liveId">
+                    <span class="shop-name">DC商城</span>
+                </div>
+                <div class="closeBtn"></div>
             </div>
 
-            <!-- 商品选择 -->
-            <div class="all-goods">
-                <h1>全部宝贝<?php echo count($goodsList); ?></h1>
-                <div class="goods-list">
-                    <?php if(!empty($goodsList)){ ?>
+            <div class="anchor-part">
+                <span class="viewer" id="user_count"><i class="icon"></i>1人</span>
+                <span class="follow" id="user_top"><i class="icon"></i><?php echo $room['top_amount']; ?>人</span>
+            </div>
+
+            <!-- 聊天窗口 -->
+            <div class="chat-wrap">
+
+                <!-- 礼物 -->
+                <div class="showGift-wrap"></div>
+
+                <!-- 弹幕滚动 -->
+                <div class="barrage-scroll">
+                    <ul class="barrage-list" id="dialog-list">
+                    </ul>
+                </div>
+                <!-- 抢红包 -->
+                <div class="redSubmit"></div>
+                <!-- 商品链接 -->
+                <div class="goods-links"></div>
+
+                <select style="margin-bottom:8px;display: none" id="client_list">
+                    <option value="all">所有人</option>
+                </select>
+
+                <!-- 发送弹幕 -->
+                <form>
+                    <div class="chat-operate">
+                        <div class="send-redPacket"></div>
+                        <div class="goodShow"></div>
+                        <div class="msg-input">
+                            <span>说点什么...</span>
+                        </div>
+                        <div class="endLive">
+                            <a href="<?php echo U('/Live/index/end',array('id'=>$room_id)); ?>">结束直播</a>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- 输入框 -->
+                <div class="send-group">
+                    <div class="textarea" contenteditable="true" placeholder="说点什么" id="textarea"></div>
+                    <div class="send-btn" onclick="onSubmit()">发送</div>
+                </div>
+
+                <!-- 商品选择 -->
+                <div class="all-goods">
+                    <h1>全部宝贝<?php echo count($goodsList); ?></h1>
+                    <div class="goods-list">
+                        <?php if(!empty($goodsList)){ ?>
                         <?php foreach($goodsList as $k=>$v){ ?>
-                            <div class="goods-item" onclick="send_goods_url(<?php echo $v['goods_id']; ?>);">
-                                <div class="img-wrap">
-                                    <a href="#"><img src="<?php echo $v['goods_url']; ?>" /></a>
-                                </div>
-                                <div class="text">
-                                    <h3><a href="#"><?php echo $v['goods_name']; ?></a></h3>
-                                    <p class="price">￥<?php echo $v['shop_price']; ?></p>
-                                    <div class="publish-btn">发布商品</div>
-                                </div>
+                        <div class="goods-item" onclick="send_goods_url(<?php echo $v['goods_id']; ?>);">
+                            <div class="img-wrap">
+                                <a href="#"><img src="<?php echo $v['goods_url']; ?>" /></a>
                             </div>
+                            <div class="text">
+                                <h3><a href="#"><?php echo $v['goods_name']; ?></a></h3>
+                                <p class="price">￥<?php echo $v['shop_price']; ?></p>
+                                <div class="publish-btn">发布商品</div>
+                            </div>
+                        </div>
                         <?php } ?>
 
-                    <?php } ?>
+                        <?php } ?>
 
+                    </div>
                 </div>
+
             </div>
 
         </div>
 
-    </div>
-
-    <!-- 遮罩层 -->
-    <div class="mask">
-        <!-- 红包弹窗 -->
-        <div class="popup redPacket-popup">
-            <div class="popup-header">
-                <h3>手气红包</h3>
-            </div>
-            <div class="popup-body">
-                <div class="group-wrap">
-                    <span class="title">总金额</span>
-						<span class="right">
-							<input type="text" id="money" name="money" placeholder="0.00">
-						元</span>
+        <!-- 遮罩层 -->
+        <div class="mask">
+            <!-- 红包弹窗 -->
+            <div class="popup redPacket-popup">
+                <div class="popup-header">
+                    <h3>手气红包</h3>
                 </div>
-                <div class="group-wrap">
-                    <span class="title">红包个数</span>
-						<span class="right">
-							<input type="text" id='num' name="num" placeholder="填写红包个数">
-						个</span>
+                <div class="popup-body">
+                    <div class="group-wrap">
+                        <span class="title">总金额</span>
+                        <span class="right">
+                            <input type="text" id="money" name="money" placeholder="0.00">
+                            元</span>
+                    </div>
+                    <div class="group-wrap">
+                        <span class="title">红包个数</span>
+                        <span class="right">
+                            <input type="text" id='num' name="num" placeholder="填写红包个数">
+                            个</span>
+                    </div>
                 </div>
+                <div class="popup-footer">
+                    <span class="send-btn" onclick="redSubmit('<?php echo $user_id; ?>','<?php echo $room_id; ?>')"
+                        value="发红包">发红包</span>
+                </div>
+                <div class="close-btn"></div>
             </div>
-            <div class="popup-footer">
-                <span class="send-btn" onclick="redSubmit('<?php echo $user_id; ?>','<?php echo $room_id; ?>')" value="发红包" >发红包</span>
-            </div>
-            <div class="close-btn"></div>
         </div>
     </div>
-</div>
 
-</div>
+    </div>
 
-<script type="text/javascript" src="__STATIC__/chat/js/swfobject.js"></script>
-<script type="text/javascript" src="__STATIC__/chat/js/web_socket.js"></script>
-<script type="text/javascript" src="__STATIC__/chat/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/chat/js/swfobject.js"></script>
+    <script type="text/javascript" src="__STATIC__/chat/js/web_socket.js"></script>
+    <script type="text/javascript" src="__STATIC__/chat/js/jquery.min.js"></script>
 
-<script src="__STATIC__/live/static/js/public/jquery-3.3.1.min.js"></script>
-<script>
+    <script src="__STATIC__/live/static/js/public/jquery-3.3.1.min.js"></script>
+    <script>
 
-// 计时显示
+        // 计时显示
 
-function checkTime(i) {
-          if (i < 10) {
-              i = "0" + i;
-          }
-          return i;
-}
-
-var timing_timerid = setInterval(function(){
-          var now_time   =  Math.round(new Date().getTime()/1000)
-          var start_time =  "<?php echo $start_time; ?>";
-          var t = now_time - start_time ;
-          var d = Math.floor(t/60/60/24);
-          var h = Math.floor(t/60/60%24);
-          var m = Math.floor(t/60%60);
-          var s = Math.floor(t%60);
-          document.getElementById('time').innerHTML = checkTime(h)+':'+checkTime(m)+':'+checkTime(s);
-}, 1000);
-
-       
-    $(function(){
-        // 打开红包
-        $(".sendBtn").click(function(){
-            $(".enveloper-popup").show();
-            $(".undemolished").show();
-        })
-
-        // 关闭弹框
-        $(".close-btn").click(function(){
-            $(".enveloper-popup").hide();
-            $(".undemolished").hide();
-            $(".open-status").hide();
-        })
-
-        // 拆红包
-        $(".open-btn").click(function(){
-            $(".undemolished").hide();
-            $(".open-status").show();
-        })
-
-    })
-</script>
-<script>
-    //红包隐藏显示
-    $(".close-btn").click(function(){
-        $(".popup").hide();
-        $(".mask").hide();
-    })
-    $(".send-redPacket").click(function(){
-        $(".mask").show();
-        $(".popup").show();
-    })
-
-    // 发布商品
-    $(".goodShow").click(function(){
-        $(".all-goods").toggle();
-    })
-
-    // 取消冒泡
-    $(".all-goods,.goodShow").click(function(){
-        var e = window.event || event;
-        if(e.stopPropagation){
-            e.stopPropagation();
-        }else{
-            e.cancelBubble = true;
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
         }
-    })
 
-    //点击输入框
-    $(".msg-input").click(function(){
-        var e = window.event || event;
-        if(e.stopPropagation){
-            e.stopPropagation();
-        }else{
-            e.cancelBubble = true;
-        }
-        $(".chat-operate").hide();
-        $(".send-group").css("visibility","visible");
-        // 点击发送按钮获取焦点
-        $('.textarea').focus();
-    })
+        var timing_timerid = setInterval(function () {
+            var now_time = Math.round(new Date().getTime() / 1000)
+            var start_time = "<?php echo $start_time; ?>";
+            var t = now_time - start_time;
+            var d = Math.floor(t / 60 / 60 / 24);
+            var h = Math.floor(t / 60 / 60 % 24);
+            var m = Math.floor(t / 60 % 60);
+            var s = Math.floor(t % 60);
+            document.getElementById('time').innerHTML = checkTime(h) + ':' + checkTime(m) + ':' + checkTime(s);
+        }, 1000);
 
-    //改变发送按钮样式
-    $('.send-group .textarea').keyup(function(){
-        if($(this).html()!=''){
-            $('.send-group .send-btn').css('opacity','1')
-        }else{
-            $('.send-group .send-btn').css('opacity','.5')
-        }
-    })
 
-    // 发送消息
-    $('.send-group .send-btn').click(function(){
-        $('.send-group .textarea').html('');
-    })
+        $(function () {
+            // 打开红包
+            $(".sendBtn").click(function () {
+                $(".enveloper-popup").show();
+                $(".undemolished").show();
+            })
 
-    // 点击空白处关闭
-    document.onclick = function(){
-        $(".all-goods").hide();//商品选择
-        $(".send-group").css("visibility","hidden");
-        $(".chat-operate").show();
-    };
+            // 关闭弹框
+            $(".close-btn").click(function () {
+                $(".enveloper-popup").hide();
+                $(".undemolished").hide();
+                $(".open-status").hide();
+            })
 
-    $(".showGift-wrap .gift-item").last().hide();
-    $(".showGift-wrap .gift-item").first().fadeOut(2000);
-    $(".showGift-wrap .gift-item").last().fadeIn(2000);
+            // 拆红包
+            $(".open-btn").click(function () {
+                $(".undemolished").hide();
+                $(".open-status").show();
+            })
 
-</script>
-
-<script>
-    $(function(){
-        // 调用摄像头
-        join();
-
-    })
-
-    //点赞
-    function live_top(user_id,room_id){
-        $.ajax({
-            type: "POST",
-            data:{user_id:user_id,room_id:room_id},
-            async:false,
-            url: "/Live/user/like",
-            success: function(data){
-                if(data.status==200){
-                    var content = data.data;
-                    var amount = content.count;
-                    $("#user_top").html('<i class="icon" onclick="live_top('+user_id+','+room_id+');"></i>'+amount+"人");
-                }else{
-                    alert(data.msg);
-                }
-            }
         })
-    }
-</script>
+    </script>
+    <script>
+        //红包隐藏显示
+        $(".close-btn").click(function () {
+            $(".popup").hide();
+            $(".mask").hide();
+        })
+        $(".send-redPacket").click(function () {
+            $(".mask").show();
+            $(".popup").show();
+        })
 
-<script language="javascript">
+        // 发布商品
+        $(".goodShow").click(function () {
+            $(".all-goods").toggle();
+        })
 
-    if(!AgoraRTC.checkSystemRequirements()) {
-        alert("Your browser does not support WebRTC!");
-    }
-
-    /* select Log type */
-    // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.NONE);
-    // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.ERROR);
-    // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.WARNING);
-    // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.INFO);
-    // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.DEBUG);
-
-    /* simulated data to proof setLogLevel() */
-    AgoraRTC.Logger.error('this is error');
-    AgoraRTC.Logger.warning('this is warning');
-    AgoraRTC.Logger.info('this is info');
-    AgoraRTC.Logger.debug('this is debug');
-
-    var client, localStream, camera, microphone;
-
-    var audioSelect = document.querySelector('select#audioSource');
-    var videoSelect = document.querySelector('select#videoSource');
-
-    function join() {
-        document.getElementById("join").disabled = true;
-        document.getElementById("video").disabled = true;
-        var channel_key = null;
-
-        console.log("Init AgoraRTC client with App ID: " + appId.value);
-
-        $.ajax({
-            type: "POST",
-            data:{appId:appId.value,channel:'<?php echo $room_id; ?>'},
-            async:false,
-            url: "/Live/index/RtmTokenBuilderSample",
-            success: function(data){
-                channel_key = data;
+        // 取消冒泡
+        $(".all-goods,.goodShow").click(function () {
+            var e = window.event || event;
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            } else {
+                e.cancelBubble = true;
             }
         })
 
-        client = AgoraRTC.createClient({mode: 'live'});
-        client.init(appId.value, function () {
-            console.log("AgoraRTC client initialized");
-            client.join(channel_key, '<?php echo $room_id; ?>', null, function(uid) {
-                console.log("User " + uid + " join channel successfully");
-
-                if (document.getElementById("video").checked) {
-                    camera = videoSource.value;
-                    microphone = audioSource.value;
-                    localStream = AgoraRTC.createStream({streamID: uid, audio: true, cameraId: camera, microphoneId: microphone, video: document.getElementById("video").checked, screen: false});
-                    //localStream = AgoraRTC.createStream({streamID: uid, audio: false, cameraId: camera, microphoneId: microphone, video: false, screen: true, extensionId: 'minllpmhdgpndnkomcoccfekfegnlikg'});
-                    if (document.getElementById("video").checked) {
-                        localStream.setVideoProfile('480p_1');
-
-                    }
-
-                    // The user has granted access to the camera and mic.
-                    localStream.on("accessAllowed", function() {
-                        console.log("accessAllowed");
-                    });
-
-                    // The user has denied access to the camera and mic.
-                    localStream.on("accessDenied", function() {
-                        console.log("accessDenied");
-                    });
-
-                    localStream.init(function() {
-                        console.log("getUserMedia successfully");
-                        localStream.play('agora_local');
-
-                        client.publish(localStream, function (err) {
-                            console.log("Publish local stream error: " + err);
-                        });
-
-                        client.on('stream-published', function (evt) {
-                            console.log("Publish local stream successfully");
-                        });
-                    }, function (err) {
-                        console.log("getUserMedia failed", err);
-                    });
-                }
-            }, function(err) {
-                console.log("Join channel failed", err);
-            });
-        }, function (err) {
-            console.log("AgoraRTC client init failed", err);
-        });
-
-        channelKey = "";
-        client.on('error', function(err) {
-            console.log("Got error msg:", err.reason);
-            if (err.reason === 'DYNAMIC_KEY_TIMEOUT') {
-                client.renewChannelKey(channelKey, function(){
-                    console.log("Renew channel key successfully");
-                }, function(err){
-                    console.log("Renew channel key failed: ", err);
-                });
+        //点击输入框
+        $(".msg-input").click(function () {
+            var e = window.event || event;
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            } else {
+                e.cancelBubble = true;
             }
-        });
+            $(".chat-operate").hide();
+            $(".send-group").css("visibility", "visible");
+            // 点击发送按钮获取焦点
+            $('.textarea').focus();
+        })
 
-
-        client.on('stream-added', function (evt) {
-            var stream = evt.stream;
-            console.log("New stream added: " + stream.getId());
-            console.log("Subscribe ", stream);
-            client.subscribe(stream, function (err) {
-                console.log("Subscribe stream failed", err);
-            });
-        });
-
-        client.on('stream-subscribed', function (evt) {
-            var stream = evt.stream;
-            console.log("Subscribe remote stream successfully: " + stream.getId());
-            if ($('div#video #agora_remote'+stream.getId()).length === 0) {
-                $('div#video').append('<div id="agora_remote'+stream.getId()+'" style="float:left; width:810px;height:607px;display:inline-block;"></div>');
+        //改变发送按钮样式
+        $('.send-group .textarea').keyup(function () {
+            if ($(this).html() != '') {
+                $('.send-group .send-btn').css('opacity', '1')
+            } else {
+                $('.send-group .send-btn').css('opacity', '.5')
             }
-            stream.play('agora_remote' + stream.getId());
-        });
+        })
 
-        client.on('stream-removed', function (evt) {
-            var stream = evt.stream;
-            stream.stop();
-            $('#agora_remote' + stream.getId()).remove();
-            console.log("Remote stream is removed " + stream.getId());
-        });
+        // 发送消息
+        $('.send-group .send-btn').click(function () {
+            $('.send-group .textarea').html('');
+        })
 
-        client.on('peer-leave', function (evt) {
-            var stream = evt.stream;
-            if (stream) {
-                stream.stop();
-                $('#agora_remote' + stream.getId()).remove();
-                console.log(evt.uid + " leaved from this channel");
-            }
-        });
-    }
-
-    function leave() {
-        document.getElementById("leave").disabled = true;
-        client.leave(function () {
-            console.log("Leavel channel successfully");
-        }, function (err) {
-            console.log("Leave channel failed");
-        });
-    }
-
-    function publish() {
-        document.getElementById("publish").disabled = true;
-        document.getElementById("unpublish").disabled = false;
-        client.publish(localStream, function (err) {
-            console.log("Publish local stream error: " + err);
-        });
-    }
-
-    function unpublish() {
-        document.getElementById("publish").disabled = false;
-        document.getElementById("unpublish").disabled = true;
-        client.unpublish(localStream, function (err) {
-            console.log("Unpublish local stream failed" + err);
-        });
-    }
-
-    function getDevices() {
-        AgoraRTC.getDevices(function (devices) {
-            for (var i = 0; i !== devices.length; ++i) {
-                var device = devices[i];
-                var option = document.createElement('option');
-                option.value = device.deviceId;
-                if (device.kind === 'audioinput') {
-                    option.text = device.label || 'microphone ' + (audioSelect.length + 1);
-                    audioSelect.appendChild(option);
-                } else if (device.kind === 'videoinput') {
-                    option.text = device.label || 'camera ' + (videoSelect.length + 1);
-                    videoSelect.appendChild(option);
-                } else {
-                    console.log('Some other kind of source/device: ', device);
-                }
-            }
-        });
-    }
-
-    //audioSelect.onchange = getDevices;
-    //videoSelect.onchange = getDevices;
-    getDevices();
-</script>
-
-
-
-
-<!--聊天室-->
-<script type="text/javascript">
-    if (typeof console == "undefined") {    this.console = { log: function (msg) {  } };}
-    // 如果浏览器不支持websocket，会使用这个flash自动模拟websocket协议，此过程对开发者透明
-    WEB_SOCKET_SWF_LOCATION = "__STATIC__/chat/swf/WebSocketMain.swf";
-    // 开启flash的websocket debug
-    WEB_SOCKET_DEBUG = true;
-
-    var ws, name, client_list={};
-
-    // 连接服务端
-    function connect() {
-        console.log(document.domain);
-        // 创建websocket
-        var server_name = '<?php echo $server_name; ?>';
-        ws = new WebSocket("ws://"+server_name+":7373");
-        // 当socket连接打开时，输入用户名
-        ws.onopen = onopen;
-        // 当有消息时根据消息类型显示不同信息
-        ws.onmessage = onmessage;
-        ws.onclose = function() {
-            console.log("连接关闭，定时重连");
-            connect();
+        // 点击空白处关闭
+        document.onclick = function () {
+            $(".all-goods").hide();//商品选择
+            $(".send-group").css("visibility", "hidden");
+            $(".chat-operate").show();
         };
-        ws.onerror = function() {
-            console.log("出现错误");
-        };
-    }
 
-    // 连接建立时发送登录信息
-    function onopen()
-    {
-        name = "{$user_name}";
-        // 登录
-        var login_data = '{"type":"login","client_name":"'+name.replace(/"/g, '\\"')+'","room_id":"<?php echo isset($room_id) ? $room_id : 1?>"}';
-        console.log("websocket握手成功，发送登录数据:"+login_data);
-        ws.send(login_data);
-    }
-
-    // 服务端发来消息时
-    function onmessage(e)
-    {
-        console.log(e.data);
-        var data = eval("("+e.data+")");
-        switch(data['type']){
-            // 服务端ping客户端
-            case 'ping':
-                ws.send('{"type":"pong"}');
-                break;;
-            // 登录 更新用户列表
-            case 'login':
-                //{"type":"login","client_id":xxx,"client_name":"xxx","client_list":"[...]","time":"xxx"}
-                say(data['client_id'], data['client_name'],  ' 加入了直播间', data['time'],'<?php echo $level; ?>');
-                if(data['client_list'])
-                {
-                    client_list = data['client_list'];
-                }
-                else
-                {
-                    client_list[data['client_id']] = data['client_name'];
-                }
-                flush_client_list();
-
-                console.log(data['client_name']+"登录成功");
-                break;
-            // 发言
-            case 'say':
-                say(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level']);
-                break;
-            // 用户退出 更新用户列表
-            case 'logout':
-                //{"type":"logout","client_id":xxx,"time":"xxx"}
-                say(data['from_client_id'], data['from_client_name'], data['from_client_name']+' 退出了', data['time'],data['user_level']);
-                delete client_list[data['from_client_id']];
-                flush_client_list();
-                break;
-            //直播发红包
-            case 'red_anchor':
-                console.log('aaaaaaaaaaaa');
-                red_anchor(data['from_client_id'], data['from_client_name'], data['content'], data['m_id'], data['time']);
-                // console.log(data['from_client_name']+"说："+data['content']);
-                break;
-            //抢红包
-            case 'red_receive':
-                red_receive(data['from_client_id'], data['from_client_name'], data['content'], data['money'], data['time']);
-                say(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level']);
-                break;
-            //用户端抢包显示
-            case 'red_receive_user':
-                say(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['user_level']);
-                break;
-            //礼物
-            case 'gift':
-                gift(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['gift_id']);
-                console.log(data['from_client_name']+"说："+data['content']);
-                break;
-            //商品
-            case 'goods':
-                goods_url(data['from_client_id'], data['from_client_name'], data['content'], data['time'],data['goods_url']);
-                console.log(data['from_client_name']+"说："+data['content']);
-                break;
-        }
-    }
-
-    // 提交对话
-    function onSubmit() {
-
-        var input = $('#textarea').html();
-        var to_client_id = $("#client_list option:selected").attr("value");
-        var to_client_name = $("#client_list option:selected").text();
-        var user_level = '<?php echo $level; ?>';
-        console.log(user_level);
-
-        $('.send-group .textarea').html('');
-        ws.send('{"type":"say","user_level":"'+user_level+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+input.replace(/"/g, '\\"').replace(/\n/g,'\\n').replace(/\r/g, '\\r')+'"}');
-    }
-
-    //发送礼物推送
-    function send_goods_url(goods_id){
-        var room_id = '<?php echo $room_id; ?>';
-        var user_id = '<?php echo $user_id; ?>';
-        var to_client_id = $("#client_list option:selected").attr("value");
-        var to_client_name = $("#client_list option:selected").text();
-        $.ajax({
-            type: "POST",
-            data:{user_id:user_id,room_id:room_id,goods_id:goods_id},
-            async:false,
-            url: "/Live/index/sendGoodsUrl",
-            success: function(data){
-                if(data.status==200){
-                    var content = data.data;
-                    var to_client_id = content.to_client_id;
-                    var to_client_name = content.to_client_name;
-                    var goods_url = content.goods_url;
-                    var content = content.content;
-                    ws.send('{"type":"goods","goods_url":"'+goods_url+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","content":"'+content+'"}');
-                    $(".all-goods").hide();
-                }else{
-                    alert(data.msg);
-                }
-            }
-        })
-
-    }
-
-    //红包提交
-    function redSubmit(user_id,room_id){
-        var money = document.getElementById('money').value;
-        var num = document.getElementById('num').value;
-        var to_client_id = $("#client_list option:selected").attr("value");
-        var to_client_name = $("#client_list option:selected").text();
-        var user_level = '<?php echo $level; ?>';
-        
-        $.ajax({
-            type: 'post',
-            async:false,
-            url: "{:U('live/index/redSubmit')}", //请求的服务端地址
-            data: {money: money,num: num,room_id: room_id,user_id: user_id},
-            dataType: 'json',
-            success: function (data) {
-                if(data.status==200){
-                    var content = data.data;
-                    var to_client_id = content.to_client_id;
-                    var to_client_name = content.to_client_name;
-                    var m_id = content.m_id;
-                    var content = content.content;
-                    ws.send('{"type":"red_anchor","user_level":"'+user_level+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","m_id":"'+m_id+'","content":"'+content+'"}');
-                    $(".mask,.redPacket-popup").hide();
-                }else{
-                    alert(data.msg);
-                }
-            }
-        })
-    }
-
-    // 刷新用户列表框
-    function flush_client_list(){
-        var userlist_window = $("#userlist");
-        var client_list_slelect = $("#client_list");
-        userlist_window.empty();
-        client_list_slelect.empty();
-        userlist_window.append('<h4>在线用户</h4><ul>');
-        client_list_slelect.append('<option value="all" id="cli_all">所有人</option>');
-        var count = 0;
-        for(var p in client_list){
-            userlist_window.append('<li id="'+p+'">'+client_list[p]+'</li>');
-            client_list_slelect.append('<option value="'+p+'">'+client_list[p]+'</option>');
-            ++count;
-        }
-        $("#client_list").val(select_client_id);
-        userlist_window.append('</ul>');
-        $("#user_count").html('<i class="icon"></i>'+count+"人");
-
-        //刷新点赞人数
-        var user_id = '<?php echo $user_id; ?>';
-        var room_id = '<?php echo $room_id; ?>';
-        $.ajax({
-            type: "POST",
-            data:{user_id:user_id,room_id:room_id},
-            async:false,
-            url: "/Live/user/userTopAmount",
-            success: function(data){
-                if(data.status==200){
-                    var content = data.data;
-                    var amount = content.count;
-                    if(amount == 0){
-                        amount = 1;
-                    }
-                    $("#user_top").html('<i class="icon" onclick="live_top('+user_id+','+room_id+');"></i>'+amount+"人");
-                }
-            }
-        })
-
-    }
-
-    // 发言
-    function say(from_client_id, from_client_name, content, time,user_level){
-        var str = '';
-        str += '<li class="dm-item">';
-        str +='<span class="level level-'+user_level+'"></span>';
-        str +=' <span class="viewer-name">'+from_client_name+'：</span>';
-        str +='<span class="barrage-con">'+content+'</span>';
-        str +='</li>';
-
-
-        $("#dialog-list").append(str);
-        // 点击发送按钮获取焦点
-        $('.textarea').focus();
-        $('.send-group .send-btn').css('opacity','.5');
-        // 滚动条到底部
-        $('.barrage-scroll').animate({
-            scrollTop: $('.barrage-scroll').height()
-        }, 100);
-    }
-    //用户抢红包
-    function red_receive(from_client_id, from_client_name, money, content, time){
-        console.log(content);
-        var str = '';
-        str +='<div class="open-status">';
-        str +='<div class="popup-header">';
-        str +='<h3 style="margin-top: 13px;">红包</h3>';
-        str +='</div>';
-        str +='<div class="popup-body">';
-        str +='<h3>获得红包</h3>';
-        str +='<p><span class="amount-num">'+money+'</span> 元</p>';
-        str +='</div>';
-        str +='<div class="popup-footer"><div class="close-btn" onclick="closeRed();"></div></div>';
-        str +='</div>';
-        $(".enveloper-popup").html(str);
-        $(".enveloper-popup").show();
-        $(".open-status").show();
-        $(".undemolished").hide();
-
-    }
-
-    //发红包
-    function red_anchor(from_client_id, from_client_name, content, m_id, time){
-        console.log('sdfsdfsdfsdf');
-        console.log(from_client_name);
-        var str = '';
-        str +='<div class="undemolished">';
-        str +='<div class="popup-header">';
-        str +='<h3 style="margin-top: 23px;">主播红包</h3>';
-        str +='</div>';
-        str +='<div class="popup-body">';
-        str +='<p>红包</p>';
-        str +='</div>';
-        str +='<div class="popup-footer">';
-        str +='<div class="open-btn" onclick="testa('+m_id+');">立即拆开</div>';
-        str +='<div class="close-btn" onclick="closeRed();"></div>';
-        str +='</div>';
-        str +='</div>';
-        $(".enveloper-popup").html(str);
-        $(".enveloper-popup").show();
-        $(".enveloper-popup .undemolished").last().hide();
-        $(".enveloper-popup .undemolished").last().fadeIn(2000);
-    }
-
-    function testa(m_id){
-        var room_id = document.getElementById('room_id').value;
-        var users_id = document.getElementById('users_id').value;
-        var to_client_id = $("#client_list option:selected").attr("value");
-        var to_client_name = $("#client_list option:selected").text();
-        var user_level = '<?php echo $level; ?>';
-        
-        $.ajax({
-            type: 'post',
-            async:false,
-            url: "{:U('live/index/click_red_packet')}", //请求的服务端地址
-            data: {room_id: room_id,users_id: users_id,m_id: m_id,index:'index'},    
-            dataType: 'json',
-            success: function (data) {
-                if(data.status==200){
-                    var content = data.data;
-                    var to_client_id = content.to_client_id;
-                    var to_client_name = content.to_client_name;
-                    var content = content.content;
-                    var money = content.money;
-                    console.log(money);
-                    ws.send('{"type":"red_receive","user_level":"'+user_level+'","to_client_id":"'+to_client_id+'","to_client_name":"'+to_client_name+'","money":"'+money+'","content":"'+content+'"}');
-                    $(".mask,.redPacket-popup").hide();
-                }else{
-                    alert(data.msg);
-                }
-            }
-        })
-    }
-
-    function closeRed(){
-        $(".enveloper-popup").hide();
-    }
-
-    //发礼物
-    function gift(from_client_id, from_client_name, content, time,gift_id){
-        console.log(content);
-        $(".showGift-wrap .gift-item").remove();
-        var str = '';
-        str += '<div class="gift-item">';
-        str += '<span class="gift-icon"><img src="__STATIC__/live/static/images/play/gift-icon-'+gift_id+'.png" /></span>';
-        str += '<span class="gift-count">x1</span>';
-        str += '<span class="viewer-name">'+from_client_name+'</span>';
-        str += '</div>';
-
-        $(".showGift-wrap").append(str);
         $(".showGift-wrap .gift-item").last().hide();
+        $(".showGift-wrap .gift-item").first().fadeOut(2000);
         $(".showGift-wrap .gift-item").last().fadeIn(2000);
 
+    </script>
 
-        // 点击发送按钮获取焦点
-        $('.textarea').focus();
-        $('.send-group .send-btn').css('opacity','.5');
-        // 滚动条到底部
-        $('.barrage-scroll').animate({
-            scrollTop: $('.barrage-scroll').height()
-        }, 100);
-    }
+    <script>
+        $(function () {
+            // 调用摄像头
+            join();
 
-    //发购物链接
-    function goods_url(from_client_id, from_client_name, content, time,goods_url){
-        console.log(content);
-        var str = '';
-        // str += '<div class="goods-links">';
-        str += '商品链接：<a href="'+goods_url+'">'+goods_url+'</a>';
-        // str += '</div>';
-        $(".goods-links").html(str);
+        })
 
-    }
+        //点赞
+        function live_top(user_id, room_id) {
+            $.ajax({
+                type: "POST",
+                data: { user_id: user_id, room_id: room_id },
+                async: false,
+                url: "/Live/user/like",
+                success: function (data) {
+                    if (data.status == 200) {
+                        var content = data.data;
+                        var amount = content.count;
+                        $("#user_top").html('<i class="icon" onclick="live_top(' + user_id + ',' + room_id + ');"></i>' + amount + "人");
+                    } else {
+                        alert(data.msg);
+                    }
+                }
+            })
+        }
+    </script>
 
-    $(function(){
-        select_client_id = 'all';
-        $("#client_list").change(function(){
-            select_client_id = $("#client_list option:selected").attr("value");
+    <script language="javascript">
+
+        if (!AgoraRTC.checkSystemRequirements()) {
+            alert("Your browser does not support WebRTC!");
+        }
+
+        /* select Log type */
+        // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.NONE);
+        // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.ERROR);
+        // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.WARNING);
+        // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.INFO);
+        // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.DEBUG);
+
+        /* simulated data to proof setLogLevel() */
+        AgoraRTC.Logger.error('this is error');
+        AgoraRTC.Logger.warning('this is warning');
+        AgoraRTC.Logger.info('this is info');
+        AgoraRTC.Logger.debug('this is debug');
+
+        var client, localStream, camera, microphone;
+
+        var audioSelect = document.querySelector('select#audioSource');
+        var videoSelect = document.querySelector('select#videoSource');
+
+        function join() {
+            document.getElementById("join").disabled = true;
+            document.getElementById("video").disabled = true;
+            var channel_key = null;
+
+            console.log("Init AgoraRTC client with App ID: " + appId.value);
+
+            $.ajax({
+                type: "POST",
+                data: { appId: appId.value, channel: '<?php echo $room_id; ?>' },
+                async: false,
+                url: "/Live/index/RtmTokenBuilderSample",
+                success: function (data) {
+                    channel_key = data;
+                }
+            })
+
+            client = AgoraRTC.createClient({ mode: 'live' });
+            client.init(appId.value, function () {
+                console.log("AgoraRTC client initialized");
+                client.join(channel_key, '<?php echo $room_id; ?>', null, function (uid) {
+                    console.log("User " + uid + " join channel successfully");
+
+                    if (document.getElementById("video").checked) {
+                        camera = videoSource.value;
+                        microphone = audioSource.value;
+                        localStream = AgoraRTC.createStream({ streamID: uid, audio: true, cameraId: camera, microphoneId: microphone, video: document.getElementById("video").checked, screen: false });
+                        //localStream = AgoraRTC.createStream({streamID: uid, audio: false, cameraId: camera, microphoneId: microphone, video: false, screen: true, extensionId: 'minllpmhdgpndnkomcoccfekfegnlikg'});
+                        if (document.getElementById("video").checked) {
+                            localStream.setVideoProfile('480p_1');
+
+                        }
+
+                        // The user has granted access to the camera and mic.
+                        localStream.on("accessAllowed", function () {
+                            console.log("accessAllowed");
+                        });
+
+                        // The user has denied access to the camera and mic.
+                        localStream.on("accessDenied", function () {
+                            console.log("accessDenied");
+                        });
+
+                        localStream.init(function () {
+                            console.log("getUserMedia successfully");
+                            localStream.play('agora_local');
+
+                            client.publish(localStream, function (err) {
+                                console.log("Publish local stream error: " + err);
+                            });
+
+                            client.on('stream-published', function (evt) {
+                                console.log("Publish local stream successfully");
+                            });
+                        }, function (err) {
+                            console.log("getUserMedia failed", err);
+                        });
+                    }
+                }, function (err) {
+                    console.log("Join channel failed", err);
+                });
+            }, function (err) {
+                console.log("AgoraRTC client init failed", err);
+            });
+
+            channelKey = "";
+            client.on('error', function (err) {
+                console.log("Got error msg:", err.reason);
+                if (err.reason === 'DYNAMIC_KEY_TIMEOUT') {
+                    client.renewChannelKey(channelKey, function () {
+                        console.log("Renew channel key successfully");
+                    }, function (err) {
+                        console.log("Renew channel key failed: ", err);
+                    });
+                }
+            });
+
+
+            client.on('stream-added', function (evt) {
+                var stream = evt.stream;
+                console.log("New stream added: " + stream.getId());
+                console.log("Subscribe ", stream);
+                client.subscribe(stream, function (err) {
+                    console.log("Subscribe stream failed", err);
+                });
+            });
+
+            client.on('stream-subscribed', function (evt) {
+                var stream = evt.stream;
+                console.log("Subscribe remote stream successfully: " + stream.getId());
+                if ($('div#video #agora_remote' + stream.getId()).length === 0) {
+                    $('div#video').append('<div id="agora_remote' + stream.getId() + '" style="float:left; width:810px;height:607px;display:inline-block;"></div>');
+                }
+                stream.play('agora_remote' + stream.getId());
+            });
+
+            client.on('stream-removed', function (evt) {
+                var stream = evt.stream;
+                stream.stop();
+                $('#agora_remote' + stream.getId()).remove();
+                console.log("Remote stream is removed " + stream.getId());
+            });
+
+            client.on('peer-leave', function (evt) {
+                var stream = evt.stream;
+                if (stream) {
+                    stream.stop();
+                    $('#agora_remote' + stream.getId()).remove();
+                    console.log(evt.uid + " leaved from this channel");
+                }
+            });
+        }
+
+        function leave() {
+            document.getElementById("leave").disabled = true;
+            client.leave(function () {
+                console.log("Leavel channel successfully");
+            }, function (err) {
+                console.log("Leave channel failed");
+            });
+        }
+
+        function publish() {
+            document.getElementById("publish").disabled = true;
+            document.getElementById("unpublish").disabled = false;
+            client.publish(localStream, function (err) {
+                console.log("Publish local stream error: " + err);
+            });
+        }
+
+        function unpublish() {
+            document.getElementById("publish").disabled = false;
+            document.getElementById("unpublish").disabled = true;
+            client.unpublish(localStream, function (err) {
+                console.log("Unpublish local stream failed" + err);
+            });
+        }
+
+        function getDevices() {
+            AgoraRTC.getDevices(function (devices) {
+                for (var i = 0; i !== devices.length; ++i) {
+                    var device = devices[i];
+                    var option = document.createElement('option');
+                    option.value = device.deviceId;
+                    if (device.kind === 'audioinput') {
+                        option.text = device.label || 'microphone ' + (audioSelect.length + 1);
+                        audioSelect.appendChild(option);
+                    } else if (device.kind === 'videoinput') {
+                        option.text = device.label || 'camera ' + (videoSelect.length + 1);
+                        videoSelect.appendChild(option);
+                    } else {
+                        console.log('Some other kind of source/device: ', device);
+                    }
+                }
+            });
+        }
+
+        //audioSelect.onchange = getDevices;
+        //videoSelect.onchange = getDevices;
+        getDevices();
+    </script>
+
+
+
+
+    <!--聊天室-->
+    <script type="text/javascript">
+        if (typeof console == "undefined") { this.console = { log: function (msg) { } }; }
+        // 如果浏览器不支持websocket，会使用这个flash自动模拟websocket协议，此过程对开发者透明
+        WEB_SOCKET_SWF_LOCATION = "__STATIC__/chat/swf/WebSocketMain.swf";
+        // 开启flash的websocket debug
+        WEB_SOCKET_DEBUG = true;
+
+        var ws, name, client_list = {};
+
+        // 连接服务端
+        function connect() {
+            console.log(document.domain);
+            // 创建websocket
+            var server_name = '<?php echo $server_name; ?>';
+            ws = new WebSocket("ws://" + server_name + ":7373");
+            // 当socket连接打开时，输入用户名
+            ws.onopen = onopen;
+            // 当有消息时根据消息类型显示不同信息
+            ws.onmessage = onmessage;
+            ws.onclose = function () {
+                console.log("连接关闭，定时重连");
+                connect();
+            };
+            ws.onerror = function () {
+                console.log("出现错误");
+            };
+        }
+
+        // 连接建立时发送登录信息
+        function onopen() {
+            name = "{$user_name}";
+            // 登录
+            var login_data = '{"type":"login","client_name":"' + name.replace(/"/g, '\\"') + '","room_id":"<?php echo isset($room_id) ? $room_id : 1?>"}';
+            console.log("websocket握手成功，发送登录数据:" + login_data);
+            ws.send(login_data);
+        }
+
+        // 服务端发来消息时
+        function onmessage(e) {
+            console.log(e.data);
+            var data = eval("(" + e.data + ")");
+            switch (data['type']) {
+                // 服务端ping客户端
+                case 'ping':
+                    ws.send('{"type":"pong"}');
+                    break;;
+                // 登录 更新用户列表
+                case 'login':
+                    //{"type":"login","client_id":xxx,"client_name":"xxx","client_list":"[...]","time":"xxx"}
+                    say(data['client_id'], data['client_name'], ' 加入了直播间', data['time'], '<?php echo $level; ?>');
+                    if (data['client_list']) {
+                        client_list = data['client_list'];
+                    }
+                    else {
+                        client_list[data['client_id']] = data['client_name'];
+                    }
+                    flush_client_list();
+
+                    console.log(data['client_name'] + "登录成功");
+                    break;
+                // 发言
+                case 'say':
+                    say(data['from_client_id'], data['from_client_name'], data['content'], data['time'], data['user_level']);
+                    break;
+                // 用户退出 更新用户列表
+                case 'logout':
+                    //{"type":"logout","client_id":xxx,"time":"xxx"}
+                    say(data['from_client_id'], data['from_client_name'], data['from_client_name'] + ' 退出了', data['time'], data['user_level']);
+                    delete client_list[data['from_client_id']];
+                    flush_client_list();
+                    break;
+                //直播发红包
+                case 'red_anchor':
+                    console.log('aaaaaaaaaaaa');
+                    red_anchor(data['from_client_id'], data['from_client_name'], data['content'], data['m_id'], data['time']);
+                    // console.log(data['from_client_name']+"说："+data['content']);
+                    break;
+                //抢红包
+                case 'red_receive':
+                    red_receive(data['from_client_id'], data['from_client_name'], data['content'], data['money'], data['time']);
+                    say(data['from_client_id'], data['from_client_name'], data['content'], data['time'], data['user_level']);
+                    break;
+                //用户端抢包显示
+                case 'red_receive_user':
+                    say(data['from_client_id'], data['from_client_name'], data['content'], data['time'], data['user_level']);
+                    break;
+                //礼物
+                case 'gift':
+                    gift(data['from_client_id'], data['from_client_name'], data['content'], data['time'], data['gift_id']);
+                    console.log(data['from_client_name'] + "说：" + data['content']);
+                    break;
+                //商品
+                case 'goods':
+                    goods_url(data['from_client_id'], data['from_client_name'], data['content'], data['time'], data['goods_url']);
+                    console.log(data['from_client_name'] + "说：" + data['content']);
+                    break;
+            }
+        }
+
+        // 提交对话
+        function onSubmit() {
+
+            var input = $('#textarea').html();
+            var to_client_id = $("#client_list option:selected").attr("value");
+            var to_client_name = $("#client_list option:selected").text();
+            var user_level = '<?php echo $level; ?>';
+            console.log(user_level);
+
+            $('.send-group .textarea').html('');
+            ws.send('{"type":"say","user_level":"' + user_level + '","to_client_id":"' + to_client_id + '","to_client_name":"' + to_client_name + '","content":"' + input.replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r') + '"}');
+        }
+
+        //发送礼物推送
+        function send_goods_url(goods_id) {
+            var room_id = '<?php echo $room_id; ?>';
+            var user_id = '<?php echo $user_id; ?>';
+            var to_client_id = $("#client_list option:selected").attr("value");
+            var to_client_name = $("#client_list option:selected").text();
+            $.ajax({
+                type: "POST",
+                data: { user_id: user_id, room_id: room_id, goods_id: goods_id },
+                async: false,
+                url: "/Live/index/sendGoodsUrl",
+                success: function (data) {
+                    if (data.status == 200) {
+                        var content = data.data;
+                        var to_client_id = content.to_client_id;
+                        var to_client_name = content.to_client_name;
+                        var goods_url = content.goods_url;
+                        var content = content.content;
+                        ws.send('{"type":"goods","goods_url":"' + goods_url + '","to_client_id":"' + to_client_id + '","to_client_name":"' + to_client_name + '","content":"' + content + '"}');
+                        $(".all-goods").hide();
+                    } else {
+                        alert(data.msg);
+                    }
+                }
+            })
+
+        }
+
+        //红包提交
+        function redSubmit(user_id, room_id) {
+            var money = document.getElementById('money').value;
+            var num = document.getElementById('num').value;
+            var to_client_id = $("#client_list option:selected").attr("value");
+            var to_client_name = $("#client_list option:selected").text();
+            var user_level = '<?php echo $level; ?>';
+
+            $.ajax({
+                type: 'post',
+                async: false,
+                url: "{:U('live/index/redSubmit')}", //请求的服务端地址
+                data: { money: money, num: num, room_id: room_id, user_id: user_id },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status == 200) {
+                        var content = data.data;
+                        var to_client_id = content.to_client_id;
+                        var to_client_name = content.to_client_name;
+                        var m_id = content.m_id;
+                        var content = content.content;
+                        ws.send('{"type":"red_anchor","user_level":"' + user_level + '","to_client_id":"' + to_client_id + '","to_client_name":"' + to_client_name + '","m_id":"' + m_id + '","content":"' + content + '"}');
+                        $(".mask,.redPacket-popup").hide();
+                    } else {
+                        alert(data.msg);
+                    }
+                }
+            })
+        }
+
+        // 刷新用户列表框
+        function flush_client_list() {
+            var userlist_window = $("#userlist");
+            var client_list_slelect = $("#client_list");
+            userlist_window.empty();
+            client_list_slelect.empty();
+            userlist_window.append('<h4>在线用户</h4><ul>');
+            client_list_slelect.append('<option value="all" id="cli_all">所有人</option>');
+            var count = 0;
+            for (var p in client_list) {
+                userlist_window.append('<li id="' + p + '">' + client_list[p] + '</li>');
+                client_list_slelect.append('<option value="' + p + '">' + client_list[p] + '</option>');
+                ++count;
+            }
+            $("#client_list").val(select_client_id);
+            userlist_window.append('</ul>');
+            $("#user_count").html('<i class="icon"></i>' + count + "人");
+
+            //刷新点赞人数
+            var user_id = '<?php echo $user_id; ?>';
+            var room_id = '<?php echo $room_id; ?>';
+            $.ajax({
+                type: "POST",
+                data: { user_id: user_id, room_id: room_id },
+                async: false,
+                url: "/Live/user/userTopAmount",
+                success: function (data) {
+                    if (data.status == 200) {
+                        var content = data.data;
+                        var amount = content.count;
+                        if (amount == 0) {
+                            amount = 1;
+                        }
+                        $("#user_top").html('<i class="icon" onclick="live_top(' + user_id + ',' + room_id + ');"></i>' + amount + "人");
+                    }
+                }
+            })
+
+        }
+
+        // 发言
+        function say(from_client_id, from_client_name, content, time, user_level) {
+            var str = '';
+            str += '<li class="dm-item">';
+            str += '<span class="level level-' + user_level + '"></span>';
+            str += ' <span class="viewer-name">' + from_client_name + '：</span>';
+            str += '<span class="barrage-con">' + content + '</span>';
+            str += '</li>';
+
+
+            $("#dialog-list").append(str);
+            // 点击发送按钮获取焦点
+            $('.textarea').focus();
+            $('.send-group .send-btn').css('opacity', '.5');
+            // 滚动条到底部
+            $('.barrage-scroll').animate({
+                scrollTop: $('.barrage-scroll').height()
+            }, 100);
+        }
+        //用户抢红包
+        function red_receive(from_client_id, from_client_name, money, content, time) {
+            console.log(content);
+            var str = '';
+            str += '<div class="open-status">';
+            str += '<div class="popup-header">';
+            str += '<h3 style="margin-top: 13px;">红包</h3>';
+            str += '</div>';
+            str += '<div class="popup-body">';
+            str += '<h3>获得红包</h3>';
+            str += '<p><span class="amount-num">' + money + '</span> 元</p>';
+            str += '</div>';
+            str += '<div class="popup-footer"><div class="close-btn" onclick="closeRed();"></div></div>';
+            str += '</div>';
+            $(".enveloper-popup").html(str);
+            $(".enveloper-popup").show();
+            $(".open-status").show();
+            $(".undemolished").hide();
+
+        }
+
+        //发红包
+        function red_anchor(from_client_id, from_client_name, content, m_id, time) {
+            console.log('sdfsdfsdfsdf');
+            console.log(from_client_name);
+            var str = '';
+            str += '<div class="undemolished">';
+            str += '<div class="popup-header">';
+            str += '<h3 style="margin-top: 23px;">主播红包</h3>';
+            str += '</div>';
+            str += '<div class="popup-body">';
+            str += '<p>红包</p>';
+            str += '</div>';
+            str += '<div class="popup-footer">';
+            str += '<div class="open-btn" onclick="testa(' + m_id + ');">立即拆开</div>';
+            str += '<div class="close-btn" onclick="closeRed();"></div>';
+            str += '</div>';
+            str += '</div>';
+            $(".enveloper-popup").html(str);
+            $(".enveloper-popup").show();
+            $(".enveloper-popup .undemolished").last().hide();
+            $(".enveloper-popup .undemolished").last().fadeIn(2000);
+        }
+
+        function testa(m_id) {
+            var room_id = document.getElementById('room_id').value;
+            var users_id = document.getElementById('users_id').value;
+            var to_client_id = $("#client_list option:selected").attr("value");
+            var to_client_name = $("#client_list option:selected").text();
+            var user_level = '<?php echo $level; ?>';
+
+            $.ajax({
+                type: 'post',
+                async: false,
+                url: "{:U('live/index/click_red_packet')}", //请求的服务端地址
+                data: { room_id: room_id, users_id: users_id, m_id: m_id, index: 'index' },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status == 200) {
+                        var content = data.data;
+                        var to_client_id = content.to_client_id;
+                        var to_client_name = content.to_client_name;
+                        var content = content.content;
+                        var money = content.money;
+                        console.log(money);
+                        ws.send('{"type":"red_receive","user_level":"' + user_level + '","to_client_id":"' + to_client_id + '","to_client_name":"' + to_client_name + '","money":"' + money + '","content":"' + content + '"}');
+                        $(".mask,.redPacket-popup").hide();
+                    } else {
+                        alert(data.msg);
+                    }
+                }
+            })
+        }
+
+        function closeRed() {
+            $(".enveloper-popup").hide();
+        }
+
+        //发礼物
+        function gift(from_client_id, from_client_name, content, time, gift_id) {
+            console.log(content);
+            $(".showGift-wrap .gift-item").remove();
+            var str = '';
+            str += '<div class="gift-item">';
+            str += '<span class="gift-icon"><img src="__STATIC__/live/static/images/play/gift-icon-' + gift_id + '.png" /></span>';
+            str += '<span class="gift-count">x1</span>';
+            str += '<span class="viewer-name">' + from_client_name + '</span>';
+            str += '</div>';
+
+            $(".showGift-wrap").append(str);
+            $(".showGift-wrap .gift-item").last().hide();
+            $(".showGift-wrap .gift-item").last().fadeIn(2000);
+
+
+            // 点击发送按钮获取焦点
+            $('.textarea').focus();
+            $('.send-group .send-btn').css('opacity', '.5');
+            // 滚动条到底部
+            $('.barrage-scroll').animate({
+                scrollTop: $('.barrage-scroll').height()
+            }, 100);
+        }
+
+        //发购物链接
+        function goods_url(from_client_id, from_client_name, content, time, goods_url) {
+            console.log(content);
+            var str = '';
+            // str += '<div class="goods-links">';
+            str += '商品链接：<a href="' + goods_url + '">' + goods_url + '</a>';
+            // str += '</div>';
+            $(".goods-links").html(str);
+
+        }
+
+        $(function () {
+            select_client_id = 'all';
+            $("#client_list").change(function () {
+                select_client_id = $("#client_list option:selected").attr("value");
+            });
         });
-    });
-</script>
+    </script>
 </body>
+
 </html>
+
 </html>
