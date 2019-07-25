@@ -107,7 +107,7 @@ class Search extends ApiBase
             foreach($goods_list as $k=>$v){
                 $zong_commont = Db::name('comment')->where(['goods_id'=>$v['goods_id']])->count();
                 $good_commont = Db::name('comment')->where("goods_id='".$v['goods_id']."' and goods_rank>=4")->count();
-                $goods_list[$k]['good_rate'] = $good_commont/$zong_commont*100;
+                $goods_list[$k]['good_rate'] = $zong_commont ? $good_commont/$zong_commont*100 : 0;
                 foreach($seller_arr as $ks=>$vs){
                     if($v['seller_id'] == $vs['seller_id'] ){
                    
