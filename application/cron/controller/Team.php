@@ -29,10 +29,12 @@ class Team extends Controller{
         $AuctionPprice = M('Auction_price');
         $Users = M('Users');
         $AccountLog = M('AccountLog');
+        $SpecGoodsPrice = M('spec_goods_price');
         //$alist = $Auction->field('id,deposit,payment_time,end_time')->where(['end_time'=>['gt',(time()-360)],'is_end'=>1])->select();
-        $alist = $Auction->field('id,deposit,payment_time,end_time')->where(['end_time'=>['between',[(time()-360),time()]]])->select();
+        $alist = $Auction->field('id,goods_id,item_id,deposit,payment_time,end_time')->where(['end_time'=>['between',[(time()-360),time()]]])->select();
         $Auction->where(['end_time'=>['lt',time()],'is_end'=>['neq',1]])->update(['is_end'=>1]);
         foreach($alist as $v2){
+            if($v2['item_id'])$SpecGoodsPrice->where(['item_id'=>$v2['item_id'],'goods_id'=>$v2['goods_id']])->update(['prom_id'=>0,'prom_type'=>0]);
             $aplist = $AuctionDeposit->field('user_id')->where(['auction_id'=>$v2['id']])->select();
 
             //成交用户
