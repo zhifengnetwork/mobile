@@ -206,7 +206,6 @@ class Index extends Base
             'start_time' => time(),
             'status' => 1
         ];
-
         $result = Db::name('user_video')->insert($data);
         if (!$result) {
             return $this->failResult('开始直播失败', 301);

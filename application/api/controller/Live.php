@@ -108,6 +108,32 @@ class Live extends ApiBase
         }
     }
 
+
+    /**
+     * 设置开始直播商品
+     */
+    public function livegoods()
+    {
+        $user_id = $this->user->user_id;
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }
+        $goodsList  =  Db::name('goods')->field('goods_id,goods_name,original_img,store_count,market_price,shop_price,cost_price')->limit(0, 100)->select();
+
+        $goodsListData = [];
+
+        foreach ($goodsList as $k => $v) {
+            $goodsListData[$k] = $v;
+            $goodsListData[$k]['original_img'] = SITE_URL.$v['original_img'];
+        }
+
+        $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
+        if (empty($identity)) {
+            $this->ajaxReturn(['status' => -2 , 'msg'=>'身份验证错误','data'=>'']);
+        }
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$goodsListData]);
+    }
+
     /**
      * 开始直播
      */
@@ -118,7 +144,19 @@ class Live extends ApiBase
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
+        $good_ids = rtrim(input('good_ids', ''), ',');
 
+        $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
+        if (empty($identity)) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'身份验证错误','data'=>'']);
+        }
+        if (!empty($good_ids)) {
+            $good_ids  = explode(',', $good_ids);
+            $goods_arr = json_encode($good_ids, JSON_NUMERIC_CHECK);
+        }
+        if (!($fengmian = request()->file('image'))) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'请设置封面','data'=>'']);
+        }
         //设置封面
         if($user_id!=""){
             // 获取表单上传文件 例如上传了001.jpg
@@ -133,23 +171,22 @@ class Live extends ApiBase
                 // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
                 // echo $info->getSaveName();
                 // 输出 42a79759f284b767dfcb2a0197904287.jpg
-                $data['pic_fengmian'] = SITE_URL.'/public/upload/'.$info->getSaveName(); //输出路径
-                // ROOT_PATH . DS.
-                $data['start_time'] = time();
-                // 存着 地址
-                $rel = M('user_video')->field('pic_fengmian')->where(['user_id'=>$user_id])->find();
-                if($rel){
-                    $res = M('user_video')->where(['user_id'=>$user_id])->update($data);
-                }   else{
-                    $res = M('user_video')->where(['user_id'=>$user_id])->insert($data);
-                }
 
 
-                $img['pic_fengmian'] = $data;
-                if($res){
-                    $this->ajaxReturn(['status' => 0 , 'msg'=>'上传成功','data'=>$img]);
+                $data = [
+                    'good_ids' => !empty($good_ids) ? $goods_arr : '',
+                    'user_id'  => $user_id,
+                    'room_id'  => $user_id . time(),
+                    'pic_fengmian' => SITE_URL.'/public/upload/'.$info->getSaveName(),
+                    'location' => '',
+                    'start_time' => time(),
+                    'status' => 1
+                ];
+                $result = Db::name('user_video')->insert($data);
+                if($result){
+                    $this->ajaxReturn(['status' => 0 , 'msg'=>'开始直播成功','data'=>$data]);
                 }else{
-                    $this->ajaxReturn(['status' => -2 , 'msg'=>'上传失败','data'=>$file->getError()]);
+                    $this->ajaxReturn(['status' => -1 , 'msg'=>'开始直播失败','data'=>'']);
                 }
             }else{
                 $this->ajaxReturn(['status' => -2 , 'msg'=>'上传失败','data'=>$file->getError()]);
