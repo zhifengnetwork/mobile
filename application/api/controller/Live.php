@@ -414,7 +414,7 @@ class Live extends ApiBase
         }
 
         $userId = $this->get_user_id();
-//        $userId = 57580;
+        $userId = 57580;
         if(!$userId){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
