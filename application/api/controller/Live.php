@@ -196,6 +196,19 @@ class Live extends ApiBase
 
     }
 
+    //主播直播间
+    public function master_live_room(){
+        $user_id = $this->get_user_id();
+//        $user_id = 57603;
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }
+
+
+
+    }
+
+
 
     //商品弹窗
     public function goods_upwindows()
@@ -245,11 +258,13 @@ class Live extends ApiBase
         }
     }
 
+
+
+
     //结束直播
     public function liveover()
     {
         $user_id = $this->get_user_id();
-//        $user_id = 57603;
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
