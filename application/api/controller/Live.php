@@ -642,6 +642,51 @@ class Live extends ApiBase
     public function update_icard_pic()
     {
 
+        $user_id = $this->get_user_id();
+        if (!$user_id) {
+            $this->ajaxReturn(['status' => -1, 'msg' => '用户不存在', 'data' => '']);
+        }
+
+        if ($_FILES['pic_front']['tmp_name']) {
+            $file = $this->request->file('pic_front');
+            $image_upload_limit_size = config('image_upload_limit_size');
+            $validate = ['size'=>$image_upload_limit_size,'ext'=>'jpg,png,gif,jpeg'];
+            $dir = UPLOAD_PATH.'pic/';
+            if (!($_exists = file_exists($dir))){
+                $isMk = mkdir($dir);
+            }
+            $parentDir = date('Ymd');
+            $info = $file->validate($validate)->move($dir, true);
+            if($info){
+                $post['pic_front'] = SITE_URL . '/'.$dir.$parentDir.'/'.$info->getFilename();
+
+            }else{
+                // $this->error($file->getError());//上传错误提示错误信息
+                $this->ajaxReturn(['status' => -1 , 'msg'=>'上传错误','data'=>'']);
+            }
+        }
+
+        if ($_FILES['pic_back']['tmp_name']) {
+            $file = $this->request->file('pic_back');
+            $image_upload_limit_size = config('image_upload_limit_size');
+            $validate = ['size'=>$image_upload_limit_size,'ext'=>'jpg,png,gif,jpeg'];
+            $dir = UPLOAD_PATH.'pic/';
+            if (!($_exists = file_exists($dir))){
+                $isMk = mkdir($dir);
+            }
+            $parentDir = date('Ymd');
+            $info = $file->validate($validate)->move($dir, true);
+            if($info){
+                $post['pic_back'] = SITE_URL . '/'.$dir.$parentDir.'/'.$info->getFilename();
+
+            }else{
+                // $this->error($file->getError());//上传错误提示错误信息
+                $this->ajaxReturn(['status' => -1 , 'msg'=>'上传错误','data'=>'']);
+            }
+        }
+
+        $this->ajaxReturn(['status' => 0, 'msg' => '提交成功', 'data' => $post]);
+
 
 //        $user_id = $this->get_user_id();
 //        if (!$user_id) {
@@ -649,57 +694,58 @@ class Live extends ApiBase
 //        }
 //        print_r(request()->file);die;
 //        if ($user_id != "") {
-                // 身份证正面
-                $pic_front = request()->file('pic_front');
-                $save_url = UPLOAD_PATH . 'idcard/' . date('Y', time()) . '/' . date('m-d', time());
-                if ($pic_front) {
-                    // 移动到框架应用根目录/public/uploads/ 目录下
-                    $image_upload_limit_size = config('image_upload_limit_size');
-                    $info = $pic_front->rule('uniqid')->validate(['size' => $image_upload_limit_size, 'ext' => 'jpg,png,gif,jpeg'])->move($save_url);
-                    if ($info) {
-                        // 成功上传后 获取上传信息
-                        // 输出 jpg
-                        $comment_img = '/' . $save_url . '/' . $info->getFilename();
-                    } else {
-                        // 上传失败获取错误信息
-                        $this->ajaxReturn(['status' => -1, 'msg' => $pic_front->getError()]);
-                    }
-                    $data['pic_front'] = $comment_img;
-                }
-
-                $pic_back = request()->file('pic_back');
-                $save_url = UPLOAD_PATH . 'idcard/' . date('Y', time()) . '/' . date('m-d', time());
-                if ($pic_back) {
-                    // 移动到框架应用根目录/public/uploads/ 目录下
-                    $image_upload_limit_size = config('image_upload_limit_size');
-                    $info = $pic_back->rule('uniqid')->validate(['size' => $image_upload_limit_size, 'ext' => 'jpg,png,gif,jpeg'])->move($save_url);
-                    if ($info) {
-                        // 成功上传后 获取上传信息
-                        // 输出 jpg
-                        $comment_img1 = '/' . $save_url . '/' . $info->getFilename();
-                    } else {
-                        // 上传失败获取错误信息
-                        $this->ajaxReturn(['status' => -1, 'msg' => $pic_back->getError()]);
-                    }
-                    $data['pic_back'] = $comment_img1;
-                }
-
-//        存入表
-            $rel = M('user_verify_identity_info')->field('user_id')->where(['user_id' => $user_id])->find();
-            if ($rel) {
-                $res = M('user_verify_identity_info')->where(['user_id' => $user_id])->update($data);
-            } else {
-                $res = M('user_verify_identity_info')->insert($data);
-            }
-
-            if ($res) {
-                $data['pic_back'] = SITE_URL . $comment_img1;
-                $data['pic_front'] = SITE_URL . $comment_img;
-                $this->ajaxReturn(['status' => 0, 'msg' => '提交成功', 'data' => $data]);
-            } else {
-                $this->ajaxReturn(['status' => -2, 'msg' => '提交失败', 'data' => $pic_front->getError()]);
-            }
-//        }
+//                // 身份证正面
+//                $pic_front = request()->file('pic_front');
+//                print_r($pic_front);die;
+//                $save_url = UPLOAD_PATH . 'idcard/' . date('Y', time()) . '/' . date('m-d', time());
+//                if ($pic_front) {
+//                    // 移动到框架应用根目录/public/uploads/ 目录下
+//                    $image_upload_limit_size = config('image_upload_limit_size');
+//                    $info = $pic_front->rule('uniqid')->validate(['size' => $image_upload_limit_size, 'ext' => 'jpg,png,gif,jpeg'])->move($save_url);
+//                    if ($info) {
+//                        // 成功上传后 获取上传信息
+//                        // 输出 jpg
+//                        $comment_img = '/' . $save_url . '/' . $info->getFilename();
+//                    } else {
+//                        // 上传失败获取错误信息
+//                        $this->ajaxReturn(['status' => -1, 'msg' => $pic_front->getError()]);
+//                    }
+//                    $data['pic_front'] = $comment_img;
+//                }
+//
+//                $pic_back = request()->file('pic_back');
+//                $save_url = UPLOAD_PATH . 'idcard/' . date('Y', time()) . '/' . date('m-d', time());
+//                if ($pic_back) {
+//                    // 移动到框架应用根目录/public/uploads/ 目录下
+//                    $image_upload_limit_size = config('image_upload_limit_size');
+//                    $info = $pic_back->rule('uniqid')->validate(['size' => $image_upload_limit_size, 'ext' => 'jpg,png,gif,jpeg'])->move($save_url);
+//                    if ($info) {
+//                        // 成功上传后 获取上传信息
+//                        // 输出 jpg
+//                        $comment_img1 = '/' . $save_url . '/' . $info->getFilename();
+//                    } else {
+//                        // 上传失败获取错误信息
+//                        $this->ajaxReturn(['status' => -1, 'msg' => $pic_back->getError()]);
+//                    }
+//                    $data['pic_back'] = $comment_img1;
+//                }
+//
+////        存入表
+//            $rel = M('user_verify_identity_info')->field('user_id')->where(['user_id' => $user_id])->find();
+//            if ($rel) {
+//                $res = M('user_verify_identity_info')->where(['user_id' => $user_id])->update($data);
+//            } else {
+//                $res = M('user_verify_identity_info')->insert($data);
+//            }
+//
+//            if ($res) {
+//                $data['pic_back'] = SITE_URL . $comment_img1;
+//                $data['pic_front'] = SITE_URL . $comment_img;
+//                $this->ajaxReturn(['status' => 0, 'msg' => '提交成功', 'data' => $data]);
+//            } else {
+//                $this->ajaxReturn(['status' => -2, 'msg' => '提交失败', 'data' => $pic_front->getError()]);
+//            }
+////        }
     }
     /**
      * 查询用户信息
