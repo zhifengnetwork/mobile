@@ -144,15 +144,10 @@ class Live extends ApiBase
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
-        $good_ids = rtrim(input('good_ids', ''), ',');
 
         $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
         if (empty($identity)) {
             $this->ajaxReturn(['status' => -1 , 'msg'=>'身份验证错误','data'=>'']);
-        }
-        if (!empty($good_ids)) {
-            $good_ids  = explode(',', $good_ids);
-            $goods_arr = json_encode($good_ids, JSON_NUMERIC_CHECK);
         }
         if (!($fengmian = request()->file('image'))) {
             $this->ajaxReturn(['status' => -1 , 'msg'=>'请设置封面','data'=>'']);
@@ -174,7 +169,6 @@ class Live extends ApiBase
 
 
                 $data = [
-                    'good_ids' => !empty($good_ids) ? $goods_arr : '',
                     'user_id'  => $user_id,
                     'room_id'  => $user_id . time(),
                     'pic_fengmian' => SITE_URL.'/public/upload/'.$info->getSaveName(),
@@ -351,12 +345,13 @@ class Live extends ApiBase
 
 
     /**
-     * 用户进入直播页面
+     * 用户视频直播
      */
-    public function user_live_page()
+    public function user_live()
     {
 
-        $user_id = $this->get_user_id();
+//        $user_id = $this->get_user_id();
+        $user_id= 57580;
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
@@ -397,23 +392,19 @@ class Live extends ApiBase
 
     /**
      * 用户点击领取红包
-     * user_id    抢包人id
-     * room_id    房间id
-     * users_id   发包人id
-     * red_master_id   红包主表id
      */
 
     public function click_red_packet()
     {
 
         $room_id = input('post.room_id', 0); //房间id
-        $users_id = input('post.users_id', 0); //用户id
-        $m_id = input('post.m_id', 0); //用户id
+        $users_id = input('post.users_id', 0); //发包人id
+        $m_id = input('post.m_id', 0); //红包主表id
         if (empty($users_id) || empty($room_id) || empty($m_id)) {
             return $this->failResult('参数有误', 301);
         }
 
-        $userId = $this->get_user_id();
+//        $userId = $this->get_user_id();
         $userId = 57580;
         if(!$userId){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
@@ -424,7 +415,7 @@ class Live extends ApiBase
             $this->ajaxReturn(['status' => -1 , 'msg'=>'已抢过红包!!!','data'=>'']);
         }
         //事务处理
-        Db::startTrans();
+//        Db::startTrans();
         //获取红包从表信息
         $red_master_find = $this->red_master_find($room_id, $m_id);
         print_r($red_master_find);die;
