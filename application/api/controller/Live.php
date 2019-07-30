@@ -21,8 +21,7 @@ class Live extends ApiBase
      */
     public function videoList()
     {
-//        $user_id = $this->user->user_id;
-        $user_id = 56007;
+        $user_id = $this->user->user_id;
         $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
 
         // 判断是否是主播，是主播显示主播按钮
@@ -249,8 +248,8 @@ class Live extends ApiBase
     //商品弹窗
     public function goods_upwindows()
     {
-//        $user_id = $this->get_user_id();
-        $user_id = 57580;
+        $user_id = $this->get_user_id();
+
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
@@ -312,8 +311,7 @@ class Live extends ApiBase
     //红包弹窗
     public function red_upwindows()
     {
-//        $user_id = $this->get_user_id();
-        $user_id = 57580;
+        $user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
@@ -505,7 +503,7 @@ class Live extends ApiBase
     public function user_live()
     {
 
-//        $user_id = $this->get_user_id();
+        $user_id = $this->get_user_id();
         $user_id= 57580;
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
