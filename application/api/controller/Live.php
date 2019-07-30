@@ -17,6 +17,46 @@ class Live extends ApiBase
 
 
     /**
+     * 直播列表
+     */
+    public function videoList()
+    {
+//        $user_id = $this->user->user_id;
+        $user_id = 56007;
+        $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
+
+        // 判断是否是主播，是主播显示主播按钮
+
+        $data['zhubo'] = $identity ? 1 : 0;
+
+        //正则直播列表
+        $where = ['status' => 1];
+//        $count = M('user_video')->where($where)->count();
+//        $page_count = C('PAGESIZE');
+//        $page = new AjaxPage($count, $page_count);
+        $list = M('user_video')->where($where)->order("id desc")
+//            ->limit($page->firstRow . ',' . $page->listRows)
+            ->select();
+
+        //跳转到用户端直播间
+        $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
+        $url = $http_type . $_SERVER['SERVER_NAME'];
+
+        foreach ($list as $k => $v) {
+            $data[$k] = $v;
+            //跳转到直播间url
+            $data[$k]['url'] = $url . '/api/live/master_live_room?room_id=' . $v['room_id'];
+            $data[$k]['start_time'] = date('Y-m-d H:i:s');
+        }
+        $this->ajaxReturn(['status' => 0, 'msg' => '获取直播列表成功', 'data' => $data]);
+    }
+
+
+
+
+
+
+    /**
      * 申请直播
      */
     public function apply()
@@ -515,7 +555,7 @@ class Live extends ApiBase
         $users_id = input('post.users_id', 0); //发包人id
         $m_id = input('post.m_id', 0); //红包主表id
         if (empty($users_id) || empty($room_id) || empty($m_id)) {
-            return $this->failResult('参数有误', 301);
+            $this->ajaxReturn(['status' => -1, 'msg' => '参数错误', 'data' => '']);
         }
 
 //        $userId = $this->get_user_id();
@@ -532,11 +572,12 @@ class Live extends ApiBase
 //        Db::startTrans();
         //获取红包从表信息
         $red_master_find = $this->red_master_find($room_id, $m_id);
-        print_r($red_master_find);die;
+
         if (!$red_master_find) {
             $this->ajaxReturn(['status' => -1 , 'msg'=>'事务处理失败','data'=>'']);
         }
         $red_detail_find = Db::name('red_detail')->where(['m_id' => $m_id, 'type' => 0, 'room_id' => $room_id])->find();
+
         if (!$red_detail_find) {
             $all_get_master = Db::name('red_master')->where(['id' => $m_id, 'room_id' => $room_id])->update(['all_get' => 1]);
             if (!$all_get_master) {
@@ -565,10 +606,11 @@ class Live extends ApiBase
         accountLog($userId, $red_detail_find['money'], 0,  '领取红包', 0, $red_detail_find, time());
         Db::commit();
         $money = bcadd($red_detail_find['money'], '0.00', 2);
+        $user_find = Db::name("users")->where(['user_id' => $userId])->find();
         $message = array(
             'type' => 'red_receive_user',
             'from_client_id' => $userId,
-            'from_client_name' => $this->user->nickname,
+            'from_client_name' => $user_find['nickname'],
             'to_client_id' => 'all',
             'moeny' => $money,
             'content' => $this->user->nickname . '领取了' . $money . '元红包',
@@ -584,6 +626,7 @@ class Live extends ApiBase
     public function red_master_find($room_id, $m_id)
     {
         $where = "room_id = '" . $room_id . "' and id = '" . $m_id . "' and all_get = 0";
+
         $red_user_find = Db::name("red_master")->where($where)->find();
         if ($red_user_find) {
             return $red_user_find;
@@ -592,4 +635,81 @@ class Live extends ApiBase
         }
     }
 
+
+    /**
+     * 身份证上传
+     */
+    public function update_icard_pic()
+    {
+        
+        $user_id = $this->get_user_id();
+        if (!$user_id) {
+            $this->ajaxReturn(['status' => -1, 'msg' => '用户不存在', 'data' => '']);
+        }
+
+        if ($user_id != "") {
+                // 身份证正面
+                $pic_front = request()->file('pic_front');
+                $save_url = UPLOAD_PATH . 'idcard/' . date('Y', time()) . '/' . date('m-d', time());
+                if ($pic_front) {
+                    // 移动到框架应用根目录/public/uploads/ 目录下
+                    $image_upload_limit_size = config('image_upload_limit_size');
+                    $info = $pic_front->rule('uniqid')->validate(['size' => $image_upload_limit_size, 'ext' => 'jpg,png,gif,jpeg'])->move($save_url);
+                    if ($info) {
+                        // 成功上传后 获取上传信息
+                        // 输出 jpg
+                        $comment_img = '/' . $save_url . '/' . $info->getFilename();
+                    } else {
+                        // 上传失败获取错误信息
+                        $this->ajaxReturn(['status' => -1, 'msg' => $pic_front->getError()]);
+                    }
+                    $data['pic_front'] = $comment_img;
+                }
+
+                $pic_back = request()->file('pic_back');
+                $save_url = UPLOAD_PATH . 'idcard/' . date('Y', time()) . '/' . date('m-d', time());
+                if ($pic_back) {
+                    // 移动到框架应用根目录/public/uploads/ 目录下
+                    $image_upload_limit_size = config('image_upload_limit_size');
+                    $info = $pic_back->rule('uniqid')->validate(['size' => $image_upload_limit_size, 'ext' => 'jpg,png,gif,jpeg'])->move($save_url);
+                    if ($info) {
+                        // 成功上传后 获取上传信息
+                        // 输出 jpg
+                        $comment_img1 = '/' . $save_url . '/' . $info->getFilename();
+                    } else {
+                        // 上传失败获取错误信息
+                        $this->ajaxReturn(['status' => -1, 'msg' => $pic_back->getError()]);
+                    }
+                    $data['pic_back'] = $comment_img1;
+                }
+
+//        存入表
+            $rel = M('user_verify_identity_info')->field('user_id')->where(['user_id' => $user_id])->find();
+            if ($rel) {
+                $res = M('user_verify_identity_info')->where(['user_id' => $user_id])->update($data);
+            } else {
+                $res = M('user_verify_identity_info')->insert($data);
+            }
+
+            if ($res) {
+                $data['pic_back'] = SITE_URL . $comment_img1;
+                $data['pic_front'] = SITE_URL . $comment_img;
+                $this->ajaxReturn(['status' => 0, 'msg' => '提交成功', 'data' => $data]);
+            } else {
+                $this->ajaxReturn(['status' => -2, 'msg' => '提交失败', 'data' => $pic_front->getError()]);
+            }
+        }
+    }
+    /**
+     * 查询用户信息
+     */
+    public function user($user_id)
+    {
+        $user_find = Db::name("users")->where(['user_id' => $user_id])->find();
+        if ($user_find) {
+            return $user_find;
+        } else {
+            return false;
+        }
+    }
 }

@@ -51,7 +51,7 @@ class User extends ApiBase
 
             $state = M('user_verify_identity_info')->field('verify_state')->where(['user_id'=>$user_id])->find();
             Db::name('users')->where(['user_id'=>$user_id])->update(['livestate'=>$state['verify_state']]);
-            
+
             $data = Db::name("users")
             ->where(['user_id'=>$user_id])
             ->field('user_id,agent_user as level,nickname,user_money,head_pic,agent_user,first_leader,realname,mobile,is_distribut,is_agent,sex,birthyear,paypwd,birthmonth,birthday,livestate')
