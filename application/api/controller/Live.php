@@ -271,26 +271,140 @@ class Live extends ApiBase
     //红包弹窗
     public function red_upwindows()
     {
-        $user_id = $this->get_user_id();
+//        $user_id = $this->get_user_id();
+        $user_id = 57580;
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
-        if (IS_POST) {
 
-            $data['uid'] = $user_id;
-            $data['room_id'] = I('post.room_id');
-            $data['money'] = I('total_money');
-            $data['num'] = I('red_number');
-            $data['create_time'] = time();
-            $rel = M('red_master')->insert($data);
+        $money_input = input('post.total_money', 0); //红包金额
+        $num = input('post.red_number', 0); //红包个数
+        $room_id = input('post.room_id', 0); //房间id
+        $money = bcadd($money_input, '0.00', 2);
 
-            if ($rel){
-                $this->ajaxReturn(['status' => 0, 'msg' => '提交成功', 'data' => $data]);
+        if (empty($num) || empty($money_input) || empty($room_id)) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数有误','data'=>'']);
+        }
+        if ($money < 0 || $money != $money_input) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'金融格式不正确','data'=>'']);
+        }
+        if (!is_numeric($num) || strpos($num, ".") !== false) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'红包个数不正确','data'=>'']);
+        }
+
+        $user = Db::name('users')->where(['user_id' => $user_id])->find();
+        $deduct_money = bcsub($user['user_money'], $money, 2);
+        // dump($deduct_money);
+        if ($deduct_money < 0) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'余额不足','data'=>'']);
+        }
+
+        //事务处理
+        Db::startTrans();
+        //剩余的用户钱
+        $user_money = bcsub($user['user_money'], $money, 2);
+        // dump($user_money);
+//        扣减用户余额的钱
+         $result = Db::name('users')->where(['user_id' => $user_id])->update(['user_money' => $user_money]);
+         if (!$result) {
+             $this->ajaxReturn(['status' => -1 , 'msg'=>'事务处理失败','data'=>'']);
+         }
+        $createRedDate = $this->createRedDate($money, $num); //生成红包
+        if (!$createRedDate) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'事务处理失败','data'=>'']);
+        }
+
+        $red_master_data = [
+            "uid" => $user_id,
+            "room_id" => $room_id,
+            "num" => $num,
+            "money" => $money,
+            "create_time" => time()
+        ];
+        $red_master = $this->tp_red_master($red_master_data);
+        if (!$red_master) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'事务处理失败','data'=>'']);
+        }
+
+        // 遍历插入红包从表
+        foreach ($createRedDate['redMoneyList'] as $key => $vey_money) {
+            $red_detail_data = [
+                'money' => $vey_money,
+                'm_id' => $red_master,
+                'room_id' => $room_id
+            ];
+            $red_detail = $this->tp_red_detail($red_detail_data);
+            if (!$red_detail) {
+                $this->ajaxReturn(['status' => -1 , 'msg'=>'事务处理失败','data'=>'']);
             }
+        }
 
+        //添加消费记录
+        accountLog($user_id, -$money, 0,  '直播发红包', 0, $red_master, time());
+
+        Db::commit();
+        $user_find = Db::name("users")->where(['user_id' => $user_id])->find();
+        $message = array(
+//            'type' => 'red_anchor',
+            'from_client_id' => $user_id,
+            'from_client_name' => $user_find['nickname'],
+//            'to_client_id' => 'all',
+            'm_id' => $red_master,
+            'content' => $this->user->nickname . '主播发了' . $money . '元红包',
+            'time' => date('Y-m-d H:i:s'),
+        );
+
+        $this->ajaxReturn(['status' => 0, 'msg' => '提交成功', 'data' => $message]);
+
+    }
+
+    /**
+     * 生成红包
+     */
+    public function createRedDate($total, $num)
+    {
+        if (!$total || !$num) {
+            return false;
+        }
+        $min = 0.01; // 保证最小金额
+        if ($total <= $min) {
+            $this->ajaxReturn(['status' => -1, 'msg' => '金额不正确', 'data' => '']);
+        }
+        $wamp = array();
+        $returnData = array();
+        for ($i = 1; $i < $num; ++$i) {
+            $safe_total = ($total - ($num - $i) * $min) / ($num - $i); // 随机安全上限 红包金额的最大值
+            if ($safe_total < 0) break;
+            $money = @mt_rand($min * 100, $safe_total * 100) / 100; // 随机产生一个红包金额
+            $total = $total - $money;   // 剩余红包总额
+            $wamp[$i] = sprintf("%.2f", $money); // 保留两位有效数字
+        }
+        $wamp[$i] = sprintf("%.2f", $total);
+        $returnData['redMoneyList'] = $wamp;
+        $returnData['newTotalMoney'] = array_sum($wamp);
+        return $returnData;
+    }
+    //tp_red_detail红包主表插入
+    public function tp_red_master($data)
+    {
+        $result = Db::name('red_master')->insertGetId($data);
+        if ($result) {
+            return $result;
+        } else {
+            return false;
         }
     }
 
+    //tp_red_detail红包从表插入
+    public function tp_red_detail($data)
+    {
+        $result = Db::name('red_detail')->insert($data);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 
@@ -477,4 +591,5 @@ class Live extends ApiBase
             return false;
         }
     }
+
 }

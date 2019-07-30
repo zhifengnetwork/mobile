@@ -45,11 +45,16 @@ class User extends ApiBase
 
     public function userinfo(){
         //解密token
-        $user_id = $this->get_user_id();
+//        $user_id = $this->get_user_id();
+        $user_id= 57580;
         if($user_id!=""){
+
+            $state = M('user_verify_identity_info')->field('verify_state')->where(['user_id'=>$user_id])->find();
+            Db::name('users')->where(['user_id'=>$user_id])->update(['livestate'=>$state['verify_state']]);
+            
             $data = Db::name("users")
             ->where(['user_id'=>$user_id])
-            ->field('user_id,agent_user as level,nickname,user_money,head_pic,agent_user,first_leader,realname,mobile,is_distribut,is_agent,sex,birthyear,paypwd,birthmonth,birthday')
+            ->field('user_id,agent_user as level,nickname,user_money,head_pic,agent_user,first_leader,realname,mobile,is_distribut,is_agent,sex,birthyear,paypwd,birthmonth,birthday,livestate')
             ->find();
             $data['date_birth'] = $data['birthyear'].'-'.$data['birthmonth'].'-'.$data['birthday'];
             unset($data['birthyear']);
@@ -58,8 +63,9 @@ class User extends ApiBase
         }else{
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
-        // dump($data['level']);die;
-        // $data['level_name'] = $data['level'] ? M('user_level')->where(['level'=>$data['level']])->value('level_name') : '普通用户';
+
+
+
         $level_name=M('user_level')->where(['level'=>$data['level']])->value('level_name');
         if($level_name){
             $data['level_name']=$level_name;
