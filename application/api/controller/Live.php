@@ -265,7 +265,7 @@ class Live extends ApiBase
             }
         }
         $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 2])->find();
-        if (empty($identity)) {
+        if (!empty($identity)) {
             $this->ajaxReturn(['status' => -2 , 'msg'=>'身份验证错误','data'=>'']);
         }
         $this->ajaxReturn(['status' => 0, 'msg' => '提交成功', 'data' => $good]);
@@ -641,7 +641,7 @@ class Live extends ApiBase
      */
     public function update_icard_pic()
     {
-        
+
         $user_id = $this->get_user_id();
         if (!$user_id) {
             $this->ajaxReturn(['status' => -1, 'msg' => '用户不存在', 'data' => '']);
