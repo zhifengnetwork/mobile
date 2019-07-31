@@ -642,8 +642,7 @@ class Live extends ApiBase
     {
 
 
-//        $user_id = $this->get_user_id();
-        $user_id= 57580;
+        $user_id = $this->get_user_id();
         if($user_id!=""){
             // 获取表单上传文件 例如上传了001.jpg
             $file = request()->file('picfront');
