@@ -184,10 +184,10 @@ class Live extends ApiBase
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
 
-//        $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
-//        if (empty($identity)) {
-//            $this->ajaxReturn(['status' => -1 , 'msg'=>'身份验证错误','data'=>'']);
-//        }
+        $identity = Db::name('user_verify_identity_info')->where(['user_id' => $user_id, 'verify_state' => 1])->find();
+        if (empty($identity)) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'身份验证错误','data'=>'']);
+        }
         if (!($fengmian = request()->file('image'))) {
             $this->ajaxReturn(['status' => -1 , 'msg'=>'请设置封面','data'=>'']);
         }
@@ -311,7 +311,8 @@ class Live extends ApiBase
     //红包弹窗
     public function red_upwindows()
     {
-        $user_id = $this->get_user_id();
+//        $user_id = $this->get_user_id();
+        $user_id = 57545;
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
@@ -504,14 +505,13 @@ class Live extends ApiBase
     {
 
         $user_id = $this->get_user_id();
-        $user_id= 57580;
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
 
         $room_id = input('get.room_id', 0);
         $goods_id = input('get.goods_id', 0);
-        if (empty($room_id) || empty($goods_id)) {
+        if (empty($room_id)) {
             $this->ajaxReturn(['status' => -1 , 'msg'=>'参数有误','data'=>'']);
         }
         $room = Db::name('user_video')->where(['room_id' => $room_id])->find();
@@ -526,8 +526,7 @@ class Live extends ApiBase
 
         $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
         $url = $http_type . $_SERVER['SERVER_NAME'];
-        $goods_url = $url . '/Mobile/Goods/goodsInfo/id/' . $goods_id . '.html?zhubo_id=' . $room['user_id'];
-        $data['goods_url'] = $goods_url;
+
         //获取礼物列表
         $giftList = Db::name('live_gift')->where(['delete_time' => ['EXP', 'IS NULL']])->order('sort asc')->select();
         foreach ($giftList as $k=>$v){
@@ -537,10 +536,10 @@ class Live extends ApiBase
 
         //主播的用户名  主播图片
         $zhubo = Db::name('users')->field('user_id,nickname,head_pic')->where(['user_id' => $room['user_id']])->find();
-        $zhubo['head_pic'] = SITE_URL.$zhubo['head_pic'];
+        $zhubo['head_pic'] = $zhubo['head_pic'];
         $data['zhuobo'] = $zhubo;
 
-        $this->ajaxReturn(['status' => 0, 'msg' => '提交成功', 'data' => $data]);
+        $this->ajaxReturn(['status' => 0, 'msg' => '获取成功', 'data' => $data]);
     }
 
     /**
@@ -557,8 +556,7 @@ class Live extends ApiBase
             $this->ajaxReturn(['status' => -1, 'msg' => '参数错误', 'data' => '']);
         }
 
-//        $userId = $this->get_user_id();
-        $userId = 57580;
+        $userId = $this->get_user_id();
         if(!$userId){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
@@ -607,10 +605,10 @@ class Live extends ApiBase
         $money = bcadd($red_detail_find['money'], '0.00', 2);
         $user_find = Db::name("users")->where(['user_id' => $userId])->find();
         $message = array(
-            'type' => 'red_receive_user',
+//            'type' => 'red_receive_user',
             'from_client_id' => $userId,
             'from_client_name' => $user_find['nickname'],
-            'to_client_id' => 'all',
+//            'to_client_id' => 'all',
             'moeny' => $money,
             'content' => $this->user->nickname . '领取了' . $money . '元红包',
             'time' => date('Y-m-d H:i:s'),
@@ -636,12 +634,317 @@ class Live extends ApiBase
 
 
     /**
+     * 红包超时退回
+     */
+    public function sendBackRed()
+    {
+
+        // 获取所有大于5分钟的红包
+        $key = $_GET['key'];
+
+        if (!$key || $key != 'HGQ3keAjEyWPnT9AoutsCWFky99lbgKE') {
+            echo 'no...';
+            exit;
+        }
+        // dump($key);exit;
+        $map['m.time_out'] = 0;
+        $map['m.all_get'] = 0;
+        $red_all = Db::name('red_master')->alias('m')
+            ->field('m.id,m.uid,m.room_id,m.num,m.money,m.create_time,m.time_out,m.all_get')
+            ->where('m.time_out', 0)
+            ->select();
+        // 如果超时退回标记主表time_out=1 以及从表type=2，并且统计红包是否全部领取，如果全部领取标记主表all_get=1
+        $out_time = 350; // 过期时间
+        $i = 0;
+        if ($red_all) {
+            foreach ($red_all as $k => $v) {
+                // 判断当前时间是否大于等于红包创建时间+过期时间
+                if (time() >= $v['create_time'] + $out_time) {
+                    // 根据当前主表id获取从表没被抢的红包记录 统计没被领取红包总金额
+                    $no_get_money = Db::name('red_detail')->where(['m_id' => $v['id'], 'type' => 0])->sum('money');
+                    // dump($v['uid']);
+                    // 退还金额到对应用户
+                    if ($no_get_money) {
+                        $out_money_res = Db::name('users')->where(['user_id' => $v['uid']])->setInc('user_money', $no_get_money);
+                        if ($out_money_res) {
+                            // dump($out_money_res);
+                            // 修改状态
+                            $out_update_res = Db::name('red_detail')->where(['m_id' => $v['id'], 'type' => 0])->update(['type' => 2, 'out_time' => time()]);
+                            $out_update_res2 = Db::name('red_master')->where(['id' => $v['id']])->update(['time_out' => 1, 'all_get' => 1]);
+                            // 插入日志
+                            $out_money_log = [
+                                'from_id' => $v['uid'],
+                                'uid' => $v['uid'],
+                                'm_id' => $v['id'],
+                                'red_money' => $v['money'],
+                                'money' => $no_get_money,
+                                'type' => 12,
+                                'create_time' => time(),
+                                'remake' => '红包退回'
+                            ];
+                            $out_money_log_res = Db::name('red_log')->insert($out_money_log);
+                        } else {
+                            // echo 'out red update red err\n';
+                        }
+                    } else {
+                        // 修改主表标记全部领取
+                        $out_update_res3 = Db::name('red_master')->where(['id' => $v['id']])->update(['all_get' => 1]);
+                        continue;
+                    }
+                }
+                $i++;
+            }
+            echo 'out red ' . $i;
+        } else {
+            echo 'no order\n';
+            exit;
+        }
+    }
+
+
+    /**
+     * 用户发红包
+     */
+    public function user_send_red() {
+        $room_id = input('post.room_id', 0);
+        $money_input = input('post.money', 0);
+        if (empty($room_id) || empty($money_input)) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数有误','data'=>'']);
+        }
+
+        $room = Db::name('user_video')->where(['room_id' => $room_id])->find();
+        if (empty($room)) { //不存在直播；跳转到直播间列表
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'不存在的直播','data'=>'']);
+        }
+        if ($room['status'] == 2) { //如果主播已结束，跳转到结束页面
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'直播已结束','data'=>'']);
+        }
+
+        $money = bcadd($money_input, '0.00', 2);
+        if ($money < 0 || $money != $money_input) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'金融格式不对','data'=>'']);
+        }
+
+        $userId = $this->get_user_id();
+        $user = Db::name('users')->where(['user_id' => $userId])->find();
+        $koujian = bcsub($user['user_money'], $money, 2);
+        if ($koujian < 0) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'余额不足','data'=>'']);
+        }
+        //事务处理
+        Db::startTrans();
+        //剩余的用户钱
+        $user_money = bcsub($user['user_money'], $money, 2);
+        //扣减用户余额的钱
+        $result = Db::name('users')->where(['user_id' => $userId])->update(['user_money' => $user_money]);
+        if (!$result) {
+            Db::rollback();
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'事务处理失败1','data'=>'']);
+
+        }
+
+        //增加主播余额的钱
+        $zhobuVideo = Db::name('user_video')->where(['room_id' => $room_id])->find();
+        if (!$zhobuVideo) {
+            Db::rollback();
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'主播直播间不存在','data'=>'']);
+        }
+        $zhubo_user_id = $zhobuVideo['user_id'];
+        $zhobuUser = Db::name('users')->where(['user_id' => $zhubo_user_id])->find();
+        $user_money = bcadd($zhobuUser['user_money'], $money, 2);
+        //增加主播余额的钱
+        $result = Db::name('users')->where(['user_id' => $zhubo_user_id])->update(['user_money' => $user_money]);
+        if (!$result) {
+            Db::rollback();
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'事务处理失败2','data'=>'']);
+        }
+        //新增用户给主播发红包流水
+        $data = [
+            'user_id' => $userId,
+            'to_user_id' => $zhubo_user_id,
+            'room_id' => $room_id,
+            'money' => $money,
+            'data' => "【{$userId}:{$this->user->nickname}】给主播【{$zhubo_user_id}:{$zhobuUser['nickname']}】发了【{$money}】的红包",
+            'create_time' => time(),
+        ];
+        $result = Db::name('live_red_sending_log')->insert($data);
+        if (!$result) {
+            Db::rollback();
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'事务处理失败3','data'=>'']);
+        }
+
+        //修改用户的金额
+        $updateMoney = bcadd($zhobuVideo['money'], $money, 2);
+        $result = Db::name('user_video')->where(['user_id' => $zhubo_user_id])->update(['money' => $updateMoney]);
+        if (!$result) {
+            Db::rollback();
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'事务处理失败4','data'=>'']);
+        }
+        //添加消费记录
+        accountLog($userId, -$money, 0,  '给主播发红包', 0, $result, time());
+        accountLog($zhubo_user_id, $money, 0,  '用户给主播发红包', 0, $result, time());
+
+        Db::commit();
+        $user_find = Db::name("users")->where(['user_id' => $userId])->find();
+        $message = array(
+//            'type' => 'say',
+            'from_client_id' => $userId,
+            'from_client_name' => $user_find['nickname'],
+//            'to_client_id' => 'all',
+            'content' => '给主播发了' . $money . '红包',
+            'time' => date('Y-m-d H:i:s'),
+        );
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'提交成功','data'=>$message]);
+    }
+
+    /**
+     * 用户发礼物
+     */
+    public function user_send_gift(){
+        $room_id = input('post.room_id', 0);
+        //上线后去掉默认值  add by zgp
+        $gift_id = input('post.gift_id', 0);
+        if (empty($room_id) || empty($gift_id)) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'参数错误','data'=>'']);
+        }
+
+        $room = Db::name('user_video')->where(['room_id' => $room_id])->find();
+        if (empty($room)) { //不存在直播；跳转到直播间列表
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'不存在直播','data'=>'']);
+        }
+        if ($room['status'] == 2) { //如果主播已结束，跳转到结束页面
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'直播已结束','data'=>'']);
+
+        }
+
+        $userId = $this->get_user_id();
+        $user = Db::name('users')->where(['user_id' => $userId])->find();
+        $money = 0;
+        //获取礼物的价格
+        $gift = Db::name('live_gift')->where(['id' => $gift_id])->find();
+        if (empty($gift)) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'礼物不存在','data'=>'']);
+        }
+        $money = $gift['price'];
+        $koujian = bcsub($user['user_money'], $money, 2);
+        if ($koujian < 0) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'余额不足','data'=>'']);
+        }
+        //事务处理
+        Db::startTrans();
+        //剩余的用户钱
+        $user_money = bcsub($user['user_money'], $money, 2);
+        //扣减用户余额的钱
+        $result = Db::name('users')->where(['user_id' => $userId])->update(['user_money' => $user_money]);
+        if (!$result) {
+            Db::rollback();
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'事务处理失败','data'=>'']);
+        }
+
+        //新增用户给主播发礼物流水
+        $zhubo_user_id = 0;
+        $zhobuInfo = Db::name('user_video')->where(['room_id' => $room_id])->find();
+        $zhubo_user_id = $zhobuInfo['user_id'];
+        $zhobuInfo = Db::name('users')->where(['user_id' => $zhubo_user_id])->find();
+        $data = [
+            'gift_id' => $gift_id,
+            'user_id' => $userId,
+            'to_user_id' => $zhubo_user_id,
+            'room_id' => $room_id,
+            'data' => "【{$userId}:{$this->user->nickname}】给【{$zhubo_user_id}:{$zhobuInfo['nickname']}】发价值【{$gift['price']}】的【{$gift_id}:{$gift['name']}】礼物",
+            'create_time' => time(),
+        ];
+        $result = Db::name('live_gift_sending_log')->insert($data);
+        if (!$result) {
+            Db::rollback();
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'事务处理失败2','data'=>'']);
+        }
+
+        Db::commit();
+        $user_find = Db::name("users")->where(['user_id' => $userId])->find();
+        $message = array(
+//            'type' => 'gift',
+            'from_client_id' => $userId,
+            'from_client_name' => $user_find['nickname'] ,
+//            'to_client_id' => 'all',
+            'gift_id' => $data['gift_id'],
+            'content' => '给主播发了' . $gift['name'] . '礼物',
+            'time' => date('Y-m-d H:i:s'),
+        );
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'提交成功','data'=>$message]);
+    }
+
+
+    /***
+     * 点赞
+     */
+    public  function like(){
+
+        $room_id = I('post.room_id', 0);
+        $room = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->find();
+        if (empty($room)) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'不存在的直播间','data'=>'']);
+        }
+
+        $user_id = $this->get_user_id();
+        $verifyData = Db::name('live_like')->where(['user_id' => $user_id, 'room_id' => $room_id])->find();
+        // 没有点赞记录，新增、top_amount++
+        if (!$verifyData) {
+            $data = array(
+                'room_id' => $room_id,
+                'user_id' => $user_id,
+                'create_time' => time()
+            );
+            Db::startTrans();
+            $like = Db::name('live_like')->insert($data);
+            $result = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->setInc('top_amount');
+            $user_video = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->find();
+            if ($like && $result) {
+                Db::commit();
+                $message['msg'] = '点赞成功';
+                $message['count'] = $user_video['top_amount'];
+                $this->ajaxReturn(['status' => 0 , 'msg'=>'提交成功','data'=>$message]);
+            } else {
+                Db::rollback();
+                $this->ajaxReturn(['status' => -1 , 'msg'=>'点赞失败','data'=>'']);
+            }
+        }
+        $this->ajaxReturn(['status' => -1 , 'msg'=>'已点赞','data'=>'']);
+    }
+
+
+
+    /**
+     * 获取点赞人数
+     */
+
+    public function userTopAmount(){
+        $room_id = I('post.room_id', 1);
+        $room = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->find();
+        if (empty($room)) {
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'不存在的直播间','data'=>'']);
+        }
+        $room = Db::name('user_video')->where(['room_id' => $room_id, 'status' => 1])->find();
+        $data['count'] = $room['top_amount'];
+        $this->ajaxReturn(['status' => 0 , 'msg'=>'获取成功','data'=>$data]);
+    }
+
+
+
+    /**
+     * 观看人数加1
+     */
+    public function userLookAmount(){
+        $room_id = I('post.room_id', 0);
+        Db::name('user_video')->where(['room_id' => $room_id])->setInc('look_amount');
+    }
+
+
+    /**
      * 身份证上传
      */
     public function update_icard_pic()
     {
-
-
         $user_id = $this->get_user_id();
         if($user_id!=""){
             // 获取表单上传文件 例如上传了001.jpg
@@ -657,7 +960,7 @@ class Live extends ApiBase
                 // echo $info->getSaveName();
                 // 输出 42a79759f284b767dfcb2a0197904287.jpg
                 $data['pic_front'] = SITE_URL.'/public/upload/'.$info->getSaveName(); //输出路径
-                // ROOT_PATH . DS.
+                // ROOT_PATH .DS.
 
                 // 存着 地址
                 M('user_verify_identity_info')->where(['user_id' => $user_id])->update($data);
