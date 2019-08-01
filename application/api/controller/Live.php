@@ -945,12 +945,13 @@ class Live extends ApiBase
      */
     public function update_icard_pic()
     {
-        $user_id = $this->get_user_id();
+//        $user_id = $this->get_user_id();
+        $user_id = 57534;
         if($user_id!=""){
             // 获取表单上传文件 例如上传了001.jpg
             $file = request()->file('picfront');
             // 移动到框架应用根目录/uploads/ 目录下
-            $info = $file->validate(['size'=>204800,'ext'=>'jpg,png,gif']);
+            $info = $file->validate(['size'=>20480000,'ext'=>'jpg,png,gif']);
             $info = $file->rule('md5')->move(ROOT_PATH . DS.'public/upload');//加密->保存路径
             if($info){
                 // 成功上传后 获取上传信息
