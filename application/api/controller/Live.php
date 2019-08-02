@@ -311,8 +311,7 @@ class Live extends ApiBase
     //红包弹窗
     public function red_upwindows()
     {
-//        $user_id = $this->get_user_id();
-        $user_id = 57545;
+        $user_id = $this->get_user_id();
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
