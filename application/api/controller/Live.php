@@ -58,10 +58,67 @@ class Live extends ApiBase
     /**
      * 申请直播
      */
+
     public function apply()
     {
         //解密token
-        $user_id = $this->get_user_id();
+//        $user_id = $this->get_user_id();
+        $user_id = 57534;
+        if(!$user_id){
+            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
+        }
+
+        if($user_id!="") {
+//            //选择会员
+//            $levelname = M('user_level')->field('level_name')->select();
+//
+//            foreach ($levelname as $k=>$v){
+//                $levelname[$k]=$v['level_name'];
+//            }
+//
+//            foreach ($levelname as $k=>$v){
+//                $levelname['name'][$k] = $v;
+//            }
+//
+//            $data['level_name'] = $levelname;
+
+
+            if (IS_POST) {
+
+                $mobile = I('post.mobile', '');
+                $name = I('post.username', '');
+                $level = I('post.level_id', '');
+                $pic_back = I('post.pic_back', '');
+                $pic_front = I('post.pic_front', '');
+
+                $data['mobile'] = $mobile;
+                $data['name'] = $name;
+                $data['user_id'] = $user_id;
+                $data['level_id'] = $level;
+                $data['create_time'] = time();
+                $data['pic_front'] = $pic_front;
+                $data['pic_back'] = $pic_back;
+            }
+//        存入表
+            $rel = M('user_verify_identity_info')->field('user_id')->where(['user_id'=>$user_id])->find();
+            if($rel){
+                $res = M('user_verify_identity_info')->where(['user_id'=>$user_id])->update($data);
+            }else{
+                $res = M('user_verify_identity_info')->insert($data);
+            }
+        }
+        if ($res){
+            $this->ajaxReturn(['status' => 0, 'msg' => '提交成功', 'data' => $data]);
+        }
+    }
+
+
+
+    public function apply1()
+    {
+        //解密token
+//        $user_id = $this->get_user_id();
+        $user_id = 57534;
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
@@ -945,7 +1002,6 @@ class Live extends ApiBase
     public function update_icard_pic()
     {
         $user_id = $this->get_user_id();
-//        $user_id = 57534;
         if($user_id!=""){
             // 获取表单上传文件 例如上传了001.jpg
             $file = request()->file('picfront');
