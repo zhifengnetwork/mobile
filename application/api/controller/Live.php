@@ -62,8 +62,8 @@ class Live extends ApiBase
     public function apply()
     {
         //解密token
-        $user_id = $this->get_user_id();
-//        $user_id = 57534;
+//        $user_id = $this->get_user_id();
+        $user_id = 57534;
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
@@ -98,65 +98,15 @@ class Live extends ApiBase
                 $data['create_time'] = time();
                 $data['pic_front'] = $pic_front;
                 $data['pic_back'] = $pic_back;
-            }
-//        存入表
-            $rel = M('user_verify_identity_info')->field('user_id')->where(['user_id'=>$user_id])->find();
-            if($rel){
-                $res = M('user_verify_identity_info')->where(['user_id'=>$user_id])->update($data);
-            }else{
-                $res = M('user_verify_identity_info')->insert($data);
-            }
-        }
-        if ($res){
-            $this->ajaxReturn(['status' => 0, 'msg' => '提交成功', 'data' => $data]);
-        }
-    }
 
 
-
-    public function apply1()
-    {
-        //解密token
-//        $user_id = $this->get_user_id();
-        $user_id = 57534;
-        if(!$user_id){
-            $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
-        }
-
-        if($user_id!="") {
-//            //选择会员
-//            $levelname = M('user_level')->field('level_name')->select();
-//
-//            foreach ($levelname as $k=>$v){
-//                $levelname[$k]=$v['level_name'];
-//            }
-//
-//            foreach ($levelname as $k=>$v){
-//                $levelname['name'][$k] = $v;
-//            }
-//
-//            $data['level_name'] = $levelname;
-
-
-        if (IS_POST) {
-
-            $mobile = I('post.mobile', '');
-            $name = I('post.username', '');
-            $level = I('post.level_id', '');
-
-            $data['mobile'] = $mobile;
-            $data['name'] = $name;
-            $data['user_id'] = $user_id;
-            $data['level_id'] = $level;
-            $data['create_time'] = time();
-
-            // 身份证正面
-            $pic_front = request()->file('pic_front');
-            $save_url = UPLOAD_PATH.'idcard/' . date('Y', time()) . '/' . date('m-d', time());
-            if($pic_front) {
+                // 身份证正面
+                $file = request()->file('pic_front');
+                $save_url = UPLOAD_PATH.'idcard/' . date('Y', time()) . '/' . date('m-d', time());
+                if($file) {
                     // 移动到框架应用根目录/public/uploads/ 目录下
                     $image_upload_limit_size = config('image_upload_limit_size');
-                    $info = $pic_front->rule('uniqid')->validate(['size' => $image_upload_limit_size, 'ext' => 'jpg,png,gif,jpeg'])->move($save_url);
+                    $info = $file->rule('uniqid')->validate(['size' => $image_upload_limit_size, 'ext' => 'jpg,png,gif,jpeg'])->move($save_url);
                     if ($info) {
                         // 成功上传后 获取上传信息
                         // 输出 jpg
@@ -165,28 +115,31 @@ class Live extends ApiBase
                         // 上传失败获取错误信息
                         $this->ajaxReturn(['status' =>-1,'msg' =>$pic_front->getError()]);
                     }
-                $data['pic_front'] =$comment_img;
-            }
-
-            $pic_back = request()->file('pic_back');
-            $save_url = UPLOAD_PATH.'idcard/' . date('Y', time()) . '/' . date('m-d', time());
-            if($pic_back) {
-                // 移动到框架应用根目录/public/uploads/ 目录下
-                $image_upload_limit_size = config('image_upload_limit_size');
-                $info = $pic_back->rule('uniqid')->validate(['size' => $image_upload_limit_size, 'ext' => 'jpg,png,gif,jpeg'])->move($save_url);
-                if ($info) {
-                    // 成功上传后 获取上传信息
-                    // 输出 jpg
-                    $comment_img1 = '/' . $save_url . '/' . $info->getFilename();
-                } else {
-                    // 上传失败获取错误信息
-                    $this->ajaxReturn(['status' =>-1,'msg' =>$pic_back->getError()]);
+                    $data['pic_front'] =SITE_URL.$comment_img;
                 }
-                $data['pic_back'] =$comment_img1;
+
+                $files = request()->file('pic_back');
+                $save_url = UPLOAD_PATH.'idcard/' . date('Y', time()) . '/' . date('m-d', time());
+                if($files) {
+                    // 移动到框架应用根目录/public/uploads/ 目录下
+                    $image_upload_limit_size = config('image_upload_limit_size');
+                    $info = $files->rule('uniqid')->validate(['size' => $image_upload_limit_size, 'ext' => 'jpg,png,gif,jpeg'])->move($save_url);
+                    if ($info) {
+                        // 成功上传后 获取上传信息
+                        // 输出 jpg
+                        $comment_img1 = '/' . $save_url . '/' . $info->getFilename();
+                    } else {
+                        // 上传失败获取错误信息
+                        $this->ajaxReturn(['status' =>-1,'msg' =>$pic_back->getError()]);
+                    }
+                    $data['pic_back'] =SITE_URL.$comment_img1;
+                }
+
+
+
+
+
             }
-
-
-        }
 //        存入表
             $rel = M('user_verify_identity_info')->field('user_id')->where(['user_id'=>$user_id])->find();
             if($rel){
@@ -196,13 +149,10 @@ class Live extends ApiBase
             }
         }
         if ($res){
-            $data['pic_back'] =SITE_URL.$comment_img1;
-            $data['pic_front'] =SITE_URL.$comment_img;
             $this->ajaxReturn(['status' => 0, 'msg' => '提交成功', 'data' => $data]);
-        }else{
-            $this->ajaxReturn(['status' => -2 , 'msg'=>'提交失败','data'=>$pic_front->getError()]);
         }
     }
+
 
 
     /**
@@ -253,7 +203,7 @@ class Live extends ApiBase
             // 获取表单上传文件 例如上传了001.jpg
             $file = request()->file('image');
             // 移动到框架应用根目录/uploads/ 目录下
-            $info = $file->validate(['size'=>204800,'ext'=>'jpg,png,gif']);
+            $info = $file->validate(['size'=>204800000,'ext'=>'jpg,png,gif']);
             $info = $file->rule('md5')->move(ROOT_PATH . DS.'public/upload');//加密->保存路径
             if($info){
                 // 成功上传后 获取上传信息
