@@ -62,8 +62,8 @@ class Live extends ApiBase
     public function apply()
     {
         //解密token
-//        $user_id = $this->get_user_id();
-        $user_id = 57534;
+        $user_id = $this->get_user_id();
+//        $user_id = 57534;
         if(!$user_id){
             $this->ajaxReturn(['status' => -1 , 'msg'=>'用户不存在','data'=>'']);
         }
