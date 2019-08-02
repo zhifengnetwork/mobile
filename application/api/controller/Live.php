@@ -463,11 +463,16 @@ class Live extends ApiBase
         }
         if (IS_GET) {
             $room_id = I('get.room_id');
+            $room = (new UserVideo)->where(['room_id' => $room_id])->find();
+            if (empty($room)) {
+                $this->ajaxReturn(['status' => -1 , 'msg'=>'不存在的直播间','data'=>'']);
+            }
+
+            Db::name('user_video')->where(['room_id' => $room_id])->update(['status' => 2]);
 
             $data = M('user_video')->field('pic_fengmian,user_id,start_time,end_time,money,look_amount,top_amount')->where(['room_id'=>$room_id])->find();
             if ($data){
                 $data['pic_fengmian'] = SITE_URL.$data['pic_fengmian'];
-
                 //计算天数
                 $timediff = $data['end_time']-$data['start_time'];
                 $days = intval($timediff/86400);
