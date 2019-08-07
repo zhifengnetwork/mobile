@@ -45,8 +45,7 @@ class User extends ApiBase
 
     public function userinfo(){
         //解密token
-//        $user_id = $this->get_user_id();
-        $user_id= 57580;
+        $user_id = $this->get_user_id();
         if($user_id!=""){
 
             $state = M('user_verify_identity_info')->field('verify_state')->where(['user_id'=>$user_id])->find();
