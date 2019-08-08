@@ -11,6 +11,8 @@ use app\common\logic\Message;
 use app\common\model\UserMessage;
 use app\common\logic\wechat\WechatUtil;
 use app\common\logic\ShareLogic;
+use app\live\service\RtmTokenBuilder;
+use app\live\service\AccessToken;
 
 class Live extends ApiBase
 {
@@ -1020,6 +1022,22 @@ class Live extends ApiBase
             return $user_find;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * 调用摄像头
+     */
+    public function RtmTokenBuilderSample()
+    {
+        $appID = "4c2954a8e1524f5ea15dc5ae14232042";
+        $appCertificate = "1580a6da5ed94447840d870a07e1c6e2";
+        $account = input('post.channel', 0);
+        $expiredTs = 0;
+        $builder = new RtmTokenBuilder($appID, $appCertificate, $account);
+        $builder->setPrivilege(AccessToken::Privileges["kRtmLogin"], $expiredTs);
+        if ($builder){
+            $this->ajaxReturn(['status' => 0 , 'msg'=>'调用成功','data'=>$builder->buildToken()]);
         }
     }
 }
